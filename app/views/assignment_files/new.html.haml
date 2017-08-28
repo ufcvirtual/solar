@@ -29,6 +29,8 @@
         complement_success: function(){
           $('#tb_lf').show();
           $.fancybox.close();
+          flash_message("#{t('assignment_files.success.uploaded')}", "notice");
+          $(".assignment_to_be_sent").html("#{t(:sent)}").css("color","#2900C2");
           update_tables_with_no_data();
           focus_element_time('#flash_message_span'); 
         }

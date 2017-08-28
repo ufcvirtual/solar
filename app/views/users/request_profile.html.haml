@@ -7,10 +7,10 @@
       .flash_message_wrapper
 
       .form-inputs.block_content
-        .profile
-          = label_tag :profile_id, t(".profile")
-          %span= select_tag :profile_id, options_from_collection_for_select(@profiles, "id", "name", params[:profile_id]), include_blank: false
         .filter
+          .profile
+            = label_tag :profile_id, t(".profile")
+            %span= select_tag :profile_id, options_from_collection_for_select(@profiles, "id", "name", params[:profile_id]), include_blank: false
           .curriculum_unit_type
             = label_tag :curriculum_unit_type, t(".type")
             %span= select_tag :curriculum_unit_type, options_from_collection_for_select(@types, "id", "description", params[:type_id]), include_blank: true

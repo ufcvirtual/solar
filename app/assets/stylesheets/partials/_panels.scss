@@ -19,7 +19,7 @@
   overflow: auto;
   margin: 30px auto;
   text-align: left;
-  background-color: rgba($color_white_panels,0.8);
+  background-color: rgba($color_white_base,0.8);
   padding: 5px 10px;
 }
 
@@ -29,7 +29,7 @@
   overflow: auto;
   margin: 30px auto;
   text-align: left;
-  background-color: rgba($color_white_panels,0.8);
+  background-color: rgba($color_white_base,0.8);
   padding: 5px 10px;
   padding-bottom: 5%;
   margin-bottom: 5%;
@@ -82,7 +82,7 @@
 
 #faq .search, .tutorials .search, #privacy .search{
   text-align: center;
-  color: $panel_color;
+  color: $font_color_buttons;
   font-weight: bold;
   input{
     vertical-align: middle;
@@ -92,7 +92,7 @@
 
 #faq .question a, #privacy .policy a{
   text-decoration: none;
-  color: $panel_color;
+  color: $font_color_buttons;
 }
 
 #faq h4.title, #privacy h4.title{
@@ -100,12 +100,12 @@
   background: $background_light;
   background: -moz-linear-gradient(top, $background_light 0%, $background_light 100%);
   background: -webkit-gradient(left top, left bottom, color-stop(0%, $background_light), color-stop(100%, $background_light));
-  background: -webkit-linear-gradient(top, $background_light 0%, $color_white_panels 100%);
-  background: -o-linear-gradient(top, $background_light 0%, $color_white_panels 100%);
-  background: -ms-linear-gradient(top, $background_light 0%, $color_white_panels 100%);
-  background: linear-gradient(to bottom, $background_light 0%, $color_white_panels 100%);
+  background: -webkit-linear-gradient(top, $background_light 0%, $color_white_base 100%);
+  background: -o-linear-gradient(top, $background_light 0%, $color_white_base 100%);
+  background: -ms-linear-gradient(top, $background_light 0%, $color_white_base 100%);
+  background: linear-gradient(to bottom, $background_light 0%, $color_white_base 100%);
   font-weight: normal;
-  color: $panel_color;
+  color: $font_color_buttons;
   margin: 10px 0 0 0;
   padding: .5em .5em .5em .7em;
   cursor: pointer;
@@ -148,20 +148,20 @@
 .panel h4, .panel p{
   font-family:PT Sans;
   font-size: 16px;
-  color: $panel_content_color;
+  color: $color_almost_gray_content;
 }
 
 .panel .menu_footer ul li a{
   text-decoration: none;
   font-family: Ubuntu;
   font-size: 14px;
-  color: $panel_menu_footer_color;
+  color: $current_color;
 }
 
 .dropdown-panel .close{
   float: right;
   button{
-    background-color: $color_white_panels;
+    background-color: $color_white_base;
     border: none;
     cursor: pointer;
   }

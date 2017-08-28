@@ -1,4 +1,4 @@
-$comment_color: #4B4B4B;
+$color_gray_text: #424242;
 
 $exam_open_question_color: #1c5ec9;
 $exam_open_question_border: #CDD6E3;
@@ -16,10 +16,8 @@ $tool_table_title_background: #FFEFDB;
 $evaluated_corrected_color: #2D7035;
 $evaluated_sent_color: #2900c2;
 $evaluated_not_sent_color: #e12227;
-// $evaluated_not_started_color: #787878;
 $evaluated_not_started_color: #666666;
 $evaluated_to_send_color: #003e7a;
-// $evaluated_without_group_color: #e37073;
 $evaluated_without_group_color: #B15759;
 
 $assignment_not_answered_color: #CC0033;
@@ -44,7 +42,7 @@ $new_after_evaluation_background: #e6f0fc;
 .comment-blue {
   background-color: $background_dark_gray;
   border-radius: 8px;
-  color: $comment_color;
+  color: $color_gray_text;
   padding: 7px 5px 7px 5px;
   font-size: 9pt;
   margin-bottom: 10px;
@@ -53,7 +51,7 @@ $new_after_evaluation_background: #e6f0fc;
 .comment-red {
   background-color: $background_light_red;
   border-radius: 8px;
-  color: $comment_color;
+  color: $color_gray_text;
   padding: 7px 5px 7px 5px;
   font-size: 9pt;
   margin-bottom: 10px;
@@ -62,7 +60,7 @@ $new_after_evaluation_background: #e6f0fc;
 .comment-green {
   background-color: $background_light_green;
   border-radius: 8px;
-  color: $comment_color;
+  color: $color_gray_text_custom_icons;
   padding: 7px 5px 7px 5px;
   font-size: 9pt;
   margin-bottom: 10px;
@@ -186,11 +184,11 @@ $new_after_evaluation_background: #e6f0fc;
         }
 
         .incorrect{
-          color: $exam_open_question_incorrect;
+          color: $error_color;
         }
 
         .hit{
-          color: $exam_open_question_hit;
+          color: $color_green;
         }
       }
 

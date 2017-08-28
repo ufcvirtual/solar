@@ -4,21 +4,21 @@
   .block_content.messages
     .align-left
       %ul
-        %li= link_to content_tag(:i, nil, class: 'icon-reply', :"aria-hidden" => 'true'), reply_message_path(@message), class: 'btn btn_main', id: "reply", :'data-tooltip' => t(".reply"), :'aria-label'=> t(".reply")
+        %li= link_to content_tag(:i, nil, class: 'icon-reply', :"aria-hidden" => 'true'), reply_message_path(@message), class: 'btn btn_main', id: "reply", :'data-tooltip' => t(".reply"), :'aria-label'=> t(".reply"), class: 'btn'
         %li= link_to  content_tag(:i, nil, class: 'icon-reply-all', :"aria-hidden" => 'true'), reply_all_message_path(@message), class: 'btn', id: "reply_all", :'data-tooltip' => t(".reply_all"), :'aria-label'=> t(".reply_all")
         %li= link_to content_tag(:i, nil, class: 'icon-forward', :"aria-hidden" => 'true'), forward_message_path(@message), class: 'btn', id: "forward", :'data-tooltip' => t(".forward"), :'aria-label'=> t(".forward")
 
     .align-right
       %ul
-        %li= link_to content_tag(:i, nil, class: 'icon-plus', :"aria-hidden" => 'true'),  new_message_path, :class =>'btn', id: "button_new_msg", 'data-tooltip' => t(:new, scope: :messages), :'aria-label'=> t("messages.new")
+        %li= link_to content_tag(:i, nil, class: 'icon-plus', :"aria-hidden" => 'true'),  new_message_path, class: 'btn', id: "button_new_msg", 'data-tooltip' => t(:new, scope: :messages), :'aria-label'=> t("messages.new")
 
         - if @box != "trashbox"
-          %li#mark_as_unread.btn=link_to content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true'), '#', {:"data-tooltip" => t('.unread'), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "unread", box: @box), :'aria-label'=> t(".unread"), onkeydown: 'click_on_keypress(event, this);', id: 'unread'}
+          %li#mark_as_unread=link_to content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true'), '#', {:"data-tooltip" => t('.unread'), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "unread", box: @box), :'aria-label'=> t(".unread"), onkeydown: 'click_on_keypress(event, this);', id: 'unread', class: 'btn'}
 
-          %li#remove_message.btn=link_to content_tag(:i, nil, class: 'icon-trash', :'aria-hidden' => 'true'), '#', {:"data-tooltip" => t('.trash'), :"data-new-status" => "trash", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "trash", box: @box), :'aria-label'=> t(".trash"), onkeydown: 'click_on_keypress(event, this);', class: 'remove_btn', id: 'trash'}
+          %li#remove_message=link_to content_tag(:i, nil, class: 'icon-trash', :'aria-hidden' => 'true'), '#', {:"data-tooltip" => t('.trash'), :"data-new-status" => "trash", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "trash", box: @box), :'aria-label'=> t(".trash"), onkeydown: 'click_on_keypress(event, this);', class: 'remove_btn btn', id: 'trash'}
 
         - if @box == "trashbox"
-          %li#restore_message.btn=link_to content_tag(:i, nil, class: 'icon-restore', :'aria-hidden' => 'true'), '#', {:"data-tooltip" => t('.restore'), :"data-new-status" => "restore", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "restore", box: @box), :'aria-label'=> t(".restore"), onkeydown: 'click_on_keypress(event, this);', id: 'trashbox'}
+          %li#restore_message.btn=link_to content_tag(:i, nil, class: 'icon-restore', :'aria-hidden' => 'true'), '#', {:"data-tooltip" => t('.restore'), :"data-new-status" => "restore", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "restore", box: @box), :'aria-label'=> t(".restore"), onkeydown: 'click_on_keypress(event, this);', id: 'trashbox', class: 'btn'}
 
     .clearfix
 
