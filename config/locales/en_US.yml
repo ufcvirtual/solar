@@ -3116,6 +3116,21 @@ en_US:
         evaluative: 97
         frequency: 98
         notevaluative: 99
+    evaluatives:
+      name:
+        responsibles: "Responsibles [R]"
+        students_and_tools: "Tools [T]"
+        all: "Geral View [0]"
+        evaluative: 'Evaluative [1]'
+        notevaluative: 'Not Evaluative [2]'
+        frequency: 'Frequency [3]'
+      code:
+        responsibles: 82
+        students_and_tools: 84
+        all: 96
+        evaluative: 97
+        notevaluative: 98
+        frequency: 99
     exam:
       name:
         time: 'Time [T]'
