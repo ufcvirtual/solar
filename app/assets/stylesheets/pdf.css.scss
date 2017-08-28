@@ -2,8 +2,8 @@ $color_gray_text: #424242;
 
 $exam_open_question_color: #1c5ec9;
 $exam_open_question_border: #CDD6E3;
-$exam_open_question_incorrect: #E03838;
-$exam_open_question_hit: #0B610B;
+$error_color: #E03838;
+$color_green: #0B610B;
 
 $background_dark_gray: #E8EFF6;
 $background_light_red: #fff6f6;
@@ -12,7 +12,6 @@ $background_light_green: #F5FFE3;
 $tool_table_body_odd_background: #D3D3D3;
 $tool_table_title_background: #FFEFDB;
 
-// $evaluated_corrected_color: #378941;
 $evaluated_corrected_color: #2D7035;
 $evaluated_sent_color: #2900c2;
 $evaluated_not_sent_color: #e12227;
@@ -60,7 +59,7 @@ $new_after_evaluation_background: #e6f0fc;
 .comment-green {
   background-color: $background_light_green;
   border-radius: 8px;
-  color: $color_gray_text_custom_icons;
+  color: $color_gray_text;
   padding: 7px 5px 7px 5px;
   font-size: 9pt;
   margin-bottom: 10px;
