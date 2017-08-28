@@ -913,6 +913,7 @@ pt_BR:
       enrolled: "Matriculado"
       rejected: "Matricula Rejeitada"
       pending: Pendente
+      cancelled_rejected: Rejeitadas/Canceladas
       ucs_available: Disciplinas diponíveis
       confirm: "Tem certeza de que deseja cancelar?"
       cancel_request: "Cancelar pedido"
