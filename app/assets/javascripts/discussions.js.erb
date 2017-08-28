@@ -93,6 +93,7 @@ function update_post(obj, post, parent, draft) {
 
   if(draft==false){
     $("#submit_post_draft").remove();
+    $(".forum_post_draft").remove();
   }
 
   postEdit = $(obj).closest('.forum_post_wrapper').children(".forum_post_reply");

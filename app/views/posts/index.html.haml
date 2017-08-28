@@ -38,9 +38,12 @@
           = form.text_area :content
           = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'discussion_post_content', number: '', field: ''}
           .new_post_dialog_buttons.btn-group
+
             = button_tag content_tag(:span, t(:cancel)), type: 'button', onclick: "cancel_posting(this)", class: 'btn btn_caution', id: 'btn_cancel_post'
             = button_tag t('.publish'), class: "btn btn_main", id: "submit_post", type: :button
             = button_tag t('.save_draft'), class: "btn btn-orange", id: "submit_post_draft", type: :button
+          .forum_post_draft  
+            %p= raw t('posts.post.draft', aria: t('posts.post.draft2') + t('fancybox.open'))
     .forum_post_new
 
   .forum_posts_wrapper
@@ -59,6 +62,10 @@
   $("#button_new_post").focus();
 
   $(function(){
+    $('.draft_version_explain').call_fancybox({
+      'maxWidth': '700px',
+      content: $('#fv_explain').html()
+    });
     $('a').not(".draft_version_explain, .update_post, .btn_caution, .forum_button_attachment, .response_post, .dropdown-open, .close_dropdown, #mysolar_top_user_nick, #accessibility_top, #help_top, .link-arrow, #shortcut_accesskey").click(function(){
       if( typeof(CKEDITOR) !== "undefined" && CKEDITOR != undefined ){
         if (CKEDITOR.instances['discussion_post_content'] !== undefined){
@@ -163,7 +170,7 @@
         success: function(data){
           remove_ckeditor(); // remove ckeditor options
 
-          $.get("#{discussion_post_path(@discussion.id, ':id')}".replace(':id', data.post_id), {can_post: "#{@can_post}"}, function(data2){
+          $.get("#{discussion_post_path(@discussion.id, ':id')}".replace(':id', data.post_id), {can_post: "#{@can_post}", new_post: true}, function(data2){
             var post_table = $("article#"+data.post_id);
             if (!!post_table.length){
               post_table.html(data2);
