@@ -6,7 +6,7 @@
 
 .icon-trash, .icon-cancel-circle {
   color: #000000;
-  @include opacity(0.5);
+  opacity: 0.5;
   filter:alpha(opacity=50);
 }
 
@@ -16,7 +16,7 @@
 
 .question_form .icon-trash, .block_buttons .icon-trash, .message_general_div_option .icon-trash, .remove_note  .icon-trash{
   color: #ffffff;
-  @include opacity(1);
+  opacity: 1;
   filter:alpha(opacity=100);
 }
 
