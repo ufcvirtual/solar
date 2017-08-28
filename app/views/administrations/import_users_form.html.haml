@@ -6,11 +6,9 @@
 
         .import-users
           = simple_form_for :batch, url: import_users_batch_path, html: {multipart: true, id: "import_users"} do |f|
-            .form-inputs
-              .inline
-                = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
-                = f.input :file, as: :file, required: false, label: false
-                = button_to_function t(:import, scope: [:administrations, :import_users]), "import_users(); return false;", class: "btn btn_main btn_lightbox", type: "button"
+            = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
+            = f.input :file, as: :file, required: false, label: false
+            = button_to_function t(:import, scope: [:administrations, :import_users]), "import_users(); return false;", class: "btn btn_main btn_lightbox", type: "button"
 
   .wait.invisible
     = t(:wait, scope: [:administrations, :import_users])

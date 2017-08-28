@@ -26,8 +26,7 @@
 
   table th {
     padding: 6px 6px 4px;
-    background-color: $color_white_background_portlets;
-    color: $color_black_background_color; 
+    color: $color_black_buttons; 
   }
   .type, .semester {
     text-align: center;
@@ -149,7 +148,7 @@ table tr.block_title th {
   width: $portlet_settings_width;
   height: $portlet_settings_height;
   overflow-y:auto;
-  background-color: $color_white_portlets;
+  background-color: $color_white_base;
 
   h3 {
     margin-top: 6px;
@@ -157,7 +156,7 @@ table tr.block_title th {
     font-family: 'PT Sans', sans-serif;
     text-transform: uppercase;
     font-size: 12px;
-    color: $slide_settings_title_color_portlets;
+    color: $color_almost_gray_content;
   }
   ul, h3 {
     padding: 0;
@@ -172,7 +171,7 @@ table tr.block_title th {
     &.active {
       font-weight: bold;
       background-color: $slide_settings_active_background;
-      color: $color_black_portlets;
+      color: $color_black;
     }
     .counter {
       position: absolute;
@@ -181,7 +180,7 @@ table tr.block_title th {
       padding: 2px 5px 1px 5px;
       @include rounded-corners(3px);
       font-size: 11px;
-      background-color: $slide_settings_counter_background_portlets;
+      background-color: $color_black_buttons;
       color: $slide_settings_counter_color_portlets;
     }
   }
@@ -196,7 +195,7 @@ table tr.block_title th {
 .slide-block{
   width: 170px;
   height: 164px;
-  background-color: $color_black_background_color;
+  background-color: $color_black;
   opacity: 0.8;
   float: right;
   padding: 1px;
@@ -206,7 +205,7 @@ table tr.block_title th {
   top: 0;
 
   label{
-    color: $color_white_background_portlets;
+    color: $color_white_base;
     padding-left: 5px;
     padding-right: 5px;
   }
@@ -215,14 +214,14 @@ table tr.block_title th {
     font-family: 'Ubuntu Condensed';
     font-size: 14px;
     padding-top: 4px;
-    color: $color_white_portlets;
+    color: $color_white_base;
   }
 
   label.subtitle{
     font-family: 'PT Sans';
     font-size: 12px;
     padding-left: 8px;
-    color: $color_white_portlets;
+    color: $color_white_base;
   }
 
   input{

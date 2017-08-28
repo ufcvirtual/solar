@@ -17,7 +17,7 @@
 .highlight-date-mark {
     a.ui-state-default {
         background-color: $color_main_medium;
-        color: $color_white_calendar;
+        color: $color_white_base;
     }
 }
 //.ui-helper-hidden-accessible { display: none; }
@@ -41,7 +41,7 @@
 
 /* cabecalho do calendario */
   .ui-datepicker-header {
-    background: $color_white_calendar;
+    background: $color_white_base;
     color: $color_black_calendar;
     height: 1.2em;
     padding: .3em;
@@ -88,7 +88,7 @@
 }
 
 #ui-datepicker-div{
-    background-color: $color_white_calendar;
+    background-color: $color_white_base;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 10px;
@@ -117,7 +117,7 @@
     /* data atual */
     .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {
         // background: none;
-        color: $color_contrast_text_calendar;
+        color: $color_contrast_text_font;
         // border: none;
         font-weight: bold;
     }
@@ -179,7 +179,7 @@
     border: 0; padding: 0em; width: 14.25%; min-height: 1.2em; }
 .ui-datepicker td span, .ui-datepicker td a {
     display: block; padding: 0px; text-align: right; text-decoration: none; }
-.ui-datepicker-week-end {color: $color_contrast_text_weekend_calendar;}
+.ui-datepicker-week-end {color: $color_contrast_text_font;}
 
 
 /* IE6 IFRAME FIX (taken from datepicker 1.5.3 */

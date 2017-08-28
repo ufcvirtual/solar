@@ -10,7 +10,7 @@
 
   .block_content{
 
-    background-color: $color_white_lesson_notes;
+    background-color: $color_white_base;
 
     -webkit-columns: 3;
     column-count: 3;
@@ -25,27 +25,31 @@
       position: relative;
       padding: 5px;
       float: left;
-      box-shadow: 1px 1px 3px #8888;
+      box-shadow: 1px 1px 3px $color_gray;
       width: 215px;
 
       -webkit-column-break-inside: avoid; /* will prevent breaking blocks across columns */
       column-break-inside: avoid;
 
       label{
-        color: #333;
+        color: $panel_box_shadow;
         width: auto;
         margin-right: 4%;
       }
 
       .description{
         word-break: break-all;
-        color: #000;
+        color: $color_black_buttons;
         font-size: 10pt;
 
         p{
-          color: #000;
+          color: $color_black_buttons;
         }
 
+      }
+
+      form{
+        padding-bottom: 25px;
       }
 
       .title{
@@ -53,7 +57,7 @@
         font-weight: bold;
         padding: 2px;
         padding-bottom: 7px;
-        color: #000;
+        color: $color_black_buttons;
 
         .lesson_note_name{
           display: inline;
@@ -69,7 +73,7 @@
         position: absolute;
         bottom: 0;
         left: 0;
-        background-color: #000;
+        background-color: $color_black_buttons;
         height: 20px;
         opacity: 0.7;
         width: 98.6%;
@@ -78,13 +82,14 @@
         float: left;
         padding: 2px;
         display: block;
+        margin-bottom: -1px;
 
         li{
           display: inline-block;
         }
 
         i{
-          color: #fff;
+          color: $color_white;
           margin-left: 2px;
         }
 

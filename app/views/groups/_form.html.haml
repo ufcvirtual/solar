@@ -8,16 +8,16 @@
 
       %div
         = f.label t(:course)
-        = @group.offer.course.try(:name)
+        #text_as_label= @group.offer.course.try(:name)
 
       - if @type_id != "3"
         %div
           = f.label t(:curriculum_unit)
-          = @group.offer.curriculum_unit.try(:name)
+          #text_as_label= @group.offer.curriculum_unit.try(:name)
 
       %div
         = f.label t(:semester)
-        = @group.offer.semester.name
+        #text_as_label= @group.offer.semester.name
 
       = f.input :code
 

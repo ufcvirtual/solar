@@ -15,7 +15,7 @@
   tr.lines td {
 
     a.allocation_cancel_enroll.btn_caution:hover{
-      color: $enrollment_cancel_button_hover_font_color;
+      color: $color_white_base;
     }
   }
 }
@@ -96,7 +96,7 @@
 }
 
 .enrollment_label_search {
-  color: $enrollment_label_search_font_color;
+  color: $color_black;
 }
 
 .enrollment_bar {
@@ -134,7 +134,7 @@
 table.tb_list.enrollments {
   .allocations {
     tr.lines.active:hover {
-      background-color: $enrollment_active_line_table_hover;
+      background-color: $warning_background_back;
     }
   }
 }
