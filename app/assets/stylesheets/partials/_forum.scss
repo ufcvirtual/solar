@@ -24,7 +24,7 @@ div.forum_navigation {
   /*background: url('../images/error.gif') no-repeat left center;*/
   padding-top: 7px;
   font-family: 'Ubuntu Condensed', sans-serif;
-  color: $color_red_forum;
+  color: $color_red;
 }
 
 #forum_view_mode {
@@ -35,6 +35,7 @@ div.forum_navigation {
   font-size: 10pt;
   min-height: 28px;
   display: block;
+  color: $color_black;
 
   form {
     padding-top: 7px;
@@ -56,7 +57,7 @@ div.forum_navigation {
   max-width: 785px;
   width: 100%;
   margin-top: 5px;
-  color: $forum_post_color;
+  color: $color_black;
 
   .forum_post_wrapper {
     max-width: $forum_post_width;
@@ -90,7 +91,7 @@ div.forum_navigation {
 .forum_post_icon {
   border-right: 2px solid;
   border-right-color: $color_main;
-  background-color: $color_white_forum;
+  background-color: $color_white_base;
   vertical-align: top;
   padding-right: 5px;
   width: 40px;
@@ -133,7 +134,7 @@ div.forum_navigation {
 }
 
 .forum_post_date {
-  color: $color_light_gray_forum;
+  color: $color_gray_font;
   text-align: right;
 }
 
@@ -251,31 +252,39 @@ div.forum_navigation {
 }
 
 .forum_post_head.new, .forum_post_icon.new{
-  background-color: $forum_post_background;
+  background-color: $blue_warning_background_bkg;
 }
 
 .forum_post_wrapper {
   .draft{
     background-color: $background_gray;
+    color: $color_black_buttons;
     .forum_post_attachment{
       background-color: $background_gray;
     }
   }
   .new{
-    background-color: $forum_post_background_blue;
+    background-color: $blue_warning_background_blue;
+    /*color: $color_black_buttons;*/
     .forum_post_attachment{
-      background-color: $forum_post_background_blue;
+      background-color: $blue_warning_background_blue;
+      /*color: $color_black_buttons;*/
     }  
   }
 }
 
 .draft.forum_post_wrapper {
   background-color: $background_gray;
+  /*color: $color_black_buttons;*/
   .forum_post_attachment{
     background-color: $background_gray;
+  }
+  .forum_post_date{
+    /*color: $color_black_buttons;*/
   }
 }
 
 .draft{
+  /*color: $color_black_buttons;*/
   background-color: $background_gray;
 }

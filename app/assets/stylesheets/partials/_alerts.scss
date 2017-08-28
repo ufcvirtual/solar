@@ -40,12 +40,12 @@
     cursor: pointer;
     padding: 5px 10px 4px 10px;
     .icon-plus-circle{
-      color: $icon_color;
+      color: $current_color_gray;
       vertical-align: top;
       margin-right: 4px;
     }
     .icon-arrow-up-thin, .icon-arrow-down-thin, .icon-arrow-right-thin, .icon-arrow-left-thin{
-      color: $icon_color;
+      color: $current_color_gray;
       vertical-align: top;
       position: relative;
     }
@@ -70,7 +70,7 @@
 
 .sticky-float {
   .flash_message_wrapper {
-    background-color: rgba($color_white_alert, 0.8);
+    background-color: rgba($color_white_base, 0.8);
     width: 785px;
     z-index: 1000;
   }
@@ -80,7 +80,7 @@
 }
 
 label {
-  color: $color_white_alert;
+  color: $color_white_base;
   display: inline-block;
   width: 140px;
   .menor {

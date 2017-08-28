@@ -31,7 +31,7 @@
                 = f.check_box :chat_type, { checked: (f.object.chat_type == 1), id: :chat_room_type }
                 #participants_box
                   %span{ id: (f.object.chat_type == 1 ? 'tab' : 'define_participants') }
-                    = f.label :type, t('.define_participants')
+                    #text_as_label= f.label :type, t('.define_participants')
                   .box{ class: (f.object.chat_type == 1 ? '' : 'invisible') }
                     - if @allocations.any?
                       %div

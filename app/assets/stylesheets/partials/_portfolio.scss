@@ -39,7 +39,7 @@
   margin-right: 8px;
   margin-left: 10px;
   float: right;
-  color: $color_light_gray_portfolio;
+  color: $color_gray_font;
 }
 
 .assignment_comment_date {
@@ -76,7 +76,7 @@
   text-align: left;
   border-bottom: 1px solid;
   border-bottom-color: $color_main;
-  background-color: $color_white_background_portfolio;
+  background-color: $color_white_base;
 }
 
 .comments_files_div .btn {
@@ -93,7 +93,7 @@
 
 .assignment_without_group, td.assignment_without_group a {
   white-space: nowrap;
-  color: $portfolio_assignment_without_group_color;
+  color: $without_group_color;
 }
 
 .activity_grade {
@@ -105,43 +105,35 @@
 */
 
 .assignment_corrected, .assignment_evaluated {
-  color: $portfolio_assignment_corrected_color_portfolio;
+  color: $color_green_font;
 }
 
 a.assignment_corrected, a.assignment_evaluated {
-  color: $portfolio_assignment_corrected_color_portfolio_link;
-}
-
-.assignment_not_answered {
-  color: $portfolio_assignment_not_answered_color_portfolio;
+  color: $color_green_link;
 }
 
 .assignment_sent, .assignment_finished, .assignment_finish, .assignment_processing {
-  color: $portfolio_assignment_color;
+  color: $sent_color;
 }
 
 a.assignment_sent, a.assignment_corrected, td.assignment_as a {
-  color: $portfolio_assignment_color_link;
+  color: $sent_color_link;
 }
 
 .assignment_as {
-  color: $portfolio_assignment_color;
+  color: $sent_color;
 }
 
 a.assignment_as {
-  color: $portfolio_assignment_color_link;
+  color: $sent_color_link;
 }
 
-.assignment_not_sent, .expired, .assignment_closed {
-  color: $portfolio_assignment_not_sent_color;
+.assignment_not_sent, .expired, .assignment_closed, .assignment_not_answered {
+  color: $not_sent_color_font;
 }
 
 a.assignment_not_sent {
-  color: $portfolio_assignment_not_sent_color_link !important;
-}
-
-.assignment_not_started, .assignment_scheduled {
-  color: $portfolio_assignment_not_started;
+  color: $not_sent_color !important;
 }
 
 .assignment_to_be_sent, .assignment_to_be_sent a, .assignment_started,
@@ -149,15 +141,19 @@ a.assignment_not_sent {
   color: $color_main;
 }
 
+.assignment_not_started, .assignment_scheduled {
+  color: $color_almost_gray_content;
+}
+
 .assignment_an{
   color: $color_main;
 }
 .assignment_without_group {
-  color: $portfolio_assignment_without_group_color;
+  color: $without_group_color;
 }
 
 .assignment_without_group a, td.assignment_without_group a {
-  color: $portfolio_assignment_without_group_color_link;
+  color: $without_group_color_link;
 }
 
 .assignment_corrected,
@@ -183,7 +179,7 @@ td.assignment_without_group a
 
 .tb_list{
   tr > td > .participants_box:not(.invisible){
-    border-bottom: 1px solid $step_list_color_portfolio;
+    border-bottom: 1px solid $step_list_color_import;
   }
 
   td{
@@ -192,7 +188,7 @@ td.assignment_without_group a
       max-height: 200px;
       overflow: auto;
       tbody{
-        background-color: $color_white_background_portfolio;
+        background-color: $color_white_base;
         td{
           padding: 6px 10px 4px 10px;
           vertical-align: middle;
@@ -232,7 +228,7 @@ td.assignment_without_group a
     width: 50px;
     height: 50px;
     border-radius: 30px;
-    box-shadow: 4px 4px 7px $portfolio_block_wrapper_groups;
+    box-shadow: 4px 4px 7px $color_gray;
   }
   .block_user{
     background-color: $event_assignment_background_portfolio;
@@ -267,7 +263,7 @@ td.assignment_without_group a
 .assignment_info{
   .title {
     border-bottom: 2px solid;
-    border-bottom-color: $color_main_border_portfolio;
+    border-bottom-color: $color_main;
     position: relative;
     overflow: hidden; // FIXME: em outro local estava definido como auto, verificar se está ok assim
     padding-top: 13px;
@@ -275,4 +271,43 @@ td.assignment_without_group a
   }
 }
 
+.assignment_summarized .student_files.files, .assignment_summarized .student_webconferences.files{
+  width: 99%;
+}
+
+.assignment_summarized .assignment_comments .block_wrapper{
+  width: 99%;
+}
+
+.assignment_summarized .assignment_comment_wrapper{
+  overflow-y: hidden;
+  max-height: none;
+}
+
+.assignment_summarized{
+  width: 700px;
+}
+
+/* assignment webconference's table */
+#tb_lw{
+  text-align: center;
+}
+
+.assignment_summarized{
+  .recordings{
+    .title{
+      padding: 1%;
+    }
+    .back{
+      float: right;
+      margin-top: 1%;
+    }
+    h3{
+      padding: 2%;
+      display: inline-block;
+      max-width: 70%;
+      word-wrap: break-word;
+    }
+  }
+}
 
