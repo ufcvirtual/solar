@@ -12,7 +12,7 @@
 
 #lesson_files_select_all {
   font-size: 10pt;
-  color: $lesson_files_select_all_color;
+  color: $color_gray_font;
 }
 
 .lesson_module,
@@ -81,15 +81,38 @@
   float: right;
 }
 
+
 #tree {
   max-height: 235px;
   overflow-y: auto;
+  background-color: $background_blue;
+  color: $color_black;
+  ul.dynatree-container{
+    background-color: $background_blue;
+    color: $color_black;
+    a.dynatree-title{
+      color: $color_black;
+    }
+    #initial_file > a.dynatree-title{
+      color: #e7aa3f;
+      font-weight: bold;
+    }
+    #some_child_selected, span.dynatree-selected > a.dynatree-title{
+      color: $color_green;
+      font-style: italic;
+    }
+  }
+
+  ul.dynatree-container a:hover,
+  span.dynatree-focused a:link{
+    color: $color_black_buttons;
+  }
 }
 
 #save_automatically_message {  // FIXME utilizado apenas em lesson_files, mudar seletor para ser menos genérico
   font-size: 10pt;
   margin-top: 13px;
-  color: $save_automatically_message_color;
+  color: $edition_color;
 }
 
 #attention_message { // FIXME utilizado apenas em lesson_files, mudar seletor para ser menos genérico

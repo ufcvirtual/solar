@@ -54,14 +54,3 @@
 .hide{
  display: none;
 }
-
-table.discussions {
-  thead{
-    tr.lines{
-      th {
-        background-color: $thead_background_color;
-        color: $thead_color;
-      }
-    }
-  }
-}

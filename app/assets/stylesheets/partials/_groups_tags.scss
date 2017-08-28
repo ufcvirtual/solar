@@ -13,7 +13,7 @@
 
   .collection_check_boxes {
     .icon{
-      color: $color_white;
+      color: $color_white_base;
       padding-right: 0;
       padding-left: 0;
       margin-top: -16px;
@@ -41,7 +41,7 @@
 
   .add_group, .unbind_groups{
     border: 1px solid $complete_border_left_color;
-    color: $color_gray_group_tags;
+    color: $color_gray_font;
   }
 
   .tags{
@@ -53,7 +53,7 @@
 .groups .collection_check_boxes, .groups_tags .collection_check_boxes, .group_checkbox .collection_check_boxes, .group_checkbox .collection_check_boxes label, .labels_tags .collection_check_boxes{
   @include collection_check_boxes_layout;
   background-color: $groups_forms_background;
-  color: $groups_tags_collecion_check_box;
+  color: $color_white_base;
   white-space: nowrap;
   display:inline-block;
 }
@@ -74,7 +74,7 @@
 }
 
 .no_tags .collection_check_boxes{
-  color: $color_black_groups_tags;
+  color: $color_black_buttons;
   background-color: $color_white;
   border: 0;
   padding: 0;
@@ -88,6 +88,9 @@
     border: 1px solid $complete_border_left_color;
     max-height: 400px;
     overflow-y: auto;
+    h1, label{
+      color: $color_black_buttons;
+    }
 
     .btn{
       margin: 5px;
@@ -125,19 +128,19 @@ tbody .groups, .input .groups{
 }
 
 .groups_tags .collection_check_boxes#disabled, .group_label .groups .collection_check_boxes#disabled, .group_checkbox .collection_check_boxes#disabled, .group_checkbox .collection_check_boxes#disabled label{
-  background-color: $complete_border_left_color;
+  background-color: $complete_border_left_color_gray;
 }
 
 .group_checkbox .collection_check_boxes label{
   margin: 0;
-  color: $groups_tags_collecion_check_box;
+  color: $color_white_base;
 }
 
 div#dropdown.dropdown.dropdown-tip.add_group_dropdown_1 {
   h1 {
-    color: $color_black_groups_tags;
+    color: $color_black_buttons;
   }
   label {
-    color: $color_black_groups_tags;
+    color: $color_black_buttons;
   }
 }
