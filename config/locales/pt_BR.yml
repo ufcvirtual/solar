@@ -3401,7 +3401,7 @@ pt_BR:
     evaluatives:
       name:
         responsibles: "Responsáveis [R]"
-        students_and_tools: "Ferramentas [F]"
+        students_and_tools: "Alunos/Ferramentas [F]"
         all: "Geral [0]"
         evaluative: 'Avaliativo [1]'
         notevaluative: 'Não Avaliativo [2]'
