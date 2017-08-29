@@ -46,6 +46,11 @@
         .forum_post_buttons
           .btn-group
             %ul
+              - if post.draft  
+                %span.hide.post_id= post.id 
+                %span.hide.parent_id= post.parent_id 
+                %span.hide.content= sanitize post.content
+                = button_tag t('posts.index.publish'), class: "btn btn_main submit_post", type: :button
               - if @can_evaluate && (post.profile.types & Profile_Type_Student) > 0
                 %li= link_to content_tag(:i, nil, class: 'icon-write'), user_discussion_posts_path(post.discussion.id, post.user_id), class: 'btn to_evaluate_post', :'data-tooltip'=> t('.to_evaluate'), :'aria-label' => t('.to_evaluate') + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
               - if can_interact
