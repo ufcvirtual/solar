@@ -77,7 +77,8 @@ function new_post(obj, parent) {
   }
 
   $('form#new_post_form').attr('method', "POST");
-
+  $("#submit_post_draft").show();
+  $(".forum_post_draft").show();
   return false;
 };
 
@@ -92,8 +93,8 @@ function update_post(obj, post, parent, draft) {
   $('form#new_post_form').attr('method', "PUT");
 
   if(draft==false){
-    $("#submit_post_draft").remove();
-    $(".forum_post_draft").remove();
+    $("#submit_post_draft").hide();
+    $(".forum_post_draft").hide();
   }
 
   postEdit = $(obj).closest('.forum_post_wrapper').children(".forum_post_reply");

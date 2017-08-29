@@ -1,6 +1,7 @@
 - user, new_post_class = post.user, ((new_post && new_post.to_i == post.id) ? "new" : "")
 - post_draft = post.draft==true ? " draft" : ""
 - new_post_class1 = new_post_class + post_draft
+
 - children = ((display_mode == 'list') ? post.children : Post.where("(draft = ? ) OR (draft = ? AND user_id= ?)", false, true, current_user.id).reorder_by_latest_posts(post.children)) # obtendo e reordenando os posts a partir dos seus "filhos/netos"
 - editable = ((post.user_id == current_user.id) && ((post.children_count == 0) || post.children.where(draft: true).count>0))
 - files    = post.files
@@ -25,7 +26,6 @@
    
         .forum_participant_profile
           = (profile = post.profile).nil? ? '' : profile.name
-
       .forum_post_date
         = l(post.updated_at, format: :discussion_post_date)
         = l(post.updated_at, format: :discussion_post_hour)
