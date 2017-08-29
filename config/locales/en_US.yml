@@ -758,6 +758,7 @@ en_US:
       general_message: It was not possible to execute action
       uab_enrollment: It's not possible to enroll at a distance curriculum unit by Solar
       uab_general: It's not possible to change an enrollment for a distance curriculum unit by Solar
+      off_period: Closed enrollment period
     show:
       course: Course
       curriculum_unit: Subject
@@ -1662,7 +1663,8 @@ en_US:
         cancel: Allocation not canceled.
         cancel_request: No canceled.
         cancel_profile_request: Profile request not canceled.
-        invalid_profile: "Não é possível realizar alocação com o perfil e dados fornecidos"
+        invalid_profile: "It's not possible to allocate this user with profile and data provided"
+        off_period: Closed enrollment period
     index:
       filter_user: "Filter Users"
       manage: Manage

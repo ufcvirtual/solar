@@ -1,5 +1,3 @@
-- user_groups, curriculum_units = [], []
-
 .allocations.filter
   .block_content
     .block_left
@@ -18,143 +16,28 @@
       %h2= t('.enrolled')
     .block_content
       %table.tb_list.enrollment_list_enrolled.table_ucs
-        - offer_enrolled = @user_requests.where(status: Allocation_Activated)
-        - if offer_enrolled.any?
-          %thead.thead_ucs
-            %tr.lines
-              %th= t(".type")
-              %th= t(".curriculum_unit")
-              %th= t(".course")
-              %th= t(:semester)
-              %th= t(".group")
-              %th.no_sort= t(:mysolar_mn_enrollment)
-          %tbody
-            - offer_enrolled.find_each do |allocation|
-
-              - group = allocation.group
-              - user_groups << group.id
-              - offer_info = group.detailed_info
-              - curriculum_units << [offer_info[:curriculum_unit], offer_info[:curriculum_unit].gsub(/\W/, '')]
-
-              %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}", 'data-group-id' => group.id}
-                %td= offer_info[:curriculum_unit_type]
-                %td
-                  - unless offer_info[:curriculum_unit_type_id].to_i == 3
-                    = offer_info[:curriculum_unit]
-                %td= offer_info[:course]
-                %td= offer_info[:semester]
-                %td= group.code
-                %td
-                  - period_start, period_end = group.offer.enrollment_period
-                  - if Time.now.between?(period_start, period_end)
-                    = link_to t('.cancel'), cancel_allocation_path(allocation), class: 'btn btn_caution allocation_cancel_enroll'
-                  - else
-                    = label_tag "lb_enrollm", t(".enrolled"), class: 'enrollment_label'
-          .block_content_text_list.text_none.empty_message.hide_message
-            = t(:item_search_no_found)
-        - else
-          .block_content_text_list.text_none
-            = t(:item_search_no_found)
+        = render 'enrollments/requests', status: [Allocation_Activated]
 
   .block_wrapper
     .block_title
       %h2= t('.pending')
     .block_content
       %table.tb_list.enrollment_list_pending.table_ucs
-        - offer_pending = @user_requests.where('status IN (?)', [Allocation_Pending, Allocation_Pending_Reactivate])
-        - unless offer_pending.nil? or offer_pending.empty?
-          %thead.thead_ucs
-            %tr.lines
-              %th= t(".type")
-              %th= t(".curriculum_unit")
-              %th= t(".course")
-              %th= t(:semester)
-              %th= t(".group")
-              %th.no_sort
-              %th.no_sort= t(:mysolar_mn_enrollment)
-          %tbody
-            - offer_pending.find_each do |allocation|
-
-              - group = allocation.group
-              - user_groups << group.id
-              - offer_info = group.detailed_info
-              - curriculum_units << [offer_info[:curriculum_unit], offer_info[:curriculum_unit].gsub(/\W/, '')]
-
-              %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}", 'data-group-id' => group.id}
-                %td= offer_info[:curriculum_unit_type]
-                %td
-                  - unless offer_info[:curriculum_unit_type_id].to_i == 3
-                    = offer_info[:curriculum_unit]
-                %td= offer_info[:course]
-                %td= offer_info[:semester]
-                %td= group.code
-                %td= link_to content_tag(:i, nil, class: 'icon-info'), group_enrollments_path(group.id), class: "btn", id: "enrollment_info_#{group.id}"
-                %td
-                  - case allocation.try(:status)
-                    - when Allocation_Pending.to_i
-                      = link_to t('.cancel_request'), cancel_request_allocation_path(allocation), class: 'btn btn_caution allocation_cancel_request'
-                    - when Allocation_Pending_Reactivate.to_i
-                      = link_to t('.cancel_request'), cancel_request_allocation_path(allocation), class: 'btn btn_caution allocation_cancel_request request_reactivate'
-          .block_content_text_list.text_none.empty_message.hide_message
-            = t(:item_search_no_found)
-        - else
-          .block_content_text_list.text_none
-            = t(:item_search_no_found)
+        = render 'enrollments/requests', status: [Allocation_Pending, Allocation_Pending_Reactivate]
 
   .block_wrapper
     .block_title
       %h2= t('.cancelled_rejected')
     .block_content
       %table.tb_list.enrollment_list_pending.table_ucs
-        - offer_pending = @user_requests.where('status IN (?)', [Allocation_Cancelled, Allocation_Rejected])
-        - unless offer_pending.nil? or offer_pending.empty?
-          %thead.thead_ucs
-            %tr.lines
-              %th= t(".type")
-              %th= t(".curriculum_unit")
-              %th= t(".course")
-              %th= t(:semester)
-              %th= t(".group")
-              %th.no_sort
-              %th.no_sort= t(:mysolar_mn_enrollment)
-          %tbody
-            - offer_pending.find_each do |allocation|
-
-              - group = allocation.group
-              - user_groups << group.id
-              - offer_info = group.detailed_info
-              - curriculum_units << [offer_info[:curriculum_unit], offer_info[:curriculum_unit].gsub(/\W/, '')]
-
-              %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}", 'data-group-id' => group.id}
-                %td= offer_info[:curriculum_unit_type]
-                %td
-                  - unless offer_info[:curriculum_unit_type_id].to_i == 3
-                    = offer_info[:curriculum_unit]
-                %td= offer_info[:course]
-                %td= offer_info[:semester]
-                %td= group.code
-                %td= link_to content_tag(:i, nil, class: 'icon-info'), group_enrollments_path(group.id), class: "btn", id: "enrollment_info_#{group.id}"
-                %td
-                  - case allocation.try(:status)
-                    - when Allocation_Cancelled.to_i
-                      - if group.offer.is_active?
-                        = link_to t('.enroll'), request_reactivate_allocation_path(allocation), class: 'btn btn_default request_enroll request_reactivate'
-                      - else
-                        = t('.enrollment_period_expired')
-                    - when Allocation_Rejected.to_i
-                      = label_tag "lb_rejected", t(".rejected"), class: 'enrollment_label'
-          .block_content_text_list.text_none.empty_message.hide_message
-            = t(:item_search_no_found)
-        - else
-          .block_content_text_list.text_none
-            = t(:item_search_no_found)
+        = render 'enrollments/requests', status: [Allocation_Cancelled, Allocation_Rejected]
 
   .block_wrapper
     .block_title
       %h2= t(".ucs_available")
     .block_content
       %table.tb_list.enrollment_list.table_ucs
-        - if @offers.any?
+        - if @groups.any?
           %thead.thead_ucs
             %tr.lines
               %th= t(".type")
@@ -166,24 +49,19 @@
               %th.no_sort
               %th.no_sort= t(:mysolar_mn_enrollment)
           %tbody
-            - @offers.each do |offer|
-
-              - offer_info = offer.detailed_info
-              - curriculum_units << [offer_info[:curriculum_unit], offer_info[:curriculum_unit].gsub(/\W/, '')]
-              - query = "groups.id NOT IN (?)" unless user_groups.empty?
-
-              - Group.where(offer_id: offer.id, status: true).where(query, user_groups).find_each do |group|
-                %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}", 'data-group-id' => group.id}
-                  %td= offer_info[:curriculum_unit_type]
-                  %td
-                    - unless offer_info[:curriculum_unit_type_id].to_i == 3
-                      = offer_info[:curriculum_unit]
-                  %td= offer_info[:course]
-                  %td= offer_info[:semester]
-                  %td= group.code
-                  %td= [l(Date.parse(offer.enroll_start_date), format: :normal), l(Date.parse(offer.enroll_end_date))].join '-'
-                  %td= link_to content_tag(:i, nil, class: 'icon-info'), group_enrollments_path(group.id), class: "btn", id: "enrollment_info_#{group.id}"
-                  %td= link_to t('.enroll'), enroll_request_allocations_path(group_id: group.id), class: 'btn btn_default request_enroll'
+            - @groups.each do |group|
+              - offer_info = Offer.find(group.id).detailed_info
+              %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}", 'data-group-id' => group.id}
+                %td= offer_info[:curriculum_unit_type]
+                %td
+                  - unless offer_info[:curriculum_unit_type_id].to_i == 3
+                    = offer_info[:curriculum_unit]
+                %td= offer_info[:course]
+                %td= offer_info[:semester]
+                %td= group.code
+                %td= [l(Date.parse(group.enroll_start_date), format: :normal), l(Date.parse(group.enroll_end_date))].join '-'
+                %td= link_to content_tag(:i, nil, class: 'icon-info'), group_enrollments_path(group.id), class: "btn", id: "enrollment_info_#{group.g_id}"
+                %td= link_to t('.enroll'), enroll_request_allocations_path(group_id: group.id), class: 'btn btn_default request_enroll'
           .block_content_text_list.text_none.empty_message.hide_message
             = t(:item_search_no_found)
         - else

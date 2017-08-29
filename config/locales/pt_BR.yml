@@ -926,6 +926,7 @@ pt_BR:
       general_message: Não foi possível realizar a ação desejada
       uab_enrollment: A matrícula de disciplinas a distância não pode ser realizada através do Solar
       uab_general: Não é possível alterar matrícula de disciplinas à distância pelo Solar
+      off_period: Perído de matrícula encerrado
     show:
       course: Curso
       curriculum_unit: Disciplina
@@ -1881,6 +1882,7 @@ pt_BR:
         cancel_request: "Cancelamento não realizado."
         cancel_profile_request: "Solicitação de perfil não cancelada"
         invalid_profile: "Não é possível realizar alocação com o perfil e dados fornecidos"
+        off_period: Perído de matrícula encerrado
     index:
       filter_user: "Filtrar usuários"
       manage: Gerenciar

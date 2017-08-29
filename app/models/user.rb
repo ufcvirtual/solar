@@ -707,6 +707,96 @@ class User < ActiveRecord::Base
     DigitalClass.update_user(self, ignore_changes)
   end
 
+  # groups that user can enroll
+  def groups_to_enroll
+    Offer.find_by_sql <<-SQL
+      -- offers which user already is enrolled or pending at some group
+      WITH offers_collection AS ( 
+        SELECT DISTINCT g.offer_id AS id
+        FROM groups g
+        LEFT JOIN allocation_tags at ON at.group_id = g.id
+        LEFT JOIN allocations al ON al.allocation_tag_id = at.id
+        LEFT JOIN profiles p ON al.profile_id = p.id
+        WHERE al.user_id = #{id} 
+          AND cast( p.types & '#{Profile_Type_Student}' as boolean )
+      )
+      SELECT o.*, COALESCE(os_e.start_date, ss_e.start_date)::date AS enroll_start_date, groups.code, groups.id AS g_id,
+        CASE
+          WHEN o.enrollment_schedule_id IS NULL THEN COALESCE(ss_e.end_date, ss_p.end_date)::date
+          WHEN o.enrollment_schedule_id IS NOT NULL AND o.offer_schedule_id IS NULL THEN COALESCE(os_e.end_date, ss_p.end_date)::date
+          ELSE COALESCE(os_e.end_date, os_p.end_date, ss_e.end_date, ss_p.end_date)::date
+        END AS enroll_end_date
+        FROM groups
+        JOIN offers                 AS o    ON o.id = groups.offer_id
+        JOIN semesters              AS s    ON s.id    = o.semester_id
+        JOIN schedules              AS ss_e ON ss_e.id = s.enrollment_schedule_id -- periodo de matricula do semestre
+        JOIN schedules              AS ss_p ON ss_p.id = s.offer_schedule_id -- periodo do semestre
+        LEFT JOIN curriculum_units       AS uc   ON uc.id = o.curriculum_unit_id
+        LEFT JOIN curriculum_unit_types  AS ct   ON ct.id = uc.curriculum_unit_type_id
+        LEFT JOIN courses           AS c         ON c.id = o.course_id
+   LEFT JOIN schedules              AS os_e ON os_e.id = o.enrollment_schedule_id -- periodo de matricula definido na oferta
+   LEFT JOIN schedules              AS os_p ON os_p.id = o.offer_schedule_id -- periodo da oferta
+       WHERE
+          ((ct.id IS NULL AND c.id IS NOT NULL) OR (ct.allows_enrollment IS TRUE))
+          AND (
+            -- periodo de matricula informado na oferta
+            (
+              o.enrollment_schedule_id IS NOT NULL AND (
+
+                -- matricula definida na oferta com data final
+                (
+                  os_e.end_date IS NOT NULL
+                  AND
+                  current_date BETWEEN os_e.start_date AND os_e.end_date -- final de matricula na oferta
+                )
+
+                -- matricula definida na oferta, mas sem data final
+                OR
+                (
+                  os_e.end_date IS NULL AND o.offer_schedule_id IS NOT NULL
+                  AND
+                  current_date BETWEEN os_e.start_date AND os_p.end_date -- final de matricula no periodo da oferta
+                )
+
+                -- matricula definida na oferta sem data final
+                OR
+                (
+                  os_e.end_date IS NULL AND o.offer_schedule_id IS NULL
+                  AND
+                  current_date BETWEEN os_e.start_date AND ss_p.end_date -- final de matricula no periodo do semestre
+                )
+              )
+
+              OR
+
+              -- periodo de matricula nao informado na oferta
+              (
+                o.enrollment_schedule_id IS NULL AND (
+                  -- semestre possui matricula com data final
+                  (
+                    ss_e.end_date IS NOT NULL
+                    AND
+                    current_date BETWEEN ss_e.start_date AND ss_e.end_date -- usa periodo de matricula
+                  )
+
+                  OR
+
+                  (
+                    ss_e.end_date IS NULL
+                    AND
+                    current_date BETWEEN ss_e.start_date AND ss_p.end_date -- usa data final do periodo
+                  )
+                )
+              )
+            )
+            AND groups.status = 't' AND o.id NOT IN (select id from offers_collection)
+          ) -- where
+        ORDER BY enroll_start_date DESC;
+      SQL
+    end
+
+
+
   private
 
     def login_differ_from_cpf
