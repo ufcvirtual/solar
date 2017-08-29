@@ -417,13 +417,11 @@
     $("#mysolar_high_contrast_option").click(function(){
       $.put($(this).data("url"), {"theme": $(this).data("theme")}, function(data){
         var theme = data.theme;
-        if( theme == "blue") {
+        if( theme == "blue")
           theme = "high_contrast";
-        } else {
-          theme == "blue";
-        };
-        var theme_path = "/assets/themes/theme_" + theme + ".css";
-        $("link[id='themes']").attr("href", theme_path);
+        else
+          theme = "blue";
+        $("link[id='themes']").attr("href", "/assets/themes/theme_" + theme + ".css");
         location.reload();
       });
     });
