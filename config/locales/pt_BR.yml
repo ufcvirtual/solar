@@ -915,6 +915,7 @@ pt_BR:
       enrolled: "Matriculado"
       rejected: "Matricula Rejeitada"
       pending: Pendente
+      cancelled_rejected: Rejeitadas/Canceladas
       ucs_available: Disciplinas diponíveis
       confirm: "Tem certeza de que deseja cancelar?"
       cancel_request: "Cancelar pedido"
@@ -3397,6 +3398,21 @@ pt_BR:
         evaluative: 97
         frequency: 98
         notevaluative: 99
+    evaluatives:
+      name:
+        responsibles: "Responsáveis [R]"
+        students_and_tools: "Ferramentas [F]"
+        all: "Geral [0]"
+        evaluative: 'Avaliativo [1]'
+        notevaluative: 'Não Avaliativo [2]'
+        frequency: 'Frequência [3]'
+      code:
+        responsibles: 82
+        students_and_tools: 70
+        all: 96
+        evaluative: 97
+        notevaluative: 98
+        frequency: 99
     exam:
       name:
         time: 'Tempo [T]'

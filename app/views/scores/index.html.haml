@@ -10,7 +10,7 @@
 
   .block_wrapper
     .block_title
-      %h2= t(".responsibles")
+      %h2{:'data-shortcut'=> t("shortcut.evaluatives.code.responsibles"), :'data-shortcut-name'=> t("shortcut.evaluatives.name.responsibles"), :'data-shortcut-focus' => 'true'}= t(".responsibles")
 
     - unless @responsibles.empty?
       .tb_list_responsibles
@@ -37,18 +37,18 @@
 
 %section.block_wrapper
   .block_title
-    %h2= t(".students")
+    %h2{:'data-shortcut'=> t("shortcut.evaluatives.code.students_and_tools"), :'data-shortcut-name'=> t("shortcut.evaluatives.name.students_and_tools"), :'data-shortcut-focus' => 'true'}= t(".students")
     #tabs.tabs_index{:'data-div' => '.tb_list_students'}
       %ul
         %li
-          %a.general.active{href: '#', :'data-url' => general_scores_path, onclick: 'change_tab(this); return false;', onkeydown: 'click_on_keypress(event, this);'}=t('scores.index.general')
+          %a.general.active{href: '#', :'data-url' => general_scores_path, onclick: 'change_tab(this); return false;', onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.evaluatives.code.all"), :'data-shortcut-name'=> t("shortcut.evaluatives.name.all"), :'data-shortcut-focus' => 'true'}=t('scores.index.general')
         %li
-          %a.evaluative{href: '#', :'data-url' => evaluative_scores_path,onclick: 'change_tab(this); return false;', onkeydown: 'click_on_keypress(event, this);'}=t('scores.index.evaluative')
+          %a.evaluative{href: '#', :'data-url' => evaluative_scores_path,onclick: 'change_tab(this); return false;', onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.evaluatives.code.evaluative"), :'data-shortcut-name'=> t("shortcut.evaluatives.name.evaluative"), :'data-shortcut-focus' => 'true'}=t('scores.index.evaluative')
         %li
-          %a.not_evaluative{href: '#', :'data-url' => not_evaluative_scores_path,onclick: 'change_tab(this); return false;', onkeydown: 'click_on_keypress(event, this);'}=t('scores.index.not_evaluative')
+          %a.not_evaluative{href: '#', :'data-url' => not_evaluative_scores_path,onclick: 'change_tab(this); return false;', onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.evaluatives.code.notevaluative"), :'data-shortcut-name'=> t("shortcut.evaluatives.name.notevaluative"), :'data-shortcut-focus' => 'true'}=t('scores.index.not_evaluative')
           - unless @wh.nil?
             %li
-              %a.frequency{href: '#', :'data-url' => frequency_scores_path, onclick: 'change_tab(this); return false;', onkeydown: 'click_on_keypress(event, this);'}=t('scores.index.frequency')
+              %a.frequency{href: '#', :'data-url' => frequency_scores_path, onclick: 'change_tab(this); return false;', onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.evaluatives.code.frequency"), :'data-shortcut-name'=> t("shortcut.evaluatives.name.frequency"), :'data-shortcut-focus' => 'true'}=t('scores.index.frequency')
 
   .tb_list_students
     = render partial: 'general'

@@ -61,8 +61,9 @@ class Allocation < ActiveRecord::Base
     ## verifica se oferta ou turma estao dentro do prazo
 
     al_offer = offer || group.offer
-    return unless al_offer.enrollment_period.include?(Date.today)
-
+    # return unless al_offer.enrollment_period.include?(Date.today)
+    return unless Date.today.between?(al_offer.enrollment_period[0], al_offer.enrollment_period[1])
+    puts "TESTE Passou >>>>>>>>"
     self.status = Allocation_Pending_Reactivate
     self.save!
   end
