@@ -151,8 +151,8 @@ class Score # < ActiveRecord::Base
     JOIN discussions ON academic_allocations.academic_tool_id = discussions.id 
     JOIN schedules ON discussions.schedule_id = schedules.id
     LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = users.id
-    LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id AND discussion_posts.user_id = users.id
-    WHERE discussion_posts.draft=false AND cast( profiles.types & '#{Profile_Type_Student}' as boolean ) #{wq})
+    LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id AND discussion_posts.user_id = users.id AND discussion_posts.draft=false
+    WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ) #{wq})
     
     UNION
     (SELECT 
@@ -332,8 +332,8 @@ class Score # < ActiveRecord::Base
           JOIN discussions ON academic_allocations.academic_tool_id = discussions.id 
           JOIN schedules ON discussions.schedule_id = schedules.id
           LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = users.id
-          LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id AND discussion_posts.user_id = users.id
-          WHERE discussion_posts.draft=false AND cast( profiles.types & '#{Profile_Type_Student}' as boolean ) AND users.id=#{user_id} AND academic_allocations.academic_tool_id=#{tool_id} #{wq}
+          LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id AND discussion_posts.user_id = users.id AND discussion_posts.draft=false
+          WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ) AND users.id=#{user_id} AND academic_allocations.academic_tool_id=#{tool_id} #{wq}
         SQL
 
       when 'exam'     
