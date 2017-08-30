@@ -3,7 +3,7 @@
     = content_tag(:i, nil, class: 'icon-list')
     = t('scores.index.show_hide_tools')
     %i.icon-arrow-down-triangle
-  = simple_form_for :evaluative_frequency, :url => url = not_evaluative_scores_path, html: { id: 'evaluative_frequency_form', method: 'get', target: '_blank' } do |f|  
+  = simple_form_for :evaluative_frequency, :url => url = not_evaluative_scores_path, html: { id: 'evaluative_frequency_form', method: 'get', target: '_blank' } do |f|
     %div{ id: "dropdown_menu", class: 'dropdown dropdown-tip' }
       %ul.dropdown-menu
         - @tools.each_with_index do |tool, idx|
@@ -23,7 +23,7 @@
           %th#student= t("scores.index.student")
           - @acs.group_by{|t| t['tool_type']}.each do |ac|
             - ac[1].each_with_index do |tool, idx|
-              %th{class: tool.tool_type, :'data-tooltip' =>tool.name }= [t("activerecord.models.#{tool.tool_type.tableize.singularize}")[0], idx+1].join(' ')
+              %th{id: "#{tool.id}_#{tool.name}", class: tool.tool_type, :'data-tooltip' =>tool.name }= [t("activerecord.models.#{tool.tool_type.tableize.singularize}")[0], idx+1].join(' ')
     %tbody.scores
       - if @users.empty? || @acs.empty?
         %tr.lines.no_sort#student
@@ -32,6 +32,6 @@
         = render partial: 'pending_evaluatives_frequency', locals: { users: @users, score_type: score_type}
 
 - if !@users.blank? && !@acs.empty?
-  = link_to content_tag(:i, nil, class: "icon-ellipsis"), not_evaluative_scores_path(page: @users.next_page, type: score_type), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items), :'aria-label' => t(:load_items) if @users.next_page             
+  = link_to content_tag(:i, nil, class: "icon-ellipsis"), not_evaluative_scores_path(page: @users.next_page, type: score_type), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items), :'aria-label' => t(:load_items) if @users.next_page
 
 = javascript_include_tag 'tooltip'

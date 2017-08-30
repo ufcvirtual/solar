@@ -20,18 +20,18 @@
               %th#student_responsible= t(".responsible")
               %th#profile= t(".profiles")
               %th#public_files= t(".public_files")
-              %th.participation= t(".participation")
-              %th.participation= t(".sent_messages")
-              %th.access_history= t(".access_to_the_course")
+              %th#participations.participation= t(".participation")
+              %th#sent_messages.participation= t(".sent_messages")
+              %th#access_to_the_course.access_history= t(".access_to_the_course")
           %tbody
             - @responsibles.each do |responsible|
               %tr.lines
-                %td.td_student{'data-tooltip' => responsible.name}= link_to responsible.name, user_info_scores_path(responsible.id)
-                %td= responsible.profile_name
-                %td= responsible.u_public_files
-                %td= responsible.u_posts
-                %td= responsible.u_sent_msgs
-                %td= responsible.u_logs
+                %td.td_student{'data-tooltip' => responsible.name, headers: "student_responsible"}= link_to responsible.name, user_info_scores_path(responsible.id)
+                %td{headers: "profile"}= responsible.profile_name
+                %td{headers: "public_files"}= responsible.u_public_files
+                %td{headers: "participations"}= responsible.u_posts
+                %td{headers: "sent_messages"}= responsible.u_sent_msgs
+                %td{headers: "access_to_the_course"}= responsible.u_logs
     - else
       .block_content_text_list.text_none= t(".no_responsible")
 

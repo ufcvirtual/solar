@@ -1,22 +1,22 @@
 - @users.each do |student|
   - user_scores = @scores.select { |attachment| attachment.user_id.to_i == student.id }
   %tr.lines
-    %th.td_student{'data-tooltip' => student.name}= link_to student.name, user_info_scores_path(student.id)
+    %th.td_student{'data-tooltip' => student.name, headers: 'student'}= link_to student.name, user_info_scores_path(student.id)
     - @acs.each do |ac|
       - score = user_scores.select { |attachment| attachment.id.to_i == ac.id.to_i }
       - if score.blank?
-        %td.not_sent= t("scores.index.not_sent")
+        %td.not_sent{headers: "#{ac.id}_#{ac.name}"}= t("scores.index.not_sent")
       - else
-        %td{class: "#{score.first.situation} #{ac.tool_type} #{score.first.new_after_evaluation == 't' ? 'new_after_evaluation' : ''}" }
+        %td{class: "#{score.first.situation} #{ac.tool_type} #{score.first.new_after_evaluation == 't' ? 'new_after_evaluation' : ''}", headers: "#{ac.id}_#{ac.name}" }
           - if ['not_started', 'to_send'].include?(score.first.situation)
             = link_to_function ((@score_type == 'frequency' ? score.first.wh : score.first.grade) || t("scores.index.#{score.first.situation}")) + (score.first.new_after_evaluation == 't' ? '*' : '' ), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: ac.tool_type, ac_id: ac.id, user_id: student.id, group_id: score.first.group, situation: score.first.situation, score_type: @score_type), id: ac.id.to_s+"_"+student.id.to_s, class: "disabled #{['u', ac.id.to_s, student.id.to_s].join('_')} #{['g', ac.id.to_s, score.first.group.try(:to_s)].join('_')}", id: ac.id.to_s+"_"+student.id.to_s
           - else
             = link_to_function ((@score_type == 'frequency' ? score.first.wh : score.first.grade) || t("scores.index.#{score.first.situation}")) + (score.first.new_after_evaluation == 't' ? '*' : '' ), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: ac.tool_type, ac_id: ac.id, user_id: student.id, group_id: score.first.group, situation: score.first.situation, score_type: @score_type), id: ac.id.to_s+"_"+student.id.to_s, class: "#{['u', ac.id.to_s, student.id.to_s].join('_')} #{['g', ac.id.to_s, score.first.group.try(:to_s)].join('_')}", id: ac.id.to_s+"_"+student.id.to_s
-              
+
 = javascript_include_tag 'tableHeadFixer','tooltip', 'tablesorter', 'scores'
 :javascript
   $(function () {
-    $("#list_of_students").tableHeadFixer({'left' : 1}); 
+    $("#list_of_students").tableHeadFixer({'left' : 1});
     $('.tb_list_students ul.dropdown-menu li input[type="checkbox"]').each(function(){
       if(!!$(this).prop('checked'))
         $('.'+$(this).val()).removeClass('invisible');

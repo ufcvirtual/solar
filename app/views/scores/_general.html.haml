@@ -1,4 +1,4 @@
-%div{ class: 'link_pdf' }    
+%div{ class: 'link_pdf' }
   = link_to t('scores.index.print_pdf'), general_scores_path(report: true, format: :pdf), :target => "_blank", class: "btn"
 
 .parent
@@ -6,20 +6,20 @@
     %thead
       %tr.lines
         %th#student{style: "width: 100px;"}= t("scores.index.student")
-        %th= t('scores.index.access_to_the_course')
+        %th#access_to_the_course= t('scores.index.access_to_the_course')
         - unless @wh.nil?
-          %th= t('scores.index.frequency')
-          %th= t('scores.index.faults')
-        %th= t('scores.index.final_grade')
-        %th= t('scores.index.af')  
-        %th= t('scores.index.public_files')
-        %th= t("activerecord.models.assignment")
-        %th= t("activerecord.models.exam")
-        %th= t("activerecord.models.discussion")
-        %th= t("activerecord.models.chat_room")
-        %th= t("activerecord.models.webconference")
-        %th= t("activerecord.models.schedule_event")
-          
+          %th#frequency= t('scores.index.frequency')
+          %th#faults= t('scores.index.faults')
+        %th#final_grade= t('scores.index.final_grade')
+        %th#af= t('scores.index.af')
+        %th#public_files= t('scores.index.public_files')
+        %th#assignment= t("activerecord.models.assignment")
+        %th#exam= t("activerecord.models.exam")
+        %th#discussion= t("activerecord.models.discussion")
+        %th#chat_room= t("activerecord.models.chat_room")
+        %th#webconference= t("activerecord.models.webconference")
+        %th#schedule_event= t("activerecord.models.schedule_event")
+
     %tbody.users
       - if @users.blank?
         %tr.lines
@@ -27,4 +27,4 @@
       - else
         = render partial: 'pending_general', locals: { users: @users }
 - unless @users.blank?
-  = link_to content_tag(:i, nil, class: "icon-ellipsis"), general_scores_path(page: @users.next_page), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items), :'aria-label' => t(:load_items)  if @users.next_page    
+  = link_to content_tag(:i, nil, class: "icon-ellipsis"), general_scores_path(page: @users.next_page), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items), :'aria-label' => t(:load_items)  if @users.next_page
