@@ -1,0 +1,19 @@
+%h1#lightBoxDialogTitle= t('.title', webconference_name: @webconference.title)
+.webconference_access
+  - unless @logs.empty?
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th#date= t('.date')
+          %th#time= t('.time')
+          %th#user= t('.responsible')
+      %tbody
+      - @logs.each_with_index do |log, idx|
+        %tr.lines
+          %td{headers:'date'}
+            %date{datetime: l(log.created_at.to_datetime, format: :normal)}= l(log.created_at.to_datetime, format: :normal)
+          %td{headers:'time'}
+            %date{datetime: l(log.created_at.to_datetime, format: :clock_time)}= l(log.created_at.to_datetime, format: :clock_time)
+          %td.user{headers:'user'}= (log.user_name)
+  - else
+    .block_content_text_list.text_none= t('.no_requests')

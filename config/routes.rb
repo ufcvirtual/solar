@@ -505,6 +505,7 @@ Solar::Application.routes.draw do
       get "download/file/:file_id", to: "messages#download_files", as: :download_file
 
       get :support_new, to: "messages#new", as: :support_new, support: true
+      get :support_webconference, to: "messages#new", as: :support_webconference, support_help: true
     end
   end
 
@@ -569,7 +570,9 @@ Solar::Application.routes.draw do
     collection do
       get :list
       get :preview
-
+      get :support_help_session
+      get :support_help_attendance
+      get :support_help
       put ':tool_id/unbind/group/:id' , to: 'groups#change_tool', type: 'unbind', tool_type: 'Webconference', as: :unbind_group_from
       put ':tool_id/remove/group/:id' , to: 'groups#change_tool', type: 'remove', tool_type: 'Webconference', as: :remove_group_from
       put ':tool_id/add/group/:id'    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Webconference', as: :add_group_to
@@ -580,6 +583,7 @@ Solar::Application.routes.draw do
       delete :remove_record, only_recordings: true
       get :access
       get :list_access
+      get :list_support_help
       get :user_access
       get :get_record
       put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Webconference', as: :evaluate

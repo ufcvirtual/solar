@@ -1,24 +1,40 @@
 .block_wrapper.preview_webconferences
-  .title-warning= t('.warning')
+  %div.title-warning
+    %div.information_title
+      = link_to_function raw(t('.information_title')), 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
+      %i.icon-arrow-down-triangle
+      %i.icon-arrow-up-triangle.invisible
+    %div.information.invisible{tabindex: 0}= raw t('.information')
+  .block_title
+    %h2
+      %i.icon-video-conference
+      = t(:webconferences, scope: [:webconferences, :list])
+  .block_content_toolbar
+    .align-left.padding-checkbox
+      %span.views#dropdown_messages{role: 'menubar'}
+        %a.btn.btn_dropdown{ href: '#', :"data-dropdown" => '#views-dropdown' }
+          = I18n.t('webconferences.preview.view_webs', type: I18n.t('webconferences.preview.'+@filter_situation))
+          %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
+        .dropdown.dropdown-tip#views-dropdown
+          %ul.dropdown-menu
+            %li{role: 'menuitem'}= link_to t('.all'), preview_webconferences_path(status: "all"), class: 'selected all', id: "all", onkeydown: 'click_on_keypress(event, this);'
+            %li{role: 'menuitem'}= link_to t('.scheduled'), preview_webconferences_path(status: "scheduled"), class: 'scheduled', id: "scheduled",  onkeydown: 'click_on_keypress(event, this);'
+            %li{role: 'menuitem'}= link_to t('.in_progress'), preview_webconferences_path(status: "in_progress") , class: 'in_progress', id: "in_progress", onkeydown: 'click_on_keypress(event, this);'
+            %li{role: 'menuitem'}= link_to t('.finish'), preview_webconferences_path(status: "finish"), class: 'finish', id: "finish", onkeydown: 'click_on_keypress(event, this);'
+            %li{role: 'menuitem'}= link_to t('.recorded'), preview_webconferences_path(status: "recorded"), class: 'recorded', id: "recorded", onkeydown: 'click_on_keypress(event, this);'
+    .block_toolbar_left
+      = label_tag :search, t('.search'), class: 'title'
+      = text_field_tag :search, nil, :'data-column' => 'all', type: :search, class: 'search', placeholder: t('.placeholder'), size: 50
+    - if @can_remove_record
+      .block_toolbar_right
+        %a.btn.delete_record_btn{ href: nil, :'data-dropdown' => "#trash_dropdown", alt: t('.delete_record') }
+          = content_tag(:i, nil, class:'icon-trash')
+          %i.icon-arrow-down-triangle
+        #trash_dropdown.dropdown.dropdown-tip
+          %ul.dropdown-menu
+            %li
+              %a.delete_record{ href: nil, :'data-link-remove' => remove_record_webconference_path(':id') }= t('.delete_record')
   - unless @webconferences.blank?
-    .block_title
-      %h2
-        %i.icon-video-conference
-        = t(:webconferences, scope: [:webconferences, :list])
-    .block_content_toolbar
-      .block_toolbar_left
-        = label_tag :search, t('.search'), class: 'title'
-        = text_field_tag :search, nil, :'data-column' => 'all', type: :search, class: 'search', placeholder: t('.placeholder'), size: 50
-      - if @can_remove_record
-        .block_toolbar_right
-          %a.btn.delete_record_btn{ href: nil, :'data-dropdown' => "#trash_dropdown", alt: t('.delete_record') }
-            = content_tag(:i, nil, class:'icon-trash')
-            %i.icon-arrow-down-triangle
-          #trash_dropdown.dropdown.dropdown-tip
-            %ul.dropdown-menu
-              %li
-                %a.delete_record{ href: nil, :'data-link-remove' => remove_record_webconference_path(':id') }= t('.delete_record')
-
     %table.webconferences.tb_list
       %thead
         %tr.lines
@@ -32,14 +48,16 @@
           %th.smaller_width= t('webconferences.index.user_online')
           %th.smaller_width.no_sort= t('webconferences.index.recording')
           - if @can_see_access
-            %th.smaller_width.no_sort= t('webconferences.index.access')
+            %th.smaller_width.no_sort= t('webconferences.preview.access')
+          - if @support_help
+            %th.smaller_width.no_sort= t('webconferences.preview.help')
       %tbody
         - @webconferences.each_with_index do |webconference, idx|
           - unavailable = exist_and_offline?(webconference.server)
           - disabled = (webconference.situation == 'scheduled' || webconference.situation == 'in_progress' || webconference.situation == 'processing' || unavailable)
-          %tr.lines
+          %tr.lines.list_webs
             %td{ style: 'text-align:center;' }= check_box_tag :ckb_webconference, webconference.ac_id || webconference.academic_allocations.first.id, false, { class: 'ckb_webconference' }
-            %td= webconference.link_to_join(current_user, webconference.at_id)
+            %td{ class: 'link_help' }= webconference.link_to_join(current_user, webconference.at_id)
             %td
               - location = webconference.location
               = location
@@ -81,7 +99,7 @@
             %td.center
               %div= l(webconference.start_date.to_date)
               %div= [l(webconference.start_hour.to_datetime, format: :today), l(webconference.end_hour.to_datetime, format: :today)].join(' - ')
-            %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}")}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t(webconference.situation, scope: [:scores, :situation])
+            %td.center{class: (unavailable ? 'web_not_started' : "web_#{webconference.situation}")}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t(webconference.situation, scope: [:scores, :situation])
             %td.invisible= location
             %td.center= webconference.meeting_info(current_user, webconference.at_id)
             - if disabled
@@ -89,8 +107,10 @@
             - else
               %td.center{:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference, at_id: webconference.at_id), class: "record"
             - if @can_see_access
-              %td{ :'data-url' => list_access_webconference_path(webconference, at_id: webconference.at_id), :'data-tooltip' => t('webconferences.list.access') }= link_to_function content_tag(:i, nil, class: 'icon-users btn'), 'list_access(this)'
-
+              %td.center{ :'data-url' => list_access_webconference_path(webconference, at_id: webconference.at_id), :'data-tooltip' => t('webconferences.list.access') }= link_to_function content_tag(:i, nil, class: 'icon-users btn'), 'list_access(this)'
+            - if @support_help
+              %td.center{ :'data-tooltip' => t('webconferences.preview.help_list') }= link_to content_tag(:i, nil, class: 'icon-plus-circle btn'), list_support_help_webconference_path(webconference, at_id: webconference.at_id), class: "help_list"
+              %td.center.support_help.hidden= webconference.support_help
     .message_div_navigation
       = will_paginate @webconferences
 
@@ -102,4 +122,39 @@
 :javascript
   $(function(){
     $('.record').call_fancybox();
+    $('.help_list').call_fancybox();
+
+    // Muda a cor da tr de acordo com o status do support_help
+    if ("#{@support_help}" == "true") {
+      $('.support_help').each(function(){
+        if ($(this).html() == #{Support_Help_Request}) { $(this).parent().addClass( "support_help_request" ); }
+        else if ($(this).html() == #{Support_Help_Success}) { $(this).parent().addClass( "support_help_success" ); }
+        else if ($(this).html() == #{Support_Help_Fail}) { $(this).parent().addClass( "support_help_fail" ); }
+        else if ($(this).html() == #{Support_Help_Message}) { $(this).parent().addClass( "support_help_message" ); }
+      });
+
+      // Muda status do chamado ao clicar na webconferência (support_help_success)
+      $(".link_help a").click(function() {
+        var web = $(this).closest('tr');
+        if (web.hasClass('support_help_request') || web.hasClass('support_help_message')) {
+          $.ajax({
+            type: "GET",
+            url: "/webconferences/support_help_attendance",
+            data: { "ac_id": web.find(".ckb_webconference").val() },
+            success: function(data){
+              console.log("Cliente suporte: Webconferência atendida com sucesso");
+              // Atualiza css
+              web.removeClass("support_help_request support_help_message");
+              web.addClass("support_help_success");
+              // Atualizando o contador
+              var count = $('#btn_count_help').html();
+              $('#btn_count_help').html(count-1)
+            },
+            error: function(data){
+              console.log("ERROR: " + data);
+            }
+          })
+        }
+      });
+    }
   });

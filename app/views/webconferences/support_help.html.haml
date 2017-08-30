@@ -1,0 +1,69 @@
+.block_wrapper.support_webconferences    
+  .block_title
+    %h1
+      %i.icon-video-conference= t(".title")
+  .block_content
+    .message
+      = t(".answer_html", user_name: current_user.name)
+    - unless @webconferences_online.nil?
+      .options_support_web
+        .radio_options
+          - @webconferences_online.each do |w| 
+            .option
+              = radio_button :radio, :option, w.academic_allocations.first.id
+              = label_tag :option, w.title
+        .button.right_buttons
+          = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default', type: 'button', alt: t(:cancel)
+          = button_to_function t(".request"), 'websocket_client_help()', class: 'btn btn_main hide', id: 'btn_send_ws_support_help', type: 'button', alt: t(".request")
+          = button_tag t(".message"), class: 'btn btn_main hide', id: 'btn_message_support_help', type: 'button', alt: t(".request"), :onclick => 'send_message()'
+    - else
+      .block_content_text_list.text_none= t(".no_data_html")
+
+:javascript
+
+  $(function(){
+    var websocket_host_sp = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["host_support_help"]}";
+    var websocket_port_sp = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["port_support_help"]}";
+    console.log("Cliente: Conectando ao websocket...");
+    ws_sh = new WebSocket('ws://'+websocket_host_sp+':'+websocket_port_sp);
+    ws_sh.onmessage = function(msg) {
+      console.log("Cliente: Existe suporte ONLINE?: " + msg.data);
+      //Se não tem suporte online, redireciona para a mensagem
+      if (msg.data == "false") { 
+        console.log("Cliente: Ninguém do suporte online. Mostra botão de mensagem(email)..."); 
+        $('#btn_message_support_help').removeClass('hide');
+      } else { $('#btn_send_ws_support_help').removeClass('hide'); }
+    };
+    ws_sh.onopen = function () {  }; //ao iniciar ws
+    ws_sh.onclose = function () {  }; // ao perder conexão com o ws
+    ws_sh.onerror = function (err) { }; // ao receber erro no ws
+  });
+
+  // Encaminha para a mensagem/email
+  function send_message(){
+    console.log("Cliente: Redirecionando para o envio de mensagem(email)..."); 
+    ac_id = $( ":radio:checked" ).val();
+    if (ac_id != null) {
+      window.location.replace("/messages/support_webconference?ac=" + ac_id);
+    }
+  }
+
+  function websocket_client_help(){
+    //Academic_allocation da webconferencia selecionada 
+    ac_id = $( ":radio:checked" ).val()
+    if (ac_id != null) {
+      try {
+        console.log("Cliente: Enviando mensagem (academic_allocation) para o server: " + ac_id);
+        ws_sh.send(
+        JSON.stringify({
+          academic_allocation_id: ac_id
+        })); 
+        console.log("Cliente: Mensagem enviada!!!");
+        $('.block_content').html('Seu pedido foi enviado! Por favor, volte à webconferência e aguarde o atendimento.');
+        ws_sh.close();
+        console.log("Cliente: Conexão encerrada!!!");
+      } catch(exception) {
+        $('.block_content').html('Falha no envio! Por favor, tente novamente mais tarde.');
+      }
+    }
+  }

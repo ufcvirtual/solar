@@ -1,5 +1,5 @@
 class Webconference < ActiveRecord::Base
-  
+
   before_destroy :can_destroy?, :remove_records
 
   include Bbb
@@ -34,7 +34,8 @@ class Webconference < ActiveRecord::Base
   def self.all_by_allocation_tags(allocation_tags_ids, opt = { asc: true }, user_id = nil)
     query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids } }
 
-    select = "users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency, academic_allocations.max_working_hours, academic_allocations.final_exam, eq_web.title AS eq_name, webconferences.initial_time || '' AS start_hour, webconferences.initial_time + webconferences.duration* interval '1 min' || '' AS end_hour, webconferences.initial_time AS start_date, CASE
+    select = "users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency, academic_allocations.max_working_hours, academic_allocations.final_exam, academic_allocations.support_help AS support_help, eq_web.title AS eq_name, webconferences.initial_time || '' AS start_hour, webconferences.initial_time + webconferences.duration* interval '1 min' || '' AS end_hour, webconferences.initial_time AS start_date, 
+    CASE
       WHEN acu.grade IS NOT NULL OR acu.working_hours IS NOT NULL THEN 'evaluated'
       WHEN (acu.status = 1 OR (acu.status IS NULL AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.count > 0))) THEN 'sent'
       when NOW()>webconferences.initial_time AND NOW()<(webconferences.initial_time + webconferences.duration* interval '1 min') then 'in_progress'
@@ -238,6 +239,14 @@ class Webconference < ActiveRecord::Base
               .group('log_actions.created_at, users.name, allocation_tags.id, users.id, acu.grade, acu.working_hours, students.id, academic_allocations.max_working_hours')
   end
 
+  # Retorna a lista com os atendimentos da webconferência (academic_allocation)
+  def get_support_attendance(acs)
+    LogAction.joins(:user)
+             .where(academic_allocation_id: acs, log_type: LogAction::TYPE[:webconferece_support_attendance])
+             .select("log_actions.created_at, users.name AS user_name")
+             .order('log_actions.created_at ASC')
+  end
+
   def self.update_previous(academic_allocation_id, user_id, academic_allocation_user_id)
     LogAction.where(academic_allocation_id: academic_allocation_id, user_id: user_id, log_type: 7).update_all academic_allocation_user_id: academic_allocation_user_id
   end
@@ -254,5 +263,12 @@ class Webconference < ActiveRecord::Base
     offer = AllocationTag.find(allocation_tag_ids_associations).first.offers.first
     errors.add(:initial_time, I18n.t('schedules.errors.offer_end')) if offer.end_date < (initial_time + duration.minutes).to_date
     errors.add(:initial_time, I18n.t('schedules.errors.offer_start')) if offer.start_date > initial_time.to_date
+  end
+
+  # Atualiza a academic_allocation (support_help)
+  def self.set_status_support_help(academic_allocation_id, status)
+    ac = AcademicAllocation.find(academic_allocation_id)
+    ac.update_attributes! support_help: status
+    ac
   end
 end

@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :authenticate_user!, except: [:verify_cpf, :api_download, :lesson_media, :tutorials, :privacy_policy] # devise
-  before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im, :get_theme
+  before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im, :user_support_help, :get_theme
   after_filter :log_navigation
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -67,7 +67,7 @@ class ApplicationController < ActionController::Base
      end
   end
 
-  def start_user_session  
+  def start_user_session
     return unless user_signed_in?
     user_session[:tabs] = {
       opened: {
@@ -77,6 +77,16 @@ class ApplicationController < ActionController::Base
         }
       }, active: 'Home'
     } unless user_session.include?(:tabs)
+  end
+
+  # Sessão suporte conectado
+  def user_support_help
+    if current_user
+      if (can? :see_help_requests, Webconference)
+        @support_help = true
+        session[:support_connect] ||= false
+      end
+    end
   end
   
   def another_level_breadcrumb

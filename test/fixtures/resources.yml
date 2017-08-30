@@ -1197,3 +1197,9 @@ res229:
   controller: 'notifications'
   action: 'mark_as_mandatory'
   description: 'Marcar aviso como de leitura obrigatória'
+
+res230:
+  id: 230
+  controller: 'webconferences'
+  action: 'see_help_requests'
+  description: 'Visualizar chamadas de ajuda das webconferências'

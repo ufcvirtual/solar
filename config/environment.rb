@@ -85,3 +85,10 @@ Other				= 6 # other
 # número máximo de turmas exibidas sem expansão da div
 Max_Groups_Shown_Filter = 30 # no filtro
 Max_Groups_Shown_Tags 	= 15 # nas tags
+
+# Ajuda do suporte a webcoferência
+Support_Help_Request = 1 # Web solicitou ajuda
+Support_Help_Success = 2 # Web foi atendida
+Support_Help_Fail    = 3 # Web não foi atendida
+Support_Help_Message = 4 # Web foi encaminhada para a mensagem
+Support_Help_Form 	 = 5 # Web foi encaminhada para o formulário

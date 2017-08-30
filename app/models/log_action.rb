@@ -13,7 +13,8 @@ class LogAction < ActiveRecord::Base
     block_user: 5,
     request_password: 6,
     access_webconference: 7,
-    access_digital_class_lesson: 8
+    access_digital_class_lesson: 8,
+    webconferece_support_attendance: 9
   }
 
   before_save :set_acu, if: '!academic_allocation_user_id.nil? && log_type != 7'
@@ -40,6 +41,8 @@ class LogAction < ActiveRecord::Base
         :access_webconference
       when 8
         :access_digital_class_lesson
+      when 9
+        :webconferece_support_attendance
     end
 
     I18n.t(type, scope: 'administrations.logs.types')
@@ -85,4 +88,8 @@ class LogAction < ActiveRecord::Base
     create(params)
   end
 
+  def self.webconferece_support_attendance(params)
+    params.merge!(log_type: TYPE[:webconferece_support_attendance])
+    create(params)
+  end
 end

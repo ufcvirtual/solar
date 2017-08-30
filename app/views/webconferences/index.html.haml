@@ -12,6 +12,8 @@
         %i.icon-arrow-down-triangle
         %i.icon-arrow-up-triangle.invisible
       %div.accessibility.invisible{tabindex: 0}= raw t('.accessibility')
+    %div
+      = link_to "support_help", support_help_webconferences_path(web_online: @webconferences_online), class: 'hidden', id: "link_support_help", remote: true
     .block_title
       %h2
         %i.icon-video-conference
@@ -108,4 +110,13 @@
 :javascript
   $(function(){
     $('.record').call_fancybox();
+    $('#link_support_help').call_fancybox();
+  });
+
+  // Se parâmetro request_support, chama o fancybox
+  $(document).ready(function() {
+    if ("#{@request_support}" == "true") {
+      console.log("Cliente: Chamada de ajuda!! Parâmetro request_support encontrado, chamando o fancybox!");
+      $('#link_support_help').click();
+    }
   });

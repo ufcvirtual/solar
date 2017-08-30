@@ -21,7 +21,7 @@
         .message_new_text_to
           .label.align-left= label_tag :subject, t('.subject'), for: 'message_subject', id: 'subject'
           .input.align-right
-            = f.input :subject, label: false, input_html: { class: 'message_new_textbox' }
+            = f.input :subject, label: false, input_html: { class: 'message_new_textbox', value: ( @reply_to.first[:subject] if @reply_to.try(:first)) }
             = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline', ckeditor: false, div_id: 'message_subject', number: '', field: t('.subject_speech')}
 
         .message_new_upload

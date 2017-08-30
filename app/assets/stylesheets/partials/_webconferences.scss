@@ -17,6 +17,11 @@ form{
       overflow-y: auto;
     }
   }
+
+  .support_help_request{ background-color: #619ad2 !important; }
+  .support_help_success{ background-color: #b3dd89 !important; }
+  .support_help_fail{ background-color: #EA8A8A !important; }
+  .support_help_message{ background-color: #F2F27B !important; }
 }
 
 .block_wrapper{
@@ -112,5 +117,19 @@ table.webconferences{
   .text_none{
     border-top: solid 1px;
     border-top-color: $border_color;
+  }
+}
+
+.support_webconferences{
+  .block_content{
+    margin-top: 10px;
+    .options_support_web{
+      .radio_options {
+        width: 100%;
+        .option{
+          padding: 8px 0px 0px 20px;
+        }
+      }
+    }
   }
 }

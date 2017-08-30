@@ -846,6 +846,11 @@ pt_BR:
   edition: "Edição"
   enrollment: "Matrícula"
 
+  # Suporte Webconferência
+  support_web_tooltip: "Habilitar/Desabilitar o suporte a webconferência em tempo real"
+  support_web: "Suporte Webconferência"
+  support_web_count: "Quantidade de webconferências solicitando ajuda no momento"
+
   # portlets do meu solar
   # Disciplina
   my_solar_curriculum_units: "Disciplinas"
@@ -1546,9 +1551,19 @@ pt_BR:
       placeholder: Digite qualquer valor a ser buscado na tabela desta página
       search: Busca
       location: Localização
-      warning: 'Esta tela não permite a edição de webconferências, apenas sua visualização, bem como de suas respectivas gravações (permitindo a deleção dessas). Para criar/editar/remover webconferências, dirija-se a Edição de Conteúdo.'
+      information_title: '<b>Informações básicas</b>'
+      information: "Esta tela não permite a edição de webconferências, apenas sua visualização, bem como de suas respectivas gravações (permitindo a deleção dessas). Para criar/editar/remover webconferências, dirija-se a Edição de Conteúdo.<br><br>Ao clicar no botão <b>Suporte Webconferência</b>, disponível para o perfil \'<i>Suporte Webconferência</i>\', você ficará disponível para receber chamados de ajuda das webconferências em andamento.<br><br>Aparecerá um aviso no topo da página quando houver um novo chamado. Para atender a um chamado, basta entrar na webconferência.<br><br>As webconferências com chamado serão identificadas com as seguintes cores: <ul style='list-style-type: square; margin-left: 40px;'> <li>Azul - Chamado em aberto;</li> <li>Verde - Chamado atendido;</li> <li>Vermelha - Webconferência encerrada e chamado não atendido;</li> <li>Amarela - Ninguém do suporte online, usuário encaminhado para o email(webconferência@virtual.ufc.br).</li> </ul>"
       shared_with: ( Compartilhada entre %{link} turma(s) )
-      access: Lista de acessos
+      access: Acessos
+      help: Atendimentos de chamados
+      help_list: Chamados
+      view_webs: 'Visualizar: %{type}'
+      all: "Todas"
+      in_progress: "Em andamento"
+      scheduled: "Agendadas"
+      finish: "Finalizadas"
+      recorded: "Com gravação"
+      disconnect_webcsocket: "Tem certeza que deseja desativar o suporte em tempo real?"
     index:
       shared_with: Compartilhada entre %{link} turma(s)
       access: Lista de acessos
@@ -1585,6 +1600,12 @@ pt_BR:
       working_hours: Carga horária
       profile: Perfil
       summary: Tabela cujo conteúdo contém a lista com todos os acessos à webconferência com perfil, nome, horário e data da pessoa que acessou e o nome completo da turma. Bem como também há a possibilidade de avaliar os acessos de um aluno, no caso de professor.
+    list_support_help:
+      title: Lista de atendimentos da webconferêcia - %{webconference_name}
+      no_requests: Não existem registros de atendimento para esta webconferência.
+      responsible: 'Atendido por:'
+      date: Data
+      time: Hora
     get_record:
       recordings: Gravações de %{name}
       access: Acesso à gravação
@@ -1594,6 +1615,13 @@ pt_BR:
       warning: '<b>Importante: </b> Para cada ausência prolongada de participantes na webconferência, uma nova gravação é realizada.'
       no_message: Gravações removidas ou vazias ou a webconferência não possui gravações
       remove: Remover gravação
+    support_help:
+      title: ' Suporte Webconferência'
+      answer_html: "<br> Olá <b>%{user_name}</b>! <br><br> Selecione a webconferência para a qual você deseja solicitar ajuda: "
+      request: 'Solicitar ajuda em tempo real'
+      message: 'Enviar Mensagem'
+      no_data_html: "Não existem webconferências em andamento. Clique <a href='https://goo.gl/forms/PEB4WFixcWwuGyOt1' target='_blank'>aqui</a> para responder ao questionário de avaliação da ferramenta."
+      new_request: "novo(s) pedido(s) de ajuda da(s) webconferência(s) !!!"
     warning:
       blocked: 'Seu navegador está com a permissão de popups bloqueada. Favor desbloquear.'
     user_access:
@@ -2953,6 +2981,7 @@ pt_BR:
     no_subject: "(sem assunto)"
     support: "Atendimento <atendimento@virtual.ufc.br>"
     support_html: "Atendimento &lt;atendimento@virtual.ufc.br&gt;"
+    support_help: "Suporte webconferência <webconferencia@virtual.ufc.br>"
     contacts:
       title: "Seleção de contatos"
       contacts: "Contatos"

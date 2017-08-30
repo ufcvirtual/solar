@@ -686,6 +686,9 @@ en_US:
   description: "Description"
   edition: "Edition"
   enrollment: "Enrollment"
+  support_web_tooltip: "Enable/disable real-time webconference support"
+  support_web: "Web Conferencing Support"
+  support_web_count: "Number of webconferences requesting help at the moment"
   my_solar_curriculum_units: "Subjects"
   my_solar_curriculum_without: "No subjects found."
   my_solar_uc_without_group: There are no groups
@@ -1357,9 +1360,19 @@ en_US:
       placeholder: Type any value to be searched at the table of this page
       search: Search
       location: Location
-      warning: "This page doesn't allow webconference's edition, only it's preview, as it's respective records (allowing the removal of these). To create/edit/remove webconferences, go to Content Edition."
+      information_title: '<b>Basic information</b>'
+      information: "This page doesn't allow webconference's edition, only it's preview, as it's respective records (allowing the removal of these). To create/edit/remove webconferences, go to Content Edition.<br><br>When you click the <b>Web Conferencing Support</b> button, available for the \'<i>Conferencing Support profile</i>\', you will be available to receive help from webconferences in progress.<br><br>A warning will appear at the top of the page when there is a new call. To answer a call, simply enter the webconference.<br><br>Webconferences with call will be identified in the following colors: <ul style='list-style-type: square; margin-left: 40px;'> <li>Blue - Open call;</li> <li>Green - Answered call;</li> <li>Red - Webconference closed and called unanswered;</li> <li>Yellow - No one from the online support, user sent to the email (webconferência@virtual.ufc.br).</li> </ul>"
       shared_with: ( Shared with %{link} group(s) )
-      access: Access's list
+      access: Access
+      help: Request responses
+      help_list: Requests
+      view_webs: 'View: %{type}'
+      all: "All"
+      in_progress: "In progress"
+      scheduled: "Scheduled"
+      finish: "Finished"
+      recorded: "With recording"
+      disconnect_webcsocket: "Are you sure you want to disable real-time support?"
     index:
       shared_with: Shared with %{link} group(s)
       access: Access's list
@@ -1396,6 +1409,12 @@ en_US:
       working_hours: Working hours
       profile: Profile
       summary: Table which content has all access list with profile, name of user, complete name of group, date and time info. As well you can evaluate all access of a student, if you're a teatcher.
+    list_support_help:
+      title: Webconference attendance list - %{webconference_name}
+      no_requests: There are no attendance records for this webconference.
+      responsible:  'Attended by:'
+      date: Date
+      time: Time
     get_record:
       recordings: "%{name}'s recordings"
       access: Access to recording
@@ -1405,6 +1424,13 @@ en_US:
       warning: '<b>Importat: </b> To each prolonged absence from webconference participants, a new recording is made.'
       no_message: Removed or empty recordings or webconference does not have any recordings
       remove: Remove recording
+    support_help:
+      title: ' Support Web Conferencing'
+      answer_html: "<br> Hello <b>%{user_name}</b>! <br><br> Select the webconference for which you want to request help: "
+      request: 'Request real-time help'
+      message: 'Send Message'
+      no_data_html: "There are no webconferences in progress. Click <a href='https://goo.gl/forms/PEB4WFixcWwuGyOt1' target='_blank'>here</a> to respond to the tool evaluation questionnaire."
+      new_request: "New request(s) for help from webconference !!!"
     warning:
       blocked: "Your browser has popup permissions blocked. Please allow it."
     user_access:
@@ -2721,6 +2747,7 @@ en_US:
     no_subject: "(no subject)"
     support: "Support <atendimento@virtual.ufc.br>"
     support_html: "Support &lt;atendimento@virtual.ufc.br&gt;"
+    support_help: "Support webconference <webconferencia@virtual.ufc.br>"
     contacts:
       title: "Selection of contacts"
       contacts: "Contacts"

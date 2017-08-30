@@ -101,8 +101,11 @@
 
             %li#mysolar_suggestions
               = link_to t(:mysolar_suggestions), 'https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ', class: 'btn', target: '_blank', :'aria-label' => t(:mysolar_suggestions) + t(:new_window)
-
-
+            // Support webconference
+            - if @support_help
+              %li#mysolar_support_web
+                = link_to t(:support_web), "#", method: "get", class: "btn", onclick: "change_session_sh(#{current_user.id});", :'aria-label' => t(:support_web_tooltip), :'data-tooltip' => t(:support_web_tooltip), remote: true
+                = link_to Bbb.count_help, preview_webconferences_path, :'aria-label' => t(:support_web_count), :id => "btn_count_help", :class => "btn count_help btn-orange", :'data-tooltip' => t(:support_web_count)
       / sidebar
       #mysolar_sidebar{role: 'navigation'}
         #mysolar_menu_accordion{style: "z-index:10"}
@@ -290,7 +293,6 @@
         $("#mysolar_open_lesson button").removeClass("disabled");
     });
 
-
     // IM
     imageLoading = "#{image_path('spinner.gif')}"
     xmpp_cpf = "#{current_user.cpf}";
@@ -391,13 +393,17 @@
       //logout
       $('.mysolar_top_link.logout').click(function(e) {
         try {
-          alert(logout_path)
-          alert('teste ok')
-          $(".xmpp-status-menu .unavailable").click();
-          con.xmppstatus.save({'status': 'online'});
-          delete con;
-          con = null;
-          setTimeout(function(){location.href="#{logout_path}";},250); // espera 250 milesegundos para redirecionar para a pagina de logout
+          // Desconecta do IM
+          //$(".xmpp-status-menu .unavailable").click();
+          $('#disconnectDl').click();
+          if (con.length) {
+            con.xmppstatus.save({'status': 'online'});
+            delete con;
+            con = null; }
+          //Desconecta o support_help das webconferências
+          if ("#{session[:support_connect]}" == "true") { change_session_sh("#{current_user.id}", true); }
+          // espera 250 milesegundos para redirecionar para a pagina de logout
+          setTimeout(function(){location.href="#{logout_path}";},250);
           e.preventDefault();
         } catch(err) {}
       });
@@ -596,3 +602,115 @@
         }, 250);
       });
     });
+
+    $(document).keydown(function (e) {
+      if (e.which === 27) {
+        $("#dropdown_menu").slideUp(150);
+        $(".dropdown_close").hide(150);
+      }
+    });
+
+    //////////////////////////////////////
+    /*    Support Help Webconference    */
+    //////////////////////////////////////
+    $(function(){
+      if ("#{@support_help}" == "true") {
+        console.log("Cliente suporte: Atualizando a página... Chamando a funcão principal");
+        websocket_support_help("#{current_user.id}", ("#{session[:support_connect]}" == "true"), false);
+      }
+    });
+
+    var ws_sh = ws_sh || null;
+    //Websocket botão support_help
+    function websocket_support_help(user, session, button, btn_exit){
+      console.log("Cliente suporte: Função principal! - ws_sh: " + ws_sh + ", Botão: " + button + ", Sessão: " + session + ", Sair: " + btn_exit );
+      // Desconectando
+      if (!session) {
+        console.log("Cliente suporte: Está conectado? " + ws_sh);
+        if (ws_sh) {
+          console.log("Cliente suporte: A sessão é false - Desconectando");
+          //Muda o botão se não tem sessão
+          $('#mysolar_support_web .btn:first').removeClass( "btn_warning" );
+          //Desconectando se botão
+          if (button){
+            console.log("Cliente suporte: Botão acionado - Desconectando...");
+            if (!btn_exit){
+              if (confirm("#{I18n.t('webconferences.preview.disconnect_webcsocket')}")){
+                console.log("Desconectado...!");
+                ws_sh.close();
+                console.log("Cliente suporte: Desconectado!");
+              }
+              else { change_session_sh(user); console.log("Cliente suporte: Cancelando desconexão... Muda a sessão e reconecta..."); }
+            //Desconecta ao sair do solar
+            } else {
+              console.log("Cliente suporte: Desconectando com o botão sair!!!");
+              ws_sh.close();
+              console.log("Cliente suporte: Desconectado com o botão sair!!!");
+            }
+          }
+        }
+      }
+      //Conectando
+      else {
+        console.log("Cliente suporte: A sessão é true - Conectando");
+        //Muda o botão se tem sessão
+        $('#mysolar_support_web .btn:first').addClass( "btn_warning" );
+        //Conectando se botão
+        console.log("Cliente suporte: Conectando usuário ao websocket...");
+        var websocket_host_sp = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["host_support_help"]}";
+        var websocket_port_sp = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["port_support_help"]}";
+        //Conexão com o WebSocket
+        ws_sh = new WebSocket('ws://'+websocket_host_sp+':'+websocket_port_sp+'/'+user);
+        ws_sh.onmessage = function (msg) {
+          var data = JSON.parse(msg.data);
+          console.log("Cliente suporte: Mensagem recebida do server: " + data.academic_allocation_id);
+          add_support_help_warning(data.requests, data.academic_allocation_id);
+        };
+        ws_sh.onopen = function () {  }; //ao iniciar ws
+        ws_sh.onclose = function () {  }; // ao perder conexão com o ws
+        ws_sh.onerror = function (err) { }; // ao receber erro no ws
+      }
+    }
+
+    // Alterna a sessão do usuário
+    function change_session_sh(user, btn_exit = false){
+      console.log("Cliente suporte: GET AJAX - Mudando a sessão...");
+      $.ajax({
+        type: "GET",
+        url: "/webconferences/support_help_session",
+        success: function(data){
+          console.log("Cliente suporte: Resposta get ajax: " + data.session + user);
+          console.log("Cliente suporte: Sessão alterada com sucesso... Chamando a funcão principal");
+          websocket_support_help(user, data.session, true, btn_exit);
+        },
+        error: function(data){
+          console.log("ERROR: " + data);
+        }
+      })
+    }
+
+    // Novo chamado!
+    function add_support_help_warning(count_help, ac_id){
+      console.log("Cliente suporte: Carregando a flash_message... Quantidade de chamados: " + count_help);
+      if (count_help>0) {
+        var new_help = $( "input[value='"+ ac_id +"']" ).parents('.list_webs');
+        console.log("Novo chamado: " + ac_id + " - " + new_help);
+        // Atualiza css
+        new_help.removeClass("support_help_success support_help_message");
+        new_help.addClass("support_help_request");
+        if ($(new_help).offset()) {
+          // Aponta para a web
+          $(window).scrollTop($(new_help).offset().top);
+        }
+        // Atualiza contador
+        $('#btn_count_help').html(count_help);
+        // Flash Message
+        flash_message(count_help + " #{I18n.t('webconferences.support_help.new_request')}", "warning", undefined);
+        // Redireciona para a tela de preview ao clicar no flash_message
+        $("#flash_message.warning").click(function(){
+          window.location.href = "#{preview_webconferences_path}";
+        });
+      }
+      else
+        erase_flash_messages();
+    }
