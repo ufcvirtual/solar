@@ -3134,6 +3134,7 @@ en_US:
       name:
         responsibles: "Responsibles [R]"
         students_and_tools: "Students/Tools [T]"
+        legends: "Subtitles [S]"
         all: "Geral View [0]"
         evaluative: 'Evaluative [1]'
         notevaluative: 'Not Evaluative [2]'
@@ -3141,6 +3142,7 @@ en_US:
       code:
         responsibles: 82
         students_and_tools: 84
+        legends: 83
         all: 96
         evaluative: 97
         notevaluative: 98

@@ -53,29 +53,30 @@
   .tb_list_students
     = render partial: 'general'
 
-%div.legend
-  = t(".subtitle")
-#scores_notes.legend_score_footer
-  .evaluated
-    = t(".evaluated")
-    = t(".evaluated_complete")
-  .not_sent
-    = t(".not_sent")
-    = t(".not_sent_complete")
-  .without_group
-    = t(".without_group")
-    = t(".without_group_complete")
-  .sent
-    = t(".sent")
-    = t(".sent_complete")
-  .to_send
-    = t(".to_send")
-    = t(".to_send_complete")
-  .not_started
-    = t(".not_started")
-    = t(".not_started_complete")
-  %table
-    %td.new_after_evaluation
-      = t(".new_after_evaluation")
+%div{:'data-shortcut'=> t("shortcut.evaluatives.code.legends"), :'data-shortcut-name'=> t("shortcut.evaluatives.name.legends"), :'data-shortcut-focus' => 'true'}
+  .legend
+    = t(".subtitle")
+  #scores_notes.legend_score_footer
+    .evaluated
+      = t(".evaluated")
+      = t(".evaluated_complete")
+    .not_sent
+      = t(".not_sent")
+      = t(".not_sent_complete")
+    .without_group
+      = t(".without_group")
+      = t(".without_group_complete")
+    .sent
+      = t(".sent")
+      = t(".sent_complete")
+    .to_send
+      = t(".to_send")
+      = t(".to_send_complete")
+    .not_started
+      = t(".not_started")
+      = t(".not_started_complete")
+    %table
+      %td.new_after_evaluation
+        = t(".new_after_evaluation")
 
 = javascript_include_tag 'scores'

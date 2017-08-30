@@ -3413,6 +3413,7 @@ pt_BR:
       name:
         responsibles: "Responsáveis [R]"
         students_and_tools: "Alunos/Ferramentas [F]"
+        legends: "Legendas [L]"
         all: "Geral [0]"
         evaluative: 'Avaliativo [1]'
         notevaluative: 'Não Avaliativo [2]'
@@ -3420,6 +3421,7 @@ pt_BR:
       code:
         responsibles: 82
         students_and_tools: 70
+        legends: 76
         all: 96
         evaluative: 97
         notevaluative: 98
