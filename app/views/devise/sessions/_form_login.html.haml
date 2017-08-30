@@ -24,7 +24,6 @@
 
   = link_to image_tag("help-solar-grande.png", alt: t(:solar_faq)), faq_path, target: '_blank', :'aria-label' => t(:login_faq)+ t(:new_window), id: "faq-button"
 
-
   .fb-like
     %script{src: "http://connect.facebook.net/en_US/all.js#xfbml=1"}
     %fb:like{"data-href" => YAML::load(File.open('config/facebook.yml'))['data-fanpage'], layout: "button_count", "data-show_faces" => "false", "data-width" => "450"}
@@ -54,9 +53,6 @@
   });
 
   $(function(){
-    var text = $("#flash_message span").text().trim();
-    if(text.length !== 0) {
-      $("#flash_message").prop('tabindex', 0);
-      $("#flash_message").focus();
-    }
+    if($("#flash_message span").text().trim().length !== 0)
+      focus_element($("#flash_message"));
   });

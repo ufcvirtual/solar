@@ -14,15 +14,16 @@
   }
 }
 tr.lines {
-  // input {
-  //  padding: 5px 0 0 5px;
-  // }
   td {
     padding: 6px 8px 4px;
   }
 }
 .border {
   border-top: 1px solid $border_color_another_gray;
+}
+
+.permission {
+  color: $color_green !important;
 }
 
 .added-permission {
@@ -33,10 +34,6 @@ tr.lines {
   color: $removed_permission_color !important;
 }
 
-.permission {
-  color: $permission_color;
-}
-
 .edition-enabled {
   background-color: $background_light_beige;
 }
@@ -44,6 +41,7 @@ tr.lines {
 label.permissions-search-text {
   font-size: 10pt;
   vertical-align: text-bottom;
+  color: $color_black;
 }
 
 table.tb_allocation .dropdown ul li a{
@@ -74,37 +72,10 @@ table.tb_allocation .dropdown ul li a{
 
 .title-warning {
   background-color: $background_dark_gray;
-  color: $comment_color;
+  color: $color_gray_text;
   padding: 7px 5px 7px 5px;
   font-size: 10pt;
   margin-bottom: 15px;
-}
-.comment-blue {
-  background-color: $background_dark_gray;
-  border-radius: 8px;
-  color: $comment_color;
-  padding: 7px 5px 7px 5px;
-  font-size: 9pt;
-  margin-bottom: 10px;
-  width: 450px;
-}
-.comment-red {
-  background-color: $background_light_red;
-  border-radius: 8px;
-  color: $comment_color;
-  padding: 7px 5px 7px 5px;
-  font-size: 9pt;
-  margin-bottom: 10px;
-  width: 450px;
-}
-.comment-green {
-  background-color: $background_light_green;
-  border-radius: 8px;
-  color: $comment_color;
-  padding: 7px 5px 7px 5px;
-  font-size: 9pt;
-  margin-bottom: 10px;
-  width: 450px;
 }
 
 .responsibles_list .block_content_toolbar{
@@ -129,14 +100,23 @@ table.tb_allocation .dropdown ul li a{
   }
 }
 
-.global_item, .specific_item {
-  @include item_button;
+.indication{
+  color: $color_black;
+  .global_item, .specific_item {
+    @include item_button;
+  }
+
+  .global, .specific{
+    height: 111px;
+  }
+
+  .global_text, .specific_text{
+    padding-top: 13px;
+  }
 }
 
-.global, .specific{
-  height: 111px;
-}
-
-.global_text, .specific_text{
-  padding-top: 13px;
+.import-users{
+  .inline, .input{
+    display: inline-block;
+  }
 }

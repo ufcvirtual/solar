@@ -13,7 +13,6 @@ fieldset {
 
   .block_content_alt {
     margin-bottom: 20px;
-    background-color: $color_white;
 
     li {
       margin-bottom: 10px;
@@ -35,9 +34,16 @@ fieldset {
   overflow-y: auto;
 }
 
-.filter_type .ui-autocomplete, .filter .ui-autocomplete{
+.filter_type .ui-autocomplete, .filter .ui-autocomplete, li.ui-menu-item {
   width: 306px !important;
- }
+  background-color: $color_white_base;
+  a {
+    color: $color_main;
+  }
+  a:hover {
+    color: $color_main;
+  }
+}
 
 .offer_course .ui-autocomplete, .offer_curriculum_unit .ui-autocomplete{
   width: 300px !important;
@@ -63,7 +69,7 @@ fieldset {
   font-size: 11px;
   margin-bottom: 15px;
   margin-top: -20px;
-  color: $color_gray;
+  color: $color_gray_font;
 }
 
 .edition .filter .groups{
@@ -82,7 +88,7 @@ fieldset {
 }
 
 .edition.block_content{
-  background-color: $color_white;
+  background-color: $color_white_base;
 }
 
 .offer_groups_options {
@@ -137,6 +143,7 @@ label[for="all"]{
 
 .repository_text{
   padding-top: 13px;
+  color: $color_black;
 }
 
 .edition_items{
@@ -180,7 +187,7 @@ label[for="all"]{
       }
       .tools_by_tool_type{
         tr.red{
-          background-color: $background_light_red;
+          background-color: $background_light_red_editions;
         }
       }
       .icons{
@@ -230,14 +237,14 @@ label[for="all"]{
       display: inline-block;
       padding: 20px 0px 20px 0px;
       width: 250px;
-      border: 1px dashed $list_exams_btn_color;
+      border: 1px dashed $color_gray_font;
     }
   }
   .exam_box{
     width: 775px;
     padding: 5px 0px 5px 4px;
-    border-left: 6px solid $list_exams_exam_box_color;
-    background-color: $list_exams_background;
+    border-left: 6px solid $btn_main_color;
+    background-color: $block_groups_background;
   }
   .block_wrapper .block_content_toolbar{
     margin-top: 10px;
@@ -265,8 +272,16 @@ label[for="all"]{
 }
 
 
-.filter{
+.filter, .filter_type, .contacts-type{
   li.ui-menu-item a{
-    color: $color_almost_black;
+    color: $color_black;
+  }
+  label{
+    color: $color_black;
+  }
+
+  .ui-state-hover, .ui-widget-content .ui-state-hover,
+  .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus{
+    color: $color_black_buttons;
   }
 }

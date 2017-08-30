@@ -1,3 +1,4 @@
+
 !!!
 %html{xmlns: "http://www.w3.org/1999/xhtml", lang: I18n.locale.to_s.gsub('_', '-')}
   - if is_curriculum_unit_selected?
@@ -17,7 +18,10 @@
     = javascript_include_tag "converse/converse"
     = stylesheet_link_tag "converse/converse"
     / IM \
-    = stylesheet_link_tag "application", "themes/theme_blue", "fancybox"
+    = stylesheet_link_tag "application", "fancybox"
+    = stylesheet_link_tag "themes/theme_" + "#{user_session[:theme]}", id: "themes"
+    / Datapicker with time
+    = stylesheet_link_tag 'jquery-ui-timepicker-addon'
 
     = csrf_meta_tag
 
@@ -50,7 +54,7 @@
                   %li#link_to_search_box.sub_nav_menu= link_to t(:search_box), "#search_box_accesskey", accesskey: "3", class: "sub_nav_item"
                 - if active_tab[:url][:context] == 2 && params[:bread] == "menu_score_student"
                   %li#link_to_shortcut.sub_nav_menu= link_to t("shortcut.shortcut_link"), "#", class: "sub_nav_item"
-                -# %li= link_to t(:high_contrast_link), "#", accesskey: "5"
+                %li= link_to t(:high_contrast_link), "#", accesskey: "5", :'data-url' => update_theme_personal_configurations_path, :'data-theme' => "#{user_session[:theme]}", id: "mysolar_high_contrast_option", remote: true
                 - if I18n.locale.to_s == 'pt_BR'
                   %li.sub_nav_menu=link_to t(:libras), 'http://www.vlibras.gov.br/', target: '_blank', 'aria-label'=> t(:libras) + t(:new_window), class: "sub_nav_item"
             %li#mysolar_top_help.mysolar_top_submenu_label_regular.nav_menu
@@ -426,6 +430,19 @@
       closeBtn : true
     });
 
+    //Select theme function
+    $("#mysolar_high_contrast_option").click(function(){
+      $.put($(this).data("url"), {"theme": $(this).data("theme")}, function(data){
+        var theme = data.theme;
+        if( theme == "blue")
+          theme = "high_contrast";
+        else
+          theme = "blue";
+        $("link[id='themes']").attr("href", "/assets/themes/theme_" + theme + ".css");
+        location.reload();
+      });
+    });
+
     $("#link_to_menu_accesskey").on("click keypress", function(event){
       var keynum = event.which || event.keyCode;
 
@@ -448,6 +465,7 @@
         $(".search_box_focus").focus();
         $("#autocomplete-input").focus();
       }, 100);
+
     });
 
     $(".nav_item").on("keydown", function(event){

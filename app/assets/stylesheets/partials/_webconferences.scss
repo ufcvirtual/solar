@@ -59,22 +59,11 @@ table.webconferences{
       }
     }
   }
-  tbody{
-    td{
-      [class^='icon-']:not(.evaluate){
-        font-size: 18px;
-        padding-top: 7px;
-        color: $webconference_table_body_color;
-      }
-      [class^='icon-']:hover{
-        color: $font_color;
-      }
-    }
-  }
+  
   a.disabled{
     pointer-events: none;
     text-decoration: none;
-    color: $table_data_line_title;
+    color: $score_tbody_link;
   }
 }
 
@@ -85,7 +74,7 @@ table.webconferences{
     }
     text-align: center;
     td.profile{
-      color: $webconference_access_profile_color;
+      color: $color_almost_gray_content;
       font-size: 9pt;
       font-style: italic;
       padding-right: 0;

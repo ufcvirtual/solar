@@ -6,7 +6,7 @@
     
 .blcok_content
   - unless @bibliographies.blank?
-    %table.tb_list{summary: t('.summary')}
+    %table.tb_list.bibliography{summary: t('.summary')}
       %thead
         %tr.lines
           %th#item{ align: 'left' }=t(:item, scope: [:bibliographies, :list])

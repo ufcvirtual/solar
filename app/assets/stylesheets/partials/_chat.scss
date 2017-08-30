@@ -6,13 +6,6 @@
   right: 15px;
 }
 
-#mysolar_chat_barra {
-  font-size: 11pt;
-  padding-left: 5px;
-  padding-right: 5px;
-  cursor: pointer;
-  background-color: $mysolar_chat_barra_background;
-}
 
 #mysolar_chat_contatos {
   width: 150px;
@@ -20,7 +13,7 @@
 
 #mysolar_chat_list {
   border: 1px solid $mysolar_chat_color;
-  background-color: $color_white;
+  background-color: $color_white_base;
   display: none;
 }
 
@@ -34,5 +27,5 @@
   width: 87%;
   border: none;
   height: 1px;
-  background-color: $mysolar_chat_color;
+  background-color: $mysolar_chat_color_chat;
 }

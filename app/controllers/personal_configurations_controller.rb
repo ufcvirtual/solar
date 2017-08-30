@@ -17,4 +17,18 @@ class PersonalConfigurationsController < ApplicationController
     personal_options.save()
   end
 
+  def update_theme
+    personal_configuration = PersonalConfiguration.find_by_user_id(current_user.id)
+
+    unless user_session[:theme].blank? || !['blue','high_contrast'].include?(user_session[:theme])
+      user_session[:theme] = (user_session[:theme] == 'blue' ? 'high_contrast' : 'blue')
+    else
+      user_session[:theme] = 'blue'
+    end
+
+
+    personal_configuration.update_attribute(:theme, "#{user_session[:theme]}")
+    render json: {success: true, theme: "#{user_session[:theme]}"}
+  end
+  
 end

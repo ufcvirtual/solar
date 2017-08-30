@@ -37,7 +37,7 @@
   color: $color_gray_text;
 
   a{
-    color: $color_gray_text;
+    color: $color_gray_text_messages_link;
   }
 }
 
@@ -106,7 +106,7 @@ table.tb_list.message_div_list{
 }
 
 .message_read {
-  color: $color_almost_gray;
+  color: $color_almost_gray_content;
 }
 
 .message_unread {
@@ -119,13 +119,10 @@ table.tb_list.message_div_list{
   font-weight: normal;
   margin: 0px;
   padding: 0px;
-  padding-left: 2px;
-  padding-right: 2px;
-  border: 1px solid;
-  -moz-border-radius: 4px;
-  color: $color_white;
-  background-color: $color_contrast;
-  border-color: $color_contrast;
+  padding: 3px;
+  color: $color_black_buttons;
+  background-color: $message_label_background;
+  border: none;
 }
 
 .message_new {
@@ -164,14 +161,13 @@ table.tb_list.message_div_list{
         padding: 2px 0px;
 
         &:hover{
-          background: $block_content_background;
           color: $color_white;
         }
       }
     }
   }
   .block_white{
-    background: $color_white;
+    background: $color_white_base;
   }
   .block_white.index{
     height: 38px;
@@ -196,7 +192,7 @@ table.tb_list.message_div_list{
       vertical-align: middle;
       text-align: center;
       margin-right: 5px;
-      color: $color_almost_gray;
+      color: $color_almost_gray_content;
     }
 
   }
@@ -261,6 +257,7 @@ table.tb_list.message_div_list{
   }
   label{
     width: auto;
+    color: $color_black;
   }
 
   .input{
@@ -394,12 +391,6 @@ ul.files_to_send{
   border-bottom-color: $current_color;
 }
 
-.message_label {
-  color: $color_black;
-  background-color: $message_label_background;
-  border: 1px solid $message_label_background;
-}
-
 // contatos
 
 #content-div {
@@ -413,7 +404,7 @@ ul.files_to_send{
   line-height: 15px;
   margin-bottom: 5px;
   .edition.block_content{
-    background-color: $contacts_edition_block_content_background;
+    background-color: $form_background_color;
   }
   .select{
     margin-top: 5px;
@@ -446,7 +437,7 @@ ul.files_to_send{
   margin-bottom: 5px;
   border: 1px solid;
   height: 150px;
-  background-color: $color_white;
+  background-color: $color_white_base;
   border-color: $contacts_list_border_color;
   .already_added{
     color: $color_red;
@@ -458,11 +449,11 @@ ul.files_to_send{
 .contacts-selected {
   font-size: 10pt;
   border: 1px solid;
-  border-color: $lesson_portlet_border_color;
+  border-color: $language_border_color;
   height: 100px;
   white-space: normal;
   overflow: auto;
-  background-color: $color_white;
+  background-color: $color_white_base;
   margin-bottom: 10px;
 }
 
@@ -471,16 +462,10 @@ ul.files_to_send{
   padding: 5px;
 }
 
-#receiver_already_added {
-  display: inline-block;
-  margin-left: 5px;
-  font-size: 11px;
-  color: $receiver_already_added_color;
-}
-
 .message_new_upload{
   label{
     width: 12%;
+    color: $color_black;
   }
   .files{
     .file_attached {

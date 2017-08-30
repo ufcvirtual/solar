@@ -93,12 +93,12 @@
 .form_error, .error, span.field_with_errors {
   padding-left: 10px;
   vertical-align: top;
-  color: $form_error_color;
+  color: $error_color_font;
 }
 
 .field_with_errors input, .field_with_errors textarea {
   border: 1px solid;
-  border-color: $form_error_color;
+  border-color: $error_color_font;
 }
 
 #special_needs_line {
@@ -110,7 +110,7 @@
   font-size: 9pt;
   margin-right: 2px;
   margin-top: 2px;
-  color: $form_error_color;
+  color: $error_color_font;
 }
 
 .form_requirement {
@@ -152,9 +152,9 @@ form #cell_phone{
 }
 
 select[disabled] {
-  color: $form_error_color;
+  color: $error_color_font;
   border: 1px solid $border_color;
-  background-color: $form_select_disabled_background;
+  background-color: $background_gray;
 }
 
 .radio_options label{ // TODO: usado apenas em editions
@@ -249,6 +249,7 @@ select[disabled] {
 }
 
 .form-inputs .inline {
+  background-color: $form_background_color;
   & > div {
     display: inline-block;
     vertical-align: top;
@@ -283,4 +284,9 @@ form .schedule_dates input{
     position: absolute;
     width: 1px;
   }
+}
+
+#text_as_label{
+  vertical-align: bottom;
+  display: inline-block;
 }

@@ -1,0 +1,22 @@
+*:not(.btn) > [class^="icon-"], *:not(.btn) > [class*=" icon-"]{
+  width: 18px;
+  height: 18px;
+  color: #FFFFFF;
+}
+
+.icon-trash, .icon-cancel-circle {
+  color: #000000;
+  opacity: 0.5;
+  filter:alpha(opacity=50);
+}
+
+#flash_message .icon-cross, #flash_message .icon-arrow-down-thin, #flash_message .icon-plus-circle{
+  color: #828282;
+}
+
+.question_form .icon-trash, .block_buttons .icon-trash, .message_general_div_option .icon-trash, .remove_note  .icon-trash{
+  color: #ffffff;
+  opacity: 1;
+  filter:alpha(opacity=100);
+}
+

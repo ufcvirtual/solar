@@ -28,17 +28,17 @@ input::-moz-focus-inner {
     text-shadow: 0 1px 1px rgba($color_white, 0.75);
     vertical-align: middle;
     cursor: pointer;
-    background-color: $btn_color; /* Old browsers */
-    @include filter-gradient($btn_color, darken($btn_color,7%)); /* IE */
-    @include background-image(linear-gradient($btn_color, darken($btn_color,7%))); /* CSS3 */
+    background-color: $color_white; /* Old browsers */
+    @include filter-gradient($color_white, darken($color_white,7%)); /* IE */
+    @include background-image(linear-gradient($color_white, darken($color_white,7%))); /* CSS3 */
     background-repeat: repeat-x;
-    border: 1px solid $btn_border_color;
+    border: 1px solid $language_border_color;
     *border: 1px;
     border-color: $btn_border_light_gray $btn_border_light_gray $btn_border_dark_gray;
     border-color: rgba($color_black, 0.1) rgba($color_black, 0.1) rgba($color_black, 0.25);
     border-bottom-color: $btn_border_botton_color;
     *zoom: 1;
-    @include box-shadow(rgba($color_white, 0.2) 0 1px 0 inset, rgba($color_white, 0.05) 0 1px 2px inset);
+    @include box-shadow(rgba($color_white, 0.2) 0 1px 0 inset, rgba($color_white_base, 0.05) 0 1px 2px inset);
 }
 
 .btn_lightbox,.btn_form{
@@ -104,11 +104,12 @@ input::-moz-focus-inner {
 .btn_disabled,
 .btn[disabled],
 .btn.dropdown-open {
-    background-color: darken($btn_color,7%);
+    background-color: darken($color_white,7%);
 }
 
 .btn i {
-    color: $color_black;
+    /*color: $color_gray;*/
+    color: $color_black_buttons;
     @include opacity(0.5);
     filter:alpha(opacity=50);
 }
@@ -137,7 +138,7 @@ input::-moz-focus-inner {
 }
 
 .btn:focus {
-    outline: thin dotted $font_color;
+    outline: thin dotted $font_color_buttons;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px;
 }
@@ -158,17 +159,16 @@ input::-moz-focus-inner {
 }
 
 .btn_main {
-    color: $color_white;
+    color: $color_white_base;
     text-shadow: 0 -1px 0 rgba($color_black, 0.25);
     background: $btn_main_color; /* Old browsers */
     @include filter-gradient($btn_main_color, darken($btn_main_color, 10%)); /* IE */
     @include background-image(linear-gradient($btn_main_color, darken($btn_main_color, 15%))); /* CSS3 */
     background-repeat: repeat-x;
-    border-color: $btn_border_light_blue $btn_border_light_blue $btn_border_dark_blue;
 }
 
 .btn_main i {
-    color: $color_white;
+    color: $color_white_base;
     @include opacity(0.85);
     filter:alpha(opacity=85);
 }
@@ -209,25 +209,25 @@ input::-moz-focus-inner {
 .btn_caution:hover i,
 .btn_caution:focus i,
 .btn_caution:active i {
-    color: $color_white;
+    color: $color_white_base;
 }
 
 .btn_warning,
 .btn_caution:hover,
 .btn_caution:focus,
 .btn_caution:active {
-    color: $color_white;
+    color: $color_white_base;
     background: $btn_caution_color; /* Old browsers */
     @include filter-gradient($btn_caution_color, darken($btn_caution_color, 20%)); /* IE */
     @include background-image(linear-gradient($btn_caution_color, darken($btn_caution_color, 20%))); /* CSS3 */
     background-repeat: repeat-x;
-    border-color: $btn_border_light_red $btn_border_light_red $btn_border_dark_red;
+    border-color: $btn_border_light_red $btn_border_light_red $btn_warning_background;
     border-color: rgba($color_black, 0.1) rgba($color_black, 0.1) rgba($color_black, 0.25);
     text-shadow: none;
 }
 
 .btn_caution[disabled] {
-    border-color: $btn_border_light_red $btn_border_light_red $btn_border_dark_red;
+    border-color: $btn_border_light_red $btn_border_light_red $btn_warning_background;
 }
 
 .btn_caution[disabled] i {
@@ -255,7 +255,7 @@ input::-moz-focus-inner {
 .btn_caution.disabled,
 .btn_caution.btn_disabled
 .btn_caution[disabled] {
-    border-color: $btn_border_light_red $btn_border_light_red $btn_border_dark_red;
+    border-color: $btn_border_light_red $btn_border_light_red $btn_warning_background;
     border-color: rgba($color_black, 0.1) rgba($color_black, 0.1) rgba($color_black, 0.25);
 }
 
@@ -280,8 +280,8 @@ input::-moz-focus-inner {
 .btn_caution.disabled,
 .btn_caution.btn_disabled,
 .btn_caution[disabled] {
-    background-color: $btn_disabled_background;
-    *background-color: $btn_disabled_background;
+    background-color: $color_red;
+    *background-color: $color_red;
 }
 
 .btn_warning:hover,

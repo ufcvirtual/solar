@@ -1,7 +1,7 @@
 // SEMESTRES E OFERTAS
 
 .semester_same_dates, #semester_period { // TODO: usado em offers
-  color: $semester_color;
+  color: $color_almost_gray_content;
 }
 
 #semester_period { // TODO usado em semesters
@@ -18,8 +18,9 @@
     border-bottom: solid 1px;
     border-bottom-color: $border_color;
     min-height: 20px;
-    background-color: $block_content_text_background;
+    background-color: $block_content_text_list_background;
     padding-top: 12px;
+    color: $color_main;
 }
 
 .new_semester, .new_offer {
@@ -64,4 +65,8 @@
 
 .link_edit_offer{
   float: right;
+}
+
+.del_semester i.icon-trash {
+  color: $color_gray_font;
 }

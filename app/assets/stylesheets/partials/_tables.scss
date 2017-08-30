@@ -5,7 +5,8 @@
 */
 th:not(.act_like_td) {
   border-bottom: 1px solid;
-  border-bottom-color: $table_border_color;
+  border-bottom-color: $step_list_color_import;
+  color: $color_almost_gray_back;
 }
 
 th, tr.lines td, tr.lines th.act_like_td {
@@ -15,8 +16,9 @@ th, tr.lines td, tr.lines th.act_like_td {
 
 tbody tr.lines {
   border-bottom: 1px solid;
-  border-bottom-color: $table_border_color;
+  border-bottom-color: $step_list_color_import;
   background-color: $color_main_light;
+  color: $exclusive_font_color;
 
   &:hover {
     background-color: $color_main_light_highlight; /* #FFF5ED*/
@@ -25,16 +27,20 @@ tbody tr.lines {
 
 tbody tr.lines.active {
   border-bottom: 1px solid;
-  border-bottom-color: $table_border_color;
+  border-bottom-color: $step_list_color_import;
   background-color: $color_contrast_light;
 
   &:hover {
-    background-color: $table_line_hover;
+    background-color: $warning_background_back;
   }
 }
 
+tbody tr.lines.period_ended a {
+  color: $color_almost_gray_content;
+}
+
 tbody tr.lines.period_ended:hover {
-  background-color: $table_line_period_ended_hover;
+  background-color: $background_gray;
 }
 
 tr.lines td img {
@@ -88,7 +94,7 @@ table.tb_list {
   }
 
   td.file_data_info {
-    color: $table_file_data_info_color;
+    color: $color_almost_gray;
   }
 
   td.center, th.center{
@@ -96,7 +102,7 @@ table.tb_list {
   }
 
   td .title{
-    color: $table_data_line_title;
+    color: $score_tbody_link;
   }
 
   td .title-yellow{
@@ -104,8 +110,9 @@ table.tb_list {
   }
 
   thead tr.lines{
-    color: $table_head_line_title;
+    color: $color_almost_gray_content;
   }
+
 }
 
 table.user-courses tbody.offers {
@@ -143,9 +150,9 @@ tr.post_content {
 /* header */
 .tablesorter-default th,
 .tablesorter-default thead td {
-  border-bottom: $table_sort_border_color 1px solid;
+  border-bottom: $step_list_color 1px solid;
+  
   /*font: bold;
-  color: #000;
   background-color: #fff;
   border-collapse: collapse;
   padding: 0;*/
@@ -192,4 +199,8 @@ tr.responsibles{
   p{
     margin-bottom: 0;
   }
+}
+
+th.td_student{
+  background-color: $color_white_base !important;
 }

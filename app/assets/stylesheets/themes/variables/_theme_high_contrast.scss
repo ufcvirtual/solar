@@ -1,0 +1,194 @@
+// High Constrast Variables
+$high_contrast_link_color: #FFF333;
+$high_contrast_font_color: #ffffff !default;
+$high_contrast_background_color: #000000;
+
+// Blacks
+$color_black: $high_contrast_font_color;
+$color_black_base: $high_contrast_link_color;
+$color_black_calendar: #FFFFFF;
+$color_black_buttons: $high_contrast_background_color;
+$lightbox_fancybox_inner_color: $high_contrast_font_color;
+$color_almost_black: $high_contrast_font_color;
+$color_almost_black_base: $high_contrast_background_color;
+$font_color: $high_contrast_background_color;
+$font_color_buttons: $high_contrast_font_color;
+$questions_audios_background_firefox: #1f1e1f;
+$panel_box_shadow: #323232;
+
+
+// Whites
+$color_white: $high_contrast_font_color;
+$color_white_base: $high_contrast_background_color;
+$color_white_base_link: $high_contrast_link_color;
+$questions_audios_background: #FAFAFA;
+$panel_background: $high_contrast_background_color;
+$panel_border_color: $high_contrast_font_color;
+$background_light: $high_contrast_background_color;
+$questions_audios_background_exams: $high_contrast_background_color;
+$mysolar_top_submenu_label_selected: $color_black;
+
+
+// Grays
+$color_gray: #808080;
+$color_gray_font: $high_contrast_font_color;
+$color_gray_light: $high_contrast_font_color;
+$color_gray_text: $high_contrast_font_color;
+$color_gray_text_custom_icons: $high_contrast_background_color;
+$color_gray_text_messages_link: $high_contrast_link_color;
+$color_almost_gray: $high_contrast_link_color;
+$color_almost_gray_content: $high_contrast_font_color;
+$color_almost_gray_back: $high_contrast_background_color;
+$btn_box_shadow: #9a9a9a;
+$steps_list_color: $high_contrast_background_color;
+$step_list_color: #B4B2B1;
+$step_list_color_import: $high_contrast_font_color;
+$step_list_color_import_black: $high_contrast_background_color;
+$contacts_list_border_color: #dddddd;
+$search_keyword_inactive_color: $high_contrast_font_color;
+$disabled_color: $high_contrast_font_color;
+$disabled_color_exams: $high_contrast_background_color;
+$language_border_color: $high_contrast_font_color;
+$language_background_color: $high_contrast_background_color;
+$event_recess_holiday_background: #E3E3E3;
+$event_recess_holiday_border: $high_contrast_font_color;
+$btn_border_light_gray: $high_contrast_font_color;
+$btn_border_dark_gray: $high_contrast_font_color;
+$btn_border_botton_color: #b3b3b3;
+$datepicker_color: $high_contrast_font_color;
+$complete_border_left_color: $high_contrast_font_color;
+$complete_border_left_color_gray: #C0C0C0;
+$questions_link_color_contrast: $high_contrast_link_color;
+$mysolar_chat_color: $high_contrast_font_color;
+$mysolar_chat_color_chat: $high_contrast_background_color;
+$border_color_another_gray: $high_contrast_font_color;
+$border_color: $high_contrast_font_color;
+$label_border_color: #CBCED1;
+$question_image_border_color: #CDD6E3;
+$question_image_border_color_exams: $high_contrast_font_color;
+$question_image_legend_background: $high_contrast_background_color;
+$question_image_legend_background_exams: $high_contrast_background_color;
+$label_disabled_border_color: #dcdcdc;
+$background_dark_gray: $high_contrast_background_color;
+$current_background: $high_contrast_background_color;
+$slide_settings_active_background: #d8dfe9;
+$block_groups_background: $high_contrast_background_color;
+$lesson_area_background: $high_contrast_background_color;
+$background_blue: $high_contrast_background_color;
+$background_gray: $high_contrast_background_color;
+$background_gray_color: #EFEFEF;
+$body_background: $high_contrast_background_color;
+$period_ended_background: $high_contrast_background_color;
+$steps_background: $event_recess_holiday_background;
+$mysolar_border_color: $high_contrast_font_color;
+$slide_settings_hover_background: #eef3f9;
+$participants_list_none_background: $high_contrast_background_color;
+
+// Blues
+$form_background_color: $high_contrast_background_color;
+$blue_warning_background: #E9F3FF;
+$blue_warning_background_bkg: $high_contrast_background_color;
+$color_main: $high_contrast_font_color;
+$color_main_base_link: $high_contrast_link_color;
+$color_main_mysolar: $high_contrast_background_color;
+$added_permission_color: #6A94FF;
+$sent_color: $high_contrast_font_color;
+$sent_color_link: $high_contrast_link_color;
+$btn_border_dark_blue: $high_contrast_background_color;
+$btn_border_light_blue: $high_contrast_background_color;
+$btn_main_color: $high_contrast_font_color;
+$agenda_color: $high_contrast_font_color;
+$slide_settings_counter_color: #3b5e9a;
+$slide_settings_counter_color_portlets: $high_contrast_font_color;
+$current_color: $high_contrast_font_color;
+$current_color_base: $high_contrast_link_color;
+$current_color_back: $added_permission_color;
+$current_color_gray: $color_gray; 
+$lesson_header_title_background: $high_contrast_background_color;
+$panel_title_color: $high_contrast_font_color;
+$score_tbody_link: $high_contrast_font_color;
+$groups_forms_background: $high_contrast_font_color;
+$block_content_text_list_background: $high_contrast_background_color;
+
+// Reds
+$background_light_red: #fff6f6;
+$background_light_red_editions: $high_contrast_background_color;
+$removed_permission_color: #FF6A6A;
+$color_red: $high_contrast_font_color;
+$not_sent_color: $high_contrast_link_color;
+$not_sent_color_font: $high_contrast_font_color;
+$without_group_color: $high_contrast_font_color;
+$without_group_color_link: $high_contrast_link_color;
+$error_color: $removed_permission_color;
+$error_color_font: $high_contrast_font_color;
+$text_alert_color: $high_contrast_font_color;
+$btn_caution_color: #ee5f5b;
+$remove_file_color: $high_contrast_font_color;
+$edition_color: $high_contrast_font_color;
+$btn_warning_background: #942a25;
+$notice_exams_color: $high_contrast_font_color;
+$btn_border_light_red: #bd362f;
+$lesson_status_draft_background: $high_contrast_background_color;
+
+// Greens
+$background_light_green: #F5FFE3;
+$color_green: #01AF01;
+$color_green_font: $high_contrast_font_color;
+$color_green_link: $high_contrast_link_color;
+$notice_color: #006633;
+$lesson_status_released_background: $high_contrast_background_color;
+
+// Yellows and oranges
+$background_light_beige: $high_contrast_background_color;
+$warning_background: #FFFFDE;
+$warning_background_back: $high_contrast_background_color;
+$color_contrast: $high_contrast_font_color;
+$color_contrast_text: $high_contrast_link_color;
+$color_contrast_text_font: $high_contrast_font_color;
+$color_contrast_text_alert: $high_contrast_background_color;
+$color_contrast_messages: $high_contrast_background_color; 
+$steps_list_box_shadow: #f0cf65;
+$event_webconferencelesson_background: #F5DA81;
+$event_webconferencelesson_border: $high_contrast_font_color;
+$btn_initial_file_color_final: #f9c143;
+$message_label_background: $high_contrast_font_color;
+
+// Hipster
+$event_assignment_background: #FCEBCA;
+$event_assignment_background_portfolio: $high_contrast_background_color;
+$event_assignment_border: $high_contrast_font_color;
+$event_chat_background: #A7C1F0;
+$event_chat_border: $high_contrast_font_color;
+$event_presential_test_background: #F5D5EF;
+$event_presential_test_border: $high_contrast_font_color;
+$lesson_notes_background: $high_contrast_background_color;
+$event_presential_meeting_background: #FFD9E0;
+$event_presential_meeting_border: $high_contrast_font_color;
+$btn_orange: $high_contrast_font_color;
+$event_lessons_background: #A9F0F7;
+$event_lessons_border: $high_contrast_font_color;
+$event_discussion_background: #CAFCCC;
+$event_discussion_border: $high_contrast_font_color;
+$event_other_background: #CCCCFF;
+$event_other_border: $high_contrast_font_color;
+$alert_color: #cc0000;
+$blue_warning_background_blue: #b0cce8;
+$blue_warning_background_blue_bkg: $high_contrast_background_color;
+$event_exam_background: #E4FFA5;
+
+// Sass colors
+$color_main_light: $high_contrast_background_color;
+$color_main_medium: $high_contrast_font_color;
+$color_main_light_highlight: $high_contrast_background_color;
+$color_contrast_light: $high_contrast_background_color;
+$color_contrast_light_mysolar_menu_active: $high_contrast_font_color;
+
+hr {
+  border-top-color: $border_color;
+  border-bottom-color: $color_white;
+}
+
+// high contrast exclusives
+$exclusive_background_color: $high_contrast_background_color;
+$exclusive_font_color: $high_contrast_font_color;
+$exclusive_link_color: $high_contrast_link_color;

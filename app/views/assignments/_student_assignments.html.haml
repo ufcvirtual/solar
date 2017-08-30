@@ -1,5 +1,5 @@
 - if assignments.any?
-  %table.tb_list{:summary=> t("assignments.list.summary")}
+  %table.tb_list.assignments{:summary=> t("assignments.list.summary")}
     %thead
       %tr.lines
         %th.medium{id: "description#{type}"}= t("assignments.list.description")

@@ -39,7 +39,7 @@
   margin-right: 8px;
   margin-left: 10px;
   float: right;
-  color: $color_light_gray;
+  color: $color_gray_font;
 }
 
 .assignment_comment_date {
@@ -54,6 +54,7 @@
 .assignment_user_comment {
   float: left;
   padding-left: 10px;
+  color: $exclusive_font_color;
 }
 
 .assignment_comment {
@@ -62,6 +63,7 @@
   max-width: 785px;
   width: 100%;
   margin-top: 5px;
+  color: $exclusive_font_color;
 }
 
 .assignment_comment_head {
@@ -74,7 +76,7 @@
   text-align: left;
   border-bottom: 1px solid;
   border-bottom-color: $color_main;
-  background-color: $color_white;
+  background-color: $color_white_base;
 }
 
 .comments_files_div .btn {
@@ -91,7 +93,7 @@
 
 .assignment_without_group, td.assignment_without_group a {
   white-space: nowrap;
-  color: $portfolio_assignment_without_group_color;
+  color: $without_group_color;
 }
 
 .activity_grade {
@@ -103,28 +105,35 @@
 */
 
 .assignment_corrected, .assignment_evaluated {
-  color: $portfolio_assignment_corrected_color;
+  color: $color_green_font;
 }
 
-.assignment_not_answered {
-  color: $portfolio_assignment_not_answered_color;
+a.assignment_corrected, a.assignment_evaluated {
+  color: $color_green_link;
 }
 
-.assignment_sent, .assignment_sent a, .assignment_corrected a, .assignment_finished, .assignment_finish, .assignment_processing,
-td.assignment_as a {
-  color: $portfolio_assignment_color;
+.assignment_sent, .assignment_finished, .assignment_finish, .assignment_processing {
+  color: $sent_color;
 }
 
-.assignment_as, .assignment_as a{
-  color: $portfolio_assignment_color;
+a.assignment_sent, a.assignment_corrected, td.assignment_as a {
+  color: $sent_color_link;
 }
 
-.assignment_not_sent, .assignment_not_sent a, .expired, .assignment_closed {
-  color: $portfolio_assignment_not_sent_color;
+.assignment_as {
+  color: $sent_color;
 }
 
-.assignment_not_started, .assignment_not_started a, .assignment_scheduled {
-  color: $portfolio_assignment_not_started;
+a.assignment_as {
+  color: $sent_color_link;
+}
+
+.assignment_not_sent, .expired, .assignment_closed, .assignment_not_answered {
+  color: $not_sent_color_font;
+}
+
+a.assignment_not_sent {
+  color: $not_sent_color !important;
 }
 
 .assignment_to_be_sent, .assignment_to_be_sent a, .assignment_started,
@@ -132,12 +141,19 @@ td.assignment_as a {
   color: $color_main;
 }
 
+.assignment_not_started, .assignment_scheduled {
+  color: $color_almost_gray_content;
+}
+
 .assignment_an{
   color: $color_main;
 }
-.assignment_without_group, .assignment_without_group a,
-td.assignment_without_group a {
-  color: $portfolio_assignment_without_group_color;
+.assignment_without_group {
+  color: $without_group_color;
+}
+
+.assignment_without_group a, td.assignment_without_group a {
+  color: $without_group_color_link;
 }
 
 .assignment_corrected,
@@ -163,7 +179,7 @@ td.assignment_without_group a
 
 .tb_list{
   tr > td > .participants_box:not(.invisible){
-    border-bottom: 1px solid $step_list_color;
+    border-bottom: 1px solid $step_list_color_import;
   }
 
   td{
@@ -172,7 +188,7 @@ td.assignment_without_group a
       max-height: 200px;
       overflow: auto;
       tbody{
-        background-color: $color_white;
+        background-color: $color_white_base;
         td{
           padding: 6px 10px 4px 10px;
           vertical-align: middle;
@@ -212,10 +228,11 @@ td.assignment_without_group a
     width: 50px;
     height: 50px;
     border-radius: 30px;
-    box-shadow: 4px 4px 7px $portfolio_block_wrapper_groups;
+    box-shadow: 4px 4px 7px $color_gray;
   }
   .block_user{
-    background-color: $event_assignment_background;
+    background-color: $event_assignment_background_portfolio;
+    color: $exclusive_font_color;
     font-size: 10pt;
   }
 
@@ -235,6 +252,7 @@ td.assignment_without_group a
     float: left;
     font-weight: bold;
     margin-right: 7px;
+    color: $exclusive_font_color; 
   }
 }
 
@@ -252,7 +270,6 @@ td.assignment_without_group a
 
   }
 }
-
 
 .assignment_summarized .student_files.files, .assignment_summarized .student_webconferences.files{
   width: 99%;
@@ -293,3 +310,4 @@ td.assignment_without_group a
     }
   }
 }
+

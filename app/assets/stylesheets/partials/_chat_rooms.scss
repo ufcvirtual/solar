@@ -28,8 +28,8 @@
 }
 
 .box, #tab label{
-  border: 1px solid $color_gray;
-  background-color: $color_white;
+  border: 1px solid $color_gray_font;
+  background-color: $color_white_base;
 }
 
 #tab label{
@@ -56,6 +56,7 @@
     width: auto;
     max-width: 260px;
     vertical-align: top;
+    color: $color_black;
   }
 }
 
@@ -108,7 +109,7 @@ a.chat_list {
     }
     text-align: center;
     td.profile{
-      color: $period_ended_color;
+      color: $color_almost_gray_content;
       font-size: 9pt;
       font-style: italic;
       padding-right: 0;
