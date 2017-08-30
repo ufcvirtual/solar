@@ -7,7 +7,7 @@
   display: inline-block;
   zoom: 1;
   *display: inline;
-  background-color: $color_white_content;
+  background-color: $color_white_base;
 }
 
 #block_locale {
@@ -48,7 +48,7 @@ div.block_module, div.block_exam{
   padding-top: 6px !important;
   overflow: visible !important;
   border-bottom: 1px solid;
-  border-bottom-color: rgba($block_border_color, 0.3);
+  border-bottom-color: rgba($color_main, 0.3);
 
   h2{
     position: relative !important;
@@ -134,7 +134,6 @@ div.legend h1 {
   margin-top: 15px;
   width: 785px;
   margin-bottom: 15px;
-  // overflow: hidden;
 }
 
 /*.block_wrapper_small {
@@ -206,7 +205,6 @@ div.block_title {
     position: absolute;
     .offer_period{
       display: inline-block;
-      vertical-align: bottom;
     }
 
     .offer_period.hide{
@@ -268,7 +266,7 @@ div.block_title {
     vertical-align: top; /* garantindo que o conteudo do bloco fique proximo a linha superior */
   }
   label {
-    color: $block_content_label;
+    color: $color_main;
   }
 }
 
@@ -288,7 +286,7 @@ div.block_title {
 .block_content_line {
   /*    font-size: 10pt;*/
   border-bottom: 1px solid;
-  border-bottom-color: $block_content_color;
+  border-bottom-color: $language_border_color;
   padding: 6px 10px;
 }
 
@@ -317,21 +315,21 @@ div.block_title {
   background-color: $color_main_light;
 }
 
-.bibliography_volume, .bibliography_publication_year{
-
+#mysolar_curriculum_unit_portlet .block_title a{
+  color: $color_black;
 }
 
-#search_box_accesskey{
-  color: $color_black_content;
+#mysolar_curriculum_unit_portlet .block_title a{
+  color: $color_black_base;
 }
 
 /**
 * Barra de ferramentas
 */
 .block_content_toolbar {
-  background-color: $block_content_toolbar_background;
+  background-color: $background_dark_gray;
   border-bottom: 1px solid;
-  border-bottom-color: rgba($block_border_color, 0.3);
+  border-bottom-color: rgba($color_main, 0.3);
   padding: 2px;
 
   img {
@@ -406,8 +404,8 @@ form .right_buttons {
   position: relative;
   right: 8px;
   bottom: 3px;
-  color: $color_white;
-  background-color: $color_main_content;
+  color: $color_white_base;
+  background-color: $color_main;
   border-radius: 4px;
   padding: 0px 2px;
   font-family: bold;
@@ -442,8 +440,8 @@ a.disabled {
       color: $steps_list_color;
     }
     li.active{
-      color: $steps_list_active_color;
-      background-color: $color_white_content;
+      color: $color_main_base_link;
+      background-color: $color_white_base;
       border-radius: 5px;
       box-shadow: 0px 0px 4px $steps_list_box_shadow;
     }
@@ -474,10 +472,10 @@ a.disabled {
 }
 
 .shortcut_floating_box{
-  color: $color_black_floating_box;
+  color: $color_black_buttons;
   font-family: 'PT Sans', sans-serif;
   h2 {
-    color: $color_black_floating_box;
+    color: $color_black_buttons;
   }
 }
 

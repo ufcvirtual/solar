@@ -14,7 +14,7 @@
         %h2= folder_name
     %table.tb_list{border: "0", cellpadding: "10", cellspacing: "0", width: "100%", :summary=> t("support_material_summary")}
       %thead
-        %tr
+        %tr.lines
           %th{style: "width:20%", id: "title_#{folder}"}= t('support_material_files.list.title')
           %th{ id: "name_#{folder}"}= t('support_material_files.list.name')
           %th{style: "width:80px", id: "size_#{folder}"}= t(:support_material_size)

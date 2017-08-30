@@ -2,7 +2,7 @@
   .block_content{
     margin-top: 0px;
     padding-top: 1px;
-    background-color: $color_white_import;
+    background-color: $color_white_base;
   }
 
   .block_title{
@@ -16,7 +16,6 @@
     margin: 20px;
 
     ul {
-      border: 1px solid white;
       border-radius: 5px;
     }
   }

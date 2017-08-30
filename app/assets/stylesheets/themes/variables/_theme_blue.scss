@@ -1,35 +1,7 @@
-// Tons claros
+// Whites
 $color_white: #ffffff;
 $color_white_base: $color_white;
-$color_white_buttons: $color_white;
-$color_white_calendar: $color_white;
-$color_white_chat: $color_white;
-$color_white_chat_rooms: $color_white;
-$color_white_content: $color_white;
-$color_white_fancybox: $color_white;
-$color_white_forum: $color_white;
-$color_white_import: $color_white;
-$color_white_lightbox: $color_white;
-$color_white_messages: $color_white;
-$color_white_mysolar: $color_white;
-$color_white_mysolar_link: $color_white;
-$color_white_lesson_notes: $color_white;
-$table_td_student: $color_white;
-$color_white_panels: $color_white;
-$groups_tags_collecion_check_box: $color_white;
-$form_background_color: #f8fbfe;
-$thead_background_color: $color_white_forum;
-$background_light_beige: #fefae6;
-$background_light_red: #fff6f6;
-$background_light_red_editions: $background_light_red;
-$background_light_green: #F5FFE3;
-$blue_warning_background: #E9F3FF;
-$label_selected_background: #FDFBE9;
-$label_selected_background_fancybox: $label_selected_background;
-$warning_background: #FFFFDE;
-$table_line_hover: #fffbd1;
-$score_table_background: #e6f0fc;
-$table_line_period_ended_hover: #f1f1f1;
+$color_white_base_link: $color_white;
 $questions_audios_background: #FAFAFA;
 $panel_background: #eceef0;
 $panel_border_color: #d3d3d3;
@@ -37,66 +9,31 @@ $background_light: #f5f5f5;
 $questions_audios_background_exams: $questions_audios_background;
 $mysolar_top_submenu_label_selected: $color_white;
 
-// Cores escuras
+// Blacks
 $color_black: #000000;
 $color_black_base: $color_black;
-$color_black_content: $color_black;
 $color_black_calendar: $color_black;
 $color_black_buttons: $color_black;
-$color_black_groups_tags: $color_black;
-$color_black_mysolar_menu_active: $color_black;
-$color_black_floating_box: $color_black;
-$fc_event_title_agenda: $color_black;
-$forum_post_color: $color_black;
-$message_label_color: $color_black;
 $lightbox_fancybox_inner_color: #444;
 $color_almost_black: #222222;
 $color_almost_black_base: $color_almost_black;
 $font_color: #333333;
 $font_color_buttons: $font_color;
 $questions_audios_background_firefox: #1f1e1f;
-$calendar_link_color: #370101;
-$comment_color: #4B4B4B;
-$tutorials_description_color: #424242;
-$lightbox_dialog_title_color: #4c4c4c;
-$lightbox_dialog_title_color_lightbox: $lightbox_dialog_title_color;
-$color_little_dark_gray: #555555;
 $panel_box_shadow: #323232;
-$panel_color: #363636;
-$panel_content_color: #616161;
 
-// Cinza com letras brancas
+// Grays
 $color_gray: #808080;
-$color_gray_editions: $color_gray;
-$color_gray_chat_rooms: $color_gray;
-$color_gray_group_tags: $color_gray;
-$color_gray_lesson: $color_gray;
-// $score_table_head_color: #aaaaaa;
+$color_gray_font: $color_gray;
 $color_gray_light: #A3A3A3;
-// $color_gray_text: #7C7C7C;
-$color_gray_text: $lightbox_dialog_title_color;
+$color_gray_text: #424242;
 $color_gray_text_custom_icons: $color_gray_text;
 $color_gray_text_messages_link: $color_gray_text;
 $color_almost_gray: #666666;
-$table_period_ended: #666666;
 $color_almost_gray_content: $color_almost_gray;
-$color_almost_gray_messages: $color_almost_gray;
-$color_light_gray: #888888;
-$thead_color: $color_light_gray;
-$color_light_gray_forum: $color_light_gray;
-// $not_started_color: #787878;
-$color_disabled: #777777;
-$lesson_files_select_all_color: #8D8D8D;
-$portfolio_block_wrapper_groups: #929792;
-$semester_color: #56585E;
-$speech2text_color: #828282;
-$table_head_line_title: #6B6B6B;
-// $period_ended_color: #989898;
+$color_almost_gray_back: $color_almost_gray;
 $btn_box_shadow: #9a9a9a;
 $steps_list_color: #919191;
-$del_semester_icon_trash: #828282;
-
-// Cinza com letras escuras
 $step_list_color: #B4B2B1;
 $step_list_color_import: $step_list_color;
 $step_list_color_import_black: $step_list_color;
@@ -104,7 +41,6 @@ $contacts_list_border_color: #dddddd;
 $search_keyword_inactive_color: #b0b0b0;
 $disabled_color: #B4B3B7;
 $disabled_color_exams: $disabled_color;
-$disabled_color_messages: $disabled_color;
 $language_border_color: #cccccc;
 $language_background_color: #e7e9eb;
 $event_recess_holiday_background: #E3E3E3;
@@ -114,6 +50,8 @@ $btn_border_dark_gray: #bfbfbf;
 $btn_border_botton_color: #b3b3b3;
 $datepicker_color: #cfcfcf;
 $complete_border_left_color: #C0C0C0;
+$complete_border_left_color_gray: $complete_border_left_color;
+$questions_link_color_contrast: $complete_border_left_color;
 $mysolar_chat_color: #bbbbbb;
 $mysolar_chat_color_chat: $mysolar_chat_color;
 $border_color_another_gray: #dedede;
@@ -127,112 +65,90 @@ $label_disabled_border_color: #dcdcdc;
 $background_dark_gray: #E8EFF6;
 $current_background: #E7EDED;
 $slide_settings_active_background: #d8dfe9;
-$slide_settings_counter_background: #d7dfea;
 $block_groups_background: #f3f3f3;
 $lesson_area_background: #eeeeee;
 $background_blue: #F5F8FB;
 $background_gray: #EFEFEF;
+$background_gray_color: $background_gray;
 $body_background: #f9f9f9;
 $period_ended_background: #f6f6f6;
 $steps_background: #f5f5f5;
 $mysolar_border_color: #EBEBEB;
 $slide_settings_hover_background: #eef3f9;
-$label_disabled_selected_background: #F0F0F0;
-$label_disabled_selected_background_fancybox: $label_disabled_selected_background;
 $participants_list_none_background: #f2f6f6;
-$label_disabled_background: #F7F7F7;
-$label_disabled_background_fancybox: $label_disabled_background;
-$form_select_disabled_background: #F2F2F2;
-$form_select_disabled_background_forms: $form_select_disabled_background;
-$contacts_edition_block_content_background: #F8FBFE;
-$contacts_edition_block_content_background_messages: $contacts_edition_block_content_background;
-$contacts_edition_block_content_background_mysolar: $contacts_edition_block_content_background;
 
-// Tons azuis
+// Blues
+$form_background_color: #f8fbfe;
+$blue_warning_background: #E9F3FF;
+$blue_warning_background_bkg: $blue_warning_background;
 $color_main: #003E7A;
 $color_main_base_link: $color_main;
-$color_main_content: $color_main;
 $color_main_mysolar: $color_main;
-$color_main_mysolar_link: $color_main;
-$color_main_messages_text_none: $color_main;
-$empty_message_fancybox_with_columns: $color_main;
-$color_main_groups_tag: $color_main;
 $added_permission_color: #0000FF;
 $sent_color: #2900c2;
+$sent_color_link: $sent_color;
 $btn_border_dark_blue: #002a80;
 $btn_border_light_blue: #0044cc;
-$steps_list_active_color: #004B81;
 $btn_main_color: #005cc0;
 $agenda_color: #4b6380;
-$facebook_main_color: #3b5c9a;
 $slide_settings_counter_color: #3b5e9a;
+$slide_settings_counter_color_portlets: $slide_settings_counter_color;
 $current_color: #214684;
 $current_color_base: $current_color;
+$current_color_back: $current_color;
+$current_color_gray: $current_color;
 $lesson_header_title_background: $current_color;
-$block_content_background: #0074f3;
-$panel_menu_footer_color: #2b5088;
 $panel_title_color: #135696;
-// $block_content_background: #0074a0;
-$block_content_label: $color_main;
 $score_tbody_link: #21578B;
+$groups_forms_background: #0074f3;
+$block_content_text_list_background: $form_background_color;
 
-// Tons vermelhos
+// Reds
+$background_light_red: #fff6f6;
+$background_light_red_editions: $background_light_red;
 $removed_permission_color: #FF0000;
 $color_red: #CE1A15;
-$color_red_messages: $color_red;
-$color_red_forum: $color_red;
 $not_sent_color: #e12227;
-// $without_group_color: #e37073;
+$not_sent_color_font: $not_sent_color;
 $without_group_color: #B15759;
+$without_group_color_link: $without_group_color;
 $error_color: #E03838;
-// $text_alert_color: #e64d4d;
+$error_color_font: $error_color;
 $text_alert_color: #CD4444;
 $btn_caution_color: #ee5f5b;
 $remove_file_color: #DC5869;
-$remove_file_color_digital_classes: $remove_file_color;
-$remove_file_color_fancybox: $remove_file_color;
 $edition_color: #D5031C;
-$edition_color_messages: $edition_color;
 $btn_warning_background: #942a25;
 $notice_exams_color: #b30602;
 $btn_border_light_red: #bd362f;
-$btn_border_dark_red: #802420;
 $lesson_status_draft_background: #B41717;
-$save_automatically_message_color: #da1124;
-$portfolio_assignment_not_answered_color: #CC0033;
 
-// Tons verdes
-$permission_color: #008000;
-// $evaluated_color: #378941;
-$evaluated_color: #2D7035;
+// Greens
+$background_light_green: #F5FFE3;
+$color_green: #0B610B;
+$color_green_font: $color_green;
+$color_green_link: $color_green;
 $notice_color: #2F4F2F;
-$question_iten_hit_color: #0B610B;
-$question_iten_hit_color_exams: $question_iten_hit_color;
 $lesson_status_released_background: #7DC43F;
 
-// Tons Amarelos e Laranjas
+// Yellows and oranges
+$background_light_beige: #fefae6;
+$warning_background: #FFFFDE;
+$warning_background_back: $warning_background;
 $color_contrast: #F9DB43;
 $color_contrast_text: #dca727;
+$color_contrast_text_font: $color_contrast_text;
 $color_contrast_text_alert: $color_contrast_text;
-$color_contrast_text_exams: #dca727;
-$color_contrast_text_calendar: #dca727;
-$color_contrast_text_weekend_calendar: #dca727;
-$color_contrast_messages: #F9DB43;
-
-// $color_contrast_text: #916E19;
+$color_contrast_messages: $color_contrast; 
 $steps_list_box_shadow: #f0cf65;
 $event_webconferencelesson_background: #F5DA81;
 $event_webconferencelesson_border: #F5DA81;
-$mysolar_chat_barra_background: #fbb03b;
 $btn_initial_file_color_final: #f9c143;
-$label_selected_border_color: #F9E993;
 $message_label_background: #F9C153;
-$message_label_background_border: #F9C153;
-$receiver_already_added_color: #FF9900;
-$receiver_already_added_color_messages: #FF9900;
 
-// Cores Hipster
+// Hipster
 $event_assignment_background: #FCEBCA;
+$event_assignment_background_portfolio: $event_assignment_background;
 $event_assignment_border: #FCEBCA;
 $event_chat_background: #A7C1F0;
 $event_chat_border: #A7C1F0;
@@ -249,10 +165,11 @@ $event_discussion_border: #CAFCCC;
 $event_other_background: #CCCCFF;
 $event_other_border: #CCCCFF;
 $alert_color: #660000;
-$forum_post_background_blue: #b0cce8;
+$blue_warning_background_blue: #b0cce8;
+$blue_warning_background_blue_bkg: $blue_warning_background_blue;
 $event_exam_background: #E4FFA5;
 
-// Cores modificadas por funções do Sass
+// Sass colors
 $color_main_light: desaturate(lighten($color_main, 74.5%),20%);
 $color_main_medium: lighten(desaturate($color_main, 70%),30%);
 $color_main_light_highlight: adjust_color($color_main, $lightness: 73%);
@@ -264,130 +181,7 @@ hr {
   border-bottom-color: $color_white;
 }
 
-// Cores repetidas
-$btn_color: $color_white;
-$forum_post_background: $blue_warning_background;
-$btn_border_color: $language_border_color;
-$slide_settings_title_color: $color_almost_gray;
-$btn_disabled_background: $color_red;
-$block_border_color: $color_main;
-$block_content_color: $language_border_color;
-$list_exams_btn_color: $color_gray;
-$list_exams_btn_color_exams: $list_exams_btn_color;
-$list_exams_btn_color_editions: $list_exams_btn_color;
-$list_exams_exam_box_color: $btn_main_color;
-$list_exams_exam_box_color_editions: $btn_main_color;
-$list_exams_background: $block_groups_background;
-$question_iten_incorrect: $error_color;
-$question_iten_incorrect_exams: $error_color;
-$list_exams_corrected_color: $evaluated_color;
-$list_exams_corrected_color_exams: $list_exams_corrected_color;
-$list_exams_finished_color: $sent_color;
-$list_exams_finished_color_exams: $list_exams_finished_color;
-$list_exams_not_answered_color: $not_sent_color;
-$list_exams_not_answered_color_exams: $list_exams_not_answered_color;
-$list_exams_not_started_color: $color_almost_gray;
-$list_exams_not_started_color_exams: $list_exams_not_started_color;
-$form_error_color: $error_color;
-$form_error_color_forms: $form_error_color;
-$lesson_portlet_border_color: $language_border_color;
-$portfolio_assignment_without_group_color: $without_group_color;
-$portfolio_assignment_without_group_color_link: $without_group_color;
-$portfolio_assignment_corrected_color: $evaluated_color;
-$portfolio_assignment_color: $sent_color;
-$portfolio_assignment_color_link: $sent_color;
-$portfolio_assignment_not_sent_color: $not_sent_color;
-$portfolio_assignment_not_sent_color_link: $not_sent_color;
-$portfolio_assignment_not_started: $color_almost_gray;
-$portfolio_assignment_not_started_link: $color_almost_gray;
-$portfolio_assignment_to_be_sent: #003E7A;
-$portfolio_assignment_to_be_sent_link: #003E7A;
-$block_content_toolbar_background: $background_dark_gray;
-$questions_link_color: $complete_border_left_color;
-$info_color: $color_almost_gray;
-$scores_info_img_box_shadow: $portfolio_block_wrapper_groups;
-$block_content_text_list_background: $contacts_edition_block_content_background;
-$speech2text_hover_color: $btn_caution_color;
-$table_border_color: $step_list_color;
-$table_file_data_info_color: $color_almost_gray;
-$table_data_line_title: $score_tbody_link;
-$table_sort_border_color: $step_list_color;
-$table_link_content_lesson: $color_main;
-$webconference_table_body_color: $speech2text_color;
-$webconference_access_profile_color: $color_almost_gray;
-
-// Cores Enxugadas
-$label_disabled_color: $tutorials_description_color;
-$label_disabled_color_fancybox: $label_disabled_color;
-$groups_forms_background: $block_content_background;
-$language_color: $current_color;
-$language_color_base: $language_color;
-$language_color_base_choice_language: $language_color;
-$icon_color: $current_color;
-$lesson_header_background: $current_color;
-$not_started_color: $color_almost_gray;
-$period_ended_color: $color_almost_gray;
-$period_ended_color_base: $period_ended_color;
-$score_table_head_color: $color_little_dark_gray;
-
-// Cores exclusivas do high contrast
-
+// high contrast exclusives
 $exclusive_background_color: false;
 $exclusive_font_color: false;
 $exclusive_link_color: false;
-
-//alert
-$color_black_alert: $color_black;
-$color_white_alert: $color_white;
-
-//scores
-$color_little_dark_gray_score: $color_little_dark_gray;
-$color_little_dark_gray_dropdown_scores: $color_little_dark_gray;
-$color_main_border_score: $color_main;
-$color_main_li_active_score: $color_main;
-$color_white_font_color_score: $color_white;
-$info_color_score: $info_color;
-$color_white_background_score: $color_white;
-$evaluated_color_score: $evaluated_color;
-$sent_color_score: $sent_color;
-$not_sent_color_score: $not_sent_color;
-$without_group_color_score: $without_group_color;
-
-//questions
-$questions_link_color_contrast: $questions_link_color;
-$color_white_questions: $color_white;
-
-//portlets
-$color_white_portlets: $color_white;
-$slide_settings_title_color_portlets: $slide_settings_title_color;
-$color_black_portlets: $color_black;
-$slide_settings_counter_background_portlets: $slide_settings_counter_background;
-$slide_settings_counter_color_portlets: $slide_settings_counter_color;
-$color_black_background_color: $color_black;
-$color_white_background_portlets: $color_white;
-
-//portfolio
-$color_light_gray_portfolio: $color_light_gray;
-$color_white_background_portfolio: $color_white;
-$portfolio_assignment_corrected_color_portfolio: $portfolio_assignment_corrected_color;
-$portfolio_assignment_corrected_color_portfolio_link: $portfolio_assignment_corrected_color;
-$portfolio_assignment_not_answered_color_portfolio: $portfolio_assignment_not_answered_color;
-$step_list_color_portfolio: $step_list_color;
-$event_assignment_background_portfolio: $event_assignment_background;
-$color_main_border_portfolio: $color_main;
-
-//agenda
-$schedule_event_color_text: $color_black;
-$schedule_event_color_gray_text: $color_gray_text;
-$schedule_event_background_color: $color_white;
-
-//matrícula
-$enrollment_label_search_font_color: $color_black;
-$enrollment_cancel_button_hover_font_color: $color_white;
-$enrollment_active_line_table_hover: $table_line_hover;
-
-//allocation
-$allocation_status_info_profile: #006600;
-
-//editions
-$edition_background_color: $color_white;

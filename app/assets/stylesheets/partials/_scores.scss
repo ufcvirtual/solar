@@ -3,7 +3,7 @@
 #history_search_content {
   padding-bottom: 6px;
   border-bottom: 1px solid;
-  border-bottom-color: $color_main_border_score;
+  border-bottom-color: $color_main;
 }
 
 #history-body {
@@ -32,6 +32,7 @@ tr#activities{
     font-weight: bold;
     display: block;
     margin-left: 20%;
+    color: $color_black;
   }
 }
 
@@ -39,7 +40,7 @@ tr#activities{
   float: left;
   width: 30%;
   font-size: 10pt;
-  color: $info_color_score;
+  color: $color_black;
 
   a.tool_dropdown{
     float: left;
@@ -54,7 +55,7 @@ tr#activities{
     }
     label:hover, label{
       background-color: transparent;
-      color: $color_little_dark_gray_score;
+      color: $color_almost_gray_content;
       cursor: pointer;
       display: inline;
     }
@@ -70,9 +71,6 @@ tr#activities{
     th, td{
       text-align: center;
       min-width: 25px;
-      a.disabled{
-        text-decoration: none; 
-      }
     }
     th.td_student{
       text-align: left;
@@ -101,66 +99,60 @@ tr#activities{
     }
   }
   #assignment_title{
-    background-color: $color_white_background_score;
+    background-color: $color_white_base;
     float: right;
     font-size: 10pt;
-    color: $info_color;
+    color: $color_almost_gray;
   }
 
 }
 
 #scores_notes.legend_score_footer, .tb_list_students{
   .evaluated {
-    color: $evaluated_color_score;
+    color: $color_green_font;
   }
 
   .sent {
-    color: $portfolio_assignment_color;
+    color: $sent_color;
   }
 
   .sent a, .evaluated a
   td.assignment_as a {
-    color: $portfolio_assignment_color_link;
+    color: $sent_color_link;
   }
 
   .assignment_as {
-    color: $portfolio_assignment_color;
+    color: $sent_color;
   }
 
   .assignment_as a{
-    color: $portfolio_assignment_color_link;
+    color: $sent_color_link;
   }
 
   .not_sent {
-    color: $portfolio_assignment_not_sent_color;
+    color: $not_sent_color_font;
   }
 
   .not_sent a{
-   color: $portfolio_assignment_not_sent_color_link;
+   color: $not_sent_color;
   }
 
-  .not_started {
-    color: $portfolio_assignment_not_started;
+  .not_started, .not_started a {
+    color: $color_almost_gray_content;
+    text-decoration: none;
   }
 
-  .not_started a {
-    color: $portfolio_assignment_not_started_link;
-  }
-
-  .to_send {
-    color: $portfolio_assignment_to_be_sent;
-  }
-
-  .to_send a{
-    color: $portfolio_assignment_to_be_sent_link;
+  .to_send, .to_send a {
+    color: $color_main;
+    text-decoration: none; 
   }
 
   .without_group {
-    color: $portfolio_assignment_without_group_color;
+    color: $without_group_color;
   }
 
   .without_group a{
-    color: $portfolio_assignment_without_group_color_link;
+    color: $without_group_color_link;
   }
 
   .evaluated, .sent, .not_sent, .not_started, .to_send, .without_group{
@@ -183,14 +175,14 @@ table.users#list_of_students{
 
 table#list_of_students{
   td.new_after_evaluation{
-    background-color: $score_table_background;
+    background-color: $blue_warning_background_bkg;
   }
 }
 
 #scores_notes table{
   td.new_after_evaluation{
     padding: 5px;
-    background-color: $score_table_background;
+    background-color: $blue_warning_background_bkg;
     color: $color_black;
   }
 }
@@ -200,7 +192,7 @@ table#list_of_students thead{
   ul.dropdown-menu{
     label:hover, label{
       background-color: transparent;
-      color: $color_little_dark_gray;
+      color: $color_almost_gray_content;
       cursor: pointer;
       display: inline;
     }
@@ -235,7 +227,7 @@ table.general{
     }
     img{
       border-radius: 58px;
-      box-shadow: 4px 4px 7px $scores_info_img_box_shadow;
+      box-shadow: 4px 4px 7px $color_gray;
       margin-bottom: 10px;
     }
   }
@@ -248,7 +240,7 @@ table.general{
     }
     label:hover, label{
       background-color: transparent;
-      color: $color_little_dark_gray_dropdown_scores;
+      color: $panel_box_shadow;
       cursor: pointer;
       display: inline;
       font-size: 12pt;
@@ -290,9 +282,9 @@ tbody{
     padding-right: 5px;
   }
   li a{
-    color: $score_table_head_color;
+    color: $color_almost_gray_content;
     cursor: pointer;
-    border-top: solid 2px $color_main_border_score;
+    border-top: solid 2px $color_main;
     
     padding-left: 10px;
     padding-right: 10px;
@@ -303,14 +295,14 @@ tbody{
     border-left: solid 2px $color_main;
   }
   li a.active{
-    background-color: $color_main_li_active_score;
-    color: $color_white_font_color_score;
+    background-color: $color_main;
+    color: $color_white_base;
   }
   a{
     text-decoration: none;
   }
   li a:last-of-type{
-    border-right: solid 2px $color_main_border_score;
+    border-right: solid 2px $color_main;
   }
 
 }
@@ -323,9 +315,9 @@ tbody{
     padding-right: 5px;
   }
   li a{
-    color: $score_table_head_color;
+    color: $color_almost_gray_content;
     cursor: pointer;
-    border-top: solid 2px $color_main_border_score;
+    border-top: solid 2px $color_main;
     
     padding-left: 10px;
     padding-right: 10px;
@@ -333,17 +325,17 @@ tbody{
     background-color: $background_gray;
   }
   li a:not(.ui-tabs-anchor){
-    border-left: solid 2px $color_main_border_score;
+    border-left: solid 2px $color_main;
   }
   li a.active{
-    background-color: $color_main_li_active_score;
-    color: $color_white_font_color_score;
+    background-color: $color_main;
+    color: $color_white_base;
   }
   a{
     text-decoration: none;
   }
   li a:last-of-type{
-    border-right: solid 2px $color_main_border_score;
+    border-right: solid 2px $color_main;
   }
 
 }
@@ -376,7 +368,7 @@ tbody{
   a.disabled{
     cursor: default;
     text-decoration:none;
-    color: $table_data_line_title;
+    color: $score_tbody_link;
     padding-left: 0;
     padding-right: 0;
   }
@@ -389,26 +381,6 @@ tbody{
         th {
           background-color: $exclusive_background_color;
           color: $exclusive_font_color;
-        }
-      }
-    }
-  }
-}
-
-#evaluative_exa, #frequency_exa, #notevaluative_exa,
-#evaluative_eve, #frequency_eve, #notevaluative_eve,
-#evaluative_chat, #frequency_chat, #notevaluative_chat,
-#evaluative_dis, #frequency_dis, #notevaluative_dis,
-#evaluative_assig, #frequency_assig, #notevaluative_assig,
-#evaluative_web, #frequency_web, #notevaluative_web,
-#evaluative_all, #frequency_all, #notevaluative_all,
-.public_files_info {
-  table {
-    thead{
-      tr.lines{
-        th {
-          background-color: $thead_background_color;
-          color: $thead_color;
         }
       }
     }
