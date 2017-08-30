@@ -56,23 +56,23 @@
 %div{:'data-shortcut'=> t("shortcut.evaluatives.code.legends"), :'data-shortcut-name'=> t("shortcut.evaluatives.name.legends"), :'data-shortcut-focus' => 'true'}
   .legend
     = t(".subtitle")
-  #scores_notes.legend_score_footer
-    .evaluated
+  %ul#scores_notes.legend_score_footer
+    %li.evaluated
       = t(".evaluated")
       = t(".evaluated_complete")
-    .not_sent
+    %li.not_sent
       = t(".not_sent")
       = t(".not_sent_complete")
-    .without_group
+    %li.without_group
       = t(".without_group")
       = t(".without_group_complete")
-    .sent
+    %li.sent
       = t(".sent")
       = t(".sent_complete")
-    .to_send
+    %li.to_send
       = t(".to_send")
       = t(".to_send_complete")
-    .not_started
+    %li.not_started
       = t(".not_started")
       = t(".not_started_complete")
     %table
