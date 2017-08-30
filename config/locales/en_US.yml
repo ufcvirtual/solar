@@ -1431,6 +1431,8 @@ en_US:
       message: 'Send Message'
       no_data_html: "There are no webconferences in progress. Click <a href='https://goo.gl/forms/PEB4WFixcWwuGyOt1' target='_blank'>here</a> to respond to the tool evaluation questionnaire."
       new_request: "New request(s) for help from webconference !!!"
+      send_request: "Your request has been sent! Please go back to the webconference and wait for support."
+      error_request: "Failed to send! Please try again later."
     warning:
       blocked: "Your browser has popup permissions blocked. Please allow it."
     user_access:

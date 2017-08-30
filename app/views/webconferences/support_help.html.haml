@@ -59,11 +59,11 @@
           academic_allocation_id: ac_id
         })); 
         console.log("Cliente: Mensagem enviada!!!");
-        $('.block_content').html('Seu pedido foi enviado! Por favor, volte à webconferência e aguarde o atendimento.');
+        $('.block_content').html("#{I18n.t('webconferences.support_help.send_request')}");
         ws_sh.close();
         console.log("Cliente: Conexão encerrada!!!");
       } catch(exception) {
-        $('.block_content').html('Falha no envio! Por favor, tente novamente mais tarde.');
+        $('.block_content').html("#{I18n.t('webconferences.support_help.error_request')}");
       }
     }
   }

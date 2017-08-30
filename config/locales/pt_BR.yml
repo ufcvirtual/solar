@@ -1622,6 +1622,8 @@ pt_BR:
       message: 'Enviar Mensagem'
       no_data_html: "Não existem webconferências em andamento. Clique <a href='https://goo.gl/forms/PEB4WFixcWwuGyOt1' target='_blank'>aqui</a> para responder ao questionário de avaliação da ferramenta."
       new_request: "novo(s) pedido(s) de ajuda da(s) webconferência(s) !!!"
+      send_request: "Seu pedido foi enviado! Por favor, volte à webconferência e aguarde o atendimento."
+      error_request: "Falha no envio! Por favor, tente novamente mais tarde."
     warning:
       blocked: 'Seu navegador está com a permissão de popups bloqueada. Favor desbloquear.'
     user_access:
