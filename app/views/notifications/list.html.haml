@@ -18,7 +18,8 @@
         %tr.lines
           %th.no_sort{style: 'text-align:center; width: 25px;'}= check_box_tag :all_notifications, false, false, :"data-children-names" => "ckb_notification", class: "all_notifications"
           %th{align: "left"}=t(".notification")
-          %th.no_sort{align: "center", style: "width: 26%;"}= t(".period")
+          %th.no_sort{style: "text-align:center; width: 26%;"}= t(".period")
+          %th.no_sort{style: "text-align:center; width: 26%;"}= t(".mandatory_reading")
       %tbody
         - @notifications.each do |notification|
           = render partial: "notifications/notification", locals: {notification: notification, all_groups: all_groups, destroy: true}

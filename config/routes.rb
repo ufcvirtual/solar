@@ -548,12 +548,16 @@ Solar::Application.routes.draw do
   resources :notifications do
     collection do
       get :list # edicao
+      get :mandatory
+      get :show_mandatory
 
       put ':tool_id/unbind/group/:id' , to: 'groups#change_tool', type: 'unbind', tool_type: 'Notification', as: :unbind_group_from
       put ':tool_id/remove/group/:id' , to: 'groups#change_tool', type: 'remove', tool_type: 'Notification', as: :remove_group_from
       put ':tool_id/add/group/:id'    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Notification', as: :add_group_to
       get ':tool_id/group/tags'       , to: 'groups#tags'                       , tool_type: 'Notification', as: :group_tags_from
     end
+
+    put :read_later, on: :member
   end
 
   resources :webconferences, except: :show do

@@ -280,7 +280,7 @@ class User < ActiveRecord::Base
   
   end
 
-  def profiles_with_access_on(action, controller, allocation_tag_id = nil, only_id = false, count = false)
+  def profiles_with_access_on(action, controller, allocation_tag_id = nil, only_id = false, count = false, verify_global_profile=false)
     sql = []
     sql << 'SELECT COUNT(*) FROM
         (' if count
@@ -297,8 +297,15 @@ class User < ActiveRecord::Base
             resources.controller = ?
             AND
             allocations.status = #{Allocation_Activated}"
-    sql << "AND
-            allocations.allocation_tag_id IN (#{allocation_tag_id.join(',')})" unless allocation_tag_id.nil?
+
+    sql << " AND " if !allocation_tag_id.blank? || verify_global_profile
+
+    query = []
+    query << "(allocations.allocation_tag_id IN (#{allocation_tag_id.join(',')}))" unless allocation_tag_id.blank?
+    query << "(allocations.allocation_tag_id IS NULL)" if verify_global_profile
+
+    sql << "( #{query.join(' OR ')} )"  unless query.blank?
+
     sql << (count ? ') AS ids;' : ';')
 
     profiles = Profile.find_by_sql [sql.join(' '), action, controller]

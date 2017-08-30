@@ -33,4 +33,8 @@ ul.notifications {
 
 #notification_form{
   overflow-y: hidden;
+  .input.notification_mandatory_reading{
+    vertical-align: bottom;
+    width: 12%;
+  }
 }

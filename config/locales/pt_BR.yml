@@ -470,6 +470,7 @@ pt_BR:
       notification:
         title: Título
         description: Descrição
+        mandatory_reading: Leitura obrigatória
       profile:
         name: Nome
         description: Descrição
@@ -1437,6 +1438,8 @@ pt_BR:
       edit: Editar Aviso
       day_from: Período
       day_to: a
+      mandatory_explain: 'Aviso aparecerá automaticamente logo após login do usuário'
+      mandatory: Leitura obrigatória (?)
     list:
       notifications: Avisos
       notification: Aviso
@@ -1449,6 +1452,9 @@ pt_BR:
       compress_description: Comprimir descrição
       choose_at_least_one: "Selecione, ao menos, um aviso"
       choose_one: Selecione um aviso
+      mandatory: Sim
+      not_mandatory: Não
+      mandatory_reading: Leitura obrigatória
     success:
       created: Aviso criado com sucesso.
       updated: Aviso atualizado com sucesso.
@@ -1457,10 +1463,13 @@ pt_BR:
       created: Não foi possível criar aviso.
       updated: Não foi possível atualizar aviso.
       deleted: Não foi possível deletar aviso.
+      only_general: só pode ser selecionado em avisos gerais
     show:
       count_groups: "%{count} turmas"
       next: Próxima notícia
       prev: Notícia anterior
+    show_mandatory:
+      read_later: Ler depois
 
   webconferences:
     form:

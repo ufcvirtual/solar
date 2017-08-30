@@ -412,6 +412,7 @@ en_US:
       notification:
         title: Title
         description: Description
+        mandatory_reading: Mandatory Reading
       profile:
         name: Name
         description: Description
@@ -1250,6 +1251,8 @@ en_US:
       edit: Edit Notification
       day_from: Period
       day_to: to
+      mandatory_explain: 'Notification will show automatically after user login'
+      mandatory: Mandatory reading (?)
     list:
       notifications: Notifications
       notification: Notification
@@ -1262,6 +1265,9 @@ en_US:
       compress_description: Compress description
       choose_at_least_one: "Choose at least one notification"
       choose_one: Choose a notification
+      mandatory: 'Yes'
+      not_mandatory: 'No'
+      mandatory_reading: Mandatory reading
     success:
       created: Notification was successfully created.
       updated: Notification was successfully updated.
@@ -1270,10 +1276,13 @@ en_US:
       created: Notification wasn't created.
       updated: Notification wasn't updated.
       deleted: Notification wasn't deleted.
+      only_general: can only be checked at general notifications
     show:
       count_groups: "%{count} groups"
       next: Next notification
       prev: Previous notification
+    show_mandatory:
+      read_later: Read later
   webconferences:
     form:
       new: "New Webconference"
