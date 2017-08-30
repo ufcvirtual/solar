@@ -19,6 +19,11 @@
 
           .left= s.input :start_date, label: t(".day_from"), as: :string, input_html: {id: 'from-date', size: 10, value: start_date}
           .right_form= s.input :end_date, label: t(".day_to"), as: :string, input_html: {id: 'until-date', size: 10, value: end_date}
+        - if @can_mark_as_mandatory
+          .inline
+            = f.label :mandatory_reading, t('.mandatory'), {:'data-tooltip' => t('.mandatory_explain'), :'aria-label' => t('.mandatory_explain'), class: 'string control-label form_label'}
+            = f.input :mandatory_reading, label: false
+
 
     = f.input :description, as: :ckeditor, label: false
 

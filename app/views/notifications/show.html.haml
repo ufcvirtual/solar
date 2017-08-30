@@ -7,25 +7,7 @@
       - unless @all_notification.first.id == @notification.id
         = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-thin', :'aria-hidden'=>'true'), 'prev_notification()', class: 'prev', onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('.prev')
 
-  - unless @groups.blank? && @allocation_tag.blank?
-    .title-warning
-      = @allocation_tag.no_group_info unless @allocation_tag.blank?
-      - unless @groups.blank?
-        - if @groups.size == 1
-          = @groups.first.code
-        - else
-          .equivalent
-            %a{ href: '#', :"data-dropdown" => "#dropdown" }
-              = t('.count_groups', count: @groups.size)
-              %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-            .dropdown.dropdown-tip{id: "dropdown"}
-              %ul{ class: 'dropdown-menu' }
-                - @groups.each do |code|
-                  %li= code
-
-  .block_content
-    .notification
-      = sanitize @notification.description
+  = render partial: 'notification_content', locals: {notification: @notification}
 
   .block_buttons
     .right

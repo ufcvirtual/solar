@@ -37,7 +37,13 @@ class Notification < ActiveRecord::Base
     read_notifications.create(user: user) unless read?(user)
   end
 
-  def self.of_user(user)
+  def mark_as_unread(user)
+    read_notifications.where(user_id: user).delete_all if read?(user)
+  end
+
+  def self.of_user(user, mandatory = false)
+    query = (mandatory ? " AND mandatory_reading = 't' AND rn.notification_id IS NULL" : '')
+
     Notification.find_by_sql <<-SQL
       WITH ats AS (
         SELECT DISTINCT at.id
@@ -52,9 +58,14 @@ class Notification < ActiveRecord::Base
       JOIN schedules ON schedules.id = notifications.schedule_id
       JOIN academic_allocations ac ON ac.academic_tool_id = notifications.id AND ac.academic_tool_type = 'Notification'
       LEFT JOIN read_notifications rn ON rn.notification_id = notifications.id AND rn.user_id = #{user.id}
-      WHERE (ac.allocation_tag_id IN (select id FROM ats) OR ac.allocation_tag_id IS NULL)
+      WHERE (ac.allocation_tag_id IN (select id FROM ats) OR ac.allocation_tag_id IS NULL) #{query}
       AND schedules.start_date::date <= current_date AND schedules.end_date::date >= current_date
+      ORDER BY notifications.id;
     SQL
+  end
+
+  def self.mandatory_of_user(user)
+    Notification.of_user(user, true)
   end
 
   def self.general_warnings

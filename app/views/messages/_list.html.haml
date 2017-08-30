@@ -30,7 +30,7 @@
                 = content_tag(:i, nil, class: 'icon-paperclip', :'aria-hidden'=>'true')
               .visuallyhidden= message.count_files != '0' ? t('messages.show.at_yes') : t('messages.show.at_no')
             - if 'outbox' == @box
-              %td.td_recipient{ :'data-tooltip' => message.sent_to_names, headers: 'th_sent_to' }= link_to message.sent_to_names.truncate(100), msg_path
+              %td.td_recipient{ :'data-tooltip' => message.sent_to_names, headers: 'th_sent_to' }= (link_to message.sent_to_names.truncate(100), msg_path rescue '')
             - else
               %td.td_sender.center{headers: 'th_sent_by'}= link_to message.sent_by_name, msg_path
             %td.td_time.center{headers: 'th_date'}= link_to l(message.created_at, format: :short), msg_path

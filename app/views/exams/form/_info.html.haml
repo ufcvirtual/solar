@@ -16,7 +16,7 @@
 
 = f.input :duration, input_html: { :"data-tooltip" => t('exams.form.info.duration') }
 
-= f.input :result_release, as: :string, label: t('exams.form.info.result_release'), placeholder: t('assignment_webconferences.form.date_placeholder'), label_html: { :'data-tooltip' => t('.result_release_explain') }, input_html: {value: (l(f.object.result_release, format: :mask_with_time_form) rescue '')}
+= f.input :result_release, as: :string, label: t('exams.form.info.result_release') + " (?)", placeholder: t('assignment_webconferences.form.date_placeholder'), label_html: { :'data-tooltip' => t('.result_release_explain') }, input_html: {value: (l(f.object.result_release, format: :mask_with_time_form) rescue '')}
 
 = render 'groups/codes'
 

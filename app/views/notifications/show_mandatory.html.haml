@@ -1,0 +1,36 @@
+.show_notification
+  #lightBoxDialogTitle
+    %h1= @notification.first.title
+    - if @notification.next_page
+      = link_to_function content_tag(:i, nil, class: 'icon-arrow-right-thin', :'aria-hidden'=>'true'), 'next_notification()', class: 'next', onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('notifications.show.next')
+
+  = render partial: 'notification_content', locals: {notification: @notification.first}
+
+  .block_buttons
+    .right
+      = button_to_function t(:close), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+      = button_to_function t('.read_later'), "read_later()", class: "btn btn_main", type: "button"
+
+
+:javascript
+  function next_notification() {
+    $('.show_notification').call_fancybox({href: "#{show_mandatory_notifications_path}", open: true});
+  }
+
+  function next_notification_with_page() {
+    $('.show_notification').call_fancybox({href: "#{show_mandatory_notifications_path(page: 2)}", open: true});
+  }
+
+  function read_later(){
+    $.put("#{read_later_notification_path(@notification.first)}", function(data){
+      $("ul.notifications li[id=#{@notification.first.id}]").addClass('unread');
+      if("#{@notification.next_page}" == '')
+        jQuery.fancybox.close();
+      else
+        next_notification_with_page();
+    });
+  }
+
+  $(function(){
+    $("ul.notifications li[id=#{@notification.first.id}]").removeClass('unread');
+  });
