@@ -560,6 +560,8 @@ Solar::Application.routes.draw do
       put ':tool_id/remove/group/:id' , to: 'groups#change_tool', type: 'remove', tool_type: 'Notification', as: :remove_group_from
       put ':tool_id/add/group/:id'    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Notification', as: :add_group_to
       get ':tool_id/group/tags'       , to: 'groups#tags'                       , tool_type: 'Notification', as: :group_tags_from
+
+      get '/file/:id/download', to: 'notifications#file_download', as: :download_file
     end
 
     put :read_later, on: :member

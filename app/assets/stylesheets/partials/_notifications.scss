@@ -38,4 +38,22 @@ ul.notifications {
     vertical-align: bottom;
     width: 12%;
   }
+  #files{
+    display: inline-block;
+    .info, .file{
+      display: inline-block;
+    }
+    input[type='file']{
+      display: none;
+    }
+    .info.invisible{
+      display: none;
+    }
+  }
+}
+
+.list_notifications{
+  a.preview{
+    text-decoration: none;
+  }
 }

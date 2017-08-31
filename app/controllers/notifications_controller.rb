@@ -1,6 +1,7 @@
 class NotificationsController < ApplicationController
 
   include SysLog::Actions
+  include FilesHelper
 
   before_filter only: [:edit, :new, :create] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
@@ -71,30 +72,44 @@ class NotificationsController < ApplicationController
 
     raise CanCan::AccessDenied if @notification.mandatory_reading && !@can_mark_as_mandatory
 
+    @notification.schedule.verify_today = true
+
     if @notification.save
       all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
       render partial: "notification", locals: {notification: @notification, all_groups: all_groups, destroy: true}
     else
+      @files_errors = @notification.notification_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
+      @notification.notification_files.delete_all
+      @notification.notification_files.build
       render :new
     end
   rescue => error
-    request.format = :json
-    raise error.class
+    render_json_error(error, 'notifications.errors')
   end
 
   # PUT /notifications/1
   def update
     raise CanCan::AccessDenied if notification_params[:mandatory_reading] && !@can_mark_as_mandatory
 
+    @notification.schedule.verify_today = true
+
     if @notification.update_attributes(notification_params)
       all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
       render partial: "notification", locals: {notification: @notification, all_groups: all_groups, destroy: true}
     else
+      @files_errors = @notification.notification_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
+      @notification.notification_files = @notification.notification_files.where('id is not null')
       render :edit
     end
   rescue => error
-    request.format = :json
-    raise error.class
+    if error.to_s=='ended'
+      @files_errors = @notification.notification_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
+      @notification.notification_files.delete_if {|file| file.errors.full_messages.any? } 
+      render :edit
+    else
+      request.format = :json
+      raise error.class
+    end
   end
 
   # DELETE /notifications/1
@@ -117,10 +132,23 @@ class NotificationsController < ApplicationController
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
+  def file_download
+    file = NotificationFile.find(params[:id])
+
+    raise CanCan::AccessDenied unless file.notification.allocation_tags.blank? || (current_user.all_allocation_tags & file.notification.allocation_tags.map(&:id)).any?
+    raise 'not_opened' unless Date.today.between?(file.notification.start_date, file.notification.end_date)
+
+    download_file(:back, file.file.path, file.file_file_name)
+  rescue CanCan::AccessDenied
+    redirect_to :back, alert: t(:no_permission)
+  rescue => error
+    redirect_to :back, alert: t('notifications.error.download')
+  end
+
   private
 
     def notification_params
-      params.require(:notification).permit(:title, :description, :mandatory_reading, schedule_attributes: [:id, :start_date, :end_date])
+      params.require(:notification).permit(:title, :description, :mandatory_reading, schedule_attributes: [:id, :start_date, :end_date], notification_files_attributes: [:id, :file, :_destroy])
     end
 
     def render_notification_success_json(method)

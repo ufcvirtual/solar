@@ -207,6 +207,7 @@ en_US:
       question_image: Image
       scheduleevent: Evento
       chatroom: Chat
+      notification_file: Arquivo
     attributes:
       user:
         password: "Password"
@@ -455,6 +456,10 @@ en_US:
       message:
         content: Content
         subject: Subject
+      notification_file:
+        file_file_size: Size
+        file: File
+        file_file_name: File
 
     errors:
       uniqueness: "Record already exists in the system"
@@ -1255,6 +1260,7 @@ en_US:
       day_to: to
       mandatory_explain: 'Notification will show automatically after user login'
       mandatory: Mandatory reading (?)
+      add_files: 'Add files'
     list:
       notifications: Notifications
       notification: Notification
@@ -1270,6 +1276,8 @@ en_US:
       mandatory: 'Yes'
       not_mandatory: 'No'
       mandatory_reading: Mandatory reading
+      files: Files
+      preview: Preview
     success:
       created: Notification was successfully created.
       updated: Notification was successfully updated.
@@ -1279,12 +1287,19 @@ en_US:
       updated: Notification wasn't updated.
       deleted: Notification wasn't deleted.
       only_general: can only be checked at general notifications
+      download: It was not possible to download file.
+      general_message: It was not possible to execute desired action.
+      ended: "can't be changed after period ending"
+      ended_file: "can't be uploaded or removeed after period ending"
     show:
       count_groups: "%{count} groups"
       next: Next notification
       prev: Previous notification
     show_mandatory:
       read_later: Read later
+      download_file_alt: Download file %{name} which size is %{size}
+      download_file: "%{name} (%{size})"
+      files: 'Files'
   webconferences:
     form:
       new: "New Webconference"

@@ -243,6 +243,7 @@ pt_BR:
       chatroom: Chat
       webconference: Webconferência
       posts: Posts
+      notification_file: Arquivo
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -370,11 +371,11 @@ pt_BR:
         image_content_type: Tipo do arquivo
         image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."
       question_images:
-          image: Imagem
-          legend: Legenda
-          img_alt: Alt
-          image_content_type: Tipo do arquivo
-          image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."
+        image: Imagem
+        legend: Legenda
+        img_alt: Alt
+        image_content_type: Tipo do arquivo
+        image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."
       exam_user:
         grade: Nota
       exam_question:
@@ -471,6 +472,8 @@ pt_BR:
         title: Título
         description: Descrição
         mandatory_reading: Leitura obrigatória
+        file_size: Tamanho
+        file: Arquivo
       profile:
         name: Nome
         description: Descrição
@@ -513,6 +516,10 @@ pt_BR:
       message:
         content: Conteúdo
         subject: Assunto
+      notification_file:
+        file_file_size: Tamanho
+        file: Arquivo
+        file_file_name: Arquivo
 
     errors:
       uniqueness: "Registro já existe no sistema"
@@ -586,7 +593,7 @@ pt_BR:
           attributes:
             attachment_content_type:
               invalid_type: inválido
-
+           
 
   ########### GERAL ###############
 
@@ -1442,6 +1449,7 @@ pt_BR:
       day_to: a
       mandatory_explain: 'Aviso aparecerá automaticamente logo após login do usuário'
       mandatory: Leitura obrigatória (?)
+      add_files: 'Adicionar arquivos'
     list:
       notifications: Avisos
       notification: Aviso
@@ -1457,6 +1465,8 @@ pt_BR:
       mandatory: Sim
       not_mandatory: Não
       mandatory_reading: Leitura obrigatória
+      files: Arquivos
+      preview: Prévia
     success:
       created: Aviso criado com sucesso.
       updated: Aviso atualizado com sucesso.
@@ -1466,12 +1476,20 @@ pt_BR:
       updated: Não foi possível atualizar aviso.
       deleted: Não foi possível deletar aviso.
       only_general: só pode ser selecionado em avisos gerais
+      download: Não foi possível fazer o download do arquivo.
+      general_message: Não foi possível realizar a ação desejada.
+      ended: não pode ser alterado após término do período
+      ended_file: "não pode ser enviado ou removido após término do período"
     show:
       count_groups: "%{count} turmas"
       next: Próxima notícia
       prev: Notícia anterior
     show_mandatory:
       read_later: Ler depois
+    notification_content:
+      download_file_alt: Fazer download do arquivo %{name} de tamanho %{size}
+      download_file: "%{name} (%{size})"
+      files: 'Arquivos'
 
   webconferences:
     form:

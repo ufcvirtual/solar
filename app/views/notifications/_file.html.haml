@@ -1,0 +1,20 @@
+#files
+  = f.nested_fields_for :notification_files, wrapper_tag: :div do |file|
+    - unless(file.object.id.blank? && (!@files_errors.blank? || f.object.errors.any?))
+      .duplicatable_nested_form
+        - unless file.object.file_file_name.blank?
+          = t('notifications.notification_content.download_file', name: file.object.file_file_name, size: number_to_human_size(file.object.file_file_size, precision: 2))
+        - else 
+          = file.input :file, as: :file, label: false
+
+        .info
+          = file.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
+    - else
+      .duplicatable_nested_form
+        - unless file.object.file_file_name.blank?
+          = t('notifications.notification_content.download_file', name: file.object.file_file_name, size: number_to_human_size(file.object.file_file_size, precision: 2))
+        - else 
+          = file.input :file, as: :file, label: false
+
+        .info.invisible
+          = file.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')

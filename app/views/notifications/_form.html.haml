@@ -3,7 +3,7 @@
 
 = javascript_include_tag "ckeditor/init"
 
-= simple_form_for(@notification, html: {id: "notification_form"}) do |f|
+= simple_form_for(@notification, html: { multipart: true, id: 'notification_form' }) do |f|
   %span.form_requirement= t(:required_fields)
   %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit : :new), scope: [:notifications, :form])
 
@@ -27,6 +27,15 @@
 
     = f.input :description, as: :ckeditor, label: false
 
+    .notification_files
+      - if @files_errors
+        %span.field_with_errors.error= @files_errors
+      .files
+        .input.string
+          = label_tag t('notifications.list.files')
+          = f.add_nested_fields_link :notification_files, t('.add_files'), class: 'btn'
+        = render partial: 'notifications/file', locals: { f: f }
+
     = render "groups/codes"
 
     .form-actions.right_buttons
@@ -48,4 +57,24 @@
 
   $(function(){
     $("#from-date, #until-date").datepicker();
+
+    // remove previous observers to click to add files
+    $(document).off('fields_added.nested_form_fields');
+    // when click to add files
+    $(document).on("fields_added.nested_form_fields", function(event) {
+      // gets last file input - it will be a blank one
+      var last_file = $('#notification_form #files input[type="file"]:last');
+      // click to choose file
+      last_file.click();
+      // remove previous observers on file input
+      $('#notification_form #files input[type="file"]').off('change');
+      // observe file input
+      last_file.change(function(){
+        // when it changes, add choosen file to list as a name and with a remove button
+        var last_form_input = $('#notification_form #files .duplicatable_nested_form:last .input');
+        last_form_input.prepend("<div id='file'>"+this.files[0].name+" ( "+(this.files[0].size/1048576).toFixed(2)+"MB ) </div>");
+        last_form_input.next('.info').removeClass('invisible');
+      });
+    });
+
   });
