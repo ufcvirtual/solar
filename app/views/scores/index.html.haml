@@ -58,22 +58,22 @@
     = t(".subtitle")
   %ul#scores_notes.legend_score_footer
     %li.evaluated
-      = t(".evaluated")
+      %abbr{tiltle: t(".evaluated_complete")}= t(".evaluated")
       = t(".evaluated_complete")
     %li.not_sent
-      = t(".not_sent")
+      %abbr{tiltle: t(".not_sent_complete")}= t(".not_sent")
       = t(".not_sent_complete")
     %li.without_group
-      = t(".without_group")
+      %abbr{tiltle: t(".without_group_complete")}= t(".without_group")
       = t(".without_group_complete")
     %li.sent
-      = t(".sent")
+      %abbr{tiltle: t(".sent_complete")}= t(".sent")
       = t(".sent_complete")
     %li.to_send
-      = t(".to_send")
+      %abbr{tiltle: t(".to_send_complete")}= t(".to_send")
       = t(".to_send_complete")
     %li.not_started
-      = t(".not_started")
+      %abbr{tiltle: t(".not_started_complete")}= t(".not_started")
       = t(".not_started_complete")
     %table
       %td.new_after_evaluation
