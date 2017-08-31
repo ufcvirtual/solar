@@ -55,11 +55,13 @@
 .block_wrapper
   = link_to t(:back), :back, { class: 'btn' , id: 'back' }, :'aria-label' => t(:back)
 
-= javascript_include_tag 'ckeditor/init', 'discussions',  'contextual_help/discussion_posts', 'audios', 'pagination'
+= javascript_include_tag 'ckeditor/init', 'discussions',  'contextual_help/discussion_posts', 'audios', 'pagination', 'posts'
 
 :javascript
 
   var locale = "#{I18n.locale}";
+  var ws;
+
   $("#button_new_post").focus();
 
   $(function(){
@@ -96,7 +98,7 @@
 
     CKEDITOR_BASEPATH  = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
     var websocket_host = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["host"]}";
-    var websocket_port = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["port"]}"
+    var websocket_port = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["port"]}";
 
     $(".forum_button_attachment").call_fancybox({
       element_selector: '.focu'
@@ -120,7 +122,7 @@
     }
         
     /*Conexão com o WebSocket*/
-    var ws = new WebSocket('ws://'+websocket_host+':'+websocket_port+'/'+ac); // file websocket_server.rb
+    ws = new WebSocket('ws://'+websocket_host+':'+websocket_port+'/'+ac); // file websocket_server.rb
     ws.onopen = function (){ }; // ao iniciar ws
     ws.onclose = function () { }; // ao perder conexão com o ws
     ws.onerror = function (err) { }; // ao receber erro no ws
@@ -170,7 +172,7 @@
         success: function(data){
           remove_ckeditor(); // remove ckeditor options
 
-          $.get("#{discussion_post_path(@discussion.id, ':id')}".replace(':id', data.post_id), {can_post: "#{@can_post}", new_post: true}, function(data2){
+          $.get("#{discussion_post_path(@discussion.id, ':id')}".replace(':id', data.post_id), {can_post: "#{@can_post}"}, function(data2){
             var post_table = $("article#"+data.post_id);
             if (!!post_table.length){
               post_table.html(data2);
@@ -230,7 +232,6 @@
               } catch(exception){
                 var content = $('#discussion_post_content').val();
               }
-              console.log( content );
               
               lastSaveTime = new Date().getTime();
             }
@@ -247,7 +248,6 @@
       } catch(exception){
         var content = $('#discussion_post_content').val();
       }
-
 
       // get parent_id information
       if (form.attr("method") == "POST")
@@ -288,14 +288,6 @@
             flash_message(msg, "notice");
           });
 
-          // only send message if is a new post
-          if (form.attr("method") == "POST")
-            ws.send(JSON.stringify({
-              msg: content,
-              post_id: data.post_id,
-              parent_id: data.parent_id,
-              academic_allocation_id: ac
-            }));
           loadFocus();
         },
         error: function(data){
@@ -308,63 +300,8 @@
       });
     });
 
-
-    $(".submit_post").click(function(){
-      var post_id = $(this).siblings(".post_id").text();
-      var parent_id = $(this).siblings(".parent_id").text();
-      var content = $(this).siblings(".content").text();
-      var action = "/discussions/"+"#{@discussion.id}"+"/posts/"+post_id;
-      var method = "PUT";
-      // get parent_id information
-      $.ajax({
-        type: method,
-        url: action,
-        data: {discussion_post: {parent_id: parent_id, content: content, draft: false}},
-        success: function(data){
-
-          $.get("#{discussion_post_path(@discussion.id, ':id')}".replace(':id', data.post_id), {can_post: "#{@can_post}", new_post: true}, function(data2){
-            var post_table = $("article#"+data.post_id);
-            if (!!post_table.length){
-              post_table.html(data2);
-              msg = "#{t('posts.update.updated')}";
-            }else{
-              if (parent_table != undefined && !!parent_table.length && !display_list){
-                $(parent_table.find("._cell.forum_post_content .forum_post_wrapper")[0]).after(data2);
-                parent_table.find(".forum_post_buttons:first").find(".update_post:first, .forum_button_attachment:first, .btn_caution:first").remove();
-                
-              }else
-                $(".forum_posts_wrapper").prepend(data2);
-              msg = "#{t('posts.create.created')}";  
-            }  
-            $(".forum_button_attachment").call_fancybox({
-              afterShow: function(){
-                $('.focu').attr("tabindex", "0");
-                $('.focu').focus();
-              }
-            });
-            add_post_count_warning();
-            flash_message(msg, "notice");
-          });
-
-          // only send message if is a new post
-          if (method == "PUT")
-            ws.send(JSON.stringify({
-              msg: content,
-              post_id: data.post_id,
-              parent_id: data.parent_id,
-              academic_allocation_id: ac
-            }));
-          loadFocus();
-        },
-        error: function(data){
-          var data = $.parseJSON(data.responseText);
-          if (typeof(data.alert) != "undefined")
-            flash_message(data.alert, 'alert');
-          else
-            flash_message("#{t('posts.create.not_created')}", "alert");
-        }
-      });
-    });
+    
 
   });
 
+  

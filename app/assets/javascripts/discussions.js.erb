@@ -62,7 +62,7 @@ function new_post(obj, parent) {
   if($("#new_post:visible").length > 0)
     if (!confirm("<%= I18n.t('posts.index.confirm_ckeditor') %>")) return; 
   form_post_reset_parameters();
-
+  
   $('form#new_post_form input[name=_method]').val('post');
   if (parent > 0) { $('form#new_post_form #discussion_post_parent_id').val(parent); } // resposta
 
@@ -201,4 +201,3 @@ function delete_post_file(button, post_id) {
     }
   });
 }
-
