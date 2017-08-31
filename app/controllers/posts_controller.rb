@@ -122,7 +122,7 @@ class PostsController < ApplicationController
   def publish
     @post = Post.find(params[:id])
     @post.update_attributes draft: false
-    render json: { success: true, post_id: @post.id, discussion_id: @post.discussion.id, content: @post.content, ac_id: @post.academic_allocation_id }, status: :ok
+    render json: { success: true, post_id: @post.id, discussion_id: @post.discussion.id, content: @post.content, ac_id: @post.academic_allocation_id, parent_id: @post.parent_id }, status: :ok
   rescue => error
     render_json_error(error, 'discussions.error')
   end

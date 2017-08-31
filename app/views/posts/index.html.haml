@@ -223,7 +223,7 @@
   function publish_post(btn){
     $.put($(btn).data('url'), {draft: false}, function(data){
       $.get("#{discussion_post_path(discussion_id: ':discussion_id', id: ':id') }".replace(':discussion_id',data.discussion_id).replace(':id',data.post_id), function(data2){
-        $(btn).parents('article').replaceWith(data2);
+        $(btn).parents('article:first').replaceWith(data2);
         flash_message("#{t('posts.create.published')}", 'notice');
         ws.send(JSON.stringify({
           msg: data.content,
