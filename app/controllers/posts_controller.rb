@@ -138,13 +138,12 @@ class PostsController < ApplicationController
   ## DELETE /posts/1
   def destroy
     @children_draft = @post.children.where(draft: true)
-    puts @children_draft
     @children_draft.destroy_all
     @post.destroy
 
     render json: {result: :ok}
-  #rescue => error
-   # render json: { alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
+  rescue => error
+    render json: { alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
   end
 
   private

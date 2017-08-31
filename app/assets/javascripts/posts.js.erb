@@ -1,0 +1,58 @@
+function public_post(button, discussion_id, can_post, display_mode, ac){  
+
+  var post_id = $(button).siblings(".post_id").text();
+  var parent_id = $(button).siblings(".parent_id").text();
+  var content = $(button).siblings(".content").text();
+  var action = "/discussions/"+discussion_id+"/posts/"+post_id;
+  var method = "PUT";
+  var url     = $(button).data("url");
+  
+  // get parent_id information
+  $.ajax({
+    type: method,
+    url: action,
+    data: {discussion_post: {parent_id: parent_id, content: content, draft: false}},
+    success: function(data){
+
+      $.get(url.replace(':id', data.post_id), {can_post: can_post, new_post: true}, function(data2){
+        var post_table = $("article#"+data.post_id);
+        if (!!post_table.length){
+          post_table.html(data2);
+          msg = "<%= I18n.t('posts.update.updated') %>";
+        }else{
+          if (parent_table != undefined && !!parent_table.length && !display_list){
+            $(parent_table.find("._cell.forum_post_content .forum_post_wrapper")[0]).after(data2);
+            parent_table.find(".forum_post_buttons:first").find(".update_post:first, .forum_button_attachment:first, .btn_caution:first").remove();
+            
+          }else
+            $(".forum_posts_wrapper").prepend(data2);
+          msg = "<%= I18n.t('posts.create.created') %>";  
+        }  
+        $(".forum_button_attachment").call_fancybox({
+          afterShow: function(){
+            $('.focu').attr("tabindex", "0");
+            $('.focu').focus();
+          }
+        });
+        add_post_count_warning();
+        flash_message(msg, "notice");
+      });
+
+      // only send message if is a new post
+      ws.send(JSON.stringify({
+        msg: content,
+        post_id: data.post_id,
+        parent_id: data.parent_id,
+        academic_allocation_id: ac
+      }));
+      loadFocus();
+    },
+    error: function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
+      else
+        flash_message("<%= I18n.t('posts.create.not_created') %>", "alert");
+    }
+  });
+}
