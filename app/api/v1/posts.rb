@@ -85,15 +85,18 @@ module V1
           requires :group_id, type: Integer, desc: 'Group ID.'
           optional :limit, type: Integer, desc: 'Posts limit.', default: Rails.application.config.items_per_page.to_i
           optional :page, type: Integer, desc: 'Page.', default: 1
+          optional :ignore_drafts, type: Boolean, default: true
         end
         get ':id/posts', rabl: 'posts/list' do
           offset = (params['page'].to_i * params['limit'].to_i) - params['limit'].to_i
           allocation_tags_ids = @group.allocation_tag.related
+          query = params[:ignore_drafts] ? '' : " OR (discussion_posts.draft = 't' AND discussion_posts.user_id = #{current_user.id})"
           @posts = @discussion.discussion_posts.select('discussion_posts.*, count(children.id) AS children_count')
                         .joins(academic_allocation: :allocation_tag)
                         .joins('LEFT JOIN discussion_posts AS children ON children.parent_id = discussion_posts.id')
                         .where('discussion_posts.parent_id IS NULL')
                         .where(allocation_tags: { id: allocation_tags_ids })
+                        .where("discussion_posts.draft = 'f' #{query}")
                         .group('discussion_posts.id')
                         .order('discussion_posts.updated_at asc')
                         .limit(params[:limit])
@@ -106,13 +109,16 @@ module V1
           requires :id, type: Integer, desc: 'Post ID.'
           optional :limit, type: Integer, default: Rails.application.config.items_per_page.to_i, desc: 'Posts limit.'
           optional :page, type: Integer, default: 1, desc: 'Page.'
+          optional :ignore_drafts, type: Boolean, default: true
         end
         get ':id/posts/:post_id/children', rabl: 'posts/list' do
           offset = (params['page'].to_i * params['limit'].to_i) - params['limit'].to_i
+          query = params[:ignore_drafts] ? '' : " OR (discussion_posts.draft = 't' AND discussion_posts.user_id = #{current_user.id})"
           @posts = Post.select('discussion_posts.*, count(children.id) AS children_count')
               .joins('LEFT JOIN discussion_posts AS children ON children.parent_id = discussion_posts.id')
               .group('discussion_posts.id')
               .where(parent_id: params[:post_id])
+              .where("discussion_posts.draft = 'f' #{query}")
               .limit(params[:limit])
               .offset(offset)
         end

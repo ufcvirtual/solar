@@ -133,21 +133,6 @@ div.forum_navigation {
   padding-left: 5px;
 }
 
-.forum_post_draft {
-  color: $color_gray_text_custom_icons;
-  text-align: right;
-  p{
-    margin-right: 15.5em;
-    font-weight: normal;
-    font-size: 13px;
-    margin-top: 0.8em;
-    color: $color_red;
-    a{
-      color: $color_red;
-    }
-  }
-}
-
 .forum_post_date {
   color: $color_gray_font;
   text-align: right;
@@ -217,6 +202,23 @@ div.forum_navigation {
 #new_post {
   display: none;
   padding-top: 5px;
+  #submit_post_draft{
+    display: inline-block;
+    float: left;
+  }
+
+  .forum_post_draft {
+    color: $color_gray_text_custom_icons;
+    font-size: 13px;
+    margin-top: 1%;
+    color: $color_red;
+    display: inline-block;
+    margin-left: 1%;
+    float: left;
+    a{
+      color: $color_red;
+    }
+  }
 }
 
 .new_post_dialog_buttons {

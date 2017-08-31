@@ -1128,12 +1128,18 @@ en_US:
       res_post: "ª post"
       remove_attachment: Remove %{file} %{size}
       remove_post: "Post delete success"
-      draft: "Draft <a class='draft_version_explain' href='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'>(?)</a>"
+      draft: "<a class='draft_version_explain' href='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'> Draft (?)</a>"
       draft2: Explanation of the post Draft
-      fv_explain: "&nbsp;&nbsp;&nbsp;&nbsp; A draft post is visible only to the user who created it, it can be published at any time, as long as the forum is in its posting period and if the draft is an only child and the parent post is deleted, the draft will also be erased."
+      fv_explain: "<p> A draft post is visible only to the user who created it and it can be published at any time, as long as the forum still is in its posting period.</p> <p>If the draft is the only answer to a parent post and this post is deleted, the draft will also be erased.</p>"
+      fv_explain_alt: "A draft post is visible only to the user who created it and it can be published at any time, as long as the forum still is in its posting period. If the draft is the only answer to a parent post and this post is deleted, the draft will also be erased."
     create:
       created: "Post was successfully created"
       not_created: "Post was not created"
+      draft: "Draft created successfully. If it's the only answer to a post and the post parent is deleted, this post will be also deleted."
+      not_draft: "Draft was not created"
+      published: Post published successfully
+      save_post: Do you want to save your post?
+      save_draft: Do you want to save your post as draft?
     update:
       updated: "Post was successfully updated"
       not_updated: "Post was not updated"
@@ -1156,6 +1162,8 @@ en_US:
       date_range_expired: It was not possible to execute action. Date range expired.
       general_message: It was not possible to execute action
       permission: It's not possible to change or remove posts from others users
+      not_published: It was not possible to publish post
+      draft: It's not possible to reply a draft post
 
   post_files:
     new:

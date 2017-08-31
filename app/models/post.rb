@@ -16,38 +16,45 @@ class Post < ActiveRecord::Base
   has_many :children, class_name: 'Post', foreign_key: 'parent_id', dependent: :destroy
   has_many :files, class_name: 'PostFile', foreign_key: 'discussion_post_id', dependent: :destroy
 
-
   before_create :set_level, :verify_level
   before_destroy :remove_all_files
 
   after_create :increment_counter
-  after_destroy :decrement_counter, :update_acu
-  after_save :update_acu, on: :update
+  after_destroy :decrement_counter, :update_acu, :remove_drafts_children, :decrement_counter_draft
+  after_save :update_acu, :decrement_counter_draft, on: :update
 
   validates :content, :profile_id, presence: true
 
   validate :can_change?, if: 'merge.nil?'
+  validate :parent_post, if: 'merge.nil? && !parent_id.blank?'
 
   attr_accessor :merge
+
+  def remove_drafts_children
+    children.where(draft: true).map(&:delete_with_dependents)
+  end
+
+  def parent_post
+    errors.add(:base, I18n.t('posts.error.draft')) if parent.draft
+  end
 
   def verify_level
     raise 'level' if self.level > Discussion_Post_Max_Indent_Level
   end
 
   def verify_children
-    errors.add(:base, I18n.t('posts.error.children')) if self.children.any? && merge.nil?
+    errors.add(:base, I18n.t('posts.error.children')) if self.children.where(draft: false).any? && merge.nil?
   end
 
   def verify_children_with_raise
-
-    if self.children.any? && self.draft == false
+    if self.children.where(draft: false).any?
       errors.add(:base, I18n.t('posts.error.children'))
       raise 'children'
     end
   end
 
   def can_change?
-    unless user_id == User.current.try(:id) || draft == true
+    unless (user_id == User.current.try(:id) || (User.current.try(:id) == parent.try(:user_id) && !content_changed? && !draft_changed?))
       errors.add(:base, I18n.t('posts.error.permission'))
       raise 'permission'
     end
@@ -58,7 +65,7 @@ class Post < ActiveRecord::Base
   end
   
   def can_be_answered?
-    (self.level < Discussion_Post_Max_Indent_Level)
+    (self.level < Discussion_Post_Max_Indent_Level) && !draft
   end
 
   ## Retorna o post 'avo', ou seja, o post do nivel mais alto informado em 'post_level'
@@ -112,6 +119,15 @@ class Post < ActiveRecord::Base
     self.delete
   end
 
+   # obtain and reorder posts by its "children/grandchildren"
+  def reordered_children(user_id, display_mode='three')
+    if display_mode == 'list'
+      children.where("draft = 'f' OR (draft = 't' AND user_id = ?)", user_id)
+    else
+      Post.reorder_by_latest_posts(children.where("draft = 'f' OR (draft = 't' AND user_id = ?)", user_id))
+    end
+  end
+
   private
 
     def set_level
@@ -127,10 +143,15 @@ class Post < ActiveRecord::Base
 
     def increment_counter
       Post.increment_counter('children_count', parent_id)
+      Post.increment_counter('children_drafts_count', parent_id) if draft
     end
 
     def decrement_counter
       Post.decrement_counter('children_count', parent_id) unless parent.blank? || parent.try(:children_count) == 0
+    end
+
+    def decrement_counter_draft
+      Post.decrement_counter('children_drafts_count', parent_id) unless parent.blank? || parent.try(:children_drafts_count) == 0 || !draft_was
     end
 
     def update_acu

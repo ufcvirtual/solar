@@ -5,9 +5,9 @@ class PostsController < ApplicationController
 
   # before_filter :authenticate_user!
   before_filter :prepare_for_pagination
-  before_filter :set_current_user, only: [:destroy, :create, :update]
+  before_filter :set_current_user, only: [:destroy, :create, :update, :publish]
 
-  load_and_authorize_resource except: [:index, :user_posts, :create, :show, :evaluate]
+  load_and_authorize_resource except: [:index, :user_posts, :create, :show, :evaluate, :publish]
 
   ## GET /discussions/1/posts
   ## GET /discussions/1/posts/20120217/[news, history]/order/asc/limit/10
@@ -119,6 +119,14 @@ class PostsController < ApplicationController
     end
   end
 
+  def publish
+    @post = Post.find(params[:id])
+    @post.update_attributes draft: false
+    render json: { success: true, post_id: @post.id, discussion_id: @post.discussion.id, content: @post.content, ac_id: @post.academic_allocation_id }, status: :ok
+  rescue => error
+    render_json_error(error, 'discussions.error')
+  end
+
   ## GET /discussions/:id/posts/1
   def show
     post = Post.find(params[:id])
@@ -127,7 +135,7 @@ class PostsController < ApplicationController
     allocation_tag_id = active_tab[:url][:allocation_tag_id]
     can_interact = post.discussion.user_can_interact?(current_user.id)
     can_post = can?(:create, Post, on: [allocation_tag_id])
-    @can_evaluate = (can? :evaluate, Discussion, {on: [@allocation_tags]}) #&& (@academic_allocation.evaluative || @academic_allocation.frequency)
+    @can_evaluate = (can? :evaluate, Discussion, {on: [@allocation_tags]}) 
 
     @researcher = (params[:researcher] == "true" or params[:researcher] == true)
     @class_participants = AllocationTag.get_participants(allocation_tag_id, { all: true }).map(&:id)
@@ -137,11 +145,11 @@ class PostsController < ApplicationController
 
   ## DELETE /posts/1
   def destroy
-    @children_draft = @post.children.where(draft: true)
-    @children_draft.destroy_all
-    @post.destroy
-
-    render json: {result: :ok}
+    if @post.destroy
+      render json: { result: :ok }
+    else
+      render json: { alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
+    end
   rescue => error
     render json: { alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
   end
