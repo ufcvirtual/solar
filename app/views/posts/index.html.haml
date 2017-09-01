@@ -154,8 +154,10 @@
       try{
         var content = CKEDITOR.instances["discussion_post_content"].getData();
       } catch(exception){
-        var content = $('#discussion_post_content').val();
+        var content = $('#discussion_post_content').val().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        content = '<p>'+content+'</p>';
       }
+
       // get parent_id information
       if (form.attr("method") == "POST")
         var parent_table = $($(this).parents("article")[0]);
