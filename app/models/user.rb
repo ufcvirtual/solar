@@ -412,8 +412,10 @@ class User < ActiveRecord::Base
 
       user_exist = where(cpf: cpf).first
       user = user_exist.nil? ? new(cpf: cpf) : user_exist
-      user_data = User.connect_and_import_user(cpf) # try to import
-      user.synchronize(user_data) # synchronize user with new MA data
+      if (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO['integrated'])
+        user_data = User.connect_and_import_user(cpf) # try to import
+        user.synchronize(user_data) # synchronize user with new MA data
+      end
       
       blacklist = UserBlacklist.where(cpf: user.cpf).first_or_initialize
       blacklist.name = (user.try(:name) || row['Nome']) if blacklist.new_record?
