@@ -166,12 +166,11 @@ class PostsController < ApplicationController
 
       aau = AcademicAllocationUser.find_or_create_one(academic_allocation.id, active_tab[:url][:allocation_tag_id], current_user.id, nil, true, AcademicAllocationUser::STATUS[:sent])
 
-      @post = Post.new(post_params)
+      @post = Post.new(post_params)     
       @post.user_id = current_user.id
       @post.academic_allocation_id = academic_allocation.id
       @post.academic_allocation_user_id = aau.try(:id)
       @post.profile_id = current_user.profiles_with_access_on(:create, :posts, allocation_tag_ids, true).first
-
       @post.save
     end
 

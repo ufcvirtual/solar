@@ -135,6 +135,7 @@ module V1
         academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: RelatedTaggable.related({ group_id: @group.id })).first
 
         @post = Post.new(post_params)
+        @post.content = CGI::escapeHTML(@post.content)
         @post.user = current_user
         @post.profile_id = @profile_id
         @post.academic_allocation_id = academic_allocation.id
