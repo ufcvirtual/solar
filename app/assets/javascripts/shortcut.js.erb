@@ -29,7 +29,7 @@ function shortcut(){
   $(document).off('keydown');
   $(document).keydown(function (e) {
     // if no input is on focus
-    if(!$("input").is(":focus")){
+    if(!$("input").is(":focus") && !$("textarea").is(":focus")){
       // verify if exists some html element which is not disabled and its data-shortcut code is the same as the pressed key
       var element = $('[data-shortcut="'+e.which+'"]:first').not(".disabled");
 
