@@ -66,6 +66,9 @@
   .close {
     float: right;
   }
+  a#undo_action{
+    color: $color_main_blue;
+  }
 }
 
 .sticky-float {
