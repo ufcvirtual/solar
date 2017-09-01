@@ -1,5 +1,5 @@
 .top_elements
-  %a.btn.tool_dropdown{href: '#', :'data-dropdown' => "#dropdown_menu"}
+  %a.btn.tool_dropdown{href: '#', :'data-dropdown' => "#dropdown_menu", id: "dropdown_frequency"}
     = content_tag(:i, nil, class: 'icon-list')
     = t('scores.index.show_hide_tools')
     %i.icon-arrow-down-triangle
@@ -8,7 +8,7 @@
       %ul.dropdown-menu
         - @tools.each_with_index do |tool, idx|
           %li
-            = check_box_tag "#{tool}idx", tool, true
+            = check_box_tag "#{tool}idx", tool, true, class: 'nav_item_dropdown'
             = label_tag "#{tool}idx", t("activerecord.models.#{tool.tableize.singularize}")
     = hidden_field_tag :report, true
     = hidden_field_tag :type, score_type
@@ -35,3 +35,22 @@
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), not_evaluative_scores_path(page: @users.next_page, type: score_type), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items), :'aria-label' => t(:load_items) if @users.next_page
 
 = javascript_include_tag 'tooltip'
+
+:javascript
+  $(function () {
+    $(".nav_item_dropdown").on("keydown", function(event){
+      var keynum = event.which || event.keyCode;
+
+      switch( keynum ) {
+        case 40:
+          down(this);
+          break;
+        case 38:
+          up(this);
+          break;
+        case 27:
+          $("#dropdown_frequency").click().focus();
+          break;
+      }
+    });
+  });
