@@ -194,6 +194,10 @@ class ApplicationController < ActionController::Base
     request.headers['HTTP_CLIENT_IP'] || request.remote_ip
   end
 
+  def get_access_token
+    request.headers['APP_CLIENT_TOKEN'] || params[:access_token]
+  end
+
   def client_network_ip
     render json: { network_ip: get_remote_ip }
   end
