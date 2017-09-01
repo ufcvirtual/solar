@@ -5,13 +5,13 @@ function open_evaluation(link){
         $(link).call_fancybox({
           href: data.url,
           open: true
-        }); 
+        });
       }else{
         if(data.method != 'get'){
           $.ajax({
             type: data.method,
             url: data.url,
-            success: function(data){ 
+            success: function(data){
               flash_message(data.notice, 'notice');
             },
             error: function(data){
@@ -39,7 +39,7 @@ function open_tool(link){
       $(link).call_fancybox({
         href: data.url,
         open: true
-      }); 
+      });
     }else{
       if(data.web != undefined){
         $.get(data.url, function(data2){
@@ -81,6 +81,14 @@ function change_tab_tool(tab){
   return false;
 }
 
+function down(element) {
+  $(element).closest("li").next("li").find(".nav_item_dropdown").focus();
+}
+
+function up(element) {
+  $(element).closest("li").prev("li").find(".nav_item_dropdown").focus();
+}
+
 $(function(){
    $('.tb_list_students ul.dropdown-menu li input[type="checkbox"]').change(function(){
     if(!!$(this).prop('checked'))
@@ -120,4 +128,7 @@ $(function(){
     return false;
   });
 
+  $(".dropdown-menu").on("focus", function (e) {
+    $(".nav_item_dropdown")[0].focus();
+  });
 });
