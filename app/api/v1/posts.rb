@@ -18,7 +18,7 @@ module V1
         end
 
         def post_params
-          ActionController::Parameters.new(params).require(:discussion_post).permit(:content, :parent_id)
+          ActionController::Parameters.new(params).require(:discussion_post).permit(:content, :parent_id, :draft)
         end
       end
 
