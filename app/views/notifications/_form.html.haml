@@ -36,11 +36,21 @@
           = f.add_nested_fields_link :notification_files, t('.add_files'), class: 'btn'
         = render partial: 'notifications/file', locals: { f: f }
 
+    .notification_profiles
+      .profiles
+        .input.string
+          = label_tag :profiles, t('.profiles'), {:'data-tooltip' => t('.profiles_explain'), :'aria-label' => t('.profiles_explain')}
+          #profiles_box
+            = f.collection_check_boxes :profile_ids, Profile.all, :id, :name, {multiple: true, item_wrapper_tag: 'div', item_wrapper_class: 'profile_ckb'}
+      - if @profiles_errors
+        %span.field_with_errors.error= @profiles_errors
+
     = render "groups/codes"
 
     .form-actions.right_buttons
       = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
       = button_to_function t(:save), "save_notification()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
+
 
 :javascript
   CKEDITOR.editorConfig = function(config) {
@@ -53,9 +63,9 @@
       ];
   };
 
-  $("#from-date, #until-date").mask("#{I18n.t(:mask, scope: "date.formats")}");
 
   $(function(){
+    $("#from-date, #until-date").mask("#{I18n.t(:mask, scope: "date.formats")}");
     $("#from-date, #until-date").datepicker();
 
     // remove previous observers to click to add files

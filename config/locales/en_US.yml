@@ -1269,6 +1269,8 @@ en_US:
       mandatory_explain: 'Notification will show automatically after user login'
       mandatory: Mandatory reading (?)
       add_files: 'Add files'
+      profiles: 'Profiles (?)'
+      profiles_explain: 'By selecting profiles, this notice will be available only to users with one of those profiles. If none is selected, this notice will be available to every user.'
     list:
       notifications: Notifications
       notification: Notification
@@ -1299,6 +1301,7 @@ en_US:
       general_message: It was not possible to execute desired action.
       ended: "can't be changed after period ending"
       ended_file: "can't be uploaded or removeed after period ending"
+      ended_profiles: "can't be changed after period ending"
     show:
       count_groups: "%{count} groups"
       next: Next notification
@@ -4423,6 +4426,8 @@ en_US:
       t: 'Yes'
       f:  'No'
     hours: '%{hours}h'
+    error: 
+      general_message: It was not possible to execute action
 
   ip_control:
     info:

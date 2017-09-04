@@ -7,9 +7,13 @@ class Notification < ActiveRecord::Base
 
   belongs_to :schedule
 
+  validate :verify_end_date, on: :update, if: 'ended?'
+
   has_and_belongs_to_many :users, join_table: 'read_notifications'
-  has_many :read_notifications, dependent: :destroy
+  has_and_belongs_to_many :profiles, join_table: 'notification_profiles'
+  has_many :read_notifications, dependent: :delete_all
   has_many :notification_files, dependent: :destroy
+  has_many :notification_profiles, dependent: :destroy
 
   accepts_nested_attributes_for :schedule
   accepts_nested_attributes_for :notification_files, allow_destroy: true, reject_if: :reject_files
@@ -17,7 +21,6 @@ class Notification < ActiveRecord::Base
   validates :title, :description, :schedule, presence: true
   validates :title, length: { maximum: 255 }
 
-  validate :verify_end_date, on: :update, if: 'ended?'
 
   after_save :remove_readings, on: :update, if: 'title_changed? || description_changed? || (mandatory_reading_changed? && mandatory_reading)'
 
@@ -79,6 +82,7 @@ class Notification < ActiveRecord::Base
         JOIN allocation_tags at ON at.id = rt.group_at_id OR at.id = rt.offer_at_id OR at.id = rt.course_at_id OR at.id = rt.curriculum_unit_at_id OR at.id = rt.curriculum_unit_type_at_id
         JOIN allocations al ON al.allocation_tag_id = group_at_id OR al.allocation_tag_id = offer_at_id OR al.allocation_tag_id = course_at_id OR al.allocation_tag_id = curriculum_unit_at_id OR al.allocation_tag_id = curriculum_unit_type_at_id
         WHERE al.user_id = #{user.id}
+        AND rt.group_status = 't'
         AND al.status = #{Allocation_Activated}
       )
       SELECT DISTINCT notifications.id, notifications.*, rn.user_id AS read
@@ -86,9 +90,46 @@ class Notification < ActiveRecord::Base
       JOIN schedules ON schedules.id = notifications.schedule_id
       JOIN academic_allocations ac ON ac.academic_tool_id = notifications.id AND ac.academic_tool_type = 'Notification'
       LEFT JOIN read_notifications rn ON rn.notification_id = notifications.id AND rn.user_id = #{user.id}
-      WHERE (ac.allocation_tag_id IN (select id FROM ats) OR ac.allocation_tag_id IS NULL) #{query}
+      LEFT JOIN notification_profiles np ON np.notification_id = notifications.id
+      LEFT JOIN profiles p ON np.profile_id = p.id
+      WHERE (
+              (
+                -- if no profile was defined
+                p.id IS NULL AND 
+                -- verify if user has permission to access notification
+                (ac.allocation_tag_id IN (select id FROM ats) OR ac.allocation_tag_id IS NULL)
+              ) OR ( 
+                -- if profiles were defined
+                p.id IS NOT NULL 
+                -- verify user allocations and profiles and notification ATs
+                AND ( 
+                  -- if notification has no at, get all users with that profile
+                  (
+                    ac.allocation_tag_id IS NULL AND 
+                    EXISTS(SELECT al.profile_id AS id
+                      FROM allocations al
+                      WHERE al.user_id = #{user.id}
+                      AND al.status = #{Allocation_Activated}
+                      AND al.profile_id = p.id)
+                  ) OR (
+                    -- or if notification has at
+                    ac.allocation_tag_id IS NOT NULL AND 
+                    -- gets all user with that profile and related at or general allocation
+                    EXISTS(SELECT at.id, al.profile_id
+                      FROM allocations al 
+                      LEFT JOIN related_taggables rt ON al.allocation_tag_id = group_at_id OR al.allocation_tag_id = offer_at_id OR al.allocation_tag_id = course_at_id OR al.allocation_tag_id = curriculum_unit_at_id OR al.allocation_tag_id = curriculum_unit_type_at_id
+                      LEFT JOIN allocation_tags at ON at.id = rt.group_at_id OR at.id = rt.offer_at_id OR at.id = rt.course_at_id OR at.id = rt.curriculum_unit_at_id OR at.id = rt.curriculum_unit_type_at_id
+                      WHERE al.user_id = #{user.id}
+                      AND al.status = #{Allocation_Activated}
+                      AND (at.id = ac.allocation_tag_id OR at.id IS NULL) 
+                      AND (rt.group_status = 't' OR rt.id IS NULL)
+                      AND al.profile_id = p.id)
+                  )
+                )
+              )
+            ) #{query}
       AND schedules.start_date::date <= current_date AND schedules.end_date::date >= current_date
-      ORDER BY notifications.id;
+      ORDER BY notifications.updated_at DESC;
     SQL
   end
 

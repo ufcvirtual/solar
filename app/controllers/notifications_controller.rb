@@ -45,8 +45,11 @@ class NotificationsController < ApplicationController
   # GET /notifications/1
   def show
     @all_notification = Notification.of_user(current_user)
+    raise CanCan::AccessDenied unless @all_notification.map(&:id).include?(params[:id].to_i)
     @notification = Notification.find(params[:id])
     notification_show(@notification)
+  rescue CanCan::AccessDenied
+    render text: t(:no_permission)
   end
 
   require 'will_paginate/array'
@@ -93,6 +96,11 @@ class NotificationsController < ApplicationController
 
     @notification.schedule.verify_today = true
 
+    unless (!@notification.ended? || [notification_params[:profile_ids].map(&:to_i).compact.sort - [0]].flatten == @notification.profile_ids.sort)
+      @profiles_errors = t('notifications.error.ended_profiles')
+      raise 'error'
+    end
+
     if @notification.update_attributes(notification_params)
       all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
       render partial: "notification", locals: {notification: @notification, all_groups: all_groups, destroy: true}
@@ -106,9 +114,10 @@ class NotificationsController < ApplicationController
       @files_errors = @notification.notification_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       @notification.notification_files.delete_if {|file| file.errors.full_messages.any? } 
       render :edit
+    elsif !@profiles_errors.blank?
+      render :edit
     else
-      request.format = :json
-      raise error.class
+      render_json_error(error, 'notifications.errors')
     end
   end
 
@@ -121,8 +130,7 @@ class NotificationsController < ApplicationController
     @notifications.destroy_all
     render_notification_success_json('deleted')
   rescue => error
-    request.format = :json
-    raise error.class
+    render_json_error(error, 'notifications.errors')
   end
 
   def read_later
@@ -148,7 +156,7 @@ class NotificationsController < ApplicationController
   private
 
     def notification_params
-      params.require(:notification).permit(:title, :description, :mandatory_reading, schedule_attributes: [:id, :start_date, :end_date], notification_files_attributes: [:id, :file, :_destroy])
+      params.require(:notification).permit(:title, :description, :mandatory_reading, profile_ids: [], schedule_attributes: [:id, :start_date, :end_date], notification_files_attributes: [:id, :file, :_destroy])
     end
 
     def render_notification_success_json(method)
