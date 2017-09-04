@@ -150,7 +150,7 @@ class LessonFilesController < ApplicationController
       # erro se estiver tentando remover o arquivo inicial ou alguma pasta "superior" à ele e não for a pasta raiz
       raise 'error' if params[:root_node] != 'true' && @lesson.address.include?(params[:path])
       path = @lesson.path(true, false).to_s
-      @lesson.update_attributes({ address: '', status: 0 }) if params[:root_node] == 'true'
+      @lesson.update_attributes({ status: 0, address: '' }) if params[:root_node] == 'true'
       @address = @lesson.address
 
       FileUtils.rm_rf Dir.glob(File.join(path, params[:path])) # remove arquivos sem remover diretorio raiz
