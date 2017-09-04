@@ -51,6 +51,8 @@ config/newrelic.yml
 config/digital_class.yml
 sink.sh
 commit.sh
+sink_master.sh
+sink_development.sh
 sink_sem_commit.sh
 ship.sh
 config/digital_class_access_token.txt
