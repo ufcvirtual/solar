@@ -2,7 +2,7 @@
 
 if ENV['RAILS_ENV'] == 'production'
   # Unicorn self-process killer
-  require 'unicorn/configuration'
+  # require 'unicorn/configuration'
   require 'unicorn/worker_killer'
 
   # Max requests per worker
