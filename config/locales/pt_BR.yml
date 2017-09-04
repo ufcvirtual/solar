@@ -593,7 +593,7 @@ pt_BR:
           attributes:
             attachment_content_type:
               invalid_type: inválido
-           
+
 
   ########### GERAL ###############
 
@@ -2189,6 +2189,7 @@ pt_BR:
       attached_files: Anexos
       edit: Editar comentário
       remove: Remover comentário
+      remove_attachment: "Remover anexo"
     success:
       new: Comentário criado com sucesso
       edit: Comentário alterado com sucesso

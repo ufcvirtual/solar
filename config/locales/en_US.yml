@@ -1972,6 +1972,7 @@ en_US:
       attached_files: Attachments
       edit: Edit comment
       remove: Remove comment
+      remove_attachment: Remove attachment
     success:
       new: Comment created successfully
       edit: Comment updated successfully
