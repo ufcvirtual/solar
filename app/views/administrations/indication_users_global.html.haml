@@ -49,7 +49,7 @@
 
     $("#search_user").click(function() {
       var url_for = "#{search_users_allocations_path(allocation_tags_ids: @allocation_tags_ids, admin: @admin)}";
-      var data = { user: encodeURIComponent($("#text_search").val()) };
+      var data = { user: encodeURIComponent($("#text_search").val()), specific_indication: false };
       $.get(url_for, data, function(data) {
         $('#list_users').html(data);
       }).error(function(data){
