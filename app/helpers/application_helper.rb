@@ -112,7 +112,7 @@ module ApplicationHelper
   end
 
   def render_json_error(error, path, default_error="general_message", message=nil)
-    error_message = error == CanCan::AccessDenied ? t(:no_permission) : (I18n.translate!("#{path}.#{error}", raise: true) rescue t("#{path}.#{default_error}"))
+    error_message = error == CanCan::AccessDenied ? t(:no_permission) : ((I18n.translate!("#{path}.#{error}", raise: true) rescue I18n.translate!("#{path}.#{default_error}", raise: true)) rescue t("common_between_pages.error.general_message"))
     Rails.logger.info "[ERROR] [APP] [#{Time.now}] [#{error}] [#{(message.nil? ? error_message : error.message)}]"
     render json: { success: false, alert: (message.nil? ? error_message : error.message) }, status: :unprocessable_entity
   end
