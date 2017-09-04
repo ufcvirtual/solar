@@ -103,11 +103,10 @@ class AccessControlController < ApplicationController
     guard_with_access_token_or_authenticate
 
     unless (user_session[:blocking_content] rescue @user_session_exam)
-      lessons = [lesson  = Lesson.find(params[:id])]
+      lessons = [lesson = Lesson.find(params[:id])]
 
       if user_session.nil? && !@user_session_exam.nil?
-        ats = RelatedTaggable.related(group_id: params[:group_id])
-        raise CanCan::AccessDenied if User.current.profiles_with_access_on(:show, :lessons, ats).empty?
+        raise CanCan::AccessDenied if User.current.profiles_with_access_on(:show, :lessons, lesson.allocation_tags.map(&:related)).empty? # verify if user can access that lesson
       elsif user_session[:lessons].include?(params[:id])
         lessons << lesson.imported_to
         verify(lessons.flatten.map(&:allocation_tags).flatten.map(&:id).flatten.compact, Lesson, :show, true, true)
@@ -161,8 +160,8 @@ class AccessControlController < ApplicationController
     end
 
     def guard_with_access_token_or_authenticate
-      if params[:access_token].present?
-        access_token = Doorkeeper::AccessToken.authenticate(params[:access_token])
+      unless get_access_token.blank? || !user_session.blank?
+        access_token = Doorkeeper::AccessToken.authenticate(get_access_token)
         case Oauth2::AccessTokenValidationService.validate(access_token, scopes: [])
         when Oauth2::AccessTokenValidationService::INSUFFICIENT_SCOPE
           Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for access_token permission - INSUFFICIENT_SCOPE"
@@ -185,7 +184,6 @@ class AccessControlController < ApplicationController
         authenticate_user!
         user_session[:blocking_content] = Exam.verify_blocking_content(current_user.try(:id) || User.current.try(:id)) if user_session[:blocking_content].blank?
       end
-      
     end
 
 end
