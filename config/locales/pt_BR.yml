@@ -1454,6 +1454,8 @@ pt_BR:
       mandatory_explain: 'Aviso aparecerá automaticamente logo após login do usuário'
       mandatory: Leitura obrigatória (?)
       add_files: 'Adicionar arquivos'
+      profiles: 'Perfis (?)'
+      profiles_explain: 'Ao selecionar perfis, este aviso ficará disponível apenas para usuários com algum desses perfis. Caso nenhum seja escolhido, este aviso ficará disponível a todos os usuários.'
     list:
       notifications: Avisos
       notification: Aviso
@@ -1484,6 +1486,7 @@ pt_BR:
       general_message: Não foi possível realizar a ação desejada.
       ended: não pode ser alterado após término do período
       ended_file: "não pode ser enviado ou removido após término do período"
+      ended_profiles: "não podem ser alterados após término do período"
     show:
       count_groups: "%{count} turmas"
       next: Próxima notícia
@@ -4670,6 +4673,8 @@ pt_BR:
       t: 'Sim'
       f: Não
     hours: '%{hours}h'
+    error: 
+      general_message: Não foi possível realizar a ação desejada
 
   ip_control:
     info:
