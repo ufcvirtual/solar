@@ -3234,11 +3234,17 @@ en_US:
         comments_title: "Comments [C]"
         sent_assignment_title: "Files sent by student [F]"
         webconferences: "Webconferences [W]"
+        individual_assignments: "Individual assignments [I]"
+        group_assignments: "Group assignments [G]"
+        public_files: "Public area [P]"
       code:
         files_title: 65
         comments_title: 67
         sent_assignment_title: 70
         webconferences: 87
+        individual_assignments: 73
+        group_assignments: 71
+        public_files: 80
 
   scores:
     index:
@@ -4437,7 +4443,7 @@ en_US:
       t: 'Yes'
       f:  'No'
     hours: '%{hours}h'
-    error: 
+    error:
       general_message: It was not possible to execute action
     all: All
 
