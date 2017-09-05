@@ -520,6 +520,10 @@ pt_BR:
         file_file_size: Tamanho
         file: Arquivo
         file_file_name: Arquivo
+      post_file:
+        attachment_file_size: Tamanho
+        attachment: Arquivo
+        attachment_file_name: Arquivo
 
     errors:
       uniqueness: "Registro já existe no sistema"
