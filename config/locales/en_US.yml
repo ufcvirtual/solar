@@ -4428,6 +4428,7 @@ en_US:
     hours: '%{hours}h'
     error: 
       general_message: It was not possible to execute action
+    all: All
 
   ip_control:
     info:
