@@ -1,5 +1,5 @@
-.group_assignments.header{:"data-score" => @score_type}
-  %h1#lightBoxDialogTitle= t(".title", name: @assignment.name)
+.group_assignments.header.title{:"data-score" => @score_type}
+  %h1= t(".title", name: @assignment.name)
   %span.form_requirement= t(".warning")
 
 .block_wrapper.label_display
@@ -26,8 +26,6 @@
   .students_without_groups_column.last_column.of_three
     .block_title
       %h2= t(".students_without_groups")
-      / .right_buttons
-      /   = text_field_tag :search_student, nil, :"data-column" => "all", type: :search, class: "search", placeholder: "Buscar aluno", width: 30
     .block_content
       %table.tb_list
         %tbody{:"data-assignment-id" => @assignment.id}
