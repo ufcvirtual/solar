@@ -460,6 +460,10 @@ en_US:
         file_file_size: Size
         file: File
         file_file_name: File
+      post_file:
+        attachment_file_size: Size
+        attachment: File
+        attachment_file_name: File
 
     errors:
       uniqueness: "Record already exists in the system"

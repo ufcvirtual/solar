@@ -32,6 +32,7 @@
       $('form#form_post_new_file').serialize_and_submit({
         files: true,
         prepend_to_list: $("#"+id),
+        outer: 'fancybox-outer',
         complement_success: function(){
           $.fancybox.close();
           $("#"+id).empty();
