@@ -3228,6 +3228,17 @@ en_US:
       code:
         next: 39
         previous: 37
+    assignments:
+      name:
+        files_title: "Assignment's files [A]"
+        comments_title: "Comments [C]"
+        sent_assignment_title: "Files sent by student [F]"
+        webconferences: "Webconferences [W]"
+      code:
+        files_title: 65
+        comments_title: 67
+        sent_assignment_title: 70
+        webconferences: 87
 
   scores:
     index:

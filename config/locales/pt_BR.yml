@@ -3472,6 +3472,17 @@ pt_BR:
       code:
         next: 39
         previous: 37
+    assignments:
+      name:
+        files_title: "Arquivos da atividade [A]"
+        comments_title: "Comentários [C]"
+        sent_assignment_title: "Enviados pelos alunos [E]"
+        webconferences: "Webconferências [W]"
+      code:
+        files_title: 65
+        comments_title: 67
+        sent_assignment_title: 69
+        webconferences: 87
 
   scores:
     index:

@@ -1,6 +1,6 @@
 .block_wrapper
   .block_title
-    %h2
+    %h2{:'data-shortcut'=> t("shortcut.assignments.code.comments_title"), :'data-shortcut-name'=> t("shortcut.assignments.name.comments_title"), :'data-shortcut-focus' => 'true'}
       %i.icon-comment
       = t('.title')
     - if can? :create, AssignmentComment, on: [@allocation_tag_id]
@@ -31,4 +31,3 @@
     });
 
   });
-
