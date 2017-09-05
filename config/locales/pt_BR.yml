@@ -2435,6 +2435,7 @@ pt_BR:
       other_extension: "Há problemas com a formatação do arquivo fornecido, favor importar com .xls ou .xlsx"
       unknown_file: "Extensão não permitida"
       other_delimiter: "Delimitador CSV incorreto"
+      group_not_found: Turma %{code} não encontrada
       log:
         success: "[SUCESSO]: CPF: %{cpf}, importado com sucesso"
         error: "[ERRO]: CPF: %{cpf}, %{error}"

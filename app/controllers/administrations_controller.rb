@@ -332,25 +332,24 @@ class AdministrationsController < ApplicationController
   # POST /import/users/batch
   def import_users_batch
     allocation_tags_ids = params[:allocation_tags_ids].split(' ').compact.uniq.map(&:to_i)
-    unless current_user.admin?
-      authorize! :import_users, Administration, { on: allocation_tags_ids }
-    end
+    authorize! :import_users, Administration, { on: allocation_tags_ids } unless current_user.admin?
 
     raise t(:invalid_file, scope: [:administrations, :import_users]) if (file = params[:batch][:file]).nil?
 
-    result = User.import(file)
+    result = User.import(file, allocation_tags_ids)
     users = result[:imported]
     @log  = result[:log]
     @count_imported = result[:log][:success].count
 
     users.each do |user|
-      allocation_tags_ids.each do |at|
-        begin
-          AllocationTag.find(at).group.allocate_user(user.id, Profile.student_profile, current_user.id)
-          @log[:success] << t(:allocation_success, scope: [:administrations, :import_users, :log], cpf: user.cpf, allocation_tag: at)
-        rescue => error
-          @log[:error] << t(:allocation_error, scope: [:administrations, :import_users, :log], cpf: user.cpf)
+      if user[:group].blank? && user[:group_name].blank?
+        allocation_tags_ids.each do |at|
+          allocate_user(AllocationTag.find(at).group, at, user[:user])
         end
+      elsif user[:group].blank? && !user[:group_name].blank?
+        @log[:error] << t('administrations.import_users.group_not_found', code: user[:group_name])
+      else
+        allocate_user(user[:group], user[:group].allocation_tag.id, user[:user])
       end
     end
 
@@ -403,6 +402,15 @@ class AdministrationsController < ApplicationController
         f.puts(logs)
       end
       filename
+    end
+
+    def allocate_user(group, at, user)
+      begin
+        group.allocate_user(user.id, Profile.student_profile, current_user.id)
+        @log[:success] << t(:allocation_success, scope: [:administrations, :import_users, :log], cpf: user.cpf, allocation_tag: at)
+      rescue => error
+        @log[:error] << t(:allocation_error, scope: [:administrations, :import_users, :log], cpf: user.cpf)
+      end
     end
 
 end
