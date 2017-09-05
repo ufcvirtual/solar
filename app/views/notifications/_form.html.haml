@@ -24,7 +24,6 @@
             = f.label :mandatory_reading, t('.mandatory'), {:'data-tooltip' => t('.mandatory_explain'), :'aria-label' => t('.mandatory_explain'), class: 'string control-label form_label'}
             = f.input :mandatory_reading, label: false
 
-
     = f.input :description, as: :ckeditor, label: false
 
     .notification_files
@@ -39,8 +38,11 @@
     .notification_profiles
       .profiles
         .input.string
+          - profiles = f.object.profile_ids.any?
           = label_tag :profiles, t('.profiles'), {:'data-tooltip' => t('.profiles_explain'), :'aria-label' => t('.profiles_explain')}
-          #profiles_box
+          = check_box_tag :all, true, !profiles
+          = label_tag :all, t('common_between_pages.all')
+          #profiles_box{class: (profiles ? '' : 'invisible')}
             = f.collection_check_boxes :profile_ids, Profile.all, :id, :name, {multiple: true, item_wrapper_tag: 'div', item_wrapper_class: 'profile_ckb'}
       - if @profiles_errors
         %span.field_with_errors.error= @profiles_errors
@@ -67,6 +69,15 @@
   $(function(){
     $("#from-date, #until-date").mask("#{I18n.t(:mask, scope: "date.formats")}");
     $("#from-date, #until-date").datepicker();
+
+    $('#all').change(function(){
+      $('#profiles_box').toggle();
+      if(!!$(this).prop('checked')){
+        $('#profiles_box input').each(function(){
+          $(this).prop('checked', false);
+        });
+      }
+    });
 
     // remove previous observers to click to add files
     $(document).off('fields_added.nested_form_fields');

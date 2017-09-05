@@ -56,8 +56,11 @@ ul.notifications {
     }
   }
   .profiles{
+    #all{
+      margin-left: -1.6%;
+      vertical-align: bottom;
+    }
     #profiles_box{
-      display: inline-block;
       vertical-align: top;
       border: 1px solid $color_gray_font;
       background-color: $color_white_base;
@@ -67,6 +70,7 @@ ul.notifications {
       padding-bottom: 7px;
       padding-right: 15px;
       width: 40%;
+      margin-left: 13%;
       .profile_ckb{
         margin-left: -13px;
         label{
