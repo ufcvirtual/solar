@@ -3478,11 +3478,17 @@ pt_BR:
         comments_title: "Comentários [C]"
         sent_assignment_title: "Enviados pelos alunos [E]"
         webconferences: "Webconferências [W]"
+        individual_assignments: "Trabalhos individuais [I]"
+        group_assignments: "Trabalhos em grupo [G]"
+        public_files: "Área pública [P]"
       code:
         files_title: 65
         comments_title: 67
         sent_assignment_title: 69
         webconferences: 87
+        individual_assignments: 73
+        group_assignments: 71
+        public_files: 80
 
   scores:
     index:
@@ -4684,7 +4690,7 @@ pt_BR:
       t: 'Sim'
       f: Não
     hours: '%{hours}h'
-    error: 
+    error:
       general_message: Não foi possível realizar a ação desejada
     all: Todos
 
