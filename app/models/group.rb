@@ -140,7 +140,7 @@ class Group < ActiveRecord::Base
   private
 
     def unique_code_on_offer
-      errors.add(:code, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) if Group.where(offer_id: offer_id, code: code).any?
+      errors.add(:code, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) if Group.where(offer_id: offer_id).where("lower(code) = '#{code.downcase}'").any?
     end
 
 end

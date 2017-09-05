@@ -2216,6 +2216,7 @@ en_US:
       other_extension: "There are problems with the formatting of the given file, please import .xls or .xlsx files"
       unknown_file: "Not allowed extension"
       other_delimiter: "Incorrect CSV delimiter"
+      group_not_found: Group %{code} not found
       log:
         success: "[SUCCESSO]: CPF: %{cpf}, successfully imported"
         error: "[ERRO]: CPF: %{cpf}, %{error}"
