@@ -4675,6 +4675,7 @@ pt_BR:
     hours: '%{hours}h'
     error: 
       general_message: Não foi possível realizar a ação desejada
+    all: Todos
 
   ip_control:
     info:
