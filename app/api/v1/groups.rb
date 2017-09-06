@@ -145,33 +145,72 @@ module V1
       end # groups
 
       namespace :group do
-        desc "Criação de turma"
-        params do
-          requires :code, type: String
-          optional :offer_id, type: Integer#, values: -> { Offer.all.map(&:id) }
-          optional :course_code, :curriculum_unit_code, :semester, type: String
-          optional :activate, type: Boolean, default: false
-          exactly_one_of :offer_id, :course_code
-          exactly_one_of :offer_id, :curriculum_unit_code
-          exactly_one_of :offer_id, :semester
-        end
-        post "/" do
-          begin
+
+        segment do 
+          after_validation do
             if params[:course_code].present?
               offer_id = Offer.where(course_id: Course.find_by_code(params[:course_code]).try(:id), curriculum_unit_id: CurriculumUnit.find_by_code(params[:curriculum_unit_code]).try(:id),
                 semester_id: Semester.find_by_name(params[:semester]).try(:id)).first.try(:id)
               params.merge!({offer_id: offer_id})
             end
-            if params[:activate]
-              group = Group.where(group_params(params)).first_or_initialize
-              group.status = true
-              group.save!
-            else
-              group = Group.create! group_params(params)
-            end
-            {id: group.id}
+          end 
+
+          desc "Criação de turma"
+          params do
+            requires :code, type: String
+            optional :offer_id, type: Integer#, values: -> { Offer.all.map(&:id) }
+            optional :course_code, :curriculum_unit_code, :semester, type: String
+            optional :activate, type: Boolean, default: false
+            exactly_one_of :offer_id, :course_code
+            exactly_one_of :offer_id, :curriculum_unit_code
+            exactly_one_of :offer_id, :semester
           end
-        end
+          post "/" do
+            begin
+              if params[:activate]
+                group = Group.where(group_params(params)).first_or_initialize
+                group.status = true
+                group.save!
+              else
+                group = Group.create! group_params(params)
+              end
+              {id: group.id}
+            end
+          end
+
+          desc "Remove turma"
+           params do
+            optional :code, type: String
+            optional :id, type: Integer
+            optional :offer_id, type: Integer
+            optional :course_code, :curriculum_unit_code, :semester, type: String
+            exactly_one_of :id, :offer_id, :course_code
+            exactly_one_of :id, :offer_id, :curriculum_unit_code
+            exactly_one_of :id, :offer_id, :semester
+            exactly_one_of :id, :code
+          end
+          delete "/" do
+            begin
+              unless params[:id].blank?
+                group = Group.find(params[:id])
+              else
+                group = Group.where(offer_id: group_params(params)[:offer_id]).where("lower(code) = ?", group_params(params)[:code].downcase).first
+              end
+              unless group.blank?
+                begin
+                  group.destroy
+                rescue
+                  group.status = false
+                  group.save!
+
+                  group.offer.notify_editors_of_disabled_groups(group)
+                end
+              end
+              {ok: :ok}             
+            end
+          end
+
+        end #segment
 
         desc "Edição de turma"
         params do
@@ -184,7 +223,7 @@ module V1
           begin
             group = Group.find(params[:id])
             group.update_attributes! group_params(params)
-            group.offer.notify_editors_of_disabled_groups(group) if params[:status].present? and not(params[:status])
+            group.offer.notify_editors_of_disabled_groups(group) if params[:status].present? && !(params[:status])
 
             {ok: :ok}
           end
@@ -211,7 +250,7 @@ module V1
           end
         end # students_info
 
-         desc 'Recuperação de dados da turma'
+        desc 'Recuperação de dados da turma'
         params do
           requires :group_code, :semester, :course_code, :curriculum_unit_code, type: String
           requires :curriculum_unit_type_id, default: 2
