@@ -2,7 +2,7 @@
   %tbody
     - @participants.each do |participant|
       %tr.lines{ :"data-user-id" => participant.id }
-        %td= participant.name
+        %td{tabindex: 0, :'aria-label' => participant.name}= participant.name
         - unless @import
           %td.icon{ onclick: "remove_participant(this)", onkeydown: "remove_participant(this, event)", :"data-tooltip" => t('group_assignments.index.remove') }
             = content_tag(:i, nil, class: "icon-cross-square", :'aria-label' => t('group_assignments.index.remove'), :"data-tooltip" => t('group_assignments.index.remove'), tabindex: 0)
