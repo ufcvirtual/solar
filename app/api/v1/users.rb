@@ -86,8 +86,6 @@ module V1
           end
         end
 
-<<<<<<< HEAD
-=======
         params do
           requires :cpf, type: String
           optional :name, type: String
@@ -101,7 +99,6 @@ module V1
           end
         end
 
->>>>>>> 150852366
       end # user
 
       namespace :profiles do
