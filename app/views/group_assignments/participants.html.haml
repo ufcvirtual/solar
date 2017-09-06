@@ -4,7 +4,8 @@
       %tr.lines{ :"data-user-id" => participant.id }
         %td= participant.name
         - unless @import
-          %td.icon{ onclick: "remove_participant(this)", :"data-tooltip" => t('group_assignments.index.remove') }= content_tag(:i, nil, class: "icon-cross-square")
+          %td.icon{ onclick: "remove_participant(this)", onkeydown: "remove_participant(this, event)", :"data-tooltip" => t('group_assignments.index.remove') }
+            = content_tag(:i, nil, class: "icon-cross-square", :'aria-label' => t('group_assignments.index.remove'), :"data-tooltip" => t('group_assignments.index.remove'), tabindex: 0)
   .text_none.empty_message{ class: @participants.any? ? 'hide_message' : '' }= t('group_assignments.index.no_participants')
 
 = javascript_include_tag "tooltip"
