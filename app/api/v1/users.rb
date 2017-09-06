@@ -86,6 +86,8 @@ module V1
           end
         end
 
+      end # user
+
       namespace :profiles do
 
         desc "Retorna usuários com perfis informados"
