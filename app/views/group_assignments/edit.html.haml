@@ -1,15 +1,15 @@
 = form_for @group_assignment do |f|
   = f.text_field :group_name
   .buttons
-    = content_tag(:i, nil, class: "icon-checkmark save", onclick: "rename_group(this)", :"data-tooltip" => t(:save))
-    = content_tag(:i, nil, class: "icon-cross cancel", onclick: "cancel_group(this)", :"data-tooltip" => t(:cancel))
+    = content_tag(:i, nil, class: "icon-checkmark save", onclick: "rename_group(this)", onkeydown: "rename_group(this, event)", :"data-tooltip" => t(:save), tabindex: 0)
+    = content_tag(:i, nil, class: "icon-cross cancel", onclick: "cancel_group(this)", onkeydown: "cancel_group(this, event)", :"data-tooltip" => t(:cancel), tabindex: 0)
 
 :javascript
   $(function(){
     $("form").keypress(function(e){
       if (e.keyCode == 13){
         e.preventDefault();
-        rename_group($(this).children(".buttons").first().children("i.save").first());
+        // rename_group($(this).children(".buttons").first().children("i.save").first());
         select_group($(this).parents(".label").first());
       }
     });
