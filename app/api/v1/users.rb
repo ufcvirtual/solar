@@ -86,21 +86,6 @@ module V1
           end
         end
 
-        params do
-          requires :cpf, type: String
-          optional :name, type: String
-        end
-        put "unbind/:cpf" do
-          begin
-            user_blacklist = UserBlacklist.where(cpf: params[:cpf].delete('.').delete('-')).first_or_initialize
-            user_blacklist.name = params[:name] unless params[:name].blank?
-            user_blacklist.save!
-            {ok: :ok}
-          end
-        end
-
-      end # user
-
       namespace :profiles do
 
         desc "Retorna usuários com perfis informados"
