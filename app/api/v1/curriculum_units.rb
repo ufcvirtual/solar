@@ -66,6 +66,32 @@ module V1
             {ok: :ok}
           end
         end
+
+        desc "Remover disciplina"
+        params do
+          optional :id, type: Integer
+          optional :code
+          exactly_one_of :code, :id
+        end
+        delete "/" do
+          begin
+            uc =  if params[:id]
+              CurriculumUnit.find(params[:id])
+            else
+              CurriculumUnit.where("lower(code) = ?", params[:code].downcase).first
+            end
+
+            unless uc.blank?
+              begin
+                uc.destroy
+              rescue
+                uc.deactivate_all_groups
+              end
+            end
+
+            {ok: :ok}
+          end
+        end
         
       end # curriculum_unit
 
