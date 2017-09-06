@@ -126,7 +126,14 @@ module V1
 
       ## CREATE
 
-      params { requires :id, type: Integer, desc: 'Discussion ID.' }
+      params do
+        requires :id, type: Integer, desc: 'Discussion ID.'
+        requires :discussion_post, type: Hash do
+          requires :content, type: String
+          optional :parent_id, type: Integer
+          optional :draft, type: Boolean, default: false
+        end
+      end
       post ":id/posts" do
         verify_user_permission_on_discussion_and_set_obj(:create)
 
@@ -144,11 +151,41 @@ module V1
         if @post.save
           { id: @post.id }
         else
-          raise @post.errors.full_messages
+          raise @post.errors.full_messages.join(', ')
         end
       end #:id/posts
 
+      namespace :post do
+        desc 'Update a post.'
+        params do
+          requires :id, type: Integer, desc: 'Post ID.'
+          requires :discussion_post, type: Hash do
+            optional :content, type: String
+            optional :draft, type: Boolean
+            at_least_one_of :content, :draft
+          end
+        end
+        put ':id' do
+          User.current = current_user
+          raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
+          
+          post = Post.find(params[:id])
+
+          raise ActiveRecord::RecordNotFound if post.blank?
+          raise CanCan::AccessDenied if (post.user_id != current_user.id)
+          raise CanCan::AccessDenied unless post.discussion.user_can_interact?(current_user.id)
+
+          post_params[:content] = CGI::escapeHTML(post_params[:content]) unless post_params[:content].blank?
+
+          if post.update_attributes post_params
+            { id: post.id }
+          else
+            raise post.errors.full_messages.join(', ')
+          end
+        end
+      end # namespace post
     end # namespace discussions
+
 
     namespace :posts do
 
@@ -203,6 +240,7 @@ module V1
         pfile.destroy
       end
 
-    end
-  end # namespace posts
+    end # namespace posts
+
+  end
 end
