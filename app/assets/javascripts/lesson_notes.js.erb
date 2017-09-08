@@ -1,6 +1,5 @@
 function edit_note(icon){
   new_note_box();
-
   $.get($(icon).data('link'), function(data){
     $(icon).parents('.note:first').html(data);
     $('#lesson_note_name').prop('tabindex', 0);
