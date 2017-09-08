@@ -31,7 +31,6 @@
       = will_paginate @posts
     .new_posts{style: "display: block;"}
       #new_post
-        - p @post
         = simple_form_for(@post, html: { id: 'new_post_form', :'action-to-edit' => discussion_post_path(@discussion.id, ':id'), :"action-default" => discussion_posts_path(@discussion.id), method: :put, multipart: true }) do |form|
           = form.hidden_field(:parent_id,  value: '', id: 'discussion_post_parent_id')
           = form.hidden_field(:display_mode, value: @display_mode, id: 'display_mode_1')
@@ -40,8 +39,9 @@
 
           = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'post_content', number: '', field: ''}
           
-          = button_tag t('.save_draft'), class: "btn", id: "submit_post_draft", type: :button, :'data-tooltip' => raw(t('posts.post.fv_explain')), :'aria-label'=> t('.save_draft') + raw(t('posts.post.fv_explain_alt')), :'data-draft' => true
           = button_tag t('posts.post.attach_file'), class: 'btn btn-orange new_file', id: 'post_new_file'
+          = button_tag t('.save_draft'), class: "btn", id: "submit_post_draft", type: :button, :'data-tooltip' => raw(t('posts.post.fv_explain')), :'aria-label'=> t('.save_draft') + raw(t('posts.post.fv_explain_alt')), :'data-draft' => true
+         
 
           .new_post_dialog_buttons.btn-group
             = button_tag content_tag(:span, t(:cancel)), type: 'button', onclick: "cancel_posting(this)", class: 'btn btn_caution', id: 'btn_cancel_post'
@@ -62,8 +62,8 @@
                 .input.files
                   %label
                   %span#file{:"data-file-id" => file.id}
-                    = file.attachment_file_name
-                    %i.icon-cross-square.warning.remove_file
+                    %span{ tabindex: "0" }= file.attachment_file_name
+                    %i.icon-cross-square.warning.remove_file{ tabindex: "0" }
 
     .forum_post_new
 
@@ -272,34 +272,44 @@
       $(".attachment_title_").removeClass("invisible");
 
       $("input[type='file']", new_form).change(function(){
-        var new_file_name = "<div class='input files'> <label></label> <span id='file' data-input-file-name=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-square warning remove_file'></i> </span> </div>";
+        console.log(this.files[0].name );
+        var text_aria_label = "#{I18n.t('posts.post.remove_file')}"+': ' + this.files[0].name + ' ' +humanFileSize(this.files[0].size);
+
+        var new_file_name = "<div class='input files'> <label></label> <span id='file' data-input-file-name=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-square warning remove_file' tabindex= '0' aria-label= '"+text_aria_label+"' data-tooltip= '"+text_aria_label+"' ></i> </span> </div>";
 
         if ($(".list_files_to_send_ .files:last").lenght)
           $(".list_files_to_send_ .files:last").after(new_file_name);
         else
           $(".list_files_to_send_").append(new_file_name);
 
-        $(".remove_file").click(function(){
-          var span_file = $(this).parents('span#file');
+        $(".remove_file").on("click keypress", function(event){
+          var keynum = event.which || event.keyCode;
 
-          $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove();
-          $(span_file).parents('div.input.files').remove();
+          if( keynum == 13 || event.type == 'click'){
+            var span_file = $(this).parents('span#file');
 
-          if (!$(".list_files_to_send_").children().length)
-            $(".attachment_title_").addClass("invisible");
+            $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove();
+            $(span_file).parents('div.input.files').remove();
+
+            if (!$(".list_files_to_send_").children().length)
+              $(".attachment_title_").addClass("invisible");
+          }    
         });
       });
     }
 
-    $(".remove_file").click(function(){
-      var span_file = $(this).parents('span#file');
+    $(".remove_file").on("click keypress", function(event){
+      var keynum = event.which || event.keyCode;
+      if( keynum == 13 || event.type == 'click') {
+        var span_file = $(this).parents('span#file');
 
-      $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove(); // pra edicao nao serve
-      $("input[data-file-id=" + span_file.data("file-id") + "]").val(1); // edicao: colocar o _destroy com valor 1
-      $(span_file).parents('div.input.files').remove();
+        $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove(); // pra edicao nao serve
+        $("input[data-file-id=" + span_file.data("file-id") + "]").val(1); // edicao: colocar o _destroy com valor 1
+        $(span_file).parents('div.input.files').remove();
 
-      if (!$(".list_files_to_send_").children().length)
-        $(".attachment_title_").addClass("invisible");
+        if (!$(".list_files_to_send_").children().length)
+          $(".attachment_title_").addClass("invisible");
+      }    
     });
     $(".new_file").click(function(e){
       e.preventDefault();
@@ -307,6 +317,11 @@
     });
 
   });
+
+  function humanFileSize(size){
+    var i = Math.floor( Math.log(size) / Math.log(1024) );
+    return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB'][i];
+  }
 
   function publish_post(btn){
     $.put($(btn).data('url'), {draft: false}, function(data){
