@@ -30,15 +30,15 @@ function form_post_reset_parameters() {
 }
 
 function destroy_editor() {
-  if (CKEDITOR.instances['discussion_post_content']) {
-    CKEDITOR.instances['discussion_post_content'].destroy();
-    $("#discussion_post_content").val(null);
+  if (CKEDITOR.instances['post_content']) {
+    CKEDITOR.instances['post_content'].destroy();
+    $("#post_content").val(null);
   }
 }
 
 function append_rich_text(container) {
   destroy_editor();
-  CKEDITOR.replace('discussion_post_content');
+  CKEDITOR.replace('post_content');
 
   $("#new_post").detach().appendTo(container);
   $('#new_post').show(300);
@@ -71,6 +71,7 @@ function new_post(obj, parent) {
     postNew = $(obj).closest('.forum_navigation').children(".forum_post_new");
     $(postNew).show();
     append_rich_text(postNew); // seletor para novo post
+
   } else {
     postReply = $(obj).closest('.forum_post_wrapper').children(".forum_post_reply");
     $(postReply).show();
@@ -95,7 +96,7 @@ function update_post(obj, post, parent) {
   $(postEdit).show();
   append_rich_text(postEdit);
   $(postEdit).parent().find('.publish_post').hide();
-  CKEDITOR.instances['discussion_post_content'].setData($(obj).closest('.forum_post_wrapper').children('.forum_post_inner_content').html());
+  CKEDITOR.instances['post_content'].setData($(obj).closest('.forum_post_wrapper').children('.forum_post_inner_content').html());
 
   return false;
 }

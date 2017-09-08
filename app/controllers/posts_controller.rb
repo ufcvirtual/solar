@@ -32,6 +32,9 @@ class PostsController < ApplicationController
       p = params.slice(:date, :type, :order, :limit, :display_mode, :page)
 
       @display_mode = p['display_mode'] ||= 'tree'
+      @post = Post.new
+      @post.files.build
+   
 
       if (p['display_mode'] == "list" || params[:format] == "json")
         # se for em forma de lista ou para o mobilis, pesquisa pelo método posts
@@ -59,6 +62,11 @@ class PostsController < ApplicationController
         }
       end
     end  
+  end
+
+  def new
+    @post = Post.new
+    @post.files.build
   end
 
   ## GET /discussions/1/posts/user/1
@@ -106,7 +114,9 @@ class PostsController < ApplicationController
 
   ## PUT /discussions/:id/posts/1
   def update
-    if @post.update_attributes(content: params[:discussion_post][:content], draft: params[:discussion_post][:draft])
+    #if @post.update_attributes(content: params[:post][:content], draft: params[:post][:draft])
+    @post = Post.find(params[:id])
+    if @post.update_attributes post_params
       render json: {success: true, post_id: @post.id, parent_id: @post.parent_id}
     else
       render json: { result: 0, alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
@@ -157,7 +167,7 @@ class PostsController < ApplicationController
   private
 
     def post_params
-      params.require(:discussion_post).permit(:content, :parent_id, :discussion_id, :draft)
+      params.require(:post).permit(:content, :parent_id, :discussion_id, :draft, files_attributes: [:id, :attachment, :_destroy])
     end
 
     def new_post_under_discussion(discussion)

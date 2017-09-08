@@ -16,6 +16,8 @@ class Post < ActiveRecord::Base
   has_many :children, class_name: 'Post', foreign_key: 'parent_id', dependent: :destroy
   has_many :files, class_name: 'PostFile', foreign_key: 'discussion_post_id', dependent: :destroy
 
+  accepts_nested_attributes_for :files, allow_destroy: true, reject_if: proc {|attributes| !attributes.include?(:attachment) || attributes[:attachment] == '0' || attributes[:attachment].blank?}
+
   before_create :set_level, :verify_level
   before_destroy :remove_all_files
 

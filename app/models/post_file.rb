@@ -10,7 +10,7 @@ class PostFile < ActiveRecord::Base
   validates_attachment_size :attachment, less_than: 10.megabyte
   validates_attachment_content_type_in_black_list :attachment
 
-  validate :can_change?, if: 'merge.nil?'
+  #validate :can_change?, if: 'merge.nil?'
   before_destroy :can_change?, if: 'merge.nil?'
 
   has_attached_file :attachment,
