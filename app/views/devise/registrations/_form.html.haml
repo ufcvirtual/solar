@@ -154,16 +154,12 @@
       });
 
       var el = $(".error").siblings()[0];
-     // var er = $(".error")[0];
-     //var text = $(el).text()+': '+$(er).text();
       if($(el).is(":visible")){
-        //$(el).attr("aria-label",text);
         $(".error").siblings()[0].focus();
       }else{
         if(typeof($("#next_1")) !== "undefined" && $("#next_1").is(":visible")){
           $("#next_1").click();
           if ($(el).is(":visible")) {
-            //$(el).attr("aria-label",text);
             $(".error").siblings()[0].focus();
           } 
         }

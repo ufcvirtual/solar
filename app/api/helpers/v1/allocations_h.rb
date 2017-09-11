@@ -12,23 +12,29 @@ module V1::AllocationsH
   end
 
   # cancel all previous allocations and create new ones to groups
-  def cancel_previous_and_create_allocations(groups, user, profile_id)
-    # only curriculum units which type is 2
-    # user.groups([profile_id], nil, nil, 2).each do |group|
-    #   group.change_allocation_status(user.id, 2, profile_id: profile_id) # cancel all users previous allocations as profile_id
-    # end
-
-    groups.each do |group|
-      group.allocate_user(user.id, profile_id)
+  def create_allocations(groups, user, profile_id)
+    ActiveRecord::Base.transaction do
+      groups.each do |group|
+        group.allocate_user(user.id, profile_id)
+      end
     end
   end
+
+  def cancel_allocations(groups, user, profile_id)
+    ActiveRecord::Base.transaction do
+      groups.each do |group|
+        group.change_allocation_status(user.id, 2, profile_id: profile_id) # cancel all users previous allocations as profile_id
+      end
+    end
+  end
+
 
   def cancel_all_allocations(profile_id, semester_id)
     ucs = CurriculumUnitType.find(2).curriculum_units.map(&:id)
     params = { curriculum_unit_id: ucs }
     params.merge!(semester_id: semester_id) #unless config not defined
     taggables = RelatedTaggable.joins(:offer).where(offers: params).select('COALESCE(group_at_id, offer_at_id) AS at').map(&:at).map(&:to_i)
-    Allocation.where(allocation_tag_id: taggables, profile_id: profile_id).update_all updated_at: Time.now, status: Allocation_Cancelled
+    Allocation.where(allocation_tag_id: taggables, profile_id: profile_id).update_all updated_at: Time.now, status: Allocation_Cancelled, updated_by_user_id: nil
   end
 
   def get_profile_id(profile)
@@ -74,7 +80,7 @@ module V1::AllocationsH
     end
 
 
-    users << import_users(params) if (params[:cpf].present? or params[:cpfs].present?) and params[:ma]
+    users << import_users(params) if (params[:cpf].present? || params[:cpfs].present?) && params[:ma]
     users.compact.flatten
   end
 

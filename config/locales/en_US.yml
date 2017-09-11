@@ -207,6 +207,7 @@ en_US:
       question_image: Image
       scheduleevent: Evento
       chatroom: Chat
+      notification_file: Arquivo
     attributes:
       user:
         password: "Password"
@@ -412,6 +413,7 @@ en_US:
       notification:
         title: Title
         description: Description
+        mandatory_reading: Mandatory Reading
       profile:
         name: Name
         description: Description
@@ -454,6 +456,10 @@ en_US:
       message:
         content: Content
         subject: Subject
+      notification_file:
+        file_file_size: Size
+        file: File
+        file_file_name: File
 
     errors:
       uniqueness: "Record already exists in the system"
@@ -537,14 +543,18 @@ en_US:
   dont_destroy_with_many_allocations: "It has associations with other users"
   dont_destroy_with_content: "It has content"
   item_search_no_found: "No item found"
+  high_contrast_link: "High Contrast"
+  remove_high_contrast_link: "Remove High Contrast"
   login_description1: "Solar is a virtual learning environment developed by the UFC Virtual Institute at Federal University of Ceará. It is geared towards the teacher and the student, allowing the publication of courses and interaction with them."
   login_description2: "The Solar was developed to enhance the learning process, starting from the interaction with the graphic interface of the environment, and to allow fast access to the pages and the content, easy navigation and browser compatibility. Here, the learner feels safe to explore the available spaces. The environment is supported by a philosophy of interaction, not control."
   login_title: "Sistema Online de Aprendizagem da Universidade Federal do Ceará"
   login_footer: "UFC Virtual Institute 2011 - Federal University of Ceará | Development Team"
   login_footer1: "UFC Virtual Institute"
   login_footer2: "Federal University of Ceará"
-  login_footer3: "Development Team"
-  login_footer4: "Privacy"
+  login_footer3: "Portals"
+  login_footer4: "Development"
+  login_footer5: "Code"
+  login_footer6: "Team"
   login_facebook: "The data collected from facebook are used exclusively for educational purposes at UFC Virtual Institute - Federal University of Ceará."
   login_app: "Download our App!"
   login_faq: FAQ
@@ -743,6 +753,7 @@ en_US:
       enrolled: "Enrolled"
       rejected: "Enrollment Rejected"
       pending: Pending
+      cancelled_rejected: Rejected/Cancelled
       ucs_available: Subjects Available
       confirm: "Are you sure you want to cancel?"
       cancel_request: "Cancel Request"
@@ -755,6 +766,7 @@ en_US:
       general_message: It was not possible to execute action
       uab_enrollment: It's not possible to enroll at a distance curriculum unit by Solar
       uab_general: It's not possible to change an enrollment for a distance curriculum unit by Solar
+      off_period: Closed enrollment period
     show:
       course: Course
       curriculum_unit: Subject
@@ -1094,6 +1106,8 @@ en_US:
       number_posts: 'Number of Posts %{n_post}'
       show_my_post: "Show my discussions"
       primary: " primary"
+      save_draft: Save draft
+      publish: Publish
     post:
       remove_file_confirm: "Your file will be deleted permanently. Proceed?"
       answer: "Reply"
@@ -1114,9 +1128,18 @@ en_US:
       res_post: "ª post"
       remove_attachment: Remove %{file} %{size}
       remove_post: "Post delete success"
+      draft: "<a class='draft_version_explain' href='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'> Draft (?)</a>"
+      draft2: Explanation of the post Draft
+      fv_explain: "<p> A draft post is visible only to the user who created it and it can be published at any time, as long as the forum still is in its posting period.</p> <p>If the draft is the only answer to a parent post and this post is deleted, the draft will also be erased.</p>"
+      fv_explain_alt: "A draft post is visible only to the user who created it and it can be published at any time, as long as the forum still is in its posting period. If the draft is the only answer to a parent post and this post is deleted, the draft will also be erased."
     create:
       created: "Post was successfully created"
       not_created: "Post was not created"
+      draft: "Draft created successfully. If it's the only answer to a post and the post parent is deleted, this post will be also deleted."
+      not_draft: "Draft was not created"
+      published: Post published successfully
+      save_post: Do you want to save your post?
+      save_draft: Do you want to save your post as draft?
     update:
       updated: "Post was successfully updated"
       not_updated: "Post was not updated"
@@ -1139,15 +1162,8 @@ en_US:
       date_range_expired: It was not possible to execute action. Date range expired.
       general_message: It was not possible to execute action
       permission: It's not possible to change or remove posts from others users
-    shortcut:
-      new: 78
-      list: 76
-      thread: 84
-      discussion: 68
-      shortcut_new: "[N]"
-      shortcut_list: "[L]"
-      shortcut_thread: "[T]"
-      shortcut_discussion: "[D]"
+      not_published: It was not possible to publish post
+      draft: It's not possible to reply a draft post
 
   post_files:
     new:
@@ -1250,6 +1266,9 @@ en_US:
       edit: Edit Notification
       day_from: Period
       day_to: to
+      mandatory_explain: 'Notification will show automatically after user login'
+      mandatory: Mandatory reading (?)
+      add_files: 'Add files'
     list:
       notifications: Notifications
       notification: Notification
@@ -1262,6 +1281,11 @@ en_US:
       compress_description: Compress description
       choose_at_least_one: "Choose at least one notification"
       choose_one: Choose a notification
+      mandatory: 'Yes'
+      not_mandatory: 'No'
+      mandatory_reading: Mandatory reading
+      files: Files
+      preview: Preview
     success:
       created: Notification was successfully created.
       updated: Notification was successfully updated.
@@ -1270,10 +1294,20 @@ en_US:
       created: Notification wasn't created.
       updated: Notification wasn't updated.
       deleted: Notification wasn't deleted.
+      only_general: can only be checked at general notifications
+      download: It was not possible to download file.
+      general_message: It was not possible to execute desired action.
+      ended: "can't be changed after period ending"
+      ended_file: "can't be uploaded or removeed after period ending"
     show:
       count_groups: "%{count} groups"
       next: Next notification
       prev: Previous notification
+    show_mandatory:
+      read_later: Read later
+      download_file_alt: Download file %{name} which size is %{size}
+      download_file: "%{name} (%{size})"
+      files: 'Files'
   webconferences:
     form:
       new: "New Webconference"
@@ -1663,7 +1697,8 @@ en_US:
         cancel: Allocation not canceled.
         cancel_request: No canceled.
         cancel_profile_request: Profile request not canceled.
-        invalid_profile: "Não é possível realizar alocação com o perfil e dados fornecidos"
+        invalid_profile: "It's not possible to allocate this user with profile and data provided"
+        off_period: Closed enrollment period
     index:
       filter_user: "Filter Users"
       manage: Manage
@@ -1895,11 +1930,6 @@ en_US:
       size: Size
     notification:
       final_date_smaller_than_offer: "Final date can't be posterior to offer's period"
-    shortcut:
-      new_web: 87
-      new_file: 70
-      shortcut_new_web: "[W]"
-      shortcut_new_file: "[F]"
     summarized:
       title: Student/group %{name} assignment %{assignment_name}'s info
       participants: 'Participants: '
@@ -2336,6 +2366,10 @@ en_US:
       offer: "Offer"
       group: "Group"
       choice: Choice
+      course_modality: "Course modality*"
+      filter_msg_singular: " result is available, use up and down arrow keys to navigate."
+      filter_msg_plural: " results are available, use up and down arrow keys to navigate."
+      not_result_filter: "No search results."
     content:
       type: "Type*"
       course: "Course*"
@@ -2774,6 +2808,7 @@ en_US:
       restore: Restore message
       size: " (%{size})"
       download_file: Download attachment %{name} with size %{size}
+      sent_at: 'Sent at: '
     index:
       filter_selected: "View: "
       placeholder_subject: 'Subject to be searched'
@@ -2787,29 +2822,6 @@ en_US:
       remove_success: Messages moved to trash successfully
       restore_success: Messages restored successfully
     message_to: Send message to %{name}
-    shortcut:
-      new: 78
-      all: 65
-      reads: 82
-      unreads: 85
-      inbox: 73
-      outbox: 79
-      trashbox: 84
-      trash: 65
-      reply: 82
-      reply_all: 69
-      forward: 70
-      shortcut_new: "[N]"
-      shortcut_all: "[A]"
-      shortcut_reads: "[R]"
-      shortcut_unreads: "[U]"
-      shortcut_inbox: "[I]"
-      shortcut_outbox: "[O]"
-      shortcut_trashbox: "[T]"
-      shortcut_trash: "[A]"
-      shortcut_reply: "[R]"
-      shortcut_reply_all: "[E]"
-      shortcut_forward: "[F]"
 
   profiles:
     form:
@@ -3085,33 +3097,133 @@ en_US:
       search: "Search:"
       filter: "Filter:"
       type: Type
-      profile: Profile  
+      profile: Profile
       result_search: "Access table with search's result"
 
   shortcut:
-    assignment: Assignments
-    webconference: Webconferences
-    exam: Exams
-    chat_room: Chat
-    schedule_event: Shedule events
-    discussion: Discussions
-    all: All
-    frequency: Frequency
-    evaluative: Evaluatives
-    notevaluative: Not Evaluatives
-    number_evaluative: [1]
-    number_frequency: [2]
-    number_notevaluative: [3]
     shortcut_link: "Open shortcut menu [4]"
     no_shortcuts: "No shortcuts"
     close: "Close"
-    nextq: Next question
-    previousq: Previous question
-    enunciation: Focus on enunciation
-    first_item: Focus on first item
-    timeq: Focus on time
-    questions: Focus on question amount
-    audio: Focus on first enunciation's audio
+    curricular_unit:
+      code:
+        subject: 83
+        responsibles: 82
+        lessons: 76
+        messages: 77
+        forum: 68
+        agenda: 65
+      name:
+        subject: "Subject [S]"
+        responsibles: "Responsibles [R]"
+        lessons: "Lessons [L]"
+        messages: "Messages [M]"
+        forum: "Discussions [D]"
+        agenda: "Agenda [A]"
+    discussion:
+      code:
+        new: 80
+        list: 76
+        thread: 84
+        discussion: 68
+      name:
+        new: "New post [P]"
+        list: "Show as list [L]"
+        thread: "Show as thread [T]"
+        discussion: "Show my discussions [D]"
+    scores:
+      name:
+        exam: "Exams [E]"
+        webconference: "Webconferences [W]"
+        schedule_event: "Events [V]"
+        all: "All [L]"
+        chat_room: "Chat Rooms [C]"
+        discussion: "Discussions [D]"
+        assignment: "Assignments [A]"
+        evaluative: 'Evaluative [1]'
+        frequency: 'Frequency [2]'
+        notevaluative: 'Not Evaluative [3]'
+      code:
+        exam: 69
+        webconference: 87
+        schedule_event: 86
+        all: 76
+        chat_room: 67
+        discussion: 68
+        assignment: 65
+        evaluative: 97
+        frequency: 98
+        notevaluative: 99
+    evaluatives:
+      name:
+        responsibles: "Responsibles [R]"
+        students_and_tools: "Students/Tools [T]"
+        legends: "Subtitles [S]"
+        all: "Geral View [0]"
+        evaluative: 'Evaluative [1]'
+        notevaluative: 'Not Evaluative [2]'
+        frequency: 'Frequency [3]'
+      code:
+        responsibles: 82
+        students_and_tools: 84
+        legends: 83
+        all: 96
+        evaluative: 97
+        notevaluative: 98
+        frequency: 99
+    exam:
+      name:
+        time: 'Time [T]'
+        questions: 'Question amount [Q]'
+        enunciation: 'Enunciation [E]'
+        items: 'First item [I]'
+        audio: "First enunciation's audio [A]"
+      code:
+        time: 84
+        questions: 81
+        enunciation: 69
+        items: 73
+        audio: 65
+    assignment:
+      code:
+        web: 87
+        file: 70
+      name:
+        web: "New Webconference [W]"
+        file: "Send File [F]"
+    message:
+      code:
+        new: 77
+        all: 76
+        reads: 69
+        unreads: 85
+        inbox: 73
+        outbox: 79
+        trashbox: 84
+        trash: 88
+        reply: 82
+        reply_all: 65
+        forward: 70
+        unread: 78
+      name:
+        new: "New message [M]"
+        all: "All [L]"
+        reads: "Read [E]"
+        unreads: "Unread [U]"
+        inbox: "Inbox [I]"
+        outbox: "Outbox [O]"
+        trashbox: "Trashbox [T]"
+        trash: "Remove [X]"
+        reply: "Reply [R]"
+        reply_all: "Reply All [A]"
+        forward: "Foward [F]"
+        unread: 'Mark as unread [N]'
+    pagination:
+      name:
+        next: 'Next page [SHIFT + right arrow]'
+        previous: 'Previous page [SHIFT + left arrow]'
+      code:
+        next: 39
+        previous: 37
 
   scores:
     index:
@@ -3218,35 +3330,28 @@ en_US:
       report_evaluative: "Download: Download: Report all toll evaluative."
       report_frequency: "Download: Download: Report all toll frequency."
       shortcut: "Shortcut: Number: 1 - Activities evaluative, Number: 2 - Activities frequency, Number: 3 - Activities not evaluative."
-      shortcut_exam: "[E] "
-      shortcut_webconference: "[W] "
-      shortcut_schedule_event: "[V] "
-      shortcut_all: "[L] "
-      shortcut_chat_room: "[C] "
-      shortcut_discussion: "[D] "
-      shortcut_assignment: "[A] "
       shortcut: Shortcut
-      list_all_evaluative: List all evaluatives'
-      list_all_frequency: List all frequencies'
-      list_all_not_evaluative: List all not evaluatives'
+      list_alls_evaluative: List all evaluative activities'
+      list_alls_frequency: List all frequency activities'
+      list_alls_not_evaluative: List all not evaluative activities'
       list_assignments_evaluative: List evaluatives assignments'
       list_assignments_frequency: List assignments of frequency'
       list_assignments_not_evaluative: List assignments not evaluatives'
       list_chats_evaluative: List evaluatives chats'
       list_chats_frequency: List frequency chats'
       list_chats_not_evaluative: List not evaluatives chats'
-      list_discussion_evaluative: Lista evaluative discussions'
-      list_discussion_frequency: List discussion of frequency'
-      list_discussion_not_evaluative: List not evaluatives discussions'
+      list_discussions_evaluative: Lista evaluative discussions'
+      list_discussions_frequency: List discussion of frequency'
+      list_discussions_not_evaluative: List not evaluatives discussions'
       list_exams_evaluative: List evaluatives exams'
       list_exams_frequency: List frequency exams'
       list_exams_not_evaluative: List not evaluative exams'
-      list_schedule_evaluative: List schedule evaluatives'
-      list_schedule_frequency: List schedule of frequency'
-      list_schedule_not_evaluative: List not evaluative schedules'
-      list_web_conference_evaluative: List evaluative web conference'
-      list_web_conference_frequency: List web conference of frequency'
-      list_web_conference_not_evaluative: List not evaluative web conference'
+      list_schedule_events_evaluative: List schedule evaluatives'
+      list_schedule_events_frequency: List schedule of frequency'
+      list_schedule_events_not_evaluative: List not evaluative schedules'
+      list_webconferences_evaluative: List evaluative webconferences'
+      list_webconferences_frequency: List webconferences of frequency'
+      list_webconferences_not_evaluative: List not evaluative webconferences'
       final_exam: Final Exam
       hours: Maximum Working Hours
     situation:
@@ -3258,7 +3363,7 @@ en_US:
       evaluated: Evaluated
       not_corrected: Not corrected
       not_answered: Not answered
-      retake: Retake
+      retake: '%{count} of %{count_all} attempts'
       message_ended: Ended
       closed: Closed
       started: Started
@@ -3300,14 +3405,6 @@ en_US:
       summary_evaluative: "This table contains all the evaluation tool: (exams, assignment, chats, assignments, webconferences the shedule events)."
       summary_frequency: "This table contains all the frequency tool: (exams, assignment, chats, assignments, webconferences the shedule events)."
       summary_notevaluative: "This table contains all the not evaluation tool: (exams, assignment, chats, assignments, webconferences the shedule events)."
-    checkbox:
-      exam: 69
-      assignment: 65
-      discussion: 68
-      chat_room: 67
-      webconference: 87
-      schedule_event: 86
-      all: 76
 
   lesson_notes:
     error:
@@ -3696,21 +3793,6 @@ en_US:
       item_audio_file_size: "File too large. The maximum size should be up to 10MB."
       item_image_file_size: "File too large. The maximum size should be up to 2MB."
   questions:
-    shortcut:
-      shortcut_time: [T]
-      time: 84
-      shortcut_questions: [Q]
-      questions: 81
-      shortcut_enunciation: [E]
-      enunciation: 69
-      shortcut_items: [I]
-      items: 73
-      shortcut_next: [N]
-      next: 78
-      shortcut_previous: [P]
-      previous: 80
-      shortcut_audio: [A]
-      audio: 85
     index:
       title: Questions bank (%{count} found)
       new: New question
@@ -4220,11 +4302,11 @@ en_US:
       timestamp_info: Document Generated in
       webconference: Title Webconference
       access_number: Number Access
-      access_number_distinct: Number Access Distinct
-      access_number_responsables: Number Access Responsables
-      title_chat: Title of Chat
-      title_portfolio: Portfolio
-      number_distinct_user_portfolio: Amount Distinct User
+      access_number_distinct: Number Distinct Access
+      access_number_responsables: Number Access Responsibles
+      title_chat: Chat
+      title_portfolio: Assignment
+      number_distinct_user_portfolio: Amount Distinct Users
     summary:
       courses_number: Amount of Courses
       groups_number: Amount of Groups
@@ -4233,15 +4315,15 @@ en_US:
       users_number_module_bound: Users Linked to the MA - Academic Module
       users_number_module_unbound: Users Unlinked to the MA - Academic Module
       disciplines_amount: Disciplines Amount
-      files_portifolio: Portfolio posts Amount
+      files_portifolio: Assignment files Amount
       number_of_students: Number of active registered students
-      web_portifolio: Portfolio webconferences Amount
+      web_portifolio: Assignment webconferences Amount
       webconferences_number: Webconferences Amount
       access_number: Amount Access
       post_number: Amount Posts at Forum
       number_of_responsible: Number of Responsibles
       access_number_webconrence: Amount Access Webconference
-      webconference_total: Webconference Total
+      webconference_total: Amount Access by Distinct Responsibles Webconference
       access_number_distinct_user_webconrence: Amount Access Distinct Users Webconference
       discussion_number: Amount Discussion
       lesson_number: Amount Lessons
@@ -4251,8 +4333,8 @@ en_US:
       chat_message_number: Amount Message (Chats)
       access_number_responsables: Number Access Responsables
       exam_number: Amount Exam
-      files_portifolio_distinct_user: Portfolio Files Amount Distinct (User)
-      groups_active_number: Amount of Groups Active
+      files_portifolio_distinct_user: Assignment Files Amount by Distinct Users
+      groups_active_number: Active Groups Amount
 
   tutorials:
     menu: Tutorials
@@ -4322,6 +4404,9 @@ en_US:
     open: (Will open modal window)
     minimize: "Minimize modal window"
 
+  flash_message:
+    close: "Close notification"
+
   common_between_pages:
     more: More
     less: Less
@@ -4330,7 +4415,7 @@ en_US:
     frequency:
       t: 'Yes <br/>(max: %{hours}h)'
       f: 'No'
-    ev_final_exam: 
+    ev_final_exam:
       t: 'Yes <br/>(Final Exam)'
       f: 'No'
     final_exam:
@@ -4361,3 +4446,23 @@ en_US:
       date: already started
       date_end: already ended
       restrict: "location not allowed"
+
+  privacy_policies:
+    title: Privacy Policy
+    about_title: About
+    about: "<p>We, members of Solar 2.0 team, know that you care about your privacy and trust us with your information. For that reason, we prepared this document with ours privacy policies to explain which information we collect and how are they used.</p><p>We may change this document to update some information. When this happens, users will be noticed, by Solar's notification tool, by, at least, 7 work days after the change.</p><p>We ask that you read this document with attention.</p>"
+    collected_info_title: Collected information
+    collected_info: "<p>By using Solar, we can collect user's data by four different ways::</p><ol><li>Voluntary interactions: we obtain this data by all form or text field filled, that is, are the information sended by the user itself. That includes messages, assignments, discussions, lesson's notes, instant messages etc.</li><li>Consultation to other application: are data collect by consult to another sistems based on saved data at Solar. That is, by registering at Solar or, even so, after registration, for example, we can consult if that CPF, email or username exists on another sistem and, if that CPF exists, registered data in that sistem are replicated to Solar. Here we can also enroll user at curriculum units or, even so, cancel it.</li><li>Writing by user itself or other users at third party: are data collected through the user itself or another user at applications integrated to Solar and that can, for example, register users or allow that the user send data through forms or actions.</li><li>By use: here data are collect according to users use. Implicating that we save data both in logs with every user action, including navegability actions (for which areas user has been during Solar use), and IP(1), browser(2) and OS(3) used, such as it's versions and access time etc. We can also save cookies(4) with some information such as, for example, minimized lesson.</li></ol>"
+    why_title: Why we collect and use these information
+    why: "<p>We collect and use these information to allow a better use by the user, so that sent information are stored at Solar being, therefore accessible anytime, when not established maximum period to it's storage, by everyone with access to that information.</p><p>We also use these information to update user data and to improve your experience at Solar 2.0, improving it according to collected information.</p><p>Collected or transmited information can also allow integration with another systems or, even so, the possibility of use by other tools, such as mobile apps.</p>"
+    how_title: How we use information
+    how: "<p>Your email address may be used to receive emails sent through message tool at Solar or by other tools in order to notifications or updates such as, for example, having your exam corrected.</p><p>Your registration data and allocations may be queried and updated by administrative users, which purpose is to help on the resolution of access problems, verification of problems and/or stated situations by the user itself or others. The same data may be accessed by users with permission to do so, such as, for example, secretary profiles.</p><p>Yours course's interactions may be consulted by everyone with access to that group or users with profiles that access such data, such as, for example, secretary profiles, administrative users etc.</p><p>User's address data may be used to deliver certificates by course's responsibles.</p><p>Solar 2.0 team can access the system as the user to verify stated problems. Student's progress at course wont be compromised or changed without previous request or without posterior information about the change, except when that change is mandatory to other actions (such as registration of other users, for example). </p><p>Quantitative and qualitative data may be used for studies or to generation of reports.</p><p>Researches may have access to on going data of courses,  however user's privacy will be mantained by omiting their names.</p><p>It's possible that Solar team or administrative users access action and data saved by user, including messages. That only happen to verify problems, generation of reports or verify information. User's privacy is mantained and no data is changed.</p>"
+    third_title: Sharing information with third parties applications
+    third: "<p> Other academic systems developed by Instituto UFC Virtual and UFC use some data from Solar. This use is strictly associated to academic activities and it's operation is directly and restrictly associated to Instituto UFC Virtual.</p>"
+    other_info_title: Additional information
+    other_info: "<p>Solar may, sometimes, redirect user to external websites or browser tabs. This happens, for example, by accessing webconferences and/or it's recordings; video-tutorials; support material's or lessons's urls; footer's urls etc.</p><p>User have control on his own privacy about the use of cookies and cache(6). So he can use browser's functions such as 'anonymous navigation'(7). Using this option, is important to highlight that some functions may not work as expected, such as storage of login and password to future access by browser etc.</p><p>After, at least, 1 year after submitting an webconference assignment or a webconference lesson, it's recordings may be removed from our servers, as predicted in File Document Management System organ.</p>"
+    update_title: Information update and removal
+    update: "<p> During course's offer and following each activity rules and periods, participants will have total freedom to send, update and remove information.</p><p> User can, at anytime, change it's registered data. Except when it's an UAB teatcher or student, because in this case there is integration with third party system, in way that the user have to change it's data on that system. Users that don't fit that profiles and can't change it's data must contact atendimento@virtual.ufc.br so we can remove your bond with that system.</p><p> Login, password and email data of users with bond with the application will be changed automatically at the moment it was changed at that system. All data of user with bond to the system can also be changed if user itself or users with administrative profiles synchronize it's data.</p><p>In case of contact with our support team to recover password or statement of difficults or problems, support could define a random password to the user and comunicating this action. User will have total freedom to change it's password after login.</p>"
+    subtitles_title: Subtitles
+    subtitles: "<ul><li>(1) IP: IP address is a way to identify some dispositive at a network.</li><li>(2) browser: Program that allow that users access and interact with html documents hosted at servers.</li><li>(3) OS: Or Operational System, is a software or a group of softwares that allow that we can use a computer in way that it manages this system resources, providing, therefore, a interface between final user and computer.</li><li>(4) Cookies: stored data at user's browser.</li><li>(5) API: Application program interface, allows that third parties applications consult or send data to Solar.</li><li>(6) cache: Technological component that allows to store some data in way that future request may happen faster.</li><li>(7) anonymous navigation: Navigation type oferede by some browsers (ex: chrome - anonymous navigation; firefox - private navigation) that allows to navigate without saving data at search history, neither saving cookies. This function doesn't hide navigation data from your internet provider service or Solar.</li></ul>"
+    last_update: Last update at august, 31 of 2017 at 14:17P.M

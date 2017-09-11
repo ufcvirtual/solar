@@ -1,6 +1,6 @@
 $(function(){
 
-  if ($("#radio_option_group").prop("checked"))
+  if ($(".offer_groups_options:last [id^='radio_option_group']").prop("checked"))
     $(".group_label").show();
   else
     if(!$('.tools_by_tool_type').length)

@@ -30,20 +30,20 @@ module V1::General
     user = User.new cpf: cpf
     user.connect_and_validates_user if user.can_synchronize?
 
-    raise ActiveRecord::RecordNotFound unless user.valid? and not(user.new_record?)
+    raise ActiveRecord::RecordNotFound unless user.valid? && !user.new_record?
 
     user
   end
 
   def get_destination(curriculum_unit_code, course_code, code, semester)
     case
-      when not(code.blank?)
+      when !code.blank?
         get_group_by_codes(curriculum_unit_code, course_code, code, semester)
-      when not(semester.blank?)
+      when !semester.blank?
         get_offer(curriculum_unit_code, course_code, semester)
-      when not(curriculum_unit_code.blank?)
+      when !curriculum_unit_code.blank?
         CurriculumUnit.find_by_code(curriculum_unit_code)
-      when not(course_code.blank?)
+      when !course_code.blank?
         Course.find_by_code(course_code)
     end
   end 

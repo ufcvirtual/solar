@@ -1,5 +1,5 @@
 - question_images = get_question_images(@question.id)
-- question_audios = get_question_audios(@question.id)
+- @question_audios = get_question_audios(@question.id)
 %h1#lightBoxDialogTitle= t('.title')
 
 .exam_open
@@ -16,9 +16,9 @@
                   = image_tag q_image.image(get_image_size(question_images.count)), alt: q_image.img_alt, :'aria-label' => t('exams.open.image', alt: q_image.img_alt) + (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend))
                 - unless q_image.legend.blank?
                   .legend{:'aria-hidden' => 'true'}= q_image.legend
-        - unless question_audios.blank?
+        - unless @question_audios.blank?
           %ul.question_audios
-            - question_audios.each do |q_audio|
+            - @question_audios.each do |q_audio|
               .visuallyhidden=t(:audio_suggestions)
               - class_ = nil    
               - if !q_audio.description.blank? && !q_audio.audio_description.blank?

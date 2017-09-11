@@ -35,7 +35,7 @@
           = [t('questions.questions.author'), author_name.truncate(15)].join(': ')
           %i.icon-arrow-down-triangle
         .dropdown.dropdown-tip{id: "dropdown_1a_#{question.id}"}
-          %ul{ class: 'dropdown-menu' }  
+          %ul{ class: 'dropdown-menu' }
             = author_name
       - unless updated_by_name.blank?
         .participants.equivalent
@@ -44,7 +44,7 @@
             = [t('questions.questions.updated_by'), updated_by_name.truncate(15)].join(': ')
             %i.icon-arrow-down-triangle
           .dropdown.dropdown-tip{id: "dropdown_2a_#{question.id}"}
-            %ul{ class: 'dropdown-menu' }  
+            %ul{ class: 'dropdown-menu' }
               = updated_by_name
       - unless labels.blank?
         .group_label= render 'labels', labels: labels
@@ -57,7 +57,7 @@
 
 = javascript_include_tag 'tooltip'
 
-:javascript 
+:javascript
   $(function(){
     $(".compress").click(function(){
       $(this).parents('.complete:first').hide();
@@ -75,5 +75,3 @@
       parent_div: $('.list_questions')
     });
   });
-
-  

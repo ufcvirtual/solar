@@ -31,11 +31,11 @@
 
         .offer_groups_options
           .radio_options
-            = radio_button :radio, :option, 'offer', disabled: true
-            = label_tag :radio_option_offer, t('.offer')
+            = radio_button_tag "radio_option_offer_#{filter_number}", 'offer', false, name: 'radio[option]', disabled: true
+            = label_tag "radio_option_offer_#{filter_number}_offer", t('.offer')
 
-            = radio_button :radio, :option, 'group', disabled: true, :'data-number' => filter_number
-            = label_tag :radio_option_group, t('.group')
+            = radio_button_tag "radio_option_group_#{filter_number}", 'group', false, name: 'radio[option]', disabled: true, :'data-number' => filter_number
+            = label_tag "radio_option_group_#{filter_number}_group", t('.group')
 
           .groups
 
@@ -93,5 +93,22 @@
       return false;
     });
 
+    $(".ui-helper-hidden-accessible").removeAttr("display");
 
+    $(".ui-autocomplete-input").on('keydown', function(){
+      var that = this;
+      setTimeout(function() {
+        var text = null;
+        var element = $(that).closest('.ui-combobox').find('.ui-helper-hidden-accessible');
+        var qtd = element.text().replace(/[^0-9]/g,'');
+        if(qtd==1){
+          text = qtd + "#{I18n.t(:filter_result_singular, scope: "editions.content_filter")}";
+        }else if(qtd>1){
+          text = qtd +"#{I18n.t(:filter_result_plural, scope: "editions.content_filter")}";
+        }else{
+          text = "#{I18n.t(:not_result_filter, scope: "editions.content_filter")}";
+        }
+        element.text(text);
+      }, 100);
+    });  
   });

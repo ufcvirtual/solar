@@ -1192,4 +1192,8 @@ res228:
   action: 'list_notifications'
   description: 'Avisos Gerais'
 
-  
+res229:
+  id: 229
+  controller: 'notifications'
+  action: 'mark_as_mandatory'
+  description: 'Marcar aviso como de leitura obrigatória'

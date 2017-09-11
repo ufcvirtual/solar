@@ -87,13 +87,6 @@ body {
   height: 100%;
 }
 
-.fb-like{
-  width: 75px;
-  height: 25px;
-  margin: 0 auto 10px auto;
-  z-index: 1;
-}
-
 input{
   color: $input_color;
 }
@@ -934,4 +927,8 @@ select option{
 .panel h4{
   padding-bottom: 0;
   padding-top: 0;
+}
+
+#privacy ul li{
+  list-style: none;
 }

@@ -71,17 +71,3 @@
         element_selector: '#focu'
       });
   }
-
-  $(function(){
-    $(document).keydown(function (e) {
-      if(!$("input").is(":focus")){
-        if (e.which === parseInt("#{t("assignments.shortcut.new_web")}")) {
-          $("#add_awebconference")[0].click();
-        }
-        if (e.which === parseInt("#{t("assignments.shortcut.new_file")}")) { 
-          $("#add_file")[0].click();
-        }
-        
-      }
-    });
-  });

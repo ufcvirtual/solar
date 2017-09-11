@@ -6,15 +6,15 @@
       .offer_period= t(".opened_short")
       .offer_period.hide= t('.closed_short')
     %div{style: 'float: right; margin-top: 6.5px; font-size: 12px; '}
-      %a.change_offer#history{ href: '#', style: 'color: #000;', :'data-url' => get_history_offers_users_path(history: true)}
+      %a.change_offer#history{ href: '#', :'data-url' => get_history_offers_users_path(history: true)}
         %i.icon-history{:"data-tooltip" => t('.closed_complete'), :'aria-label' => t('.closed_complete')}
         = t('.closed')
-      %a.change_offer.hide#current{ href: '#', style: 'color: #000;', :'data-url' => get_history_offers_users_path}
+      %a.change_offer.hide#current{ href: '#', :'data-url' => get_history_offers_users_path}
         %i.icon-history{:"data-tooltip" => t('.opened_complete'), :'aria-label' => t('.opened_complete')}
         = t('.opened')
         
     .slider-block{style: 'float: right; margin-top: 6.5px; font-size: 12px;margin-right: 10px'}
-      %a#search_box_accesskey{ href: '#', style: 'color: #000;'}
+      %a#search_box_accesskey{ href: '#'}
         %i.icon-search{:"data-tooltip" => t(".filter_data"), :'aria-label' => t(".filter_data_open")}
         =t(".search2")
   .mysolar_portlets_content

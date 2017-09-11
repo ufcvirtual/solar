@@ -6,10 +6,11 @@ module V1::GroupsH
   end
 
   def get_group_by_codes(curriculum_unit_code, course_code, code, semester)
-    Group.joins(offer: :semester).where(code: code, 
-      offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first, 
-               course_id: Course.where(code: course_code).first},
-      semesters: {name: semester}).first
+    group = Group.joins(offer: :semester).where(code: code, offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first, course_id: Course.where(code: course_code).first}, semesters: {name: semester}).first
+
+    raise "group not found to uc: #{curriculum_unit_code}; course: #{course_code}; semester: #{semester} with code: #{code}" if group.blank?
+
+    group
   end
 
   def get_offer_group(offer, group_code)

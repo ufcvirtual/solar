@@ -9,7 +9,7 @@ class EnrollmentsController < ApplicationController
 
     @uc_types = CurriculumUnitType.all
     @user_requests = current_user.allocations.where(profile_id: Profile.student_profile).where('allocation_tag_id IS NOT NULL') # dividir entre matriculados e outros
-    @offers = Offer.to_enroll
+    @groups = current_user.groups_to_enroll
   end
 
   def show

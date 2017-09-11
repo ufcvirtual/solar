@@ -3,7 +3,7 @@ Solar::Application.routes.draw do
   devise_for :users, controllers: { registrations: "devise/users", passwords: "devise/users_passwords" }
 
   authenticated :user do
-    get "/", to: "users#mysolar"
+    get "/", to: "users#mysolar", as: :solar_home
   end
 
   devise_scope :user do
@@ -17,7 +17,7 @@ Solar::Application.routes.draw do
   get :home, to: "users#mysolar", as: :home
   get :tutorials, to: "pages#tutorials", as: :tutorials
   get :apps, to: 'pages#apps', as: :apps
-  get :team, to: 'pages#team', as: :team
+  get :privacy_policy, to: 'pages#privacy_policy', as: :privacy_policy
   get :faq, to: 'pages#faq', as: :faq
   get :tutorials_login, to: "pages#tutorials_login", as: :tutorials_login
 
@@ -170,6 +170,7 @@ Solar::Application.routes.draw do
   resources :posts, only: [:index] do
     member do
       get :to_evaluate , to: 'posts#index', as: :evaluate
+      put :publish
     end
     resources :post_files, only: [:new, :create, :destroy, :download] do
       get :download, on: :member
@@ -554,12 +555,18 @@ Solar::Application.routes.draw do
   resources :notifications do
     collection do
       get :list # edicao
+      get :mandatory
+      get :show_mandatory
 
       put ':tool_id/unbind/group/:id' , to: 'groups#change_tool', type: 'unbind', tool_type: 'Notification', as: :unbind_group_from
       put ':tool_id/remove/group/:id' , to: 'groups#change_tool', type: 'remove', tool_type: 'Notification', as: :remove_group_from
       put ':tool_id/add/group/:id'    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Notification', as: :add_group_to
       get ':tool_id/group/tags'       , to: 'groups#tags'                       , tool_type: 'Notification', as: :group_tags_from
+
+      get '/file/:id/download', to: 'notifications#file_download', as: :download_file
     end
+
+    put :read_later, on: :member
   end
 
   resources :webconferences, except: :show do
@@ -629,8 +636,8 @@ Solar::Application.routes.draw do
       get '/export/exam_questions/steps',   to: 'exam_questions#export_steps',   as: :export_steps
       put :publish
       get :copy
-      put :remove_image_item
-      put :remove_audio_item
+      put :remove_image_item, to: 'exam_questions#remove_file_item', type: 'image'
+      put :remove_audio_item, to: 'exam_questions#remove_file_item', type: 'audio'
     end
 
     collection do

@@ -1,13 +1,10 @@
 %section.schedule_event
   .block_title
     %h2= t(:schedule_event, :scope => [:scores, :info])
-    .tabs.tab_event
-      %ul
-        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative_eve', onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_schedule_evaluative') 
-        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency_eve", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_schedule_frequency') 
-        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative_eve", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_schedule_not_evaluative') 
+    = render partial: 'scores/info/tabs', locals: {tool: 'schedule_event'}
+
   .block_content
-    .tools.show.evaluative#evaluative_eve
+    .tools.show.evaluative#evaluative_schedule_event
       .block_content
         - unless @schedules_event_evaluative.blank?
           %table.tb_list{:summary=> t("schedule_events.list.summary_evaluative")}
@@ -56,15 +53,15 @@
                       %div= [(schedule_event.start_hour), (schedule_event.end_hour)].join(' - ')
                   %td.center{class: "assignment_#{schedule_event.situation} #{['scheduleevent','u', schedule_event.id.to_s, @user.id.to_s].join('_')} situation", headers: "ev_eva_sit"}= t("scores.situation.#{schedule_event.situation}")
                   %td.center{headers: "ev_eva_gra", class: "#{['scheduleevent','u', schedule_event.id.to_s, @user.id.to_s].join('_')} #{['g', schedule_event.id.to_s, schedule_event.group_id.to_s].join('_')}"}= schedule_event.grade
-                  - if @can_evaluate_ev 
+                  - if @can_evaluate_ev
                     %td.center{headers: "ev_eva_eva"}
-                      = link_to content_tag(:i, nil, class: 'icon-write'), evaluate_user_schedule_event_path(schedule_event.academic_tool_id, user_id: @user.id, score_type: 'evaluative'), class: 'btn to_evaluate_schedule_event', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])   
+                      = link_to content_tag(:i, nil, class: 'icon-write'), evaluate_user_schedule_event_path(schedule_event.academic_tool_id, user_id: @user.id, score_type: 'evaluative'), class: 'btn to_evaluate_schedule_event', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
                   %td.center{headers: 'ev_eva_af' }=raw t(schedule_event.final_exam, scope: [:common_between_pages, :final_exam])
 
         - else
           .block_content.block_content_text= t(:itens_not_found)
 
-    .tools.frequency#frequency_eve
+    .tools.frequency#frequency_schedule_event
       .block_content
         - unless @schedules_event_frequency.blank?
           %table.tb_list{:summary=> t("schedule_events.list.summary_frequency")}
@@ -120,8 +117,8 @@
 
         - else
           .block_content.block_content_text= t(:itens_not_found)
-  
-    .tools.notevaluative#notevaluative_eve 
+
+    .tools.notevaluative#notevaluative_schedule_event
       .block_content
         - unless @schedules_event_not_evaluative.blank?
           %table.tb_list{:summary=> t("schedule_events.list.summary_notevaluative")}
@@ -180,4 +177,4 @@
       height: 'auto',
       closeBtn : true
     });
-  }); 
+  });

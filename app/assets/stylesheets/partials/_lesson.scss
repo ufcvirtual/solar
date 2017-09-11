@@ -202,7 +202,7 @@
   background-color: $background_gray;
   font-family: 'Ubuntu Condensed';
   padding: 4px;
-  border-bottom: 1px solid $lesson_portlet_border_color;
+  border-bottom: 1px solid $language_border_color;
   color: $color_gray_text;
   font-size: 11pt;
 }
@@ -217,7 +217,7 @@
   width: 775px;
   display: block;
   padding: 5px;
-  border: 1px dashed $color_gray_lesson;
+  border: 1px dashed $color_gray_font;
   text-align: center;
 }
 

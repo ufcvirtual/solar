@@ -8,12 +8,32 @@ class Notification < ActiveRecord::Base
   belongs_to :schedule
 
   has_and_belongs_to_many :users, join_table: 'read_notifications'
-  has_many :read_notifications
+  has_many :read_notifications, dependent: :destroy
+  has_many :notification_files, dependent: :destroy
 
   accepts_nested_attributes_for :schedule
+  accepts_nested_attributes_for :notification_files, allow_destroy: true, reject_if: :reject_files
 
   validates :title, :description, :schedule, presence: true
   validates :title, length: { maximum: 255 }
+
+  validate :verify_end_date, on: :update, if: 'ended?'
+
+  after_save :remove_readings, on: :update, if: 'title_changed? || description_changed? || (mandatory_reading_changed? && mandatory_reading)'
+
+  def reject_files(file)
+    (file[:file].blank? && (new_record? || file[:id].blank?))
+  end
+
+  def remove_readings
+    read_notifications.where(notification_id: id).delete_all if started? && !ended?
+  end
+
+  def verify_end_date
+    errors.add(:title, I18n.t('notifications.error.ended')) if title_changed?
+    errors.add(:description, I18n.t('notifications.error.ended')) if description_changed?
+    errors.add(:mandatory_reading, I18n.t('notifications.error.ended')) if mandatory_reading_changed?
+  end
 
   def period
     p = [I18n.l(start_date, format: :normal)]
@@ -23,6 +43,14 @@ class Notification < ActiveRecord::Base
 
   def start_date
     schedule.start_date
+  end
+
+  def started?
+    (Date.today >= schedule.start_date)
+  end
+
+  def ended?
+    (Date.today > schedule.end_date)
   end
 
   def end_date
@@ -37,7 +65,13 @@ class Notification < ActiveRecord::Base
     read_notifications.create(user: user) unless read?(user)
   end
 
-  def self.of_user(user)
+  def mark_as_unread(user)
+    read_notifications.where(user_id: user).delete_all if read?(user)
+  end
+
+  def self.of_user(user, mandatory = false)
+    query = (mandatory ? " AND mandatory_reading = 't' AND rn.notification_id IS NULL" : '')
+
     Notification.find_by_sql <<-SQL
       WITH ats AS (
         SELECT DISTINCT at.id
@@ -52,9 +86,14 @@ class Notification < ActiveRecord::Base
       JOIN schedules ON schedules.id = notifications.schedule_id
       JOIN academic_allocations ac ON ac.academic_tool_id = notifications.id AND ac.academic_tool_type = 'Notification'
       LEFT JOIN read_notifications rn ON rn.notification_id = notifications.id AND rn.user_id = #{user.id}
-      WHERE (ac.allocation_tag_id IN (select id FROM ats) OR ac.allocation_tag_id IS NULL)
+      WHERE (ac.allocation_tag_id IN (select id FROM ats) OR ac.allocation_tag_id IS NULL) #{query}
       AND schedules.start_date::date <= current_date AND schedules.end_date::date >= current_date
+      ORDER BY notifications.id;
     SQL
+  end
+
+  def self.mandatory_of_user(user)
+    Notification.of_user(user, true)
   end
 
   def self.general_warnings

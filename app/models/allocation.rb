@@ -57,12 +57,10 @@ class Allocation < ActiveRecord::Base
     self.save!
   end
 
+  ## verifica se oferta ou turma estao dentro do prazo
   def request_reactivate!
-    ## verifica se oferta ou turma estao dentro do prazo
-
     al_offer = offer || group.offer
-    return unless al_offer.enrollment_period.include?(Date.today)
-
+    raise 'off_period' unless Date.today.between?(al_offer.enrollment_period[0], al_offer.enrollment_period[1])
     self.status = Allocation_Pending_Reactivate
     self.save!
   end
@@ -92,8 +90,10 @@ class Allocation < ActiveRecord::Base
   end
 
   def change_to_new_status(type, by_user)
-    uc = allocation_tag.get_curriculum_unit
-    raise 'not_allowed_user_uab' if (!uc.blank? && uc.curriculum_unit_type_id == 2 && self.status ==  Allocation_Activated && profile_id  == Profile.student_profile)
+    unless allocation_tag.nil?
+      uc = allocation_tag.get_curriculum_unit
+      raise 'not_allowed_user_uab' if (!uc.blank? && uc.curriculum_unit_type_id == 2 && self.status ==  Allocation_Activated && profile_id  == Profile.student_profile)
+    end
     self.updated_by_user_id = by_user.try(:id)
     case type
       when :request_reactivate, Allocation_Pending_Reactivate

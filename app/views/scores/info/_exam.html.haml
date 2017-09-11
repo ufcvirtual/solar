@@ -1,14 +1,10 @@
 %section.exam
   .block_title
     %h2= t(:exam, :scope => [:scores, :info])
-    .tabs.tab_exam
-      %ul
-        %li= link_to t(:evaluative, scope: [:scores, :info]), '#', class: 'evaluative active', onclick: 'change_tab_tool(this); return false;', :'data-div' => '#evaluative_exa', onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_exams_evaluative')
-        %li= link_to t(:frequency, scope: [:scores, :info]), '#', class: 'frequency', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#frequency_exa", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_exams_frequency')
-        %li= link_to t(:not_evaluative, scope: [:scores, :info]), '#', class: 'notevaluative', onclick: 'change_tab_tool(this); return false;', :'data-div' => "#notevaluative_exa", onkeydown: 'click_on_keypress(event, this);', :'arial-label'=> t('scores.info.list_exams_not_evaluative')
+    = render partial: 'scores/info/tabs', locals: {tool: 'exam'}
 
   .block_content
-    .tools.show.evaluative#evaluative_exa      
+    .tools.show.evaluative#evaluative_exam
       - unless @exams_evaluative.empty?
         - is_user = (@user.id == current_user.id)
         %table.tb_list.list_exams{:summary=> t("exams.list.summary_evaluative")}
@@ -27,7 +23,7 @@
                   - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
                     - if is_user
                       .title= link_to exam.name, '#', disabled: true, :'aria-label' => exam.name +  t(:disabled), class: 'disabled'
-                    - elsif !@can_open 
+                    - elsif !@can_open
                       = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam', :'aria-label' => exam.name + t('fancybox.open')
                       %br
                     - if exam.closed == 't' || exam.situation == 'corrected'
@@ -38,8 +34,8 @@
                   - elsif is_user
                     = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', :'aria-label' => exam.name + t('fancybox.open')
                   - else
-                    = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam' 
-                    
+                    = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam'
+
                   .description
                     - if exam.description.size > 80
                       .description_slice= raw exam.description.slice(0..80) << "..."
@@ -69,7 +65,7 @@
                   %div= [l(exam.start_date.to_date), l(exam.end_date.to_date)].join(' - ')
                   %div= [(exam.start_hour), (exam.end_hour)].compact.join(' - ')
                 %td.center.situation{headers: "ex_eva_sit_evaluative"}
-                  %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, :scope => [:scores, :situation])
+                  %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, scope: [:scores, :situation], count: exam.count, count_all: exam.count_all)
                   = render partial: 'exams/result_release', locals: {exam: exam, id: 'ex_eva_'}
                 %td.center.grade{headers: "ex_eva_gra_evaluative"}= exam.grade
                 %td{headers: "ex_eva_btn_evaluative"}
@@ -79,8 +75,8 @@
                 / %td.center=(exam.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
         .block_content.block_content_text= t(:itens_not_found)
-        
-    .tools.frequency#frequency_exa
+
+    .tools.frequency#frequency_exam
       - unless @exams_frequency.empty?
         - is_user = (@user.id == current_user.id)
         %table.tb_list.list_exams{:summary=> t("exams.list.summary_frequency")}
@@ -101,7 +97,7 @@
                   - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
                     - if is_user
                       .title= link_to exam.name, '#', disabled: true, :'aria-label' => exam.name +  t(:disabled), class: 'disabled'
-                    - elsif !@can_open 
+                    - elsif !@can_open
                       = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam', :'aria-label' => exam.name + t('fancybox.open')
                       %br
                     - if exam.closed == 't' || exam.situation == 'corrected'
@@ -142,7 +138,7 @@
                   %div= [l(exam.start_date.to_date), l(exam.end_date.to_date)].join(' - ')
                   %div= [(exam.start_hour), (exam.end_hour)].compact.join(' - ')
                 %td.center.situation{headers: "ex_eva_sit_frequency"}
-                  %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, :scope => [:scores, :situation])
+                  %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, scope: [:scores, :situation], count: exam.count, count_all: exam.count_all)
                   = render partial: 'exams/result_release', locals: {exam: exam, id: 'ex_freq_'}
                 %td.center.grade{headers: "ex_eva_gra_frequency"}= exam.grade
                 %td.center.wh{headers: "ex_eva_wh_frequency"}= exam.working_hours
@@ -153,8 +149,8 @@
                 %td.center{headers: "ex_eva_aft"}=(exam.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
         .block_content.block_content_text= t(:itens_not_found)
-    
-    .tools.notevaluative#notevaluative_exa 
+
+    .tools.notevaluative#notevaluative_exam
       - unless @exams_not_evaluative.empty?
         - is_user = (@user.id == current_user.id)
         %table.tb_list.list_exams{:summary=> t("exams.list.summary_notevaluative")}
@@ -173,7 +169,7 @@
                   - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
                     - if is_user
                       .title= link_to exam.name, '#', disabled: true, :'aria-label' => exam.name +  t(:disabled), class: 'disabled'
-                    - elsif !@can_open 
+                    - elsif !@can_open
                       = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam', :'aria-label' => exam.name + t('fancybox.open')
                       %br
                     - if exam.closed == 't' || exam.situation == 'corrected'
@@ -214,7 +210,7 @@
                   %div= [l(exam.start_date.to_date), l(exam.end_date.to_date)].join(' - ')
                   %div= [(exam.start_hour), (exam.end_hour)].compact.join(' - ')
                 %td.center.situation{headers: "ex_not_sit"}
-                  %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, :scope => [:scores, :situation])
+                  %div{class: "#{exam.situation} #{['exam','u', exam.id.to_s, @user.id.to_s].join('_')} situation"}= I18n.t(exam.situation, scope: [:scores, :situation], count: exam.count, count_all: exam.count_all)
                   = render partial: 'exams/result_release', locals: {exam: exam, id: 'ex_not_'}
                 %td.center{headers: "ex_not_gra"}=exam.grade
                 %td.center.grade{headers: "ex_not_bla"}
@@ -222,7 +218,7 @@
                   %span.activity_grade= link_to_function (content_tag(:i, nil, class: 'icon-write', :'aria-hidden' => 'true')), 'calculate_user_grade_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calculate_user_grade_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate') + t(:of) + exam.name
                 %td.center{headers: "ex_not_aft"}=(exam.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
-        .block_content.block_content_text= t(:itens_not_found)   
+        .block_content.block_content_text= t(:itens_not_found)
 
 = javascript_include_tag 'tablesorter', 'tooltip', 'scores'
 
@@ -243,4 +239,4 @@
       height: 'auto',
       closeBtn : true
     });
-  }); 
+  });

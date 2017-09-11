@@ -4,9 +4,6 @@ function save_discussion(){
   $('form#discussion_form').serialize_and_submit({
     replace_list: div_to_replace
   });
-  setTimeout(function() {
-    focuInpuErro();
-  }, 700);  
 }
 
 $(function(){
@@ -38,6 +35,7 @@ $(function(){
         discussions.parents('tr').fadeOut().remove();
 
         $(".btn_edit, .btn_del").attr("disabled", true);
+
       }).error(function(data){
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")

@@ -20,7 +20,7 @@ ul.notifications {
 
   ul.dropdown-menu{
     padding: 10px;
-    color: $exclusive_background_color;
+    color: $font_color;
   }
 }
 
@@ -34,4 +34,26 @@ ul.notifications {
 
 #notification_form{
   overflow-y: hidden;
+  .input.notification_mandatory_reading{
+    vertical-align: bottom;
+    width: 12%;
+  }
+  #files{
+    display: inline-block;
+    .info, .file{
+      display: inline-block;
+    }
+    input[type='file']{
+      display: none;
+    }
+    .info.invisible{
+      display: none;
+    }
+  }
+}
+
+.list_notifications{
+  a.preview{
+    text-decoration: none;
+  }
 }

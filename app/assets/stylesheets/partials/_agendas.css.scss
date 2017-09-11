@@ -119,7 +119,7 @@ a.fc-event-title{
 }
 
 .fc-event.fc-event-title{
-  color: $fc_event_title_agenda;
+  color: $color_black_buttons;
 }
 
 //By high contrast theme
@@ -151,13 +151,13 @@ a.fc-event-title{
     width: 435px;
     .dropdown-panel{
         margin-bottom: 10px;
-        background-color: $schedule_event_background_color;
+        background-color: $color_white;
       }
     .event_details_dropdown{
       h1, h2, h3, h4, .group_label label{
         font-family: 'PT Sans', sans-serif;
         background-color: $color_white;
-        color: $schedule_event_color_text;
+        color: $color_black_buttons;
         border-bottom: none;
       }
       h2{
@@ -167,7 +167,7 @@ a.fc-event-title{
       }
 
       h3, .group_label label, h3 p{
-        color: $schedule_event_color_gray_text;
+        color: $color_gray_text_custom_icons;
         font-size: 10pt;
         font-weight: normal;
         text-align: left;
@@ -301,6 +301,10 @@ a.fc-event-title{
 .agenda_ajax {
   font-size: 9pt;
   color: $agenda_color;
+}
+
+a.agenda_ajax:hover{
+  color: $color_main_base_link;
 }
 
 .agenda_left_month_year .year_left {

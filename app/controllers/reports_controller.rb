@@ -20,6 +20,7 @@ class ReportsController < ApplicationController
     @allocation_tags_ids = @allocation_tags_ids.join(" ")
     @is_curriculum_unit = params[:curriculum_unit_id].nil? ? nil : params[:curriculum_unit_id]
     @is_group = params[:groups_id].nil? ? nil : params[:groups_id]
+    @is_semester = params[:semester_id].nil? ? nil : params[:semester_id]
 
     render partial: 'types_reports'
   rescue

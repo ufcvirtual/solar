@@ -45,7 +45,6 @@ class Ability
       profiles = user.profiles.joins(:resources).where(resources: { action: alias_action(action.first), controller: object_class.to_s.underscore.pluralize })
       have     = !(profiles.to_ary.empty?) # tem permissao para acessar acao
 
-
       return false unless have # nao tem permissao de realizar acao
       return true if have && object.nil? # tem permissao de realizar acao na classe e objeto nao e passado
 

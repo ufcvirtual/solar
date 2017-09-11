@@ -1,11 +1,10 @@
 .speech2text i{
   font-size: 14pt;
-  color: $speech2text_color;
 }
 .speech2text i:hover{
-  color: $speech2text_hover_color;
+  color: $btn_caution_color;
 }
-.speech2text .btn{
+.speech2text .i{
   margin-top: 4px;
 }
 
@@ -13,15 +12,15 @@
   float: left;
 }
 
-.speech2text.inline .btn{
+.speech2text.inline .i{
   margin-top: 0px;
 }
 
-.speech2text.middle .btn{
+.speech2text.middle .i{
   vertical-align: middle;
 }
 
-.speech2text.upper .btn{
+.speech2text.upper .i{
   margin-bottom:25px;
 }
 
@@ -29,6 +28,6 @@
   display: inline-block;
 }
 
-.speech2text i.invisible{
+.speech2text i.invisible, .speech2text .btn.invisible{
   display: none;
 }

@@ -1,25 +1,25 @@
 - @users.each_with_index do |student, idx|
   - af = AcademicAllocationUser.getAFUser(student.id, @allocation_tag_id) ? t('scores.info.t') : t('scores.info.f')
   %tr.lines
-    %th.td_student{:'data-tooltip' => student.name}= link_to student.name, user_info_scores_path(student.id)
-    %td=student.u_logs
+    %th.td_student{:'data-tooltip' => student.name, headers: 'student'}= link_to student.name, user_info_scores_path(student.id)
+    %td{headers: 'access_to_the_course'}=student.u_logs
     - unless @wh.nil?
-      %td=student.working_hours
-      %td=@wh.to_i - student.working_hours.to_i
-    %td=student.u_grade
-    %td= af
-    %td=student.u_public_files
-    %td=[student.assignments, t(:of), @tools.assignments_count].join(' ')
-    %td=[student.exams, t(:of), @tools.exams_count]. join(' ')
-    %td=[student.discussions, t(:of), @tools.discussions_count]. join(' ')
-    %td=[student.chat_rooms, t(:of), @tools.chat_rooms_count]. join(' ')
-    %td=[student.webconferences, t(:of), @tools.webconferences_count]. join(' ')
-    %td=[student.schedule_events, t(:of), @tools.events_count]. join(' ')
+      %td{headers: 'frequency'}=student.working_hours
+      %td{headers: 'faults'}=@wh.to_i - student.working_hours.to_i
+    %td{headers: 'final_grade'}=student.u_grade
+    %td{headers: 'af'}= af
+    %td{headers: 'public_files'}=student.u_public_files
+    %td{headers: 'assignment'}=[student.assignments, t(:of), @tools.assignments_count].join(' ')
+    %td{headers: 'exam'}=[student.exams, t(:of), @tools.exams_count]. join(' ')
+    %td{headers: 'discussion'}=[student.discussions, t(:of), @tools.discussions_count]. join(' ')
+    %td{headers: 'chat_room'}=[student.chat_rooms, t(:of), @tools.chat_rooms_count]. join(' ')
+    %td{headers: 'webconference'}=[student.webconferences, t(:of), @tools.webconferences_count]. join(' ')
+    %td{headers: 'schedule_event'}=[student.schedule_events, t(:of), @tools.events_count]. join(' ')
 
 
 = javascript_include_tag 'tableHeadFixer','tooltip', 'tablesorter', 'scores'
 
 :javascript
   $(function () {
-    $("#list_of_students").tableHeadFixer({'left' : 1}); 
+    $("#list_of_students").tableHeadFixer({'left' : 1});
   });

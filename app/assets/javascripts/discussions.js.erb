@@ -50,6 +50,7 @@ function cancel_posting() {
 }
 
 function remove_ckeditor(){
+  $('#new_post').parent().parent().find('.publish_post').show();
   append_rich_text($(".new_posts"));
   $('#new_post').hide(300);
   $('#new_post').parent().hide(300, function() {
@@ -62,7 +63,7 @@ function new_post(obj, parent) {
   if($("#new_post:visible").length > 0)
     if (!confirm("<%= I18n.t('posts.index.confirm_ckeditor') %>")) return; 
   form_post_reset_parameters();
-
+  
   $('form#new_post_form input[name=_method]').val('post');
   if (parent > 0) { $('form#new_post_form #discussion_post_parent_id').val(parent); } // resposta
 
@@ -77,7 +78,6 @@ function new_post(obj, parent) {
   }
 
   $('form#new_post_form').attr('method', "POST");
-
   return false;
 };
 
@@ -94,6 +94,7 @@ function update_post(obj, post, parent) {
   postEdit = $(obj).closest('.forum_post_wrapper').children(".forum_post_reply");
   $(postEdit).show();
   append_rich_text(postEdit);
+  $(postEdit).parent().find('.publish_post').hide();
   CKEDITOR.instances['discussion_post_content'].setData($(obj).closest('.forum_post_wrapper').children('.forum_post_inner_content').html());
 
   return false;
@@ -195,4 +196,3 @@ function delete_post_file(button, post_id) {
     }
   });
 }
-

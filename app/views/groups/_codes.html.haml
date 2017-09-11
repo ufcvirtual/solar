@@ -17,7 +17,7 @@
 
 :javascript
   $(function(){
-    if ($("#radio_option_group").prop("checked") || $(".groups").length > 0)
+    if ($(".offer_groups_options:last [id^='radio_option_group']").prop("checked") || $(".groups").length > 0)
       $(".group_codes .group_label").show();
 
     $(".codes .expand, .codes .compress").click(function(){

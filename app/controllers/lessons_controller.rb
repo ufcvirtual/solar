@@ -33,6 +33,12 @@ class LessonsController < ApplicationController
     @allocation_tags_ids = @allocation_tags_ids.join(' ') if @allocation_tags_ids.is_a?(Array)
 
     render layout: false if @not_offer_area
+  rescue => error
+    if @not_offer_area
+      render json: { alert: t(:no_permission) }, status: :unauthorized
+    else
+      redirect_to :back, alert: t(:no_permission)
+    end
   end
 
   def list

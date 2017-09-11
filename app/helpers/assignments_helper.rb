@@ -53,7 +53,9 @@ module AssignmentsHelper
   end
 
   def verify_owner_or_responsible!(allocation_tag_id = nil, academic_allocation_user = nil, method)
+    allocation_tag_id = allocation_tag_id || active_tab[:url][:allocation_tag_id]
     @student_id, @group_id = (params[:group_id].blank? ? [params[:student_id], nil] : [nil, params[:group_id]])
+    academic_allocation_user = (academic_allocation_user || AcademicAllocationUser.find(params[:academic_allocation_user_id])) rescue nil
     assignment = (academic_allocation_user.try(:assignment) || Assignment.find(params[:id])) rescue @assignment
     @group = GroupAssignment.find(params[:group_id]) unless @group_id.blank?
     @own_assignment = Assignment.owned_by_user?(current_user.id, { student_id: @student_id, group: @group, academic_allocation_user: academic_allocation_user })

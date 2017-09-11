@@ -47,14 +47,15 @@ module Taggable
   ## Alocações
 
   # creates or activates user allocation
-  def allocate_user(user_id, profile_id)
+  def allocate_user(user_id, profile_id, updated_by_user_id=nil)
     allocation = Allocation.where(user_id: user_id, allocation_tag_id: self.allocation_tag.id, profile_id: profile_id).first_or_initialize
     allocation.status = Allocation_Activated
+    allocation.updated_by_user_id = updated_by_user_id # if nil, was updated by system
     allocation.save!
     allocation
   end
 
-  def cancel_allocations(user_id = nil, profile_id = nil, opts = {})
+  def cancel_allocations(user_id = nil, profile_id = nil, updated_by_user_id=nil, opts = {})
     query = {}
     query.merge!({user_id: user_id})       unless user_id.nil?
     query.merge!({profile_id: profile_id}) unless profile_id.nil?
@@ -66,11 +67,11 @@ module Taggable
     end
 
     all.where(query).each do |al|
-      al.update_attributes(status: Allocation_Cancelled)
+      al.update_attributes(status: Allocation_Cancelled, updated_by_user_id: updated_by_user_id)
     end
   end
 
-  def change_allocation_status(user_id, new_status, opts = {}) # opts = {profile_id, related}
+  def change_allocation_status(user_id, new_status, updated_by_user_id=nil, opts = {}) # opts = {profile_id, related}
     where = {user_id: user_id}
     where.merge!({profile_id: opts[:profile_id]}) if opts.include?(:profile_id) && !opts[:profile_id].nil?
 
@@ -81,48 +82,48 @@ module Taggable
     end
 
     all.each do |al|
-      al.update_attributes(status: new_status)
+      al.update_attributes(status: new_status, updated_by_user_id: updated_by_user_id)
     end
   end
 
   ## desabilitar todas as alocacoes do usuario nesta ferramenta academica
-  def disable_user_allocations(user_id)
-    change_allocation_status(user_id, Allocation_Cancelled)
+  def disable_user_allocations(user_id, updated_by_user_id=nil)
+    change_allocation_status(user_id, Allocation_Cancelled, updated_by_user_id)
   end
 
   ## desabilitar todas as alocacoes do usuario para o perfil informado nesta ferramenta academica
-  def disable_user_profile_allocation(user_id, profile_id)
-    change_allocation_status(user_id, Allocation_Cancelled, {profile_id: profile_id})
+  def disable_user_profile_allocation(user_id, profile_id, updated_by_user_id=nil)
+    change_allocation_status(user_id, Allocation_Cancelled, updated_by_user_id, {profile_id: profile_id})
   end
 
   ## desabilitar todas as alocacoes do usuario nesta ferramenta academica e nas ferramentas academicas abaixo desta (ex: offers -> groups)
-  def disable_user_allocations_in_related(user_id)
-    change_allocation_status(user_id, Allocation_Cancelled, {related: true})
+  def disable_user_allocations_in_related(user_id, updated_by_user_id=nil)
+    change_allocation_status(user_id, Allocation_Cancelled, updated_by_user_id, {related: true})
   end
 
   ## desabilitar todas as alocacoes do usuario para o perfil informado nesta ferramenta academica e nas ferramentas academicas abaixo desta (ex: offers -> groups)
-  def disable_user_profile_allocations_in_related(user_id, profile_id)
-    change_allocation_status(user_id, Allocation_Cancelled, {profile_id: profile_id, related: true})
+  def disable_user_profile_allocations_in_related(user_id, profile_id, updated_by_user_id=nil)
+    change_allocation_status(user_id, Allocation_Cancelled, updated_by_user_id, {profile_id: profile_id, related: true})
   end
 
   ## ativar alocacao do usuario nesta ferramenta academica
-  def enable_user_allocations(user_id)
-    change_allocation_status(user_id, Allocation_Activated)
+  def enable_user_allocations(user_id, updated_by_user_id=nil)
+    change_allocation_status(user_id, Allocation_Activated, updated_by_user_id)
   end
 
   ## ativar alocacao do usuario nesta ferramenta academica e nas ferramentas academicas abaixo desta (ex: offers -> groups)
-  def enable_user_allocations_in_related(user_id)
-    change_allocation_status(user_id, Allocation_Activated, {related: true})
+  def enable_user_allocations_in_related(user_id, updated_by_user_id=nil)
+    change_allocation_status(user_id, Allocation_Activated, updated_by_user_id, {related: true})
   end
 
   ## ativar alocacao do usuario para o perfil informado nesta ferramenta academica
-  def enable_user_profile_allocation(user_id, profile_id)
-    change_allocation_status(user_id, Allocation_Activated, {profile_id: profile_id})
+  def enable_user_profile_allocation(user_id, profile_id, updated_by_user_id=nil)
+    change_allocation_status(user_id, Allocation_Activated, updated_by_user_id, {profile_id: profile_id})
   end
 
   ## ativar alocacao do usuario para o perfil informado nesta ferramenta academica e nas ferramentas academicas abaixo desta (ex: offers -> groups)
-  def enable_user_profile_allocations_in_related(user_id, profile_id)
-    change_allocation_status(user_id, Allocation_Activated, {profile_id: profile_id, related: true})
+  def enable_user_profile_allocations_in_related(user_id, profile_id, updated_by_user_id=nil)
+    change_allocation_status(user_id, Allocation_Activated, updated_by_user_id, {profile_id: profile_id, related: true})
   end
 
   ########

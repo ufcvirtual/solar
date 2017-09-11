@@ -346,7 +346,7 @@ class AdministrationsController < ApplicationController
     users.each do |user|
       allocation_tags_ids.each do |at|
         begin
-          AllocationTag.find(at).group.allocate_user(user.id, Profile.student_profile)
+          AllocationTag.find(at).group.allocate_user(user.id, Profile.student_profile, current_user.id)
           @log[:success] << t(:allocation_success, scope: [:administrations, :import_users, :log], cpf: user.cpf, allocation_tag: at)
         rescue => error
           @log[:error] << t(:allocation_error, scope: [:administrations, :import_users, :log], cpf: user.cpf)

@@ -1,6 +1,3 @@
-$color_almost_black: #222;
-$webconference_table_body_color: #828282;
-
 .student_webconferences{
 
   padding-top: 10px;
@@ -45,10 +42,6 @@ $webconference_table_body_color: #828282;
         [class^='icon-']{
           font-size: 18px;
           padding-top: 7px;
-          color: $webconference_table_body_color;
-        }
-        [class^='icon-']:hover{
-          color: $color_almost_black;
         }
       }
 
@@ -61,7 +54,7 @@ $webconference_table_body_color: #828282;
 
   td{
     a.title{
-      color: $table_data_line_title;
+      color: $score_tbody_link;
       text-decoration: none;
     }
   }
@@ -73,4 +66,8 @@ $webconference_table_body_color: #828282;
   .input.assignment_webconference_title, .input.assignment_webconference_duration, .input.assignment_webconference_initial_time{
     display: inline-block;
   }
+}
+
+a#final_version_explain{
+  color: $current_color_back;
 }

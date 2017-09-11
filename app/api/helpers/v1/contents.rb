@@ -12,16 +12,17 @@ module V1::Contents
   def get_acu(ac_id, from_acu, user_id, group_id=nil)
     unless from_acu.nil?
       new_acu = AcademicAllocationUser.where(academic_allocation_id: ac_id, user_id: user_id, group_assignment_id: group_id).first_or_initialize
-      # if new_acu.new_record? || from_acu.updated_at.nil? || new_acu.updated_at.nil? || (from_acu.updated_at.to_time > new_acu.updated_at.to_time)
-        new_acu.grade = from_acu.grade # updates grade with most recent copied group
-        new_acu.working_hours = from_acu.working_hours
-        new_acu.status = from_acu.status
-        new_acu.new_after_evaluation = from_acu.new_after_evaluation
-        new_acu.merge = true
-        new_acu.save
-      # end
+      if new_acu.academic_allocation.academic_tool_type != 'Exam' || new_acu.exam_user_attempts.empty?
+        # if new_acu.new_record? || from_acu.updated_at.nil? || new_acu.updated_at.nil? || (from_acu.updated_at.to_time > new_acu.updated_at.to_time)
+          new_acu.grade = from_acu.grade # updates grade with most recent copied group
+          new_acu.working_hours = from_acu.working_hours
+          new_acu.status = from_acu.status
+          new_acu.new_after_evaluation = from_acu.new_after_evaluation
+          new_acu.merge = true
+          new_acu.save
+      end
       new_acu.id
-     end
+    end
   end
 
   def copy_academic_allocation_users(from_academic_allocation_users, to_at)
@@ -121,7 +122,7 @@ module V1::Contents
     new_object.updated_at = object_to_copy.updated_at if object_to_copy.respond_to?(:updated_at)
     new_object.merge = true if new_object.respond_to?(:merge) # used so call save without callbacks (before_save, before_create)
 
-    if acu
+    if acu && !object_to_copy.academic_allocation_user.blank?
       new_object.academic_allocation_user_id = get_acu(new_object.academic_allocation.id, object_to_copy.academic_allocation_user, (object_to_copy.user_id || object_to_copy.allocation.user_id)) #rescue nil
     end
 

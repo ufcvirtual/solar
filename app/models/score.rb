@@ -151,7 +151,7 @@ class Score # < ActiveRecord::Base
     JOIN discussions ON academic_allocations.academic_tool_id = discussions.id 
     JOIN schedules ON discussions.schedule_id = schedules.id
     LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = users.id
-    LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id AND discussion_posts.user_id = users.id
+    LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id AND discussion_posts.user_id = users.id AND discussion_posts.draft=false
     WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ) #{wq})
     
     UNION
@@ -332,7 +332,7 @@ class Score # < ActiveRecord::Base
           JOIN discussions ON academic_allocations.academic_tool_id = discussions.id 
           JOIN schedules ON discussions.schedule_id = schedules.id
           LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = users.id
-          LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id AND discussion_posts.user_id = users.id
+          LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id AND discussion_posts.user_id = users.id AND discussion_posts.draft=false
           WHERE cast( profiles.types & '#{Profile_Type_Student}' as boolean ) AND users.id=#{user_id} AND academic_allocations.academic_tool_id=#{tool_id} #{wq}
         SQL
 
@@ -443,8 +443,8 @@ class Score # < ActiveRecord::Base
             NULL AS type_tool,
             '' AS start_hour,
             '' AS end_hour,
-            (SELECT COUNT(id) FROM discussion_posts WHERE discussion_posts.academic_allocation_id = academic_allocations.id AND user_id = #{user_id})::text AS count,
-            (SELECT COUNT(id) FROM discussion_posts WHERE discussion_posts.academic_allocation_id = academic_allocations.id ) AS count_all,
+            (SELECT COUNT(id) FROM discussion_posts WHERE discussion_posts.academic_allocation_id = academic_allocations.id AND user_id = #{user_id} AND discussion_posts.draft=false)::text AS count,
+            (SELECT COUNT(id) FROM discussion_posts WHERE discussion_posts.academic_allocation_id = academic_allocations.id AND discussion_posts.draft=false) AS count_all,
             NULL as moderator,
             NULL as duration,
             NULL as server,
@@ -470,11 +470,11 @@ class Score # < ActiveRecord::Base
             academic_allocations.frequency
           FROM discussions, schedules s, academic_allocations 
           LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = #{user_id}
-          LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id AND discussion_posts.user_id = #{user_id}
+          LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id AND discussion_posts.user_id = #{user_id} AND discussion_posts.draft=false
           LEFT JOIN academic_allocations eq_ac ON eq_ac.id = academic_allocations.equivalent_academic_allocation_id
           LEFT JOIN discussions eq_disc ON eq_disc.id = eq_ac.academic_tool_id AND eq_ac.academic_tool_type = 'Discussion'
           WHERE 
-            academic_allocations.academic_tool_id = discussions.id AND academic_allocations.academic_tool_type='Discussion' AND discussions.schedule_id=s.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats})
+            academic_allocations.academic_tool_id = discussions.id AND academic_allocations.academic_tool_type='Discussion' AND discussions.schedule_id=s.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats}) 
           )"
 
         when 'assignments'
@@ -641,8 +641,8 @@ class Score # < ActiveRecord::Base
             NULL AS type_tool,
             exams.start_hour,
             exams.end_hour,
-            NULL as count,
-            0 as count_all,
+            user_attempts.count::text as count,
+            exams.attempts as count_all,
             NULL as moderator,
             exams.duration::text,
             NULL as server,
