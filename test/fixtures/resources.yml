@@ -141,9 +141,9 @@ res31:
 
 res32:
   id: 32
-  controller: 'assignment_comments'
+  controller: 'comments'
   action: 'create'
-  description: 'Enviar comentários a um trabalho'
+  description: 'Enviar comentários a uma atividade'
 
 res34:
   id: 34
@@ -1135,7 +1135,7 @@ res218:
 res219:
   id: 219
   controller: 'exams'
-  action: 'calcule_grades'
+  action: 'evaluate'
   description: 'Calcular nota de prova de alunos' 
 
 res220:

@@ -53,7 +53,7 @@ describe "Groups" do
           it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Assignment"),:count).by(9) }
           it { should change(SentAssignment,:count).by(5) }
           it { should change(AssignmentFile,:count).by(4) }
-          it { should change(AssignmentComment,:count).by(3) }
+          it { should change(Comment,:count).by(3) }
           it { should change(CommentFile,:count).by(1) }
           it { should change(GroupAssignment,:count).by(6) }
           it { should change(GroupParticipant,:count).by(9) }
@@ -99,7 +99,7 @@ describe "Groups" do
           it { should change(AcademicAllocation.where(allocation_tag_id: 3, academic_tool_type: "Assignment"),:count).by(0) }
           it { should change(SentAssignment,:count).by(2) } # it has 4, received 1
           it { should change(AssignmentFile,:count).by(0) }
-          it { should change(AssignmentComment,:count).by(1) }
+          it { should change(Comment,:count).by(1) }
           it { should change(CommentFile,:count).by(0) }
           it { should change(GroupAssignment,:count).by(1) }
           it { should change(GroupParticipant,:count).by(1) }
@@ -142,7 +142,7 @@ describe "Groups" do
         it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Assignment"),:count).by(0) }
         it { should change(SentAssignment,:count).by(0) }
         it { should change(AssignmentFile,:count).by(0) }
-        it { should change(AssignmentComment,:count).by(0) }
+        it { should change(Comment,:count).by(0) }
         it { should change(CommentFile,:count).by(0) }
         it { should change(GroupAssignment,:count).by(0) }
         it { should change(GroupParticipant,:count).by(0) }
@@ -180,7 +180,7 @@ describe "Groups" do
         it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Assignment"),:count).by(0) }
         it { should change(SentAssignment,:count).by(0) }
         it { should change(AssignmentFile,:count).by(0) }
-        it { should change(AssignmentComment,:count).by(0) }
+        it { should change(Comment,:count).by(0) }
         it { should change(CommentFile,:count).by(0) }
         it { should change(GroupAssignment,:count).by(0) }
         it { should change(GroupParticipant,:count).by(0) }
@@ -218,7 +218,7 @@ describe "Groups" do
         it { should change(AcademicAllocation.where(allocation_tag_id: 11, academic_tool_type: "Assignment"),:count).by(0) }
         it { should change(SentAssignment,:count).by(0) }
         it { should change(AssignmentFile,:count).by(0) }
-        it { should change(AssignmentComment,:count).by(0) }
+        it { should change(Comment,:count).by(0) }
         it { should change(CommentFile,:count).by(0) }
         it { should change(GroupAssignment,:count).by(0) }
         it { should change(GroupParticipant,:count).by(0) }
@@ -259,7 +259,7 @@ describe "Groups" do
         it { should change(AcademicAllocation.where(allocation_tag_id: 3, academic_tool_type: "Assignment"),:count).by(2) }
         it { should change(SentAssignment,:count).by(1) }
         it { should change(AssignmentFile,:count).by(0) }
-        it { should change(AssignmentComment,:count).by(1) }
+        it { should change(Comment,:count).by(1) }
         it { should change(CommentFile,:count).by(0) }
         it { should change(GroupAssignment,:count).by(0) }
         it { should change(GroupParticipant,:count).by(0) }
@@ -307,7 +307,7 @@ describe "Groups" do
         it { should change(AcademicAllocation.where(allocation_tag_id: 2, academic_tool_type: "Assignment"),:count).by(11) }
         it { should change(SentAssignment,:count).by(5) } # porque ele primeiro remove todo o conteúdo e depois adiciona (porque, teoricamente, deve ter acontecido um merge type true antes)
         it { should change(AssignmentFile,:count).by(4) }
-        it { should change(AssignmentComment,:count).by(3) } # deleta todos os prévios objetos e adiciona os novos
+        it { should change(Comment,:count).by(3) } # deleta todos os prévios objetos e adiciona os novos
         it { should change(CommentFile,:count).by(1) }
         it { should change(GroupAssignment,:count).by(6) }
         it { should change(GroupParticipant,:count).by(9) }
