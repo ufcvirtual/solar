@@ -72,13 +72,13 @@ class ScheduleEventsController < ApplicationController
   end
 
   def evaluate_user
-    authorize! :evaluate, ScheduleEvent, {on: allocation_tag = active_tab[:url][:allocation_tag_id]}
+    authorize! :evaluate, ScheduleEvent, {on: @allocation_tag_id = active_tab[:url][:allocation_tag_id]}
     @schedule_event = ScheduleEvent.find(params[:id])
-    @ac = @schedule_event.academic_allocations.where(allocation_tag_id: allocation_tag).first
+    @ac = @schedule_event.academic_allocations.where(allocation_tag_id: @allocation_tag_id).first
     @user = User.find(params[:user_id])
     @score_type = params[:score_type]
    
-    raise 'not_student' unless @user.has_profile_type_at(allocation_tag)
+    raise 'not_student' unless @user.has_profile_type_at(@allocation_tag_id)
     @acu = AcademicAllocationUser.find_one(@ac.id, params[:user_id])
 
   rescue CanCan::AccessDenied

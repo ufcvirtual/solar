@@ -21,6 +21,18 @@ class AcademicAllocationUsersController < ApplicationController
     end
   end
 
+  def summary
+    at = active_tab[:url][:allocation_tag_id]
+    ac_id = (params[:ac_id].blank? ? AcademicAllocation.where(academic_tool_type: params[:tool], academic_tool_id: (params[:tool_id]), allocation_tag_id: at).first.try(:id) : params[:ac_id])
+
+    @acu = AcademicAllocationUser.find_or_create_one(ac_id, at, current_user.id, params[:group_id], false)
+    @tool = params[:tool].constantize.find(params[:tool_id])
+
+    @user = current_user
+
+    render partial: 'comments/summary'
+  end
+
   private
     def acu_params
       params.require(:academic_allocation_user).permit(:group_id, :user_id, :grade, :working_hours, :score_type)

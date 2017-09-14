@@ -131,6 +131,7 @@ class ScoresController < ApplicationController
     @responsible = AllocationTag.get_participants(@allocation_tag_id, {responsibles: true})
 
     @is_student = @user.is_student?([@allocation_tag_id])
+    @current_user_is_student = current_user.is_student?([@allocation_tag_id])
 
     if @is_student
       @types = [ [t(:exam, scope: [:scores, :info]), 'exam'], [t(:assignments, scope: [:scores, :info]), 'assignment'],[t(:discussions, scope: [:scores, :info]), 'discussion'], [t(:chat, scope: [:scores, :info]), 'chat_room'],[t(:webconference, scope: [:scores, :info]), 'webconference'],[t(:schedule_events, scope: [:scores, :info]), 'schedule_event'], [t(:all, scope: [:scores, :info]), 'all']]
@@ -150,6 +151,9 @@ class ScoresController < ApplicationController
       authorize! :info, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
       @user = current_user
     end
+
+    @is_student = @user.is_student?([@allocation_tag_id])
+    @current_user_is_student = current_user.is_student?([@allocation_tag_id])
     
     case params[:tool]
     when 'discussion'
@@ -184,7 +188,7 @@ class ScoresController < ApplicationController
       @assigments_frequency = Score.list_tool(@user.id, @allocation_tag_id, 'assignments', false, true)
       @assigments_not_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'assignments')
     when 'schedule_event'
-      @can_evaluate_ev = can? :evaluate, ScheduleEvent, { on: @allocation_tag_id }
+      @can_evaluate = can? :evaluate, ScheduleEvent, { on: @allocation_tag_id }
 
       @schedules_event_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'schedule_events', true)
       @schedules_event_frequency = Score.list_tool(@user.id, @allocation_tag_id, 'schedule_events', false, true)
@@ -195,6 +199,8 @@ class ScoresController < ApplicationController
       @tool_frequency = Score.list_tool(@user.id, @allocation_tag_id, 'all', false, true) 
       @tool_not_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'all') 
     end
+    @can_comment = (can? :create, Comment, { on: @allocation_tag_id } )
+
     render partial: "scores/info/"+params[:tool]
   end  
 

@@ -12,7 +12,7 @@ class AccessControlController < ApplicationController
       case current_path_split[current_path_split.size-2] #ex: ["", "media", "assignment", "public_area", "20_crimescene.png"] => public_area
         when 'comments' # arquivo de um comentário
           file = CommentFile.find(file_id)
-          acu = file.assignment_comment.academic_allocation_user
+          acu = file.comment.academic_allocation_user
           allocation_tags = acu.academic_allocation.allocation_tag_id
         when 'sent_assignment_files' # arquivo enviado pelo aluno/grupo
           file = AssignmentFile.find(file_id)

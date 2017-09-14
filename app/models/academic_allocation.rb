@@ -89,7 +89,7 @@ class AcademicAllocation < ActiveRecord::Base
               new_acu = AcademicAllocationUser.new(acu.attributes.except('id', 'group_assignment_id', 'user_id').merge!({user_id: p.user_id}))
               new_acu.merge = true
               new_acu.save
-              copy_objects(acu.assignment_comments, { 'academic_allocation_user_id' => new_acu.id }, true, :files)
+              copy_objects(acu.comments, { 'academic_allocation_user_id' => new_acu.id }, true, :files)
               copy_objects(acu.assignment_files, { 'academic_allocation_user_id' => new_acu.id }, true)
               copy_objects(acu.assignment_webconferences, { 'academic_allocation_user_id' => new_acu.id }, true, nil, { to: :set_origin, from: :id })
             end
