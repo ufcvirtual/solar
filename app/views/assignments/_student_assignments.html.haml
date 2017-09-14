@@ -7,9 +7,7 @@
         %th{align: "right", style: "width:11%", id: "situation#{type}"}= t("assignments.list.situation")
         %th.center{style: "width: 8%;", id: "evaluative#{type}"}= t(:evaluative, scope: [:scores, :index])
         %th.center{style: "width: 8%;", id: "frequency#{type}"}= t(:frequency, scope: [:scores, :info])
-        %th.center{style: "width: 8%;", id: "grade#{type}"}= t("assignments.list.grade")
-        %th.center{style: "width: 8%;", id: "workload#{type}"}= t(:workload, scope: [:scores, :info])
-        %th.center.no_sort{style: "width:80px", id: "comments#{type}"}= t("assignments.list.comments")
+        %th.center{style: "width: 2%;", id: "summary_#{type}"}=t(:info_evaluation, scope: [:scores, :info])
     %tbody
       - assignments.each do |assignment|
         - link    = student_assignment_path(assignment.academic_tool_id, student_id: assignment.user_id || current_user.id, group_id: assignment.group_id)
@@ -56,11 +54,7 @@
               = link_to t(assignment.situation.to_sym), link, class: "assignment_#{assignment.situation}"
           %td.center{headers: "evaluative#{type}" }=raw assignment.final_exam ? t(assignment.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(assignment.evaluative, scope: [:scores, :info])
           %td.center{headers: "frequency#{type}" }= raw t(assignment.frequency, scope: [:common_between_pages, :frequency], hours: assignment.max_working_hours)
-          %td.center{headers: "grade#{type}" }
-            %span.activity_grade= assignment.grade || "-"
-          %td.center{headers: "workload#{type}" }
-            %span.activity_grade= assignment.working_hours || "-"
-          %td.center{headers: "comments#{type}" }= content_tag :i, nil, class: "icon-comment big #{assignment.count_all.to_i > 0 ? '' : 'empty'}"
+          %td.center{headers: "summary_#{type}"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_assignments_path(ac_id: assignment.id, tool_id: assignment.academic_tool_id, group_id: assignment.group_id), class: "btn #{assignment.has_info == 't' ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt', tool: assignment.name, count: assignment.count_comments), :'aria-label' => t('comments.summary.title_alt', tool: assignment.name, count: assignment.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
 
 - else
   .text_none.empty_message= t(:itens_not_found)

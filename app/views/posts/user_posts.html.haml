@@ -23,6 +23,9 @@
 
   - else
     .block_content_text_list.text_none= t(".no_posts")
+
+  .comments
+    = render partial: 'comments/list', locals: { comments: @alluser.try(:comments), tool: @discussion, tool_type: 'Discussion' }
   
   - if evaluate && @user.is_student?(@allocation_tags)
     = simple_form_for :academic_allocation_user, url: evaluate_discussion_path(@discussion), html: { method: :put } do |f|

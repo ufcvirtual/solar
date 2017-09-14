@@ -5,7 +5,7 @@
       = @discussion.name
   .block_content.block_content_text= sanitize @discussion.description
 
-.block_wrapper
+.block_wrapper.posts
   = content_tag(:i, nil, class: 'icon-pluscircle.png')
   .block_title.forum_navigation
     %span#forum_new_message
@@ -15,6 +15,9 @@
             = content_tag(:i, nil, class: 'icon-edit')
       - else
         #forum_closed= t("forum_closed")
+      - unless @acu.blank?
+        - comments = @acu.try(:comments).count rescue 0
+        = link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_discussions_path(tool_id: @discussion.id, ac_id: @academic_allocation.id), class: "btn #{comments > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: comments), :'aria-label' => t('comments.summary.count_alt', count: comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
 
     %span#forum_view_mode
       - class_l = (@display_mode == 'list') ? 'btn_pressed' : 'btn_default'
@@ -71,7 +74,8 @@
     - @hash = { } unless @display_mode == 'list'
     - @posts = get_page_posts(@posts, @current_page) unless @display_mode == 'list'
     - @posts.each do |post|
-      = render partial: 'post', locals: { post: post, display_mode: @display_mode, can_interact: @can_interact, can_post: @can_post, current_user: @user, new_post: false, number: '' }
+      = render partial: 'post', locals: { post: post, display_mode: @display_mode, can_interact: @can_interact, can_post: @can_post, current_user: @user, new_post: false, number: '', comments: (@acu.try(:comments).count rescue nil)}
+
 .block_wrapper
   = link_to t(:back), :back, { class: 'btn' , id: 'back' }, :'aria-label' => t(:back)
 
@@ -81,7 +85,7 @@
     = raw t('posts.post.fv_explain')
 
 
-= javascript_include_tag 'ckeditor/init', 'discussions', 'contextual_help/discussion_posts', 'audios', 'pagination', 'tooltip'
+= javascript_include_tag 'ckeditor/init', 'discussions', 'contextual_help/discussion_posts', 'audios', 'pagination', 'tooltip', 'academic_allocation_user'
 
 :javascript
 
@@ -258,18 +262,18 @@
       $(".attachment_title_").removeClass("invisible");
 
     if ($(".file_input:last").length)
-      var nested_form = $(".file_input:first");
+      var nested_form = $(".file_input:first", $('.posts'));
 
     function add_new_file() {
       var new_form = nested_form.clone();
-      var forms_on_page = $(".file_input").length;
+      var forms_on_page = $(".file_input", $('.posts')).length;
       var input_name = $("input[type='file']", new_form).attr("name");
       input_name = input_name.replace(new RegExp(/\[[0-9]+\]/), "[" + forms_on_page + "]");
       $("input", new_form).attr("name", input_name);
 
       $(new_form).insertAfter( nested_form.last() );
       $("input[type='file']", new_form).click();
-      $(".attachment_title_").removeClass("invisible");
+      $(".attachment_title_", $('.posts')).removeClass("invisible");
 
       $("input[type='file']", new_form).change(function(){
         console.log(this.files[0].name );
@@ -282,7 +286,7 @@
         else
           $(".list_files_to_send_").append(new_file_name);
 
-        $(".remove_file").on("click keypress", function(event){
+        $(".remove_file", $('.posts')).on("click keypress", function(event){
           var keynum = event.which || event.keyCode;
 
           if( keynum == 13 || event.type == 'click'){

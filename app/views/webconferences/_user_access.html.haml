@@ -44,6 +44,9 @@
     - else
       .block_content_text_list.text_none= t('.no_log')
 
+  .comments
+    = render partial: 'comments/list', locals: { comments: @acu.try(:comments), tool: @webconference, tool_type: 'Webconference' }
+
 
   - if (@evaluative || @frequency) && @can_evaluate
     = simple_form_for :academic_allocation_user, url: evaluate_webconference_path(@webconference), html: { method: :put } do |f|

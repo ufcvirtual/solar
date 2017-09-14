@@ -20,8 +20,8 @@
   %section.student_webconferences.files
     = render partial: 'assignment_webconferences/list', locals: { webconferences: @acu.try(:assignment_webconferences), disabled: true }
 
-  %section.assignment_comments
-    = render partial: 'assignment_comments/list', locals: { comments: @acu.try(:assignment_comments) }
+  %section.comments
+    = render partial: 'comments/list', locals: { comments: @acu.try(:comments), tool: @assignment, tool_type: 'Assignment' }
   
   - if @can_evaluate
     = simple_form_for :academic_allocation_user, url: evaluate_assignment_path(@assignment), html: { method: :put, id: 'academic_allocation_user_grade_form' } do |f|

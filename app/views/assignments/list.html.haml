@@ -20,6 +20,8 @@
   .block_wrapper
     = link_to t(:back), :back, { class: 'btn', id: 'back'  }
 
+= javascript_include_tag 'academic_allocation_user'
+
 :javascript
   $(function(){
     $(".enunciation_more").click(function(){

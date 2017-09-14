@@ -7,8 +7,7 @@
       %th.center{style: "width: 10%;", id: "evaluative_#{@id_table}"}= t(:evaluative, scope: [:scores, :index])
       %th.center{style: "width: 2%;", id: "frequency_#{@id_table}"}= t(:frequency, scope: [:scores, :info])
       - if @is_student && other==false
-        %th.center{style: "width: 2%;", id: "grade_#{@id_table}"}= t(:grade, scope: [:scores, :info])
-        %th.center{style: "width: 2%;", id: "workload_#{@id_table}"}= t(:workload, scope: [:scores, :info])
+        %th.center{style: "width: 2%;", id: "summary_#{@id_table}"}=t(:info_evaluation, scope: [:scores, :info])
       - if history
         %th.center.no_sort{style: "width: 7%", id: "message_history_#{@id_table}"}= t(".message_history")
   %tbody
@@ -70,8 +69,7 @@
         %td.center{headers: "evaluative_#{@id_table}" }=raw chat.final_exam ? t(chat.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(chat.evaluative, scope: [:scores, :info])
         %td.center{headers: "frequency_#{@id_table}" }= raw t(chat.frequency, scope: [:common_between_pages, :frequency], hours: chat.max_working_hours)
         - if @is_student && other==false
-          %td.center{headers: "grade_#{@id_table}" }= chat.grade
-          %td.center{headers: "workload_#{@id_table}" }= chat.working_hours
+          %td.center{headers: "summary_#{@id_table}"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_chat_rooms_path(ac_id: chat.id, tool_id: chat.academic_tool_id), class: "btn #{chat.has_info == 't' ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt', tool: chat.name, count: chat.count_comments), :'aria-label' => t('comments.summary.title_alt', tool: chat.name, count: chat.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
         - if history && (!@is_student || !other)
           %td{align: "center", headers: "message_history_#{@id_table}"}= link_to content_tag(:i, nil, class: 'icon-history'), messages_chat_room_path(chat.academic_tool_id), class: "btn history", :"data-tooltip" => t(".message_history"), :'aria-label' => t(".message_history")+t('fancybox.open')
         - else
