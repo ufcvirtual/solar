@@ -41,6 +41,11 @@ module V1
           @profile_id = current_user.profiles_with_access_on(permission, :messages, @group.allocation_tag.related, true).first
           raise ActiveRecord::RecordNotFound if @profile_id.nil? || !(current_user.groups([@profile_id], Allocation_Activated).include?(@group))
         end
+
+        def option_user_box(type)
+          return type if ['outbox', 'trashbox'].include?(type)
+          'inbox'
+        end
       end #helpers
 
       segment do
@@ -57,7 +62,10 @@ module V1
           optional :page, type: Integer, desc: 'Page', default: 1
         end #params
         
-        get "/:all", rabl: 'messages/list' do
+        get :all, rabl: 'messages/list' do
+          @box = option_user_box(params[:box])
+          @allocation_tag_id = Group.find(params[:group_id]).allocation_tag.id
+          @messages = Message.by_box(current_user.id, @box, @allocation_tag_id)
         end
       end #segment
     end #namespace all

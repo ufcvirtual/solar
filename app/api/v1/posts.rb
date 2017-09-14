@@ -148,7 +148,7 @@ module V1
         end
       end #:id/posts
 
-    end # namespace discussions
+    end # namespace discussions.id
 
     namespace :posts do
 
