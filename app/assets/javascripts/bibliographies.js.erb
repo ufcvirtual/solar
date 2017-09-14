@@ -1,8 +1,11 @@
 function save_bibliography(){
+  console.log("teste");
   $('form#bibliography_form').serialize_and_submit({
     files: true,
+    outer: 'fancybox-outer',
     replace_list: $('.list_bibliographies'),
     complement_success: function(data) {
+      console.log(data);
       if (typeof(data.alert) != "undefined")
         $('form span.error').html(data.alert);
       else

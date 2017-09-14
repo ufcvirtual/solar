@@ -45,7 +45,7 @@ class BibliographiesController < ApplicationController
     authorize! :create, Bibliography, on: @allocation_tags_ids = params[:allocation_tags_ids].split(' ').flatten
 
     (params[:bibliography][:type_bibliography].to_i == Bibliography::TYPE_FILE) ? create_many : create_one
-    
+
     render json: { success: true, notice: t(:created, scope: [:bibliographies, :success]) }
   rescue ActiveRecord::AssociationTypeMismatch
     render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
@@ -55,7 +55,7 @@ class BibliographiesController < ApplicationController
     @allocation_tags_ids = @allocation_tags_ids.join(' ')
     params[:success] = false
     if @bibliography.nil? || @bibliography.is_file?
-      render json: { success: false, alert: t('bibliographies.error.file') }
+      render json: { success: false, alert: t('bibliographies.error.file') }, status: :unprocessable_entity
     else
       render :new
     end
