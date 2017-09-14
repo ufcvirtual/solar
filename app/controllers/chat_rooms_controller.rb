@@ -154,6 +154,7 @@ class ChatRoomsController < ApplicationController
       raise CanCan::AccessDenied if (all_participants.any? && all_participants.joins(:user).where(users: { id: current_user }).empty?) && !responsible && !(@researcher)
 
       @can_evaluate = can? :evaluate, ChatRoom, {on: allocation_tag_id}
+      @can_comment = can? :create, Comment, {on: [@allocation_tags]}
       
       @messages = @chat_room.get_messages(allocation_tag_id, (params.include?(:user_id) ? {user_id: params[:user_id]} : {}))
     end

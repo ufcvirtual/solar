@@ -59,10 +59,10 @@
           - if @frequency
             = f.input :working_hours, as: :numeric, label: t('webconferences.list_access.working_hours'), input_html: { value: @acu.try(:working_hours), min: 0, max: @maxwh, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@maxwh )} 
 
-          - if @back
-            = link_to t(:back), list_access_webconference_path(@webconference), class: 'btn back_chat_history'
           = link_to_function t('webconferences.list_access.finish_evaluation'), 'finish_evaluation(this)', class: 'btn btn_main', onkeydown: 'click_on_keypress(event, this);'
 
+  - if @back
+    = link_to t(:back), list_access_webconference_path(@webconference), class: 'btn back_chat_history'
 
 :javascript
   function finish_evaluation(btn){

@@ -23,7 +23,8 @@ class Post < ActiveRecord::Base
 
   after_create :increment_counter
   after_destroy :decrement_counter, :update_acu, :remove_drafts_children, :decrement_counter_draft
-  after_save :update_acu, :decrement_counter_draft, on: :update
+  after_save :update_acu
+  after_save :decrement_counter_draft, on: :update
 
   validates :content, :profile_id, presence: true
 
@@ -174,7 +175,7 @@ class Post < ActiveRecord::Base
     def update_acu
       unless academic_allocation_user_id.blank?
         if (academic_allocation_user.grade.blank? && academic_allocation_user.working_hours.blank?)
-          if academic_allocation_user.discussion_posts.empty?
+          if academic_allocation_user.discussion_posts.where(draft: false).empty?
             academic_allocation_user.status = AcademicAllocationUser::STATUS[:empty]
           else
             academic_allocation_user.status = AcademicAllocationUser::STATUS[:sent]

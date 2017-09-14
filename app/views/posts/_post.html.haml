@@ -48,7 +48,7 @@
             %ul
               - if post.draft  
                 = button_tag t('posts.index.publish'), class: "btn btn_main publish_post", :'data-url' => publish_post_path(post), type: :button, onclick: 'publish_post(this)'
-              - if @can_evaluate && (post.profile.types & Profile_Type_Student) > 0
+              - if (@can_evaluate || @can_comment) && (post.profile.types & Profile_Type_Student) > 0
                 %li= link_to content_tag(:i, nil, class: 'icon-write'), user_discussion_posts_path(post.discussion.id, post.user_id), class: 'btn to_evaluate_post', :'data-tooltip'=> t('.to_evaluate'), :'aria-label' => t('.to_evaluate') + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
               - if can_interact
                 - if editable

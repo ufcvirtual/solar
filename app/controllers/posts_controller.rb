@@ -28,6 +28,7 @@ class PostsController < ApplicationController
       @can_interact = @discussion.user_can_interact?(current_user.id)
       @can_post = (can? :create, Post, on: [@allocation_tags])
       @can_evaluate = can? :evaluate, Discussion, {on: [@allocation_tags]}
+      @can_comment = can? :create, Comment, {on: [@allocation_tags]}
 
       p = params.slice(:date, :type, :order, :limit, :display_mode, :page)
 
@@ -178,7 +179,7 @@ class PostsController < ApplicationController
       allocation_tag_ids  = AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
       academic_allocation = discussion.academic_allocations.where(allocation_tag_id: allocation_tag_ids).first
 
-      aau = AcademicAllocationUser.find_or_create_one(academic_allocation.id, active_tab[:url][:allocation_tag_id], current_user.id, nil, true, AcademicAllocationUser::STATUS[:sent])
+      aau = AcademicAllocationUser.find_or_create_one(academic_allocation.id, active_tab[:url][:allocation_tag_id], current_user.id, nil, true, nil)
 
       @post = Post.new(post_params)     
       @post.user_id = current_user.id

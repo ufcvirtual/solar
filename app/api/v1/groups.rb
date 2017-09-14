@@ -232,7 +232,7 @@ module V1
         desc 'Recuperação de dados dos alunos com relacao a turma'
         params do
           requires :group_code, :semester, :course_code, :curriculum_unit_code, type: String
-          requires :curriculum_unit_type_id, default: 2
+          optional :curriculum_unit_type_id, default: 2
         end
         get :students_info, rabl: 'groups/students_info' do
           begin
@@ -253,7 +253,7 @@ module V1
         desc 'Recuperação de dados da turma'
         params do
           requires :group_code, :semester, :course_code, :curriculum_unit_code, type: String
-          requires :curriculum_unit_type_id, default: 2
+          optional :curriculum_unit_type_id, default: 2
         end
         get :info, rabl: 'groups/info' do
           begin
@@ -275,7 +275,7 @@ module V1
         desc 'Recuperação de dados do responsavel com relacao a turma'
         params do
           requires :group_code, :semester, :course_code, :curriculum_unit_code, :cpf, type: String
-          requires :curriculum_unit_type_id, default: 2
+          optional :curriculum_unit_type_id, default: 2
         end
         get :responsible_info, rabl: 'groups/responsible_info' do
           begin

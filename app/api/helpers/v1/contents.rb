@@ -121,8 +121,10 @@ module V1::Contents
   end
 
   def copy_object(object_to_copy, merge_attributes={}, is_file = false, nested = nil, call_methods = {}, acu=false)
-    new_object = object_to_copy.class.where(object_to_copy.attributes.except('id', 'children_count', 'updated_at', 'new_after_evaluation', 'academic_allocation_user_id', 'created_at', 'draft', 'group_updated_at').merge!(merge_attributes)).first_or_initialize
+    new_object = object_to_copy.class.where(object_to_copy.attributes.except('id', 'children_count', 'updated_at', 'new_after_evaluation', 'academic_allocation_user_id', 'created_at', 'group_updated_at', 'draft').merge!(merge_attributes)).first_or_initialize
 
+
+    new_object.draft = object_to_copy.draft if object_to_copy.respond_to?(:draft)
     new_object.created_at = object_to_copy.created_at if object_to_copy.respond_to?(:created_at)
     new_object.updated_at = object_to_copy.updated_at if object_to_copy.respond_to?(:updated_at)
     new_object.merge = true if new_object.respond_to?(:merge) # used so call save without callbacks (before_save, before_create)

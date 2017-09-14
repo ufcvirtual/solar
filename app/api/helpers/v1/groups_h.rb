@@ -87,6 +87,7 @@ module V1::GroupsH
         FROM discussion_posts
         JOIN academic_allocations ON academic_allocations.id = discussion_posts.academic_allocation_id 
         WHERE academic_allocations.allocation_tag_id IN (#{related_ats_ids})
+        AND discussion_posts.draft = 'f'
         GROUP BY discussion_posts.user_id
       ) posts ON posts.user_id = users.id
       LEFT JOIN (
@@ -194,6 +195,7 @@ module V1::GroupsH
         SELECT COUNT(DISTINCT discussion_posts.id) AS count, academic_allocations.allocation_tag_id AS at FROM discussion_posts
         JOIN academic_allocations ON discussion_posts.academic_allocation_id = academic_allocations.id
         WHERE academic_allocations.allocation_tag_id IN (#{related_ats})
+        AND discussion_posts.draft = 'f'
         GROUP BY academic_allocations.allocation_tag_id
     SQL
     @posts = posts.first.try(:count)
@@ -316,6 +318,7 @@ module V1::GroupsH
         FROM discussion_posts
         JOIN academic_allocations ON academic_allocations.id = discussion_posts.academic_allocation_id 
         WHERE academic_allocations.allocation_tag_id IN (#{related_ats_ids})
+        AND discussion_posts.draft = 'f'
         GROUP BY discussion_posts.user_id
       ) posts ON posts.user_id = users.id
       LEFT JOIN (
@@ -337,13 +340,13 @@ module V1::GroupsH
         GROUP BY log_actions.user_id
       ) webs ON webs.user_id = users.id
       LEFT JOIN (
-        SELECT assignment_comments.user_id, COUNT(assignment_comments.id) AS total, COUNT(DISTINCT academic_allocation_users.id) AS sa, COUNT(DISTINCT assignments.id) AS assig
+        SELECT comments.user_id, COUNT(comments.id) AS total, COUNT(DISTINCT academic_allocation_users.id) AS sa, COUNT(DISTINCT assignments.id) AS assig
         FROM academic_allocation_users
         JOIN academic_allocations AS ac ON ac.id = academic_allocation_users.academic_allocation_id
         JOIN assignments                ON assignments.id = ac.academic_tool_id AND ac.academic_tool_type = 'Assignment'
-        LEFT JOIN assignment_comments   ON assignment_comments.academic_allocation_user_id = academic_allocation_users.id
+        LEFT JOIN comments   ON comments.academic_allocation_user_id = academic_allocation_users.id
 	WHERE ac.allocation_tag_id IN (#{related_ats_ids}) 
-        GROUP BY assignment_comments.user_id
+        GROUP BY comments.user_id
       ) comments ON comments.user_id = users.id
       LEFT JOIN (
         SELECT COUNT(academic_allocation_users.id) AS count, ac.allocation_tag_id AS at, COUNT(DISTINCT assignments.id) AS assig

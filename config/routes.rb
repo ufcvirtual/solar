@@ -696,7 +696,7 @@ Solar::Application.routes.draw do
   get '/media/users/:user_id/photos/:style.:extension', to: 'access_control#users'
 
   get '/media/assignment/sent_assignment_files/:file.:extension', to: 'access_control#assignment'
-  get '/media/assignment/comments/:file.:extension',    to: 'access_control#assignment'
+  get '/media/assignment/comments/:file.:extension',    to: 'access_control#comments'
   get '/media/assignment/public_area/:file.:extension', to: 'access_control#assignment'
   get '/media/assignment/enunciation/:file.:extension', to: 'access_control#assignment'
 
