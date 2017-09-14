@@ -1,11 +1,11 @@
 %tr
-  %td.assignment_comment_form{ colspan: "2" }
+  %td.comment_form{ colspan: "2" }
     = render "form"
 
 :javascript
   $(function(){
     $(".cancel_comment").click(function(){
-      if(confirm("#{t('assignment_comments.list.confirm')}")){
+      if(confirm("#{t('comments.list.confirm')}")){
         var button_tr = $($(this).parents("tr")[0]);
         button_tr.siblings(".comment").show();
         button_tr.remove();
@@ -22,6 +22,7 @@
         files: true,
         replace_list: $($(this).parents("li")[0]),
         dont_remove_lightbox: true,
+        outer: 'fancybox-outer',
         flash_msg: 'fancybox-outer',
         complement_success: function(){
           $("#new_comment, .edit_comment").removeAttr("disabled");

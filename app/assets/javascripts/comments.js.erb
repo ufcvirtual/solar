@@ -13,11 +13,16 @@ function remove_comment(button){
   var button_table = $($(button).parents("li")[0]);
   if (confirm("<%=I18n.t(:are_you_sure)%>"))
     $.delete($(button).data("url"), function(data){
-      flash_message(data.notice, "notice");
+      if(!!$('.fancybox-outer').length)
+        flash_message("<%=I18n.t('comments.success.removed')%>", "notice", 'fancybox-outer');
+      else
+        flash_message("<%=I18n.t('comments.success.removed')%>", 'notice');
       var parent = button_table.parent();
       button_table.remove();
-      if (!parent.children(":visible").length)
-        $("#no_itens_message_comment").show();
+      update_tables_with_no_data('.comments_list', '.comments_list > li');
+
+      if(data.ac_id != undefined)
+        after_evaluate(data.tool, data.score_type, data.ac_id, data.user_id, data, data.group_id);
     }).error(function(data){
       show_error(data);
     });

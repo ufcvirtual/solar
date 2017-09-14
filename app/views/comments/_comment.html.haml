@@ -1,0 +1,25 @@
+%li.comment.tb_comments{ :"data-link-list" => comment_path(comment), summary: t("assignments.list.summary_comments") }
+  .comment_head
+    .user_comment= comment.user.nick
+    .comment_date= (comment.updated_at.blank? ? l(comment.created_at, format: :long) : l(comment.updated_at, format: :long))
+  .comment
+    %div{ class: "comment_#{comment.id}", colspan: '2' }
+      .comment_inner_content
+        %span{class: "comment_#{comment.id}", :'data-value' => comment.comment}=simple_format comment.comment
+        - if comment.user_id == current_user.id
+          .comment_button
+            = link_to_function content_tag(:i, nil, class: "icon-edit"), "edit_comment(this)", class: 'btn edit_comment', :"data-url" => edit_comment_path(comment), :"data-tooltip" => t(".edit"), :'aria-label' => t(".edit")
+            = link_to_function content_tag(:i, nil, class: "icon-trash"), "remove_comment(this)", class: 'btn', :"data-url" => comment_path(comment, score_type: @score_type), :"data-remove-link" => comment_path(comment, score_type: @score_type), :"data-tooltip" => t('.remove'), :'aria-label' => t(".remove")
+      .forum_post_attachment
+        - unless comment.files.blank?
+          %h3= t('.attached_files')
+          %ul.comments_files_div
+            - comment.files.each do |comment_file|
+              - size = format('%.2f KB', comment_file.attachment_file_size/1024.0)
+              %li
+                = link_to image_tag(icon_attachment(comment_file.attachment_file_name)), download_comments_path(file_id: comment_file.id), class: 'file_icon',  :'aria-label'=> t('posts.post.download', file: comment_file.attachment_file_name, size: size)
+                = link_to comment_file.attachment_file_name, download_comments_path(file_id: comment_file.id), class: 'file_icon', :'aria-label'=> t('posts.post.download', file: comment_file.attachment_file_name, size: size)
+                .comment_files_info= l(comment_file.attachment_updated_at, format: :at_date)
+                .comment_files_info= size
+
+= javascript_include_tag 'comments'
