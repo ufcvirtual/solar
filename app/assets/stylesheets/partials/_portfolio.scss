@@ -4,91 +4,12 @@
   display: none;
 }
 
-.assignment_comment_form {
-  width: 100%;
-  font-family: 'PT Sans', sans-serif;
-  font-size: 10pt;
-  vertical-align: top;
-}
-
-.assignment_inner_content {
-  word-wrap: break-word;
-  padding: 5px 5px 0px 5px;
-  min-height: 27px;
-  background-color: $color_main_light;
-}
-
-.comments_files {
-  margin: 0px 10px 10px 0px;
-}
-
 .student_assignment_evaluate {
   text-align: center;
 }
 
 .date_column {
   width: 20%;
-}
-
-.assignment_files_info, .assignment_comment_date {
-  font-family: 'PT Sans', sans-serif;
-  font-weight: normal;
-  font-size: 8pt;
-  text-align: right;
-  font-style: italic;
-  margin-right: 8px;
-  margin-left: 10px;
-  float: right;
-  color: $color_gray_font;
-}
-
-.assignment_comment_date {
-  float: right;
-}
-
-.assignment_files_info {
-  margin-left: 10px;
-  margin-top: 5px;
-}
-
-.assignment_user_comment {
-  float: left;
-  padding-left: 10px;
-  color: $exclusive_font_color;
-}
-
-.assignment_comment {
-  min-height: 40px;
-  white-space: normal;
-  max-width: 785px;
-  width: 100%;
-  margin-top: 5px;
-  color: $exclusive_font_color;
-}
-
-.assignment_comment_head {
-  height: 17px;
-  font-size: 12px;
-  white-space: normal;
-  font-family: 'Ubuntu';
-  width: 100%;
-  display: block;
-  text-align: left;
-  border-bottom: 1px solid;
-  border-bottom-color: $color_main;
-  background-color: $color_white_base;
-}
-
-.comments_files_div .btn {
-  min-width: 10px;
-  height: 22px;
-  padding: 0 2px;
-  vertical-align: bottom;
-  img {
-    width: 20px;
-    padding: 0;
-    margin: 0;
-  }
 }
 
 .assignment_without_group, td.assignment_without_group a {
@@ -198,7 +119,7 @@ td.assignment_without_group a
   }
 }
 
-.assignment_comment_wrapper, .assignment_files > .block_content{
+.comment_wrapper, .assignment_files > .block_content{
   max-height: 300px;
   overflow-y: auto;
   background-color: $color_main_light;
@@ -273,15 +194,6 @@ td.assignment_without_group a
 
 .assignment_summarized .student_files.files, .assignment_summarized .student_webconferences.files{
   width: 99%;
-}
-
-.assignment_summarized .assignment_comments .block_wrapper{
-  width: 99%;
-}
-
-.assignment_summarized .assignment_comment_wrapper{
-  overflow-y: hidden;
-  max-height: none;
 }
 
 .assignment_summarized{

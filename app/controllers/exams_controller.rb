@@ -14,7 +14,7 @@ class ExamsController < ApplicationController
     @exams = Score.list_tool(current_user.id, @allocation_tag_id, 'exams', false, false, true)
 
     @can_open = can? :open, Exam, {on: @allocation_tag_id}
-    @can_evaluate = can? :calcule_grades, Exam, { on: @allocation_tag_id }
+    @can_evaluate = can? :evaluate, Exam, { on: @allocation_tag_id }
   rescue => error
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   end
@@ -192,7 +192,7 @@ class ExamsController < ApplicationController
     begin
       authorize! :open, Exam, { on: @allocation_tag_id = active_tab[:url][:allocation_tag_id] }
     rescue
-      authorize! :calcule_grades, Exam, { on: @allocation_tag_id }
+      authorize! :evaluate, Exam, { on: @allocation_tag_id }
       @user_id = params[:user_id]
     end
     @exam = Exam.find(params[:id])
@@ -202,7 +202,7 @@ class ExamsController < ApplicationController
     acs = @exam.academic_allocations
     @ac = (acs.size == 1 ? acs.first : acs.where(allocation_tag_id: active_tab[:url][:allocation_tag_id]).first)
     @acu = AcademicAllocationUser.find_one(@ac.id, @user_id)
-    @frequency = @ac.frequency && (can? :calcule_grades, Exam, { on: @allocation_tag_id })
+    @frequency = @ac.frequency && (can? :evaluate, Exam, { on: @allocation_tag_id })
     raise 'empty' if @acu.nil? && !@frequency
 
     @grade = ((@acu.try(:grade).blank? || @exam.can_correct?(@user_id, AllocationTag.find(@allocation_tag_id).related)) ? @exam.recalculate_grades(@user_id, "#{[@allocation_tag_id].flatten.join(',')}", true).first : @acu.grade)
@@ -241,7 +241,7 @@ class ExamsController < ApplicationController
     exam = Exam.find(params[:id])
     user_id = current_user.id
     if params.include?(:user_id) && params[:user_id].to_i != current_user.id
-      authorize! :calcule_grades, Exam, { on: active_tab[:url][:allocation_tag_id] }
+      authorize! :evaluate, Exam, { on: active_tab[:url][:allocation_tag_id] }
       user_id = params[:user_id]
     end
     raise 'not_finished' unless exam.ended?
@@ -254,7 +254,7 @@ class ExamsController < ApplicationController
 
   def calculate_grade
     allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids] : active_tab[:url][:allocation_tag_id]
-    authorize! :calcule_grades, Exam, { on: allocation_tags_ids }
+    authorize! :evaluate, Exam, { on: allocation_tags_ids }
     ats = allocation_tags_ids.gsub(' ', ",") rescue allocation_tags_ids
 
     exam = Exam.find(params[:id])

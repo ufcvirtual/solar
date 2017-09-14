@@ -216,7 +216,7 @@ pt_BR:
       notification: Aviso
       agenda: Agenda
       assignment: Trabalho
-      assignment_comment: Comentário de Trabalho
+      comment: Comentário
       chat_room: Chat
       enrollment: Matrícula
       lesson: Aula
@@ -244,6 +244,8 @@ pt_BR:
       webconference: Webconferência
       posts: Posts
       notification_file: Arquivo
+      post_file: Arquivo
+      comment_file: Arquivo
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -316,10 +318,13 @@ pt_BR:
       comment_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
+        attachment: Arquivo
+        attachment_file_name: Arquivo
       group_assignment:
         group_name: "Nome do grupo"
-      assignment_comment:
+      comment:
         comment: Comentário
+        comment_file: Arquivo
       discussion:
         name: Título
         description: Descrição
@@ -524,7 +529,6 @@ pt_BR:
         attachment_file_size: Tamanho
         attachment: Arquivo
         attachment_file_name: Arquivo
-
     errors:
       uniqueness: "Registro já existe no sistema"
       template:
@@ -1303,7 +1307,7 @@ pt_BR:
       new_posts: " nova(s) postagem(ns) no fórum"
       new_posts_page: "1 nova postagem no fórum (página "
       moved_allocation: "Alocação transferida para outra turma"
-      to_evaluate: Avaliar
+      to_evaluate: Avaliar/Comentar
       grade: '(Nota: %{grade})'
       frequency: '(Frequência: %{wh}hs)'
       download: "Download %{file}, tamanho: %{size}"
@@ -1607,7 +1611,7 @@ pt_BR:
       title: Lista de acessos a webconferêcia %{webconference_name}
       on_going: '<b> Aviso: </b> Esta webconferência ainda está em andamento, portanto esta lista de acessos pode aumentar.'
       not_started: '<b> Aviso: </b> Esta webconferência ainda não iniciou.'
-      evaluate: Avaliar aluno
+      evaluate: Avaliar/Comentar
       grade: Nota
       frequency: Frequência
       finish_evaluation: Avaliar
@@ -2183,27 +2187,7 @@ pt_BR:
       not_started_up: Não é possível fazer o envio do arquivo. O trabalho ainda não está iniciado.
     success:
       removed: Arquivo deletado com sucesso
-      uploaded: Arquivo enviado com sucesso
-  assignment_comments:
-    list:
-      new: Novo comentário
-      title: Comentários
-      confirm: Confirma cancelamento do comentário?
-    form:
-      attach_file: Anexar arquivo
-      attached_files: Anexos
-    comment:
-      attached_files: Anexos
-      edit: Editar comentário
-      remove: Remover comentário
-      remove_attachment: "Remover anexo"
-    success:
-      new: Comentário criado com sucesso
-      edit: Comentário alterado com sucesso
-      removed: Comentário removido com sucesso
-    error:
-      general_message: Não foi possível realizar ação.
-      date_range_expired: Não foi possível realizar ação. Período encerrado.
+      uploaded: Arquivo enviado com sucesso   
   group_assignments:
     index:
       title: Gerenciamento de grupos - %{name}
@@ -2907,7 +2891,7 @@ pt_BR:
       time: Horário
       no_message: Nenhuma mensagem
       all: Todos
-      to_evaluate: Avaliar
+      to_evaluate: Avaliar/Comentar
       grade: Nota
       wh: Carga horária
       summary: "Está tabela contém todas mensagens enviadas com as seguintes informações: Perfil de quem enviou, quem enviou, para quem enviou, mensagem, data e hora do enviou."
@@ -3504,10 +3488,10 @@ pt_BR:
       access_to_the_course: "Acessos à Turma"
       no_students: Não há alunos
       list_of_students: Lista de estudantes
-      evaluated_complete: Atividade avaliada
+      evaluated_complete: Atividade avaliada (nota ou frequência) ou com comentário
       not_sent_complete: Atividade não enviada e com período encerrado
       without_group_complete: Aluno sem grupo
-      sent_complete: "Atividade enviada, mas não avaliada (sem nota)"
+      sent_complete: "Atividade enviada, mas não avaliada (sem nota, frequência ou comentários)"
       to_send_complete: Atividade a ser enviada
       not_started_complete: Atividade com período não iniciado
       subtitle: Legenda
@@ -3623,6 +3607,8 @@ pt_BR:
       list_webconferences_not_evaluative: Listar webconferências não avaliativas'
       final_exam: Avaliação Final (AF)
       hours: Carga Horária Máxima
+      info_evaluation: Nota/frequência e comentários
+      comments: Comentários
     reports:
       general_evaluative: Relatório Acompanhamento - Atividades Avaliativas
       general_frequency: Relatório Acompanhamento - Atividades de Frequência
@@ -4742,3 +4728,35 @@ pt_BR:
     subtitles_title: Legendas
     subtitles: '<ul><li>(1) IP: O endereço de IP é um meio de identificar determinado dispositivo em uma rede.</li><li>(2) navegador: Programa que permite que os usuários acessem e interajam com documentos html hospedados em servidores.</li><li>(3) SO: Ou Sistema Operacional, é um software ou conjunto de softwares que permite com que possamos utilizar um computador de modo que ele gerencia os recursos desse sistema, fornecendo, portanto, uma interface entre o usuário final e o computador.</li><li>(4) Cookies: dados armazenados no navegador do usuário.</li><li>(5) API: Interface de programação da aplicação, permite que aplicações de terceiros consultem ou enviem dados ao Solar.</li><li>(6) cache: Componente tecnológico que permite armazenar determinados dados de modo que requisições futuras sejam realizadas de modo mais rápido.</li><li>(7) navegar anonimamente: Modo de navegação oferecido por alguns navegadores (ex: chrome - navegação anônima; firefox - navegação privada) que permite navegar sem salvar no histórico de pesquisa e nem armazenar cookies. Este modo não oculta dados de navegação do provedor de internet ou do Solar.</li></ul>'
     last_update: Última atualização em 31 de agosto de 2017 às 14:17
+
+  comments:
+    summary:
+      title: "Comentários e notas para %{user} em %{tool}"
+      grade: 'Nota: '
+      working_hours: 'Carga Horária: '
+      no_grade: "<i>sem nota</i>"
+      no_wh: "<i>sem carga horária</i>"
+      info: Nota e Frequência
+      count: "%{count} comentários"
+      count_alt: "Acessar %{count} comentários"
+      title_alt: "Acessar notas/frequências e comentários para %{tool} (%{count} comentários)"
+      title_alt2: "Acessar notas/frequências e comentários para %{tool}"
+    list:
+      new: Novo comentário
+      title: Comentários dos responsáveis
+      confirm: Confirma cancelamento do comentário?
+    comment:
+      attached_files: Anexos
+      edit: Editar comentário
+      remove: Remover comentário
+      remove_attachment: "Remover anexo"
+    form:
+      attach_file: Anexar arquivo
+      attached_files: Anexos
+    success:
+      new: Comentário criado com sucesso
+      edit: Comentário alterado com sucesso
+      removed: Comentário removido com sucesso
+    error:
+      general_message: Não foi possível realizar ação.
+      date_range_expired: Não foi possível realizar ação. Período encerrado.

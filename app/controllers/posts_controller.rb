@@ -27,7 +27,7 @@ class PostsController < ApplicationController
       @posts = []
       @can_interact = @discussion.user_can_interact?(current_user.id)
       @can_post = (can? :create, Post, on: [@allocation_tags])
-      @can_evaluate = (@academic_allocation.evaluative || @academic_allocation.frequency) && (can? :evaluate, Discussion, {on: [@allocation_tags]})
+      @can_evaluate = can? :evaluate, Discussion, {on: [@allocation_tags]}
 
       p = params.slice(:date, :type, :order, :limit, :display_mode, :page)
 
@@ -48,7 +48,11 @@ class PostsController < ApplicationController
       else  
         @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags, current_user.id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
       end
-            
+      
+      if current_user.is_student?([@allocation_tags].flatten)
+        @acu = AcademicAllocationUser.find_or_create_one(@academic_allocation.id, [@allocation_tags].flatten, current_user.id, nil)
+      end
+
       respond_to do |format|
         format.html
         format.json  {
@@ -79,13 +83,13 @@ class PostsController < ApplicationController
       @discussion = Discussion.find(params[:discussion_id])
       @score_type = params[:score_type]
 
-      @allocation_tags = AllocationTag.find(at = active_tab[:url][:allocation_tag_id]).related
+      @allocation_tags = AllocationTag.find(@allocation_tag_id = active_tab[:url][:allocation_tag_id]).related
       raise CanCan::AccessDenied if params[:user_id].to_i != current_user.id && !AllocationTag.find(active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id)
 
       @posts = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: @allocation_tags, academic_tool_id: @discussion.id, academic_tool_type: 'Discussion' }, user_id: @user.id, draft: false).order('updated_at DESC')
 
       @academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: @allocation_tags).first
-      @can_evaluate = can? :evaluate, Discussion, { on: at = active_tab[:url][:allocation_tag_id] }
+      @can_evaluate = can? :evaluate, Discussion, { on: @allocation_tag_id }
       @alluser = AcademicAllocationUser.find_one(@academic_allocation.id, @user.id, nil, false, @can_evaluate)# unless @posts.blank?
 
       respond_to do |format|

@@ -108,7 +108,7 @@ tr#activities{
 }
 
 #scores_notes.legend_score_footer, .tb_list_students{
-  .evaluated {
+  .evaluated, .evaluated a {
     color: $color_green_font;
   }
 
@@ -116,8 +116,7 @@ tr#activities{
     color: $sent_color;
   }
 
-  .sent a, .evaluated a
-  td.assignment_as a {
+  .sent a, td.assignment_as a {
     color: $sent_color_link;
   }
 

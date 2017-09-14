@@ -45,7 +45,7 @@ module V1
           assignments = tools['Assignment'].as_json || []
           assignments.each do |assignment_hash|
             acu = AcademicAllocationUser.where(group_assignment_id: assignment_hash['group_id'], user_id: assignment_hash['user_id'], academic_allocation_id: assignment_hash['id']).first
-            assignment_hash.merge!(comments: (acu.assignment_comments.map{ |comment| { user_id: comment.user_id, user_name: comment.user.name, comment: comment.comment, created_at: comment.updated_at }} rescue []))
+            assignment_hash.merge!(comments: (acu.comments.map{ |comment| { user_id: comment.user_id, user_name: comment.user.name, comment: comment.comment, created_at: comment.updated_at }} rescue []))
           end
         else
         end

@@ -10,22 +10,22 @@
         %table.tb_list{:summary=> t("scores.list.summary_evaluative")}
           %thead
             %tr.lines
-              %th#al_eva_tol{style: "width: 20%;"}= t(:tool, scope: [:scores, :info])
-              %th#al_eva_tit{style: "width: 40%;"}= t(:title, scope: [:scores, :info])
-              %th#al_eva_dat.center.date{style: "width: 25%;"}= t(:date_range, scope: [:scores, :info])
+              %th#al_eva_tit{style: "width: 46%;"}= t(:title, scope: [:scores, :info])
+              %th#al_eva_dat.center.date{style: "width: 14%;"}= t(:date_range, scope: [:scores, :info])
               %th#al_eva_sit.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
               %th#al_eva_int.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
-              %th#al_eva_gra.center{style: "width: 20%;"}= t(:grade, scope: [:scores, :info])
-              %th#al_eva_bla.no_sort
+              %th#al_eva_gra.center{style: "width: 2%;"}= t(:grade, scope: [:scores, :info])
+              - if @current_user_is_student
+                %th.center#al_eva_comment{style: "width: 2%;"}=t(:comments, scope: [:scores, :info])
+              %th#al_eva_btn.no_sort
               %th#al_eva_af.center.no_sort{style: "width: 2%;"}=t('scores.info.final_exam')
               %th#al_eva_aft.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
           %tbody
             - @tool_evaluative.each do |tool|
               - available = tool.academic_tool_type != 'Webconference' || !exist_and_offline?(tool.server.to_i)
               %tr.lines
-                %td{headers: "al_eva_tol"}
-                  = t(tool.academic_tool_type.downcase, scope: [:activerecord, :models])
                 %td{headers: "al_eva_tit"}
+                  %div= t(tool.academic_tool_type.downcase, scope: [:activerecord, :models])
                   - if tool.opened == 't' && tool.academic_tool_type != 'ScheduleEvent' && tool.situation != 'finished' &&  available && tool.situation != 'without_group'
                     = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => (tool.academic_tool_type == 'ChatRoom' ? tool.name + t('fancybox.open') : (tool.academic_tool_type == "Webconference" ? t('.access_web', web: tool.name) : tool.name )), class: 'link_content'
                   - else
@@ -73,10 +73,11 @@
                 %td.center{headers: "al_eva_int"}
                   - unless tool.count.blank?
                     = link_to_function tool.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => (tool.count.to_s + t('scores.info.interactions') + t(:of) + tool.name + t('fancybox.open')), class: 'open_evaluation'
-                %td.center.grade{headers: "al_eva_gra", class: "#{[tool.academic_tool_type.downcase.delete('_'), 'u', tool.id.to_s, @user.id.to_s].join('_')} #{[tool.academic_tool_type.downcase.delete('_'), 'g', tool.id.to_s, tool.group_id.to_s].join('_')}"}
-                  = tool.grade.blank? ? ' - ' : tool.grade.to_f
-                %td{headers: "al_eva_bla"}
-                  - if (tool.academic_tool_type != 'Exam' && @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate)) || @can_evaluate.include?(tool.academic_tool_type.to_s.tableize => :calcule_grades)
+                %td.center.grade{headers: "al_eva_gra", class: "#{[tool.academic_tool_type.downcase.delete('_'), 'u', tool.id.to_s, @user.id.to_s].join('_')} #{[tool.academic_tool_type.downcase.delete('_'), 'g', tool.id.to_s, tool.group_id.to_s].join('_')}"}= tool.grade.blank? ? ' - ' : tool.grade.to_f
+                - if @current_user_is_student
+                  %td.center{headers: "al_eva_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_comments_path(ac_id: tool.id, tool_id: tool.academic_tool_id, group_id: tool.group_id, tool: tool.academic_tool_type), class: "btn #{tool.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: tool.count_comments), :'aria-label' => t('comments.summary.count_alt', count: tool.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+                %td{headers: "al_eva_btn"}
+                  - if @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate) || @can_comment
                     = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), class: 'btn open_evaluation', onkeydown: 'click_on_keypress(event, this);'
                 %td.center{headers: 'al_eva_af' }=raw t(tool.final_exam, scope: [:common_between_pages, :final_exam])
                 %td.center{headers: "al_eva_aft"}=(tool.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
@@ -89,22 +90,22 @@
         %table.tb_list{:summary=> t("scores.list.summary_frequency")}
           %thead
             %tr.lines
-              %th#al_fre_tol{style: "width: 20%;"}= t(:tool, scope: [:scores, :info])
-              %th#al_fre_tit{style: "width: 37%;"}= t(:title, scope: [:scores, :info])
-              %th#al_fre_dat.center.date{style: "width: 25%;"}= t(:date_range, scope: [:scores, :info])
+              %th#al_fre_tit{style: "width: 46%;"}= t(:title, scope: [:scores, :info])
+              %th#al_fre_dat.center.date{style: "width: 14%;"}= t(:date_range, scope: [:scores, :info])
               %th#al_fre_sit.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
               %th#al_fre_int.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
-              %th#al_fre_fre.center{style: "width: 20%;"}= t(:frequency, scope: [:scores, :info])
-              %th#al_fre_bla.no_sort
+              %th#al_fre_fre.center{style: "width: 2%;"}= t(:frequency, scope: [:scores, :info])
+              - if @current_user_is_student
+                %th.center#al_fre_comment{style: "width: 2%;"}=t(:comments, scope: [:scores, :info])
+              %th#al_fre_btn.no_sort
               %th#al_freq_hours.center.no_sort{style: "width: 2%;"}=t('scores.info.hours')
               %th#al_fre_aft.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
           %tbody
             -  @tool_frequency.each do |tool|
               - available = tool.academic_tool_type != 'Webconference' || !exist_and_offline?(tool.server.to_i)
-              %tr.lines
-                %td{headers: "al_fre_tol"}
-                  = t(tool.academic_tool_type.downcase, scope: [:activerecord, :models])
+              %tr.lines                
                 %td{headers: "al_fre_tit"}
+                  %div= t(tool.academic_tool_type.downcase, scope: [:activerecord, :models])
                   - if tool.opened == 't' && tool.academic_tool_type != 'ScheduleEvent' && available && tool.situation != 'without_group'
                     = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => (tool.academic_tool_type == 'ChatRoom' ? tool.name + t('fancybox.open') : (tool.academic_tool_type == "Webconference" ? t('.access_web', web: tool.name) : tool.name )), class: 'link_content'
                   - else
@@ -154,8 +155,10 @@
                   - unless tool.count.blank?
                     = link_to_function tool.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'frequency'), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => (tool.count.to_s + t('scores.info.interactions') + t(:of) + tool.name + t('fancybox.open')), class: 'open_evaluation'
                 %td.center.wh{headers: "al_fre_fre", class: "#{[tool.academic_tool_type.downcase.delete('_'), 'u', tool.id.to_s, @user.id.to_s].join('_')} #{[tool.academic_tool_type.downcase.delete('_'), 'g', tool.id.to_s, tool.group_id.to_s].join('_')}"}= (tool.working_hours.blank? ? ' - ' : tool.working_hours.to_i)
-                %td{headers: "al_fre_bla"}
-                  - if (tool.academic_tool_type != 'Exam' && @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate)) || @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :calcule_grades)
+                - if @current_user_is_student
+                  %td.center{headers: "al_fre_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_comments_path(ac_id: tool.id, tool_id: tool.academic_tool_id, group_id: tool.group_id, tool: tool.academic_tool_type), class: "btn #{tool.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: tool.count_comments), :'aria-label' => t('comments.summary.count_alt', count: tool.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+                %td{headers: "al_fre_btn"}
+                  - if @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate) || @can_comment
                     = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'frequency'), class: 'btn open_evaluation', onkeydown: 'click_on_keypress(event, this);'
                 %td.center{headers:'al_freq_hours'}=raw t('common_between_pages.hours', hours: tool.max_working_hours)
                 %td.center{headers: "al_fre_aft"}=(tool.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
@@ -168,19 +171,19 @@
         %table.tb_list{:summary=> t("scores.list.summary_notevaluative")}
           %thead
             %tr.lines
-              %th#al_not_tol{style: "width: 20%;"}= t(:tool, scope: [:scores, :info])
-              %th#al_not_tit{style: "width: 35%;"}= t(:title, scope: [:scores, :info])
-              %th#al_not_dat.center.date{style: "width: 25%;"}= t(:date_range, scope: [:scores, :info])
+              %th#al_not_tit{style: "width: 46%;"}= t(:title, scope: [:scores, :info])
+              %th#al_not_dat.center.date{style: "width: 14%;"}= t(:date_range, scope: [:scores, :info])
               %th#al_not_sit.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
               %th#al_not_int.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
-              %th#al_not_bla.no_sort
+              - if @current_user_is_student
+                %th.center#al_not_comment{style: "width: 2%;"}=t(:comments, scope: [:scores, :info])
+              %th#al_not_btn.no_sort
           %tbody
             -  @tool_not_evaluative.each do |tool|
               - available = tool.academic_tool_type != 'Webconference' || !exist_and_offline?(tool.server.to_i)
               %tr.lines
-                %td{headers: "al_not_tol"}
-                  = t(tool.academic_tool_type.downcase, scope: [:activerecord, :models])
                 %td{headers: "al_not_tit"}
+                  %div= t(tool.academic_tool_type.downcase, scope: [:activerecord, :models])
                   - if tool.opened == 't' && tool.academic_tool_type != 'ScheduleEvent' && available && tool.situation != 'without_group'
                     = link_to_function tool.name, 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => (tool.academic_tool_type == 'ChatRoom' ? tool.name + t('fancybox.open') : (tool.academic_tool_type == "Webconference" ? t('.access_web', web: tool.name) : tool.name )), class: 'link_content'
                   - else
@@ -227,9 +230,11 @@
                     = render partial: 'exams/result_release', locals: {exam: tool, id: 'al_not_'}
                 %td.center{headers: "al_not_int"}
                   - unless tool.count.blank?
-                    = link_to_function tool.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'not_evaluative'), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => (tool.count.to_s + t('scores.info.interactions') + t(:of) + tool.name + t('fancybox.open')), class: 'open_evaluation'
-                %td{headers: "al_not_bla"}
-                  - if ['Assignment', 'Exam'].include?(tool.academic_tool_type) && ((tool.academic_tool_type != 'Exam' && @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate)) || @can_evaluate.include?(tool.academic_tool_type.to_s.tableize => :calcule_grades))
+                    = link_to_function tool.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'not_evaluative'), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => (tool.count.to_s + t('scores.info.interactions') + t(:of) + tool.name + t('fancybox.open')), class: 'open_evaluation', onkeydown: 'click_on_keypress(event, this);'
+                - if @current_user_is_student
+                  %td.center{headers: "al_not_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_comments_path(ac_id: tool.id, tool_id: tool.academic_tool_id, group_id: tool.group_id, tool: tool.academic_tool_type), class: "btn #{tool.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: tool.count_comments), :'aria-label' => t('comments.summary.count_alt', count: tool.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+                %td{headers: "al_not_btn"}
+                  - if @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate) || @can_comment
                     = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'not_evaluative'), class: 'btn open_evaluation', onkeydown: 'click_on_keypress(event, this);'
 
       - else

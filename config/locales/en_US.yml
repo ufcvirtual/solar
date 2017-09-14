@@ -183,7 +183,7 @@ en_US:
       notification: Notification
       agenda: Agenda
       assignment: Assignment
-      assignment_comment: Assignment Comment
+      comment: Comment
       chat_room: Chat
       enrollment: Enrollment
       lesson: Lesson
@@ -205,9 +205,11 @@ en_US:
       question: Question
       question_item: Item
       question_image: Image
-      scheduleevent: Evento
+      scheduleevent: Event
       chatroom: Chat
-      notification_file: Arquivo
+      notification_file: File
+      post_file: File
+      comment_file: File
     attributes:
       user:
         password: "Password"
@@ -270,11 +272,9 @@ en_US:
         attachment_file_size: "File too large. The maximum size should be up to 26MB."
         attachment_file_name: File
         academic_allocation_user_id: "Can't send file to this assignment"
-      comment_file:
-        attachment_file_size: "File too large. The maximum size should be up to 5MB."
       group_assignment:
         group_name: "Group name"
-      assignment_comment:
+      comment:
         comment: Comment
       discussion:
         name: Title
@@ -462,6 +462,10 @@ en_US:
         file_file_name: File
       post_file:
         attachment_file_size: Size
+        attachment: File
+        attachment_file_name: File
+      comment_file:
+        attachment_file_size: "File too large. The maximum size should be up to 5MB."
         attachment: File
         attachment_file_name: File
 
@@ -1123,7 +1127,7 @@ en_US:
       new_posts: " new(s) post(s) at discussion"
       new_posts_page: "1 new post at discussion (page "
       moved_allocation: "Allocation moved to other class"
-      to_evaluate: To_evaluate
+      to_evaluate: Evaluate/Comment
       grade: '(Grade: %{grade})'
       frequency: '(Frequency: %{wh})'
       download: "Download %{file}, size %{size}"
@@ -1419,7 +1423,7 @@ en_US:
       title: List of access to webconference %{webconference_name}
       on_going: '<b> Warning: </b> This webconference is still on going, therefore this access list can be extended.'
       not_started: '<b> Warning: </b> This webconference have not started yet.'
-      evaluate: Evaluate student
+      evaluate: Evaluate/Comment
       grade: Grade
       frequency: Frequency
       finish_evaluation: Evaluate
@@ -1967,26 +1971,6 @@ en_US:
     success:
       removed: File removed successfully
       uploaded: File uploaded successfully
-  assignment_comments:
-    list:
-      new: New comment
-      title: Comments
-      confirm: Confirm to cancel comment?
-    form:
-      attach_file: Attach file
-      attached_files: Attachments
-    comment:
-      attached_files: Attachments
-      edit: Edit comment
-      remove: Remove comment
-      remove_attachment: Remove attachment
-    success:
-      new: Comment created successfully
-      edit: Comment updated successfully
-      remove: Comment removed successfully
-    error:
-      general_message: It was not possible to execute action.
-      date_range_expired: It was not possible to execute action. Date range expired.
   group_assignments:
     index:
       title: Groups management - %{name}
@@ -2679,7 +2663,7 @@ en_US:
       time: Time
       no_message: No messages
       all: All
-      to_evaluate: To_evaluate
+      to_evaluate: Evaluate/Comment
       grade: Grade
       wh: Working hours
       summary: "This table contains all sent messages with the following information: Profile of who sent, who sent, whom it sent, message, date and time it was sent."
@@ -3266,10 +3250,10 @@ en_US:
       sent: SENT
       to_send: TS
       not_started: NSt
-      evaluated_complete: Activity evaluated
+      evaluated_complete: Evaluated activity (grade or working hours) or has a comment
       not_sent_complete: No activity sent and date range expired
       without_group_complete: Student without group
-      sent_complete: "Activity sent, but was not evaluated"
+      sent_complete: "Activity sent, but was not evaluated (no grade, working hours or comments)"
       to_send_complete: No activity sent
       not_started_complete: Activity not started
       subtitle: Subtitle
@@ -3380,6 +3364,8 @@ en_US:
       list_webconferences_not_evaluative: List not evaluative webconferences'
       final_exam: Final Exam
       hours: Maximum Working Hours
+      info_evaluation: Grade/Frequency and comments
+      comments: Comments
     situation:
       not_started: Not started
       to_answer: To answer
@@ -4495,3 +4481,35 @@ en_US:
     subtitles_title: Subtitles
     subtitles: "<ul><li>(1) IP: IP address is a way to identify some dispositive at a network.</li><li>(2) browser: Program that allow that users access and interact with html documents hosted at servers.</li><li>(3) OS: Or Operational System, is a software or a group of softwares that allow that we can use a computer in way that it manages this system resources, providing, therefore, a interface between final user and computer.</li><li>(4) Cookies: stored data at user's browser.</li><li>(5) API: Application program interface, allows that third parties applications consult or send data to Solar.</li><li>(6) cache: Technological component that allows to store some data in way that future request may happen faster.</li><li>(7) anonymous navigation: Navigation type oferede by some browsers (ex: chrome - anonymous navigation; firefox - private navigation) that allows to navigate without saving data at search history, neither saving cookies. This function doesn't hide navigation data from your internet provider service or Solar.</li></ul>"
     last_update: Last update at august, 31 of 2017 at 14:17P.M
+
+  comments:
+    summary:
+      title: "Comments and grades to %{user} at %{tool}"
+      grade: 'Grade: '
+      working_hours: 'Working Hours: '
+      no_grade: "<i>no grade</i>"
+      no_wh: "<i>no working hour</i>"
+      info: Grade and Frequency
+      count: "%{count} comments"
+      count_alt: "Access %{count} comments"
+      title_alt: "Access grades/working hours and comments to %{tool} (%{count} comments)"
+      title_alt2: "Access grades/working hours and comments to %{tool}"
+    list:
+      new: New comment
+      title: "Responsible's comments"
+      confirm: Confirm to cancel comment?
+    comment:
+      attached_files: Attachments
+      edit: Edit comment
+      remove: Remove comment
+      remove_attachment: Remove attachment
+    form:
+      attach_file: Attach file
+      attached_files: Attachments
+    success:
+      new: Comment created successfully
+      edit: Comment updated successfully
+      remove: Comment removed successfully
+    error:
+      general_message: It was not possible to execute action.
+      date_range_expired: It was not possible to execute action. Date range expired.

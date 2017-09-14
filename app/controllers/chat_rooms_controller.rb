@@ -116,17 +116,17 @@ class ChatRoomsController < ApplicationController
       @chat_room = ChatRoom.find(params[:id])
       @score_type = params[:score_type]
      
-      allocation_tag_id = active_tab[:url][:allocation_tag_id]
+      @allocation_tag_id = active_tab[:url][:allocation_tag_id]
 
-      authorize! :show, ChatRoom, on: [allocation_tag_id]
-      raise CanCan::AccessDenied if !(ChatRoom.responsible_or_observer?(allocation_tag_id, current_user.id)) && !(@researcher) && current_user.id != @user.id
+      authorize! :show, ChatRoom, on: [@allocation_tag_id]
+      raise CanCan::AccessDenied if !(ChatRoom.responsible_or_observer?(@allocation_tag_id, current_user.id)) && !(@researcher) && current_user.id != @user.id
 
-      @academic_allocation = @chat_room.academic_allocations.where(allocation_tag_id: allocation_tag_id).first
-      can_evaluate = can? :evaluate, ChatRoom, {on: allocation_tag_id}
+      @academic_allocation = @chat_room.academic_allocations.where(allocation_tag_id: @allocation_tag_id).first
+      can_evaluate = can? :evaluate, ChatRoom, {on: @allocation_tag_id}
       @evaluative = can_evaluate && @academic_allocation.evaluative
       @frequency = can_evaluate && @academic_allocation.frequency
 
-      @messages = @chat_room.get_messages(allocation_tag_id, (params.include?(:user_id) ? {user_id: params[:user_id]} : {}))
+      @messages = @chat_room.get_messages(@allocation_tag_id, (params.include?(:user_id) ? {user_id: params[:user_id]} : {}))
             
       @acu = AcademicAllocationUser.find_one(@academic_allocation.id, params[:user_id],nil, false, can_evaluate)
 
@@ -153,10 +153,8 @@ class ChatRoomsController < ApplicationController
 
       raise CanCan::AccessDenied if (all_participants.any? && all_participants.joins(:user).where(users: { id: current_user }).empty?) && !responsible && !(@researcher)
 
-      can_evaluate = can? :evaluate, ChatRoom, {on: allocation_tag_id}
-      @evaluative = (can_evaluate && @academic_allocation.evaluative)
-      @frequency = (can_evaluate && @academic_allocation.frequency)
-
+      @can_evaluate = can? :evaluate, ChatRoom, {on: allocation_tag_id}
+      
       @messages = @chat_room.get_messages(allocation_tag_id, (params.include?(:user_id) ? {user_id: params[:user_id]} : {}))
     end
   rescue => error
