@@ -1978,6 +1978,7 @@ en_US:
       groups: Groups
       new: Create group
       already_evaluated: "This group was already evaluated, thus it's not possible to remove or add participants to it"
+      not_evaluated: "This group was not evaluated"
       participants: Participants
       select_a_group: Select a group
       no_participants: No participants

@@ -7,7 +7,9 @@
       %h2= t(".assignments")
     .labels
       - @assignments.each do |assignment|
-        .label{onclick: "select_assignment(this)", onkeydown: "select_assignment(this, event)", :"data-url" => list_group_assignments_path(assignment_id: assignment.id), :"data-assignment-id" => assignment.id, tabindex: 0}= assignment.name
+        .label{:"data-url" => list_group_assignments_path(assignment_id: assignment.id), :"data-assignment-id" => assignment.id}
+          %a{href: "#", onclick: "select_assignment(this)", onkeydown: "select_assignment(this, event)"}
+            = assignment.name
 
   .groups_column.middle_column
     .block_title

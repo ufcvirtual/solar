@@ -2195,6 +2195,7 @@ pt_BR:
       groups: Grupos
       new: Criar grupo
       already_evaluated: "Este grupo já foi avaliado, portanto não é possível remover ou adicionar participantes a ele"
+      not_evaluated: "Este grupo não foi avaliado"
       participants: Participantes
       select_a_group: Selecione um grupo
       no_participants: Sem participantes

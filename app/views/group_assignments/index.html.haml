@@ -12,7 +12,7 @@
     .labels
       - @groups.each do |group|
         - evaluated = group.evaluated?
-        .label{class: (evaluated ? "disabled" : ""), :"data-url" => participants_group_assignment_path(group.id), onclick: "select_group(this)", onkeydown: "select_group(this, event)", :"data-group-id" => group.id, :"data-message" => (evaluated ? t(".already_evaluated") : ""), tabindex: 0}
+        .label{class: (evaluated ? "disabled" : ""), :"data-group-id" => group.id, :"data-message" => (evaluated ? t(".already_evaluated") : ""), :"data-url" => participants_group_assignment_path(group.id)}
           = render partial: "group", locals: {group: group}
 
   .participants_column.middle_column

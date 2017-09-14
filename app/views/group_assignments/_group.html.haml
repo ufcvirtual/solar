@@ -1,7 +1,7 @@
 - can_remove = group.can_remove?
-= group.group_name
+%a{href: "#", onclick: "select_group(this)", onkeydown: "select_group(this, event)", :"data-url" => participants_group_assignment_path(group.id), :"aria-label" => (group.evaluated? ? t("group_assignments.index.already_evaluated") : t("group_assignments.index.not_evaluated"))}= group.group_name
 .buttons
-  = content_tag(:i, nil, class: "icon-edit edit", onclick: "edit_group(this)", onkeydown: "edit_group(this, event)", :"data-tooltip" => t(".edit"), :'aria-label' => t(".edit"), tabindex: 0 )
-  = content_tag(:i, nil, class: "icon-cross #{can_remove ? 'remove' : 'cant_remove'}", onclick: (can_remove ? "remove_group(this)" : ""), onkeydown: (can_remove ? "remove_group(this, event)" : ""), :"data-tooltip" => (can_remove ? t(".remove") : t(".cant_remove")), :'aria-label' => (can_remove ? t(".remove") : t(".cant_remove")), tabindex: 0 )
+  %a{href: "#", onclick: "edit_group(this)", onkeydown: "edit_group(this, event)", onclick: "edit_group(this)", onkeydown: "edit_group(this, event)", :"data-tooltip" => t(".edit"), :'aria-label' => t(".edit")}= content_tag(:i, nil, class: "icon-edit edit")
+  %a{href: "#", onclick: (can_remove ? "remove_group(this)" : ""), onkeydown: (can_remove ? "remove_group(this, event)" : ""), :"data-tooltip" => (can_remove ? t(".remove") : t(".cant_remove")), :'aria-label' => (can_remove ? t(".remove") : t(".cant_remove"))}= content_tag(:i, nil, class: "icon-cross #{can_remove ? 'remove' : 'cant_remove'}")
 
 = javascript_include_tag "tooltip"
