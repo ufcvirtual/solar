@@ -75,7 +75,7 @@ module V1
 
         params do
           requires :cpf, type: String
-          optional :name, type: String
+          requires :name, type: String
         end
         put "unbind/:cpf" do
           begin

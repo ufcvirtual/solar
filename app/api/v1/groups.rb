@@ -196,6 +196,7 @@ module V1
               else
                 group = Group.where(offer_id: group_params(params)[:offer_id]).where("lower(code) = ?", group_params(params)[:code].downcase).first
               end
+
               unless group.blank?
                 begin
                   group.destroy
@@ -203,7 +204,7 @@ module V1
                   group.status = false
                   group.save!
 
-                  group.offer.notify_editors_of_disabled_groups(group)
+                  group.offer.notify_editors_of_disabled_groups([group])
                 end
               end
               {ok: :ok}             
@@ -223,7 +224,7 @@ module V1
           begin
             group = Group.find(params[:id])
             group.update_attributes! group_params(params)
-            group.offer.notify_editors_of_disabled_groups(group) if params[:status].present? && !(params[:status])
+            group.offer.notify_editors_of_disabled_groups([group]) if params[:status].present? && !(params[:status])
 
             {ok: :ok}
           end
