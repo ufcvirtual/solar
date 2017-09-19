@@ -3227,6 +3227,9 @@ en_US:
         individual_assignments: "Individual assignments [I]"
         group_assignments: "Group assignments [G]"
         public_files: "Public area [P]"
+        groups: "Groups [G]"
+        participants: "Participants [P]"
+        students_without_group: "Students without group [S]"
       code:
         files_title: 65
         comments_title: 67
@@ -3235,6 +3238,8 @@ en_US:
         individual_assignments: 73
         group_assignments: 71
         public_files: 80
+        participants: 80
+        students_without_group: 83
 
   scores:
     index:

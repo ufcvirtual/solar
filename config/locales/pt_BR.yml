@@ -2187,7 +2187,7 @@ pt_BR:
       not_started_up: Não é possível fazer o envio do arquivo. O trabalho ainda não está iniciado.
     success:
       removed: Arquivo deletado com sucesso
-      uploaded: Arquivo enviado com sucesso   
+      uploaded: Arquivo enviado com sucesso
   group_assignments:
     index:
       title: Gerenciamento de grupos - %{name}
@@ -2204,6 +2204,7 @@ pt_BR:
       add: "Adicionar ao grupo"
       remove: "Remover do grupo"
       confirm: Confirma remoção do grupo?
+      shortcut: Atalhos
     group:
       edit: Renomear grupo
       remove: Remover grupo
@@ -3471,6 +3472,9 @@ pt_BR:
         individual_assignments: "Trabalhos individuais [I]"
         group_assignments: "Trabalhos em grupo [G]"
         public_files: "Área pública [P]"
+        groups: "Grupos [G]"
+        participants: "Participantes [P]"
+        students_without_group: "Alunos sem grupo [A]"
       code:
         files_title: 65
         comments_title: 67
@@ -3479,6 +3483,8 @@ pt_BR:
         individual_assignments: 73
         group_assignments: 71
         public_files: 80
+        participants: 80
+        students_without_group: 65
 
   scores:
     index:
