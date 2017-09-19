@@ -4693,6 +4693,8 @@ pt_BR:
     error:
       general_message: Não foi possível realizar a ação desejada
     all: Todos
+    attached_files: Anexos
+    remove_file: Remover anexo %{name}
 
   ip_control:
     info:

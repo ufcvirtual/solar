@@ -4445,6 +4445,8 @@ en_US:
     error:
       general_message: It was not possible to execute action
     all: All
+    attached_files: Attachments
+    remove_file: Remove attachment %{name}
 
   ip_control:
     info:

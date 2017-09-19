@@ -83,44 +83,6 @@
   text-align: right;
 }
 
-#comment_form{
-  .files{
-    margin-top: -15px;
-  }
-  #files{
-    display: inline-block;
-    margin-top: 1%;
-    .info, .file{
-      display: inline-block;
-    }
-    input[type='file']{
-      display: none;
-    }
-    .info.invisible{
-      display: none;
-    }
-
-    padding: 6px;
-  }
-
-  .comment_button {
-    float: right;
-    margin-right: 5px;
-  }
-  .forum_post_attachment h3 {
-    padding-top: 12px;
-  }
-
-  i.remove_file{
-    padding: 5px;
-    color: $remove_file_color;
-    cursor: pointer;
-  }
-  .forum_post_attachment{
-    text-align: left;
-  }
-}
-
 .summary{
   .info{
     
