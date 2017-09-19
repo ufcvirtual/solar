@@ -14,6 +14,11 @@ module V1
 
           raise ActiveRecord::RecordNotFound if @profile_id.nil? || !(current_user.groups([@profile_id], Allocation_Activated).include?(@group))
         end
+
+        def message_params
+          ActionController::Parameters.new(params).require(:message).permit(:content, :subject, :id, :allocation_tag_id)
+        end
+
       end #helpers
 
       segment do
@@ -29,6 +34,20 @@ module V1
 
         get "/:id" , rabl: 'messages/show' do   
         end
+
+        # Compor mensagem
+        desc 'Compor Mensagem'
+        post ':id/message' do
+          verify_user_permission_on_discussion_and_set_obj(:create)
+
+          @message = Message.new(message_params)
+
+          if @message.save
+            { id: @message.id }
+          else
+            raise @message.errors.full_messages
+          end
+        end #end post
       end #segment
     end #namespace message
 
