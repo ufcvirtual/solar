@@ -32,5 +32,6 @@ function cancel_new_comment(){
   $(".comment_form").html("");
   $(".new_comment_btns").addClass("invisible");
   $("#new_comment").show();
+  $("#new_comment, .edit_comment").removeAttr("disabled");
   return false;
 }

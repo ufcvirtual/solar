@@ -15,8 +15,11 @@ class CommentsController < ApplicationController
 
   def new
     academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], params[:student_id], params[:group_id], false)
+    raise 'no_acu' if academic_allocation_user.nil?
     @comment = Comment.new academic_allocation_user_id: academic_allocation_user.id
     @comment.files.build
+  rescue => error
+    render_json_error(error, 'comments.error')
   end
 
   def create

@@ -4523,3 +4523,4 @@ en_US:
     error:
       general_message: It was not possible to execute action.
       date_range_expired: It was not possible to execute action. Date range expired.
+      no_acu: Is not possible to create a comment to this student at this group.

@@ -4771,3 +4771,4 @@ pt_BR:
     error:
       general_message: Não foi possível realizar ação.
       date_range_expired: Não foi possível realizar ação. Período encerrado.
+      no_acu: Não é possível criar um comentário para este aluno nesta turma.
