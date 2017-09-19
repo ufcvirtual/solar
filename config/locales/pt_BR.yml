@@ -3467,6 +3467,7 @@ pt_BR:
       name:
         files_title: "Arquivos da atividade [A]"
         comments_title: "Comentários [C]"
+        new_comment: "Novo cometário [N]"
         sent_assignment_title: "Enviados pelos alunos [E]"
         webconferences: "Webconferências [W]"
         individual_assignments: "Trabalhos individuais [I]"
@@ -3478,6 +3479,7 @@ pt_BR:
       code:
         files_title: 65
         comments_title: 67
+        new_comment: 78
         sent_assignment_title: 69
         webconferences: 87
         individual_assignments: 73

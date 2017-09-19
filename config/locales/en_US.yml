@@ -3222,6 +3222,7 @@ en_US:
       name:
         files_title: "Assignment's files [A]"
         comments_title: "Comments [C]"
+        new_comment: "New comment [N]"
         sent_assignment_title: "Files sent by student [F]"
         webconferences: "Webconferences [W]"
         individual_assignments: "Individual assignments [I]"
@@ -3233,6 +3234,7 @@ en_US:
       code:
         files_title: 65
         comments_title: 67
+        new_comment: 78
         sent_assignment_title: 70
         webconferences: 87
         individual_assignments: 73
