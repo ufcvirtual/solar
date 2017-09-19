@@ -58,9 +58,23 @@ class AccessControlController < ApplicationController
 
   def support_material
     unless Exam.verify_blocking_content(current_user.id)
-      get_file(SupportMaterialFile, 'support_material_files')
+      file = SupportMaterialFile.find(params[:path].split('_')[0])
+      if file.is_file?
+        file_path = File.join(SupportMaterialFile::FILES_PATH, [params[:path], '.', file.name.split('.').last ].join)
+        File.exist?(file_path) ? send_file(file_path, disposition: 'inline') : render(nothing: true) 
+
+      else
+        path = file.path(true)
+        params[:extension] = path.split('.').last if params[:extension].nil?
+        send_file(path, { disposition: 'inline', type: return_type(params[:extension]) })
+      end 
+      
     end  
-  end
+  end 
+
+  def support_material_file
+    get_file(SupportMaterialFile, 'support_material_files')
+  end 
 
   def question_image 
     question = QuestionImage.find(params[:file].split('_')[0]).question

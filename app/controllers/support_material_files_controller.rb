@@ -13,6 +13,7 @@ class SupportMaterialFilesController < ApplicationController
     get_groups_by_tool(@support_material = SupportMaterialFile.find(params[:id]))
   end
 
+
   def index
     authorize! :index, SupportMaterialFile, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
     allocation_tag_ids = AllocationTag.find(@allocation_tag_id).related
@@ -73,6 +74,29 @@ class SupportMaterialFilesController < ApplicationController
     request.format = :json
     raise error.class
   end
+
+  def open
+    if Exam.verify_blocking_content(current_user.id)
+        redirect_to :back, alert: t('exams.restrict')
+    else  
+      @file = SupportMaterialFile.find(params[:id]) unless params[:id].blank?
+      if @file.url.blank? && !File.exist?(@file.attachment.path)
+        render text: t(:file_error_nonexistent_file)
+      else
+        allocation_tag_ids = if !((current_at = active_tab[:url][:allocation_tag_id]).blank?) # dentro de uma UC
+            ats = AllocationTag.find(current_at).related
+            # se tenho acesso ao arquivo de dentro da UC que estou acessando
+            @file.nil? ? ats : @file.academic_allocations.map(&:allocation_tag_id) & ats
+          else # fora da UC
+            @file.academic_allocations.map(&:allocation_tag_id)
+          end
+        authorize! :download, SupportMaterialFile, on: allocation_tag_ids, read: true
+        
+        render layout: 'lesson'
+      end  
+    end 
+
+  end  
 
   def destroy
     @support_material_files = SupportMaterialFile.where(id: params[:id].split(",").flatten)

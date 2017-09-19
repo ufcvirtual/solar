@@ -18,12 +18,14 @@ class SupportMaterialFile < ActiveRecord::Base
     path: ":rails_root/media/support_material_files/:id_:basename.:extension",
     url: "/media/support_material_files/:id_:basename.:extension"
 
+   FILES_PATH = Rails.root.join('media', 'support_material_files') # path dos arquivos de aula
+
   def copy_dependencies_from(material_to_copy)
     copy_file(material_to_copy, self, 'support_material_files') if material_to_copy.is_file?
   end
 
   def path
-    return url if is_link?
+    return link_path if is_link?
     attachment.url
   end
 
@@ -45,6 +47,13 @@ class SupportMaterialFile < ActiveRecord::Base
 
   def is_file?
     material_type == Material_Type_File
+  end
+
+  def link_path(api: false)
+    raise 'not link' unless is_link?
+
+    return 'http://www.youtube.com/embed/' + url.split('v=')[1] if !api && url.include?('youtube') && !url.include?('embed')
+    url
   end
 
   def define_fixed_values
