@@ -44,7 +44,9 @@ class CommentsController < ApplicationController
     if @comment.update_attributes(comment_params)
       render json: { success: true, notice: t('comments.success.edit') }
     else
-      render_json_error(error, 'comments.error')
+      error = @comment.files.map(&:errors).map(&:full_messages).flatten.uniq
+      error = @comment.errors.full_messages if error.blank?
+      render json: {succes: false, alert: error.flatten.join(', ')}, status: :unprocessable_entity
     end
   rescue => error
     render_json_error(error, 'comments.error')

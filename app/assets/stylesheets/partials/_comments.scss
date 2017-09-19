@@ -35,9 +35,9 @@
   margin-right: 8px;
   margin-left: 10px;
   color: $color_gray_font;
+  display: inline-block;
+  float: right;
 }
-
-  
 
 .comments_files_div .btn {
   min-width: 10px;
@@ -84,12 +84,25 @@
 }
 
 #comment_form{
-  .input.files{
-    #file{
-      padding: 10px;
-      margin-left: -200px;
-    }
+  .files{
+    margin-top: -15px;
   }
+  #files{
+    display: inline-block;
+    margin-top: 1%;
+    .info, .file{
+      display: inline-block;
+    }
+    input[type='file']{
+      display: none;
+    }
+    .info.invisible{
+      display: none;
+    }
+
+    padding: 6px;
+  }
+
   .comment_button {
     float: right;
     margin-right: 5px;
