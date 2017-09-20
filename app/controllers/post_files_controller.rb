@@ -22,19 +22,22 @@ class PostFilesController < ApplicationController
       editable = ((post.user_id == current_user.id) && (post.children_count == 0))
 
       file_names = []
-      if ((can_interact) && (post.user_id == current_user.id))
-        files = params[:post_file].is_a?(Hash) ? params[:post_file].values : params[:post_file] # {attachment1 => [valores1], attachment2 => [valores2]} => [valores1, valores2]
-        [files].flatten.each do |file|
-          f = PostFile.create({ discussion_post_id: post.id, attachment: file })
-          file_names << "#{f.id} - #{f.attachment_file_name}"
+      ActiveRecord::Base.transaction do
+        if ((can_interact) && (post.user_id == current_user.id))
+          files = params[:post_file].is_a?(Hash) ? params[:post_file].values : params[:post_file] # {attachment1 => [valores1], attachment2 => [valores2]} => [valores1, valores2]
+          [files].flatten.each do |file|
+            f = PostFile.new({ discussion_post_id: post.id, attachment: file })
+            f.save!
+            file_names << "#{f.id} - #{f.attachment_file_name}"
+          end
+        elsif (post.user_id != current_user.id)
+          raise "permission"
+        else
+          raise "date_range_expired"
         end
-      elsif (post.user_id != current_user.id)
-        raise "permission"
-      else
-        raise "date_range_expired"
-      end
 
-      LogAction.create(log_type: LogAction::TYPE[:create], user_id: current_user.id, ip: get_remote_ip, description: "post_file: #{file_names.join(', ')}, post: #{post.id}") rescue nil
+        LogAction.create(log_type: LogAction::TYPE[:create], user_id: current_user.id, ip: get_remote_ip, description: "post_file: #{file_names.join(', ')}, post: #{post.id}") rescue nil
+      end
     rescue => error
       error_msg = error
       error = true
@@ -52,7 +55,7 @@ class PostFilesController < ApplicationController
           if params.include?('auth_token')
             render :json => {:result => 0}, :status => :unprocessable_entity
           else
-            render_json_error(error_msg, 'posts.error') 
+            render_json_error(error_msg, 'posts.error', nil, error_msg) 
           end
         end
       }

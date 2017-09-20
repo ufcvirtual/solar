@@ -1,15 +1,19 @@
-class AssignmentComment < ActiveRecord::Base
+class Comment < ActiveRecord::Base
 
   default_scope order: 'updated_at DESC'
 
   before_save :can_save?, if: 'merge.nil?'
   before_destroy :can_save?, if: 'merge.nil?'
   before_create :define_user, if: 'merge.nil?'
+  after_create :set_acu_status, if: 'merge.nil?'
+  after_destroy :set_acu_status, if: 'merge.nil?'
 
   belongs_to :academic_allocation_user
   belongs_to :user
 
   has_one :academic_allocation, through: :academic_allocation_user
+  has_one :allocation_tag, through: :academic_allocation
+  
   has_one :assignment, through: :academic_allocation_user
 
   has_many :files, class_name: 'CommentFile', dependent: :delete_all
@@ -30,9 +34,14 @@ class AssignmentComment < ActiveRecord::Base
   end
 
   def can_save?
-    raise 'date_range_expired' unless assignment.in_time?(allocation_tag.id, user_id)
+    raise 'date_range_expired' unless allocation_tag.verify_offer_period
     raise CanCan::AccessDenied unless user_id == User.current.id || new_record?
     true
+  end
+
+  def set_acu_status
+    ac = academic_allocation
+    AcademicAllocationUser.create_or_update(ac.academic_tool_type, ac.academic_tool_id, ac.allocation_tag_id, {user_id: academic_allocation_user.user_id, group_assignment_id: academic_allocation_user.group_assignment_id}, {grade: academic_allocation_user.grade, working_hours: academic_allocation_user.working_hours})
   end
 
   def define_user

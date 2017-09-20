@@ -9,7 +9,7 @@ class NotificationFile < ActiveRecord::Base
     path: ":rails_root/media/notifications/:id_:basename.:extension",
     url: "/media/notifications/:id_:basename.:extension"
 
-  validates_attachment_size :file, less_than: 10.megabyte
+  validates_attachment_size :file, less_than: 30.megabyte
   validates_attachment_content_type_in_black_list :file
 
   after_destroy :remove_readings

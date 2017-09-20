@@ -58,12 +58,60 @@ sa9:
 
 sa10:
   id: 10
-  academic_allocation_id: 7
+  academic_allocation_id: 7 # assignment - qm-cau quimica I
   group_assignment_id: 1
   status: 1
 
 sa11:
   id: 11
-  academic_allocation_id: 74
+  academic_allocation_id: 74 # assignment - qm-mar 
   group_assignment_id: 8
   status: 0
+
+dp1:
+  id: 12
+  academic_allocation_id: 35 # discussion- qm-cau quimica I
+  user_id: 1
+  status: 1
+
+dp2:
+  id: 13
+  academic_allocation_id: 35 # discussion- qm-cau quimica I
+  user_id: 2
+  status: 1
+
+dp3:
+  id: 14
+  academic_allocation_id: 69 # discussion
+  user_id: 1
+  status: 1
+
+dp4:
+  id: 15
+  academic_allocation_id: 69 #discussion
+  user_id: 2
+  status: 1
+
+dp5:
+  id: 16
+  academic_allocation_id: 36 #discussion
+  user_id: 1
+  status: 1
+
+dp6:
+  id: 17
+  academic_allocation_id: 36 #discussion
+  user_id: 7
+  status: 1
+
+dp7:
+  id: 18
+  academic_allocation_id: 36 #discussion
+  user_id: 2
+  status: 1
+
+dp8:
+  id: 19
+  academic_allocation_id: 71 #discussion
+  user_id: 7
+  status: 1

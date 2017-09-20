@@ -1,23 +1,34 @@
-.group_assignments.header{:"data-score" => @score_type}
-  %h1#lightBoxDialogTitle= t(".title", name: @assignment.name)
+.group_assignments.header.title{:"data-score" => @score_type}
+  %h1= t(".title", name: @assignment.name)
   %span.form_requirement= t(".warning")
+
+.shortcut_groups
+  .title-warning
+    %div
+      = link_to_function t('group_assignments.index.shortcut'), 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
+      = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle'), 'hide_or_show_info(this)'
+      = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle'), 'hide_or_show_info(this)'
+    %div.invisible
+      %p= t("shortcut.assignments.name.groups")
+      %p= t("shortcut.assignments.name.participants")
+      %p= t("shortcut.assignments.name.students_without_group")
 
 .block_wrapper.label_display
   .groups_column.first_column.of_three
     .block_title
-      %h2= t(".groups")
+      %h2{:'data-shortcut'=> t("shortcut.assignments.code.group_assignments"), :'data-shortcut-focus' => 'true'}= t(".groups")
       %span.right_buttons
-        = button_tag content_tag(:i, nil, class: "icon-plus"), class: "btn btn_main new_group", :"data-tooltip" => t(".new")
+        = button_tag content_tag(:i, nil, class: "icon-plus"), class: "btn btn_main new_group", :"data-tooltip" => t(".new"), :'aria-label' => t(".new")
 
     .labels
       - @groups.each do |group|
         - evaluated = group.evaluated?
-        .label{class: (evaluated ? "disabled" : ""), :"data-url" => participants_group_assignment_path(group.id), onclick: "select_group(this)", :"data-group-id" => group.id, :"data-message" => (evaluated ? t(".already_evaluated") : "")}
+        .label{class: (evaluated ? "disabled" : ""), :"data-group-id" => group.id, :"data-message" => (evaluated ? t(".already_evaluated") : ""), :"data-url" => participants_group_assignment_path(group.id)}
           = render partial: "group", locals: {group: group}
 
   .participants_column.middle_column
     .block_title
-      %h2= t(".participants")
+      %h2{:'data-shortcut'=> t("shortcut.assignments.code.participants"), :'data-shortcut-focus' => 'true'}= t(".participants")
     .block_content
       %table.tb_list
         %tbody
@@ -25,9 +36,7 @@
 
   .students_without_groups_column.last_column.of_three
     .block_title
-      %h2= t(".students_without_groups")
-      / .right_buttons
-      /   = text_field_tag :search_student, nil, :"data-column" => "all", type: :search, class: "search", placeholder: "Buscar aluno", width: 30
+      %h2{:'data-shortcut'=> t("shortcut.assignments.code.students_without_group"), :'data-shortcut-focus' => 'true'}= t(".students_without_groups")
     .block_content
       %table.tb_list
         %tbody{:"data-assignment-id" => @assignment.id}

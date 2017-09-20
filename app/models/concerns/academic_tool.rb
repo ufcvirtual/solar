@@ -16,6 +16,10 @@ module AcademicTool
     attr_accessor :allocation_tag_ids_associations, :merge
   end
 
+  def offer_opened?
+    !allocation_tags.map(&:verify_offer_period).include?(false)
+  end
+
   private
 
     def define_academic_associations
@@ -32,4 +36,3 @@ module AcademicTool
     end
 
 end
-

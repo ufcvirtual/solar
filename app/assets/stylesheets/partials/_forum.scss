@@ -25,6 +25,7 @@ div.forum_navigation {
   padding-top: 7px;
   font-family: 'Ubuntu Condensed', sans-serif;
   color: $color_red;
+  display: inline-block;
 }
 
 #forum_view_mode {
@@ -203,8 +204,8 @@ div.forum_navigation {
   display: none;
   padding-top: 5px;
   #submit_post_draft{
-    display: inline-block;
     float: left;
+    display: inline-block;
   }
 
   .forum_post_draft {

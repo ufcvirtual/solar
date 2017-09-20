@@ -1,0 +1,93 @@
+.user_comment {
+  float: left;
+  padding-left: 10px;
+  color: $exclusive_font_color;
+  max-width: 80%;
+}
+
+.comment {
+  min-height: 40px;
+  white-space: normal;
+  width: 98%;
+  margin-top: 5px;
+  color: $exclusive_font_color;
+}
+
+.comment_head {
+  min-height: 17px;
+  font-size: 12px;
+  white-space: normal;
+  font-family: 'Ubuntu';
+  width: 100%;
+  display: block;
+  text-align: left;
+  border-bottom: 1px solid;
+  border-bottom-color: $color_main;
+  background-color: $color_white_base;
+}
+
+.comment_files_info, .comment_date {
+  font-family: 'PT Sans', sans-serif;
+  font-weight: normal;
+  font-size: 8pt;
+  text-align: right;
+  font-style: italic;
+  margin-right: 8px;
+  margin-left: 10px;
+  color: $color_gray_font;
+  display: inline-block;
+  float: right;
+}
+
+.comments_files_div .btn {
+  min-width: 10px;
+  height: 22px;
+  padding: 0 2px;
+  vertical-align: bottom;
+  img {
+    width: 20px;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.comment_form, li.comment {
+  width: 100%;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 10pt;
+  vertical-align: top;
+}
+
+.comment_inner_content {
+  word-wrap: break-word;
+  padding: 5px 5px 0px 5px;
+  min-height: 27px;
+  background-color: $color_main_light;
+}
+
+.comments_files {
+  margin: 0px 10px 10px 0px;
+}
+
+.fancybox-outer .comments .block_wrapper{
+  width: 99%;
+  min-width: 400px;
+}
+
+.fancybox-outer .comment_wrapper{
+  overflow-y: hidden;
+  max-height: none;
+}
+
+.comment_button{
+  text-align: right;
+}
+
+.summary{
+  .info{
+    
+    .label_info{
+      width: auto;
+    }
+  }
+}

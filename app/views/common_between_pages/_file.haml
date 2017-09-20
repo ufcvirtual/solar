@@ -1,0 +1,10 @@
+%ul#files
+  = f.nested_fields_for :files, wrapper_tag: :li do |file|
+    .duplicatable_nested_form
+      - unless file.object.attachment_file_name.blank?
+        = file.object.attachment_file_name
+      - else 
+        = file.input :attachment, as: :file, label: false
+
+      .info{class: file.object.new_record? ? 'invisible' : ''}
+        = file.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash'), :'data-tooltip' => t('common_between_pages.remove_file', name: file.object.attachment_file_name), :'aria-label' => t('common_between_pages.remove_file', name: file.object.attachment_file_name)

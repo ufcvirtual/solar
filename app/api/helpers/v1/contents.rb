@@ -13,14 +13,16 @@ module V1::Contents
     unless from_acu.nil?
       new_acu = AcademicAllocationUser.where(academic_allocation_id: ac_id, user_id: user_id, group_assignment_id: group_id).first_or_initialize
       if new_acu.academic_allocation.academic_tool_type != 'Exam' || new_acu.exam_user_attempts.empty?
-        # if new_acu.new_record? || from_acu.updated_at.nil? || new_acu.updated_at.nil? || (from_acu.updated_at.to_time > new_acu.updated_at.to_time)
-          new_acu.grade = from_acu.grade # updates grade with most recent copied group
-          new_acu.working_hours = from_acu.working_hours
-          new_acu.status = from_acu.status
-          new_acu.new_after_evaluation = from_acu.new_after_evaluation
-          new_acu.merge = true
-          new_acu.save
+        new_acu.grade = from_acu.grade # updates grade with most recent copied group
+        new_acu.working_hours = from_acu.working_hours
+        new_acu.status = from_acu.status
+        new_acu.new_after_evaluation = from_acu.new_after_evaluation
+        new_acu.merge = true
+        new_acu.save
       end
+
+      copy_objects(from_acu.comments, { 'academic_allocation_user_id' => new_acu.id }, true, :files)
+
       new_acu.id
     end
   end
@@ -35,7 +37,6 @@ module V1::Contents
       end
       new_acu = get_acu(to_ac.id, from_academic_allocation_user, from_academic_allocation_user.user_id, new_group.try(:id))
 
-      copy_objects(from_academic_allocation_user.assignment_comments, { 'academic_allocation_user_id' => new_acu }, true, :files)
       copy_objects(from_academic_allocation_user.assignment_files, { 'academic_allocation_user_id' => new_acu }, true)
       copy_objects(from_academic_allocation_user.assignment_webconferences, { 'academic_allocation_user_id' => new_acu }, true, nil, { to: :set_origin, from: :id })
     end
@@ -58,6 +59,8 @@ module V1::Contents
       # cant unmerge if never merged
       raise 'not merged' if !merge && !Merge.where(main_group_id: main_group.id, secundary_group_id: secundary_group.id).last.try(:type_merge)
       
+      Merge.create! main_group_id: main_group.id, secundary_group_id: secundary_group.id, type_merge: merge
+      
       remove_all_content(to_at) unless merge
 
       replicate_discussions(from_academic_allocations, to_at)
@@ -72,7 +75,6 @@ module V1::Contents
         replicate_public_files(from_at, to_at)
       end
 
-      Merge.create! main_group_id: main_group.id, secundary_group_id: secundary_group.id, type_merge: merge
       LogAction.create(log_type: LogAction::TYPE[:create], user_id: 0, ip: request.headers['HTTP_CLIENT_IP'], description: "merge: transfering content from #{from_group.allocation_tag.info} to #{to_group.allocation_tag.info}, merge type: #{merge}") rescue nil
     end
 
@@ -96,10 +98,13 @@ module V1::Contents
       ac.academic_allocation_users.map(&:delete_with_dependents)
       LogAction.where(academic_allocation_id: ac.id, log_type: 7).delete_all
     }
-    AcademicAllocation.where(academic_tool_type: 'Exam', allocation_tag_id: allocation_tag).map{ |exam|
-      exam.academic_allocation_users.map(&:delete_with_dependents)
-    }
-  AcademicAllocationUser.joins(:academic_allocation).where(academic_allocations: {allocation_tag_id: allocation_tag}).map(&:delete_with_dependents)
+
+    # Se a tentativa ja existir na turma, não deve sobrescrever. Então não tem por que remover as provas e as tentativas para depois recadastra-las, pois isso seria, de certo modo, uma sobrescrita. Basta fazer o mesmo processo que na aglutinação
+    # AcademicAllocation.where(academic_tool_type: 'Exam', allocation_tag_id: allocation_tag).map{ |exam|
+    #   exam.academic_allocation_users.map(&:delete_with_dependents)
+    # }
+    
+    AcademicAllocationUser.joins(:academic_allocation).where(academic_allocations: {allocation_tag_id: allocation_tag}).where("academic_allocations.academic_tool_type != 'Exam'").map(&:delete_with_dependents) # remove todas as ACUs, EXCETO de prova pelos motivos descritos acima
   end
 
   def copy_file(file_to_copy_path, file_copied_path)
@@ -116,8 +121,10 @@ module V1::Contents
   end
 
   def copy_object(object_to_copy, merge_attributes={}, is_file = false, nested = nil, call_methods = {}, acu=false)
-    new_object = object_to_copy.class.where(object_to_copy.attributes.except('id', 'children_count', 'updated_at', 'new_after_evaluation', 'academic_allocation_user_id', 'created_at').merge!(merge_attributes)).first_or_initialize
+    new_object = object_to_copy.class.where(object_to_copy.attributes.except('id', 'children_count', 'updated_at', 'new_after_evaluation', 'academic_allocation_user_id', 'created_at', 'group_updated_at', 'draft').merge!(merge_attributes)).first_or_initialize
 
+
+    new_object.draft = object_to_copy.draft if object_to_copy.respond_to?(:draft)
     new_object.created_at = object_to_copy.created_at if object_to_copy.respond_to?(:created_at)
     new_object.updated_at = object_to_copy.updated_at if object_to_copy.respond_to?(:updated_at)
     new_object.merge = true if new_object.respond_to?(:merge) # used so call save without callbacks (before_save, before_create)
@@ -151,9 +158,15 @@ module V1::Contents
   def replicate_discussions(from_academic_allocations, to_at)
     from_discussions_academic_allocations = from_academic_allocations.where(academic_tool_type: 'Discussion')
     create_missing_tools(from_discussions_academic_allocations.pluck(:academic_tool_id), to_at, 'Discussion')
-
     from_posts = Post.where(parent_id: nil, academic_allocation_id: from_discussions_academic_allocations.pluck(:id))
     copy_posts(from_posts, to_at)
+
+    #from acs, copy all acus which doesnt have any post
+    from_acus_without_posts = AcademicAllocationUser.joins('LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_user_id = academic_allocation_users.id').where(academic_allocation_id: from_discussions_academic_allocations.pluck(:id)).where('discussion_posts.id IS NULL') 
+    from_acus_without_posts.each do |from_acu_without_post|
+      ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Discussion', academic_tool_id: from_acu_without_post.academic_allocation.academic_tool_id).first
+      get_acu(ac.id, from_acu_without_post, from_acu_without_post.user_id) #rescue nil
+    end
   end
 
   def replicate_chats(from_academic_allocations, to_at)
@@ -165,6 +178,13 @@ module V1::Contents
 
       copy_objects(chat.chat_messages, {"academic_allocation_id" => to_ac.id}, false, nil, {}, true)
       copy_objects(chat.chat_participants, {"academic_allocation_id" => to_ac.id})
+    end
+
+    #from acs, copy all acus which doesnt have any msg
+    from_acus_without_msgs = AcademicAllocationUser.joins('LEFT JOIN chat_messages ON chat_messages.academic_allocation_user_id = academic_allocation_users.id').where(academic_allocation_id: from_chats_academic_allocations.pluck(:id)).where('chat_messages.id IS NULL') 
+    from_acus_without_msgs.each do |from_acu_without_msg|
+      ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'ChatRoom', academic_tool_id: from_acu_without_msg.academic_allocation.academic_tool_id).first
+      get_acu(ac.id, from_acu_without_msg, from_acu_without_msg.user_id) #rescue nil
     end
   end
 
@@ -182,10 +202,18 @@ module V1::Contents
     from_webconferences_academic_allocations = from_academic_allocations.where(academic_tool_type: 'Webconference')
     create_missing_tools(from_webconferences_academic_allocations.pluck(:academic_tool_id).uniq, to_at, 'Webconference', :create_copy, from_at)
     from_webconferences_academic_allocations.each do |web|
-      to_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Webconference', academic_tool_id: web.academic_tool_id).first
+      to_ac = AcademicAllocation.joins(:webconference).where(allocation_tag_id: to_at, academic_tool_type: 'Webconference').where("origin_meeting_id = '?' OR origin_meeting_id = ? OR academic_tool_id = ?", web.academic_tool_id, [from_at, web.academic_tool_id].join('_'), web.academic_tool_id).order('id').last
 
       unless to_ac.nil?
         copy_objects(LogAction.where(academic_allocation_id: web.id, log_type: 7), {"academic_allocation_id" => to_ac.id}, false, nil, {}, true)
+
+        #from acs, copy all acus which doesnt have any access
+        from_acus_without_access = AcademicAllocationUser.joins('LEFT JOIN log_actions ON log_actions.academic_allocation_user_id = academic_allocation_users.id').where(academic_allocation_id: web.id).where('log_actions.id IS NULL') 
+        from_acus_without_access.each do |from_acu_without_access|
+          ac = AcademicAllocation.joins(:webconference).where(allocation_tag_id: to_at, academic_tool_type: 'Webconference').where("origin_meeting_id = '?' OR origin_meeting_id = ? OR academic_tool_id = ?", web.academic_tool_id, [from_at, web.academic_tool_id].join('_'), web.academic_tool_id).order('id').last
+          get_acu(ac.id, from_acu_without_access, from_acu_without_access.user_id) #rescue nil
+        end
+
       end
     end
   end

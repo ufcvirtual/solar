@@ -275,13 +275,20 @@ $.fn.serialize_and_submit = function(options) {
         }
 
         if (typeof(options.prepend_to_list) != "undefined"){
-          $('#'+$(data).prop('id')).remove();
-          options.prepend_to_list.prepend(data);
+          if(typeof(data.prepend_to_list_url) != "undefined"){
+            $.get(data.prepend_to_list_url, function(data2){
+              options.prepend_to_list.prepend(data2);
+            });
+          }else{
+            $('#'+$(data).prop('id')).remove();
+            options.prepend_to_list.prepend(data);
+          }
           $('.empty_message.text_none').addClass('invisible');
+
         }
 
         else if (typeof(data) != "undefined" && typeof(data.notice) != "undefined"){
-          flash_message(data.notice, 'notice');
+          flash_message(data.notice, 'notice', options.outer);
         }
       }
 
@@ -373,6 +380,36 @@ $.fn.nice_open_lesson = function(options) {
     autoSize: true,
     afterShow: function() {
       $("<a class='fancybox-item fancybox-minimize'  title=<%=I18n.t('fancybox.minimize')%> aria-label=<%=I18n.t('fancybox.minimize')%>></a>").appendTo(this.skin).click(minimize_lesson);
+
+      add_description_to_close_fancybox_btn("<%=I18n.t(:menu_lesson)%>");
+      focus_on_fancybox_element(undefined, undefined, "<%=I18n.t(:menu_lesson)%>");
+      remove_focus_from_back();
+
+      $('iframe').prop('title', "<%=I18n.t(:menu_lesson)%>");
+      $('iframe').contents().find('html').prop('lang', "<%=I18n.locale.to_s.gsub('_', '-')%>");
+    },
+    afterClose:  function(event) {
+      event.element.prop('tabindex', 0);
+      event.element.focus();
+      give_focus_to_back();
+    }
+  };
+
+  options = $.extend(default_options, options, {live: false} );
+  $.fancybox.open($(this), options);
+}
+
+$.fn.nice_open_file = function(options) {
+  if (typeof(options) == "undefined")
+    options = {};
+
+  var default_options = {
+    autoSize: false,
+    beforeLoad : function() {         
+      this.width  = parseInt(this.element.data('fancybox-width'));  
+      this.height = parseInt(this.element.data('fancybox-height'));
+    },
+    afterShow: function() {
 
       add_description_to_close_fancybox_btn("<%=I18n.t(:menu_lesson)%>");
       focus_on_fancybox_element(undefined, undefined, "<%=I18n.t(:menu_lesson)%>");

@@ -12,7 +12,7 @@ class CurriculumUnit < ActiveRecord::Base
   before_update :update_correspondent_course,   if: 'curriculum_unit_type_id == 3 && !ignore_course'
   after_destroy :destroy_correspondent_course,  if: 'curriculum_unit_type_id == 3 && !ignore_course'
 
-  validates :code, uniqueness: true, length: { maximum: 40 }, allow_blank: false
+  validates :code, uniqueness: { case_sensitive: false }, length: { maximum: 40 }, allow_blank: false
   validates :name, length: { maximum: 120 }
   validates :name, :curriculum_unit_type, :resume, :syllabus, :objectives, :code, presence: true
   validates :passing_grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true}
@@ -59,6 +59,14 @@ class CurriculumUnit < ActiveRecord::Base
   def verify_evaluative_tools
     acs = AcademicAllocation.where(allocation_tag_id: allocation_tag.related, frequency: true).where('final_exam IS NULL AND equivalent_academic_allocation_id IS NULL').pluck(:max_working_hours)
     (acs.empty? ? false : acs.sum(:max_working_hours) == working_hours)
+  end
+
+  def deactivate_all_groups
+    groups = Group.joins(:offer).where(offers: {curriculum_unit_id: id})
+    groups.update_all status: false
+    offers.each do |offer|
+      offer.notify_editors_of_disabled_groups(groups)
+    end
   end
 
   ## triggers

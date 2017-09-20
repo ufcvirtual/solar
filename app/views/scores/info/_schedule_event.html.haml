@@ -14,7 +14,9 @@
                 %th#ev_eva_dat.center.date{style: "width: 6%;"}= t(:date_range, scope: [:scores, :info])
                 %th#ev_eva_sit.center{style: "width: 4%;"}= t(:situation, scope: [:scores, :info])
                 %th#ev_eva_gra.center{style: "width: 2%;"}= t(:grade, scope: [:scores, :info])
-                - if @can_evaluate_ev
+                - if @current_user_is_student
+                  %th.center#ev_eva_comment{style: "width: 2%;"}=t(:comments, scope: [:scores, :info])
+                - if @can_evaluate || @can_comment
                   %th#ev_eva_eva.center.no_sort{style: "width: 2%;"}
                 %th#ev_eva_af.center.no_sort{style: "width: 2%;"}=t('scores.info.final_exam')
             %tbody
@@ -53,7 +55,9 @@
                       %div= [(schedule_event.start_hour), (schedule_event.end_hour)].join(' - ')
                   %td.center{class: "assignment_#{schedule_event.situation} #{['scheduleevent','u', schedule_event.id.to_s, @user.id.to_s].join('_')} situation", headers: "ev_eva_sit"}= t("scores.situation.#{schedule_event.situation}")
                   %td.center{headers: "ev_eva_gra", class: "#{['scheduleevent','u', schedule_event.id.to_s, @user.id.to_s].join('_')} #{['g', schedule_event.id.to_s, schedule_event.group_id.to_s].join('_')}"}= schedule_event.grade
-                  - if @can_evaluate_ev
+                  - if @current_user_is_student
+                    %td.center{headers: "ev_eva_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_assignments_path(ac_id: schedule_event.id, tool_id: schedule_event.academic_tool_id, group_id: schedule_event.group_id), class: "btn #{schedule_event.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: schedule_event.count_comments), :'aria-label' => t('comments.summary.count_alt', count: schedule_event.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+                  - if @can_evaluate || @can_comment
                     %td.center{headers: "ev_eva_eva"}
                       = link_to content_tag(:i, nil, class: 'icon-write'), evaluate_user_schedule_event_path(schedule_event.academic_tool_id, user_id: @user.id, score_type: 'evaluative'), class: 'btn to_evaluate_schedule_event', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
                   %td.center{headers: 'ev_eva_af' }=raw t(schedule_event.final_exam, scope: [:common_between_pages, :final_exam])
@@ -71,7 +75,9 @@
                 %th#ev_fre_dat.center.date{style: "width: 6%;"}= t(:date_range, scope: [:scores, :info])
                 %th#ev_fre_sit.center{style: "width: 4%;"}= t(:situation, scope: [:scores, :info])
                 %th#ev_fre_fre.center{style: "width: 2%;"}= t(:frequency, scope: [:scores, :info])
-                - if @can_evaluate_ev
+                - if @current_user_is_student
+                  %th.center#ev_freq_comment{style: "width: 2%;"}=t(:comments, scope: [:scores, :info])
+                - if @can_evaluate || @can_comment
                   %th#ev_fre_eva.center.no_sort{style: "width: 2%;"}
                 %th#ev_freq_hours.center.no_sort{style: "width: 2%;"}=t('scores.info.hours')
             %tbody
@@ -110,7 +116,9 @@
                       %div= [(schedule_event.start_hour), (schedule_event.end_hour)].join(' - ')
                   %td.center{class: "assignment_#{schedule_event.situation} #{['scheduleevent','u', schedule_event.id.to_s, @user.id.to_s].join('_')} situation", headers: "ev_fre_sit"}= t("scores.situation.#{schedule_event.situation}")
                   %td.center{headers: "ev_fre_fre", class: "#{['scheduleevent','u', schedule_event.id.to_s, @user.id.to_s].join('_')} #{['g', schedule_event.id.to_s, schedule_event.group_id.to_s].join('_')}"}= schedule_event.working_hours
-                  - if @can_evaluate_ev
+                  - if @current_user_is_student
+                    %td.center{headers: "ev_fre_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_assignments_path(ac_id: schedule_event.id, tool_id: schedule_event.academic_tool_id, group_id: schedule_event.group_id), class: "btn #{schedule_event.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: schedule_event.count_comments), :'aria-label' => t('comments.summary.count_alt', count: schedule_event.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+                  - if @can_evaluate || @can_comment
                     %td.center{headers: "ev_fre_eva"}
                       = link_to content_tag(:i, nil, class: 'icon-write'), evaluate_user_schedule_event_path(schedule_event.academic_tool_id, user_id: @user.id, score_type: 'frequency'), class: 'btn to_evaluate_schedule_event', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
                   %td.center{headers:'ev_freq_hours'}=raw t('common_between_pages.hours', hours: schedule_event.max_working_hours)
@@ -127,6 +135,10 @@
                 %th#ev_not_she{style: "width: 6%;"}= t(:schedule_event, scope: [:scores, :info])
                 %th#ev_not_dat.center.date{style: "width: 6%;"}= t(:date_range, scope: [:scores, :info])
                 %th#ev_not_sit.center{style: "width: 4%;"}= t(:situation, scope: [:scores, :info])
+                - if @can_comment
+                  %th#ev_not_btn.center.no_sort{style: "width: 4%;"}
+                - if @current_user_is_student
+                  %th.center#ev_not_comment{style: "width: 2%;"}=t(:comments, scope: [:scores, :info])
 
             %tbody
               - @schedules_event_not_evaluative.each do |schedule_event|
@@ -163,6 +175,11 @@
                     - if !schedule_event.start_hour.blank?
                       %div= [(schedule_event.start_hour), (schedule_event.end_hour)].join(' - ')
                   %td.center{class: "assignment_#{schedule_event.situation} #{['scheduleevent','u', schedule_event.id.to_s, @user.id.to_s].join('_')} situation", headers: "ev_not_sit"}= t("scores.situation.#{schedule_event.situation}")
+                  - if @can_comment
+                    %td.center{headers: "ev_not_btn"}
+                      = link_to content_tag(:i, nil, class: 'icon-write'), evaluate_user_schedule_event_path(schedule_event.academic_tool_id, user_id: @user.id, score_type: 'not_evaluative'), class: 'btn to_evaluate_schedule_event', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
+                  - if @current_user_is_student
+                    %td.center{headers: "ev_not_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_assignments_path(ac_id: schedule_event.id, tool_id: schedule_event.academic_tool_id, group_id: schedule_event.group_id), class: "btn #{schedule_event.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: schedule_event.count_comments), :'aria-label' => t('comments.summary.count_alt', count: schedule_event.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
         - else
           .block_content.block_content_text= t(:itens_not_found)
 

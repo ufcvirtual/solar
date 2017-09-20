@@ -10,10 +10,6 @@ class AccessControlController < ApplicationController
       current_path_split = request.env['PATH_INFO'].split('/') #ex: /media/assignment/public_area/20_crimescene.png => ["", "media", "assignment", "public_area", "20_crimescene.png"]
 
       case current_path_split[current_path_split.size-2] #ex: ["", "media", "assignment", "public_area", "20_crimescene.png"] => public_area
-        when 'comments' # arquivo de um comentário
-          file = CommentFile.find(file_id)
-          acu = file.assignment_comment.academic_allocation_user
-          allocation_tags = acu.academic_allocation.allocation_tag_id
         when 'sent_assignment_files' # arquivo enviado pelo aluno/grupo
           file = AssignmentFile.find(file_id)
           acu  = file.academic_allocation_user
@@ -30,7 +26,7 @@ class AccessControlController < ApplicationController
 
       if can_access.nil?
         is_observer_or_responsible = AllocationTag.find(active_tab[:url][:allocation_tag_id] || allocation_tags).is_observer_or_responsible?(current_user.id)
-        can_access = (( acu.user_id.to_i == current_user.id || (!(acu.group.nil?) && acu.group.user_in_group?(current_user.id)) ) || is_observer_or_responsible) 
+        can_access = (( acu.user_id.to_i == current_user.id || (!(acu.group_assignment.nil?) && acu.group_assignment.user_in_group?(current_user.id)) ) || is_observer_or_responsible) 
       end
 
       if can_access
@@ -43,15 +39,42 @@ class AccessControlController < ApplicationController
     end
   end
 
+  def comments
+    file = CommentFile.find(params[:file].split('_')[0])
+    acu = file.comment.academic_allocation_user
+
+    is_observer_or_responsible = acu.allocation_tags.first.is_observer_or_responsible?(current_user.id)
+
+    unless acu.user_id == current_user.id || is_observer_or_responsible
+      raise CanCan::AccessDenied unless (acu.academic_allocation.academic_tool_type == 'Assignment' && !acu.group_assignment.blank? && acu.group_assignment.user_in_group?(current_user.id))
+    end
+
+    send_file(file.attachment.path, { disposition: 'inline', type: return_type(params[:extension])})
+  end
+
   def bibliography
     get_file(Bibliography, 'bibliography')
   end
 
   def support_material
     unless Exam.verify_blocking_content(current_user.id)
-      get_file(SupportMaterialFile, 'support_material_files')
+      file = SupportMaterialFile.find(params[:path].split('_')[0])
+      if file.is_file?
+        file_path = File.join(SupportMaterialFile::FILES_PATH, [params[:path], '.', file.name.split('.').last ].join)
+        File.exist?(file_path) ? send_file(file_path, disposition: 'inline') : render(nothing: true) 
+
+      else
+        path = file.path(true)
+        params[:extension] = path.split('.').last if params[:extension].nil?
+        send_file(path, { disposition: 'inline', type: return_type(params[:extension]) })
+      end 
+      
     end  
-  end
+  end 
+
+  def support_material_file
+    get_file(SupportMaterialFile, 'support_material_files')
+  end 
 
   def question_image 
     question = QuestionImage.find(params[:file].split('_')[0]).question

@@ -38,6 +38,11 @@ ul.notifications {
     vertical-align: bottom;
     width: 12%;
   }
+  .files, .profiles{
+    label{
+      width: 76px;
+    }
+  }
   #files{
     display: inline-block;
     .info, .file{
@@ -48,6 +53,34 @@ ul.notifications {
     }
     .info.invisible{
       display: none;
+    }
+  }
+  .profiles{
+    #all{
+      margin-left: -1.6%;
+      vertical-align: bottom;
+    }
+    #profiles_box{
+      vertical-align: top;
+      border: 1px solid $color_gray_font;
+      background-color: $color_white_base;
+      max-height: 200px;
+      overflow-y: auto;
+      padding-top: 7px;
+      padding-bottom: 7px;
+      padding-right: 15px;
+      width: 40%;
+      margin-left: 13%;
+      .profile_ckb{
+        margin-left: -13px;
+        label{
+          vertical-align: top;
+          width: auto;
+        }
+      }
+    }
+    span{
+      display: block;
     }
   }
 }

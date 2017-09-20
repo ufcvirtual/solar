@@ -28,9 +28,8 @@
           %th.center.smaller_width#web_frequency= t(:frequency, scope: [:scores, :info])
           - if @can_see_access
             %th.smaller_width#web_access.no_sort= t('.access')
-          - else
-            %th#web_grade.no_sort= t('.grade')
-            %th#web_wh.no_sort= t('.frequency')
+          - if @is_student
+            %th.center{style: "width: 2%;", id: "summary"}=t(:info_evaluation, scope: [:scores, :info])
       %tbody
         - @webconferences.each do |webconference|
           - unavailable = exist_and_offline?(webconference.server.to_i)
@@ -97,13 +96,12 @@
             %td.center{headers:'web_frequency'}= raw t(webconference.frequency, scope: [:common_between_pages, :frequency], hours: webconference.max_working_hours)
             - if @can_see_access
               %td{headers: 'web_access',:'data-url' => list_access_webconference_path(webconference, at_id: webconference.at_id), :'data-tooltip' => t('webconferences.list.access') }= link_to_function content_tag(:i, nil, class: 'icon-users'), 'list_access(this)', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('webconferences.list.access') + t('fancybox.open'), class: 'btn'
-            - else
-              %td{headers:'web_grade'}= webconference.grade
-              %td{headers:'web_wh'}= webconference.working_hours
+            - if @is_student
+              %td.center{headers: "summary"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_webconferences_path(ac_id: webconference.ac_id, tool_id: webconference.id), class: "btn #{webconference.has_info == 't' ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt2', tool: webconference.title), :'aria-label' => t('comments.summary.title_alt2', tool: webconference.title) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
   - else
     .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])
 
-= javascript_include_tag 'tooltip', 'webconferences'
+= javascript_include_tag 'tooltip', 'webconferences', 'academic_allocation_user'
 
 :javascript
   $(function(){

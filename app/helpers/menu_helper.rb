@@ -43,13 +43,17 @@ module MenuHelper
   private
 
     def to_html(menu_list)
+      letters_to_shortcut = []
       parents = menu_list[:parents].map do |p_id, father|
+        count = 0
+        count += 1 while letters_to_shortcut.include?(father[:name][count].downcase)
+        letters_to_shortcut << father[:name][count].downcase
         children = father[:children].map { |kid| create_link(kid, p_id, 'list') }
         %{
           <div class="mysolar_menu_group">
             <ul>
               <li class="mysolar_menu_title_multiple">
-                #{father[:name]}
+                <span data-shortcut="#{father[:name][count].downcase.ord - 32}" data-shortcut-focus="true" data-shortcut-shift="true">#{father[:name]}</span>
                 <ul class="submenu">
                   #{children.join}
                 </ul>

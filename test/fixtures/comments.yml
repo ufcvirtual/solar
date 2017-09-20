@@ -36,12 +36,6 @@ ac6:
   user_id: 6 # professor
   comment: "comentario 1"
 
-ac7:
-  id: 7
-  academic_allocation_user_id: 13
-  user_id: 1 #user
-  comment: "comentario 7"
-
 ac8:
   id: 8
   academic_allocation_user_id: 9

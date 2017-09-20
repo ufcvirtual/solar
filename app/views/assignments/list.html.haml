@@ -1,7 +1,7 @@
 .assignments_list
   .block_wrapper
     .block_title
-      %h2
+      %h2{:'data-shortcut'=> t("shortcut.assignments.code.individual_assignments"), :'data-shortcut-name'=> t("shortcut.assignments.name.individual_assignments"), :'data-shortcut-focus' => 'true'}
         %i.icon-suitcase
         = t('.individual_assignments')
     .block_content
@@ -9,16 +9,18 @@
 
   .block_wrapper
     .block_title
-      %h2
+      %h2{:'data-shortcut'=> t("shortcut.assignments.code.group_assignments"), :'data-shortcut-name'=> t("shortcut.assignments.name.group_assignments"), :'data-shortcut-focus' => 'true'}
         %i.icon-suitcase
         = t('.group_assignments')
     .block_content
       = render partial: (@student ? 'student_assignments' : 'assignments'), locals: { assignments: @assignments_group, type: 'group' }
-  #public_files 
+  #public_files
     = render partial: 'public_files/list', locals: { public_files: @public_files }
 
   .block_wrapper
     = link_to t(:back), :back, { class: 'btn', id: 'back'  }
+
+= javascript_include_tag 'academic_allocation_user'
 
 :javascript
   $(function(){

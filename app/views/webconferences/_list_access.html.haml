@@ -10,7 +10,7 @@
     %table.tb_list
       %thead
         %tr.lines
-          - if (@evaluative || @frequency) && @can_evaluate
+          - if (@can_evaluate || @can_comment) && !@too_old
             %th#evaluate=t('chat_rooms.messages.to_evaluate')
           %th#profile= t('.profile')
           %th#user= t('.user')
@@ -24,7 +24,7 @@
       %tbody
         - @logs.each_with_index do |log, idx|
           %tr.lines{:'data-user-id' => log.user_id}
-            - if (@evaluative || @frequency) && !@too_old
+            - if (@can_evaluate || @can_comment) && !@too_old
               %td{headers:'evaluate'}
                 - if log.is_student == 't' 
                   = link_to_function content_tag(:i, nil, class: 'icon-write'), 'evaluate_web(this)', :'data-url' => user_access_webconference_path(@webconference, user_id: log.user_id, back:true), class: 'btn evaluate', :'data-tooltip'=> t('.evaluate')

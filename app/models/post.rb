@@ -16,17 +16,23 @@ class Post < ActiveRecord::Base
   has_many :children, class_name: 'Post', foreign_key: 'parent_id', dependent: :destroy
   has_many :files, class_name: 'PostFile', foreign_key: 'discussion_post_id', dependent: :destroy
 
+  accepts_nested_attributes_for :files, allow_destroy: true, reject_if: proc {|attributes| !attributes.include?(:attachment) || attributes[:attachment] == '0' || attributes[:attachment].blank?}
+
   before_create :set_level, :verify_level
   before_destroy :remove_all_files
 
   after_create :increment_counter
   after_destroy :decrement_counter, :update_acu, :remove_drafts_children, :decrement_counter_draft
-  after_save :update_acu, :decrement_counter_draft, on: :update
+  after_save :update_acu
+  after_save :decrement_counter_draft, on: :update
 
   validates :content, :profile_id, presence: true
 
   validate :can_change?, if: 'merge.nil?'
   validate :parent_post, if: 'merge.nil? && !parent_id.blank?'
+
+  before_save :set_parent, if: '!new_record? && parent_id_changed?'
+  before_save :set_draft, if: '(!new_record? && draft_changed? && !draft_was) || draft.blank?'
 
   attr_accessor :merge
 
@@ -36,6 +42,18 @@ class Post < ActiveRecord::Base
 
   def parent_post
     errors.add(:base, I18n.t('posts.error.draft')) if parent.draft
+  end
+
+  # cant change parent_id
+  def set_parent
+    self.parent_id = parent_id_was
+    return true
+  end
+
+  # cant turn into draft a post already published
+  def set_draft
+    self.draft = false
+    return true
   end
 
   def verify_level
@@ -157,7 +175,7 @@ class Post < ActiveRecord::Base
     def update_acu
       unless academic_allocation_user_id.blank?
         if (academic_allocation_user.grade.blank? && academic_allocation_user.working_hours.blank?)
-          if academic_allocation_user.discussion_posts.empty?
+          if academic_allocation_user.discussion_posts.where(draft: false).empty?
             academic_allocation_user.status = AcademicAllocationUser::STATUS[:empty]
           else
             academic_allocation_user.status = AcademicAllocationUser::STATUS[:sent]

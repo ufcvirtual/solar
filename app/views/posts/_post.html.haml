@@ -48,7 +48,7 @@
             %ul
               - if post.draft  
                 = button_tag t('posts.index.publish'), class: "btn btn_main publish_post", :'data-url' => publish_post_path(post), type: :button, onclick: 'publish_post(this)'
-              - if @can_evaluate && (post.profile.types & Profile_Type_Student) > 0
+              - if (@can_evaluate || @can_comment) && (post.profile.types & Profile_Type_Student) > 0
                 %li= link_to content_tag(:i, nil, class: 'icon-write'), user_discussion_posts_path(post.discussion.id, post.user_id), class: 'btn to_evaluate_post', :'data-tooltip'=> t('.to_evaluate'), :'aria-label' => t('.to_evaluate') + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
               - if can_interact
                 - if editable
@@ -93,15 +93,18 @@
     height: 'auto',
     closeBtn : true
   });
-
-  $('.number_post').each(function(index){
-    var indice = index+1;
-    $(this).attr("id", "span_"+ indice);
-    parent_id = $(this).html();
-    label = indice+"#{t('.post')}";
-    if(parent_id && $("#"+parent_id).length && "#{display_mode}" != 'list'){
-      var parent_id = parseInt($("#"+parent_id).find('.number_post').attr('id').replace(/[^0-9]/g,''));
-      label = label +"#{t('.answer_post')}"+ parent_id+"#{t('.res_post')}";
-    }
-    $(this).attr("aria-label", label);
-  }); 
+  $(function(){
+    setTimeout(function() {
+      $('.number_post').each(function(index){
+        var indice = index+1;
+        $(this).attr("id", "span_"+ indice);
+        parent_id = $(this).html();
+        label = indice+"#{t('.post')}";
+        if(parent_id && $("#"+parent_id).length && "#{display_mode}" != 'list'){
+          var parent_id = parseInt($("#"+parent_id).find('.number_post').attr('id').replace(/[^0-9]/g,''));
+          label = label +"#{t('.answer_post')}"+ parent_id+"#{t('.res_post')}";
+        }
+        $(this).attr("aria-label", label);
+      }); 
+    }, 200);  
+  });  

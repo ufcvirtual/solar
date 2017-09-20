@@ -1,0 +1,23 @@
+- model_name = @tool.class.to_s
+- evaluative = @acu.academic_allocation.evaluative || model_name == "Assignment" || model_name == "Exam"
+- frequency = @acu.academic_allocation.frequency
+.summary
+  %h1#lightBoxDialogTitle=t(".title", user: current_user.name, tool: (@tool.title rescue @tool.name))
+
+  - if evaluative || frequency
+    .info.block_wrapper
+      .block_title
+        %h2=t('.info')
+      .block_content
+        .form-inputs
+          - if evaluative
+            .input
+              = label_tag t(".grade"), nil, class: "form_label"
+              %span.label_info= @acu.grade || raw(t('.no_grade'))
+          - if frequency
+            .input
+              = label_tag t(".working_hours"), nil, class: "form_label"
+              %span.label_info= @acu.working_hours || raw(t('.no_wh'))
+
+  .comments
+    = render partial: 'comments/list', locals: { comments: @acu.try(:comments), tool: @tool, tool_type: model_name }

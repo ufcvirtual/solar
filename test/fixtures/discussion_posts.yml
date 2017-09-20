@@ -1,6 +1,7 @@
 post_1_ac_1:
   id: 1
   academic_allocation_id: 35
+  academic_allocation_user_id: 12
   user_id: 1
   profile_id: 1
   level: 1
@@ -11,6 +12,7 @@ post_1_ac_1:
 post_2_ac_1:
   id: 2
   academic_allocation_id: 35
+  academic_allocation_user_id: 
   user_id: 2
   profile_id: 2
   parent_id: 1
@@ -22,6 +24,7 @@ post_2_ac_1:
 post_3_ac_1:
   id: 3
   academic_allocation_id: 35
+  academic_allocation_user_id: 12
   user_id: 1
   profile_id: 3
   level: 1
@@ -32,6 +35,7 @@ post_3_ac_1:
 post_4_ac_1:
   id: 6
   academic_allocation_id: 35
+  academic_allocation_user_id: 
   user_id: 2
   profile_id: 2
   parent_id: 1
@@ -43,6 +47,7 @@ post_4_ac_1:
 post_1_ac2:
   id: 7
   academic_allocation_id: 69
+  academic_allocation_user_id: 14
   user_id: 1
   profile_id: 1
   level: 1
@@ -53,6 +58,7 @@ post_1_ac2:
 post_2_ac2:
   id: 8
   academic_allocation_id: 69
+  academic_allocation_user_id: 
   user_id: 2
   profile_id: 2
   parent_id: 7
@@ -64,6 +70,7 @@ post_2_ac2:
 post_3_ac2:
   id: 9
   academic_allocation_id: 69
+  academic_allocation_user_id: 14
   user_id: 1
   profile_id: 3
   level: 1
@@ -74,6 +81,7 @@ post_3_ac2:
 post_4_ac2:
   id: 10
   academic_allocation_id: 69
+  academic_allocation_user_id: 
   user_id: 2
   profile_id: 2
   parent_id: 7
@@ -86,6 +94,7 @@ post_4_ac2:
 post_1_forum_2:
   id: 11
   academic_allocation_id: 36
+  academic_allocation_user_id: 
   user_id: 1
   profile_id: 4
   level: 1
@@ -96,6 +105,7 @@ post_1_forum_2:
 post_2_forum_2:
   id: 12
   academic_allocation_id: 36
+  academic_allocation_user_id: 18
   user_id: 2
   profile_id: 1
   level: 1
@@ -106,6 +116,7 @@ post_2_forum_2:
 post_3_forum_2:
   id: 13
   academic_allocation_id: 36
+  academic_allocation_user_id: 17
   user_id: 7
   profile_id: 1
   level: 1
@@ -116,6 +127,7 @@ post_3_forum_2:
 post_1_forum_1_qm_mar:
   id: 14
   academic_allocation_id: 71
+  academic_allocation_user_id: 19
   user_id: 7
   profile_id: 1
   level: 1

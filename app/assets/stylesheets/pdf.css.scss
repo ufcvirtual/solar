@@ -193,57 +193,56 @@ $new_after_evaluation_background: #e6f0fc;
 
 }
 .tool_all{
+  font-size: 12px;
+  .tb_list{
     font-size: 12px;
-    .tb_list{
-        font-size: 12px;
-    }
-    table{
-        width: 100%;
-    }
-    table tbody tr:nth-child(odd) {
-        background: $tool_table_body_odd_background;
-    }
-    table thead tr th {
+  }
+  table{
+    width: 100%;
+  }
+  table tbody tr:nth-child(odd) {
+    background: $tool_table_body_odd_background;
+  }
+  table thead tr th {
     background: $tool_table_title_background;
     border: 1px;
-    }
-    .evaluated {
-        color: $evaluated_corrected_color;
-      }
+  }
+  .evaluated, .evaluated a {
+    color: $evaluated_corrected_color;
+  }
 
-      .sent, .sent a, .evaluated a
-      td.assignment_as a {
-        color: $evaluated_sent_color;
-      }
+  .sent, .sent a, td.assignment_as a {
+    color: $evaluated_sent_color;
+  }
 
-      .assignment_as, .assignment_as a{
-        color: $evaluated_sent_color;
-      }
+  .assignment_as, .assignment_as a{
+    color: $evaluated_sent_color;
+  }
 
-      .not_sent, .not_sent a{
-        color: $evaluated_not_sent_color;
-      }
+  .not_sent, .not_sent a{
+    color: $evaluated_not_sent_color;
+  }
 
-      .not_started, .not_started a {
-        color: $evaluated_not_started_color;
-      }
+  .not_started, .not_started a {
+    color: $evaluated_not_started_color;
+  }
 
-      .to_send, .to_send a, .retake, .retake a{
-        color: $evaluated_to_send_color;
-      }
+  .to_send, .to_send a, .retake, .retake a{
+    color: $evaluated_to_send_color;
+  }
 
-      .without_group, .without_group a{
-        color: $evaluated_without_group_color;
-      }
+  .without_group, .without_group a{
+    color: $evaluated_without_group_color;
+  }
 
-      .evaluated, .sent, .not_sent, .not_started, .to_send, .without_group{
-        white-space: nowrap;
-      }
+  .evaluated, .sent, .not_sent, .not_started, .to_send, .without_group{
+    white-space: nowrap;
+  }
 
-    table td {
-        text-align:center;
+  table td {
+    text-align:center;
     vertical-align:middle;
-    }
+  }
 }
 
 /**

@@ -1,76 +1,112 @@
-function select_group(element){
-  if ($(element).hasClass("label")){
+function select_group(element, event){
+  if(event === undefined || event.which == 13 ) {
     $(".selected").removeClass("selected");
-    $(element).addClass("selected");
+    var label = ( $(element).hasClass("label") ? element : $(element).closest(".label") );
+    $(label).addClass("selected");
+
+    $.get($(element).data("url"), function(data){
+      $(".participants_column .block_content").html(data);
+      if ($(element).data("name") != undefined)
+        var name = $(element).data("name");
+      else{
+        var text_field = $($(label).find("input#group_assignment_group_name")[0]).val();
+        if (text_field == undefined)
+          var name =  $(element).text();
+        else
+          var name = text_field;
+      }
+      var message = $(label).data("message");
+      if ( message != undefined && message != "")
+        flash_message(message, "warning", "group_assignments.header");
+      else if (text_field == undefined)
+        erase_flash_messages();
+      $(".participants_column h2").text("<%=I18n.t('group_assignments.index.participants')%> ( "+name+" )");
+    });
   }
-  $.get($(element).data("url"), function(data){
-    $(".participants_column .block_content").html(data);
-    if ($(element).data("name") != undefined)
-      var name = $(element).data("name");
-    else{
-      var text_field = $($(element).find("input#group_assignment_group_name")[0]).val();
-      if (text_field == undefined)
-        var name =  $(element).text();
-      else
-        var name = text_field;
+
+}
+
+function add_participant(td, event){
+  if(event === undefined || event.which == 13) {
+    change_participant(td, "<%=Rails.application.routes.url_helpers.add_participant_group_assignment_path(':id', user_id: 'uid', score_type: 'scoretype')%>", "participants_column", "cross-square", "remove");
+  }
+}
+
+function remove_participant(td, event){
+  if(event === undefined || event.which == 13) {
+    change_participant(td, "<%=Rails.application.routes.url_helpers.remove_participant_group_assignment_path(':id', user_id: 'uid', score_type: 'scoretype')%>", "students_without_groups_column", "plus-square", "add");
+  }
+}
+
+function edit_group(icon, event){
+  if(event === undefined || event.which == 13) {
+    var label = $($(icon).closest(".label"));
+    select_group(label, event);
+    $.get("<%=Rails.application.routes.url_helpers.edit_group_assignment_path(':id')%>".replace(":id", label.data("group-id")), function(data){
+      label.html(data);
+    });
+  }
+}
+
+function remove_group(icon, event){
+  if (event !== undefined) {
+    event.preventDefault();
+    var keynum = event.which || event.keyCode;
+  }
+
+  if(event === undefined || keynum == 13) {
+    var label = $($(icon).closest(".label"));
+    if (confirm("<%=I18n.t('group_assignments.index.confirm')%>")) {
+      $.delete("<%=Rails.application.routes.url_helpers.group_assignment_path(':id')%>".replace(":id", label.data("group-id")), function(data){
+        label.remove();
+        clear_participant_list();
+        var new_table = $(".students_without_groups_column tbody");
+        $.get("<%=Rails.application.routes.url_helpers.students_with_no_group_group_assignments_path(assignment_id: 'aid')%>".replace("aid", new_table.data("assignment-id")), function(data){
+          new_table.html(data);
+          update_tables_with_no_data();
+        });
+      }).error(function(data){
+        show_error(data, null, "group_assignments.header");
+      });
     }
-    var message = $(element).data("message");
-    if ( message != undefined && message != "")
-      flash_message(message, "warning", "group_assignments.header");
-    else if (text_field == undefined)
-      erase_flash_messages();
-    $(".participants_column h2").text("<%=I18n.t('group_assignments.index.participants')%> ( "+name+" )");
-  });
+  } else if (event.shiftKey && keynum == 9) {
+    $(icon).prev().focus();
+  } else if (keynum == 9 && $(icon).closest(".label").next().find("a").length == 0) {
+    var next_columns = $(icon).closest(".groups_column").nextAll();
+    if ($(next_columns).first().find("a").length != 0) {
+      $(next_columns).first().find("a").first().focus();
+    } else if ($(next_columns).last().find("a").length != 0){
+      $(next_columns).last().find("a").first().focus();
+    } else {
+      $(".fancybox-close").focus();
+    }
+  } else if (keynum == 9) {
+    $(icon).closest(".label").nextAll().find("a").first().focus();
+  }
 }
 
-function add_participant(td){
-  change_participant(td, "<%=Rails.application.routes.url_helpers.add_participant_group_assignment_path(':id', user_id: 'uid', score_type: 'scoretype')%>", "participants_column", "cross-square", "remove");
+function cancel_group(icon, event){
+  if(event === undefined || event.which == 13) {
+    var label = $($(icon).closest(".label"));
+    $.get("<%=Rails.application.routes.url_helpers.group_assignment_path(':id')%>".replace(":id", label.data("group-id")), function(data){
+      label.html(data);
+    });
+  }
 }
 
-function remove_participant(td){
-  change_participant(td, "<%=Rails.application.routes.url_helpers.remove_participant_group_assignment_path(':id', user_id: 'uid', score_type: 'scoretype')%>", "students_without_groups_column", "plus-square", "add");
-}
-
-function edit_group(icon){
-  var label = $($(icon).parents(".label")[0]);
-  $.get("<%=Rails.application.routes.url_helpers.edit_group_assignment_path(':id')%>".replace(":id", label.data("group-id")), function(data){
-    label.html(data);
-  });
-}
-
-function remove_group(icon){
-  var label = $($(icon).parents(".label")[0]);
-  if (confirm("<%=I18n.t('group_assignments.index.confirm')%>"))
-    $.delete("<%=Rails.application.routes.url_helpers.group_assignment_path(':id')%>".replace(":id", label.data("group-id")), function(data){
-      label.remove();
-      clear_participant_list();
-      var new_table = $(".students_without_groups_column tbody");
-      $.get("<%=Rails.application.routes.url_helpers.students_with_no_group_group_assignments_path(assignment_id: 'aid')%>".replace("aid", new_table.data("assignment-id")), function(data){
-        new_table.html(data);
-        update_tables_with_no_data();
+function rename_group(icon, event){
+  if (event === undefined || event.which == 13) {
+    var label = $($(icon).closest(".label"));
+    var form  = $($(icon).closest("form"));
+    $.put("<%=Rails.application.routes.url_helpers.group_assignment_path(':id')%>".replace(":id", label.data("group-id")), form.serialize(), function(data){
+      $.get("<%=Rails.application.routes.url_helpers.group_assignment_path(':id')%>".replace(":id", label.data("group-id")), function(data){
+        label.html(data);
+        select_group(label);
       });
     }).error(function(data){
       show_error(data, null, "group_assignments.header");
     });
-}
-
-function cancel_group(icon){
-  var label = $($(icon).parents(".label")[0]);
-  $.get("<%=Rails.application.routes.url_helpers.group_assignment_path(':id')%>".replace(":id", label.data("group-id")), function(data){
-    label.html(data);
-  });
-}
-
-function rename_group(icon){
-  var label = $($(icon).parents(".label")[0]);
-  var form  = $($(icon).parents("form")[0]);
-  $.put("<%=Rails.application.routes.url_helpers.group_assignment_path(':id')%>".replace(":id", label.data("group-id")), form.serialize(), function(data){
-    $.get("<%=Rails.application.routes.url_helpers.group_assignment_path(':id')%>".replace(":id", label.data("group-id")), function(data){
-      label.html(data);
-    });   
-  }).error(function(data){
-    show_error(data, null, "group_assignments.header");
-  });
+  }
 }
 
 function clear_participant_list(){
@@ -79,16 +115,19 @@ function clear_participant_list(){
   $(".participants_column h2").text("<%=I18n.t('group_assignments.index.participants')%>");
 }
 
-function select_assignment(label){
-  $(".selected").removeClass("selected");
-  $(label).addClass("selected");
-  $.get($(label).data("url"), function(data){
-    $(".groups_column tbody").html(data);
-    $(".groups_column h2").text("<%=I18n.t('group_assignments.import_list.groups')%> ( "+$(label).text()+" )");
-    clear_participant_list();
-  }).error(function(data){
-    show_error(data, null, "group_assignments.header");
-  });
+function select_assignment(element, event){
+  if (event === undefined || event.which == 13) {
+    $(".selected").removeClass("selected");
+    var label = ( $(element).hasClass("label") ? element : $(element).closest(".label") );
+    $(label).addClass("selected");
+    $.get($(label).data("url"), function(data){
+      $(".groups_column tbody").html(data);
+      $(".groups_column h2").text("<%=I18n.t('group_assignments.import_list.groups')%> ( "+$(label).text()+" )");
+      clear_participant_list();
+    }).error(function(data){
+      show_error(data, null, "group_assignments.header");
+    });
+  }
 }
 
 function import_group(button){
@@ -102,7 +141,7 @@ function import_group(button){
 }
 
 function change_participant(td, url, tbody, icon, method){
-  var tr = $(td).parent();
+  var tr = $(td).closest("tr.lines");
   var group_id = $($(".label.selected")[0]).data("group-id");
   if (group_id == null)
     show_error("", '<%=I18n.t("group_assignments.index.select_a_group")%>', "group_assignments.header");
@@ -119,7 +158,8 @@ function change_participant(td, url, tbody, icon, method){
           var tooltip = '<%=I18n.t("group_assignments.index.add")%>';
         else
           var tooltip = '<%=I18n.t("group_assignments.index.remove")%>';
-        $($(tr).find("td.icon")[0]).replaceWith('<td class="icon" onclick="'+method+'_participant(this)" title="'+tooltip+'" data-tooltip="'+tooltip+'"><i class="icon-'+icon+'"></i></td>');
+
+        $($(tr).find("td.icon")[0]).replaceWith('<td class="icon"><a href="#" onclick="'+method+'_participant(this)" onkeydown="'+method+'_participant(this, event)" data-url="'+url.replace(":id", group_id)+'" data-tooltip="'+tooltip+'" aria-label="'+tooltip+'"><i class="icon-'+icon+'"></i></a></td>');
       }else{
         $(tr).remove();
         $.get(data.call_url, function(data){

@@ -14,12 +14,12 @@
     %tbody.info
       %tr.lines
         - if @assignment.start_hour.blank?
-          %td.center{headers: "begin" }= l(@assignment.schedule.start_date, format: :normal) 
+          %td.center{headers: "begin" }= l(@assignment.schedule.start_date, format: :normal)
           %td.center{headers: "end" }= l(@assignment.schedule.end_date, format: :normal)
         - else
           %td.center{headers: "begin" }= l(@assignment.schedule.start_date, format: :normal) + t(".at") + @assignment.start_hour
           %td.center{headers: "end" }= l(@assignment.schedule.end_date, format: :normal) + t(".at") + @assignment.end_hour
-        
+
         %td.center{:class => "assignment_#{info[:situation]}", headers: "situation"}= t(info[:situation].to_sym)
         = f.input :user_id, as: :hidden, input_html: { value: @student_id }
         = f.input :group_id, as: :hidden, input_html: { value: @group_id }
@@ -29,7 +29,7 @@
               = @acu.try(:grade)
             - if @can_evaluate && @in_time
               .input.invisible
-                = f.input :grade, required: true, as: :float, step: 0.01, label: false, input_html: {  value: @acu.try(:grade), min:0, max:10, style: 'width: 50px' } 
+                = f.input :grade, required: true, as: :float, step: 0.01, label: false, input_html: {  value: @acu.try(:grade), min:0, max:10, style: 'width: 50px', :'aria-label' => t(".grade") }
         - if @ac.frequency
           %td.center.frequency{headers: "working_hours" }
             .student_assignment_evaluation
@@ -37,7 +37,7 @@
                 = @acu.try(:working_hours)
               - if @can_evaluate && @in_time
                 .input.invisible
-                  = f.input :working_hours, required: true, as: :float, label: false, input_html: { style: 'width: 90px', value: @acu.try(:working_hours), min:0, max: @ac.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@ac.max_working_hours.to_s ) }
+                  = f.input :working_hours, required: true, as: :float, label: false, input_html: { style: 'width: 90px', value: @acu.try(:working_hours), min:0, max: @ac.max_working_hours, :'aria-label' => t(".working_hours"), placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@ac.max_working_hours.to_s ) }
         - if @can_evaluate && @in_time
           %td.center{headers: "evaluate" }
             .edit_button= link_to_function content_tag(:i, nil, class: 'icon-write'), 'edit_button(this)', class: "btn edit", :"data-tooltip" => t('.edit'), :'aria-label' => t(".edit")
