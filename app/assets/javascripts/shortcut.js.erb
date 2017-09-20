@@ -33,19 +33,61 @@ function shortcut(){
       // verify if exists some html element which is not disabled and its data-shortcut code is the same as the pressed key
       // var element = $('[data-shortcut="'+e.which+'"]:first').not(".disabled");
 
-      var element = $('[data-shortcut="'+e.which+'"]:first', $('.fancybox-outer')).not(".disabled");
+      var element = $('[data-shortcut="'+e.which+'"]', $('.fancybox-outer')).not(".disabled");
+
       if(!element.length) {
-        element = $('[data-shortcut="'+e.which+'"]:first').not(".disabled");
+        element = $('[data-shortcut="'+e.which+'"]').not(".disabled");
       }
 
       // if exists some element AND (alt is not defined or alt was pressed) AND (shift is not defined or shift was pressed)
-      if(!!element.length && (($(element).data('shortcut-alt') == undefined || $(element).data('shortcut-alt') == false || e.altKey) && ($(element).data('shortcut-shift') == undefined || $(element).data('shortcut-shift') == false || e.shiftKey))){
-        // if focus is not defined or not true
-        if(element.data('shortcut-focus') == undefined || element.data('shortcut-focus') != true){
-          $(element)[0].click();
+      // if(!!element.length && (($(element).data('shortcut-alt') == undefined || $(element).data('shortcut-alt') == false || e.altKey) && ($(element).data('shortcut-shift') == undefined || $(element).data('shortcut-shift') == false || e.shiftKey))){
+      //   // if focus is not defined or not true
+      //   if(element.data('shortcut-focus') == undefined || element.data('shortcut-focus') != true){
+      //     $(element)[0].click();
+      //   }
+      //   else {
+      //     focus_element($(element)[0]);
+      //   }
+      // }
+
+      if (!!element.length) {
+        if (e.shiftKey) {
+          for (var i = 0; i < element.length; i++) {
+            if( $(element[i]).data('shortcut-shift') == true ) {
+              if(element.data('shortcut-focus') == undefined || element.data('shortcut-focus') != true){
+                $(element)[i].click();
+              }
+              else {
+                focus_element($(element)[i]);
+              }
+              break;
+            }
+          }
+        } else if (e.altKey) {
+          for (var i = 0; i < element.length; i++) {
+            if( $(element[i]).data('shortcut-alt') == true ) {
+              if(element.data('shortcut-focus') == undefined || element.data('shortcut-focus') != true){
+                $(element)[i].click();
+              }
+              else {
+                focus_element($(element)[i]);
+              }
+              break;
+            }
+          }
+        } else {
+          for (var i = 0; i < element.length; i++) {
+            if( ($(element[i]).data('shortcut-alt') == undefined || $(element[i]).data('shortcut-alt') == false) && ($(element[i]).data('shortcut-shift') == undefined || $(element[i]).data('shortcut-shift') == false) ) {
+              if(element.data('shortcut-focus') == undefined || element.data('shortcut-focus') != true){
+                $(element)[i].click();
+              }
+              else {
+                focus_element($(element)[i]);
+              }
+              break;
+            }
+          }
         }
-        else
-          focus_element($(element)[0]);
       }
     }
   });
