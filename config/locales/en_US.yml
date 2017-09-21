@@ -464,6 +464,10 @@ en_US:
         attachment_file_size: Size
         attachment: File
         attachment_file_name: File
+      files:
+        attachment_file_size: Size
+        attachment: File
+        attachment_file_name: File  
       comment_file:
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
         attachment: File

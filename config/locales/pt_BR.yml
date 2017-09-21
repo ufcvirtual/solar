@@ -529,6 +529,10 @@ pt_BR:
         attachment_file_size: Tamanho
         attachment: Arquivo
         attachment_file_name: Arquivo
+      files:
+        attachment_file_size: Tamanho
+        attachment: Arquivo
+        attachment_file_name: Arquivo  
     errors:
       uniqueness: "Registro já existe no sistema"
       template:
