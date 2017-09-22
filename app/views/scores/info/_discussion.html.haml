@@ -16,7 +16,7 @@
               %th#di_eva_gra.center{style: "width: 2%;"}= t(:grade, scope: [:scores, :info])
               - if @current_user_is_student
                 %th.center#di_eva_comment{style: "width: 2%;"}=t(:comments, scope: [:scores, :info])
-              - if @can_evaluate || @can_comment
+              - if @is_student && (@can_evaluate || @can_comment)
                 %th#di_eva_par.center.no_sort{style: "width: 2%;"}
               %th#di_eva_af.center.no_sort{style: "width: 2%;"}=t('scores.info.final_exam')
               %th#di_eva_aft.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
@@ -60,7 +60,7 @@
                 %td.center{headers: "di_eva_gra", class: "#{['discussion','u', discussion.id.to_s, @user.id.to_s].join('_')} #{['g', discussion.id.to_s, discussion.group_id.to_s].join('_')}"}=discussion.grade
                 - if @current_user_is_student
                   %td.center{headers: "di_eva_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_discussions_path(ac_id: discussion.id, tool_id: discussion.academic_tool_id), class: "btn #{discussion.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: discussion.count_comments), :'aria-label' => t('comments.summary.count_alt', count: discussion.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
-                - if @can_evaluate || @can_comment
+                - if @is_student && (@can_evaluate || @can_comment)
                   %td.center{headers: 'di_eva_par'}= link_to content_tag(:i, nil, class: "icon-write"), user_discussion_posts_path(discussion.academic_tool_id, @user.id, score_type: 'evaluative'), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]) , onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
                 %td.center{headers: 'di_eva_af' }=raw t(discussion.final_exam, scope: [:common_between_pages, :final_exam])
                 %td.center{headers: "di_eva_aft"}=(discussion.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
@@ -80,7 +80,7 @@
               %th#di_fre_fre.center{style: "width: 2%;"}= t(:frequency, scope: [:scores, :info])
               - if @current_user_is_student
                 %th.center#di_fre_comment{style: "width: 2%;"}=t(:comments, scope: [:scores, :info])
-              - if @can_evaluate || @can_comment
+              - if @is_student && ( @can_evaluate || @can_comment)
                 %th#di_fre_par.center.no_sort{style: "width: 2%;"}
               %th#di_freq_hours.center.no_sort{style: "width: 2%;"}=t('scores.info.hours')
               %th#di_fre_aft.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
@@ -123,7 +123,7 @@
                 %td.center{headers: "di_fre_fre", class: "#{['discussion','u', discussion.id.to_s, @user.id.to_s].join('_')} #{['g', discussion.id.to_s, discussion.group_id.to_s].join('_')}"}=discussion.working_hours
                 - if @current_user_is_student
                   %td.center{headers: "di_fre_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_discussions_path(ac_id: discussion.id, tool_id: discussion.academic_tool_id), class: "btn #{discussion.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: discussion.count_comments), :'aria-label' => t('comments.summary.count_alt', count: discussion.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
-                - if @can_evaluate || @can_comment
+                - if @is_student && (@can_evaluate || @can_comment)
                   %td.center{headers: "di_fre_par"}= link_to content_tag(:i, nil, class: "icon-write"), user_discussion_posts_path(discussion.academic_tool_id, @user.id, score_type: 'frequency'), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
                 %td.center{headers:'di_freq_hours'}=raw t('common_between_pages.hours', hours: discussion.max_working_hours)
                 %td.center{headers: "di_fre_aft"}=(discussion.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))

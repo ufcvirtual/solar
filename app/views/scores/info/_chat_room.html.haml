@@ -17,7 +17,7 @@
               %th#ch_eva_his.center.no_sort{style: "width: 5%;"}=t("chat_rooms.chats.message_history")
               - if @current_user_is_student
                 %th.center#ch_eva_comment{style: "width: 2%;"}=t(:comments, scope: [:scores, :info])
-              - if @can_evaluate || @can_comment
+              - if @is_student && (@can_evaluate || @can_comment)
                 %th#ch_eva_stu.no_sort{style: "width: 2%;"}
               %th#ch_eva_af.center.no_sort{style: "width: 2%;"}=t('scores.info.final_exam')
           %tbody
@@ -72,7 +72,7 @@
                 %td.center{headers: "ch_eva_his"}= link_to content_tag(:i, nil, class: 'icon-users'), messages_chat_room_path(chat.academic_tool_id, score_type: 'evaluative'), class: 'btn to_evaluate_chat', :'data-tooltip'=> t("chat_rooms.chats.message_history"), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t("chat_rooms.chats.message_history")
                 - if @current_user_is_student
                   %td.center{headers: "ch_eva_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_chat_rooms_path(ac_id: chat.id, tool_id: chat.academic_tool_id, group_id: chat.group_id), class: "btn #{chat.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: chat.count_comments), :'aria-label' => t('comments.summary.count_alt', count: chat.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
-                - if @can_evaluate || @can_comment
+                - if @is_student && (@can_evaluate || @can_comment)
                   %td.center{headers: "ch_eva_stu"}
                     = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(chat.academic_tool_id, user_id: @user.id, score_type: 'evaluative'), class: 'btn to_evaluate_chat', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
                 %td.center{headers: 'ch_eva_af' }=raw t(chat.final_exam, scope: [:common_between_pages, :final_exam])
@@ -93,7 +93,7 @@
               %th#ch_freq_his.center.no_sort{style: "width: 5%;"}=t("chat_rooms.chats.message_history")
               - if @current_user_is_student
                 %th.center#ch_freq_comment{style: "width: 2%;"}=t(:comments, scope: [:scores, :info])
-              - if @can_evaluate || @can_comment
+              - if @is_student && (@can_evaluate || @can_comment)
                 %th#ch_freq_stu.no_sort{style: "width: 2%;"}
               %th#ch_freq_hours.center.no_sort{style: "width: 2%;"}=t('scores.info.hours')
           %tbody
@@ -149,7 +149,7 @@
                 %td.center{headers: "ch_freq_his"}= link_to content_tag(:i, nil, class: 'icon-users'), messages_chat_room_path(chat.academic_tool_id, score_type: 'frequency'), class: 'btn to_evaluate_chat', :'data-tooltip'=> t("chat_rooms.chats.message_history"), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t("chat_rooms.chats.message_history")
                 - if @current_user_is_student
                   %td.center{headers: "ch_freq_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_chat_rooms_path(ac_id: chat.id, tool_id: chat.academic_tool_id, group_id: chat.group_id), class: "btn #{chat.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: chat.count_comments), :'aria-label' => t('comments.summary.count_alt', count: chat.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
-                - if @can_evaluate || @can_comment
+                - if @is_student && (@can_evaluate || @can_comment)
                   %td.center{headers: "ch_freq_stu"}
                     = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(chat.academic_tool_id, user_id: @user.id, score_type: 'frequency'), class: 'btn to_evaluate_chat', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
                 %td.center{headers:'ch_freq_hours'}=raw t('common_between_pages.hours', hours: chat.max_working_hours)
