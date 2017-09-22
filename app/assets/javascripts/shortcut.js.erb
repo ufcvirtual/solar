@@ -54,7 +54,7 @@ function shortcut(){
         if (e.shiftKey) {
           for (var i = 0; i < element.length; i++) {
             if( $(element[i]).data('shortcut-shift') == true ) {
-              if(element.data('shortcut-focus') == undefined || element.data('shortcut-focus') != true){
+              if($(element[i]).data('shortcut-focus') == undefined || $(element[i]).data('shortcut-focus') != true){
                 $(element)[i].click();
               }
               else {
@@ -66,7 +66,7 @@ function shortcut(){
         } else if (e.altKey) {
           for (var i = 0; i < element.length; i++) {
             if( $(element[i]).data('shortcut-alt') == true ) {
-              if(element.data('shortcut-focus') == undefined || element.data('shortcut-focus') != true){
+              if($(element[i]).data('shortcut-focus') == undefined || $(element[i]).data('shortcut-focus') != true){
                 $(element)[i].click();
               }
               else {
@@ -78,7 +78,7 @@ function shortcut(){
         } else {
           for (var i = 0; i < element.length; i++) {
             if( ($(element[i]).data('shortcut-alt') == undefined || $(element[i]).data('shortcut-alt') == false) && ($(element[i]).data('shortcut-shift') == undefined || $(element[i]).data('shortcut-shift') == false) ) {
-              if(element.data('shortcut-focus') == undefined || element.data('shortcut-focus') != true){
+              if($(element[i]).data('shortcut-focus') == undefined || $(element[i]).data('shortcut-focus') != true){
                 $(element)[i].click();
               }
               else {
