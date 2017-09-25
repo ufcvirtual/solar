@@ -26,17 +26,19 @@
             %td{headers: "title_#{folder}" }= file['title']
             %td{headers: "name_#{folder}" }
               - if file['url'] == nil
-                - if file['attachment_content_type'].index('image') || file['attachment_content_type'].index('pdf')
+                - if file['attachment_content_type'].index('image') 
+                  - type_class = 'link_content open_file fancybox.iframe'
+                - elsif file['attachment_content_type'].index('pdf')
                   - type_class = 'link_content open_file fancybox.iframe'
                 -else
-                  - type_class = 'link_content open_file fancybox.ajax'  
+                  - type_class = 'link_content open_file fancybox.ajax'
 
                 = link_to image_tag(icon_attachment(file["attachment_file_name"])), open_support_material_files_path(id: file['id']), class: type_class,  :'aria-hidden' => 'true'
 
                 = link_to file['attachment_file_name'], open_support_material_files_path(id: file['id']), :'aria-label'=> t('posts.post.download', file: file["attachment_file_name"], size: size), class: type_class
 
               - else
-                = link_to_function image_tag('icon_file_link.png', alt: t("link_site_img", site: file['url'])), 'open_video(this)',:'data-url' => open_support_material_files_path(id: file['id']), :'aria-hidden' => 'true', :'data-fancybox-type' => 'iframe', class: 'link_content File'
+                = link_to image_tag('icon_file_link.png', alt: t("link_site_img", site: file['url'])), open_support_material_files_path(id: file['id']), :'aria-label'=> t('posts.post.download', file: file["attachment_file_name"], size: size), class: 'link_content open_url fancybox.iframe', :'aria-hidden' => 'true'
 
                 = link_to file['url'], open_support_material_files_path(id: file['id']), :'aria-label'=> t('posts.post.download', file: file["attachment_file_name"], size: size), class: 'link_content open_url fancybox.iframe' 
 
@@ -68,14 +70,3 @@
   });
 
   
-
-  function open_video(obj){
-    var url = $(obj).data('url');
-    $(obj).nice_open_file({ 
-      href: url,
-      autoSize: true,
-      autoScale: true,
-      autoDimensions: true,
-      maxHeight: '60%'
-    });
-  }

@@ -573,10 +573,56 @@
       }
     });
 
+    function underline_shortcut_letter(element){
+      var menu_itens = $(element).find("a");
+      for(var i = 0; i < menu_itens.length; i++) {
+        var shortcut_letter = String.fromCharCode($(menu_itens[i]).attr('data-shortcut')).toLowerCase();
+
+        if(shortcut_letter.toUpperCase() === $(menu_itens[i]).text()[0]) {
+          var new_menu_item = $(menu_itens[i]).text().replace(shortcut_letter.toUpperCase(), '<span style="text-decoration: underline">' + shortcut_letter.toUpperCase() + '</span>');
+        } else {
+          var new_menu_item = $(menu_itens[i]).text().replace(shortcut_letter, '<span style="text-decoration: underline">' + shortcut_letter + '</span>');
+        }
+
+        $(menu_itens[i]).html(new_menu_item);
+      }
+    }
+
+    function remove_underline_shortcut(element) {
+      var menu_itens = $(element).find("a");
+      for(var i = 0; i < menu_itens.length; i++) {
+        $(menu_itens[i]).find("span").css("text-decoration", "none");
+      }
+    }
+
+    function put_underline_shortcut(element) {
+      var menu_itens = $(element).find("a");
+      for(var i = 0; i < menu_itens.length; i++) {
+        $(menu_itens[i]).find("span").css("text-decoration", "underline");
+      }
+    }
+
+    function fixed_shortcut() {
+      $(".submenu").each(function(){
+        underline_shortcut_letter(this);
+        remove_underline_shortcut(this);
+      });
+
+      $(".mysolar_menu_title_single").each(function() {
+        var menu_item_name = $(this).find("a").text().trim();
+        switch( menu_item_name ) {
+          case "Matrícula":
+            $(this).find("a").attr('data-shortcut', 73);
+            break;
+        }
+      });
+    }
+
     //focus do flash message
     $(function(){
       loadFocus();
       focus_element_time('#flash_message_span');
+      fixed_shortcut();
 
       $(document).keydown(function (e) {
         if (e.which === 27) {
@@ -588,11 +634,23 @@
           }, 100);
         }
 
+        if(e.shiftKey) {
+          $(".submenu").each(function(){
+            put_underline_shortcut(this);
+          });
+        }
+
         setTimeout(function() {
           var dropdown = $(".dropdown:visible").closest(".equivalent");
           if( $(dropdown).find(":focus").length === 0 ) {
             $(dropdown).find(".dropdown").hide();
           }
         }, 250);
+      });
+
+      $(document).keyup(function (e) {
+        $(".submenu").each(function(){
+          remove_underline_shortcut(this);
+        });
       });
     });

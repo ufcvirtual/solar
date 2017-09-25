@@ -529,6 +529,10 @@ pt_BR:
         attachment_file_size: Tamanho
         attachment: Arquivo
         attachment_file_name: Arquivo
+      files:
+        attachment_file_size: Tamanho
+        attachment: Arquivo
+        attachment_file_name: Arquivo  
     errors:
       uniqueness: "Registro já existe no sistema"
       template:
@@ -3400,9 +3404,30 @@ pt_BR:
       name:
         web: "Nova Webconferência [W]"
         file: "Enviar Arquivo [A]"
+        files_title: "Arquivos do enunciado [E]"
+        comments_title: "Comentários [C]"
+        new_comment: "Novo cometário [N]"
+        sent_assignment_title: "Arquivos enviados [R]"
+        webconferences: "Webconferências [V]"
+        individual_assignments: "Trabalhos individuais [I]"
+        group_assignments: "Trabalhos em grupo [G]"
+        public_files: "Área pública [P]"
+        groups: "Grupos [G]"
+        participants: "Participantes [P]"
+        students_without_group: "Alunos sem grupo [A]"
       code:
         web: 87
         file: 65
+        files_title: 69
+        comments_title: 67
+        new_comment: 78
+        sent_assignment_title: 82
+        webconferences: 86
+        individual_assignments: 73
+        group_assignments: 71
+        public_files: 80
+        participants: 80
+        students_without_group: 65
     scores:
       name:
         exam: "Provas [P]"
@@ -3463,30 +3488,6 @@ pt_BR:
       code:
         next: 39
         previous: 37
-    assignments:
-      name:
-        files_title: "Arquivos da atividade [A]"
-        comments_title: "Comentários [C]"
-        new_comment: "Novo cometário [N]"
-        sent_assignment_title: "Enviados pelos alunos [E]"
-        webconferences: "Webconferências [W]"
-        individual_assignments: "Trabalhos individuais [I]"
-        group_assignments: "Trabalhos em grupo [G]"
-        public_files: "Área pública [P]"
-        groups: "Grupos [G]"
-        participants: "Participantes [P]"
-        students_without_group: "Alunos sem grupo [A]"
-      code:
-        files_title: 65
-        comments_title: 67
-        new_comment: 78
-        sent_assignment_title: 69
-        webconferences: 87
-        individual_assignments: 73
-        group_assignments: 71
-        public_files: 80
-        participants: 80
-        students_without_group: 65
 
   scores:
     index:
