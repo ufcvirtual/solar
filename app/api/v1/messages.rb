@@ -16,7 +16,7 @@ module V1
         end
 
         def message_params
-          ActionController::Parameters.new(params).require(:message).permit(:content, :subject, :id, :allocation_tag_id)
+          ActionController::Parameters.new(params).require(:message).permit(:content, :id, :subject)
         end
 
       end #helpers
@@ -34,13 +34,29 @@ module V1
 
         get "/:id" , rabl: 'messages/show' do   
         end
+      end #segment
 
-        # Compor mensagem
+      segment do
+
+        # CREATE 
         desc 'Compor Mensagem'
-        post ':id/message' do
-          verify_user_permission_on_discussion_and_set_obj(:create)
+        params do
+          requires :message, type: Hash do
+            requires :content, type: String
+            requires :subject, type: String
+            optional :parent_id, type: Integer
+            optional :draft, type: Boolean, default: false
+          end
+        end
+
+        post '/' do
+
+        @group = Group.find(params[:group_id])
+        
+        raise CanCan::AccessDenied if current_user.profiles_with_access_on(:index, :messages, @group.allocation_tag.related, true).blank? # unauthorized
 
           @message = Message.new(message_params)
+          @message.sender = current_user
 
           if @message.save
             { id: @message.id }
