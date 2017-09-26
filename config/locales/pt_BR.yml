@@ -2953,6 +2953,7 @@ pt_BR:
   confirm_acceptance: "Confirma aceitação de solicitação?"
   confirm_cancel: 'Tem certeza de que deseja cancelar?'
   message_confirm_user: "Tem certeza?"
+  page_loading: "A página está carregando..."
 
   messages:
     file_too_big: "Arquivo muito grande!"

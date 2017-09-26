@@ -2722,6 +2722,8 @@ en_US:
   confirm_acceptance: "Confirm request acceptance?"
   confirm_cancel: 'Are you sure you want to cancel?'
   message_confirm_user: 'Are you sure?'
+  page_loading: "Page is loading..."
+
   messages:
     file_too_big: "File too big"
     mail_header: "Sent by: "

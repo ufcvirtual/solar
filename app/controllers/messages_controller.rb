@@ -16,6 +16,7 @@ class MessagesController < ApplicationController
     
     @messages = Message.by_box(current_user.id, @box, allocation_tag_id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
     @unreads  = Message.unreads(current_user.id, allocation_tag_id)
+    render partial: 'list' unless params[:page].nil? 
   end
 
   def search
