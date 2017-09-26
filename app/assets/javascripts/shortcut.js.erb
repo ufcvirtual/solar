@@ -120,6 +120,8 @@ function underline_shortcut_letter_multiple(element){
 
     if(shortcut_letter.toUpperCase() === $(menu_itens[i]).text()[0]) {
       var new_menu_item = $(menu_itens[i]).text().replace(shortcut_letter.toUpperCase(), '<span style="text-decoration: underline">' + shortcut_letter.toUpperCase() + '</span>');
+    } else if ($(menu_itens[i]).text().trim() == "Discussions") {
+      var new_menu_item = $(menu_itens[i]).text().replace("Discussions", 'Discussions <span style="display: none">(<span style="text-decoration: underline">F</span>orum)</span>');
     } else {
       var new_menu_item = $(menu_itens[i]).text().replace(shortcut_letter, '<span style="text-decoration: underline">' + shortcut_letter + '</span>');
     }
@@ -144,14 +146,22 @@ function underline_shortcut_letter_single(element){
 function remove_underline_shortcut_multiple(element) {
   var menu_itens = $(element).find("a");
   for(var i = 0; i < menu_itens.length; i++) {
-    $(menu_itens[i]).find("span").css("text-decoration", "none");
+    if ($(menu_itens[i]).text().includes("Discussions")) {
+      $(menu_itens[i]).find("span").css("display", "none");
+    } else {
+      $(menu_itens[i]).find("span").css("text-decoration", "none");
+    }
   }
 }
 
 function put_underline_shortcut_multiple(element) {
   var menu_itens = $(element).find("a");
   for(var i = 0; i < menu_itens.length; i++) {
-    $(menu_itens[i]).find("span").css("text-decoration", "underline");
+    if ($(menu_itens[i]).text().includes("Discussions")) {
+      $(menu_itens[i]).find("span").css("display", "inline");
+    } else {
+      $(menu_itens[i]).find("span").css("text-decoration", "underline");
+    }
   }
 }
 
