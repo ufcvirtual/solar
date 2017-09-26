@@ -3405,7 +3405,6 @@ pt_BR:
         web: "Nova Webconferência [W]"
         file: "Enviar Arquivo [A]"
         files_title: "Arquivos do enunciado [E]"
-        comments_title: "Comentários [C]"
         new_comment: "Novo cometário [N]"
         sent_assignment_title: "Arquivos enviados [R]"
         webconferences: "Webconferências [V]"
@@ -3419,7 +3418,6 @@ pt_BR:
         web: 87
         file: 65
         files_title: 69
-        comments_title: 67
         new_comment: 78
         sent_assignment_title: 82
         webconferences: 86
@@ -3507,6 +3505,11 @@ pt_BR:
         menu_content_edition: 68
         menu_messages: 78
         menu_registration: 85
+    comments:
+      name:
+        title: "Comentários [C]"
+      code:
+        title: 67
 
   scores:
     index:

@@ -3186,7 +3186,6 @@ en_US:
         web: 87
         file: 70
         files_title: 69
-        comments_title: 67
         new_comment: 78
         sent_assignment_title: 83
         webconferences: 86
@@ -3199,7 +3198,6 @@ en_US:
         web: "New Webconference [W]"
         file: "Send File [F]"
         files_title: "Enunciation's files [E]"
-        comments_title: "Comments [C]"
         new_comment: "New comment [N]"
         sent_assignment_title: "Files sent [S]"
         webconferences: "Webconferences [V]"
@@ -3262,6 +3260,11 @@ en_US:
         menu_content_edition: 78
         menu_messages: 83
         menu_registration: 71
+    comments:
+      name:
+        title: "Comments [C]"
+      code:
+        title: 67
 
   scores:
     index:

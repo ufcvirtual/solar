@@ -17,7 +17,7 @@
         #forum_closed= t("forum_closed")
       - unless @acu.blank?
         - comments = @acu.try(:comments).count rescue 0
-        = link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_discussions_path(tool_id: @discussion.id, ac_id: @academic_allocation.id), class: "btn #{comments > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: comments), :'aria-label' => t('comments.summary.count_alt', count: comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+        = link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_discussions_path(tool_id: @discussion.id, ac_id: @academic_allocation.id), class: "btn #{comments > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: comments), :'aria-label' => t('comments.summary.count_alt', count: comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.comments.code.title"), :'data-shortcut-name'=> t("shortcut.comments.name.title")
 
     %span#forum_view_mode
       - class_l = (@display_mode == 'list') ? 'btn_pressed' : 'btn_default'
