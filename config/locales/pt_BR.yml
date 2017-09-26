@@ -532,7 +532,7 @@ pt_BR:
       files:
         attachment_file_size: Tamanho
         attachment: Arquivo
-        attachment_file_name: Arquivo  
+        attachment_file_name: Arquivo
     errors:
       uniqueness: "Registro já existe no sistema"
       template:
@@ -3488,6 +3488,25 @@ pt_BR:
       code:
         next: 39
         previous: 37
+    vertical_menu:
+      code:
+        menu_lesson: 65
+        menu_support_material: 77
+        menu_dc_lesson: 76
+        menu_discussion: 70
+        menu_portfolio: 84
+        menu_exam: 80
+        menu_score_student: 79
+        menu_chat: 67
+        menu_webconference: 87
+        menu_score_professor: 72
+        menu_program: 82
+        menu_agenda: 71
+        menu_bibliography: 66
+        menu_participants: 69
+        menu_content_edition: 68
+        menu_messages: 78
+        menu_registration: 85
 
   scores:
     index:

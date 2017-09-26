@@ -467,7 +467,7 @@ en_US:
       files:
         attachment_file_size: Size
         attachment: File
-        attachment_file_name: File  
+        attachment_file_name: File
       comment_file:
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
         attachment: File
@@ -3243,6 +3243,25 @@ en_US:
       code:
         next: 39
         previous: 37
+    vertical_menu:
+      code:
+        menu_lesson: 76
+        menu_support_material: 85
+        menu_dc_lesson: 73
+        menu_discussion: 70
+        menu_portfolio: 84
+        menu_exam: 69
+        menu_score_student: 67
+        menu_chat: 65
+        menu_webconference: 87
+        menu_score_professor: 79
+        menu_program: 80
+        menu_agenda: 68
+        menu_bibliography: 66
+        menu_participants: 82
+        menu_content_edition: 78
+        menu_messages: 83
+        menu_registration: 71
 
   scores:
     index:
