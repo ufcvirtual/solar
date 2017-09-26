@@ -77,6 +77,8 @@ class ScheduleEventsController < ApplicationController
     @ac = @schedule_event.academic_allocations.where(allocation_tag_id: @allocation_tag_id).first
     @user = User.find(params[:user_id])
     @score_type = params[:score_type]
+
+    @can_evaluate = can? :evaluate, ScheduleEvent, { on: @allocation_tag_id }
    
     raise 'not_student' unless @user.has_profile_type_at(@allocation_tag_id)
     @acu = AcademicAllocationUser.find_one(@ac.id, params[:user_id])
