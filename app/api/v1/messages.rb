@@ -16,7 +16,7 @@ module V1
         end
 
         def message_params
-          ActionController::Parameters.new(params).require(:message).permit(:content, :id, :subject)
+          ActionController::Parameters.new(params).require(:message).permit(:content, :id, :subject, :contacts)
         end
 
       end #helpers
@@ -44,6 +44,7 @@ module V1
           requires :message, type: Hash do
             requires :content, type: String
             requires :subject, type: String
+            requires :contacts, type: String
             optional :parent_id, type: Integer
             optional :draft, type: Boolean, default: false
           end
