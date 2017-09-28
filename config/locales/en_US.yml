@@ -4403,6 +4403,15 @@ en_US:
       registration: "So you can have access to Solar 2.0, registration is mandatory. The goal of this tutorial is to answer any doubts about this procedure with all required steps and relevant information. "
       password_recovery: "After register at Solar 2.0, it may happen that you forgot your password to access or, even, your username. With the recovery password area, it's possible to generate a new password and all instructions to do so are explained at this tutorial."
       home: "After logged in at Solar 2.0, every user is redirected to environment's initial page, Home. This screen content can change accordly to it's role. However, there are many basic elements and a common structure to any profile. This tutorial aims to explain all these areas."
+      chat_edition: "Chat is a tool that allows the accomplishment of chat. Those responsible have the possibility to register and define their basic information. All the information you need to understand how chat editing works is available in this tutorial."
+      support_material_edition: "Support material is a tool that allows you to download files. Those responsible have the possibility to register and define their basic information. All the information you need to understand how editing support material works is available in this tutorial."
+      webconference_edition: "Web conferencing is a tool that allows either classes to be taught online with the interaction of the students. Those responsible have the possibility to register and define their basic information. All the information you need to understand how the edition of web conferencing works are available in this tutorial."
+      assignment_edition: "Portfolio is a tool that allows you to submit work. Those responsible have the possibility to register and define their basic information. All the information you need to understand how portfolio editing works is available in this tutorial."
+      bibliography_edition: "Bibliographies is a tool that allows those responsible to inform the bibliography of the discipline. Those responsible have the possibility to register and define their basic information. All the information you need to understand how the edition of the bibliography works is available in this tutorial."
+      discussion_edition: "Forum is a tool that allows students and teachers / tutors to make speeches about a particular topic. Those responsible have the possibility to register and define their basic information. All the information needed to understand how the forum edition works are available in this tutorial."
+      lesson_edition: "Lesson is a tool that allows students to gain fully online knowledge path is produced exclusively by teachers. Those responsible have the possibility to register and define their basic information. All the information needed to understand how the lesson edition works are available in this tutorial."
+      user_allocation_edition: "User allocation is a tool that allows the user allocation being this with a profile in certain group or offer."
+      bind_unbind_groups: "This tutorial explains and illustrates some how to link and unlink a class from a previously enrolled activity."
     files:
       math_editor: View Math Editor PDF
       evaluation: View Evaluation and frequency of activities PDF
@@ -4420,6 +4429,15 @@ en_US:
       password_recovery: View Password Recovery PDF
       registration: View Registration PDF
       home: Vew Home PDF
+      chat_edition: "View PDF about Chats edition"
+      support_material_edition: "View PDF on the edition of the Material of support"
+      webconference_edition: "View PDF about the edition of the Webconferences"
+      assignment_edition: "View PDF about the edition of the Portfolios"
+      bibliography_edition: "View PDF about the edition of Bibliographies"
+      discussion_edition: "View PDF about the edition of the Forums"
+      lesson_edition: "View PDF about the Classroom edition"
+      user_allocation_edition: "View PDF on User Allocation"
+      bind_unbind_groups: "View PDF on Linking and Unlinking Activity Class"
     new_language_pt: " (It was not possible to find this tutorial in English, see our Portuguese version)"
     new_language_en: " (It was not possible to find this tutorial in English, see our English version)"
 

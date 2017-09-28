@@ -4651,6 +4651,15 @@ pt_BR:
       registration: "Ao ter o primeiro contato com o Solar 2.0, faz-se necessário o cadastro. O objetivo deste tutorial é sanar dúvidas a respeito deste procedimento com todos os passos necessários e informações relevantes. "
       password_recovery: "Após ter um cadastro no Solar 2.0, pode acontecer da senha usada para realizar o acesso ser esquecida ou, até mesmo, o login. Para isto, existe a área de recuperação de senha no Solar, cujas informações necessárias são descritas neste tutorial."
       home: "Após realizar o login no Solar 2.0, todo usuário se depara com a tela inicial do ambiente, a Home. O conteúdo desta tela pode variar de acordo com o papel de cada um no ambiente. Entretanto, há diversos elementos básicos e uma estrutura comum a qualquer perfil. Este tutorial trata destas áreas."
+      chat_edition: "Chat é uma ferramenta que permite a realização de bate-papo online. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição do chat funciona estão disponíveis neste tutorial."
+      assignment_edition: "Portfólio é uma ferramenta que permite o envio de trabalhos. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição do portfólio funciona estão disponíveis neste tutorial."
+      support_material_edition: "Material de apoio é uma ferramenta que permite o envio(upload) de arquivos. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição do material de apoio funciona estão disponíveis neste tutorial."
+      webconference_edition: "Webconferência é uma ferramenta que permite quer video conferências sejam ministradas de forma online com a interação dos alunos. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição da webconferência funciona estão disponíveis neste tutorial."
+      bibliography_edition: "Bibliografias é uma ferramenta que permite que os responsáveis informem a bibliografia da disciplina. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição da bibliografia funciona estão disponíveis neste tutorial."
+      discussion_edition: "Fórum é uma ferramenta que permite aos alunos e professores/tutores realizarem discurssões sobre determinado tema. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição do fórum funciona estão disponíveis neste tutorial."
+      lesson_edition: "Aula é uma ferramenta que permite aos alunos obterem conhecimento totalmente online, sendo está produzida exclusivamente pelos professores. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição de aula funciona estão disponíveis neste tutorial."
+      user_allocation_edition: "Alocação de usuários é uma ferramenta que permite a alocação de usuario sendo este com um perfil em determinda turma ou oferta."
+      bind_unbind_groups: "Este tutorial explica e ilustra como vincular e desvincular uma turma de uma atividade previamente cadastradas."
     files:
       math_editor: Visualizar PDF sobre o Editor Matemático
       evaluation: Visualizar PDF sobre a Avaliação e frequência de atividades
@@ -4667,6 +4676,15 @@ pt_BR:
       registration: Visualizar PDF sobre o Cadastro
       password_recovery: Visualizar PDF de Esqueceu a sua senha?
       home: Visualizar PDF sobre a Home
+      chat_edition: "Visualizar PDF sobre a edição dos Chats"
+      support_material_edition: "Visualizar PDF sobre a edição do Material de apoio"
+      webconference_edition: "Visualizar PDF sobre a edição das Webconferências"
+      bind_unbind_groups: "Visualizar PDF sobre Vincular e desvincular turma de atividade"
+      assignment_edition: "Visualizar PDF sobre a edição dos Portfólios"
+      bibliography_edition: "Visualizar PDF sobre a edição das Bibliografias"
+      discussion_edition: "Visualizar PDF sobre a edição dos Fóruns"
+      lesson_edition: "Visualizar PDF sobre a edição das Aulas"
+      user_allocation_edition: "Visualizar PDF sobre a Alocação de usuários"
     new_language_pt: " (Não foi possível encontrar o tutorial desejado em Português, veja nossa versão em Português)"
     new_language_en: " (Não foi possível encontrar o tutorial desejado em Português, veja nossa versão em Inglês)"
 
