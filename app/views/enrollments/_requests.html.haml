@@ -28,7 +28,7 @@
           - period_start, period_end = group.offer.enrollment_period
           - case allocation.try(:status)
           - when Allocation_Pending.to_i
-            = link_to t('.cancel_request'), cancel_request_allocation_path(allocation), class: 'btn btn_caution allocation_cancel_request'
+            = link_to t('enrollments.index.cancel_request'), cancel_request_allocation_path(allocation), class: 'btn btn_caution allocation_cancel_request'
           - when Allocation_Pending_Reactivate.to_i
             = link_to t('enrollments.index.cancel_request'), cancel_request_allocation_path(allocation), class: 'btn btn_caution allocation_cancel_request request_reactivate'
           - when Allocation_Activated.to_i

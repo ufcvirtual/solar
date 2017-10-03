@@ -1,0 +1,35 @@
+.form_files
+  %h3.attachment_title{class: f.object.new_record? || f.object.files.map(&:id).compact.empty? ? 'invisible' : ''}= t("common_between_pages.attached_files")
+  .files
+    .input.string
+      = render partial: 'common_between_pages/file', locals: { f: f }
+
+:javascript
+
+  $(function(){
+    // remove previous observers to click to add files
+    $(document).off('fields_added.nested_form_fields');
+    // when click to add files
+    $(document).on("fields_added.nested_form_fields", function(event) {
+      // gets last file input - it will be a blank one
+      var last_file = $('#'+"#{form_id}"+' #files input[type="file"]:last');
+      // click to choose file
+      last_file.click();
+      // remove previous observers on file input
+      $('#'+"#{form_id}"+' #files input[type="file"]').off('change');
+      $('#'+"#{form_id}"+' .form_files .attachment_title').removeClass('invisible');
+      // observe file input
+      last_file.change(function(){
+        // when it changes, add choosen file to list as a name and with a remove button
+        var last_form_input = $('#'+"#{form_id}"+' #files .duplicatable_nested_form:last .input');
+        last_form_input.prepend("<div id='file'>"+this.files[0].name+" ( "+(this.files[0].size/1048576).toFixed(2)+"MB ) </div>");
+        last_form_input.next('.info').removeClass('invisible');
+      });
+    });
+    $(document).on("fields_removed.nested_form_fields", function(event) {
+      var count_files = $('#'+"#{form_id}"+' ul#files li #file:visible').length;
+      if(count_files<1)
+        $('#'+"#{form_id}"+' .form_files .attachment_title').addClass('invisible');
+    });
+
+  });

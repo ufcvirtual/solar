@@ -1,0 +1,38 @@
+= simple_form_for(@comment, html: { id: 'comment_form', multipart: true, class: 'common' }) do |f|
+  = f.hidden_field :academic_allocation_user_id, value: f.object.academic_allocation_user_id
+  = f.input :score_type, as: :hidden,  input_html: { value: @score_type }
+
+  .comment_inner_content.comment_area= f.input :comment, as: :ckeditor, label: false
+  .forum_post_attachment
+    = f.add_nested_fields_link :files, t('.attach_file'), class: 'btn'
+    = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline', ckeditor: true, div_id: 'comment_comment', number: '', field: ''}
+
+    .comment_button
+      = button_tag t(:cancel), class: 'btn btn_caution cancel_comment', type: :button
+      = button_tag t(:save), class: 'btn btn_main save_comment', type: :button
+
+    = render partial: 'common_between_pages/files', locals: { f: f, form_id:  'comment_form'}
+
+
+= javascript_include_tag 'ckeditor/init', 'tooltip', 'file_upload'
+
+:javascript
+
+  $(function(){
+    CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
+    CKEDITOR.editorConfig = function(config) {
+      config.toolbar =
+        [
+          { name: 'clipboard', items : [ 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+          { name: 'styles', items : [ 'Styles', 'Format', 'Font', 'FontSize', 'TextColor' ] },
+          { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
+          { name: 'links', items : [ 'Link', 'Unlink', 'Image', 'Smiley' ] },
+          { name: 'insert', items : ['EqnEditor'] }
+        ];
+
+      config.extraPlugins = 'eqneditor,smiley';
+      config.startupFocus = true;
+      config.height = '130px';
+    };
+
+  });

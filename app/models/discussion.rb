@@ -98,27 +98,6 @@ class Discussion < Event
                                                         order: "updated_at #{opts['order']}"})
   end
 
-  def discussion_posts_count(plain_list, allocation_tags_ids = nil, user_id = nil)
-    if plain_list == 'user'
-      count = 0
-      posts_by_allocation_tags_ids(allocation_tags_ids, user_id, nil).each do |a| 
-        
-        count_pots = Post.find_by_sql <<-SQL 
-          SELECT (COUNT(distinct p1.id)+COUNT(distinct p2.id)+COUNT(distinct p3.id)) AS count FROM discussion_posts as p1 LEFT JOIN discussion_posts as p2 ON p2.parent_id=p1.id
-          LEFT JOIN discussion_posts as p3 ON p3.parent_id=p2.id WHERE p1.parent_id=#{a.id}
-        SQL
-        count=count+1+count_pots.first.count.to_i
-        #count=count+1+a.children_count
-        # a.children.each do |c|
-        #   c.children.each do |f|
-        #     count=count+1+f.children_count
-        #   end  
-        # end  
-      end
-    end  
-    (plain_list != 'user' ? posts_by_allocation_tags_ids(allocation_tags_ids, user_id, nil, { grandparent: false }).count : count)
-  end
-
   def count_posts_after_and_before_period(period, allocation_tags_ids = nil, user_id=nil)
     [{ 'before' => count_posts_before_period(period, allocation_tags_ids),
        'after' => count_posts_after_period(period, allocation_tags_ids) }]

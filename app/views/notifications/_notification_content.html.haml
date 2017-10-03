@@ -17,3 +17,9 @@
 .block_content
   .notification
     = sanitize notification.description
+
+  - if notification.notification_files.any?
+    %h2= t('.files')
+    %ul.files
+      - notification.notification_files.each do |file|
+        %li= link_to t('.download_file', name: file.file_file_name, size: number_to_human_size(file.file_file_size, precision: 2)), download_file_notifications_path(id: file.id), :'aria-label' => t('.download_file_alt', name: file.file_file_name, size: number_to_human_size(file.file_file_size, precision: 2))

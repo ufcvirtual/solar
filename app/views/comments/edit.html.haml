@@ -1,0 +1,32 @@
+%tr
+  %td.comment_form{ colspan: "2" }
+    = render "form"
+
+:javascript
+  $(function(){
+    $(".cancel_comment").click(function(){
+      if(confirm("#{t('comments.list.confirm')}")){
+        var button_tr = $($(this).parents("tr")[0]);
+        button_tr.siblings(".comment").show();
+        button_tr.remove();
+        $("#new_comment, .edit_comment").removeAttr("disabled");
+      }
+    });
+
+    $(".save_comment").click(function(){
+      var content = $('div.ckeditor .cke_contents iframe').contents().find('body').html();
+      if (content != "<p><br></p>" && content != "")
+        $('textarea.ckeditor').html(content); 
+
+      $('#comment_form').serialize_and_submit({
+        files: true,
+        replace_list: $($(this).parents("li")[0]),
+        dont_remove_lightbox: true,
+        outer: 'fancybox-outer',
+        flash_msg: 'fancybox-outer',
+        complement_success: function(){
+          $("#new_comment, .edit_comment").removeAttr("disabled");
+        }
+      });
+    });
+  })

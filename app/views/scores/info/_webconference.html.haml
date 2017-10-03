@@ -15,7 +15,9 @@
               %th#we_eva_int.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
               %th#we_eva_gra.center{style: "width: 2%;"}= t(:grade, :scope => [:scores, :info])
               %th#we_eva_rec.smaller_width.center.no_sort= t(:recording, scope: [:webconferences, :index])
-              - if @can_evaluate
+              - if @current_user_is_student
+                %th.center#we_eva_comment{style: "width: 2%;"}=t(:comments, scope: [:scores, :info])
+              - if @is_student && (@can_evaluate || @can_comment)
                 %th#we_eva_acc.smaller_width.center.no_sort{style: "width: 2%;"}
               %th#we_eva_af.center.no_sort{style: "width: 2%;"}=t('scores.info.final_exam')
               %th#we_eva_aft.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
@@ -66,7 +68,9 @@
                   %td.center{:'data-tooltip' => t('webconferences.list.watch'), headers: "we_eva_rec"}= link_to content_tag(:i, nil, class: 'icon-play btn disabled'), '#', disabled: true, onclick: 'return false', :'aria-label' => t('webconferences.list.watch')
                 - else
                   %td.center{:'data-tooltip' => t('webconferences.list.watch'), headers: "we_eva_rec"}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), class: "record", onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('webconferences.list.watch')
-                - if @can_evaluate
+                - if @current_user_is_student
+                  %td.center{headers: "we_eva_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_webconferences_path(ac_id: webconference.id, tool_id: webconference.academic_tool_id, group_id: webconference.group_id), class: "btn #{webconference.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: webconference.count_comments), :'aria-label' => t('comments.summary.count_alt', count: webconference.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+                - if @is_student && (@can_evaluate || @can_comment)
                   %td.center{ :'data-url' => user_access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id, user_id: @user.id, score_type: 'evaluative'), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]), headers: "we_eva_acc" }= link_to_function content_tag(:i, nil, class: "icon-write btn"), 'list_access(this)', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
                 %td.center{headers: 'we_eva_af' }=raw t(webconference.final_exam, scope: [:common_between_pages, :final_exam])
                 %td.center{headers: "we_eva_aft"}=(webconference.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
@@ -85,7 +89,9 @@
               %th#we_fre_int.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
               %th#we_fre_fre.center{style: "width: 2%;"}= t(:frequency, :scope => [:scores, :info])
               %th#we_fre_rec.smaller_width.center.no_sort= t(:recording, scope: [:webconferences, :index])
-              - if @can_evaluate
+              - if @current_user_is_student
+                %th.center#we_fre_comment{style: "width: 2%;"}=t(:comments, scope: [:scores, :info])
+              - if @is_student && (@can_evaluate || @can_comment)
                 %th#we_fre_acc.smaller_width.center.no_sort{style: "width: 2%;"}
               %th#we_freq_hours.center.no_sort{style: "width: 2%;"}=t('scores.info.hours')
               %th#we_fre_aft.center.no_sort{style: "width: 2%;"}=t('scores.info.new_after_evaluation')
@@ -136,7 +142,9 @@
                   %td.center{:'data-tooltip' => t('webconferences.list.watch'), headers: "we_fre_rec"}= link_to content_tag(:i, nil, class: 'icon-play btn disabled'), '#', disabled: true, onclick: 'return false', :'aria-label' => t('webconferences.list.watch')
                 - else
                   %td.center{:'data-tooltip' => t('webconferences.list.watch'), headers: "we_fre_rec"}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), class: "record", onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('webconferences.list.watch')
-                - if @can_evaluate
+                - if @current_user_is_student
+                  %td.center{headers: "we_fre_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_webconferences_path(ac_id: webconference.id, tool_id: webconference.academic_tool_id, group_id: webconference.group_id), class: "btn #{webconference.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: webconference.count_comments), :'aria-label' => t('comments.summary.count_alt', count: webconference.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+                - if @is_student && (@can_evaluate || @can_comment)
                   %td.center{ :'data-url' => user_access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id, user_id: @user.id, score_type: 'frequency'), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]), headers: "we_fre_acc" }= link_to_function content_tag(:i, nil, class: "icon-write btn"), 'list_access(this)', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
                 %td.center{headers:'we_freq_hours'}=raw t('common_between_pages.hours', hours: webconference.max_working_hours)
                 %td.center{headers: "we_fre_aft"}=(webconference.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
@@ -154,6 +162,10 @@
               %th#we_not_sta.smaller_width.center= t(:status, scope: [:webconferences, :list])
               %th#we_not_int.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
               %th#we_not_rec.smaller_width.center.no_sort= t(:recording, scope: [:webconferences, :index])
+              - if @can_comment
+                %th.center#we_not_btn.no_sort{style: "width: 2%;"}
+              - if @current_user_is_student
+                %th.center#we_not_comment{style: "width: 2%;"}=t(:comments, scope: [:scores, :info])
           %tbody
             - @webconferences_not_evaluative.each do |webconference|
               - unavailable = exist_and_offline?(webconference.server.to_i)
@@ -200,6 +212,10 @@
                   %td.center{:'data-tooltip' => t('webconferences.list.watch'), headers: "we_not_rec"}= link_to content_tag(:i, nil, class: 'icon-play btn disabled'), '#', disabled: true, onclick: 'return false', :'aria-label' => t('webconferences.list.watch')
                 - else
                   %td.center{:'data-tooltip' => t('webconferences.list.watch'), headers: "we_not_rec"}= link_to content_tag(:i, nil, class: 'icon-play btn'), get_record_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id), class: "record", onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('webconferences.list.watch')
+                - if @can_comment
+                  %td.center{ :'data-url' => user_access_webconference_path(webconference.academic_tool_id, at_id: webconference.allocation_tag_id, user_id: @user.id, score_type: 'not_evaluative'), :'data-tooltip' => t(:to_evaluate, scope: [:posts, :post]), headers: "we_not_btn" }= link_to_function content_tag(:i, nil, class: "icon-write btn"), 'list_access(this)', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
+                - if @current_user_is_student
+                  %td.center{headers: "we_not_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_webconferences_path(ac_id: webconference.id, tool_id: webconference.academic_tool_id, group_id: webconference.group_id), class: "btn #{webconference.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: webconference.count_comments), :'aria-label' => t('comments.summary.count_alt', count: webconference.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
 
       - else
         .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])

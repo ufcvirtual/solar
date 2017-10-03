@@ -19,6 +19,7 @@ module V1
     mount Agendas
     mount Taggables
     mount Savs
+    mount Comments
 
     mount RemoveAfterChanges
   end

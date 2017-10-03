@@ -216,7 +216,7 @@ pt_BR:
       notification: Aviso
       agenda: Agenda
       assignment: Trabalho
-      assignment_comment: Comentário de Trabalho
+      comment: Comentário
       chat_room: Chat
       enrollment: Matrícula
       lesson: Aula
@@ -243,6 +243,9 @@ pt_BR:
       chatroom: Chat
       webconference: Webconferência
       posts: Posts
+      notification_file: Arquivo
+      post_file: Arquivo
+      comment_file: Arquivo
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -315,10 +318,13 @@ pt_BR:
       comment_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
+        attachment: Arquivo
+        attachment_file_name: Arquivo
       group_assignment:
         group_name: "Nome do grupo"
-      assignment_comment:
+      comment:
         comment: Comentário
+        comment_file: Arquivo
       discussion:
         name: Título
         description: Descrição
@@ -370,11 +376,11 @@ pt_BR:
         image_content_type: Tipo do arquivo
         image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."
       question_images:
-          image: Imagem
-          legend: Legenda
-          img_alt: Alt
-          image_content_type: Tipo do arquivo
-          image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."
+        image: Imagem
+        legend: Legenda
+        img_alt: Alt
+        image_content_type: Tipo do arquivo
+        image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."
       exam_user:
         grade: Nota
       exam_question:
@@ -471,6 +477,8 @@ pt_BR:
         title: Título
         description: Descrição
         mandatory_reading: Leitura obrigatória
+        file_size: Tamanho
+        file: Arquivo
       profile:
         name: Nome
         description: Descrição
@@ -513,7 +521,18 @@ pt_BR:
       message:
         content: Conteúdo
         subject: Assunto
-
+      notification_file:
+        file_file_size: Tamanho
+        file: Arquivo
+        file_file_name: Arquivo
+      post_file:
+        attachment_file_size: Tamanho
+        attachment: Arquivo
+        attachment_file_name: Arquivo
+      files:
+        attachment_file_size: Tamanho
+        attachment: Arquivo
+        attachment_file_name: Arquivo
     errors:
       uniqueness: "Registro já existe no sistema"
       template:
@@ -1297,7 +1316,7 @@ pt_BR:
       new_posts: " nova(s) postagem(ns) no fórum"
       new_posts_page: "1 nova postagem no fórum (página "
       moved_allocation: "Alocação transferida para outra turma"
-      to_evaluate: Avaliar
+      to_evaluate: Avaliar/Comentar
       grade: '(Nota: %{grade})'
       frequency: '(Frequência: %{wh}hs)'
       download: "Download %{file}, tamanho: %{size}"
@@ -1306,16 +1325,18 @@ pt_BR:
       res_post: "ª postagem"
       remove_attachment: "Remover %{file} %{size}"
       remove_post: "Postagem removida com suceso"
-      draft: "Rascunho <a class='draft_version_explain' href='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'>(?)</a>"
-      draft2: Explicação sobre o Rascunho do post
-      fv_explain: "&nbsp;&nbsp;&nbsp;&nbsp; Um post rascunho está visível apenas para o usuário que o criou, poderá ser publicado a qualquer momento, desde que o fórum esteja no seu período de postage e caso o rascunho seja filho único e o post pai seja apagado o rascunho também será apagado."
+      draft: "<a class='draft_version_explain' href='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'>Rascunho (?)</a>"
+      draft2: Explicação sobre o rascunho do post
+      fv_explain: "<p>Um post rascunho é visível apenas para o usuário que o criou e poderá ser publicado a qualquer momento, desde que o fórum esteja no seu período de postagem.</p><p>Caso o rascunho seja a única resposta a um post pai e este seja apagado, o rascunho também será apagado.</p>"
+      fv_explain_alt: "Um post rascunho é visível apenas para o usuário que o criou e poderá ser publicado a qualquer momento, desde que o fórum esteja no seu período de postagem. aso o rascunho seja a única resposta a um post pai e este seja apagado, o rascunho também será apagado."
     create:
       created: "Postagem criada com sucesso"
       not_created: "A postagem não foi criada"
-      draft: "Rascunho criado com sucesso, se este rascunho for o único filho e o post pai for removido, ele também será removido."
+      draft: "Rascunho criado com sucesso. Se o rascunho for a única resposta a um post pai e este for removido, aquele também será removido."
       not_draft: "O rascunho não foi criada"
-      save_draft: "Deseja salvar o seu post como rascunho?"
-      save_post: "Deseja salvar o seu post?"
+      published: Post publicado com sucesso
+      save_post: Deseja salvar seu post?
+      save_draft: Deseja salvar seu post como rascunho?
     update:
       updated: "Postagem atualizada com sucesso"
       not_updated: "A postagem não foi atualizada"
@@ -1340,6 +1361,8 @@ pt_BR:
       general_message: Não foi possível realizar a ação desejada
       date_range_expired: Não foi possível realizar ação. Período encerrado.
       permission: Não é possível alterar ou remover posts de outros usuários
+      not_published: Não foi possível publicar o post
+      draft: Não é possível responder um post de rascunho
 
   post_files:
     new:
@@ -1447,6 +1470,9 @@ pt_BR:
       day_to: a
       mandatory_explain: 'Aviso aparecerá automaticamente logo após login do usuário'
       mandatory: Leitura obrigatória (?)
+      add_files: 'Adicionar arquivos'
+      profiles: 'Perfis (?)'
+      profiles_explain: 'Ao selecionar perfis, este aviso ficará disponível apenas para usuários com algum desses perfis. Caso nenhum seja escolhido, este aviso ficará disponível a todos os usuários.'
     list:
       notifications: Avisos
       notification: Aviso
@@ -1462,6 +1488,8 @@ pt_BR:
       mandatory: Sim
       not_mandatory: Não
       mandatory_reading: Leitura obrigatória
+      files: Arquivos
+      preview: Prévia
     success:
       created: Aviso criado com sucesso.
       updated: Aviso atualizado com sucesso.
@@ -1471,12 +1499,21 @@ pt_BR:
       updated: Não foi possível atualizar aviso.
       deleted: Não foi possível deletar aviso.
       only_general: só pode ser selecionado em avisos gerais
+      download: Não foi possível fazer o download do arquivo.
+      general_message: Não foi possível realizar a ação desejada.
+      ended: não pode ser alterado após término do período
+      ended_file: "não pode ser enviado ou removido após término do período"
+      ended_profiles: "não podem ser alterados após término do período"
     show:
       count_groups: "%{count} turmas"
       next: Próxima notícia
       prev: Notícia anterior
     show_mandatory:
       read_later: Ler depois
+    notification_content:
+      download_file_alt: Fazer download do arquivo %{name} de tamanho %{size}
+      download_file: "%{name} (%{size})"
+      files: 'Arquivos'
 
   webconferences:
     form:
@@ -1593,7 +1630,7 @@ pt_BR:
       title: Lista de acessos a webconferêcia %{webconference_name}
       on_going: '<b> Aviso: </b> Esta webconferência ainda está em andamento, portanto esta lista de acessos pode aumentar.'
       not_started: '<b> Aviso: </b> Esta webconferência ainda não iniciou.'
-      evaluate: Avaliar aluno
+      evaluate: Avaliar/Comentar
       grade: Nota
       frequency: Frequência
       finish_evaluation: Avaliar
@@ -2185,25 +2222,6 @@ pt_BR:
     success:
       removed: Arquivo deletado com sucesso
       uploaded: Arquivo enviado com sucesso
-  assignment_comments:
-    list:
-      new: Novo comentário
-      title: Comentários
-      confirm: Confirma cancelamento do comentário?
-    form:
-      attach_file: Anexar arquivo
-      attached_files: Anexos
-    comment:
-      attached_files: Anexos
-      edit: Editar comentário
-      remove: Remover comentário
-    success:
-      new: Comentário criado com sucesso
-      edit: Comentário alterado com sucesso
-      removed: Comentário removido com sucesso
-    error:
-      general_message: Não foi possível realizar ação.
-      date_range_expired: Não foi possível realizar ação. Período encerrado.
   group_assignments:
     index:
       title: Gerenciamento de grupos - %{name}
@@ -2211,6 +2229,7 @@ pt_BR:
       groups: Grupos
       new: Criar grupo
       already_evaluated: "Este grupo já foi avaliado, portanto não é possível remover ou adicionar participantes a ele"
+      not_evaluated: "Este grupo não foi avaliado"
       participants: Participantes
       select_a_group: Selecione um grupo
       no_participants: Sem participantes
@@ -2219,6 +2238,7 @@ pt_BR:
       add: "Adicionar ao grupo"
       remove: "Remover do grupo"
       confirm: Confirma remoção do grupo?
+      shortcut: Atalhos
     group:
       edit: Renomear grupo
       remove: Remover grupo
@@ -2435,6 +2455,7 @@ pt_BR:
       other_extension: "Há problemas com a formatação do arquivo fornecido, favor importar com .xls ou .xlsx"
       unknown_file: "Extensão não permitida"
       other_delimiter: "Delimitador CSV incorreto"
+      group_not_found: Turma %{code} não encontrada
       log:
         success: "[SUCESSO]: CPF: %{cpf}, importado com sucesso"
         error: "[ERRO]: CPF: %{cpf}, %{error}"
@@ -2906,7 +2927,7 @@ pt_BR:
       time: Horário
       no_message: Nenhuma mensagem
       all: Todos
-      to_evaluate: Avaliar
+      to_evaluate: Avaliar/Comentar
       grade: Nota
       wh: Carga horária
       summary: "Está tabela contém todas mensagens enviadas com as seguintes informações: Perfil de quem enviou, quem enviou, para quem enviou, mensagem, data e hora do enviou."
@@ -2962,6 +2983,7 @@ pt_BR:
   confirm_acceptance: "Confirma aceitação de solicitação?"
   confirm_cancel: 'Tem certeza de que deseja cancelar?'
   message_confirm_user: "Tem certeza?"
+  page_loading: "A página está carregando..."
 
   messages:
     file_too_big: "Arquivo muito grande!"
@@ -3414,9 +3436,28 @@ pt_BR:
       name:
         web: "Nova Webconferência [W]"
         file: "Enviar Arquivo [A]"
+        files_title: "Arquivos do enunciado [E]"
+        new_comment: "Novo cometário [N]"
+        sent_assignment_title: "Arquivos enviados [R]"
+        webconferences: "Webconferências [V]"
+        individual_assignments: "Trabalhos individuais [I]"
+        group_assignments: "Trabalhos em grupo [G]"
+        public_files: "Área pública [P]"
+        groups: "Grupos [G]"
+        participants: "Participantes [P]"
+        students_without_group: "Alunos sem grupo [A]"
       code:
         web: 87
         file: 65
+        files_title: 69
+        new_comment: 78
+        sent_assignment_title: 82
+        webconferences: 86
+        individual_assignments: 73
+        group_assignments: 71
+        public_files: 80
+        participants: 80
+        students_without_group: 65
     scores:
       name:
         exam: "Provas [P]"
@@ -3444,6 +3485,7 @@ pt_BR:
       name:
         responsibles: "Responsáveis [R]"
         students_and_tools: "Alunos/Ferramentas [F]"
+        legends: "Legendas [L]"
         all: "Geral [0]"
         evaluative: 'Avaliativo [1]'
         notevaluative: 'Não Avaliativo [2]'
@@ -3451,6 +3493,7 @@ pt_BR:
       code:
         responsibles: 82
         students_and_tools: 70
+        legends: 76
         all: 96
         evaluative: 97
         notevaluative: 98
@@ -3475,6 +3518,30 @@ pt_BR:
       code:
         next: 39
         previous: 37
+    vertical_menu:
+      code:
+        menu_lesson: 65
+        menu_support_material: 77
+        menu_dc_lesson: 76
+        menu_discussion: 70
+        menu_portfolio: 84
+        menu_exam: 80
+        menu_score_student: 79
+        menu_chat: 67
+        menu_webconference: 87
+        menu_score_professor: 72
+        menu_program: 82
+        menu_agenda: 71
+        menu_bibliography: 66
+        menu_participants: 69
+        menu_content_edition: 68
+        menu_messages: 78
+        menu_registration: 85
+    comments:
+      name:
+        title: "Comentários [C]"
+      code:
+        title: 67
 
   scores:
     index:
@@ -3485,10 +3552,10 @@ pt_BR:
       access_to_the_course: "Acessos à Turma"
       no_students: Não há alunos
       list_of_students: Lista de estudantes
-      evaluated_complete: Atividade avaliada
+      evaluated_complete: Atividade avaliada (nota ou frequência) ou com comentário
       not_sent_complete: Atividade não enviada e com período encerrado
       without_group_complete: Aluno sem grupo
-      sent_complete: "Atividade enviada, mas não avaliada (sem nota)"
+      sent_complete: "Atividade enviada, mas não avaliada (sem nota, frequência ou comentários)"
       to_send_complete: Atividade a ser enviada
       not_started_complete: Atividade com período não iniciado
       subtitle: Legenda
@@ -3604,6 +3671,8 @@ pt_BR:
       list_webconferences_not_evaluative: Listar webconferências não avaliativas'
       final_exam: Avaliação Final (AF)
       hours: Carga Horária Máxima
+      info_evaluation: Nota/frequência e comentários
+      comments: Comentários
     reports:
       general_evaluative: Relatório Acompanhamento - Atividades Avaliativas
       general_frequency: Relatório Acompanhamento - Atividades de Frequência
@@ -4613,6 +4682,15 @@ pt_BR:
       registration: "Ao ter o primeiro contato com o Solar 2.0, faz-se necessário o cadastro. O objetivo deste tutorial é sanar dúvidas a respeito deste procedimento com todos os passos necessários e informações relevantes. "
       password_recovery: "Após ter um cadastro no Solar 2.0, pode acontecer da senha usada para realizar o acesso ser esquecida ou, até mesmo, o login. Para isto, existe a área de recuperação de senha no Solar, cujas informações necessárias são descritas neste tutorial."
       home: "Após realizar o login no Solar 2.0, todo usuário se depara com a tela inicial do ambiente, a Home. O conteúdo desta tela pode variar de acordo com o papel de cada um no ambiente. Entretanto, há diversos elementos básicos e uma estrutura comum a qualquer perfil. Este tutorial trata destas áreas."
+      chat_edition: "Chat é uma ferramenta que permite a realização de bate-papo online. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição do chat funciona estão disponíveis neste tutorial."
+      assignment_edition: "Portfólio é uma ferramenta que permite o envio de trabalhos. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição do portfólio funciona estão disponíveis neste tutorial."
+      support_material_edition: "Material de apoio é uma ferramenta que permite o envio(upload) de arquivos. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição do material de apoio funciona estão disponíveis neste tutorial."
+      webconference_edition: "Webconferência é uma ferramenta que permite quer video conferências sejam ministradas de forma online com a interação dos alunos. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição da webconferência funciona estão disponíveis neste tutorial."
+      bibliography_edition: "Bibliografias é uma ferramenta que permite que os responsáveis informem a bibliografia da disciplina. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição da bibliografia funciona estão disponíveis neste tutorial."
+      discussion_edition: "Fórum é uma ferramenta que permite aos alunos e professores/tutores realizarem discurssões sobre determinado tema. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição do fórum funciona estão disponíveis neste tutorial."
+      lesson_edition: "Aula é uma ferramenta que permite aos alunos obterem conhecimento totalmente online, sendo está produzida exclusivamente pelos professores. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição de aula funciona estão disponíveis neste tutorial."
+      user_allocation_edition: "Alocação de usuários é uma ferramenta que permite a alocação de usuario sendo este com um perfil em determinda turma ou oferta."
+      bind_unbind_groups: "Este tutorial explica e ilustra como vincular e desvincular uma turma de uma atividade previamente cadastradas."
     files:
       math_editor: Visualizar PDF sobre o Editor Matemático
       evaluation: Visualizar PDF sobre a Avaliação e frequência de atividades
@@ -4629,6 +4707,15 @@ pt_BR:
       registration: Visualizar PDF sobre o Cadastro
       password_recovery: Visualizar PDF de Esqueceu a sua senha?
       home: Visualizar PDF sobre a Home
+      chat_edition: "Visualizar PDF sobre a edição dos Chats"
+      support_material_edition: "Visualizar PDF sobre a edição do Material de apoio"
+      webconference_edition: "Visualizar PDF sobre a edição das Webconferências"
+      bind_unbind_groups: "Visualizar PDF sobre Vincular e desvincular turma de atividade"
+      assignment_edition: "Visualizar PDF sobre a edição dos Portfólios"
+      bibliography_edition: "Visualizar PDF sobre a edição das Bibliografias"
+      discussion_edition: "Visualizar PDF sobre a edição dos Fóruns"
+      lesson_edition: "Visualizar PDF sobre a edição das Aulas"
+      user_allocation_edition: "Visualizar PDF sobre a Alocação de usuários"
     new_language_pt: " (Não foi possível encontrar o tutorial desejado em Português, veja nossa versão em Português)"
     new_language_en: " (Não foi possível encontrar o tutorial desejado em Português, veja nossa versão em Inglês)"
 
@@ -4676,6 +4763,11 @@ pt_BR:
       t: 'Sim'
       f: Não
     hours: '%{hours}h'
+    error:
+      general_message: Não foi possível realizar a ação desejada
+    all: Todos
+    attached_files: Anexos
+    remove_file: Remover anexo %{name}
 
   ip_control:
     info:
@@ -4712,11 +4804,44 @@ pt_BR:
     how_title: Como usamos as informações
     how: '<p>Seu endereço de e-mail poderá ser utilizado para o recebimento de e-mails enviados através da ferramenta de Mensagem no Solar ou através de outras ferramentas em forma de avisos/notificações de mudanças como, por exemplo, ao ter sua prova corrigida.</p><p>Seus dados cadastrais e alocações poderão ser consultados e alterados por usuários administrativos, cujo propósito será auxiliar na resolução de problemas de acesso, averiguação de problemas e/ou situações relatadas pelo próprio usuário ou por terceiros. Os mesmos dados poderão ser consultados por usuários com acesso para tal, como, por exemplo, perfis de secretaria.</p><p>Suas interações nos cursos poderão ser consultadas por todos os demais participantes e responsáveis da mesma turma ou usuários com perfis de acesso a tais dados, como, por exemplo, perfis de secretaria, usuários administrativos etc.</p><p>Os dados de endereço do usuário podem ser utilizados para entrega de certificados pelos responsáveis de cursos.</p><p>A equipe do Solar 2.0 pode acessar o ambiente como o usuário para realização de verificação de problemas relatados. O andamento do aluno no curso não será comprometido ou alterado sem prévia solicitação ou sem informação posterior à mudança, salvo em casos da alteração ser pré-requisito para realização de ações (como o cadastro de outros usuários por exemplo). </p><p>Dados quantitativos e qualitativos dos usuários podem ser usados para estudos ou para geração de relatórios.</p><p>Pesquisadores podem ter acesso a dados do andamento de disciplinas, porém a privacidade dos usuários participantes é resguardada ao omitir seus nomes.</p><p>É possível que a equipe do Solar ou usuários administradores acessem as ações e dados salvos pelo usuário, incluindo mensagens. Isso ocorre apenas para averiguação de problemas, geração de relatórios ou conferência de informações. A privacidade do usuário é mantida e nenhum dado é alterado.</p>'
     third_title: Compartilhamento de informações com aplicações terceiras
-    third: '<p>Os seguintes sistemas fazem uso da API (5) do Solar 2.0 ou acessam a aplicação de modo que podem consultar dados dos usuários ou escrever no sistema. Para escrita, o próprio usuário precisa estar devidamente autenticado na aplicação ou a aplicação externa precisa ter permissão para tal:</p><ol><li>Chat: Ferramenta de chat do Solar 2.0, consulta dados do usuário e escreve mensagens de chat enviadas por ele no Solar;</li><li>Solar Mobilis: Aplicativo do Solar para Android e iOS, o qual permite login do usuário, envio de posts, consulta de aulas, acompanhamento, disciplinas/cursos/turmas do usuário e dados desse.</li><li>SAV: Sistema de Avaliação, o qual envia para o Solar questionários a serem realizados por usuários e consulta dados desses como informações cadastrais, perfis, alocações e cursos/disciplinas/turmas/semestres.</li><li>SGA: Sistema de Gestão Acadêmica, consulta dados quantitativos das turmas cadastradas no Solar, cadastra e aloca usuários e cadastra eventos no Solar.</li><li>Módulo Acadêmico: Sistema acadêmico utilizado para os cursos da UAB, envia ao Solar dados de usuário, que podem sobrescrever dados já existentes no Solar para determinado CPF. Também envia informações de cursos, disciplinas, turmas e alocações de usuários.</li></ol><p>Destacamos que, no que diz respeito a aplicações de terceiros, apenas aplicações autorizadas ou aplicações nas quais o usuário faça sua devida autenticação acessam os dados salvos no Solar. Estas aplicações, até então, fazem parte do Instituto UFC Virtual e têm propósito acadêmico.</p>'
+    third: '<p>Outros sistemas acadêmicos do próprio Instituto UFC Virtual e UFC fazem uso de alguns dados presentes no Solar. Este uso é estritamente associado a atividades acadêmicas e sua operação está diretamente restrita ao Instituto UFC Virtual.</p>'
     other_info_title: Informações complementares
     other_info: '<p>O Solar pode, em alguns casos, redirecionar o usuário a sites ou abas externos. Este é o caso ao acessar webconferências e/ou suas gravações; vídeo-tutoriais; links em material de apoio ou aulas; links de rodapé etc.</p><p>O usuário tem o controle de sua própria privacidade no que diz respeito ao uso de cookies e cache(6) podendo, portanto, utilizar funções do próprio navegador para “navegar anonimamente”(7). Sendo feito uso dessa função, é importante destacar que determinadas funções poderão não funcionar conforme o esperado, é o caso de armazenamento do login e senha para futuros acessos pelo navegador etc.</p><p>Passado o período de, pelo menos, 1 ano após o envio de um trabalho como webconferência ou de uma aula por webconferência, sua gravação poderá ser removida de nossos servidores, conforme previsto pelo órgão central do Sistema de Gestão de Documentos de Arquivo.</p>'
     update_title: Atualização e exclusão de informações
-    update: '<p>Durante o período de um curso e dentro das regras de prazos estabelecidas para cada atividade prevista, os participantes terão total liberdade para enviar, alterar e remover informações.</p><p>O usuário poderá, a qualquer momento, alterar seus dados cadastrais. Salvo em caso de o usuário ser um professor ou aluno da UAB, pois possuirá integração com o Módulo, de modo que deverá alterar seus dados naquele. Usuários que não se enquadram nesses perfis e que não possam alterar seus dados devem entrar em contato com o atendimento@virtual.ufc.br para realização de desvínculo com o Módulo Acadêmico.</p><p>Os dados de login, senha e email dos usuários que possuem vínculo ao Módulo Acadêmico serão alterados automaticamente no momento em que seus dados forem alterados naquele sistema. Todos os dados do usuário vinculado ao Módulo também poderão ser alterados se o próprio usuário ou usuários com acesso à administração do sistema sincronizarem suas informações.</p><p>Em caso de contato com o atendimento para recuperação de senha e relato de dificuldades ao realizar essa ação, o atendimento poderá definir uma senha aleatória para o usuário sendo este comunicado desta ação. O usuário terá total liberdade para alterar sua senha após o login.</p>'
+    update: '<p>Durante o período de um curso e dentro das regras de prazos estabelecidas para cada atividade prevista, os participantes terão total liberdade para enviar, alterar e remover informações.</p><p>O usuário poderá, a qualquer momento, alterar seus dados cadastrais. Salvo em caso de o usuário ser um professor ou aluno da UAB, pois possuirá integração com um sistema terceiro, de modo que deverá alterar seus dados naquele. Usuários que não se enquadram nesses perfis e que não possam alterar seus dados devem entrar em contato com o atendimento@virtual.ufc.br para realização de desvínculo com tal sistema.</p><p>Os dados de login, senha e email dos usuários que possuem vínculo ao sistema mencionado serão alterados automaticamente no momento em que seus dados forem alterados naquele sistema. Todos os dados do usuário vinculado ao sistema poderão ser alterados se o próprio usuário ou usuários com acesso à administração do sistema sincronizarem suas informações.</p><p>Em caso de contato com o atendimento para recuperação de senha e relato de dificuldades ao realizar essa ação, o atendimento poderá definir uma senha aleatória para o usuário sendo este comunicado desta ação. O usuário terá total liberdade para alterar sua senha após o login.</p>'
     subtitles_title: Legendas
     subtitles: '<ul><li>(1) IP: O endereço de IP é um meio de identificar determinado dispositivo em uma rede.</li><li>(2) navegador: Programa que permite que os usuários acessem e interajam com documentos html hospedados em servidores.</li><li>(3) SO: Ou Sistema Operacional, é um software ou conjunto de softwares que permite com que possamos utilizar um computador de modo que ele gerencia os recursos desse sistema, fornecendo, portanto, uma interface entre o usuário final e o computador.</li><li>(4) Cookies: dados armazenados no navegador do usuário.</li><li>(5) API: Interface de programação da aplicação, permite que aplicações de terceiros consultem ou enviem dados ao Solar.</li><li>(6) cache: Componente tecnológico que permite armazenar determinados dados de modo que requisições futuras sejam realizadas de modo mais rápido.</li><li>(7) navegar anonimamente: Modo de navegação oferecido por alguns navegadores (ex: chrome - navegação anônima; firefox - navegação privada) que permite navegar sem salvar no histórico de pesquisa e nem armazenar cookies. Este modo não oculta dados de navegação do provedor de internet ou do Solar.</li></ul>'
-    last_update: Última atualização em 09 de agosto de 2017 às 10:00
+    last_update: Última atualização em 31 de agosto de 2017 às 14:17
+
+  comments:
+    summary:
+      title: "Comentários e notas para %{user} em %{tool}"
+      grade: 'Nota: '
+      working_hours: 'Carga Horária: '
+      no_grade: "<i>sem nota</i>"
+      no_wh: "<i>sem carga horária</i>"
+      info: Nota e Frequência
+      count: "%{count} comentários"
+      count_alt: "Acessar %{count} comentários"
+      title_alt: "Acessar notas/frequências e comentários para %{tool} (%{count} comentários)"
+      title_alt2: "Acessar notas/frequências e comentários para %{tool}"
+    list:
+      new: Novo comentário
+      title: Comentários dos responsáveis
+      confirm: Confirma cancelamento do comentário?
+    comment:
+      attached_files: Anexos
+      edit: Editar comentário
+      remove: Remover comentário
+      remove_attachment: "Remover anexo"
+    form:
+      attach_file: Anexar arquivo
+      attached_files: Anexos
+    success:
+      new: Comentário criado com sucesso
+      edit: Comentário alterado com sucesso
+      removed: Comentário removido com sucesso
+    error:
+      general_message: Não foi possível realizar ação.
+      date_range_expired: Não foi possível realizar ação. Período encerrado.
+      no_acu: Não é possível criar um comentário para este aluno nesta turma.

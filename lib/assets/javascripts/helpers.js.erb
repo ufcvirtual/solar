@@ -133,15 +133,23 @@ function _ajax_request(url, data, callback, type, method) {
   });
 }
 
-function update_tables_with_no_data() {
-  $('.tb_list').each(function(){
-    var rowCount = $('tbody>tr:visible', $(this)).length;
+function update_tables_with_no_data(div_class, element) {
+  final_element = div_class;
+  if(div_class == undefined){
+    div_class = '.tb_list';
+    final_element = '.block_content';
+  }
+  if(element == undefined)
+    element = 'tbody>tr';
+
+  $(div_class).each(function(){
+    var rowCount = $(element+':visible', $(this)).length;
     if (rowCount == 0){
-      $('.empty_message', $(this).closest('.block_content')).removeClass('hide_message').removeClass('invisible');
+      $('.empty_message', $(this).closest(final_element)).removeClass('hide_message').removeClass('invisible');
       $('thead', $(this)).hide();
     } else {
       $('thead', $(this)).show();
-      $('.empty_message', $(this).closest('.block_content')).addClass('hide_message').removeClass('invisible');
+      $('.empty_message', $(this).closest(final_element)).addClass('hide_message').removeClass('invisible');
     }
   });
 }
@@ -528,8 +536,10 @@ function focuInpuErro(){
 }
 
 function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
+  if (score_type == '')
+    score_type = 'not_evaluative';
 
-  if(data.group_assignment == undefined)
+  if(data.group_assignment == undefined && data.dont_close == undefined)
     jQuery.fancybox.close();
 
   if(group_id == undefined || group_id == null || group_id == '')

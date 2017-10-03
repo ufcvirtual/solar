@@ -6,13 +6,13 @@ function save_notification(){
 
   $('form#notification_form').serialize_and_submit({
     prepend_to_list: $(".tb_notifications tbody"),
+    files: true,
     complement_success: function(data){
       setTimeout(function() {
-        if($("[name='_method']").val()=='put'){
+        if($("[name='_method']").val()=='put')
           flash_message("<%= I18n.t(:updated, scope: 'notifications.success') %>", "notice");
-        }else{
+        else
           flash_message("<%= I18n.t(:created, scope: 'notifications.success') %>", "notice");
-        }  
         update_tables_with_no_data();
         $(".all_notifications").nice_checkbox({parent_div: $('.list_notifications')});
         $('input.all_notifications').prop("checked", false);

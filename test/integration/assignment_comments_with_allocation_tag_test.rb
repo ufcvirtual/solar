@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AssignmentCommentWithAllocationTagTest < ActionDispatch::IntegrationTest
+class CommentWithAllocationTagTest < ActionDispatch::IntegrationTest
   def setup
     @quimica_tab  = add_tab_path(id: 3, context:2, allocation_tag_id: 3)  # QM CAU
     @quimica2_tab = add_tab_path(id: 3, context:2, allocation_tag_id: 11) # QM MAR
@@ -13,8 +13,8 @@ class AssignmentCommentWithAllocationTagTest < ActionDispatch::IntegrationTest
     login @prof
     get @quimica_tab
 
-    assert_difference("AssignmentComment.count") do
-      post assignment_comments_path assignment_comment: {academic_allocation_user_id: @sa1.id, user_id: @prof.id, comment: "Comentário"}
+    assert_difference("Comment.count") do
+      post comments_path assignment_comment: {academic_allocation_user_id: @sa1.id, user_id: @prof.id, comment: "Comentário"}
     end
 
     assert_response :success
@@ -25,8 +25,8 @@ class AssignmentCommentWithAllocationTagTest < ActionDispatch::IntegrationTest
     login @prof
     get @quimica_tab
 
-    assert_no_difference("AssignmentComment.count") do
-      post assignment_comments_path assignment_comment: {academic_allocation_user_id: @sa1.id, user_id: @prof.id, comment: ""}
+    assert_no_difference("Comment.count") do
+      post comments_path assignment_comment: {academic_allocation_user_id: @sa1.id, user_id: @prof.id, comment: ""}
     end
 
     assert_response :unprocessable_entity
@@ -38,11 +38,11 @@ class AssignmentCommentWithAllocationTagTest < ActionDispatch::IntegrationTest
     get @quimica_tab
 
     assert_difference("SentAssignment.count") do
-      get new_assignment_comment_path assignment_id: @atividadeG.id, group_id: group_assignments(:a2).id
+      get new_comment_path assignment_id: @atividadeG.id, group_id: group_assignments(:a2).id
     end
 
-    assert_difference("AssignmentComment.count") do
-      post assignment_comments_path assignment_comment: {academic_allocation_user_id: assigns(:academic_allocation_user).id, user_id: @prof.id, comment: "Comentário"}
+    assert_difference("Comment.count") do
+      post comments_path assignment_comment: {academic_allocation_user_id: assigns(:academic_allocation_user).id, user_id: @prof.id, comment: "Comentário"}
     end
 
     assert_response :success
@@ -53,8 +53,8 @@ class AssignmentCommentWithAllocationTagTest < ActionDispatch::IntegrationTest
     login @aluno1
     get @quimica_tab
 
-    assert_no_difference("AssignmentComment.count") do
-      post assignment_comments_path assignment_comment: {academic_allocation_user_id: @sa1.id, user_id: @prof.id, comment: "Comentário"}
+    assert_no_difference("Comment.count") do
+      post comments_path assignment_comment: {academic_allocation_user_id: @sa1.id, user_id: @prof.id, comment: "Comentário"}
     end
 
     assert_response :unauthorized
@@ -65,8 +65,8 @@ class AssignmentCommentWithAllocationTagTest < ActionDispatch::IntegrationTest
     login @tutor
     get @quimica2_tab
 
-    assert_no_difference("AssignmentComment.count") do
-      post assignment_comments_path assignment_comment: {academic_allocation_user_id: @sa2.id, user_id: @tutor.id, comment: "Comentário"}
+    assert_no_difference("Comment.count") do
+      post comments_path assignment_comment: {academic_allocation_user_id: @sa2.id, user_id: @tutor.id, comment: "Comentário"}
     end
 
     assert_response :unauthorized
@@ -84,7 +84,7 @@ class AssignmentCommentWithAllocationTagTest < ActionDispatch::IntegrationTest
     login @user
     get @quimica_tab
 
-    put assignment_comment_path id: @c01.id, assignment_comment: {comment: "Alterando comentário"}
+    put comment_path id: @c01.id, assignment_comment: {comment: "Alterando comentário"}
     assert_response :success
   end
 
@@ -92,7 +92,7 @@ class AssignmentCommentWithAllocationTagTest < ActionDispatch::IntegrationTest
     login @tutor
     get @quimica_tab
 
-    put assignment_comment_path id: @c01.id, assignment_comment: {comment: "Alterando comentário"}
+    put comment_path id: @c01.id, assignment_comment: {comment: "Alterando comentário"}
     assert_response :unauthorized
     assert_equal I18n.t(:no_permission), get_json_response("alert")
   end
@@ -101,8 +101,8 @@ class AssignmentCommentWithAllocationTagTest < ActionDispatch::IntegrationTest
     login @user
     get @quimica_tab
 
-    assert_difference("AssignmentComment.count", -1) do
-      delete assignment_comment_path id: @c01.id
+    assert_difference("Comment.count", -1) do
+      delete comment_path id: @c01.id
     end
     assert_response :success
   end
@@ -111,8 +111,8 @@ class AssignmentCommentWithAllocationTagTest < ActionDispatch::IntegrationTest
     login @tutor
     get @quimica_tab
 
-    assert_no_difference("AssignmentComment.count") do
-      delete assignment_comment_path id: @c01.id
+    assert_no_difference("Comment.count") do
+      delete comment_path id: @c01.id
     end
 
     assert_response :unauthorized

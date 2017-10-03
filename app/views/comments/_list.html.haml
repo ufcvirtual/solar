@@ -1,0 +1,34 @@
+.block_wrapper
+  .block_title
+    %h2{:'data-shortcut'=> t("shortcut.comments.code.title"), :'data-shortcut-name'=> t("shortcut.comments.name.title"), :'data-shortcut-focus' => 'true'}
+      %i.icon-comment
+      = t('comments.list.title')
+    - if can? :create, Comment, on: [@allocation_tag_id]
+      %span.right_buttons
+        = button_tag content_tag(:i, nil, class: 'icon-plus'), class: "btn btn_main #{tool.offer_opened? ? '' : 'disabled'}", id: 'new_comment', disabled: !tool.offer_opened?, :"data-tooltip" => t('.new'), :'aria-label' => t(".new"), :'data-shortcut'=> t("shortcut.assignment.code.new_comment"), :'data-shortcut-name'=> t("shortcut.assignment.name.new_comment")
+  .comment_wrapper
+    .comment_form
+    %ul.comments_list
+      - unless comments.blank?
+        - comments.each do |comment|
+          = render partial: 'comments/comment', locals: { comment: comment }
+      .text_none.empty_message#no_itens_message_comment{ class: (comments.blank? ? '' : 'hide_message') }= t(:itens_not_found)
+
+= javascript_include_tag 'comments'
+
+:javascript
+  $(function(){
+    $("#new_comment").not(".disabled").click(function(){
+      $(this).hide();
+      $("#new_comment, .edit_comment").attr("disabled", "disabled");
+      $(".new_comment_btns").removeClass("invisible");
+      $.get("#{new_comment_path(tool_id: tool.id, tool: tool_type, student_id: (@student_id || @user.try(:id)), group_id: @group_id, score_type: @score_type)}", function(data){
+        $(".comment_form").html(data);
+        $("#no_itens_message_comment").addClass('hide_message');
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert', 'fancybox-outer');
+      });
+    });
+  });

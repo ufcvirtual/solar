@@ -16,7 +16,8 @@ class AcademicAllocationUser < ActiveRecord::Base
   has_many :question_items, through: :exam_responses
   has_many :questions     , through: :question_items
 
-  has_many :assignment_comments
+  has_many :comments
+
   has_many :assignment_files
   has_many :assignment_webconferences
 
@@ -140,7 +141,7 @@ class AcademicAllocationUser < ActiveRecord::Base
       acu.grade = evaluation[:grade].blank? ? nil : evaluation[:grade].to_f
       acu.working_hours = evaluation[:working_hours].blank? ? nil : evaluation[:working_hours]
 
-      if !acu.grade.blank? || !acu.working_hours.blank?
+      if !acu.grade.blank? || !acu.working_hours.blank? || acu.comments.any?
         acu.status = STATUS[:evaluated]
       else
         acu.status = tool_type.constantize.verify_previous(acu.id) ? STATUS[:sent] : STATUS[:empty]
@@ -161,7 +162,10 @@ class AcademicAllocationUser < ActiveRecord::Base
   # must be called only when sending a activity
   def self.find_or_create_one(academic_allocation_id, allocation_tag_id, user_id, group_id=nil, new_object=false, status=STATUS[:sent])
     if !group_id.nil? || User.find(user_id).has_profile_type_at(allocation_tag_id)
-      acu = AcademicAllocationUser.where(academic_allocation_id: academic_allocation_id, user_id: (group_id.nil? ? user_id : nil), group_assignment_id: group_id).first_or_create 
+      acu = AcademicAllocationUser.where(academic_allocation_id: academic_allocation_id, user_id: (group_id.nil? ? user_id : nil), group_assignment_id: group_id).first_or_create
+
+      acu.academic_allocation.academic_tool_type.constantize.update_previous(academic_allocation_id, user_id, acu.id) if acu.try(:created_at) == acu.try(:updated_at) && !user_id.nil?
+
       unless status.nil?
         if acu.grade.blank? && acu.working_hours.blank?
           acu.update_attributes status: status
@@ -226,12 +230,15 @@ class AcademicAllocationUser < ActiveRecord::Base
   end
 
   def delete_with_dependents
+    comments.map(&:delete_with_dependents)
+    
     case academic_allocation.academic_tool_type
     when 'Exam'
-      exam_user_attempts.map(&:delete_with_dependents)
-      self.delete
+      # do nothing
+      return true
+      # exam_user_attempts.map(&:delete_with_dependents)
+      # self.delete
     when 'Assignment'
-      assignment_comments.map(&:delete_with_dependents)
       assignment_files.map(&:delete_with_dependents)
       unless merge
         assignment_webconferences.map(&:remove_records) rescue nil
@@ -295,7 +302,7 @@ class AcademicAllocationUser < ActiveRecord::Base
   def info
     case academic_allocation.academic_tool_type
     when 'Assignment' 
-      grade, working_hours, comments = try(:grade), try(:working_hours), try(:assignment_comments)
+      grade, working_hours, comments = try(:grade), try(:working_hours), try(:comments)
     
       files = AcademicAllocationUser.find_by_sql <<-SQL
         SELECT MAX(max_date) FROM (

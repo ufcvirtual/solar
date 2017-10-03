@@ -1,12 +1,12 @@
 %h1#lightBoxDialogTitle= t(".history", chat_name: @chat_room.title)
-- if (@evaluative || @frequency)
+- if @can_evaluate
   .title-warning= raw t('chat_rooms.user_messages.evaluation_info')
 .chat_messages
   - unless @messages.empty?
     %table.tb_list{:summary=> t("chat_rooms.messages.summary")}
       %thead
         %tr.lines
-          - if (@evaluative || @frequency)
+          - if @can_evaluate || @can_comment
             %th#to_evaluate= t('.to_evaluate')
           %th#from_profile= t(".from_profile")
           %th#from_name= t(".from_name")
@@ -14,16 +14,16 @@
           %th#message= t(".message")
           %th#date= t(".date")
           %th#time_msg= t(".time")
-          - if @academic_allocation.evaluative
+          - if @can_evaluate && @academic_allocation.evaluative
             %th#grade= t('.grade')
-          - if @academic_allocation.frequency
+          - if @can_evaluate && @academic_allocation.frequency
             %th#wh= t('.wh')
       %tbody
         - @messages.each do |message|
           - user = message.user
           - name, nick = user.nil? ? ["", t(".all")] : [user.info(:name, @researcher), user.info(:nick, @researcher)]
           %tr.lines 
-            - if @evaluative || @frequency
+            - if @can_evaluate
               %td{headers: "to_evaluate" }
                 - if message.is_student == 't' && message.message_type == 1
                   = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(@chat_room, user_id: message.u_id, back:true, score_type: @score_type), class: 'btn to_evaluate_chat', :'data-tooltip'=> t('.to_evaluate'), :'aria-label' => t('.to_evaluate')+t('fancybox.open')

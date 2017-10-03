@@ -183,7 +183,7 @@ en_US:
       notification: Notification
       agenda: Agenda
       assignment: Assignment
-      assignment_comment: Assignment Comment
+      comment: Comment
       chat_room: Chat
       enrollment: Enrollment
       lesson: Lesson
@@ -205,8 +205,11 @@ en_US:
       question: Question
       question_item: Item
       question_image: Image
-      scheduleevent: Evento
+      scheduleevent: Event
       chatroom: Chat
+      notification_file: File
+      post_file: File
+      comment_file: File
     attributes:
       user:
         password: "Password"
@@ -269,11 +272,9 @@ en_US:
         attachment_file_size: "File too large. The maximum size should be up to 26MB."
         attachment_file_name: File
         academic_allocation_user_id: "Can't send file to this assignment"
-      comment_file:
-        attachment_file_size: "File too large. The maximum size should be up to 5MB."
       group_assignment:
         group_name: "Group name"
-      assignment_comment:
+      comment:
         comment: Comment
       discussion:
         name: Title
@@ -455,6 +456,22 @@ en_US:
       message:
         content: Content
         subject: Subject
+      notification_file:
+        file_file_size: Size
+        file: File
+        file_file_name: File
+      post_file:
+        attachment_file_size: Size
+        attachment: File
+        attachment_file_name: File
+      files:
+        attachment_file_size: Size
+        attachment: File
+        attachment_file_name: File
+      comment_file:
+        attachment_file_size: "File too large. The maximum size should be up to 5MB."
+        attachment: File
+        attachment_file_name: File
 
     errors:
       uniqueness: "Record already exists in the system"
@@ -1117,7 +1134,7 @@ en_US:
       new_posts: " new(s) post(s) at discussion"
       new_posts_page: "1 new post at discussion (page "
       moved_allocation: "Allocation moved to other class"
-      to_evaluate: To_evaluate
+      to_evaluate: Evaluate/Comment
       grade: '(Grade: %{grade})'
       frequency: '(Frequency: %{wh})'
       download: "Download %{file}, size %{size}"
@@ -1126,12 +1143,18 @@ en_US:
       res_post: "ª post"
       remove_attachment: Remove %{file} %{size}
       remove_post: "Post delete success"
-      draft: "Draft <a class='draft_version_explain' href='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'>(?)</a>"
+      draft: "<a class='draft_version_explain' href='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'> Draft (?)</a>"
       draft2: Explanation of the post Draft
-      fv_explain: "&nbsp;&nbsp;&nbsp;&nbsp; A draft post is visible only to the user who created it, it can be published at any time, as long as the forum is in its posting period and if the draft is an only child and the parent post is deleted, the draft will also be erased."
+      fv_explain: "<p> A draft post is visible only to the user who created it and it can be published at any time, as long as the forum still is in its posting period.</p> <p>If the draft is the only answer to a parent post and this post is deleted, the draft will also be erased.</p>"
+      fv_explain_alt: "A draft post is visible only to the user who created it and it can be published at any time, as long as the forum still is in its posting period. If the draft is the only answer to a parent post and this post is deleted, the draft will also be erased."
     create:
       created: "Post was successfully created"
       not_created: "Post was not created"
+      draft: "Draft created successfully. If it's the only answer to a post and the post parent is deleted, this post will be also deleted."
+      not_draft: "Draft was not created"
+      published: Post published successfully
+      save_post: Do you want to save your post?
+      save_draft: Do you want to save your post as draft?
     update:
       updated: "Post was successfully updated"
       not_updated: "Post was not updated"
@@ -1154,6 +1177,8 @@ en_US:
       date_range_expired: It was not possible to execute action. Date range expired.
       general_message: It was not possible to execute action
       permission: It's not possible to change or remove posts from others users
+      not_published: It was not possible to publish post
+      draft: It's not possible to reply a draft post
 
   post_files:
     new:
@@ -1258,6 +1283,9 @@ en_US:
       day_to: to
       mandatory_explain: 'Notification will show automatically after user login'
       mandatory: Mandatory reading (?)
+      add_files: 'Add files'
+      profiles: 'Profiles (?)'
+      profiles_explain: 'By selecting profiles, this notice will be available only to users with one of those profiles. If none is selected, this notice will be available to every user.'
     list:
       notifications: Notifications
       notification: Notification
@@ -1273,6 +1301,8 @@ en_US:
       mandatory: 'Yes'
       not_mandatory: 'No'
       mandatory_reading: Mandatory reading
+      files: Files
+      preview: Preview
     success:
       created: Notification was successfully created.
       updated: Notification was successfully updated.
@@ -1282,12 +1312,20 @@ en_US:
       updated: Notification wasn't updated.
       deleted: Notification wasn't deleted.
       only_general: can only be checked at general notifications
+      download: It was not possible to download file.
+      general_message: It was not possible to execute desired action.
+      ended: "can't be changed after period ending"
+      ended_file: "can't be uploaded or removeed after period ending"
+      ended_profiles: "can't be changed after period ending"
     show:
       count_groups: "%{count} groups"
       next: Next notification
       prev: Previous notification
     show_mandatory:
       read_later: Read later
+      download_file_alt: Download file %{name} which size is %{size}
+      download_file: "%{name} (%{size})"
+      files: 'Files'
   webconferences:
     form:
       new: "New Webconference"
@@ -1402,7 +1440,7 @@ en_US:
       title: List of access to webconference %{webconference_name}
       on_going: '<b> Warning: </b> This webconference is still on going, therefore this access list can be extended.'
       not_started: '<b> Warning: </b> This webconference have not started yet.'
-      evaluate: Evaluate student
+      evaluate: Evaluate/Comment
       grade: Grade
       frequency: Frequency
       finish_evaluation: Evaluate
@@ -1965,25 +2003,6 @@ en_US:
     success:
       removed: File removed successfully
       uploaded: File uploaded successfully
-  assignment_comments:
-    list:
-      new: New comment
-      title: Comments
-      confirm: Confirm to cancel comment?
-    form:
-      attach_file: Attach file
-      attached_files: Attachments
-    comment:
-      attached_files: Attachments
-      edit: Edit comment
-      remove: Remove comment
-    success:
-      new: Comment created successfully
-      edit: Comment updated successfully
-      remove: Comment removed successfully
-    error:
-      general_message: It was not possible to execute action.
-      date_range_expired: It was not possible to execute action. Date range expired.
   group_assignments:
     index:
       title: Groups management - %{name}
@@ -1991,6 +2010,7 @@ en_US:
       groups: Groups
       new: Create group
       already_evaluated: "This group was already evaluated, thus it's not possible to remove or add participants to it"
+      not_evaluated: "This group was not evaluated"
       participants: Participants
       select_a_group: Select a group
       no_participants: No participants
@@ -2213,6 +2233,7 @@ en_US:
       other_extension: "There are problems with the formatting of the given file, please import .xls or .xlsx files"
       unknown_file: "Not allowed extension"
       other_delimiter: "Incorrect CSV delimiter"
+      group_not_found: Group %{code} not found
       log:
         success: "[SUCCESSO]: CPF: %{cpf}, successfully imported"
         error: "[ERRO]: CPF: %{cpf}, %{error}"
@@ -2675,7 +2696,7 @@ en_US:
       time: Time
       no_message: No messages
       all: All
-      to_evaluate: To_evaluate
+      to_evaluate: Evaluate/Comment
       grade: Grade
       wh: Working hours
       summary: "This table contains all sent messages with the following information: Profile of who sent, who sent, whom it sent, message, date and time it was sent."
@@ -2729,6 +2750,8 @@ en_US:
   confirm_acceptance: "Confirm request acceptance?"
   confirm_cancel: 'Are you sure you want to cancel?'
   message_confirm_user: 'Are you sure?'
+  page_loading: "Page is loading..."
+
   messages:
     file_too_big: "File too big"
     mail_header: "Sent by: "
@@ -3163,6 +3186,7 @@ en_US:
       name:
         responsibles: "Responsibles [R]"
         students_and_tools: "Students/Tools [T]"
+        legends: "Subtitles [S]"
         all: "Geral View [0]"
         evaluative: 'Evaluative [1]'
         notevaluative: 'Not Evaluative [2]'
@@ -3170,6 +3194,7 @@ en_US:
       code:
         responsibles: 82
         students_and_tools: 84
+        legends: 83
         all: 96
         evaluative: 97
         notevaluative: 98
@@ -3191,9 +3216,28 @@ en_US:
       code:
         web: 87
         file: 70
+        files_title: 69
+        new_comment: 78
+        sent_assignment_title: 83
+        webconferences: 86
+        individual_assignments: 73
+        group_assignments: 71
+        public_files: 80
+        participants: 80
+        students_without_group: 83
       name:
         web: "New Webconference [W]"
         file: "Send File [F]"
+        files_title: "Enunciation's files [E]"
+        new_comment: "New comment [N]"
+        sent_assignment_title: "Files sent [S]"
+        webconferences: "Webconferences [V]"
+        individual_assignments: "Individual assignments [I]"
+        group_assignments: "Group assignments [G]"
+        public_files: "Public area [P]"
+        groups: "Groups [G]"
+        participants: "Participants [P]"
+        students_without_group: "Students without group [S]"
     message:
       code:
         new: 77
@@ -3228,6 +3272,30 @@ en_US:
       code:
         next: 39
         previous: 37
+    vertical_menu:
+      code:
+        menu_lesson: 76
+        menu_support_material: 85
+        menu_dc_lesson: 73
+        menu_discussion: 70
+        menu_portfolio: 84
+        menu_exam: 69
+        menu_score_student: 67
+        menu_chat: 65
+        menu_webconference: 87
+        menu_score_professor: 79
+        menu_program: 80
+        menu_agenda: 68
+        menu_bibliography: 66
+        menu_participants: 82
+        menu_content_edition: 78
+        menu_messages: 83
+        menu_registration: 71
+    comments:
+      name:
+        title: "Comments [C]"
+      code:
+        title: 67
 
   scores:
     index:
@@ -3244,10 +3312,10 @@ en_US:
       sent: SENT
       to_send: TS
       not_started: NSt
-      evaluated_complete: Activity evaluated
+      evaluated_complete: Evaluated activity (grade or working hours) or has a comment
       not_sent_complete: No activity sent and date range expired
       without_group_complete: Student without group
-      sent_complete: "Activity sent, but was not evaluated"
+      sent_complete: "Activity sent, but was not evaluated (no grade, working hours or comments)"
       to_send_complete: No activity sent
       not_started_complete: Activity not started
       subtitle: Subtitle
@@ -3358,6 +3426,8 @@ en_US:
       list_webconferences_not_evaluative: List not evaluative webconferences'
       final_exam: Final Exam
       hours: Maximum Working Hours
+      info_evaluation: Grade/Frequency and comments
+      comments: Comments
     situation:
       not_started: Not started
       to_answer: To answer
@@ -4362,6 +4432,15 @@ en_US:
       registration: "So you can have access to Solar 2.0, registration is mandatory. The goal of this tutorial is to answer any doubts about this procedure with all required steps and relevant information. "
       password_recovery: "After register at Solar 2.0, it may happen that you forgot your password to access or, even, your username. With the recovery password area, it's possible to generate a new password and all instructions to do so are explained at this tutorial."
       home: "After logged in at Solar 2.0, every user is redirected to environment's initial page, Home. This screen content can change accordly to it's role. However, there are many basic elements and a common structure to any profile. This tutorial aims to explain all these areas."
+      chat_edition: "Chat is a tool that allows the accomplishment of chat. Those responsible have the possibility to register and define their basic information. All the information you need to understand how chat editing works is available in this tutorial."
+      support_material_edition: "Support material is a tool that allows you to download files. Those responsible have the possibility to register and define their basic information. All the information you need to understand how editing support material works is available in this tutorial."
+      webconference_edition: "Web conferencing is a tool that allows either classes to be taught online with the interaction of the students. Those responsible have the possibility to register and define their basic information. All the information you need to understand how the edition of web conferencing works are available in this tutorial."
+      assignment_edition: "Portfolio is a tool that allows you to submit work. Those responsible have the possibility to register and define their basic information. All the information you need to understand how portfolio editing works is available in this tutorial."
+      bibliography_edition: "Bibliographies is a tool that allows those responsible to inform the bibliography of the discipline. Those responsible have the possibility to register and define their basic information. All the information you need to understand how the edition of the bibliography works is available in this tutorial."
+      discussion_edition: "Forum is a tool that allows students and teachers / tutors to make speeches about a particular topic. Those responsible have the possibility to register and define their basic information. All the information needed to understand how the forum edition works are available in this tutorial."
+      lesson_edition: "Lesson is a tool that allows students to gain fully online knowledge path is produced exclusively by teachers. Those responsible have the possibility to register and define their basic information. All the information needed to understand how the lesson edition works are available in this tutorial."
+      user_allocation_edition: "User allocation is a tool that allows the user allocation being this with a profile in certain group or offer."
+      bind_unbind_groups: "This tutorial explains and illustrates some how to link and unlink a class from a previously enrolled activity."
     files:
       math_editor: View Math Editor PDF
       evaluation: View Evaluation and frequency of activities PDF
@@ -4379,6 +4458,15 @@ en_US:
       password_recovery: View Password Recovery PDF
       registration: View Registration PDF
       home: Vew Home PDF
+      chat_edition: "View PDF about Chats edition"
+      support_material_edition: "View PDF on the edition of the Material of support"
+      webconference_edition: "View PDF about the edition of the Webconferences"
+      assignment_edition: "View PDF about the edition of the Portfolios"
+      bibliography_edition: "View PDF about the edition of Bibliographies"
+      discussion_edition: "View PDF about the edition of the Forums"
+      lesson_edition: "View PDF about the Classroom edition"
+      user_allocation_edition: "View PDF on User Allocation"
+      bind_unbind_groups: "View PDF on Linking and Unlinking Activity Class"
     new_language_pt: " (It was not possible to find this tutorial in English, see our Portuguese version)"
     new_language_en: " (It was not possible to find this tutorial in English, see our English version)"
 
@@ -4426,6 +4514,11 @@ en_US:
       t: 'Yes'
       f:  'No'
     hours: '%{hours}h'
+    error:
+      general_message: It was not possible to execute action
+    all: All
+    attached_files: Attachments
+    remove_file: Remove attachment %{name}
 
   ip_control:
     info:
@@ -4462,11 +4555,44 @@ en_US:
     how_title: How we use information
     how: "<p>Your email address may be used to receive emails sent through message tool at Solar or by other tools in order to notifications or updates such as, for example, having your exam corrected.</p><p>Your registration data and allocations may be queried and updated by administrative users, which purpose is to help on the resolution of access problems, verification of problems and/or stated situations by the user itself or others. The same data may be accessed by users with permission to do so, such as, for example, secretary profiles.</p><p>Yours course's interactions may be consulted by everyone with access to that group or users with profiles that access such data, such as, for example, secretary profiles, administrative users etc.</p><p>User's address data may be used to deliver certificates by course's responsibles.</p><p>Solar 2.0 team can access the system as the user to verify stated problems. Student's progress at course wont be compromised or changed without previous request or without posterior information about the change, except when that change is mandatory to other actions (such as registration of other users, for example). </p><p>Quantitative and qualitative data may be used for studies or to generation of reports.</p><p>Researches may have access to on going data of courses,  however user's privacy will be mantained by omiting their names.</p><p>It's possible that Solar team or administrative users access action and data saved by user, including messages. That only happen to verify problems, generation of reports or verify information. User's privacy is mantained and no data is changed.</p>"
     third_title: Sharing information with third parties applications
-    third: "<p>The following systems uses Solar API(5) or access the application itself in way that can consult user's data or write on the system. To write, user itself must be autenticated at the application or the external application must have  permission to do so:</p><ol><li>Chat: Solar 2.0 chat tool, consults user data and write chat messages sent by it at Solar;</li><li>Solar Mobilis: Solar's mobile application to Android or iOS, which allow user's login, send posts, lessons access, scores, user curriculum units/courses/groups and user's data.</li><li>SAV: Evaluation system, which sends questionaries to be answered by users to Solar and consult by user's data such as registered information, profiles, allocations and courses/curriculum units/groups/semesters.</li><li>SGA: Academic Management System, consults quantitative and qualitative data of groups, registers and allocates users and creates events at Solar.</li><li>Módulo Acadêmico:  Academic system used to UAB courses, sends user's data to Solar, which may overwrite already existing data at Solar to some CPF. Also sends information about courses, curriculum units, groups and user's allocations.</li></ol><p> We highlight that, about third party applications, only the ones autorized or applications on wich user log in, access Solar's data. These applications, until now, belong to Instituto UFC Virtual and have academic purpose.</p>"
+    third: "<p> Other academic systems developed by Instituto UFC Virtual and UFC use some data from Solar. This use is strictly associated to academic activities and it's operation is directly and restrictly associated to Instituto UFC Virtual.</p>"
     other_info_title: Additional information
     other_info: "<p>Solar may, sometimes, redirect user to external websites or browser tabs. This happens, for example, by accessing webconferences and/or it's recordings; video-tutorials; support material's or lessons's urls; footer's urls etc.</p><p>User have control on his own privacy about the use of cookies and cache(6). So he can use browser's functions such as 'anonymous navigation'(7). Using this option, is important to highlight that some functions may not work as expected, such as storage of login and password to future access by browser etc.</p><p>After, at least, 1 year after submitting an webconference assignment or a webconference lesson, it's recordings may be removed from our servers, as predicted in File Document Management System organ.</p>"
     update_title: Information update and removal
-    update: "<p> During course's offer and following each activity rules and periods, participants will have total freedom to send, update and remove information.</p><p> User can, at anytime, change it's registered data. Except when it's an UAB teatcher or student, because in this case there is integration with Módulo, in way that the user have to change it's data on that system. Users that don't fit that profiles and can't change it's data must contact atendimento@virtual.ufc.br so we can remove your bond with Módulo Acadêmico.</p><p> Login, password and email data of users with bond with Módulo Acadêmico will be changed automatically at the moment it was changed at that system. All data of user with bond to Módulo can also be changed if user itself or users with administrative profiles synchronize it's data.</p><p>In case of contact with our support team to recover password or statement of difficults or problems, support could define a random password to the user and comunicating this action. User will have total freedom to change it's password after login.</p>"
+    update: "<p> During course's offer and following each activity rules and periods, participants will have total freedom to send, update and remove information.</p><p> User can, at anytime, change it's registered data. Except when it's an UAB teatcher or student, because in this case there is integration with third party system, in way that the user have to change it's data on that system. Users that don't fit that profiles and can't change it's data must contact atendimento@virtual.ufc.br so we can remove your bond with that system.</p><p> Login, password and email data of users with bond with the application will be changed automatically at the moment it was changed at that system. All data of user with bond to the system can also be changed if user itself or users with administrative profiles synchronize it's data.</p><p>In case of contact with our support team to recover password or statement of difficults or problems, support could define a random password to the user and comunicating this action. User will have total freedom to change it's password after login.</p>"
     subtitles_title: Subtitles
     subtitles: "<ul><li>(1) IP: IP address is a way to identify some dispositive at a network.</li><li>(2) browser: Program that allow that users access and interact with html documents hosted at servers.</li><li>(3) OS: Or Operational System, is a software or a group of softwares that allow that we can use a computer in way that it manages this system resources, providing, therefore, a interface between final user and computer.</li><li>(4) Cookies: stored data at user's browser.</li><li>(5) API: Application program interface, allows that third parties applications consult or send data to Solar.</li><li>(6) cache: Technological component that allows to store some data in way that future request may happen faster.</li><li>(7) anonymous navigation: Navigation type oferede by some browsers (ex: chrome - anonymous navigation; firefox - private navigation) that allows to navigate without saving data at search history, neither saving cookies. This function doesn't hide navigation data from your internet provider service or Solar.</li></ul>"
-    last_update: Last update at august, 09 of 2017 at 10:00A.M
+    last_update: Last update at august, 31 of 2017 at 14:17P.M
+
+  comments:
+    summary:
+      title: "Comments and grades to %{user} at %{tool}"
+      grade: 'Grade: '
+      working_hours: 'Working Hours: '
+      no_grade: "<i>no grade</i>"
+      no_wh: "<i>no working hour</i>"
+      info: Grade and Frequency
+      count: "%{count} comments"
+      count_alt: "Access %{count} comments"
+      title_alt: "Access grades/working hours and comments to %{tool} (%{count} comments)"
+      title_alt2: "Access grades/working hours and comments to %{tool}"
+    list:
+      new: New comment
+      title: "Responsible's comments"
+      confirm: Confirm to cancel comment?
+    comment:
+      attached_files: Attachments
+      edit: Edit comment
+      remove: Remove comment
+      remove_attachment: Remove attachment
+    form:
+      attach_file: Attach file
+      attached_files: Attachments
+    success:
+      new: Comment created successfully
+      edit: Comment updated successfully
+      remove: Comment removed successfully
+    error:
+      general_message: It was not possible to execute action.
+      date_range_expired: It was not possible to execute action. Date range expired.
+      no_acu: Is not possible to create a comment to this student at this group.

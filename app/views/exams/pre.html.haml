@@ -86,6 +86,7 @@
           if (resp){
             location.hash = 'reload';
             location.reload();
+            window.onbeforeunload = null;
           }
           else
             return resp;
@@ -93,10 +94,11 @@
         else{ 
           location.hash = 'reload';
           location.reload();
+          window.onbeforeunload = null;
         }
       }
     });
-
+  
   });
 
   function toggle_text(link){

@@ -195,9 +195,10 @@ class WebconferencesController < ApplicationController
     @too_old    = @webconference.initial_time.to_date < Date.parse(YAML::load(File.open('config/webconference.yml'))['participant_log_date']) rescue false
 
     @can_evaluate = can? :evaluate, Webconference, {on: at_id}
+    @can_comment = can? :create, Comment, {on: [@allocation_tags]}
     acs = AcademicAllocation.where(id: academic_allocations_ids)
-    @evaluative = (acs.where(evaluative: true).size == acs.size)
-    @frequency = (acs.where(frequency: true).size == acs.size)
+    @evaluative = @can_evaluate && (acs.where(evaluative: true).size == acs.size)
+    @frequency = @can_evaluate && (acs.where(frequency: true).size == acs.size)
 
     AcademicAllocationUser.set_new_after_evaluation(at_id, @webconference.id, 'Webconference', @logs.map(&:user_id).uniq, nil, false)
 
@@ -228,13 +229,13 @@ class WebconferencesController < ApplicationController
   def user_access
     @webconference = Webconference.find(params[:id])
     begin
-      authorize! :list_access, Webconference, { on: at_id = active_tab[:url][:allocation_tag_id] || params[:at_id] || @webconference.allocation_tags.map(&:id), accepts_general_profile: true }
+      authorize! :list_access, Webconference, { on: @allocation_tag_id = active_tab[:url][:allocation_tag_id] || params[:at_id] || @webconference.allocation_tags.map(&:id), accepts_general_profile: true }
     rescue
       raise CanCan::AccessDenied unless params.include?(:user_id) && params[:user_id].to_i == current_user.id
     end
 
-    academic_allocations_ids = (@webconference.shared_between_groups ? @webconference.academic_allocations.map(&:id) : @webconference.academic_allocations.where(allocation_tag_id: at_id).first.try(:id))
-    ats = AllocationTag.where(id: at_id).map(&:related)
+    academic_allocations_ids = (@webconference.shared_between_groups ? @webconference.academic_allocations.map(&:id) : @webconference.academic_allocations.where(allocation_tag_id: @allocation_tag_id).first.try(:id))
+    ats = AllocationTag.where(id: @allocation_tag_id).map(&:related)
     @score_type = params[:score_type]
 
     @logs = @webconference.get_access(academic_allocations_ids, ats, {user_id: params[:user_id]})
@@ -243,12 +244,12 @@ class WebconferencesController < ApplicationController
     @researcher = current_user.is_researcher?(ats)
     @too_old    = @webconference.initial_time.to_date < Date.parse(YAML::load(File.open('config/webconference.yml'))['participant_log_date']) rescue false
 
-    @can_evaluate = can? :evaluate, Webconference, {on: at_id}
+    @can_evaluate = can? :evaluate, Webconference, {on: @allocation_tag_id}
     acs = AcademicAllocation.where(id: academic_allocations_ids)
     @evaluative = (acs.where(evaluative: true).size == acs.size)
     @frequency = (acs.where(frequency: true).size == acs.size)
 
-    @academic_allocation = acs.where(allocation_tag_id: at_id).first
+    @academic_allocation = acs.where(allocation_tag_id: @allocation_tag_id).first
 
     @acu = AcademicAllocationUser.find_one(@academic_allocation.id, params[:user_id],nil, false, @can_evaluate)
     

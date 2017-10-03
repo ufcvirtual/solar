@@ -257,6 +257,7 @@ class AllocationTag < ActiveRecord::Base
           FROM discussion_posts
           JOIN academic_allocations ON academic_allocations.id = discussion_posts.academic_allocation_id
           WHERE academic_allocations.allocation_tag_id IN (#{ats})
+          AND discussion_posts.draft = 'f'
           GROUP BY discussion_posts.user_id
         ) posts ON posts.user_id = users.id
         LEFT JOIN (

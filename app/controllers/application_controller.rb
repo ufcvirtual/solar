@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  before_filter :authenticate_user!, except: [:verify_cpf, :api_download, :lesson_media, :tutorials, :privacy_policy] # devise
+  before_filter :authenticate_user!, except: [:verify_cpf, :api_download, :lesson_media, :tutorials, :privacy_policy, :comment_media] # devise
   before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im, :user_support_help, :get_theme
   after_filter :log_navigation
 
@@ -202,6 +202,10 @@ class ApplicationController < ActionController::Base
 
   def get_remote_ip
     request.headers['HTTP_CLIENT_IP'] || request.remote_ip
+  end
+
+  def get_access_token
+    request.headers['APP_CLIENT_TOKEN'] || params[:access_token]
   end
 
   def client_network_ip

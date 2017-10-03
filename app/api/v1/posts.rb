@@ -18,7 +18,7 @@ module V1
         end
 
         def post_params
-          ActionController::Parameters.new(params).require(:discussion_post).permit(:content, :parent_id)
+          ActionController::Parameters.new(params).require(:discussion_post).permit(:content, :parent_id, :draft)
         end
       end
 
@@ -85,15 +85,18 @@ module V1
           requires :group_id, type: Integer, desc: 'Group ID.'
           optional :limit, type: Integer, desc: 'Posts limit.', default: Rails.application.config.items_per_page.to_i
           optional :page, type: Integer, desc: 'Page.', default: 1
+          optional :ignore_drafts, type: Boolean, default: true
         end
         get ':id/posts', rabl: 'posts/list' do
           offset = (params['page'].to_i * params['limit'].to_i) - params['limit'].to_i
           allocation_tags_ids = @group.allocation_tag.related
+          query = params[:ignore_drafts] ? '' : " OR (discussion_posts.draft = 't' AND discussion_posts.user_id = #{current_user.id})"
           @posts = @discussion.discussion_posts.select('discussion_posts.*, count(children.id) AS children_count')
                         .joins(academic_allocation: :allocation_tag)
                         .joins('LEFT JOIN discussion_posts AS children ON children.parent_id = discussion_posts.id')
                         .where('discussion_posts.parent_id IS NULL')
                         .where(allocation_tags: { id: allocation_tags_ids })
+                        .where("discussion_posts.draft = 'f' #{query}")
                         .group('discussion_posts.id')
                         .order('discussion_posts.updated_at asc')
                         .limit(params[:limit])
@@ -106,13 +109,16 @@ module V1
           requires :id, type: Integer, desc: 'Post ID.'
           optional :limit, type: Integer, default: Rails.application.config.items_per_page.to_i, desc: 'Posts limit.'
           optional :page, type: Integer, default: 1, desc: 'Page.'
+          optional :ignore_drafts, type: Boolean, default: true
         end
         get ':id/posts/:post_id/children', rabl: 'posts/list' do
           offset = (params['page'].to_i * params['limit'].to_i) - params['limit'].to_i
+          query = params[:ignore_drafts] ? '' : " OR (discussion_posts.draft = 't' AND discussion_posts.user_id = #{current_user.id})"
           @posts = Post.select('discussion_posts.*, count(children.id) AS children_count')
               .joins('LEFT JOIN discussion_posts AS children ON children.parent_id = discussion_posts.id')
               .group('discussion_posts.id')
               .where(parent_id: params[:post_id])
+              .where("discussion_posts.draft = 'f' #{query}")
               .limit(params[:limit])
               .offset(offset)
         end
@@ -120,7 +126,14 @@ module V1
 
       ## CREATE
 
-      params { requires :id, type: Integer, desc: 'Discussion ID.' }
+      params do
+        requires :id, type: Integer, desc: 'Discussion ID.'
+        requires :discussion_post, type: Hash do
+          requires :content, type: String
+          optional :parent_id, type: Integer
+          optional :draft, type: Boolean, default: false
+        end
+      end
       post ":id/posts" do
         verify_user_permission_on_discussion_and_set_obj(:create)
 
@@ -129,6 +142,7 @@ module V1
         academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: RelatedTaggable.related({ group_id: @group.id })).first
 
         @post = Post.new(post_params)
+        @post.content = CGI::escapeHTML(@post.content)
         @post.user = current_user
         @post.profile_id = @profile_id
         @post.academic_allocation_id = academic_allocation.id
@@ -137,11 +151,41 @@ module V1
         if @post.save
           { id: @post.id }
         else
-          raise @post.errors.full_messages
+          raise @post.errors.full_messages.join(', ')
         end
       end #:id/posts
 
+      namespace :post do
+        desc 'Update a post.'
+        params do
+          requires :id, type: Integer, desc: 'Post ID.'
+          requires :discussion_post, type: Hash do
+            optional :content, type: String
+            optional :draft, type: Boolean
+            at_least_one_of :content, :draft
+          end
+        end
+        put ':id' do
+          User.current = current_user
+          raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
+          
+          post = Post.find(params[:id])
+
+          raise ActiveRecord::RecordNotFound if post.blank?
+          raise CanCan::AccessDenied if (post.user_id != current_user.id)
+          raise CanCan::AccessDenied unless post.discussion.user_can_interact?(current_user.id)
+
+          post_params[:content] = CGI::escapeHTML(post_params[:content]) unless post_params[:content].blank?
+
+          if post.update_attributes post_params
+            { id: post.id }
+          else
+            raise post.errors.full_messages.join(', ')
+          end
+        end
+      end # namespace post
     end # namespace discussions
+
 
     namespace :posts do
 
@@ -196,6 +240,7 @@ module V1
         pfile.destroy
       end
 
-    end
-  end # namespace posts
+    end # namespace posts
+
+  end
 end

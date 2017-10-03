@@ -20,18 +20,18 @@
               %th#student_responsible= t(".responsible")
               %th#profile= t(".profiles")
               %th#public_files= t(".public_files")
-              %th.participation= t(".participation")
-              %th.participation= t(".sent_messages")
-              %th.access_history= t(".access_to_the_course")
+              %th#participations.participation= t(".participation")
+              %th#sent_messages.participation= t(".sent_messages")
+              %th#access_to_the_course.access_history= t(".access_to_the_course")
           %tbody
             - @responsibles.each do |responsible|
               %tr.lines
-                %td.td_student{'data-tooltip' => responsible.name}= link_to responsible.name, user_info_scores_path(responsible.id)
-                %td= responsible.profile_name
-                %td= responsible.u_public_files
-                %td= responsible.u_posts
-                %td= responsible.u_sent_msgs
-                %td= responsible.u_logs
+                %td.td_student{'data-tooltip' => responsible.name, headers: "student_responsible"}= link_to responsible.name, user_info_scores_path(responsible.id)
+                %td{headers: "profile"}= responsible.profile_name
+                %td{headers: "public_files"}= responsible.u_public_files
+                %td{headers: "participations"}= responsible.u_posts
+                %td{headers: "sent_messages"}= responsible.u_sent_msgs
+                %td{headers: "access_to_the_course"}= responsible.u_logs
     - else
       .block_content_text_list.text_none= t(".no_responsible")
 
@@ -53,29 +53,30 @@
   .tb_list_students
     = render partial: 'general'
 
-%div.legend
-  = t(".subtitle")
-#scores_notes.legend_score_footer
-  .evaluated
-    = t(".evaluated")
-    = t(".evaluated_complete")
-  .not_sent
-    = t(".not_sent")
-    = t(".not_sent_complete")
-  .without_group
-    = t(".without_group")
-    = t(".without_group_complete")
-  .sent
-    = t(".sent")
-    = t(".sent_complete")
-  .to_send
-    = t(".to_send")
-    = t(".to_send_complete")
-  .not_started
-    = t(".not_started")
-    = t(".not_started_complete")
-  %table
-    %td.new_after_evaluation
-      = t(".new_after_evaluation")
+%div{:'data-shortcut'=> t("shortcut.evaluatives.code.legends"), :'data-shortcut-name'=> t("shortcut.evaluatives.name.legends"), :'data-shortcut-focus' => 'true'}
+  .legend
+    = t(".subtitle")
+  %ul#scores_notes.legend_score_footer
+    %li.evaluated
+      %abbr{tiltle: t(".evaluated_complete")}= t(".evaluated")
+      = t(".evaluated_complete")
+    %li.not_sent
+      %abbr{tiltle: t(".not_sent_complete")}= t(".not_sent")
+      = t(".not_sent_complete")
+    %li.without_group
+      %abbr{tiltle: t(".without_group_complete")}= t(".without_group")
+      = t(".without_group_complete")
+    %li.sent
+      %abbr{tiltle: t(".sent_complete")}= t(".sent")
+      = t(".sent_complete")
+    %li.to_send
+      %abbr{tiltle: t(".to_send_complete")}= t(".to_send")
+      = t(".to_send_complete")
+    %li.not_started
+      %abbr{tiltle: t(".not_started_complete")}= t(".not_started")
+      = t(".not_started_complete")
+    %table
+      %td.new_after_evaluation
+        = t(".new_after_evaluation")
 
 = javascript_include_tag 'scores'

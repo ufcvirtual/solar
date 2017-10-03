@@ -10,10 +10,6 @@ class AccessControlController < ApplicationController
       current_path_split = request.env['PATH_INFO'].split('/') #ex: /media/assignment/public_area/20_crimescene.png => ["", "media", "assignment", "public_area", "20_crimescene.png"]
 
       case current_path_split[current_path_split.size-2] #ex: ["", "media", "assignment", "public_area", "20_crimescene.png"] => public_area
-        when 'comments' # arquivo de um comentário
-          file = CommentFile.find(file_id)
-          acu = file.assignment_comment.academic_allocation_user
-          allocation_tags = acu.academic_allocation.allocation_tag_id
         when 'sent_assignment_files' # arquivo enviado pelo aluno/grupo
           file = AssignmentFile.find(file_id)
           acu  = file.academic_allocation_user
@@ -30,7 +26,7 @@ class AccessControlController < ApplicationController
 
       if can_access.nil?
         is_observer_or_responsible = AllocationTag.find(active_tab[:url][:allocation_tag_id] || allocation_tags).is_observer_or_responsible?(current_user.id)
-        can_access = (( acu.user_id.to_i == current_user.id || (!(acu.group.nil?) && acu.group.user_in_group?(current_user.id)) ) || is_observer_or_responsible) 
+        can_access = (( acu.user_id.to_i == current_user.id || (!(acu.group_assignment.nil?) && acu.group_assignment.user_in_group?(current_user.id)) ) || is_observer_or_responsible) 
       end
 
       if can_access
@@ -43,15 +39,47 @@ class AccessControlController < ApplicationController
     end
   end
 
+  def comment_media
+    guard_with_access_token_or_authenticate
+
+    file = CommentFile.find(params[:file].split('_')[0])
+    acu = file.comment.academic_allocation_user
+    user_id = current_user.try(:id) || User.current.id
+
+    is_observer_or_responsible = acu.allocation_tag.is_observer_or_responsible?(user_id)
+
+    unless acu.user_id == user_id || is_observer_or_responsible
+      raise CanCan::AccessDenied unless (acu.academic_allocation.academic_tool_type == 'Assignment' && !acu.group_assignment.blank? && acu.group_assignment.user_in_group?(user_id))
+    end
+
+    send_file(file.attachment.path, { disposition: 'inline', type: return_type(params[:extension] || file.attachment.path.split('.').last)})
+  rescue 
+    raise CanCan::AccessDenied
+  end
+
   def bibliography
     get_file(Bibliography, 'bibliography')
   end
 
   def support_material
     unless Exam.verify_blocking_content(current_user.id)
-      get_file(SupportMaterialFile, 'support_material_files')
+      file = SupportMaterialFile.find(params[:path].split('_')[0])
+      if file.is_file?
+        file_path = File.join(SupportMaterialFile::FILES_PATH, [params[:path], '.', file.name.split('.').last ].join)
+        File.exist?(file_path) ? send_file(file_path, disposition: 'inline') : render(nothing: true) 
+
+      else
+        path = file.path(true)
+        params[:extension] = path.split('.').last if params[:extension].nil?
+        send_file(path, { disposition: 'inline', type: return_type(params[:extension]) })
+      end 
+      
     end  
-  end
+  end 
+
+  def support_material_file
+    get_file(SupportMaterialFile, 'support_material_files')
+  end 
 
   def question_image 
     question = QuestionImage.find(params[:file].split('_')[0]).question
@@ -103,11 +131,10 @@ class AccessControlController < ApplicationController
     guard_with_access_token_or_authenticate
 
     unless (user_session[:blocking_content] rescue @user_session_exam)
-      lessons = [lesson  = Lesson.find(params[:id])]
+      lessons = [lesson = Lesson.find(params[:id])]
 
       if user_session.nil? && !@user_session_exam.nil?
-        ats = RelatedTaggable.related(group_id: params[:group_id])
-        raise CanCan::AccessDenied if User.current.profiles_with_access_on(:show, :lessons, ats).empty?
+        raise CanCan::AccessDenied if User.current.profiles_with_access_on(:show, :lessons, lesson.allocation_tags.map(&:related)).empty? # verify if user can access that lesson
       elsif user_session[:lessons].include?(params[:id])
         lessons << lesson.imported_to
         verify(lessons.flatten.map(&:allocation_tags).flatten.map(&:id).flatten.compact, Lesson, :show, true, true)
@@ -161,8 +188,8 @@ class AccessControlController < ApplicationController
     end
 
     def guard_with_access_token_or_authenticate
-      if params[:access_token].present?
-        access_token = Doorkeeper::AccessToken.authenticate(params[:access_token])
+      unless get_access_token.blank? || !user_session.blank?
+        access_token = Doorkeeper::AccessToken.authenticate(get_access_token)
         case Oauth2::AccessTokenValidationService.validate(access_token, scopes: [])
         when Oauth2::AccessTokenValidationService::INSUFFICIENT_SCOPE
           Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for access_token permission - INSUFFICIENT_SCOPE"
@@ -185,7 +212,6 @@ class AccessControlController < ApplicationController
         authenticate_user!
         user_session[:blocking_content] = Exam.verify_blocking_content(current_user.try(:id) || User.current.try(:id)) if user_session[:blocking_content].blank?
       end
-      
     end
 
 end

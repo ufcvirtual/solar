@@ -14,8 +14,7 @@
           %th.center{style: "width: 10%;", id: "evaluative"}= t(:evaluative, scope: [:scores, :index])
           %th.center{style: "width: 2%;", id: "frequency"}= t(:frequency, scope: [:scores, :info])
           - if @is_student
-            %th.center{style: "width: 2%;", id: "grade"}= t(:grade, scope: [:scores, :info])
-            %th.center{style: "width: 2%;", id: "workload"}= t(:workload, scope: [:scores, :info])
+            %th.center{style: "width: 2%;", id: 'summary'}=t(:info_evaluation, scope: [:scores, :info])
 
       %tbody
         - @discussions.each do |discussion|
@@ -63,13 +62,12 @@
             %td.center{headers: 'evaluative' }=raw (discussion.final_exam ? t(discussion.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(discussion.evaluative, scope: [:scores, :info]))
             %td.center{headers: 'frequency' }= raw t(discussion.frequency, scope: [:common_between_pages, :frequency], hours: discussion.max_working_hours)
             - if @is_student
-              %td.center{headers: 'grade' }= discussion.grade
-              %td.center{headers: 'workload' }= discussion.working_hours
-
+              %td.center{headers: 'summary'}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_discussions_path(ac_id: discussion.id, tool_id: discussion.academic_tool_id), class: "btn #{discussion.has_info == 't' ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt', tool: discussion.name, count: discussion.count_comments), :'aria-label' => t('comments.summary.title_alt', tool: discussion.name, count: discussion.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+              
   - else
     .block_content.block_content_text= t(:forum_message)
 
-= javascript_include_tag "contextual_help/discussion"
+= javascript_include_tag "contextual_help/discussion", 'academic_allocation_user'
 
 :javascript
 

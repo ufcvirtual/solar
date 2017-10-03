@@ -91,15 +91,16 @@ class Assignment < Event
 
     info = academic_allocation.academic_allocation_users.where(params).first.try(:info) || { has_files: false, file_sent_date: ' - ' }
 
-   { situation: situation(info[:has_files], !group_id.nil?, info[:grade]), has_comments: (!info[:comments].nil? && info[:comments].any?), group_id: group_id }.merge(info)
+    comments = (!info[:comments].nil? && info[:comments].any?)
+   { situation: situation(info[:has_files], !group_id.nil?, info[:grade], info[:working_hours], comments), has_comments: comments, group_id: group_id }.merge(info)
 
   end
 
-  def situation(has_files, has_group, grade = nil)
+  def situation(has_files, has_group, grade = nil, working_hours = nil, has_comments=[])
     case
     when !started? then 'not_started'
     when (self.type_assignment == Assignment_Type_Group && !has_group) then 'without_group'
-    when !grade.nil? then 'corrected'
+    when !grade.blank? || !working_hours.blank? || has_comments then 'corrected'
     when has_files then 'sent'
     when on_going? then 'to_be_sent'
     when ended? then 'not_sent'

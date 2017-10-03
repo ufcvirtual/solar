@@ -11,5 +11,12 @@
       .group_label.invisible= render "groups/groups_tags", groups: notification.groups, tool: notification, all_groups: all_groups, paths: {add: add_group_to_notifications_path(id: "param_id", tool_id: notification.id), remove: remove_group_from_notifications_path(id: "param_id", tool_id: notification.id), unbind: unbind_group_from_notifications_path(id: "param_id", tool_id: notification.id), tags: group_tags_from_notifications_path(tool_id: notification.id)}
   %td{style: 'text-align:center;'}= notification.period
   %td{style: 'text-align:center;'}= notification.mandatory_reading ? t('notifications.list.mandatory') : t('notifications.list.not_mandatory')
+  %td{style: 'text-align:center;'}= notification.notification_files.count
+  %td{style: 'text-align:center;'}= link_to content_tag(:i, nil, class: 'icon-eye'), notification_path(notification), class: 'preview'
 
 = javascript_include_tag 'groups_tags'
+
+:javascript
+  $(function(){
+     $('.preview').call_fancybox();
+  });

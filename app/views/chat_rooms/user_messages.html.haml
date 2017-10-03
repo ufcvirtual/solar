@@ -18,6 +18,9 @@
   - else
     .block_content_text_list.text_none= t(".no_posts")
 
+  .comments
+    = render partial: 'comments/list', locals: { comments: @acu.try(:comments), tool: @chat_room, tool_type: 'ChatRoom' }
+
   - if @evaluative || @frequency
     = simple_form_for :academic_allocation_user, url: evaluate_chat_room_path(@chat_room), html: { method: :put, id: 'academic_allocation_user_grade_form' } do |f|
       = f.input :user_id, as: :hidden, input_html: { value: @user.id }
@@ -27,9 +30,10 @@
           = f.input :grade, required: true, as: :float, :step => 0.01, label: t(".grade"), input_html: { value: @acu.try(:grade), min:0, max:10 } if @academic_allocation.evaluative
           = f.input :working_hours, required: true, as: :float, label: t(".frequency"), input_html: { value: @acu.try(:working_hours), min:0, max: @academic_allocation.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@academic_allocation.max_working_hours.to_s ) } if @academic_allocation.frequency
           
-          - if @back
-            = link_to t(:back), messages_chat_room_path(@chat_room), class: 'btn back_chat_history'
           = link_to_function t(:save), 'finish_evaluation(this)', class: 'btn btn_main'
+
+  - if @back
+    = link_to t(:back), messages_chat_room_path(@chat_room), class: 'btn back_chat_history'
 
 
 :javascript

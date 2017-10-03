@@ -19,7 +19,10 @@
         - if show_fields
           %td= @schedule_event.place
 
-  - if @ac.evaluative || @ac.frequency
+  .comments
+    = render partial: 'comments/list', locals: { comments: @acu.try(:comments), tool: @schedule_event, tool_type: 'ScheduleEvent' }
+
+  - if @can_evaluate && (@ac.evaluative || @ac.frequency)
     = simple_form_for :academic_allocation_user, url: evaluate_schedule_event_path(@schedule_event), html: { method: :put } do |f|
       = f.input :user_id, as: :hidden, input_html: { value: @user.id }
       = f.input :score_type, as: :hidden,  input_html: { value: @score_type }

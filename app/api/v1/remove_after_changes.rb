@@ -180,6 +180,8 @@ module V1
           desc "Edição de evento"
           params do
             requires :id, type: Integer, desc: "Event ID."
+            requires :Turmas, type: Array
+            requires :CodigoCurso, :CodigoDisciplina, :Periodo, type: String
             requires :Data, :HoraInicio, :HoraFim
           end
           put "/:id" do
@@ -187,13 +189,32 @@ module V1
               event = ScheduleEvent.find(params[:id])
 
               ActiveRecord::Base.transaction do
-                start_hour, end_hour = params[:HoraInicio].split(":"), params[:HoraFim].split(":")
-                event.schedule.update_attributes! start_date: params[:Data], end_date: params[:Data]
-                event.api = true
-                event.update_attributes! start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":")
-              end
+                # if editing all groups of event (when size is not one)
+                if event.academic_allocations.size == params[:Turmas].size && params[:Turmas].size > 1
+                  start_hour, end_hour = params[:HoraInicio].split(":"), params[:HoraFim].split(":")
+                  event.schedule.update_attributes! start_date: params[:Data], end_date: params[:Data]
+                  event.api = true
+                  # just update event
+                  event.update_attributes! start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":")
 
-              { ok: :ok }
+                  {id: event.id}
+                else
+                  # if editing less than all groups
+                  offer = get_offer(params[:CodigoDisciplina], params[:CodigoCurso], params[:Periodo])
+                  all_groups = event.academic_allocations.size == params[:Turmas].size
+                  # create a new event or find one that already exists
+                  group_events = create_event({event: {date: params[:Data], start: params[:HoraInicio], end: params[:HoraFim], title: event.title, type_event: event.type_event}, groups: params[:Turmas]}, offer.allocation_tag.related, offer, event)
+
+                  # if event found is not the same of the request
+                  if group_events.first[:id] != event.id && all_groups
+                    # remove event if last group or remove group ac 
+                    event.api = true
+                    event.destroy
+                  end
+
+                  {id: group_events.first[:id]}
+                end
+              end
             end
           end # put :id
 
@@ -212,13 +233,11 @@ module V1
           end
           post "/" do
             group_events = []
-            
+        
             begin
               ActiveRecord::Base.transaction do
                 offer = get_offer(params[:CodigoDisciplina], params[:CodigoCurso], params[:Periodo])
-                params[:Turmas].each do |code|
-                  group_events << create_event1(get_offer_group(offer, code), params[:DataInserida])
-                end
+                group_events = create_event({event: {date: params[:DataInserida][:Data], type: params[:DataInserida][:Tipo], start: params[:DataInserida][:HoraInicio], end: params[:DataInserida][:HoraFim]}, groups: params[:Turmas]}, offer.allocation_tag.related, offer)
               end
 
               group_events
@@ -227,13 +246,29 @@ module V1
           end # /
 
           desc "Remoção de um ou mais eventos"
-          params { requires :ids, type: String, desc: "Events IDs." }
+          params do
+            requires :ids, type: String, desc: "Events IDs."
+            requires :Turmas, type: Array
+            requires :CodigoCurso, :CodigoDisciplina, :Periodo, type: String
+          end
           delete "/:ids" do
             begin
               ScheduleEvent.transaction do
-                ScheduleEvent.where(id: params[:ids].split(",")).each do |event|
-                  event.api = true
-                  raise event.errors.full_messages unless event.destroy
+                offer = get_offer(params[:CodigoDisciplina], params[:CodigoCurso], params[:Periodo])
+                events = ScheduleEvent.where(id: params[:ids].split(","))
+
+                params[:Turmas].each do |code|
+                  group = get_offer_group(offer, code)
+                  group_at = group.allocation_tag.id
+
+                  events.each do |event|
+                    if event.academic_allocations.size > 1 || event.academic_allocations.first.allocation_tag_id != group_at
+                      event.academic_allocations.where(allocation_tag_id: group_at).destroy_all
+                    else
+                      event.api = true
+                      raise event.errors.full_messages unless event.destroy
+                    end
+                  end
                 end
               end
 

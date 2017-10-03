@@ -41,8 +41,8 @@
 %section.assignment_files.files
   = render partial: 'files', locals: { files: @assignment.try(:enunciation_files) }
 
-%section.assignment_comments
-  = render partial: 'assignment_comments/list', locals: { comments: @acu.try(:assignment_comments) }
+%section.comments
+  = render partial: 'comments/list', locals: { comments: @acu.try(:comments), tool: @assignment, tool_type: 'Assignment' }
 
 %section.student_files.files
   = render partial: 'assignment_files/list', locals: { files: @acu.try(:assignment_files), disabled: false }

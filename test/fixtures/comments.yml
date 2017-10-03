@@ -1,0 +1,43 @@
+ac1:
+  id: 1
+  academic_allocation_user_id: 3
+  user_id: 1 # user1
+  comment: "comentario 1"
+
+ac2:
+  id: 2
+  academic_allocation_user_id: 5 # quimica I - Atividade em campo III - sa3
+  user_id: 6 # professor
+  comment: "comentario 2"
+
+ac3:
+  id: 3
+  academic_allocation_user_id: 6 #sa4
+  user_id: 7 # professor2
+  comment: "comentario 3"
+
+ac4:
+  id: 4
+  academic_allocation_user_id: 6 #sa4
+  user_id: 11 # tutor distância
+  comment: "comentario 4"
+
+ac5:
+  id: 5
+  academic_allocation_user_id: 8 # sa6
+  user_id: 6 # professor
+  comment: "comentario 5"
+
+# comentario do professor para um trabalho de uma oferta concluida
+
+ac6:
+  id: 6
+  academic_allocation_user_id: 10 # sa8
+  user_id: 6 # professor
+  comment: "comentario 1"
+
+ac8:
+  id: 8
+  academic_allocation_user_id: 9
+  user_id: 6 # professor
+  comment: "comentario 1"

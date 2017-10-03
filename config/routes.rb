@@ -156,6 +156,7 @@ Solar::Application.routes.draw do
       put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: "remove", tool_type: "Discussion", as: :remove_group_from
       put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: "add"   , tool_type: "Discussion", as: :add_group_to
       get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: "Discussion", as: :group_tags_from
+      get :summary , to: 'academic_allocation_users#summary', tool: 'Discussion'
     end
     put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Discussion', as: :evaluate, on: :member
     resources :posts, except: [:new, :edit] do
@@ -170,6 +171,7 @@ Solar::Application.routes.draw do
   resources :posts, only: [:index] do
     member do
       get :to_evaluate , to: 'posts#index', as: :evaluate
+      put :publish
     end
     resources :post_files, only: [:new, :create, :destroy, :download] do
       get :download, on: :member
@@ -391,11 +393,15 @@ Solar::Application.routes.draw do
       put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: "remove", tool_type: "Assignment", as: :remove_group_from
       put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: "add"   , tool_type: "Assignment", as: :add_group_to
       get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: "Assignment", as: :group_tags_from
+      get :summary , to: 'academic_allocation_users#summary', tool: 'Assignment'
     end
   end
 
-  resources :assignment_comments do
-    get :download, on: :collection
+  resources :comments, except: [:index] do
+    collection do
+      get :download
+      get :summary, to: 'academic_allocation_users#summary'
+    end
   end
 
   resources :assignment_files do
@@ -436,6 +442,7 @@ Solar::Application.routes.draw do
       put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: "remove", tool_type: "ChatRoom", as: :remove_group_from
       put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: "add"   , tool_type: "ChatRoom", as: :add_group_to
       get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: "ChatRoom", as: :group_tags_from
+      get :summary , to: 'academic_allocation_users#summary', tool: 'ChatRoom'
     end
 
     member do
@@ -479,6 +486,7 @@ Solar::Application.routes.draw do
       get :evaluate_user
       put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'ScheduleEvent', as: :evaluate
     end
+    get :summary , to: 'academic_allocation_users#summary', tool: 'ScheduleEvent', on: :collection
   end
 
   resources :messages, only: [:new, :show, :create, :index] do
@@ -517,6 +525,7 @@ Solar::Application.routes.draw do
   resources :support_material_files do
     collection do
       get :list
+      get :open
       get "at/:allocation_tag_id/download", to: :download, type: :all, as: :download_all
       get "at/:allocation_tag_id/folder/:folder/download", to: :download, type: :folder, as: :download_folder
       get "at/download", to: :download, type: :all, as: :download_all
@@ -561,6 +570,8 @@ Solar::Application.routes.draw do
       put ':tool_id/remove/group/:id' , to: 'groups#change_tool', type: 'remove', tool_type: 'Notification', as: :remove_group_from
       put ':tool_id/add/group/:id'    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Notification', as: :add_group_to
       get ':tool_id/group/tags'       , to: 'groups#tags'                       , tool_type: 'Notification', as: :group_tags_from
+
+      get '/file/:id/download', to: 'notifications#file_download', as: :download_file
     end
 
     put :read_later, on: :member
@@ -577,6 +588,7 @@ Solar::Application.routes.draw do
       put ':tool_id/remove/group/:id' , to: 'groups#change_tool', type: 'remove', tool_type: 'Webconference', as: :remove_group_from
       put ':tool_id/add/group/:id'    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Webconference', as: :add_group_to
       get ':tool_id/group/tags'       , to: 'groups#tags'                       , tool_type: 'Webconference', as: :group_tags_from
+      get :summary , to: 'academic_allocation_users#summary', tool: 'Webconference'
     end
 
     member do
@@ -689,7 +701,7 @@ Solar::Application.routes.draw do
   get '/media/users/:user_id/photos/:style.:extension', to: 'access_control#users'
 
   get '/media/assignment/sent_assignment_files/:file.:extension', to: 'access_control#assignment'
-  get '/media/assignment/comments/:file.:extension',    to: 'access_control#assignment'
+  get '/media/assignment/comments/:file(.:extension)',    to: 'access_control#comment_media'
   get '/media/assignment/public_area/:file.:extension', to: 'access_control#assignment'
   get '/media/assignment/enunciation/:file.:extension', to: 'access_control#assignment'
 
@@ -697,6 +709,8 @@ Solar::Application.routes.draw do
   get '/media/support_material_files/:file.:extension', to: 'access_control#support_material_file'
   get "/media/messages/:file.:extension", to: "access_control#message"
   # get "/media/discussions/post/:file.:extension", to: "access_control#post"
+  get '/media/support_material_files/*path',    to: 'access_control#support_material'
+
 
   get '/media/questions/images/:file.:extension', to: 'access_control#question_image'
   get '/media/questions/items/:file.:extension', to: 'access_control#question_item'

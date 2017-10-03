@@ -386,7 +386,7 @@ class User < ActiveRecord::Base
   ## import users from csv file ##
   ################################
 
-  def self.import(file)
+  def self.import(file, ats=nil)
 
     raise I18n.t(:invalid_file, scope: [:administrations, :import_users]) if (File.extname(file.original_filename) == '.csv')
 
@@ -412,13 +412,16 @@ class User < ActiveRecord::Base
 
       user_exist = where(cpf: cpf).first
       user = user_exist.nil? ? new(cpf: cpf) : user_exist
-      user_data = User.connect_and_import_user(cpf) # try to import
-      user.synchronize(user_data) # synchronize user with new MA data
+      if (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO['integrated'])
+        user_data = User.connect_and_import_user(cpf) # try to import
+        user.synchronize(user_data) # synchronize user with new MA data
+      end
       
       blacklist = UserBlacklist.where(cpf: user.cpf).first_or_initialize
       blacklist.name = (user.try(:name) || row['Nome']) if blacklist.new_record?
       can_add_to_blacklist = blacklist.valid? || !blacklist.new_record?
       new_password         = nil
+      group = Group.joins(:allocation_tag).where(allocation_tags: {id: ats}).where("lower(code) = ?", row['Turma'].downcase).first if (row.include?('Turma') && !row['Turma'].blank? && !ats.blank?)
 
       if !user.integrated || can_add_to_blacklist
         blacklist.save if blacklist.new_record? && user.integrated && can_add_to_blacklist
@@ -447,7 +450,7 @@ class User < ActiveRecord::Base
 
       if user.save
         log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
-        imported << user
+        imported << {user: user, group: group, group_name: row['Turma']}
         user.notify_user(new_password)
       else
         if user.errors[:username].blank? || (user.integrated && !can_add_to_blacklist) # if no error with username happens or cant unbind user from modulo
@@ -462,7 +465,7 @@ class User < ActiveRecord::Base
 
           if user.save
             log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
-            imported << user
+            imported << {user: user, group: group, group_name: row['Turma']}
             user.notify_user(new_password)
 
           elsif user.errors[:email].first == I18n.t('users.errors.ma.already_exists') || user.errors[:username].first == I18n.t('users.errors.ma.already_exists') # if still have errors with MA
@@ -470,7 +473,7 @@ class User < ActiveRecord::Base
 
             if user.save
               log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
-              imported << user
+              imported << {user: user, group: group, group_name: row['Turma']}
 
               blacklist = UserBlacklist.where(cpf: user.cpf).first_or_initialize # add again to blacklist
               blacklist.name = user.name
