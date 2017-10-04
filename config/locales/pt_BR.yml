@@ -3377,6 +3377,7 @@ pt_BR:
 
   shortcut:
     shortcut_link: "Abrir menu de atalhos [4]"
+    shortcut_menu_title: "Atalhos do Teclado"
     no_shortcuts: "Sem atalhos"
     close: "Fechar"
     curricular_unit:
@@ -3519,6 +3520,41 @@ pt_BR:
         next: 39
         previous: 37
     vertical_menu:
+      name:
+        menu_lesson: "Aulas"
+        menu_lesson_key: "Shift + A"
+        menu_support_material: "Material de Apoio"
+        menu_support_material_key: "Shift + M"
+        menu_dc_lesson: "Digital Class"
+        menu_dc_lesson_key: "Shift + L"
+        menu_discussion: "Fórum"
+        menu_discussion_key: "Shift + F"
+        menu_portfolio: "Portfolio"
+        menu_portfolio_key: "Shift + T"
+        menu_exam: "Prova"
+        menu_exam_key: "Shift + P"
+        menu_score_student: "Acompanhamento"
+        menu_score_student_key: "Shift + O"
+        menu_chat: "Chat"
+        menu_chat_key: "Shift + C"
+        menu_webconference: "Webconferência"
+        menu_webconference_key: "Shift + W"
+        menu_score_professor: "Acompanhamento do Professor"
+        menu_score_professor_key: "Shift + H"
+        menu_program: "Programa"
+        menu_program_key: "Shift + R"
+        menu_agenda: "Agenda"
+        menu_agenda_key: "Shift + G"
+        menu_bibliography: "Bibliografia"
+        menu_bibliography_key: "Shift + B"
+        menu_participants: "Participantes"
+        menu_participants_key: "Shift + E"
+        menu_content_edition: "Conteúdo"
+        menu_content_edition_key: "Shift + D"
+        menu_messages: "Mensagens"
+        menu_messages_key: "Shift + N"
+        menu_registration: "Matrícula"
+        menu_registration_key: "Shift + U"
       code:
         menu_lesson: 65
         menu_support_material: 77

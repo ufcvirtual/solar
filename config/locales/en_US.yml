@@ -3131,6 +3131,7 @@ en_US:
 
   shortcut:
     shortcut_link: "Open shortcut menu [4]"
+    shortcut_menu_title: "Keyboard Shortcuts"
     no_shortcuts: "No shortcuts"
     close: "Close"
     curricular_unit:
@@ -3273,6 +3274,41 @@ en_US:
         next: 39
         previous: 37
     vertical_menu:
+      name:
+        menu_lesson: "Lessons"
+        menu_lesson_key: "Shift + L"
+        menu_support_material: "Support Material"
+        menu_support_material_key: "Shift + U"
+        menu_dc_lesson: "Digital Class"
+        menu_dc_lesson_key: "Shift + I"
+        menu_discussion: "Discussions"
+        menu_discussion_key: "Shift + F"
+        menu_portfolio: "Portfolio"
+        menu_portfolio_key: "Shift + T"
+        menu_exam: "Tests"
+        menu_exam_key: "Shift + E"
+        menu_score_student: "Scores"
+        menu_score_student_key: "Shift + C"
+        menu_chat: "Chat"
+        menu_chat_key: "Shift + A"
+        menu_webconference: "Webconference"
+        menu_webconference_key: "Shift + W"
+        menu_score_professor: "Teacher Score"
+        menu_score_professor_key: "Shift + O"
+        menu_program: "Program"
+        menu_program_key: "Shift + P"
+        menu_agenda: "Agenda"
+        menu_agenda_key: "Shift + D"
+        menu_bibliography: "Bibliography"
+        menu_bibliography_key: "Shift + B"
+        menu_participants: "Participants"
+        menu_participants_key: "Shift + R"
+        menu_content_edition: "Content"
+        menu_content_edition_key: "Shift + N"
+        menu_messages: "Messages"
+        menu_messages_key: "Shift + S"
+        menu_registration: "Registration"
+        menu_registration_key: "Shift + G"
       code:
         menu_lesson: 76
         menu_support_material: 85

@@ -1,0 +1,72 @@
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Enable scroll if needed */
+  background-color: $color_black;
+  background-color: rgba($color_black ,0.4);
+}
+
+.modal-header {
+  background-color: #908674;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  margin-left: -20px;
+  margin-top: -20px;
+}
+
+.modal-header h2 {
+  color: $color_white;
+}
+
+
+.modal-content {
+  background-color: #f3f3f3;
+  margin: 15% auto;
+  padding: 20px;
+  width: 60%;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 25px;
+}
+
+.divider {
+  border-right: 1px solid $contacts_list_border_color;
+  width: 5%;
+}
+
+.flex-item span {
+  float: right;
+  border: 1px solid $language_border_color;
+  background-color: $color_white;
+  border-radius: 2px;
+  padding: 3px 6px;
+}
+
+.flex-item {
+  width: 40%;
+  font-size: 10pt;
+}
+
+/* The Close Button */
+.close {
+  color: $color_white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: invert($color_white);
+  text-decoration: none;
+  cursor: pointer;
+}
