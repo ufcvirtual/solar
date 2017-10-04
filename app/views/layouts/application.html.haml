@@ -183,6 +183,66 @@
             %ul.choice-language-menu
               %li{class: "language pt_BR #{(selected == locales.first) ? 'selected' : ''}"}= link_to 'Português (BR)', url_for(locale: locales.first)
               %li{class: "language en_US #{(selected == locales.last) ? 'selected' : ''}"}= link_to 'English (USA)', url_for(locale: locales.last)
+    %div{id: 'myModal', class: 'modal'}
+      %div{class: 'modal-content'}
+        %header{class: 'modal-header'}
+          %a{href: "#", class: 'close', title: t("shortcut.close"), :'aria-label' => t("shortcut.close")} &times;
+          %h2{class: 'block_title'}= t('shortcut.shortcut_menu_title')
+        %article{class: 'block_content_text flex-container'}
+          %div{class: 'flex-item'}
+            %p
+              = t('shortcut.vertical_menu.name.menu_lesson')
+              %span= t('shortcut.vertical_menu.name.menu_lesson_key')
+            %p
+              = t('shortcut.vertical_menu.name.menu_support_material')
+              %span= t('shortcut.vertical_menu.name.menu_support_material_key')
+            %p
+              = t('shortcut.vertical_menu.name.menu_dc_lesson')
+              %span= t('shortcut.vertical_menu.name.menu_dc_lesson_key')
+            %p
+              = t('shortcut.vertical_menu.name.menu_discussion')
+              %span= t('shortcut.vertical_menu.name.menu_discussion_key')
+            %p
+              = t('shortcut.vertical_menu.name.menu_portfolio')
+              %span= t('shortcut.vertical_menu.name.menu_portfolio_key')
+            %p
+              = t('shortcut.vertical_menu.name.menu_exam')
+              %span= t('shortcut.vertical_menu.name.menu_exam_key')
+            %p
+              = t('shortcut.vertical_menu.name.menu_score_student')
+              %span= t('shortcut.vertical_menu.name.menu_score_student_key')
+            %p
+              = t('shortcut.vertical_menu.name.menu_chat')
+              %span= t('shortcut.vertical_menu.name.menu_chat_key')
+            %p
+              = t('shortcut.vertical_menu.name.menu_webconference')
+              %span= t('shortcut.vertical_menu.name.menu_webconference_key')
+          %div{class: 'divider'}
+          %div{class: 'flex-item'}
+            %p
+              = t('shortcut.vertical_menu.name.menu_score_professor')
+              %span= t('shortcut.vertical_menu.name.menu_score_professor_key')
+            %p
+              = t('shortcut.vertical_menu.name.menu_program')
+              %span= t('shortcut.vertical_menu.name.menu_program_key')
+            %p
+              = t('shortcut.vertical_menu.name.menu_agenda')
+              %span= t('shortcut.vertical_menu.name.menu_agenda_key')
+            %p
+              = t('shortcut.vertical_menu.name.menu_bibliography')
+              %span= t('shortcut.vertical_menu.name.menu_bibliography_key')
+            %p
+              = t('shortcut.vertical_menu.name.menu_participants')
+              %span= t('shortcut.vertical_menu.name.menu_participants_key')
+            %p
+              = t('shortcut.vertical_menu.name.menu_content_edition')
+              %span= t('shortcut.vertical_menu.name.menu_content_edition_key')
+            %p
+              = t('shortcut.vertical_menu.name.menu_messages')
+              %span= t('shortcut.vertical_menu.name.menu_messages_key')
+            %p
+              = t('shortcut.vertical_menu.name.menu_registration')
+              %span= t('shortcut.vertical_menu.name.menu_registration_key')
 
   :javascript
 
@@ -600,10 +660,22 @@
       focus_element_time('#flash_message_span');
       fixed_shortcut();
 
+      $(".close").on("click keypress", function(event){
+        var keynum = event.which || event.keyCode;
+        if(keynum == 13 || keynum == 27 || event.type == 'click') {
+          $(".modal").css("display", "none");
+        }
+      });
+
       $(document).keydown(function (e) {
+        if(e.which == 191 && e.shiftKey) {
+          open_shortcut_window();
+        }
+
         if (e.which === 27) {
           $("#dropdown_menu").slideUp(150);
           $(".dropdown").hide(150);
+          $(".modal").css("display", "none");
           setTimeout(function() {
             $(e.target).closest(".dropdown").prev("a").focus();
             $(e.target).closest(".dropdown").prev("a").removeClass("dropdown-open");

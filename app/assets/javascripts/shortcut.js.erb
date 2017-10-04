@@ -172,3 +172,7 @@ function remove_underline_shortcut_single(element) {
 function put_underline_shortcut_single(element) {
   $(element).find("a").find("span").css("text-decoration", "underline");
 }
+
+function open_shortcut_window() {
+  $(".modal").css("display", "block");
+}
