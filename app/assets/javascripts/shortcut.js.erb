@@ -173,6 +173,9 @@ function put_underline_shortcut_single(element) {
   $(element).find("a").find("span").css("text-decoration", "underline");
 }
 
-function open_shortcut_window() {
-  $(".modal").css("display", "block");
+function open_shortcut_window(event, element) {
+  var keynum = event.which || event.keyCode;
+  if((event.which == 191 && event.shiftKey) || event.type == 'click' || (keynum == 13 && element !== undefined) ) {
+    $(".modal").css("display", "block");
+  }
 }
