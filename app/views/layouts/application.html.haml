@@ -54,6 +54,7 @@
                   %li#link_to_search_box.sub_nav_menu= link_to t(:search_box), "#search_box_accesskey", accesskey: "3", class: "sub_nav_item"
                 - if active_tab[:url][:context] == 2 && params[:bread] == "menu_score_student"
                   %li#link_to_shortcut.sub_nav_menu= link_to t("shortcut.shortcut_link"), "#", class: "sub_nav_item"
+                %li.sub_nav_menu= link_to t('shortcut.shortcut_link'), "#", accesskey: "4", onclick: 'open_shortcut_window(event)', onkeydown: 'open_shortcut_window(event, this)', class: "sub_nav_item"
                 %li.sub_nav_menu= link_to t(:high_contrast_link), "#", accesskey: "5", :'data-url' => update_theme_personal_configurations_path, :'data-theme' => "#{user_session[:theme]}", id: "mysolar_high_contrast_option", class: "sub_nav_item", remote: true
                 - if I18n.locale.to_s == 'pt_BR'
                   %li.sub_nav_menu=link_to t(:libras), 'http://www.vlibras.gov.br/', target: '_blank', 'aria-label'=> t(:libras) + t(:new_window), class: "sub_nav_item"
@@ -668,9 +669,7 @@
       });
 
       $(document).keydown(function (e) {
-        if(e.which == 191 && e.shiftKey) {
-          open_shortcut_window();
-        }
+        open_shortcut_window(e);
 
         if (e.which === 27) {
           $("#dropdown_menu").slideUp(150);
