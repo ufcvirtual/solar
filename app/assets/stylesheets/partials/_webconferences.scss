@@ -18,10 +18,10 @@ form{
     }
   }
 
-  .support_help_request{ background-color: #619ad2 !important; }
-  .support_help_success{ background-color: #b3dd89 !important; }
-  .support_help_fail{ background-color: #EA8A8A !important; }
-  .support_help_message{ background-color: #F2F27B !important; }
+  .support_help_request{ background-color: $event_chat_background !important; } /* #619ad2 */
+  .support_help_success{ background-color: $event_discussion_background !important; } /* #b3dd89 */
+  .support_help_fail{ background-color: $event_presential_meeting_background !important; } /* #EA8A8A */
+  .support_help_message{ background-color: $event_assignment_background !important; } /* #F2F27B */
 }
 
 .block_wrapper{
@@ -111,6 +111,10 @@ table.webconferences{
     }
   }
 
+}
+
+.webconference_list_support{
+  margin-top: 30px;
 }
 
 .title-warning + .webconference_access{

@@ -132,12 +132,22 @@ class Webconference < ActiveRecord::Base
   end
 
   def login_meeting(user, meeting_id, meeting_name, options)
+    #token_xml = change_config_xml(academic_allocations.first.id, meeting_id) if is_portfolio # Origem portfolio?
+    avatar = Rails.application.routes.url_helpers.home_url.gsub('/home', '') + user.photo.url(:medium)
     @api.create_meeting(meeting_name, meeting_id, options) unless @api.is_meeting_running?(meeting_id)
-     if (responsible?(user.id) || user.can?(:preview, Webconference, { on: academic_allocations.flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true, any: true }))
-      @api.join_meeting_url(meeting_id, "#{user.name}*", options[:moderatorPW])
+    if (responsible?(user.id) || user.can?(:preview, Webconference, { on: academic_allocations.flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true, any: true }))
+      @api.join_meeting_url(meeting_id, "#{user.name}*", options[:moderatorPW], { avatarURL: avatar }) # option: :configToken => token_xml
     else
-      @api.join_meeting_url(meeting_id, user.name, options[:attendeePW])
+      @api.join_meeting_url(meeting_id, user.name, options[:attendeePW], { avatarURL: avatar })
     end
+  end
+
+  def change_config_xml(academic_allocation_id, meeting_id)
+    url = Rails.application.routes.url_helpers.home_url.gsub('/home', '') + Rails.application.routes.url_helpers.support_webconference_messages_path(ac: academic_allocation_id)
+    config_xml = @api.get_default_config_xml
+    config_xml = BigBlueButton::BigBlueButtonConfigXml.new(config_xml)
+    config_xml.set_attribute("help", "url", url)
+    token = @api.set_config_xml(meeting_id, config_xml)
   end
 
   def have_permission?(user, at_id = nil)

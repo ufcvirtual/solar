@@ -866,7 +866,9 @@ pt_BR:
   enrollment: "Matrícula"
 
   # Suporte Webconferência
-  support_web_tooltip: "Habilitar/Desabilitar o suporte a webconferência em tempo real"
+  support_web_tooltip: "Suporte às webconferências"
+  support_web_tooltip_on: "Ativar suporte às webconferências"
+  support_web_tooltip_off: "Desativar suporte às webconferências"
   support_web: "Suporte Webconferência"
   support_web_count: "Quantidade de webconferências solicitando ajuda no momento"
 
@@ -1587,13 +1589,14 @@ pt_BR:
       delete_record: Remover gravação
       placeholder: Digite qualquer valor a ser buscado na tabela desta página
       search: Busca
+      filter: Filtro
       location: Localização
       information_title: '<b>Informações básicas</b>'
       information: "Esta tela não permite a edição de webconferências, apenas sua visualização, bem como de suas respectivas gravações (permitindo a deleção dessas). Para criar/editar/remover webconferências, dirija-se a Edição de Conteúdo.<br><br>Ao clicar no botão <b>Suporte Webconferência</b>, disponível para o perfil \'<i>Suporte Webconferência</i>\', você ficará disponível para receber chamados de ajuda das webconferências em andamento.<br><br>Aparecerá um aviso no topo da página quando houver um novo chamado. Para atender a um chamado, basta entrar na webconferência.<br><br>As webconferências com chamado serão identificadas com as seguintes cores: <ul style='list-style-type: square; margin-left: 40px;'> <li>Azul - Chamado em aberto;</li> <li>Verde - Chamado atendido;</li> <li>Vermelha - Webconferência encerrada e chamado não atendido;</li> <li>Amarela - Ninguém do suporte online, usuário encaminhado para o email(webconferência@virtual.ufc.br).</li> </ul>"
       shared_with: ( Compartilhada entre %{link} turma(s) )
       access: Acessos
-      help: Atendimentos de chamados
-      help_list: Chamados
+      help: Chamados
+      help_list: Lista de chamados
       view_webs: 'Visualizar: %{type}'
       all: "Todas"
       in_progress: "Em andamento"
@@ -1628,6 +1631,8 @@ pt_BR:
       group: Turma
       user: Usuário
       title: Lista de acessos a webconferêcia %{webconference_name}
+      title_list_support: Atendimentos a chamados (suporte)
+      responsible: 'Atendido por:'
       on_going: '<b> Aviso: </b> Esta webconferência ainda está em andamento, portanto esta lista de acessos pode aumentar.'
       not_started: '<b> Aviso: </b> Esta webconferência ainda não iniciou.'
       evaluate: Avaliar/Comentar
@@ -1638,7 +1643,7 @@ pt_BR:
       profile: Perfil
       summary: Tabela cujo conteúdo contém a lista com todos os acessos à webconferência com perfil, nome, horário e data da pessoa que acessou e o nome completo da turma. Bem como também há a possibilidade de avaliar os acessos de um aluno, no caso de professor.
     list_support_help:
-      title: Lista de atendimentos da webconferêcia - %{webconference_name}
+      title: Lista de atendimentos da webconferência - %{webconference_name}
       no_requests: Não existem registros de atendimento para esta webconferência.
       responsible: 'Atendido por:'
       date: Data
@@ -1659,7 +1664,7 @@ pt_BR:
       message: 'Enviar Mensagem'
       no_data_html: "Não existem webconferências em andamento. Clique <a href='https://goo.gl/forms/PEB4WFixcWwuGyOt1' target='_blank'>aqui</a> para responder ao questionário de avaliação da ferramenta."
       new_request: "novo(s) pedido(s) de ajuda da(s) webconferência(s) !!!"
-      send_request: "Seu pedido foi enviado! Por favor, volte à webconferência e aguarde o atendimento."
+      send_request: "Sua solicitação foi enviada! Por favor, volte à webconferência e aguarde o atendimento."
       error_request: "Falha no envio! Por favor, tente novamente mais tarde."
     warning:
       blocked: 'Seu navegador está com a permissão de popups bloqueada. Favor desbloquear.'
@@ -3578,7 +3583,25 @@ pt_BR:
         title: "Comentários [C]"
       code:
         title: 67
-
+    support_webconference:
+      name:
+          on_off: "Ativar/Desativar suporte às webconferências"
+          on_off_key: "Shift + S"
+          list_webconferences: "Visualizar webconferências (Suporte)"
+          list_webconferences_key: "Shift + V"
+          list_all: "Listar todas às webconferências [T]"
+          list_scheduled: "Listar webconferências agendadas [G]"
+          list_in_progress: "Listar webconferências em andamento [A]"
+          list_finalized: "Listar webconferências finalizadas [F]"
+          list_recorded: "Listar webconferências com gravação [R]"
+      code:
+          on_off: 83
+          list_webconferences: 86
+          list_all: 84
+          list_scheduled: 71
+          list_in_progress: 65
+          list_finalized: 70
+          list_recorded: 82
   scores:
     index:
       assignments: "Trabalhos"

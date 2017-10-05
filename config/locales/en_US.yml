@@ -703,8 +703,10 @@ en_US:
   description: "Description"
   edition: "Edition"
   enrollment: "Enrollment"
-  support_web_tooltip: "Enable/disable real-time webconference support"
-  support_web: "Web Conferencing Support"
+  support_web_tooltip: "Webconference Support"
+  support_web_tooltip_on: "Enable webconference support"
+  support_web_tooltip_off: "Disable webconference support"
+  support_web: "Webconference Support"
   support_web_count: "Number of webconferences requesting help at the moment"
   my_solar_curriculum_units: "Subjects"
   my_solar_curriculum_without: "No subjects found."
@@ -1397,13 +1399,14 @@ en_US:
       delete_record: Remove record
       placeholder: Type any value to be searched at the table of this page
       search: Search
+      filter: Filter
       location: Location
       information_title: '<b>Basic information</b>'
       information: "This page doesn't allow webconference's edition, only it's preview, as it's respective records (allowing the removal of these). To create/edit/remove webconferences, go to Content Edition.<br><br>When you click the <b>Web Conferencing Support</b> button, available for the \'<i>Conferencing Support profile</i>\', you will be available to receive help from webconferences in progress.<br><br>A warning will appear at the top of the page when there is a new call. To answer a call, simply enter the webconference.<br><br>Webconferences with call will be identified in the following colors: <ul style='list-style-type: square; margin-left: 40px;'> <li>Blue - Open call;</li> <li>Green - Answered call;</li> <li>Red - Webconference closed and called unanswered;</li> <li>Yellow - No one from the online support, user sent to the email (webconferência@virtual.ufc.br).</li> </ul>"
       shared_with: ( Shared with %{link} group(s) )
       access: Access
-      help: Request responses
-      help_list: Requests
+      help: Request
+      help_list: Requests responses
       view_webs: 'View: %{type}'
       all: "All"
       in_progress: "In progress"
@@ -1438,6 +1441,8 @@ en_US:
       group: Group
       user: User
       title: List of access to webconference %{webconference_name}
+      title_list_support: Support for requests (support)
+      responsible: 'Attended by:'
       on_going: '<b> Warning: </b> This webconference is still on going, therefore this access list can be extended.'
       not_started: '<b> Warning: </b> This webconference have not started yet.'
       evaluate: Evaluate/Comment
@@ -3332,6 +3337,25 @@ en_US:
         title: "Comments [C]"
       code:
         title: 67
+    support_webconference:
+      name:
+          on_off: "Enable/Disable webconference support"
+          on_off_key: "Shift + Q"
+          list_webconferences: "View webconferences (Support)"
+          list_webconferences_key: "Shift + V"
+          list_all: "List all webconferences [A]"
+          list_scheduled: "List scheduled webconferences [S]"
+          list_in_progress: "List webconferences in progress [P]"
+          list_finalized: "List completed webconferences [C]"
+          list_recorded: "List recorded webconferences [R]"
+      code:
+          on_off: 81
+          list_webconferences: 86
+          list_all: 65
+          list_scheduled: 83
+          list_in_progress: 80
+          list_finalized: 67
+          list_recorded: 82
 
   scores:
     index:

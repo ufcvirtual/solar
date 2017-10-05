@@ -12,19 +12,19 @@
   .block_content_toolbar
     .align-left.padding-checkbox
       %span.views#dropdown_messages{role: 'menubar'}
-        %a.btn.btn_dropdown{ href: '#', :"data-dropdown" => '#views-dropdown' }
+        %a.btn.btn_dropdown{ href: '#', :"data-dropdown" => '#views-dropdown', "arial-label" => t('.filter') }
           = I18n.t('webconferences.preview.view_webs', type: I18n.t('webconferences.preview.'+@filter_situation))
           %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
         .dropdown.dropdown-tip#views-dropdown
           %ul.dropdown-menu
-            %li{role: 'menuitem'}= link_to t('.all'), preview_webconferences_path(status: "all"), class: 'selected all', id: "all", onkeydown: 'click_on_keypress(event, this);'
-            %li{role: 'menuitem'}= link_to t('.scheduled'), preview_webconferences_path(status: "scheduled"), class: 'scheduled', id: "scheduled",  onkeydown: 'click_on_keypress(event, this);'
-            %li{role: 'menuitem'}= link_to t('.in_progress'), preview_webconferences_path(status: "in_progress") , class: 'in_progress', id: "in_progress", onkeydown: 'click_on_keypress(event, this);'
-            %li{role: 'menuitem'}= link_to t('.finish'), preview_webconferences_path(status: "finish"), class: 'finish', id: "finish", onkeydown: 'click_on_keypress(event, this);'
-            %li{role: 'menuitem'}= link_to t('.recorded'), preview_webconferences_path(status: "recorded"), class: 'recorded', id: "recorded", onkeydown: 'click_on_keypress(event, this);'
+            %li{role: 'menuitem'}= link_to t('.all'), preview_webconferences_path(status: "all"), class: 'selected all', id: "all", onkeydown: 'click_on_keypress(event, this);', :'data-shortcut' => t("shortcut.support_webconference.code.list_all"), :'data-shortcut-name' => t("shortcut.support_webconference.name.list_all"), :'aria-label' => t('.all')
+            %li{role: 'menuitem'}= link_to t('.scheduled'), preview_webconferences_path(status: "scheduled"), class: 'scheduled', id: "scheduled",  onkeydown: 'click_on_keypress(event, this);', :'data-shortcut' => t("shortcut.support_webconference.code.list_scheduled"), :'data-shortcut-name' => t("shortcut.support_webconference.name.list_scheduled"), :'aria-label' => t('.scheduled')
+            %li{role: 'menuitem'}= link_to t('.in_progress'), preview_webconferences_path(status: "in_progress") , class: 'in_progress', id: "in_progress", onkeydown: 'click_on_keypress(event, this);', :'data-shortcut' => t("shortcut.support_webconference.code.list_in_progress"), :'data-shortcut-name' => t("shortcut.support_webconference.name.list_in_progress"), :'aria-label' => t('.in_progress')
+            %li{role: 'menuitem'}= link_to t('.finish'), preview_webconferences_path(status: "finish"), class: 'finish', id: "finish", onkeydown: 'click_on_keypress(event, this);', :'data-shortcut' => t("shortcut.support_webconference.code.list_finalized"), :'data-shortcut-name' => t("shortcut.support_webconference.name.list_finalized"), :'aria-label' => t('.finish')
+            %li{role: 'menuitem'}= link_to t('.recorded'), preview_webconferences_path(status: "recorded"), class: 'recorded', id: "recorded", onkeydown: 'click_on_keypress(event, this);', :'data-shortcut' => t("shortcut.support_webconference.code.list_recorded"), :'data-shortcut-name' => t("shortcut.support_webconference.name.list_recorded"), :'aria-label' => t('.recorded')
     .block_toolbar_left
       = label_tag :search, t('.search'), class: 'title'
-      = text_field_tag :search, nil, :'data-column' => 'all', type: :search, class: 'search', placeholder: t('.placeholder'), size: 50
+      = text_field_tag :search, nil, :'data-column' => 'all', type: :search, class: 'search', placeholder: t('.placeholder'), size: 50, :"arial-label" => t('.placeholder')
     - if @can_remove_record
       .block_toolbar_right
         %a.btn.delete_record_btn{ href: nil, :'data-dropdown' => "#trash_dropdown", alt: t('.delete_record') }
@@ -109,7 +109,7 @@
             - if @can_see_access
               %td{ :'data-url' => list_access_webconference_path(webconference, at_id: webconference.at_id), :'data-tooltip' => t('webconferences.list.access') }= link_to_function content_tag(:i, nil, class: 'icon-users'), 'list_access(this)', class: 'btn'
             - if @support_help
-              %td.center{ :'data-tooltip' => t('webconferences.preview.help_list') }= link_to content_tag(:i, nil, class: 'icon-plus-circle btn'), list_support_help_webconference_path(webconference, at_id: webconference.at_id), class: "help_list"
+              %td.center{ :'data-tooltip' => t('webconferences.preview.help_list') }= link_to content_tag(:i, nil, class: 'icon-history btn'), list_support_help_webconference_path(webconference, at_id: webconference.at_id), class: "help_list", :'aria-label' => t(:support_web_tooltip)
               %td.center.support_help.hidden= webconference.support_help
 
     .message_div_navigation
@@ -128,15 +128,15 @@
     // Muda a cor da tr de acordo com o status do support_help
     if ("#{@support_help}" == "true") {
       $('.support_help').each(function(){
-        if ($(this).html() == #{Support_Help_Request}) { $(this).parent().addClass( "support_help_request" ); }
-        else if ($(this).html() == #{Support_Help_Success}) { $(this).parent().addClass( "support_help_success" ); }
-        else if ($(this).html() == #{Support_Help_Fail}) { $(this).parent().addClass( "support_help_fail" ); }
-        else if ($(this).html() == #{Support_Help_Message}) { $(this).parent().addClass( "support_help_message" ); }
+        if ($(this).html() == #{Support_Help_Request}) { $(this).siblings().first().addClass( "support_help_request" ); }
+        else if ($(this).html() == #{Support_Help_Success}) { $(this).siblings().first().addClass( "support_help_success" ); }
+        else if ($(this).html() == #{Support_Help_Fail}) { $(this).siblings().first().addClass( "support_help_fail" ); }
+        else if ($(this).html() == #{Support_Help_Message}) { $(this).siblings().first().addClass( "support_help_message" ); }
       });
 
       // Muda status do chamado ao clicar na webconferência (support_help_success)
       $(".link_help a").click(function() {
-        var web = $(this).closest('tr');
+        var web = $(this).parent().siblings().first();
         if (web.hasClass('support_help_request') || web.hasClass('support_help_message')) {
           $.ajax({
             type: "GET",

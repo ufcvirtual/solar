@@ -190,6 +190,7 @@ class WebconferencesController < ApplicationController
     ats = AllocationTag.where(id: at_id).map(&:related)
 
     @logs = @webconference.get_access(academic_allocations_ids, ats, {})
+    @logs_support = @webconference.get_support_attendance(academic_allocations_ids)
 
     @researcher = current_user.is_researcher?(ats)
     @too_old    = @webconference.initial_time.to_date < Date.parse(YAML::load(File.open('config/webconference.yml'))['participant_log_date']) rescue false

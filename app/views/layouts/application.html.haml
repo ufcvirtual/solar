@@ -105,8 +105,10 @@
             // Support webconference
             - if @support_help
               %li#mysolar_support_web
-                = link_to t(:support_web), "#", method: "get", class: "btn", onclick: "change_session_sh(#{current_user.id});", :'aria-label' => t(:support_web_tooltip), :'data-tooltip' => t(:support_web_tooltip), remote: true
-                = link_to Bbb.count_help, preview_webconferences_path, :'aria-label' => t(:support_web_count), :id => "btn_count_help", :class => "btn count_help btn-orange", :'data-tooltip' => t(:support_web_count)
+                = link_to("#", method: "get", class: "btn", onclick: "change_session_sh(#{current_user.id});", :'aria-label' => session[:support_connect] ? t(:support_web_tooltip_off) : t(:support_web_tooltip_on), :'data-tooltip' => session[:support_connect] ? t(:support_web_tooltip_off) : t(:support_web_tooltip_on), :'data-shortcut' => t("shortcut.support_webconference.code.on_off"), :'data-shortcut-shift' => true, remote: true) do
+                  = content_tag(:i, nil, class: "icon-chat #{session[:support_connect] ? 'off' : 'on'}")
+                  = t(:support_web)
+                = link_to Bbb.count_help, preview_webconferences_path, :'aria-label' => t(:support_web_count), :id => "btn_count_help", :class => "btn count_help btn-orange", :'data-tooltip' => t(:support_web_count), :'data-shortcut' => t("shortcut.support_webconference.code.list_webconferences"), :'data-shortcut-shift' => true
       / sidebar
       #mysolar_sidebar{role: 'navigation'}
         #mysolar_menu_accordion{style: "z-index:10"}
@@ -247,6 +249,12 @@
             %p
               = t('shortcut.vertical_menu.name.menu_registration')
               %span= t('shortcut.vertical_menu.name.menu_registration_key')
+            %p
+              = t('shortcut.support_webconference.name.on_off')
+              %span= t('shortcut.support_webconference.name.on_off_key')
+            %p
+              = t('shortcut.support_webconference.name.list_webconferences')
+              %span= t('shortcut.support_webconference.name.list_webconferences_key')
 
   :javascript
 
@@ -741,7 +749,9 @@
         if (ws_sh) {
           console.log("Cliente suporte: A sessão é false - Desconectando");
           //Muda o botão se não tem sessão
-          $('#mysolar_support_web .btn:first').removeClass( "btn_warning" );
+          $('#mysolar_support_web .btn:first i').removeClass( "off" );
+          $('#mysolar_support_web .btn:first i').addClass( "on" );
+          $('.qtip-content').html("#{I18n.t('support_web_tooltip_on')}");
           //Desconectando se botão
           if (button){
             console.log("Cliente suporte: Botão acionado - Desconectando...");
@@ -765,7 +775,9 @@
       else {
         console.log("Cliente suporte: A sessão é true - Conectando");
         //Muda o botão se tem sessão
-        $('#mysolar_support_web .btn:first').addClass( "btn_warning" );
+        $('#mysolar_support_web .btn:first i').removeClass( "on" );
+        $('#mysolar_support_web .btn:first i').addClass( "off" );
+        $('.qtip-content').html("#{I18n.t('support_web_tooltip_off')}");
         //Conectando se botão
         console.log("Cliente suporte: Conectando usuário ao websocket...");
         var websocket_host_sp = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["host_support_help"]}";
@@ -804,7 +816,7 @@
     function add_support_help_warning(count_help, ac_id){
       console.log("Cliente suporte: Carregando a flash_message... Quantidade de chamados: " + count_help);
       if (count_help>0) {
-        var new_help = $( "input[value='"+ ac_id +"']" ).parents('.list_webs');
+        var new_help = $( "input[value='"+ ac_id +"']" ).parent();
         console.log("Novo chamado: " + ac_id + " - " + new_help);
         // Atualiza css
         new_help.removeClass("support_help_success support_help_message");
