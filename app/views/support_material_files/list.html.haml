@@ -18,7 +18,7 @@
           = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_material', :"data-link-delete" => support_material_file_path(':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :'data-tooltip' => t(".delete")
 
     - unless @support_materials.empty?
-      %table
+      %table.tb_list
         %thead
           %tr.lines
             %th.center.no_sort{style: 'width: 25px;'}= check_box_tag :all_support_material, false, false, :"data-children-names" => "c_", class: "all_support_material"
