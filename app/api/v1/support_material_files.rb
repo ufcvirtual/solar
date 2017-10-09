@@ -37,7 +37,7 @@ module V1
         raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
 
         file = SupportMaterialFile.find(params[:file_id])
-        send_file(file.attachment.path.to_s)
+        send_file(file.attachment.path.to_s, file.name.to_s)
       end # get download
 
     end # namespace
