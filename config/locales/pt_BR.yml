@@ -1328,15 +1328,15 @@ pt_BR:
       created: "Postagem criada com sucesso"
       not_created: "A postagem não foi criada"
       draft: "Rascunho criado com sucesso. Se o rascunho for a única resposta a um post pai e este for removido, aquele também será removido."
-      not_draft: "O rascunho não foi criada"
+      not_draft: "O rascunho não foi criado"
       published: Post publicado com sucesso
       save_post: Deseja salvar seu post?
       save_draft: Deseja salvar seu post como rascunho?
     update:
       updated: "Postagem atualizada com sucesso"
       not_updated: "A postagem não foi atualizada"
-      draft: "Rascunho atualizada com sucesso"
-      not_draft: "A rascunho não foi atualizada"
+      draft: "Rascunho atualizado com sucesso"
+      not_draft: "O rascunho não foi atualizado"
     user_posts:
       title: Postagens do %{user} em %{discussion}
       message: Post
@@ -1358,6 +1358,7 @@ pt_BR:
       permission: Não é possível alterar ou remover posts de outros usuários
       not_published: Não foi possível publicar o post
       draft: Não é possível responder um post de rascunho
+      back_to_draft: Não é possível definir como rascunho um post com respostas.
 
   post_files:
     new:

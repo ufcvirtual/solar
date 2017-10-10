@@ -1176,6 +1176,7 @@ en_US:
       permission: It's not possible to change or remove posts from others users
       not_published: It was not possible to publish post
       draft: It's not possible to reply a draft post
+      back_to_draft: It's not possible to set as draft a post with replies.
 
   post_files:
     new:

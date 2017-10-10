@@ -31,8 +31,10 @@ class Post < ActiveRecord::Base
   validate :can_change?, if: 'merge.nil?'
   validate :parent_post, if: 'merge.nil? && !parent_id.blank?'
 
+  validate :can_set_draft?, if: '!new_record? && draft_changed? && draft'
+
   before_save :set_parent, if: '!new_record? && parent_id_changed?'
-  before_save :set_draft, if: '(!new_record? && draft_changed? && !draft_was) || draft.blank?'
+  before_save :set_draft, if: 'draft.nil?'
 
   attr_accessor :merge
 
@@ -50,10 +52,13 @@ class Post < ActiveRecord::Base
     return true
   end
 
+  def can_set_draft?
+    errors.add(:base, I18n.t('posts.error.back_to_draft')) if children.any?
+  end
+
   # cant turn into draft a post already published
   def set_draft
-    self.draft = false
-    return true
+    self.draft = (draft_was.blank? ? false : draft_was)
   end
 
   def verify_level
