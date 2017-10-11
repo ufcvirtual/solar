@@ -204,7 +204,14 @@ class AccessControlController < ApplicationController
           raise RevokedError
 
         when Oauth2::AccessTokenValidationService::VALID
-          User.current = current_user = User.find(access_token.resource_owner_id) rescue nil
+          sign_in(:user, User.find(access_token.resource_owner_id))
+          user_session[:lessons] = []
+
+          if current_user.blank?
+            current_user = User.find(access_token.resource_owner_id) rescue nil 
+          end
+
+          User.current = current_user
           @user_session_exam = Exam.verify_blocking_content(current_user.id) || false
         end
       else
