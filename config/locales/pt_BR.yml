@@ -532,7 +532,7 @@ pt_BR:
       files:
         attachment_file_size: Tamanho
         attachment: Arquivo
-        attachment_file_name: Arquivo  
+        attachment_file_name: Arquivo
     errors:
       uniqueness: "Registro já existe no sistema"
       template:
@@ -1328,15 +1328,15 @@ pt_BR:
       created: "Postagem criada com sucesso"
       not_created: "A postagem não foi criada"
       draft: "Rascunho criado com sucesso. Se o rascunho for a única resposta a um post pai e este for removido, aquele também será removido."
-      not_draft: "O rascunho não foi criada"
+      not_draft: "O rascunho não foi criado"
       published: Post publicado com sucesso
       save_post: Deseja salvar seu post?
       save_draft: Deseja salvar seu post como rascunho?
     update:
       updated: "Postagem atualizada com sucesso"
       not_updated: "A postagem não foi atualizada"
-      draft: "Rascunho atualizada com sucesso"
-      not_draft: "A rascunho não foi atualizada"
+      draft: "Rascunho atualizado com sucesso"
+      not_draft: "O rascunho não foi atualizado"
     user_posts:
       title: Postagens do %{user} em %{discussion}
       message: Post
@@ -1358,6 +1358,7 @@ pt_BR:
       permission: Não é possível alterar ou remover posts de outros usuários
       not_published: Não foi possível publicar o post
       draft: Não é possível responder um post de rascunho
+      back_to_draft: Não é possível definir como rascunho um post com respostas.
 
   post_files:
     new:
@@ -2953,6 +2954,7 @@ pt_BR:
   confirm_acceptance: "Confirma aceitação de solicitação?"
   confirm_cancel: 'Tem certeza de que deseja cancelar?'
   message_confirm_user: "Tem certeza?"
+  page_loading: "A página está carregando..."
 
   messages:
     file_too_big: "Arquivo muito grande!"
@@ -3345,6 +3347,7 @@ pt_BR:
 
   shortcut:
     shortcut_link: "Abrir menu de atalhos [4]"
+    shortcut_menu_title: "Atalhos do Teclado"
     no_shortcuts: "Sem atalhos"
     close: "Fechar"
     curricular_unit:
@@ -3405,7 +3408,6 @@ pt_BR:
         web: "Nova Webconferência [W]"
         file: "Enviar Arquivo [A]"
         files_title: "Arquivos do enunciado [E]"
-        comments_title: "Comentários [C]"
         new_comment: "Novo cometário [N]"
         sent_assignment_title: "Arquivos enviados [R]"
         webconferences: "Webconferências [V]"
@@ -3419,7 +3421,6 @@ pt_BR:
         web: 87
         file: 65
         files_title: 69
-        comments_title: 67
         new_comment: 78
         sent_assignment_title: 82
         webconferences: 86
@@ -3488,6 +3489,65 @@ pt_BR:
       code:
         next: 39
         previous: 37
+    vertical_menu:
+      name:
+        menu_lesson: "Aulas"
+        menu_lesson_key: "Shift + A"
+        menu_support_material: "Material de Apoio"
+        menu_support_material_key: "Shift + M"
+        menu_dc_lesson: "Digital Class"
+        menu_dc_lesson_key: "Shift + L"
+        menu_discussion: "Fórum"
+        menu_discussion_key: "Shift + F"
+        menu_portfolio: "Portfolio"
+        menu_portfolio_key: "Shift + T"
+        menu_exam: "Prova"
+        menu_exam_key: "Shift + P"
+        menu_score_student: "Acompanhamento"
+        menu_score_student_key: "Shift + O"
+        menu_chat: "Chat"
+        menu_chat_key: "Shift + C"
+        menu_webconference: "Webconferência"
+        menu_webconference_key: "Shift + W"
+        menu_score_professor: "Acompanhamento do Professor"
+        menu_score_professor_key: "Shift + H"
+        menu_program: "Programa"
+        menu_program_key: "Shift + R"
+        menu_agenda: "Agenda"
+        menu_agenda_key: "Shift + G"
+        menu_bibliography: "Bibliografia"
+        menu_bibliography_key: "Shift + B"
+        menu_participants: "Participantes"
+        menu_participants_key: "Shift + E"
+        menu_content_edition: "Conteúdo"
+        menu_content_edition_key: "Shift + D"
+        menu_messages: "Mensagens"
+        menu_messages_key: "Shift + N"
+        menu_registration: "Matrícula"
+        menu_registration_key: "Shift + U"
+      code:
+        menu_lesson: 65
+        menu_support_material: 77
+        menu_dc_lesson: 76
+        menu_discussion: 70
+        menu_portfolio: 84
+        menu_exam: 80
+        menu_score_student: 79
+        menu_chat: 67
+        menu_webconference: 87
+        menu_score_professor: 72
+        menu_program: 82
+        menu_agenda: 71
+        menu_bibliography: 66
+        menu_participants: 69
+        menu_content_edition: 68
+        menu_messages: 78
+        menu_registration: 85
+    comments:
+      name:
+        title: "Comentários [C]"
+      code:
+        title: 67
 
   scores:
     index:
@@ -4628,6 +4688,15 @@ pt_BR:
       registration: "Ao ter o primeiro contato com o Solar 2.0, faz-se necessário o cadastro. O objetivo deste tutorial é sanar dúvidas a respeito deste procedimento com todos os passos necessários e informações relevantes. "
       password_recovery: "Após ter um cadastro no Solar 2.0, pode acontecer da senha usada para realizar o acesso ser esquecida ou, até mesmo, o login. Para isto, existe a área de recuperação de senha no Solar, cujas informações necessárias são descritas neste tutorial."
       home: "Após realizar o login no Solar 2.0, todo usuário se depara com a tela inicial do ambiente, a Home. O conteúdo desta tela pode variar de acordo com o papel de cada um no ambiente. Entretanto, há diversos elementos básicos e uma estrutura comum a qualquer perfil. Este tutorial trata destas áreas."
+      chat_edition: "Chat é uma ferramenta que permite a realização de bate-papo online. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição do chat funciona estão disponíveis neste tutorial."
+      assignment_edition: "Portfólio é uma ferramenta que permite o envio de trabalhos. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição do portfólio funciona estão disponíveis neste tutorial."
+      support_material_edition: "Material de apoio é uma ferramenta que permite o envio(upload) de arquivos. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição do material de apoio funciona estão disponíveis neste tutorial."
+      webconference_edition: "Webconferência é uma ferramenta que permite quer video conferências sejam ministradas de forma online com a interação dos alunos. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição da webconferência funciona estão disponíveis neste tutorial."
+      bibliography_edition: "Bibliografias é uma ferramenta que permite que os responsáveis informem a bibliografia da disciplina. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição da bibliografia funciona estão disponíveis neste tutorial."
+      discussion_edition: "Fórum é uma ferramenta que permite aos alunos e professores/tutores realizarem discurssões sobre determinado tema. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição do fórum funciona estão disponíveis neste tutorial."
+      lesson_edition: "Aula é uma ferramenta que permite aos alunos obterem conhecimento totalmente online, sendo está produzida exclusivamente pelos professores. Os responsáveis têm a possibilidade de cadastrar e definindo suas informações básicas. Todas as informações necessárias para entender como a edição de aula funciona estão disponíveis neste tutorial."
+      user_allocation_edition: "Alocação de usuários é uma ferramenta que permite a alocação de usuario sendo este com um perfil em determinda turma ou oferta."
+      bind_unbind_groups: "Este tutorial explica e ilustra como vincular e desvincular uma turma de uma atividade previamente cadastradas."
     files:
       math_editor: Visualizar PDF sobre o Editor Matemático
       evaluation: Visualizar PDF sobre a Avaliação e frequência de atividades
@@ -4644,6 +4713,15 @@ pt_BR:
       registration: Visualizar PDF sobre o Cadastro
       password_recovery: Visualizar PDF de Esqueceu a sua senha?
       home: Visualizar PDF sobre a Home
+      chat_edition: "Visualizar PDF sobre a edição dos Chats"
+      support_material_edition: "Visualizar PDF sobre a edição do Material de apoio"
+      webconference_edition: "Visualizar PDF sobre a edição das Webconferências"
+      bind_unbind_groups: "Visualizar PDF sobre Vincular e desvincular turma de atividade"
+      assignment_edition: "Visualizar PDF sobre a edição dos Portfólios"
+      bibliography_edition: "Visualizar PDF sobre a edição das Bibliografias"
+      discussion_edition: "Visualizar PDF sobre a edição dos Fóruns"
+      lesson_edition: "Visualizar PDF sobre a edição das Aulas"
+      user_allocation_edition: "Visualizar PDF sobre a Alocação de usuários"
     new_language_pt: " (Não foi possível encontrar o tutorial desejado em Português, veja nossa versão em Português)"
     new_language_en: " (Não foi possível encontrar o tutorial desejado em Português, veja nossa versão em Inglês)"
 

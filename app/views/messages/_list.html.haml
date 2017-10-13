@@ -42,3 +42,21 @@
 
 
 = javascript_include_tag 'pagination'
+
+:javascript
+
+  $(function () {
+    $('.pagination a').on("click", function() {
+      $('.pagination').html("#{t(:page_loading)}");
+      $.get(this.href, null, function(data){
+        $('.messages_list').html(data);
+        if(!!$('table').length){
+          $('#ckb_all').nice_checkbox();
+          focus_element($('table'));
+        }
+        else
+          focus_element($('.text_none.empty_message'));
+      });
+      return false;
+    });
+  });

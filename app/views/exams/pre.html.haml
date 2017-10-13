@@ -86,9 +86,7 @@
           if (resp){
             location.hash = 'reload';
             location.reload();
-            var isSolved = false;
-            window.onbeforeunload = unloadMess;
-            setBunload(true);
+            window.onbeforeunload = null;
           }
           else
             return resp;
@@ -96,20 +94,10 @@
         else{ 
           location.hash = 'reload';
           location.reload();
-          window.onbeforeunload = unloadMess;
-          setBunload(true);
+          window.onbeforeunload = null;
         }
       }
     });
-
-    function unloadMess(){
-        var mess = "Os dados poderão ser perdidos!";
-        if(!isSolved) return mess;
-    }
-    function setBunload(on){
-        window.onbeforeunload = (on) ? unloadMess : null;
-    }
-
   
   });
 

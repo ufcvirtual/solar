@@ -32,7 +32,7 @@
             %td
               %div
                 .title= webconference.title
-                .description
+                .description{style: 'width:250px;'}
                   .minimun= raw(truncate webconference.description, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
                   .complete.invisible
                     = raw webconference.description

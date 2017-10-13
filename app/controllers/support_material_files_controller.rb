@@ -10,7 +10,7 @@ class SupportMaterialFilesController < ApplicationController
 
   before_filter only: [:edit, :update] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
-    get_groups_by_tool(@support_material = SupportMaterialFile.find(params[:id]))
+    get_groups_by_tool(@support_material_file = SupportMaterialFile.find(params[:id]))
   end
 
 
@@ -29,7 +29,7 @@ class SupportMaterialFilesController < ApplicationController
 
   def new
     authorize! :create, SupportMaterialFile, on: @allocation_tags_ids = params[:allocation_tags_ids]
-    @support_material = SupportMaterialFile.new material_type: params[:material_type]
+    @support_material_file = SupportMaterialFile.new material_type: params[:material_type]
   end
 
   def create
@@ -49,7 +49,7 @@ class SupportMaterialFilesController < ApplicationController
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
     @allocation_tags_ids = @allocation_tags_ids.join(' ')
-    if @support_material.nil? || @support_material.is_file?
+    if @support_material_file.nil? || @support_material_file.is_file?
       render json: { success: false, alert: t('support_material_files.error.file') }, status: :unprocessable_entity
     else
       render :new
@@ -57,18 +57,18 @@ class SupportMaterialFilesController < ApplicationController
   end
 
   def edit
-    raise 'cant_edit_file' if @support_material.is_file?
+    raise 'cant_edit_file' if @support_material_file.is_file?
     authorize! :update, SupportMaterialFile, on: @allocation_tags_ids
   end
 
   def update
-    raise 'cant_edit_file' if @support_material.is_file?
-    authorize! :update, SupportMaterialFile, on: @support_material.academic_allocations.pluck(:allocation_tag_id)
+    raise 'cant_edit_file' if @support_material_file.is_file?
+    authorize! :update, SupportMaterialFile, on: @support_material_file.academic_allocations.pluck(:allocation_tag_id)
 
-    if @support_material.update_attributes(support_material_file_params)
+    if @support_material_file.update_attributes(support_material_file_params)
       render json: {success: true, notice: t('support_materials.success.updated')}
     else
-      render json: {success: false, alert: @support_material.errors.full_messages}, status: :unprocessable_entity
+      render json: {success: false, alert: @support_material_file.errors.full_messages}, status: :unprocessable_entity
     end
   rescue => error
     request.format = :json
@@ -166,12 +166,14 @@ class SupportMaterialFilesController < ApplicationController
     end
 
      def create_one(params=support_material_file_params)
-      @support_material = SupportMaterialFile.new(params)
+      @support_material_file = SupportMaterialFile.new(params)
 
       SupportMaterialFile.transaction do
-        @support_material.allocation_tag_ids_associations = @allocation_tags_ids
-        @support_material.save!
+        @support_material_file.allocation_tag_ids_associations = @allocation_tags_ids
+        @support_material_file.save!
       end
+
+      @support_material_file
     rescue => error
       raise error
     end
@@ -179,9 +181,12 @@ class SupportMaterialFilesController < ApplicationController
     def create_many
       SupportMaterialFile.transaction do
         unless params[:files].blank?
+          @support_material_files = []
           params[:files].each do |file|
             create_one(support_material_file_params.merge!(attachment: file, title: params[:support_material_file][:title]))
+            @support_material_files << @support_material_file
           end
+          @support_material_file = nil
         end
       end
     rescue => error

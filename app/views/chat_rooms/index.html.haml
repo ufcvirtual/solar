@@ -18,7 +18,7 @@
 
   - unless @chat_rooms.blank?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
-    %table.tb_list
+    %table.tb_list.description_chat_rooms
       %thead
         %tr.lines
           %th.no_sort.center{style: 'width: 25px;'}= check_box_tag :all_chats, false, false, :"data-children-names" => "c_"

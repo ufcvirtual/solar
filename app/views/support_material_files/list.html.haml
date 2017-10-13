@@ -33,7 +33,7 @@
             %tr.lines{id: "tr_#{material.id}"}
               %td{style: 'text-align:center;'}
                 = check_box_tag("c_#{material.id}", material.id, false, {class: "ckb_material", :"data-is-link" => (material.material_type == Material_Type_Link)})
-              %td{style: 'text-align:center;'}= material.title
+              %td{style: 'text-align:center;  max-width: 400px; overflow: hidden; word-wrap: break-word'}= material.title
               %td
                 %div
                   - if material.is_link?

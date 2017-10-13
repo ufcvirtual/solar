@@ -32,7 +32,7 @@
           %tr.lines{id: "tr_#{assignment.id}"}
             %td{style: 'text-align:center;'}
               = check_box_tag("ckb_assignment", assignment.id, false, {class: "ckb_assignment", :"data-can-delete" => can_delete})
-            %td
+            %td{style: "max-width: 150px"}
               %div
                 .title
                   = assignment.name

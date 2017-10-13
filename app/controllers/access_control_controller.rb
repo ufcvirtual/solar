@@ -39,17 +39,22 @@ class AccessControlController < ApplicationController
     end
   end
 
-  def comments
+  def comment_media
+    guard_with_access_token_or_authenticate
+
     file = CommentFile.find(params[:file].split('_')[0])
     acu = file.comment.academic_allocation_user
+    user_id = current_user.try(:id) || User.current.id
 
-    is_observer_or_responsible = acu.allocation_tags.first.is_observer_or_responsible?(current_user.id)
+    is_observer_or_responsible = acu.allocation_tag.is_observer_or_responsible?(user_id)
 
-    unless acu.user_id == current_user.id || is_observer_or_responsible
-      raise CanCan::AccessDenied unless (acu.academic_allocation.academic_tool_type == 'Assignment' && !acu.group_assignment.blank? && acu.group_assignment.user_in_group?(current_user.id))
+    unless acu.user_id == user_id || is_observer_or_responsible
+      raise CanCan::AccessDenied unless (acu.academic_allocation.academic_tool_type == 'Assignment' && !acu.group_assignment.blank? && acu.group_assignment.user_in_group?(user_id))
     end
 
-    send_file(file.attachment.path, { disposition: 'inline', type: return_type(params[:extension])})
+    send_file(file.attachment.path, { disposition: 'inline', type: return_type(params[:extension] || file.attachment.path.split('.').last)})
+  rescue 
+    raise CanCan::AccessDenied
   end
 
   def bibliography
@@ -199,7 +204,14 @@ class AccessControlController < ApplicationController
           raise RevokedError
 
         when Oauth2::AccessTokenValidationService::VALID
-          User.current = current_user = User.find(access_token.resource_owner_id) rescue nil
+          sign_in(:user, User.find(access_token.resource_owner_id))
+          user_session[:lessons] = []
+
+          if current_user.blank?
+            current_user = User.find(access_token.resource_owner_id) rescue nil 
+          end
+
+          User.current = current_user
           @user_session_exam = Exam.verify_blocking_content(current_user.id) || false
         end
       else

@@ -1,6 +1,6 @@
 .block_wrapper
   .block_title
-    %h2{:'data-shortcut'=> t("shortcut.assignment.code.comments_title"), :'data-shortcut-name'=> t("shortcut.assignment.name.comments_title"), :'data-shortcut-focus' => 'true'}
+    %h2{:'data-shortcut'=> t("shortcut.comments.code.title"), :'data-shortcut-name'=> t("shortcut.comments.name.title"), :'data-shortcut-focus' => 'true'}
       %i.icon-comment
       = t('comments.list.title')
     - if can? :create, Comment, on: [@allocation_tag_id]
@@ -31,5 +31,4 @@
           flash_message(data.alert, 'alert', 'fancybox-outer');
       });
     });
-
   });

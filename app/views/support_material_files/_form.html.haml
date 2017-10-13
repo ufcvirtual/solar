@@ -1,5 +1,5 @@
 .new_support_material_form
-  = simple_form_for @support_material, html: {id: 'support_material_form', multipart: true} do |f|
+  = simple_form_for @support_material_file, html: {id: 'support_material_form', multipart: true} do |f|
     - title = [(f.object.persisted? ? "edit" : "new"), (f.object.is_link? ? "link" : "file")].join("_")
 
     %h1#lightBoxDialogTitle= t(title, scope: [:support_material_files, :list])

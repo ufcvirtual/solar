@@ -212,7 +212,7 @@ module V1
           end
           post "/" do
             group_events = []
-            
+        
             begin
               ActiveRecord::Base.transaction do
                 offer = get_offer(params[:CodigoDisciplina], params[:CodigoCurso], params[:Periodo])

@@ -39,4 +39,10 @@
           break;
       }
     });
+
+     $("#lesson-options-dropdown ul li a").on("click", function(event) {
+        $(this).parent().parent().find("a").removeClass("selected");
+        $(this).addClass("selected");
+     });
+
   });

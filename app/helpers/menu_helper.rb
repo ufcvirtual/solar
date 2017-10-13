@@ -23,14 +23,11 @@ module MenuHelper
       parents: {}
     }
 
-    letters_to_shortcut = []
     menus.each_with_index do |menu, idx|
       contexts = menu.contexts.pluck(:id)
-      count = 0
-      count += 1 while letters_to_shortcut.include?(letter_shortcut_sanitize(t(menu.name)[count].downcase))
-      letters_to_shortcut << letter_shortcut_sanitize(t(menu.name)[count].downcase)
+      code_to_shortcut = menu.name
       menu_item_link = link_to(t(menu.name), url_for({controller: "/#{menu.resource.controller}", action: menu.resource.action,
-        bread: menu.name, contexts: contexts.join(',')}), onclick: 'focusTitle();', onkeypress: 'focusTitle();', onkeydown: 'click_on_keypress(event, this);', class: menu.parent.nil? ? 'mysolar_menu_title' : '', :'data-shortcut' => (letter_shortcut_sanitize(t(menu.name)[count].downcase).ord - 32), :'data-shortcut-shift' => true)
+        bread: menu.name, contexts: contexts.join(',')}), onclick: 'focusTitle();', onkeypress: 'focusTitle();', onkeydown: 'click_on_keypress(event, this);', class: menu.parent.nil? ? 'mysolar_menu_title' : '', :'data-shortcut' => t(code_to_shortcut, scope: "shortcut.vertical_menu.code"), :'data-shortcut-shift' => true)
       menu_item = {contexts: contexts, bread: menu.name, link: menu_item_link}
 
       if menu.parent.nil?
@@ -83,16 +80,6 @@ module MenuHelper
           #{link[:link]}
         </li>
       }
-    end
-
-    def letter_shortcut_sanitize(letter)
-      return "c" if letter == "ç"
-      return "i" if letter == "í"
-      return "u" if letter == "ú"
-      return "e" if letter == "é" || letter == "ẽ"
-      return "o" if letter == "ó" || letter == "õ"
-      return "a" if letter == "á" || letter == "ã" || letter == "à"
-      return letter
     end
 
 end # end module

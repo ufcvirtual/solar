@@ -467,7 +467,7 @@ en_US:
       files:
         attachment_file_size: Size
         attachment: File
-        attachment_file_name: File  
+        attachment_file_name: File
       comment_file:
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
         attachment: File
@@ -1176,6 +1176,7 @@ en_US:
       permission: It's not possible to change or remove posts from others users
       not_published: It was not possible to publish post
       draft: It's not possible to reply a draft post
+      back_to_draft: It's not possible to set as draft a post with replies.
 
   post_files:
     new:
@@ -2722,6 +2723,8 @@ en_US:
   confirm_acceptance: "Confirm request acceptance?"
   confirm_cancel: 'Are you sure you want to cancel?'
   message_confirm_user: 'Are you sure?'
+  page_loading: "Page is loading..."
+
   messages:
     file_too_big: "File too big"
     mail_header: "Sent by: "
@@ -3100,6 +3103,7 @@ en_US:
 
   shortcut:
     shortcut_link: "Open shortcut menu [4]"
+    shortcut_menu_title: "Keyboard Shortcuts"
     no_shortcuts: "No shortcuts"
     close: "Close"
     curricular_unit:
@@ -3186,7 +3190,6 @@ en_US:
         web: 87
         file: 70
         files_title: 69
-        comments_title: 67
         new_comment: 78
         sent_assignment_title: 83
         webconferences: 86
@@ -3199,7 +3202,6 @@ en_US:
         web: "New Webconference [W]"
         file: "Send File [F]"
         files_title: "Enunciation's files [E]"
-        comments_title: "Comments [C]"
         new_comment: "New comment [N]"
         sent_assignment_title: "Files sent [S]"
         webconferences: "Webconferences [V]"
@@ -3243,6 +3245,65 @@ en_US:
       code:
         next: 39
         previous: 37
+    vertical_menu:
+      name:
+        menu_lesson: "Lessons"
+        menu_lesson_key: "Shift + L"
+        menu_support_material: "Support Material"
+        menu_support_material_key: "Shift + U"
+        menu_dc_lesson: "Digital Class"
+        menu_dc_lesson_key: "Shift + I"
+        menu_discussion: "Discussions"
+        menu_discussion_key: "Shift + F"
+        menu_portfolio: "Portfolio"
+        menu_portfolio_key: "Shift + T"
+        menu_exam: "Tests"
+        menu_exam_key: "Shift + E"
+        menu_score_student: "Scores"
+        menu_score_student_key: "Shift + C"
+        menu_chat: "Chat"
+        menu_chat_key: "Shift + A"
+        menu_webconference: "Webconference"
+        menu_webconference_key: "Shift + W"
+        menu_score_professor: "Teacher Score"
+        menu_score_professor_key: "Shift + O"
+        menu_program: "Program"
+        menu_program_key: "Shift + P"
+        menu_agenda: "Agenda"
+        menu_agenda_key: "Shift + D"
+        menu_bibliography: "Bibliography"
+        menu_bibliography_key: "Shift + B"
+        menu_participants: "Participants"
+        menu_participants_key: "Shift + R"
+        menu_content_edition: "Content"
+        menu_content_edition_key: "Shift + N"
+        menu_messages: "Messages"
+        menu_messages_key: "Shift + S"
+        menu_registration: "Registration"
+        menu_registration_key: "Shift + G"
+      code:
+        menu_lesson: 76
+        menu_support_material: 85
+        menu_dc_lesson: 73
+        menu_discussion: 70
+        menu_portfolio: 84
+        menu_exam: 69
+        menu_score_student: 67
+        menu_chat: 65
+        menu_webconference: 87
+        menu_score_professor: 79
+        menu_program: 80
+        menu_agenda: 68
+        menu_bibliography: 66
+        menu_participants: 82
+        menu_content_edition: 78
+        menu_messages: 83
+        menu_registration: 71
+    comments:
+      name:
+        title: "Comments [C]"
+      code:
+        title: 67
 
   scores:
     index:
@@ -4379,6 +4440,15 @@ en_US:
       registration: "So you can have access to Solar 2.0, registration is mandatory. The goal of this tutorial is to answer any doubts about this procedure with all required steps and relevant information. "
       password_recovery: "After register at Solar 2.0, it may happen that you forgot your password to access or, even, your username. With the recovery password area, it's possible to generate a new password and all instructions to do so are explained at this tutorial."
       home: "After logged in at Solar 2.0, every user is redirected to environment's initial page, Home. This screen content can change accordly to it's role. However, there are many basic elements and a common structure to any profile. This tutorial aims to explain all these areas."
+      chat_edition: "Chat is a tool that allows the accomplishment of chat. Those responsible have the possibility to register and define their basic information. All the information you need to understand how chat editing works is available in this tutorial."
+      support_material_edition: "Support material is a tool that allows you to download files. Those responsible have the possibility to register and define their basic information. All the information you need to understand how editing support material works is available in this tutorial."
+      webconference_edition: "Web conferencing is a tool that allows either classes to be taught online with the interaction of the students. Those responsible have the possibility to register and define their basic information. All the information you need to understand how the edition of web conferencing works are available in this tutorial."
+      assignment_edition: "Portfolio is a tool that allows you to submit work. Those responsible have the possibility to register and define their basic information. All the information you need to understand how portfolio editing works is available in this tutorial."
+      bibliography_edition: "Bibliographies is a tool that allows those responsible to inform the bibliography of the discipline. Those responsible have the possibility to register and define their basic information. All the information you need to understand how the edition of the bibliography works is available in this tutorial."
+      discussion_edition: "Forum is a tool that allows students and teachers / tutors to make speeches about a particular topic. Those responsible have the possibility to register and define their basic information. All the information needed to understand how the forum edition works are available in this tutorial."
+      lesson_edition: "Lesson is a tool that allows students to gain fully online knowledge path is produced exclusively by teachers. Those responsible have the possibility to register and define their basic information. All the information needed to understand how the lesson edition works are available in this tutorial."
+      user_allocation_edition: "User allocation is a tool that allows the user allocation being this with a profile in certain group or offer."
+      bind_unbind_groups: "This tutorial explains and illustrates some how to link and unlink a class from a previously enrolled activity."
     files:
       math_editor: View Math Editor PDF
       evaluation: View Evaluation and frequency of activities PDF
@@ -4396,6 +4466,15 @@ en_US:
       password_recovery: View Password Recovery PDF
       registration: View Registration PDF
       home: Vew Home PDF
+      chat_edition: "View PDF about Chats edition"
+      support_material_edition: "View PDF on the edition of the Material of support"
+      webconference_edition: "View PDF about the edition of the Webconferences"
+      assignment_edition: "View PDF about the edition of the Portfolios"
+      bibliography_edition: "View PDF about the edition of Bibliographies"
+      discussion_edition: "View PDF about the edition of the Forums"
+      lesson_edition: "View PDF about the Classroom edition"
+      user_allocation_edition: "View PDF on User Allocation"
+      bind_unbind_groups: "View PDF on Linking and Unlinking Activity Class"
     new_language_pt: " (It was not possible to find this tutorial in English, see our Portuguese version)"
     new_language_en: " (It was not possible to find this tutorial in English, see our English version)"
 

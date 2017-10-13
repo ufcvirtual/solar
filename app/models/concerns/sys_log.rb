@@ -33,7 +33,7 @@ module SysLog
           if ((obj.respond_to?(:academic_allocations) && !obj.try(:academic_allocations).empty?) || obj.respond_to?(:academic_allocation))
             allocation_tag_id = params[:allocation_tag_id] || active_tab[:url][:allocation_tag_id] || obj.allocation_tag.id rescue nil
             [(obj.respond_to?(:academic_allocations) ? obj.academic_allocations : obj.academic_allocation)].flatten.each do |al|
-              LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, academic_allocation_id: al.id, allocation_tag_id: allocation_tag_id, ip: get_remote_ip, description: description)
+              LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, academic_allocation_id: al.id, allocation_tag_id: (allocation_tag_id || al.allocation_tag_id), ip: get_remote_ip, description: description)
             end
           elsif (obj.respond_to?(:allocation_tag) && !(obj.allocation_tag.nil?))
             LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, allocation_tag_id: obj.allocation_tag.id, ip: get_remote_ip, description: description)
