@@ -335,6 +335,9 @@ en_US:
         item_image: Image
         item_audio: Audio
         comment: Comment
+      question_text:  
+        text: Text
+        associated_text: Associated text
       assignment:
         name: Title
         type_assignment: Type
@@ -557,6 +560,7 @@ en_US:
   item_search_no_found: "No item found"
   high_contrast_link: "High Contrast"
   remove_high_contrast_link: "Remove High Contrast"
+  no_javascript: "Your browser does not support JavaScript or it's disabled."
   login_description1: "Solar is a virtual learning environment developed by the UFC Virtual Institute at Federal University of Ceará. It is geared towards the teacher and the student, allowing the publication of courses and interaction with them."
   login_description2: "The Solar was developed to enhance the learning process, starting from the interaction with the graphic interface of the environment, and to allow fast access to the pages and the content, easy navigation and browser compatibility. Here, the learner feels safe to explore the available spaces. The environment is supported by a philosophy of interaction, not control."
   login_title: "Sistema Online de Aprendizagem da Universidade Federal do Ceará"
@@ -3916,6 +3920,7 @@ en_US:
       show_alt: "Expand audio's text version"
       hide_alt: "Hide audio's text version"
       score: Scores
+      associated_text: Associated text
     question:
       preview: Preview
       public: Public
@@ -3943,11 +3948,14 @@ en_US:
       question_item: Alternative
       new: New question
       edit: Edit question
+      add_media: Add images, audios or associated texts
+      add_media_1: Add images or audios
       steps:
         info: Informations
         items: Items
         new: New question
         edit: Edit question
+        medias: Images, audios or texts
       items:
         answer: 'Answer*'
         add: Add more options
@@ -3983,6 +3991,11 @@ en_US:
       audio:
         add_audio: Add/update audio
         aud_desc: 'Alt: Mandatory description to accessibility (disabled people)'
+      text:  
+        text: Text
+        associated_text: Associated text  
+        new: New Text
+        import: Import from issues
     labels:
       labels: 'labels: '
     error:

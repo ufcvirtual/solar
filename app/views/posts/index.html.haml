@@ -1,80 +1,81 @@
 .block_wrapper#forum_description
-  .block_title
-    %h2
+  %h2
+    .block_title
       %i.icon-forum
       = @discussion.name
-  .block_content.block_content_text= sanitize @discussion.description
+  .block_content
+    .block_content_text= sanitize @discussion.description
 
-.block_wrapper.posts
-  = content_tag(:i, nil, class: 'icon-pluscircle.png')
-  .block_title.forum_navigation
-    %span#forum_new_message
-      - if @can_interact
-        - if @can_post
-          = button_tag(type: 'button', onclick: "javascript:new_post(this);", class: 'btn btn_main', id: 'button_new_post', :'data-tooltip' => t(:forum_new_message), :'aria-label'=> t(:forum_new_message), :'data-shortcut' => t("shortcut.discussion.code.new"), :'data-shortcut-name' => t("shortcut.discussion.name.new")) do
-            = content_tag(:i, nil, class: 'icon-edit')
-      - else
-        #forum_closed= t("forum_closed")
-      - unless @acu.blank?
-        - comments = @acu.try(:comments).count rescue 0
-        = link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_discussions_path(tool_id: @discussion.id, ac_id: @academic_allocation.id), class: "btn #{comments > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: comments), :'aria-label' => t('comments.summary.count_alt', count: comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.comments.code.title"), :'data-shortcut-name'=> t("shortcut.comments.name.title")
+  .posts
+    = content_tag(:i, nil, class: 'icon-pluscircle.png')
+    .block_title.forum_navigation
+      %span#forum_new_message
+        - if @can_interact
+          - if @can_post
+            = button_tag(type: 'button', onclick: "javascript:new_post(this);", class: 'btn btn_main', id: 'button_new_post', :'data-tooltip' => t(:forum_new_message), :'aria-label'=> t(:forum_new_message), :'data-shortcut' => t("shortcut.discussion.code.new"), :'data-shortcut-name' => t("shortcut.discussion.name.new")) do
+              = content_tag(:i, nil, class: 'icon-edit')
+        - else
+          #forum_closed= t("forum_closed")
+        - unless @acu.blank?
+          - comments = @acu.try(:comments).count rescue 0
+          = button_tag content_tag(:i, nil, class: 'icon-comment'), :'data-url' => summary_discussions_path(tool_id: @discussion.id, ac_id: @academic_allocation.id), class: "btn #{comments > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: comments), :'aria-label' => t('comments.summary.count_alt', count: comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.comments.code.title"), :'data-shortcut-name'=> t("shortcut.comments.name.title"), onclick: 'open_summary(this)'
 
-    %span#forum_view_mode
-      - class_l = (@display_mode == 'list') ? 'btn_pressed' : 'btn_default'
-      - class_t = (@display_mode == 'tree') ? 'btn_pressed' : 'btn_default'
-      - class_u = (@display_mode == 'user') ? 'btn_pressed' : 'btn_default'
+      %span#forum_view_mode
+        - class_l = (@display_mode == 'list') ? 'btn_pressed' : 'btn_default'
+        - class_t = (@display_mode == 'tree') ? 'btn_pressed' : 'btn_default'
+        - class_u = (@display_mode == 'user') ? 'btn_pressed' : 'btn_default'
 
-      .btn-group
-        = link_to content_tag(:i, nil, class: 'icon-list'), discussion_posts_path(@discussion, {display_mode: 'list'}), {class: "btn #{class_l}", id: 'forum_view_mode-list', :"data-tooltip" => t(".show_plainlist"), :"aria-label" => t(".show_plainlist"), :'data-shortcut' => t("shortcut.discussion.code.list"), :'data-shortcut-name' => t("shortcut.discussion.name.list")}
-        = link_to content_tag(:i, nil, class: 'icon-flow-cascade'), discussion_posts_path(@discussion, {display_mode: 'tree'}), {class: "btn #{class_t}", id: 'forum_view_mode-thread', :"data-tooltip" => t(".show_thread"), :'aria-label' => t(".show_thread"), :'data-shortcut' => t("shortcut.discussion.code.thread"), :'data-shortcut-name' => t("shortcut.discussion.name.thread")}
-        = link_to content_tag(:i, nil, class: 'icon-user'), discussion_posts_path(@discussion, {display_mode: 'user'}), {class: "btn #{class_u}", id: 'forum_view_mode-user', :"data-tooltip" => t(".show_my_post"), :'aria-label' => t(".show_my_post"), :'data-shortcut' => t("shortcut.discussion.code.discussion"), :'data-shortcut-name' => t("shortcut.discussion.name.discussion")}
+        .btn-group
+          = link_to content_tag(:i, nil, class: 'icon-list'), discussion_posts_path(@discussion, {display_mode: 'list'}), {class: "btn #{class_l}", id: 'forum_view_mode-list', :"data-tooltip" => t(".show_plainlist"), :"aria-label" => t(".show_plainlist"), :'data-shortcut' => t("shortcut.discussion.code.list"), :'data-shortcut-name' => t("shortcut.discussion.name.list")}
+          = link_to content_tag(:i, nil, class: 'icon-flow-cascade'), discussion_posts_path(@discussion, {display_mode: 'tree'}), {class: "btn #{class_t}", id: 'forum_view_mode-thread', :"data-tooltip" => t(".show_thread"), :'aria-label' => t(".show_thread"), :'data-shortcut' => t("shortcut.discussion.code.thread"), :'data-shortcut-name' => t("shortcut.discussion.name.thread")}
+          = link_to content_tag(:i, nil, class: 'icon-user'), discussion_posts_path(@discussion, {display_mode: 'user'}), {class: "btn #{class_u}", id: 'forum_view_mode-user', :"data-tooltip" => t(".show_my_post"), :'aria-label' => t(".show_my_post"), :'data-shortcut' => t("shortcut.discussion.code.discussion"), :'data-shortcut-name' => t("shortcut.discussion.name.discussion")}
 
-    #forum_pagination
-      = page_entries_info @posts, model: Post
-      = will_paginate @posts
-    .new_posts{style: "display: block;"}
-      #new_post
-        = simple_form_for(@post, html: { id: 'new_post_form', :'action-to-edit' => discussion_post_path(@discussion.id, ':id'), :"action-default" => discussion_posts_path(@discussion.id), method: :put, multipart: true }) do |form|
-          = form.hidden_field(:parent_id,  value: '', id: 'discussion_post_parent_id')
-          = form.hidden_field(:display_mode, value: @display_mode, id: 'display_mode_1')
-          = form.hidden_field(:current_page, value: @current_page, id: 'current_page_1')
-          = form.text_area(:content)
+      #forum_pagination
+        = page_entries_info @posts, model: Post
+        = will_paginate @posts
+      .new_posts
+        #new_post
+          = simple_form_for(@post, html: { id: 'new_post_form', :'action-to-edit' => discussion_post_path(@discussion.id, ':id'), :"action-default" => discussion_posts_path(@discussion.id), method: :put, multipart: true }) do |form|
+            = form.hidden_field(:parent_id,  value: '', id: 'discussion_post_parent_id')
+            = form.hidden_field(:display_mode, value: @display_mode, id: 'display_mode_1')
+            = form.hidden_field(:current_page, value: @current_page, id: 'current_page_1')
+            = form.text_area(:content)
 
-          = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'post_content', number: '', field: ''}
-          
-          = button_tag content_tag(:i, nil, class: 'icon-paperclip'), class: 'btn', id: 'post_new_file', :'data-tooltip'=> t('posts.post.attach_file'), :'aria-label'=> t('posts.post.attach_file')
-          = button_tag t('.save_draft'), class: "btn", id: "submit_post_draft", type: :button, :'data-tooltip' => raw(t('posts.post.fv_explain')), :'aria-label'=> t('.save_draft') + raw(t('posts.post.fv_explain_alt')), :'data-draft' => true
-         
+            = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'post_content', number: '', field: ''}
+            
+            = button_tag content_tag(:i, nil, class: 'icon-paperclip'), class: 'btn', id: 'post_new_file', :'data-tooltip'=> t('posts.post.attach_file'), :'aria-label'=> t('posts.post.attach_file')
+            = button_tag t('.save_draft'), class: "btn", id: "submit_post_draft", type: :button, :'data-tooltip' => raw(t('posts.post.fv_explain')), :'aria-label'=> t('.save_draft') + raw(t('posts.post.fv_explain_alt')), :'data-draft' => true
+           
 
-          .new_post_dialog_buttons.btn-group
-            = button_tag content_tag(:span, t(:cancel)), type: 'button', onclick: "cancel_posting(this)", class: 'btn btn_caution', id: 'btn_cancel_post'
-            = button_tag t('.publish'), class: "btn btn_main submit_post", id: "submit_post", type: :button, :'data-draft' => false
+            .new_post_dialog_buttons.btn-group
+              = button_tag content_tag(:span, t(:cancel)), type: 'button', onclick: "cancel_posting(this)", class: 'btn btn_caution', id: 'btn_cancel_post'
+              = button_tag t('.publish'), class: "btn btn_main submit_post", id: "submit_post", type: :button, :'data-draft' => false
 
-          
+            
 
-          = form.simple_fields_for :files do |files|
-            .file_input
-              = files.input :_destroy, as: :hidden, input_html: { value: 0, class: "destroy_input_file", :"data-file-id" => files.object.id }
-              = files.input :attachment, label: false, input_html: { id: 'fileupload' }
-          %br
-          %br
-          %h3.attachment_title_.invisible= t("posts.post.file_list")
-          .input.list_files_to_send_
-            - @post.files.each do |file|
-              - if file.persisted?
-                .input.files
-                  %label
-                  %span#file{:"data-file-id" => file.id}
-                    %span{ tabindex: "0" }= file.attachment_file_name
-                    %i.icon-cross-square.warning.remove_file{ tabindex: "0" }
+            = form.simple_fields_for :files do |files|
+              .file_input
+                = files.input :_destroy, as: :hidden, input_html: { value: 0, class: "destroy_input_file", :"data-file-id" => files.object.id }
+                = files.input :attachment, label: false, input_html: { id: 'fileupload' }
+            %br
+            %br
+            %h3.attachment_title_.invisible= t("posts.post.file_list")
+            .input.list_files_to_send_
+              - @post.files.each do |file|
+                - if file.persisted?
+                  .input.files
+                    %label
+                    %span#file{:"data-file-id" => file.id}
+                      %span{ tabindex: "0" }= file.attachment_file_name
+                      %i.icon-cross-square.warning.remove_file{ tabindex: "0" }
 
-    .forum_post_new
+      .forum_post_new
 
-  .forum_posts_wrapper
-    - @hash = { } unless @display_mode == 'list'
-    - @posts = get_page_posts(@posts, @current_page) unless @display_mode == 'list'
-    - @posts.each do |post|
-      = render partial: 'post', locals: { post: post, display_mode: @display_mode, can_interact: @can_interact, can_post: @can_post, current_user: @user, new_post: false, number: '', comments: (@acu.try(:comments).count rescue nil)}
+    .forum_posts_wrapper
+      - @hash = { } unless @display_mode == 'list'
+      - @posts = get_page_posts(@posts, @current_page) unless @display_mode == 'list'
+      - @posts.each do |post|
+        = render partial: 'post', locals: { post: post, display_mode: @display_mode, can_interact: @can_interact, can_post: @can_post, current_user: @user, new_post: false, number: '', comments: (@acu.try(:comments).count rescue nil)}
 
 .block_wrapper
   = link_to t(:back), :back, { class: 'btn' , id: 'back' }, :'aria-label' => t(:back)

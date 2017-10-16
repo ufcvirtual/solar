@@ -297,6 +297,23 @@
       }
 
     }
+    #question_text{
+      text-align: center;
+      width: 90%;
+      .legend{
+          background-color:#FFF8CC;
+        .q_text{
+          background-color:$background_light_beige;
+          text-align: center;
+          overflow:auto; 
+          width: 99%;
+          display: none;
+          padding: 0.5em;
+        }  
+
+      } 
+
+    }
 
   }
 

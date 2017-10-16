@@ -10,11 +10,16 @@
             %li.info.active
               = t('questions.form.steps.info')
               .dot.active#dot-info
+            %li.medias
+              = t('questions.form.steps.medias')  
+              .dot#dot-medias
             %li.items
               = t('questions.form.steps.items')
               .dot#dot-items
         = eq.simple_fields_for :question do |f|
           .step-info
             = render partial: 'questions/form/info', locals: { f: f, eq: eq }
+          .step-medias.invisible
+            = render partial: 'questions/form/media', locals: { f: f, eq: nil }  
           .step-items.invisible
             = render partial: 'questions/form/items', locals: { f: f, eq: eq }

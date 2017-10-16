@@ -29,7 +29,7 @@ ul {
   list-style-type: none;
 }
 
-h1, h2, h3, h4, h5 {
+h1, h2, h3, h4, h5, title {
   font-family: 'Ubuntu Light', sans-serif;
 }
 
@@ -48,9 +48,13 @@ h1 {
   }
 }
 
-h2 {
+h2, title {
   font-family: 'Ubuntu Condensed', sans-serif;
   font-weight: 500;
+}
+
+title {
+  display: block;
 }
 
 h3 {
@@ -333,4 +337,8 @@ a.disabled{
 
 .dropdown-menu{
   color: $color_black_buttons;
+}
+
+i.noscript{
+  color: $removed_permission_color;
 }

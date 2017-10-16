@@ -39,9 +39,9 @@
             = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
           %ul#mysolar_top_options
             %li#mysolar_top_submenu_label.mysolar_top_submenu_label_regular.nav_menu
-              = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", onclick: "mysolarTopSubmenuToggle();return false;"
-              - if can? :update, current_user
-                %a#mysolar_top_user_nick.mysolar_top_link.nav_item{href: "", onclick: "mysolarTopSubmenuToggle();return false;"}= current_user.nick
+              = link_to '#', {onclick: "mysolarTopSubmenuToggle();return false;", class: 'mysolar_top_link nav_item', id: 'mysolar_top_user_nick'} do
+                = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", :'aria-hidden' => 'true'
+                = current_user.nick
             %li#server_clock_wrapper.nav_menu
               %span#server_clock.nav_item{name: "server_clock"}
             %li#accessibility_top_menu.mysolar_top_submenu_label_regular.nav_menu
@@ -97,16 +97,18 @@
                 %i.icon-arrow-down-triangle
               .dropdown.dropdown-tip{id: "dropdown_eq_1_2"}
                 %ul.shortcut_floating_box{ class: 'dropdown-menu' }
-                  %h2= t('scores.info.shortcut')
+                  %title= t('scores.info.shortcut')
                   = link_to content_tag(:i, nil, class: "icon-cancel-circle"), "#", class: 'close_dropdown', :'data-tooltip' => t("shortcut.close"), :'aria-label' => t("shortcut.close")
 
             %li#mysolar_suggestions
               = link_to t(:mysolar_suggestions), 'https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ', class: 'btn', target: '_blank', :'aria-label' => t(:mysolar_suggestions) + t(:new_window)
+            %li
+              %noscript= content_tag(:i, nil, class: 'icon-warning noscript', :'aria-label' => t(:no_javascript), title: t(:no_javascript))
 
 
       / sidebar
       #mysolar_sidebar{role: 'navigation'}
-        #mysolar_menu_accordion{style: "z-index:10"}
+        #mysolar_menu_accordion
           .mysolar_menu
             %p.menu_accessible
               %a#menu_accesskey{href: "#menu_accesskey", :'aria-label' => t(:start_menu)}= t(:menu_first_item)

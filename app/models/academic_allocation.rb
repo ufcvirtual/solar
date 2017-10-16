@@ -103,8 +103,10 @@ class AcademicAllocation < ActiveRecord::Base
 
   def individual_to_group
     academic_allocation_users.each do |acu|
-      ga = GroupAssignment.create academic_allocation_id: id, group_name: acu.user.name
-      gp = GroupParticipant.create user_id: acu.user_id, group_assignment_id: ga.id
+      ga = GroupAssignment.where(academic_allocation_id: id, group_name: acu.user.name[0..19]).first_or_initialize
+      ga.merge = true
+      ga.save!
+      gp = GroupParticipant.where(user_id: acu.user_id, group_assignment_id: ga.id).first_or_create
       acu.update_attributes group_assignment_id: ga.id
     end
   end

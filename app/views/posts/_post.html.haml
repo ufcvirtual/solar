@@ -52,10 +52,10 @@
                 %li= link_to content_tag(:i, nil, class: 'icon-write'), user_discussion_posts_path(post.discussion.id, post.user_id), class: 'btn to_evaluate_post', :'data-tooltip'=> t('.to_evaluate'), :'aria-label' => t('.to_evaluate') + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
               - if can_interact
                 - if editable
-                  %li= link_to_function content_tag(:i, nil, class: 'icon-trash'), 'delete_post(this)', class: 'btn btn_caution', :'data-url' => discussion_post_path(post.discussion, post), :'data-post' => post.id, :'data-tooltip'=> t('.remove'), :'aria-label'=> t('.remove'), onkeydown: 'click_on_keypress(event, this);'
-                  %li= link_to_function content_tag(:i, nil, class: 'icon-edit'), "update_post(this, #{post.id}, #{post.parent_id || 0})", class: 'btn update_post', :'data-tooltip'=> t('.edit'), :'aria-label'=> t('.edit'), onkeydown: 'click_on_keypress(event, this);'
+                  %li= button_tag content_tag(:i, nil, class: 'icon-trash'), class: 'btn btn_caution', :'data-url' => discussion_post_path(post.discussion, post), :'data-post' => post.id, :'data-tooltip'=> t('.remove'), :'aria-label'=> t('.remove'), onkeydown: 'click_on_keypress(event, this);', onclick: 'delete_post(this)'
+                  %li= button_tag content_tag(:i, nil, class: 'icon-edit'), class: 'btn update_post', :'data-tooltip'=> t('.edit'), :'aria-label'=> t('.edit'), onkeydown: 'click_on_keypress(event, this);', onclick: "update_post(this, #{post.id}, #{post.parent_id || 0})"
                 - if post.can_be_answered? && can_post
-                  %li= link_to_function content_tag(:i, nil, class: 'icon-reply'), "new_post(this, #{post.id});", class: 'btn response_post', level: post.level, :'data-tooltip'=> t('.answer'), :'aria-label'=> t('.answer'), onkeydown: 'click_on_keypress(event, this);'
+                  %li= button_tag content_tag(:i, nil, class: 'icon-reply'), class: 'btn response_post', level: post.level, :'data-tooltip'=> t('.answer'), :'aria-label'=> t('.answer'), onkeydown: 'click_on_keypress(event, this);', onclick: "new_post(this, #{post.id});"
               - else
                 - if editable
                   %li= button_tag content_tag(:i, nil, class: 'icon-trash'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.remove'), :'aria-label'=> t('.remove')

@@ -11,11 +11,25 @@
     - if question.annulled
       - anull = '<div class="annulled">'+t('exams.open.anull')+'</div>'
     .questions
+      - text = QuestionText.find(question.question_text_id).text.html_safe unless question.question_text_id.nil?
+      - unless question.question_text_id.nil?  
+        %ul.question_texts  
+          %li#question_text    
+            .legend 
+              = link_to('#', onclick: 'show_text(this)', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
+                =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
+                =t('questions.questions.associated_text')
+              = link_to('#', onclick: 'show_text(this)', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
+                =content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.hide_alt'), :'aria-hidden' => 'true')
+                =t('questions.questions.associated_text')
+              .q_text
+                = raw text
       %h3.question{:'data-shortcut'=> t("shortcut.exam.code.enunciation"), :'data-shortcut-name'=> t("shortcut.exam.name.enunciation"), :'data-shortcut-focus' => 'true'}
         .number= number_question.to_s + ')'
         .enunciation{id: "radio_#{number_question}"}= raw [question.enunciation, anull, score].compact.join(' ')
       - question_images = get_question_images(question.id)
       - @question_audios = get_question_audios(question.id)
+      
       - unless question_images.nil?
         %ul.question_images
           - question_images.each do |q_image|
@@ -56,6 +70,7 @@
               - else
                 .audio_pdf=t('exams.open.audio2', desc: q_audio.description) + (q_audio.audio_description.blank? ? '' : t('exams.open.audio_text', desc: q_audio.audio_description))
 
+
       - if @preview
         = render 'exams/open/question_preview', { question: question }
       - else
@@ -80,6 +95,7 @@
   var clock_switch;
 
   $(function() {
+
     if (typeof clock_switch == 'undefined') {
       new updateTime("clock", [time_h, time_min, time_s]);
       clock_switch = true;

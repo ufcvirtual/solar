@@ -649,6 +649,7 @@ Solar::Application.routes.draw do
     end
 
     collection do
+      get :import_text
       get '/import/exam_questions/steps',   to: 'exam_questions#import_steps',   as: :import_steps
       get '/import/exam_questions/list',    to: 'exam_questions#import_list',    as: :import_list
       get '/import/exam_questions/details', to: 'exam_questions#import_details', as: :import_details

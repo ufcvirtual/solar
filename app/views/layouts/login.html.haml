@@ -36,7 +36,12 @@
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));
     #login_wrapper
+      = link_to t(:main_content), "#login-form", accesskey: "1", class: "invisible", id: 'accesskey_maincontent'
       = yield
+      %noscript
+        .flash_message_wrapper
+          .alert#flash_message
+            %span= t(:no_javascript)
       #login_footer_push
       = render '/user_sessions/footer'
 

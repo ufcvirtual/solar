@@ -51,8 +51,39 @@
         append_rich_text($(".desc textarea[id*='_question_items_']:visible:last").attr('id'));
       }
     });
+
+    if("#{f.object.have_media?}"=='false'){
+      $('.medias').hide();
+      $("#go_to").attr("onclick","go_to_items()");
+      //$("#question_texts_media_question").attr("checked","false");
+
+    }else{
+      $('.medias').show();
+      $("#_back").attr("onclick","back_medias()");
+      $("#question_texts_media_question").attr("checked","true");
+    }
     
   });
+
+  function change(elem){
+    $('.medias').toggle('show');
+    $("#question_texts_media_question").prop('checked', !$("#question_texts_media_question").prop('checked'));
+
+    var src = $(elem).find('img').attr('src');
+    if (src=='/assets/released.png'){
+      var newsrc = '/assets/rejected.png'; 
+      $("#go_to").attr("onclick","go_to_items()");
+      $("#_back").attr("onclick","back()");
+
+    }else{
+      var newsrc = '/assets/released.png';
+      $("#go_to").attr("onclick","go_to_medias()");
+      $("#_back").attr("onclick","back_medias()");
+
+    }
+    $(elem).find('img').attr('src', newsrc );
+   
+  }
 
   function set_image_input(){
     $("#images input[type='file'], .image input[type='file']").each(function(idx){
@@ -120,6 +151,8 @@
     }    
   }
 
+ 
+
 .question_type
   = f.label t('questions.new.privacy')
   = f.select :privacy, ([ [t('questions.new.public'), 0], [t('questions.new.private'), 1] ]), include_blank: false
@@ -144,28 +177,10 @@
 
 = label_tag 'question_enunciation', '', id: 'exam_question_question_enunciation'
 
-.question_images
-  .visuallyhidden= label_tag :img_alt, '', id: 'exam_question_question_question_images_img_alt', onfocus: 'sendFocusAudioError("exam_question_question_attributes_question_images_attributes_", "_img_alt", 6)', tabindex: '0'
-  .visuallyhidden= label_tag :img_alt, '', id: 'exam_question_question_question_images_image_content_type'
-  .visuallyhidden= label_tag :img_alt, '', id: 'question_question_images_img_alt', onfocus: 'sendFocusAudioError("question_question_images_attributes_", "_img_alt", 6)', tabindex: '0'
-  .visuallyhidden= label_tag :img_alt, '', id: 'question_question_images_image_content_type'
-  
-  = render partial: 'questions/form/image', locals: { f: f, eq: nil }
-  .input.string
-    = f.add_nested_fields_link :question_images, t('.add_images'), class: 'btn'
-
-.question_audios
-  .visuallyhidden= label_tag :audio_description, '', id: 'exam_question_question_question_audios_description', onfocus: 'sendFocusAudioError("exam_question_question_attributes_question_audios_attributes_", "_audio_description", 6)', tabindex: '0'
-  .visuallyhidden= label_tag :audio_description, '', id: 'exam_question_question_question_audios_audio_content_type'
-  .visuallyhidden= label_tag :audio_description, '', id: 'question_question_audios_description', onfocus: 'sendFocusAudioError("question_question_audios_attributes_", "_audio_description", 6)', tabindex: '0'
-  .visuallyhidden= label_tag :audio_description, '', id: 'question_question_audios_audio_content_type'
-  .visuallyhidden= label_tag :audio_description, '', id: 'exam_question_question_question'
-
-
-  = render partial: 'questions/form/audio', locals: { f: f, eq: nil }
-  .input.string
-    = f.add_nested_fields_link :question_audios, t('.add_audios'), class: 'btn'
+.ckb
+  = f.label t('questions.form.add_media'), id: 'add_media'
+  = link_to_function (image_tag "#{f.object.have_media? ? 'released' : 'rejected'}.png"), 'change(this)', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => t('questions.form.add_media'), id: 'add_media_link'
 
 .form-actions.right_buttons
   = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
-  = button_to_function t('.continue'), 'go_to_items()', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button'
+  = button_to_function t('.continue'), 'go_to_medias()', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button', id: 'go_to'
