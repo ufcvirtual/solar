@@ -20,6 +20,6 @@
           %td.center{class: "assignment_#{info[:situation]}", headers: "situation_#{assignment.id}"}= t(info[:situation].to_sym)
           %td.center{headers: "grade_#{assignment.id}" }= info[:grade] || "-"
           %td.center{headers: "working_hours_#{assignment.id}" }= info[:working_hours] || "-"
-          %td.center{headers: "comments_#{assignment.id}"}= link_to_function content_tag(:i, nil, class: "icon-comment big #{info[:has_comments] ? '' : 'empty'}"), 'open_summary(this)', :'data-url' => summarized_assignment_path(assignment.id, situation: info[:situation], group_id: group.id), :'data-tooltip' => t('comments.summary.title', tool: assignment.name, user: group.name), :'aria-label' => t('comments.summary.title', tool: assignment.name, user: group.name) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+          %td.center{headers: "comments_#{assignment.id}"}= link_to_function content_tag(:i, nil, class: "icon-comment big #{info[:has_comments] ? '' : 'empty'}"), 'open_summary(this)', :'data-url' => summarized_assignment_path(assignment.id, situation: info[:situation], group_id: group.id), :'data-tooltip' => t('comments.summary.title', tool: assignment.name, user: group.group_name), :'aria-label' => t('comments.summary.title', tool: assignment.name, user: group.group_name) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
 - else
   .text_none=t :itens_not_found
