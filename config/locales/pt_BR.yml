@@ -395,6 +395,9 @@ pt_BR:
           image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."
       question_labels:
         name: 'Palavras-Chave'
+      question_text:  
+        text: Texto
+        associated_text: Texto associado
       assignment:
         allocation_tag_id: Turma
         name: Título
@@ -4165,6 +4168,7 @@ pt_BR:
       show_alt: Expandir versão textual do áudio
       hide_alt: Ocultar versão textual do áudio
       score: Pontuação
+      associated_text: Texto associado
     question:
       preview: Visualização
       public: Pública
@@ -4192,11 +4196,14 @@ pt_BR:
       question_item: Alternativa
       new: Nova questão
       edit: Editar questão
+      add_media: Adicionar imagens, áudios ou textos associados
+      add_media_1: Adicionar imagens ou áudios
       steps:
         info: Informações
         items: Itens
         new: Nova questão
         edit: Editar questão
+        medias: Imagens, áudios ou textos
       items:
         answer: 'Resposta*'
         add: Adicionar mais opções
@@ -4232,6 +4239,11 @@ pt_BR:
       audio:
         add_audio: Adicionar/alterar áudio
         aud_desc: 'Se houver algum deficiente auditivo na turma, por favor realizar a  áudio descrição de modo que este aluno não seja prejudicado.'
+      text:  
+        text: Texto
+        associated_text: Texto associado
+        new: Novo texto
+        import: Importar de questões desta prova
     labels:
       labels: 'palavras-chave: '
     error:

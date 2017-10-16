@@ -53,6 +53,10 @@ function save_question(exam_id, type_question){
   if (prepend_to != undefined && !!!prepend_to.length)
     prepend_to = $('.list_questions_exam_'+exam_id);
 
+  if($("#question_texts_media_question").prop('checked')==false){
+    $('#audios').find('.remove_nested_fields_link').click(); 
+    $('#images').find('.remove_nested_fields_link').click();    
+  }
   if(!$('form#question_form').data('disabled'))
     $('form#question_form').serialize_and_submit({
       files: true,
@@ -73,20 +77,42 @@ function save_question(exam_id, type_question){
 
 function go_to_items(){
   $('.step-info').addClass('invisible');
+  $('.step-medias').addClass('invisible');
   $('.step-items').removeClass('invisible');
   $('li.info').removeClass('active');
+  $('li.medias').removeClass('active');
   $('#dot-info').removeClass('active');
+  $('#dot-medias').removeClass('active');
   $('li.items').addClass('active');
   $('#dot-items').addClass('active');
+}
+
+function go_to_medias(){
+  $('.step-info').addClass('invisible');
+  $('.step-items').addClass('invisible');
+  $('.step-medias').removeClass('invisible');
+  $('li.info').removeClass('active');
+  $('li.items').removeClass('active');
+  $('#dot-info').removeClass('active');
+  $('#dot-items').removeClass('active');
+  $('li.medias').addClass('active');
+  $('#dot-medias').addClass('active');
 }
 
 function back(){
   $('.step-info').removeClass('invisible');
   $('.step-items').addClass('invisible');
+  $('.step-medias').addClass('invisible');
   $('li.info').addClass('active');
   $('#dot-info').addClass('active');
   $('li.items').removeClass('active');
+  $('li.medias').removeClass('active');
   $('#dot-items').removeClass('active');
+  $('#dot-medias').removeClass('active');
+
+}
+function back_medias(){
+  go_to_medias();
 }
 
 function change_status(icon, replace_list){

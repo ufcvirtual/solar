@@ -26,6 +26,15 @@ class ExamQuestionsController < ApplicationController
     authorize! :create, Question, { on: at_ids = @exam_question.exam.allocation_tags.map(&:id) }
     @exam_question.question.user_id = current_user.id
 
+    if !params['question_texts']['text'].blank?
+      @question_text = QuestionText.new(text: params['question_texts']['text'])
+      @question_text.save
+      @exam_question.question.question_text_id = @question_text.id
+    elsif !params['question_texts_id'].blank?
+      @question_text = QuestionText.find(params['question_texts_id'])
+      @exam_question.question.question_text_id = @question_text.id
+    end  
+
     if @exam_question.save
       if @exam_question.exam.questions.size > 1
         render partial: 'question', locals: { question: @exam_question.question, exam_question: @exam_question, exam: @exam_question.exam, hide_columns: false, can_see_preview: true }
@@ -49,14 +58,34 @@ class ExamQuestionsController < ApplicationController
 
   def edit
     @exam_question = ExamQuestion.find(params[:id])
+    @question_text = QuestionText.find(@exam_question.question.question_text_id) unless @exam_question.question.question_text_id.blank?
     build_exam_question
   end
 
   def update
     authorize! :update, Question
     @exam_question = ExamQuestion.find params[:id]
+    
+    if params['question_texts']['media_question'].to_i == 1
+      if !params['question_texts_id'].blank?
+        @question_text = QuestionText.find(params['question_texts_id'])
+        @exam_question.question.question_text_id = @question_text.id
+      elsif !params['question_texts']['text'].blank?
+        @question_text = QuestionText.new(text: params['question_texts']['text'])
+        @question_text.save
+        @exam_question.question.question_text_id = @question_text.id
+      end
+
+    else
+      @exam_question.question.question_text_id = nil
+    end   
 
     if @exam_question.update_attributes exam_question_params
+      if !params['question_texts_id'].blank? && params['question_texts']['media_question'].to_i == 0
+        if Question.where(:question_text_id => params['question_texts_id']).count == 0
+          QuestionText.find(params['question_texts_id']).destroy
+        end  
+      end
       render partial: 'question', locals: { question: @exam_question.question, exam_question: @exam_question, exam: @exam_question.exam, hide_columns: false, can_see_preview: true }
     else
      @errors = []
@@ -173,6 +202,11 @@ class ExamQuestionsController < ApplicationController
   rescue => error
     render_json_error(error, 'exam_questions.errors')
   end
+
+  def import_text
+    question_text = QuestionText.find params[:id]
+    render partial: 'questions/form/import_text', locals: { f: question_text, eq: nil } 
+  end  
 
   def import_details
     authorize! :import_export, Question

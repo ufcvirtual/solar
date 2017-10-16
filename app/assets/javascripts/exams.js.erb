@@ -79,3 +79,16 @@ function validation_error(resp){
   alert(resp);
   location.reload(true);
 }
+
+function show_text(element){
+  var div = $($(element).siblings('.q_text'));
+  div.stop().slideToggle();
+  $('.show_questions_description_ico', $(element).parent()).each(function(){
+    $(this).toggle();
+
+  });
+  if(div.is(':visible'))
+    focus_element(div);
+  else
+    focus_element($('.show_questions_description_ico:visible', $(element).parent()));
+} 

@@ -6,6 +6,19 @@
   .content_exam
     .block_content
       .questions
+        - text = QuestionText.find(@question.question_text_id).text.html_safe unless @question.question_text_id.nil?
+        - unless @question.question_text_id.nil?  
+          %ul.question_texts  
+            %li#question_text    
+              .legend 
+                = link_to('#', onclick: 'show_text(this)', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
+                  =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
+                  =t('questions.questions.associated_text')
+                = link_to('#', onclick: 'show_text(this)', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
+                  =content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.hide_alt'), :'aria-hidden' => 'true')
+                  =t('questions.questions.associated_text')
+                .q_text
+                  = raw text
         %h3.question
           .enunciation=raw @question.enunciation
         - unless question_images.blank?

@@ -6,6 +6,7 @@ class Question < ActiveRecord::Base
 
   belongs_to  :user
   belongs_to :updated_by_user, class_name: 'User'
+  belongs_to :question_text  
 
   has_many :exam_questions
   has_many :exam_responses
@@ -13,6 +14,7 @@ class Question < ActiveRecord::Base
   has_many :question_images, class_name: 'QuestionImage', dependent: :destroy
   has_many :question_items , class_name: 'QuestionItem' , dependent: :destroy
   has_many :question_audios, class_name: 'QuestionAudio', dependent: :destroy
+
 
   has_and_belongs_to_many :question_labels
 
@@ -277,5 +279,43 @@ class Question < ActiveRecord::Base
     desc.merge!(labels: question_labels.collect{|item| item.attributes.except('created_at', 'updated_at')})
     desc.merge!(audios: question_audios.collect{|audio| audio.attributes.except('audio_updated_at' 'question_id')})
   end
+
+  def have_media?
+    if new_record?
+      return false
+    else  
+      return !self.question_text_id.blank? || question_audios.exists? || question_images.exists? ? true : false
+    end  
+  end  
+
+  def disabled_option(exam_id)
+    return self.get_questions_text(exam_id).count == 0 ? true : false
+  end 
+
+  def checked_option(exam_id)
+    if new_record?
+      return true
+    elsif self.question_text_id.blank?
+      return true
+    else  
+      return Question.joins(:exam_questions).where("question_text_id = ? AND questions.id <> ?", self.question_text_id, self.id).where({:'exam_questions.exam_id' => exam_id}).count == 0 ? true : false
+    end  
+  end
+
+  def questions_text(exam_id)
+    if new_record?
+      return Question.joins(:exam_questions).where("question_text_id IS NOT NULL").where({:'exam_questions.exam_id' => exam_id}) 
+    else
+      return Question.joins(:exam_questions).where("question_text_id IS NOT NULL").where({:'exam_questions.exam_id' => exam_id}) 
+    end  
+  end  
+
+  def get_questions_text(exam_id)
+    if new_record?
+      return Question.joins(:exam_questions).where("question_text_id IS NOT NULL").where({:'exam_questions.exam_id' => exam_id}) 
+    else
+      return Question.joins(:exam_questions).where("question_text_id IS NOT NULL AND questions.id <> ?", self.id).where({:'exam_questions.exam_id' => exam_id}) 
+    end  
+  end  
 
 end

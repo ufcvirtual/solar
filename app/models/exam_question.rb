@@ -48,7 +48,7 @@ class ExamQuestion < ActiveRecord::Base
 
       ExamQuestion.joins(:question).where(query)
         .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
-          questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
+          questions.id, questions.enunciation, questions.type_question, exam_questions.annulled, questions.question_text_id')
         .order(order)
     else
       responses = last_attempt.try(:complete) ? nil : last_attempt.try(:exam_responses)
@@ -58,7 +58,7 @@ class ExamQuestion < ActiveRecord::Base
           .where(exam_questions: {exam_id: exam.id, use_question: true},
             questions: {status: true})
           .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
-            questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
+            questions.id, questions.enunciation, questions.type_question, exam_questions.annulled, questions.question_text_id')
           .order((exam.raffle_order ? "RANDOM()" : "exam_questions.order"))
 
         exam_questions.each do |exam_question|
@@ -75,7 +75,7 @@ class ExamQuestion < ActiveRecord::Base
           exam_responses: {exam_user_attempt_id: last_attempt.id},
           questions: {status: true})
         .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
-          questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
+          questions.id, questions.enunciation, questions.type_question, exam_questions.annulled, questions.question_text_id')
         .order('exam_responses.id')
     end
   end
@@ -85,7 +85,7 @@ class ExamQuestion < ActiveRecord::Base
       .where(exam_questions: {exam_id: exam_id, use_question: true},
         questions: {status: true})
       .select('exam_questions.question_id, exam_questions.score, exam_questions.order,
-        questions.id, questions.enunciation, questions.type_question, exam_questions.annulled')
+        questions.id, questions.enunciation, questions.type_question, exam_questions.annulled, questions.question_text_id')
       .order((raffle_order ? "RANDOM()" : "exam_questions.order"))
   end
 

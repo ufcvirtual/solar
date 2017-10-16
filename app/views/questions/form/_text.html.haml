@@ -1,0 +1,54 @@
+#text
+  = simple_form_for :question_texts do |txt|
+    = txt.input_field :media_question, as: :boolean, class: "invisible", id: 'question_texts_media_question'
+    = txt.input :text, label: false, as: :ckeditor, input_html: { value: name = @question_text ? @question_text.text : "" }
+    = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'text', number: '2', field: t('.content_speech')} 
+
+#import
+  %p= @exam_question.exam.name
+  #list_question
+    - f.object.questions_text(@exam_question.exam_id).each do |q|
+      - checked = q.question_text_id == f.object.question_text_id && q.id == f.object.id ? true : false
+      - @qt = QuestionText.find q.question_text_id if checked
+      = label_tag 'question_texts_id_'+q.question_text_id.to_s, truncate(sanitize(q.enunciation, tags: [] ), length: 20)
+      = radio_button_tag 'question_texts_id', q.question_text_id, checked, class: "question_texts_id"
+
+  #text_question
+    = render partial: 'questions/form/import_text', locals: { f: @qt, eq: nil } unless @qt.blank?
+
+= javascript_include_tag 'ckeditor/init'
+
+:javascript
+
+  CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
+
+  $(function(){
+
+    CKEDITOR.editorConfig = function(config) {
+      config.toolbar =
+        [
+          { name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
+          { name: 'styles', items : [ 'Styles', 'Format', 'Font', 'TextColor'] },
+          { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
+          { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] },
+          { name: 'links', items : [ 'Link', 'Unlink', 'Smiley' ] },
+          { name: 'insert', items : ['EqnEditor'] }
+        ];
+
+        config.extraPlugins = 'eqneditor,smiley';
+    };
+
+    $(".question_texts_id").change(function(){   
+      var url_for = "#{Rails.application.routes.url_helpers.import_text_exam_questions_path }";
+      var data = { id: $(this).val() };
+
+      $.get(url_for, data, function(data) { 
+        $('#text_question').html(data); 
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+      });
+    });
+    
+  });

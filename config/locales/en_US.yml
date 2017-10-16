@@ -335,6 +335,9 @@ en_US:
         item_image: Image
         item_audio: Audio
         comment: Comment
+      question_text:  
+        text: Text
+        associated_text: Associated text
       assignment:
         name: Title
         type_assignment: Type
@@ -3916,6 +3919,7 @@ en_US:
       show_alt: "Expand audio's text version"
       hide_alt: "Hide audio's text version"
       score: Scores
+      associated_text: Associated text
     question:
       preview: Preview
       public: Public
@@ -3943,11 +3947,14 @@ en_US:
       question_item: Alternative
       new: New question
       edit: Edit question
+      add_media: Add images, audios or associated texts
+      add_media_1: Add images or audios
       steps:
         info: Informations
         items: Items
         new: New question
         edit: Edit question
+        medias: Images, audios or texts
       items:
         answer: 'Answer*'
         add: Add more options
@@ -3983,6 +3990,11 @@ en_US:
       audio:
         add_audio: Add/update audio
         aud_desc: 'Alt: Mandatory description to accessibility (disabled people)'
+      text:  
+        text: Text
+        associated_text: Associated text  
+        new: New Text
+        import: Import from issues
     labels:
       labels: 'labels: '
     error:
