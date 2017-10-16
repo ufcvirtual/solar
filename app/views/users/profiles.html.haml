@@ -3,20 +3,20 @@
     %h2= t(".profiles_list")
   .block_content_toolbar
     .block_toolbar_left
-      = link_to content_tag(:i, nil, class: 'icon-plus'), request_profile_users_path, class: " btn btn_main", id: "request_profile", :"data-tooltip" => t(".request_profile")
-  - unless @allocations.nil? or @allocations.empty?
+      = link_to content_tag(:i, nil, class: 'icon-plus'), request_profile_users_path, class: " btn btn_main", id: "request_profile", :"data-tooltip" => t(".request_profile"), :'aria-label' => t(".request_profile") + t('fancybox.open')
+  - unless @allocations.blank?
     .block_content
       %table.tb_list
         %thead
           %tr.lines
-            %th{style: "width: 10%"}= t(".profile")
-            %th= t(".type")
-            %th= t(".course")
-            %th= t(".curriculum_unit")
-            %th= t(".semester")
-            %th= t(".group")
-            %th{style: "width: 10%"}= t(".status")
-            %th.no_sort{style: "width: 5%"}
+            %th#profile{style: "width: 10%"}= t(".profile")
+            %th#type= t(".type")
+            %th#course= t(".course")
+            %th#curriculum_unit= t(".curriculum_unit")
+            %th#semester= t(".semester")
+            %th#group= t(".group")
+            %th#status{style: "width: 10%"}= t(".status")
+            %th#btn.no_sort{style: "width: 5%"}
         %tbody.allocations
           = render partial: 'profiles'
       = link_to content_tag(:i, nil, class: "icon-ellipsis"), profiles_users_path(page: @allocations.next_page), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @allocations.next_page

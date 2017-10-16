@@ -14,9 +14,9 @@
           %th#message= t(".message")
           %th#date= t(".date")
           %th#time_msg= t(".time")
-          - if @can_evaluate && @academic_allocation.evaluative
+          - if @academic_allocation.evaluative
             %th#grade= t('.grade')
-          - if @can_evaluate && @academic_allocation.frequency
+          - if @academic_allocation.frequency
             %th#wh= t('.wh')
       %tbody
         - @messages.each do |message|

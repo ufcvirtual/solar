@@ -2,13 +2,13 @@
 - if offer_enrolled.any?
   %thead.thead_ucs
     %tr.lines
-      %th= t(".type")
-      %th= t(".curriculum_unit")
-      %th= t(".course")
-      %th= t(:semester)
-      %th= t(".group")
-      %th.no_sort
-      %th.no_sort= t(:mysolar_mn_enrollment)
+      %th{id: "type_#{status.first}"}= t("enrollments.index.type")
+      %th{id: "uc_#{status.first}"}= t("enrollments.index.curriculum_unit")
+      %th{id: "c_#{status.first}"}= t("enrollments.index.course")
+      %th{id: "s_#{status.first}"}= t(:semester)
+      %th{id: "group_#{status.first}"}= t("enrollments.index.group")
+      %th.no_sort{id: "info_#{status.first}"}
+      %th.no_sort{id: "btns_#{status.first}"}= t(:mysolar_mn_enrollment)
   %tbody
     - offer_enrolled.find_each do |allocation|
 
@@ -16,15 +16,15 @@
       - offer_info = group.detailed_info
 
       %tr.lines{class: "uc-#{offer_info[:curriculum_unit].gsub(/\W/, '')} uc-type-#{offer_info[:curriculum_unit_type].gsub(/\W/, '')}", 'data-group-id' => group.id}
-        %td= offer_info[:curriculum_unit_type]
-        %td
+        %td{headers: "type_#{status.first}"}= offer_info[:curriculum_unit_type]
+        %td{headers: "uc_#{status.first}"}
           - unless offer_info[:curriculum_unit_type_id].to_i == 3
             = offer_info[:curriculum_unit]
-        %td= offer_info[:course]
-        %td= offer_info[:semester]
-        %td= group.code
-        %td= link_to content_tag(:i, nil, class: 'icon-info'), group_enrollments_path(group.id), class: "btn", id: "enrollment_info_#{group.id}"
-        %td
+        %td{headers: "c_#{status.first}"}= offer_info[:course]
+        %td{headers: "s_#{status.first}"}= offer_info[:semester]
+        %td{headers: "group_#{status.first}"}= group.code
+        %td{headers: "info_#{status.first}"}= link_to content_tag(:i, nil, class: 'icon-info', :'aria-hidden'=> 'true'), group_enrollments_path(group.id), class: "btn", id: "enrollment_info_#{group.id}", :'aria-label' => t('.info', about: [offer_info[:course], offer_info[:curriculum_unit], offer_info[:semester]].join(' - ')) + t('fancybox.open')
+        %td{headers: "btns_#{status.first}"}
           - period_start, period_end = group.offer.enrollment_period
           - case allocation.try(:status)
           - when Allocation_Pending.to_i

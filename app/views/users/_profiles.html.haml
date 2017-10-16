@@ -2,26 +2,26 @@
   - allocation_tag_info = allocation.allocation_tag.nil? ? nil : allocation.allocation_tag.detailed_info
   - status_color = allocation.status_color
   %tr.lines
-    %td= allocation.profile.name
+    %td{headers: 'profile'}= allocation.profile.name
     - if allocation_tag_info.nil?
-      %td= t(".not_specified")
-      %td= t(".not_specified")
-      %td= t(".not_specified")
-      %td= t(".not_specified")
-      %td= t(".not_specified")
+      %td{headers: 'type'}= t(".not_specified")
+      %td{headers: 'course'}= t(".not_specified")
+      %td{headers: 'curriculum_unit'}= t(".not_specified")
+      %td{headers: 'semester'}= t(".not_specified")
+      %td{headers: 'group'}= t(".not_specified")
     - else
-      %td= allocation_tag_info[:curriculum_unit_type]
-      %td= allocation_tag_info[:course]
-      %td= allocation_tag_info[:curriculum_unit]
-      %td= allocation_tag_info[:semester]
-      %td
+      %td{headers: 'type'}= allocation_tag_info[:curriculum_unit_type]
+      %td{headers: 'course'}= allocation_tag_info[:course]
+      %td{headers: 'curriculum_unit'}= allocation_tag_info[:curriculum_unit]
+      %td{headers: 'semester'}= allocation_tag_info[:semester]
+      %td{headers: 'group'}
         - unless allocation_tag_info[:group].nil? or allocation_tag_info[:group] == t(".not_specified")
           .groups_tags
             .collection_check_boxes= allocation_tag_info[:group]
         - else
           = t(".not_specified")
-    %td.allocation_status_info= name_of(allocation.status, false)
-    %td= link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_cancel', :"data-link-cancel" => cancel_profile_request_allocation_path(allocation), :"data-tooltip" => t(".cancel_profile"), disabled: allocation.profile_id == Profile.student_profile
+    %td.allocation_status_info{headers: 'status'}= name_of(allocation.status, false)
+    %td{headers: 'btn'}= link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_cancel', :"data-link-cancel" => cancel_profile_request_allocation_path(allocation), :"data-tooltip" => t(".cancel_profile"), disabled: allocation.profile_id == Profile.student_profile, :'aria-label' => t(".cancel_profile")
 
 :javascript
   $(function(){

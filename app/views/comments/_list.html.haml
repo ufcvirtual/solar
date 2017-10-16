@@ -12,7 +12,7 @@
       - unless comments.blank?
         - comments.each do |comment|
           = render partial: 'comments/comment', locals: { comment: comment }
-      .text_none.empty_message#no_itens_message_comment{ class: (comments.blank? ? '' : 'hide_message') }= t(:itens_not_found)
+      %li.text_none.empty_message#no_itens_message_comment{ class: (comments.blank? ? '' : 'hide_message') }= t(:itens_not_found)
 
 = javascript_include_tag 'comments'
 

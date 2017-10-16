@@ -949,6 +949,7 @@ pt_BR:
       uab_enrollment: A matrícula de disciplinas a distância não pode ser realizada através do Solar
       uab_general: Não é possível alterar matrícula de disciplinas à distância pelo Solar
       off_period: Perído de matrícula encerrado
+      info: Informações sobre %{about}
     show:
       course: Curso
       curriculum_unit: Disciplina
