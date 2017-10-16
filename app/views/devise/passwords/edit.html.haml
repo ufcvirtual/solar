@@ -14,3 +14,7 @@
           = f.submit t(:change_my_password, scope: [:devise, :passwords]), :class => 'btn solar_button  btn_password_recovery', :id => "send"
   = devise_error_messages!
 
+:javascript
+  $(function(){
+    $('#accesskey_maincontent').prop('href', '#login_content_password_recovery');
+  });

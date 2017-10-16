@@ -624,6 +624,7 @@ pt_BR:
   item_search_no_found: "Nenhum item encontrado"
   high_contrast_link: "Alto Contraste"
   remove_high_contrast_link: "Remover Alto Contraste"
+  no_javascript: Seu navegador não suporta JavaScript ou está com este desabilitado.
 
   #Página de Login
   login_description1: "O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,

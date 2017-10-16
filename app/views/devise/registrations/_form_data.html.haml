@@ -221,4 +221,8 @@
     $(_(form_texts_ids).difference(changeable_fields)).each(function(){
       $("#"+this).prop("disabled", true);
     });
+
+    $(function(){
+      $('#accesskey_maincontent').prop('href', '#register-header');
+    });
   }

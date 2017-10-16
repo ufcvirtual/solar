@@ -126,6 +126,8 @@
   $("#user_birthdate").mask("#{I18n.t('date.formats.mask')}");
 
   $(function(){
+    $('#accesskey_maincontent').prop('href', '#register-header');
+
     var options = $.extend($.datepicker.regional["#{I18n.locale.to_s.gsub('_', '-')}"]);
     $("#user_birthdate").datepicker(options);
 
