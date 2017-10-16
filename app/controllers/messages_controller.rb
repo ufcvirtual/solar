@@ -13,7 +13,7 @@ class MessagesController < ApplicationController
     @show_system_label = allocation_tag_id.nil?
 
     @box = option_user_box(params[:box])
-    
+
     @messages = Message.by_box(current_user.id, @box, allocation_tag_id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
     @unreads  = Message.unreads(current_user.id, allocation_tag_id)
     render partial: 'list' unless params[:page].nil? 
@@ -99,11 +99,11 @@ class MessagesController < ApplicationController
         @message.files << original_files if original_files and not original_files.empty?
         @message.save!
 
-        # Thread.new do
-        #   Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files, current_user.email).deliver
-        # end
+        Thread.new do
+          Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files, current_user.email).deliver
+        end
 
-        send_mass_email(emails, @message)
+        # send_mass_email(emails, @message)
       end
 
       redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages)
