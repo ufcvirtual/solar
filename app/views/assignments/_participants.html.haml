@@ -4,21 +4,23 @@
   %table.tb_list
     %thead
       %tr.lines
-        %th= t(".student")
-        %th.center{ style: 'width: 10%' }= t('assignments.list.sent_on')
-        %th.center{ style: 'width:20%' }= t('assignments.list.situation')
-        %th.center{ style: 'width:10%' }= t('assignments.list.grade')
-        %th.center{ style: 'width:10%' }= t(:workload, scope: [:scores, :info])
-        %th.center{ style: 'width:20%' }= t('assignments.list.comments')
+        %th{id: "student_or_group_#{assignment.id}"}= t(".student")
+        %th.center{ id: "sent_on_#{assignment.id}", style: 'width: 10%' }= t('assignments.list.sent_on')
+        %th.center{ id: "situation_#{assignment.id}", style: 'width:20%' }= t('assignments.list.situation')
+        %th.center{ id: "grade_#{assignment.id}", style: 'width:10%' }= t('assignments.list.grade')
+        %th.center{ id: "working_hours_#{assignment.id}", style: 'width:10%' }= t(:workload, scope: [:scores, :info])
+        %th.center{ id: "comments_#{assignment.id}", style: 'width:20%' }= t('assignments.list.comments')
     %tbody
       - @participants.each_with_index do |participant|
         - info = assignment.info(participant.id, @allocation_tag_id)
         %tr
-          %td= link_to participant.name, student_assignment_path(assignment.id, student_id: participant.id), class: :link_content
-          %td.center= info[:file_sent_date]
-          %td.center{class: "assignment_#{info[:situation]}"}= t(info[:situation].to_sym)
-          %td.center= info[:grade] || "-"
-          %td.center= info[:working_hours] || "-"
-          %td.center= content_tag :i, nil, class: "icon-comment big #{info[:has_comments] ? '' : 'empty'}"
+          %td{headers: "student_or_group_#{assignment.id}"}= link_to participant.name, student_assignment_path(assignment.id, student_id: participant.id), class: :link_content
+          %td.center{headers: "sent_on_#{assignment.id}"}= info[:file_sent_date]
+          %td.center{class: "assignment_#{info[:situation]}", headers: "situation_#{assignment.id}"}= t(info[:situation].to_sym)
+          %td.center{headers: "grade_#{assignment.id}"}= info[:grade] || "-"
+          %td.center{headers: "working_hours_#{assignment.id}"}= info[:working_hours] || "-"
+          %td.center{headers: "comments_#{assignment.id}"}= link_to_function content_tag(:i, nil, class: "icon-comment big #{info[:has_comments] ? '' : 'empty'}"), 'open_summary(this)', :'data-url' => summarized_assignment_path(assignment.id, situation: info[:situation], student_id: participant.id), :'data-tooltip' => t('comments.summary.title', tool: assignment.name, user: participant.name), :'aria-label' => t('comments.summary.title', tool: assignment.name, user: participant.name) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
 - else
   .text_none=t :itens_not_found
+
+= javascript_include_tag 'tooltip'

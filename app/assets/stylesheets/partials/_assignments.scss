@@ -21,6 +21,10 @@
       padding: 10px;
     }
   }
+
+  td[headers^='comments'] a{
+    text-decoration: none;
+  }
 }
 
 .new_assignment{

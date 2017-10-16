@@ -8,7 +8,7 @@ class Comment < ActiveRecord::Base
   after_create :set_acu_status, if: 'merge.nil?'
   after_destroy :set_acu_status, if: 'merge.nil?'
 
-  belongs_to :academic_allocation_user
+  belongs_to :academic_allocation_user, counter_cache: true
   belongs_to :user
 
   has_one :academic_allocation, through: :academic_allocation_user

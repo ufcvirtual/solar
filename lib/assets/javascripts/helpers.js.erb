@@ -418,6 +418,17 @@ function open_div(link, e){
 
       return false;
     });
+  else{
+    $(box).removeClass('invisible');
+    $("tr.assignment").attr("style", "border-bottom: 1px solid #B4B2B1;");
+    $($(link).data('div')).not("."+$(link).attr("id")).addClass("invisible");
+
+    if (box.hasClass("invisible"))
+      $(link).parents("tr").first().attr("style", "border-bottom: 1px solid #B4B2B1;");
+    else
+      if(typeof $(link).data('hide') != 'undefined')
+        $(link).parents("tr").first().attr("style", "border-bottom: none");
+  }
 }
 
 function click_on_keypress(event, element){
