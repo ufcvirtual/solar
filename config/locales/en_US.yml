@@ -558,8 +558,6 @@ en_US:
   dont_destroy_with_many_allocations: "It has associations with other users"
   dont_destroy_with_content: "It has content"
   item_search_no_found: "No item found"
-  high_contrast_link: "High Contrast"
-  remove_high_contrast_link: "Remove High Contrast"
   no_javascript: "Your browser does not support JavaScript or it's disabled."
   login_description1: "Solar is a virtual learning environment developed by the UFC Virtual Institute at Federal University of Ceará. It is geared towards the teacher and the student, allowing the publication of courses and interaction with them."
   login_description2: "The Solar was developed to enhance the learning process, starting from the interaction with the graphic interface of the environment, and to allow fast access to the pages and the content, easy navigation and browser compatibility. Here, the learner feels safe to explore the available spaces. The environment is supported by a philosophy of interaction, not control."
@@ -702,7 +700,7 @@ en_US:
   menu_aside: "Skip to menu [2]"
   search_box: "Skip to Search [3]"
   footer_site: "Skip to the footer [4]"
-  high_contrast_link: "High contrast [5]"
+  high_contrast_link: "High contrast [6]"
   libras: Translate to Libras
   description: "Description"
   edition: "Edition"
@@ -3107,7 +3105,7 @@ en_US:
       result_search: "Access table with search's result"
 
   shortcut:
-    shortcut_link: "Open shortcut menu [4]"
+    shortcut_link: "General shortcuts [8]"
     shortcut_menu_title: "Keyboard Shortcuts"
     no_shortcuts: "No shortcuts"
     close: "Close"
