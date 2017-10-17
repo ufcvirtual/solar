@@ -52,6 +52,7 @@ tr.lines td img {
 table.tb_list {
   width: 100%;
   font-size: 10pt;
+  /*table-layout: fixed;*/
 
   th:not(.act_like_td) {
     /*    font-weight: bold;*/
@@ -83,6 +84,7 @@ table.tb_list {
 
   tbody {
     background-color: $color_main_light;
+    word-break: break-word;
   }
 
   tbody tr:last-child {
@@ -119,6 +121,7 @@ table.user-courses tbody.offers {
   .offer, .open-edx-class{
     cursor: pointer;
     color: $color_main;
+    word-break: break-word;
   }
   .offer:focus {
     background-color: $color_main_light_highlight;

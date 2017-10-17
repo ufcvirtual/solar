@@ -15,7 +15,7 @@
 
   - unless @discussions.nil? or @discussions.empty?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
-    %table.tb_list.description_discussion
+    %table.tb_list
       %thead
         %tr.lines
           %th.no_sort{style: 'text-align:center; width: 8%;'}= check_box_tag :all_discussions, false, false, :"data-children-names" => "ckb_discussion", class: "all_discussions"
