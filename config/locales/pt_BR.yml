@@ -622,8 +622,6 @@ pt_BR:
   dont_destroy_with_many_allocations: "Possui associações com outros usuários"
   dont_destroy_with_content: "Possui conteúdo"
   item_search_no_found: "Nenhum item encontrado"
-  high_contrast_link: "Alto Contraste"
-  remove_high_contrast_link: "Remover Alto Contraste"
   no_javascript: Seu navegador não suporta JavaScript ou está com este desabilitado.
 
   #Página de Login
@@ -861,7 +859,7 @@ pt_BR:
   menu_aside: "Ir para o menu [2]"
   search_box: "Ir para a busca [3]"
   footer_site: "Ir para o rodapé [4]"
-  high_contrast_link: "Alto contraste [5]"
+  high_contrast_link: "Alto contraste [6]"
   libras: Tradução para Libras
 
   # Página de tutoriais
@@ -3351,7 +3349,7 @@ pt_BR:
       result_search: "Ir para tabela com o resultado da busca"
 
   shortcut:
-    shortcut_link: "Abrir menu de atalhos [4]"
+    shortcut_link: "Atalhos gerais [8]"
     shortcut_menu_title: "Atalhos do Teclado"
     no_shortcuts: "Sem atalhos"
     close: "Fechar"
