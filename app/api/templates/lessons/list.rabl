@@ -14,7 +14,7 @@ attributes :id, :name, :description, :order, :is_default
         content_type: lesson.address.blank? ? '' : lesson.content_type,
         name: lesson.name,
         address: lesson.address,
-        url: (lesson.is_link? ? lesson.link_path(api: true) : (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['dns'] rescue '')+lesson.path(false, true)),
+        url: (lesson.is_link? ? lesson.link_path(api: true) : lesson.path(false, true)),
         start_date: schedule.start_date,
         end_date: schedule.end_date
       }
