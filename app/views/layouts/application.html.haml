@@ -105,6 +105,23 @@
             %li
               %noscript= content_tag(:i, nil, class: 'icon-warning noscript', :'aria-label' => t(:no_javascript), title: t(:no_javascript))
 
+      / sidebar
+      %nav#mysolar_sidebar{role: 'navigation'}
+        #mysolar_menu_accordion
+          .mysolar_menu
+            %p.menu_accessible
+              %a#menu_accesskey{href: "#menu_accesskey", :'aria-label' => t(:start_menu)}= t(:menu_first_item)
+            - if active_tab[:url][:context] == Context_Curriculum_Unit
+              .mysolar_menu_group
+                %ul
+                  %li.mysolar_menu_title_single{'data-menu-bread' => 'menu_home', 'data-contexts' => [Context_Curriculum_Unit]}
+                    = link_to t(:menu_home), active_tab[:breadcrumb].first[:url], class: 'mysolar_menu_title', :'data-shortcut-shift' => true
+
+            = raw menu_list
+
+            %p.menu_accessible
+              %a#menu_end{href: "#menu_end", :'aria-label' => t(:end_menu)}= t(:menu_last_item)
+
       / content
       %section#mysolar_content{role: 'main'}
         / page titles
@@ -144,23 +161,6 @@
             #toggle-controlbox
               %a.chat.toggle-online-users{href: "#"}
                 %strong.conn-feedback="Bate-Papo"
-
-      / sidebar
-      %nav#mysolar_sidebar{role: 'navigation'}
-        #mysolar_menu_accordion
-          .mysolar_menu
-            %p.menu_accessible
-              %a#menu_accesskey{href: "#menu_accesskey", :'aria-label' => t(:start_menu)}= t(:menu_first_item)
-            - if active_tab[:url][:context] == Context_Curriculum_Unit
-              .mysolar_menu_group
-                %ul
-                  %li.mysolar_menu_title_single{'data-menu-bread' => 'menu_home', 'data-contexts' => [Context_Curriculum_Unit]}
-                    = link_to t(:menu_home), active_tab[:breadcrumb].first[:url], class: 'mysolar_menu_title', :'data-shortcut-shift' => true
-
-            = raw menu_list
-
-            %p.menu_accessible
-              %a#menu_end{href: "#menu_end", :'aria-label' => t(:end_menu)}= t(:menu_last_item)
 
       %footer
         #footer_push{style: "height:35px"}
