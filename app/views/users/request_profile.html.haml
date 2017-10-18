@@ -1,4 +1,4 @@
-.request_profile{style: "width: 500px;"}
+.request_profile
   %span.form_requirement= t(:required_fields)
   .request_profile_form
     = simple_form_for(@allocation, html: {id: "request_profile_form"}) do |f|
@@ -6,7 +6,7 @@
       %span.form_requirement= t(:required_fields)
       .flash_message_wrapper
 
-      .form-inputs.block_content{style: "height: 265px;"}
+      .form-inputs.block_content
         .filter
           .profile
             = label_tag :profile_id, t(".profile")
@@ -78,8 +78,8 @@
       });
     });
 
-
-
+    $(".request_profile").css("width", "500px");
+    $(".form-inputs.block_content").css("height", "265px");
 
     $( "#profile_id" ).combobox({
       select: function( event, ui ) {
