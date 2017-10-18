@@ -12,7 +12,7 @@
 }
 
 .modal-header {
-  background-color: #908674;
+  background-color: $color_main_mysolar;
   width: 100%;
   height: 100%;
   padding: 20px;
@@ -26,7 +26,7 @@
 
 
 .modal-content {
-  background-color: #f3f3f3;
+  background-color: $block_groups_background;
   margin: 15% auto;
   padding: 20px;
   width: 60%;
@@ -44,6 +44,7 @@
 }
 
 .flex-item span {
+  color: $font_color;
   float: right;
   border: 1px solid $language_border_color;
   background-color: $color_white;
@@ -66,7 +67,6 @@
 
 .close:hover,
 .close:focus {
-  color: invert($color_white);
   text-decoration: none;
   cursor: pointer;
 }
