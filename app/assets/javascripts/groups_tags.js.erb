@@ -21,7 +21,9 @@ $(function(){
     parent_div.hide();
   });
 
-  $(".unbind, .remove").click(function(){
+  $(".unbind, .remove").click(function(event){
+    event.preventDefault();
+
     var button = $(this);
     // remove/desvincula turma da ferramenta
     $.put($(this).data("link"), function(data){
@@ -39,7 +41,9 @@ $(function(){
     });
   });
 
-  $(".btn_add_group, .btn_unbind_groups").click(function(){
+  $(".btn_add_group, .btn_unbind_groups").click(function(event){
+    event.preventDefault();
+    
     var groups_ids = $('[name="group['+$(this).data("checkbox")+'][]"]:checked', $(this).parent()).map(function() { return this.value; }).get();
     var url    = $(this).data("link").replace("param_id", groups_ids);
     var button = $(this);
