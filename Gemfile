@@ -116,7 +116,4 @@ group :assets do
   gem "compass-rails", "~> 1.1.3"
 end
 # new relic
- #gem 'newrelic_rpm'
-
-gem "daemons", "~> 1.2.4"
-gem "delayed_job_active_record", "~> 4.1.2"
+#gem 'newrelic_rpm'
