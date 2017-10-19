@@ -29,7 +29,7 @@ ul {
   list-style-type: none;
 }
 
-h1, h2, h3, h4, h5, title {
+h1, h2, h3, h4, h5 {
   font-family: 'Ubuntu Light', sans-serif;
 }
 
@@ -48,13 +48,9 @@ h1 {
   }
 }
 
-h2, title {
+h2, .shortcut_title {
   font-family: 'Ubuntu Condensed', sans-serif;
   font-weight: 500;
-}
-
-title {
-  display: block;
 }
 
 h3 {

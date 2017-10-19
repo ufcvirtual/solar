@@ -97,7 +97,7 @@
                 %i.icon-arrow-down-triangle
               .dropdown.dropdown-tip{id: "dropdown_eq_1_2"}
                 %ul.shortcut_floating_box{ class: 'dropdown-menu' }
-                  %title= t('scores.info.shortcut')
+                  .shortcut_title= t('scores.info.shortcut')
                   = link_to content_tag(:i, nil, class: "icon-cancel-circle"), "#", class: 'close_dropdown', :'data-tooltip' => t("shortcut.close"), :'aria-label' => t("shortcut.close")
 
             %li#mysolar_suggestions
