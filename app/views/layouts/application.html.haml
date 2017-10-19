@@ -190,10 +190,11 @@
 
 
 
-    %div{id: 'myModal', class: 'modal'}
+    %div{class: 'modal'}
       %div{class: 'modal-content'}
+        %a{href: "#", class: 'close visuallyhidden begin-shortcut', :'aria-label' => t("shortcut.click_to_close") }= t('shortcut.begin')
         %header{class: 'modal-header'}
-          %a{href: "#", class: 'close', title: t("shortcut.close"), :'aria-label' => t("shortcut.close")} &times;
+          %a{href: "#", class: 'close', title: t("shortcut.close"), :'aria-label' => t("shortcut.click_to_close")} &times;
           %h2{class: 'block_title'}= t('shortcut.shortcut_menu_title')
         %article{class: 'block_content_text flex-container'}
           %div{class: 'flex-item'}
@@ -250,6 +251,7 @@
             %p
               = t('shortcut.vertical_menu.name.menu_registration')
               %span= t('shortcut.vertical_menu.name.menu_registration_key')
+        %a{href: "#", class: 'close visuallyhidden', :'aria-label' => t("shortcut.click_to_close") }= t('shortcut.end')
 
   :javascript
 
@@ -676,11 +678,11 @@
 
       $(document).keydown(function (e) {
         open_shortcut_window(e);
+        close_shortcut_window(e);
 
         if (e.which === 27) {
           $("#dropdown_menu").slideUp(150);
           $(".dropdown").hide(150);
-          $(".modal").css("display", "none");
           setTimeout(function() {
             $(e.target).closest(".dropdown").prev("a").focus();
             $(e.target).closest(".dropdown").prev("a").removeClass("dropdown-open");

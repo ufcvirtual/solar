@@ -335,7 +335,7 @@ en_US:
         item_image: Image
         item_audio: Audio
         comment: Comment
-      question_text:  
+      question_text:
         text: Text
         associated_text: Associated text
       assignment:
@@ -3105,10 +3105,13 @@ en_US:
       result_search: "Access table with search's result"
 
   shortcut:
-    shortcut_link: "General shortcuts [8]"
+    shortcut_link: "General shortcuts [? + Shift]"
     shortcut_menu_title: "Keyboard Shortcuts"
     no_shortcuts: "No shortcuts"
     close: "Close"
+    click_to_close: "Click to close shortcuts window"
+    begin: "Beginning of the shortcut window"
+    end: "End of the shortcut window"
     curricular_unit:
       code:
         subject: 83
@@ -3989,9 +3992,9 @@ en_US:
       audio:
         add_audio: Add/update audio
         aud_desc: 'Alt: Mandatory description to accessibility (disabled people)'
-      text:  
+      text:
         text: Text
-        associated_text: Associated text  
+        associated_text: Associated text
         new: New Text
         import: Import from issues
     labels:

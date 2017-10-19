@@ -395,7 +395,7 @@ pt_BR:
           image_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 2MB."
       question_labels:
         name: 'Palavras-Chave'
-      question_text:  
+      question_text:
         text: Texto
         associated_text: Texto associado
       assignment:
@@ -3349,10 +3349,13 @@ pt_BR:
       result_search: "Ir para tabela com o resultado da busca"
 
   shortcut:
-    shortcut_link: "Atalhos gerais [8]"
+    shortcut_link: "Atalhos gerais [? + Shift]"
     shortcut_menu_title: "Atalhos do Teclado"
     no_shortcuts: "Sem atalhos"
     close: "Fechar"
+    click_to_close: "Clique para fechar janela de atalhos"
+    begin: "Início da janela de atalhos"
+    end: "Fim da janela de atalhos"
     curricular_unit:
       code:
         subject: 68
@@ -4238,7 +4241,7 @@ pt_BR:
       audio:
         add_audio: Adicionar/alterar áudio
         aud_desc: 'Se houver algum deficiente auditivo na turma, por favor realizar a  áudio descrição de modo que este aluno não seja prejudicado.'
-      text:  
+      text:
         text: Texto
         associated_text: Texto associado
         new: Novo texto

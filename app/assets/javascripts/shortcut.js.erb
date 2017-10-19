@@ -177,5 +177,25 @@ function open_shortcut_window(event, element) {
   var keynum = event.which || event.keyCode;
   if((event.which == 191 && event.shiftKey) || event.type == 'click' || (keynum == 13 && element !== undefined) ) {
     $(".modal").css("display", "block");
+    $(".begin-shortcut").focus();
+    $('*').not('.modal-content *').each(function(){
+      $(this).prop('tabindex', -1);
+    });
+    $('.modal-content p, .modal-content h2').each(function(){
+      $(this).prop('tabindex', 0);
+    });
+  }
+}
+
+function close_shortcut_window(event) {
+  var keynum = event.which || event.keyCode;
+  if (keynum == 27 || keynum == 13) {
+    $(".modal").css("display", "none");
+    $('*').not('.modal-content *').each(function(){
+      $(this).removeAttr('tabindex');
+    });
+    $('.modal-content p, .modal-content h2, .close-shortcut-window').each(function(){
+      $(this).removeAttr('tabindex');
+    });
   }
 }
