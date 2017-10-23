@@ -1,4 +1,16 @@
 .tool_management{ :'data-link-list' => tool_management_editions_path(allocation_tag_ids: @allocation_tag_ids) }
+  %a{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'data-shortcut' => t("shortcut.editions.code.window"), :'data-shortcut-name' => t("shortcut.editions.name.window"), id: 'open_window', class: 'hidden'}
+    = 'Abrir Janela: ANALISADOR'
+  .ui-widget-content{ id: 'draggable', :'data-tooltip' => t(".draggable_info")}  
+    .ui-widget-content_title
+      %h2= t('.draggable_title')  
+      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_draggable", onkeydown: 'click_on_keypress(event, this);' }
+        %i.icon-arrow-down-triangle{:'aria-hidden'=>'true'}
+      .dropdown.dropdown-tip{id: "dropdown_eq_draggable"}
+        %ul{ class: 'dropdown-menu' }
+          = raw t('.draggable_info')
+      = link_to content_tag(:i, nil, class: "icon-cancel-circle"), "#", class: 'close_draggable', :'data-tooltip' => t("shortcut.close"), :'aria-label' => t("shortcut.close")
+    %ul{id: 'analise_errors'}
   .title-warning
     %div.how_it_works_title
       = link_to_function raw(t('.how_it_works_title')), 'hide_or_show_info(this)'
@@ -18,7 +30,7 @@
       %div.rules_and_info=raw t('.rule_wh2', working_hours: @working_hours)
   
   .management
-    = form_tag manage_tools_editions_path, method: :put do        
+    = form_tag manage_tools_editions_path, id: 'form_manage_tools_editions', method: :put do        
       - if @tools.any?
         %div
           .expand_hide
@@ -52,8 +64,27 @@
         .text_none
           = t(:item_search_no_found)
 
-
 :javascript
+  $(document).ready(function(){
+    if( $("#draggable").length ) {
+
+      var $sidebar   = $("#draggable"),
+          $window    = $(window),
+          offset     = $sidebar.offset();
+    }
+  });
+  $(function(){
+    reload_shortcut_list();
+    $('#open_window').on('click', function(){
+      $('#draggable').show();
+    });
+
+    initializer_analizer();
+    $('.close_draggable').on('click', function(){
+      $('#draggable').hide();
+    });
+  });
+
   function hide_or_show_info(name){
     var parent = $(name).parent();
     parent.siblings().slideToggle('slow', function() {
@@ -72,6 +103,10 @@
   function check_checkbox(event, object){
     if(event.target.tagName == 'TD')
       $('input', $(object)).last().click();
+
+    setTimeout(function() {
+      initializer_analizer();
+    }, 200);  
   }
 
   function manage_tools(button){
@@ -133,6 +168,9 @@
       }
       else { inputs[i].value = each_value; }
     }
+    setTimeout(function() {
+      initializer_analizer();
+    }, 200);
   }
 
   function set_weight(){
@@ -158,5 +196,8 @@
       return false;
     }
     inputs.val(100);
+    setTimeout(function() {
+      initializer_analizer();
+    }, 200);
   }
 

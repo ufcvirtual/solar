@@ -2399,13 +2399,16 @@ en_US:
       period: Period
       evaluative: Evaluative
       weight: Weight
-      final_weight: FInal Weight
+      final_weight: Final Weight
       final_exam: Final Exam
       equivalent: Equivalent to
       frequency: Frequency
       max_wh: Maximum Working Hour
       offer: Activity saved to offer
       wh: 'w/h'
+      total_final_weight: 'TOTAL(Final Weight): '
+      total_wh: 'TOTAL(Working Hour): '
+      group: 'GROUP '
     tool_management:
       how_it_works_title: "<b>How it works</b>"
       how_it_works: "<div> This activity management allows to define which activities are evaluative or not and which ones will have some working hours to attend to by the student.</div><br/><div>To indicates that an <b>activity is evaluative</b>, just check 'Evaluative' field and inform it's weight and final weight.</div><br/><div>The <b>weight</b> corresponds to the activity's weight in comparison to the other ones at the time of the student final grade automatic calculation. If it is a default weight (activities with same weight), just sets 1.</div><div><i>Weight example: Chat weight 2, Discussion weight 3. Automatic calculation: (2*chatGrade + 3*discussionGrade)/(2+3)</i></div><br/><div>The <b>final weight</b> corresponds to how many % some group of activities (grouped by a common final weight) will count at the student final grade automatic calculation.</div><div><i>Final weight example: Chat 40%, Discussion 40%, Exam 60%. Automatic calculation: 0,4*(chatGrade + discussionGrade) + 0,6*(examGrade)</i></div><div><i>Weight and final weight example: Chat weight 2 40%, Discussion weight 3 40%, Exam weight 1 60%. Calcule: [0,4*(2*chatGrade + 3*discussionGrade) + 0,6*(examGrade)]/(2+3+1)</i></div><br/><div>The <b>Final Evaluation</b> indicates if this activity will be a part of the final grade automatic calculation as a final exam. That is, <i>(studentFinalGrade + gradeFE)/2</i></div><div>If an activity is defined as Final Exam, it won't have working hours, weight and final weight. If those values are informed, they will be ignored.</div><br/><div>An activity <b>equivalent</b> to another means that if a student don't have the first, his grade will be from the second one.</div><div>If this values are incorrect or incomplete, will be used main activity values.</div><div><i>Example: Discussion 2 is equivalent to Discussion 1. The grade will be the one from discussion 1. If the student don't have a grade to this activity, it will be from discussion 2.</i></div>"
@@ -2419,6 +2422,8 @@ en_US:
       default_weight: Sets all weights as 1
       default_final_weight: Sets all final weights as 100
       finish: Finish
+      draggable_title: ANALYZER
+      draggable_info: Click and drag to move the component 
   curriculum_units:
     success:
       created: Subject was successfully created.

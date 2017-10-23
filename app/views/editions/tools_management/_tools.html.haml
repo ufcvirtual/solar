@@ -22,8 +22,18 @@
 
         %tbody
           - tools.each do |ac|
+            - if @groups.first.curriculum_unit.curriculum_unit_type_id.to_i == 2
+              - if ac.academic_tool_type == 'ScheduleEvent'
+                - ac.final_weight = ac.final_weight > 60 ? 60 : ac.final_weight
+              - else
+                - ac.final_weight = ac.final_weight > 40 ? 40 : ac.final_weight
+
             - ats_ids = ac.ats.delete('{}').split(',')
+            - array_group_code = Array.new 
             - groups = Group.joins(:allocation_tag).where(allocation_tags: {id: ats_ids.map(&:to_i)}).compact
+            - groups.each do |g|
+              - array_group_code.push(g.code)
+ 
             = fields_for 'academic_allocations[]', ac do |acf|
               %tr.lines{ class: [ats_ids.map{|at| 'at_'+at}, ac.acs.map{|ac| 'ac_'+ac}].join(' ') }
                 %td.desc
@@ -46,21 +56,24 @@
                   = t('editions.evaluative_tools.full_period', dstart: ac.start_date.to_date, dend: ac.end_date.to_date , hours: hours)
                 %td.ckb{onclick: 'check_checkbox(event, this)'}= acf.check_box :evaluative, label: false
                 %td.weight= acf.text_field :weight, label: false, disabled: !ac.evaluative || ac.final_exam
-                %td.final_weight= acf.text_field :final_weight, label: false, disabled: !ac.evaluative  || ac.final_exam
+                %td.final_weight
+                  = acf.text_field :final_weight, label: false, disabled: !ac.evaluative  || ac.final_exam, oninput: 'initializer_analizer()'
+                  = hidden_field_tag 'groups', array_group_code, class: 'groups'
                 %td.ckb{onclick: 'check_checkbox(event, this)'}= acf.check_box :final_exam, label: false, disabled: !ac.evaluative
                 %td.ckb{onclick: 'check_checkbox(event, this)'}= acf.check_box :frequency, label: false, disabled: (wh || ac.final_exam), :'data-change' => !wh  && !ac.final_exam
                 %td.working_hours
-                  = acf.text_field :max_working_hours, label: false, disabled: !ac.frequency || ac.final_exam
+                  = acf.text_field :max_working_hours, label: false, disabled: !ac.frequency || ac.final_exam, oninput: 'initializer_analizer()'
                   = t('editions.tools.wh')
                 - select_tools = AcademicAllocation.where(id: (tools_ids - ac.acs), allocation_tag_id: ats_ids.map(&:to_i)).select('DISTINCT ON(academic_tool_id, academic_tool_type) id, academic_tool_id, academic_tool_type')
                 %td= select_tools.blank? ? '-' : acf.collection_select(:equivalent_academic_allocation_id, select_tools, :id, :tool_type_name, {include_blank: true}, {disabled: (!ac.evaluative && !ac.frequency) || ac.final_exam})
                 = acf.hidden_field "allocation_tags_ids", value: ats_ids.map(&:to_i)
                 = acf.hidden_field "acs", value: ac.acs.map(&:to_i)
 
-= javascript_include_tag "tablesorter", "tooltip", "groups_tags"
+= javascript_include_tag "tablesorter", "tooltip", "groups_tags", 'shortcut'
 
 :javascript
   $(function(){
+    $("#draggable").draggable({ scroll: true });
 
     $("input[id$='evaluative']").change(function(){
       var parent = $(this).parents('tr');
@@ -110,6 +123,7 @@
           parent.find("select[id$='equivalent_academic_allocation_id']").val('');
       }
     });
+   
   });
 
   function hide_or_show(icon){
@@ -124,4 +138,140 @@
     parent.slideDown();
     parent.parent().find('.icon-arrow-down-triangle').addClass('invisible');
     parent.parent().find('.icon-arrow-up-triangle').removeClass('invisible');
+  }
+
+  function initializer_analizer(){
+   
+    $('.analise_errors_li').remove();
+    var soma = 0;
+    var soma_ch = 0;
+    var weight = [];
+    var groups = [];
+    var groups_list = [];
+    var groups_wh_list = [];
+    var class_ch = "analise_errors_li correct_t";
+    var ul = $('#analise_errors');
+    
+    $("#form_manage_tools_editions input").each(function(){
+
+      var string = String($(this).attr('id'));
+      if(string.indexOf("final_weight")>-1){
+
+        if(String($(this).attr("disabled")) == 'undefined'){
+          var offer = false;
+          var groups = $(this).siblings('.groups').val(); 
+          groups = groups.split(' ');
+
+          for(i = 0; i < groups.length; i++) {
+            if(groups[i] == '' || groups[i] == 'undefined' || groups[i] == null){
+              offer = true;
+            }
+            
+            if(offer==false){
+               // forma os grupos com os totais de peso final
+              var t_gl = false;
+              for(gl= 0; gl < groups_list.length; gl++) { 
+                if( $.inArray(groups[i], groups_list[gl]) !== -1){
+                  t_gl = true;
+                }      
+              }
+              if(t_gl==false && offer==false){
+                groups_list.push([groups[i], 0]); // [grupo, peso final]
+              }
+
+              var test = false;
+              for(w = 0; w < weight.length; w++) { 
+                if(( $.inArray(groups[i], weight[w]) !== -1) && ($.inArray($(this).val(), weight[w]) !== -1)){
+                  test = true;
+                }
+              }
+              if(test==false && offer==false){
+                weight.push([groups[i], $(this).val()]); 
+
+                for(g = 0; g < groups_list.length; g++) { 
+                  if( groups_list[g][0] == groups[i] ){
+                    groups_list[g][1] = Number(groups_list[g][1]) + Number($(this).val());
+                  } 
+                }
+              }
+
+            }else{ 
+              //oferta
+              for(g = 0; g < groups_list.length; g++) { 
+                var t_off = false;
+                for(w = 0; w < weight.length; w++) { 
+                  if(( $.inArray(groups_list[g][0], weight[w]) !== -1) && ($.inArray($(this).val(), weight[w]) !== -1)){
+                    t_off = true;
+                  }
+                }
+                //adiciona ao array de turmas caso o valor ainda não exista no array
+                if(t_off==false){
+                  weight.push([groups_list[g][0], $(this).val()]); 
+                  //altera o valor no total por grupo
+                  groups_list[g][1] = Number(groups_list[g][1]) + Number($(this).val());
+                }
+
+              }  
+              
+            }  
+          }  
+        }  
+      } 
+     
+      //carga horária
+      if(string.indexOf("max_working_hours")>-1){
+        if(String($(this).attr("disabled")) == 'undefined'){
+          var groups_wh = $(this).closest('.working_hours').siblings('.final_weight').first().find('.groups').val();
+          groups_wh = groups_wh.split(' ');
+
+          for(igwh = 0; igwh < groups_wh.length; igwh++) {
+              var t_wh =false;
+              for(wh = 0; wh < groups_wh_list.length; wh++) {
+
+                if( groups_wh_list[wh][0] == groups_wh[igwh] ){
+                  t_wh = true;
+                  groups_wh_list[wh][1] = Number(groups_wh_list[wh][1]) + Number($(this).val());
+                }
+                if(groups_wh[igwh] == '' || groups_wh[igwh] == 'undefined' || groups_wh[igwh] == null){
+                  t_wh = true;
+                  groups_wh_list[wh][1] = Number(groups_wh_list[wh][1]) + Number($(this).val());
+                }
+              }
+              if(t_wh == false){
+                groups_wh_list.push([groups_wh[igwh], $(this).val()]);
+              }
+            
+
+          }
+        }  
+      }  
+    });
+    weight.sort();
+    for(i = 0; i < weight.length; i++) {
+      name = "#{I18n.t('editions.tools.group')}"+(i+1)+': '+weight[i];
+      ul.append("<li class='analise_errors_li'>"+name+'</li>');
+    }
+    
+    for(glt = 0; glt < groups_list.length; glt++) {
+      var class_g = "analise_errors_li correct_t";
+      if(groups_list[glt][1] < 100)
+        class_g = "analise_errors_li not_correct_t";
+      else if(groups_list[glt][1] > 100)  
+        class_g = "analise_errors_li error_t"; 
+
+      group = "#{I18n.t('editions.tools.total_final_weight')}"+groups_list[glt];
+      ul.append("<li class='" + class_g + "' >"+group+"</li>"); 
+    }
+    //carga horária  
+    for(glt = 0; glt < groups_wh_list.length; glt++) {
+      var class_ch = "analise_errors_li correct_t";
+      if(groups_wh_list[glt][1] < 64)
+        class_ch = "analise_errors_li not_correct_t";
+      else if(groups_wh_list[glt][1] > 64)  
+        class_ch = "analise_errors_li error_t"; 
+
+      group = "#{I18n.t('editions.tools.total_wh')}"+groups_wh_list[glt];
+      ul.append("<li class='" + class_ch + "' >"+group+"</li>"); 
+    }
+    
   }

@@ -70,3 +70,61 @@
   text-decoration: none;
   cursor: pointer;
 }
+#draggable{
+  z-index: 1;
+  position: fixed;
+  left: 92.5em;
+  padding: 0.7em;
+
+  .ui-widget-content_title{
+    z-index: 1;
+    margin-left: -10px;
+    margin-top: -9px;
+    border-bottom: 1px dotted gray;
+    padding: 0.7em;
+    background-color: #E9EEF6;
+    margin-bottom: 0.3em;
+    width: 100%;
+    h2 { 
+      text-align: center; 
+      margin: 0; 
+      font-weight: bold; 
+    }
+    .close_draggable{
+      margin-top: -20px;
+      float: right;
+      padding-right: 3px;
+    }
+    a{
+      margin-top: -19px;
+      float: right;
+      padding-right: 20px;
+    }
+    #dropdown_eq_draggable{
+      top: 2em !important;
+    }
+  }
+  .error_t{
+    color: $color_red;
+    background-color: #E9EEF6;
+    font-weight: bold;
+    padding: 0.3em;
+    margin-top: 0.3em;
+  }
+  .correct_t{
+    color: $color_green_font;
+    background-color: #E9EEF6;
+    font-weight: bold;
+    padding: 0.3em;
+    margin-top: 0.3em;
+  }
+  .not_correct_t{
+    color: $color_contrast_text;
+    background-color: #E9EEF6;
+    font-weight: bold;
+    padding: 0.3em;
+    margin-top: 0.3em;
+  }
+}
+#draggable ul li { margin: 0.1em 0; padding: 0.1em 0; } * html #draggable ul li { height: 1%; }
+

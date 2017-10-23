@@ -147,6 +147,7 @@ class EditionsController < ApplicationController
 
     @groups = Group.joins(:allocation_tag).where(allocation_tags: { id: @allocation_tags_ids })
     @working_hours = @groups.first.curriculum_unit.try(:working_hours)
+
   end
 
   def manage_tools
@@ -155,7 +156,6 @@ class EditionsController < ApplicationController
     allocation_tags_ids = params[:academic_allocations].collect{|data| data['allocation_tags_ids'].delete('[]').split(',')}.flatten.map(&:to_i).uniq
 
     allocation_tags = AllocationTag.where(id: allocation_tags_ids)
-
     authorize! :tool_management, Edition, { on: allocation_tags_ids }
 
     errors = []
@@ -209,7 +209,7 @@ class EditionsController < ApplicationController
         end
       end
 
-      allocation_tags.each do |at|
+      allocation_tags.where('group_id IS NOT NULL').each do |at|
         # getting errors to working_hours
         unless max_working_hours.nil?
           acs = AcademicAllocation.where(allocation_tag_id: at.related, frequency: true).where('final_exam = false AND equivalent_academic_allocation_id IS NULL').pluck(:max_working_hours)
