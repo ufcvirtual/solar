@@ -163,6 +163,8 @@
           groups = groups.split(' ');
 
           for(i = 0; i < groups.length; i++) {
+            var valor = parseFloat(Number($(this).val()).toFixed(2));
+
             if(groups[i] == '' || groups[i] == 'undefined' || groups[i] == null){
               offer = true;
             }
@@ -181,16 +183,16 @@
 
               var test = false;
               for(w = 0; w < weight.length; w++) { 
-                if(( $.inArray(groups[i], weight[w]) !== -1) && ($.inArray($(this).val(), weight[w]) !== -1)){
+                if(( $.inArray(groups[i], weight[w]) !== -1) && ($.inArray(valor, weight[w]) !== -1)){
                   test = true;
                 }
               }
               if(test==false && offer==false){
-                weight.push([groups[i], $(this).val()]); 
+                weight.push([groups[i], valor]); 
 
                 for(g = 0; g < groups_list.length; g++) { 
                   if( groups_list[g][0] == groups[i] ){
-                    groups_list[g][1] = Number(groups_list[g][1]) + Number($(this).val());
+                    groups_list[g][1] = Number(groups_list[g][1]) + valor;
                   } 
                 }
               }
@@ -200,15 +202,15 @@
               for(g = 0; g < groups_list.length; g++) { 
                 var t_off = false;
                 for(w = 0; w < weight.length; w++) { 
-                  if(( $.inArray(groups_list[g][0], weight[w]) !== -1) && ($.inArray($(this).val(), weight[w]) !== -1)){
+                  if(( $.inArray(groups_list[g][0], weight[w]) !== -1) && ($.inArray(valor, weight[w]) !== -1)){
                     t_off = true;
                   }
                 }
                 //adiciona ao array de turmas caso o valor ainda não exista no array
                 if(t_off==false){
-                  weight.push([groups_list[g][0], $(this).val()]); 
+                  weight.push([groups_list[g][0], valor]); 
                   //altera o valor no total por grupo
-                  groups_list[g][1] = Number(groups_list[g][1]) + Number($(this).val());
+                  groups_list[g][1] = Number(groups_list[g][1]) + valor;
                 }
 
               }  
@@ -259,7 +261,7 @@
       else if(groups_list[glt][1] > 100)  
         class_g = "analise_errors_li error_t"; 
 
-      group = "#{I18n.t('editions.tools.total_final_weight')}"+groups_list[glt];
+      group = "#{I18n.t('editions.tools.total_final_weight')}"+ groups_list[glt][0] +': '+ parseFloat(groups_list[glt][1].toFixed(2));
       ul.append("<li class='" + class_g + "' >"+group+"</li>"); 
     }
     //carga horária  
@@ -270,7 +272,7 @@
       else if(groups_wh_list[glt][1] > 64)  
         class_ch = "analise_errors_li error_t"; 
 
-      group = "#{I18n.t('editions.tools.total_wh')}"+groups_wh_list[glt];
+      group = "#{I18n.t('editions.tools.total_wh')}"+ groups_wh_list[glt][0] + ': '+ parseFloat(groups_wh_list[glt][1].toFixed(2));
       ul.append("<li class='" + class_ch + "' >"+group+"</li>"); 
     }
     
