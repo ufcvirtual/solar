@@ -38,7 +38,7 @@ class ScoresController < ApplicationController
 
     ats = AllocationTag.find(@allocation_tag_id).related.join(',')
 
-    @acs = if ats.empty? 
+    @acs = if ats.empty?
       []
     else AcademicAllocation.find_by_sql <<-SQL
           SELECT ac.id, ac.academic_tool_type AS tool_type, ac.academic_tool_id AS tool_id, COALESCE(assignments.name, discussions.name, schedule_events.title, exams.name, chat_rooms.title, webconferences.title) AS name
@@ -85,13 +85,13 @@ class ScoresController < ApplicationController
         format.html { render partial: 'evaluative_frequency', locals: {score_type: params[:type] }}
         format.json { render json: @users }
         format.js
-      end 
-    end   
+      end
+    end
   rescue => error
     request.format = :json
     raise error
-  end 
-  
+  end
+
   require 'will_paginate/array'
   def general
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
@@ -100,7 +100,7 @@ class ScoresController < ApplicationController
     @tools = ( ats.empty? ? [] : EvaluativeTool.count_tools(ats) )
 
     if params[:report]
-      @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true) 
+      @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true)
       @ats = AllocationTag.find(@allocation_tag_id)
 
       render pdf:         t("scores.reports.general"),
@@ -108,15 +108,15 @@ class ScoresController < ApplicationController
              template: 'scores/general.html.haml',
              layout: false,
              disposition: 'attachment'
-  
+
     else
       @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true).paginate(:page => params[:page], :per_page => 20)
       respond_to do |format|
         format.html { render partial: 'general'  }
         format.json { render json: @users }
         format.js
-      end 
-    end    
+      end
+    end
   rescue => error
     request.format = :json
     raise error
@@ -154,7 +154,7 @@ class ScoresController < ApplicationController
 
     @is_student = @user.is_student?([@allocation_tag_id])
     @current_user_is_student = current_user.is_student?([@allocation_tag_id])
-    
+
     case params[:tool]
     when 'discussion'
       @can_evaluate = can? :evaluate, Discussion, { on: @allocation_tag_id }
@@ -171,7 +171,7 @@ class ScoresController < ApplicationController
       #@online = bbb_online?(bbb_prepare)
       @can_evaluate = can? :evaluate, Webconference, { on: @allocation_tag_id }
       @can_see_access = can? :list_access, Webconference, { on: @allocation_tag_id }
-     
+
       @webconferences_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'webconferences', true)
       @webconferences_frequency = Score.list_tool(@user.id, @allocation_tag_id, 'webconferences', false, true)
       @webconferences_not_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'webconferences')
@@ -196,13 +196,13 @@ class ScoresController < ApplicationController
     else  #todos
       @can_evaluate = current_user.resources_by_allocation_tags_ids([@allocation_tag_id])
       @tool_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'all', true)
-      @tool_frequency = Score.list_tool(@user.id, @allocation_tag_id, 'all', false, true) 
-      @tool_not_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'all') 
+      @tool_frequency = Score.list_tool(@user.id, @allocation_tag_id, 'all', false, true)
+      @tool_not_evaluative = Score.list_tool(@user.id, @allocation_tag_id, 'all')
     end
     @can_comment = (can? :create, Comment, { on: @allocation_tag_id } )
 
     render partial: "scores/info/"+params[:tool]
-  end  
+  end
 
   def reports_pdf
     allocation_tag_id = active_tab[:url][:allocation_tag_id]
@@ -222,28 +222,31 @@ class ScoresController < ApplicationController
     if frequency
       @type = 'frequency'
     elsif evaluative
-      @type = 'evaluative'  
+      @type = 'evaluative'
     elsif tool
-      @type = 'all' 
+      @type = 'all'
     else
-      @type = 'not_evaluative' 
-    end  
+      @type = 'not_evaluative'
+    end
 
     at = AllocationTag.find(allocation_tag_id)
     @curriculum_unit = at.get_curriculum_unit
-             
+
     @ats = AllocationTag.find(allocation_tag_id)
+    @is_student = @user.is_student?([allocation_tag_id])
     @g = AcademicAllocationUser.get_grade_finish(@user.id, allocation_tag_id)
 
     @tool = Score.list_tool(@user.id, allocation_tag_id, 'all', evaluative, frequency, (@type == 'all'))
     @access, @public_files, @access_count = Score.informations(@user.id, allocation_tag_id)
-   
-    render pdf:         t("scores.reports.student_#{@type}", name: @user.name),
-           orientation: 'Landscape',
-           template: 'scores/reports_pdf.html.haml',
-           layout: false,
-           disposition: 'attachment'
-  end  
+
+    # render pdf:         t("scores.reports.student_#{@type}", name: @user.name),
+    #        orientation: 'Landscape',
+    #        template: 'scores/reports_pdf.html.haml',
+    #        layout: false,
+    #        disposition: 'attachment'
+
+    send_data ReportsHelper.generate_pdf(@type, @ats, @user, @curriculum_unit, @is_student, @g, @tool, @access, @access_count, @public_files).render, :filename => "#{t("scores.reports.student_#{@type}", name: @user.name)}.pdf", :type => "application/pdf", disposition: 'inline'
+  end
 
   def user_info
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
@@ -263,7 +266,7 @@ class ScoresController < ApplicationController
     end
 
     render :info
-  end 
+  end
 
   def amount_access
     allocation_tag_id = active_tab[:url][:allocation_tag_id]
@@ -337,7 +340,7 @@ class ScoresController < ApplicationController
         profiles = current_user.profiles_with_access_on(:show, 'chat_rooms', [active_tab[:url][:allocation_tag_id]].flatten, true)
         allocation = Allocation.where(profile_id: profiles, status: Allocation_Activated, user_id: current_user.id).first.try(:id)
         raise CanCan::AccessDenied if allocation.blank?
-        render json: { url: access_chat_room_path(tool_id, academic_allocation_id: params[:ac_id], allocation_id: allocation) } 
+        render json: { url: access_chat_room_path(tool_id, academic_allocation_id: params[:ac_id], allocation_id: allocation) }
       when 'Webconference'
         authorize! :interact, Webconference, { on: active_tab[:url][:allocation_tag_id] }
         render json: { url: access_webconference_path(tool_id), method: :get, web: true }
@@ -345,7 +348,7 @@ class ScoresController < ApplicationController
         render json: { url: discussion_posts_path(discussion_id: tool_id), method: :get }
       when 'Exam'
         if can? :open, Exam, { on: active_tab[:url][:allocation_tag_id] }
-          render json: { url:  pre_exam_path(tool_id, allocation_tag_id: @allocation_tag_id, situation: params[:situation]) }  
+          render json: { url:  pre_exam_path(tool_id, allocation_tag_id: @allocation_tag_id, situation: params[:situation]) }
         else
           authorize! :show, Question, { on: active_tab[:url][:allocation_tag_id] }
           render json: { url: preview_exam_path(tool_id, allocation_tags_ids: active_tab[:url][:allocation_tag_id]) }

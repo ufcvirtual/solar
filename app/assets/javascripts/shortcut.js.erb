@@ -194,7 +194,7 @@ function close_shortcut_window(event) {
     $('*').not('.modal-content *').each(function(){
       $(this).removeAttr('tabindex');
     });
-    $('.modal-content p, .modal-content h2, .close-shortcut-window').each(function(){
+    $('.modal-content p, .modal-content h2').each(function(){
       $(this).removeAttr('tabindex');
     });
   }
