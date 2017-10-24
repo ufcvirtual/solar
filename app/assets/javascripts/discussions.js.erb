@@ -33,6 +33,7 @@ function destroy_editor() {
   if (CKEDITOR.instances['post_content']) {
     CKEDITOR.instances['post_content'].destroy();
     $("#post_content").val(null);
+    clear_input_file();
   }
 }
 
@@ -47,6 +48,7 @@ function append_rich_text(container) {
 function cancel_posting() {
   if (!confirm("<%= I18n.t('posts.index.confirm_cancel') %>")) return; 
   remove_ckeditor();
+  clear_input_file();
 }
 
 function remove_ckeditor(){
@@ -79,6 +81,7 @@ function new_post(obj, parent) {
   }
 
   $('form#new_post_form').attr('method', "POST");
+  clear_input_file();
   return false;
 };
 
@@ -97,6 +100,7 @@ function update_post(obj, post, parent) {
   append_rich_text(postEdit);
   $(postEdit).parent().find('.publish_post').hide();
   CKEDITOR.instances['post_content'].setData($(obj).closest('.forum_post_wrapper').children('.forum_post_inner_content').html());
+  clear_input_file();
 
   return false;
 }
@@ -196,4 +200,10 @@ function delete_post_file(button, post_id) {
         flash_message(data.alert, 'alert');
     }
   });
+}
+
+function clear_input_file(){
+  $('.hidden_input_file').val("");
+  $('.attachment_title_').hide();
+  $('.input.files').remove();
 }

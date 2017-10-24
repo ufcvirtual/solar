@@ -56,7 +56,7 @@
             = form.simple_fields_for :files do |files|
               .file_input
                 = files.input :_destroy, as: :hidden, input_html: { value: 0, class: "destroy_input_file", :"data-file-id" => files.object.id }
-                = files.input :attachment, label: false, input_html: { id: 'fileupload' }
+                = files.input :attachment, label: false, input_html: { id: 'fileupload', class: 'hidden_input_file' }
             %br
             %br
             %h3.attachment_title_.invisible= t("posts.post.file_list")
