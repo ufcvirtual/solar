@@ -2220,6 +2220,7 @@ en_US:
       email: Email
       cpf: CPF
       login: Username
+      search: Name or CPF or Email
     logs:
       log_type: Type
       course: Course

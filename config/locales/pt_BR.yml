@@ -2440,6 +2440,7 @@ pt_BR:
       email: Email
       cpf: Cpf
       login: Login
+      search: Nome ou CPF ou Email
     logs:
       log_type: Tipo
       course: Curso

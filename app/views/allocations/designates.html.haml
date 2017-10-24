@@ -26,7 +26,7 @@
 
   .block_content_toolbar
     %label{for: "text_search"}= t(".user")
-    = text_field_tag "text_search", @text_search
+    = text_field_tag "text_search", @text_search, placeholder: t('administrations.search_users.search')
     = button_tag t(".search"), type: :button, class: "btn btn_default", id: "search_user", alt: t(".search_users")
 
   .block_content
