@@ -46,22 +46,50 @@ module V1
         post "/" do
           begin
             cpf = params[:cpf].delete('.').delete('-')
-            if (user = User.find_by_cpf(cpf)).nil?
+            user = User.find_by_cpf(cpf)
+            user.synchronize if user.can_synchronize?
+
+            blacklist = UserBlacklist.where(cpf: cpf).first_or_initialize
+            blacklist.name = params[:name] if blacklist.new_record?
+            can_add_or_exists_blacklist = blacklist.valid? || !blacklist.new_record?
+            blacklist.save if blacklist.new_record? && !user.nil? && user.integrated && can_add_or_exists_blacklist
+
+            if user.nil? || can_add_or_exists_blacklist
               ActiveRecord::Base.transaction do
-                new_password = ('0'..'z').to_a.shuffle.first(8).join
-                params.merge!(params.include?(:username) ? {password: new_password} : {password: new_password, username: cpf})
-                user = User.new user_params(params)
-                user.synchronizing = true # ignore MA
+                if user.nil?
+                  new_password = ('0'..'z').to_a.shuffle.first(8).join
+                  params.merge!({password: new_password}) 
+                end
+                params.merge!({username: cpf}) if params[:username].blank? && user.nil?
+                if user.nil?
+                  user = User.new user_params(params)
+                else
+                  user.attributes = user_params(params)
+                end
+                user.valid?
+                if !user.errors[:username].blank?
+                  username = user.name.slice(' ') # by name
+                  user.username = [username[0].downcase, username[1].downcase].join('_')[0..19] rescue ''
+                  user.username = user.email.split('@')[0][0..19] unless user.valid?
+                end
+
                 user.save!
 
-                user.update_attribute :password, nil
-
                 Thread.new do
-                  Notifier.new_user(user, new_password).deliver
+                  if new_password
+                    Notifier.new_user(user, new_password).deliver
+                  else
+                    user.notify_by_email
+                  end
                 end
               end
+            else # user exists
+              log_info('integrated user and cant add to blacklist')
+              { id: user.id }
             end
-            {id: user.id}
+            { id: user.id }
+          rescue
+            log_error(user.errors.full_messages, 422)
           end
         end # /
 

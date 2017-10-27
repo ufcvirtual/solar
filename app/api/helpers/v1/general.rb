@@ -22,10 +22,18 @@ module V1::General
     Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: #{error}"
   end
 
+  def log_info(msg)
+    Rails.logger.info "[API] [INFO] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] message: #{msg}"
+  end
+
+
   def verify_or_create_user(cpf)
     user = User.find_by_cpf(cpf.delete('.').delete('-'))
 
-    return user if user
+    if user
+      user.synchronize if user.can_synchronize?
+      return user 
+    end
 
     user = User.new cpf: cpf
     user.connect_and_validates_user if user.can_synchronize?

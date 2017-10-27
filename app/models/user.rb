@@ -572,11 +572,13 @@ class User < ActiveRecord::Base
   # synchronizes user data with MA data
   def synchronize(user_data = nil)
     return nil if on_blacklist?
+    return nil unless (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO['integrated'])
     user_data = User.connect_and_import_user(cpf) if user_data.nil?
     unless user_data.nil? # if user exists
       ma_attributes = User.user_ma_attributes(user_data)
       errors.clear # clear all errors, so the system can import and save user's data
       self.synchronizing = true
+      ma_attributes.merge!({encrypted_password: encrypted_password}) if ma_attributes[:encrypted_password].blank?
       update_attributes(ma_attributes)
       self.synchronizing = false
       return true
@@ -619,6 +621,7 @@ class User < ActiveRecord::Base
           # verify if cpf, username or email already exists
           unless User.find_by_cpf(user_data[0]) || User.find_by_username(user_data[5]) || User.find_by_email(user_data[8])
             ma_attributes = User.user_ma_attributes(user_data) # import all data from MA user
+            ma_attributes.merge!({encrypted_password: user.encrypted_password}) if !user.nil? && ma_attributes[:encrypted_password].blank?
             (user.nil? ? (user = User.new(ma_attributes)) : (user.attributes = ma_attributes))
             user.errors.clear # clear all errors, so the system can import and save user's data
             return user.save(validate: false) if user.new_record? # if user don't exist, saves it without validation (all necessary data must come from MA)
@@ -645,9 +648,9 @@ class User < ActiveRecord::Base
   def self.user_ma_attributes(user_data)
     { name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == 'M'), cell_phone: user_data[17],
       nick: (user_data[7].nil? ? ([user_data[2].split(' ')[0], user_data[2].split(' ')[1]].join(' ')) : user_data[7]), telephone: user_data[18],
-      special_needs: (user_data[19].downcase == 'nenhuma' ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13],
+      special_needs: ((user_data[19].blank? || user_data[19].downcase == 'nenhuma') ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13],
       address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]),
-      encrypted_password: user_data[6], email: (user_data[8].blank? ? [user_data[0].downcase, MODULO_ACADEMICO['tmp_email_provider']].join('@') : user_data[8]), integrated: true }
+      encrypted_password: user_data[6], email: (user_data[8].blank? ? [user_data[0], MODULO_ACADEMICO['tmp_email_provider']].join('@') : user_data[8]), integrated: true }
   end
 
   def self.connect_and_import_user(cpf, client = nil)
