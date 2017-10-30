@@ -29,18 +29,14 @@ module V1::General
 
   def verify_or_create_user(cpf)
     user = User.find_by_cpf(cpf.delete('.').delete('-'))
-
-    if user
-      user.synchronize if user.can_synchronize?
-      return user 
+    user = User.new(cpf: cpf) unless user
+    
+    if user.can_synchronize?
+      import = user.synchronize
+      raise user.errors.full_messages.join(', ') unless import || user.errors.empty?
     end
 
-    user = User.new cpf: cpf
-    user.connect_and_validates_user if user.can_synchronize?
-
-    raise ActiveRecord::RecordNotFound unless user.valid? && !user.new_record?
-
-    user
+    return user 
   end
 
   def get_destination(curriculum_unit_code, course_code, code, semester)
