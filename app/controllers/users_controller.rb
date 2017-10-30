@@ -33,7 +33,11 @@ class UsersController < ApplicationController
             user_data = User.connect_and_import_user(user_cpf) # try to import
             raise if user_data.nil? # user don't exist at MA
             user.synchronize(user_data) # synchronize user with new MA data
-            redirect_to login_path, notice: t("users.notices.ma.use_ma_data").html_safe
+            if user.errors.any?
+              redirect_to login_path, alert: t("users.errors.ma.error_synchronize", errors: user.errors.full_messages.join(', ')).html_safe
+            else
+              redirect_to login_path, notice: t("users.notices.ma.use_ma_data").html_safe
+            end
           rescue
             redirect_to login_path, alert: t(:new_user_cpf_in_use)
           end
@@ -120,7 +124,7 @@ class UsersController < ApplicationController
       render json: {success: true, message: t("users.notices.ma.synchronize"), type_message: "notice",
         name: user.name, email: user.email, nick: user.nick, username: user.username}
     else # error
-      render json: {success: false, alert: t("users.errors.ma.synchronize")}, status: :unprocessable_entity
+      render json: {success: false, alert: (user.errors.any? ? user.errors.full_messages.join(', ') : t("users.errors.ma.synchronize"))}, status: :unprocessable_entity
     end
   rescue ActiveRecord::RecordNotFound
     render json: {success: false, message: t("users.warnings.ma.not_possible_syncrhonize"), type_message: "warning"}

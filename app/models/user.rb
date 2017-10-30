@@ -577,10 +577,17 @@ class User < ActiveRecord::Base
     unless user_data.nil? # if user exists
       ma_attributes = User.user_ma_attributes(user_data)
       errors.clear # clear all errors, so the system can import and save user's data
+
       self.synchronizing = true
-      ma_attributes.merge!({encrypted_password: encrypted_password}) if ma_attributes[:encrypted_password].blank?
+      ma_attributes.merge!({encrypted_password: encrypted_password}) if ma_attributes[:encrypted_password].blank? && ma_attributes[:password].blank?
       update_attributes(ma_attributes)
       self.synchronizing = false
+
+      if errors.any?
+        Rails.logger.info "\n[ERROR] [SYNCHRONIZE USER] [#{Time.now}] [USER CPF #{cpf}] message: #{errors.full_messages}" 
+        return false
+      end
+      
       return true
     else
       return nil
@@ -646,11 +653,18 @@ class User < ActiveRecord::Base
   end
 
   def self.user_ma_attributes(user_data)
-    { name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == 'M'), cell_phone: user_data[17],
+    data = { name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == 'M'), cell_phone: user_data[17],
       nick: (user_data[7].nil? ? ([user_data[2].split(' ')[0], user_data[2].split(' ')[1]].join(' ')) : user_data[7]), telephone: user_data[18],
-      special_needs: ((user_data[19].blank? || user_data[19].downcase == 'nenhuma') ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13],
-      address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]),
-      encrypted_password: user_data[6], email: (user_data[8].blank? ? [user_data[0], MODULO_ACADEMICO['tmp_email_provider']].join('@') : user_data[8]), integrated: true }
+      special_needs: ((user_data[19].blank? || user_data[19].downcase == 'nenhuma') ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13],      address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]), email: (user_data[8].blank? ? [user_data[0], MODULO_ACADEMICO['tmp_email_provider']].join('@') : user_data[8]), integrated: true }
+
+    if !user_data[6].blank?
+      data.merge!({encrypted_password: user_data[6]})
+    elsif data[:encrypted_password].blank?
+      # generate a random passowrd just to create user successfully
+      data.merge!({password: ('0'..'z').to_a.shuffle.first(8).join})
+    end
+
+    return data
   end
 
   def self.connect_and_import_user(cpf, client = nil)

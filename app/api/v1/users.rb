@@ -98,6 +98,8 @@ module V1
           begin
             verify_or_create_user(params[:cpf].delete('.').delete('-'))
             {ok: :ok}
+          rescue => error
+            raise error
           end
         end
 
