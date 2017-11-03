@@ -27,11 +27,11 @@ module V1::General
   end
 
 
-  def verify_or_create_user(cpf)
+  def verify_or_create_user(cpf, ignore_synchronize=false)
     user = User.find_by_cpf(cpf.delete('.').delete('-'))
     user = User.new(cpf: cpf) unless user
     
-    if user.can_synchronize?
+    if user.can_synchronize?  && (!ignore_synchronize || user.new_record?)
       import = user.synchronize
       raise user.errors.full_messages.join(', ') unless import || user.errors.empty?
     end

@@ -87,7 +87,7 @@ module V1::AllocationsH
   def import_users(params)
     users = []
     [params[:cpf] || params[:cpfs]].flatten.each do |cpf|
-      users << verify_or_create_user(cpf)
+      users << verify_or_create_user(cpf, params[:ma])
     end
     users
   end
