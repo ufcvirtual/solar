@@ -23,7 +23,7 @@ module V1
         end
         get "/:id/photo" do
           user = current_user.id == params[:id].to_i ? current_user : User.find(params[:id])
-          send_file(user.photo.path(params[:style]))
+          send_file(user.photo.path(params[:style]), params[:style])
         end
 
       end # users
