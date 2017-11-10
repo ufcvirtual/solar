@@ -46,27 +46,28 @@ module V1
         post "/" do
           begin
             cpf = params[:cpf].delete('.').delete('-')
-            user = User.find_by_cpf(cpf)
+            user_exist = User.where(cpf: cpf).first
+            user = user_exist.nil? ? User.new(cpf: cpf) : user_exist
+
             user.synchronize if user.can_synchronize?
+
+            new_user = (user.new_record? && !user.integrated)
 
             blacklist = UserBlacklist.where(cpf: cpf).first_or_initialize
             blacklist.name = params[:name] if blacklist.new_record?
             can_add_or_exists_blacklist = blacklist.valid? || !blacklist.new_record?
             blacklist.save if blacklist.new_record? && !user.nil? && user.integrated && can_add_or_exists_blacklist
 
-            if user.nil? || can_add_or_exists_blacklist
+            if new_user || can_add_or_exists_blacklist
               ActiveRecord::Base.transaction do
-                if user.nil?
+                if new_user
                   new_password = ('0'..'z').to_a.shuffle.first(8).join
                   params.merge!({password: new_password}) 
                 end
-                params.merge!({username: cpf}) if params[:username].blank? && user.nil?
-                if user.nil?
-                  user = User.new user_params(params)
-                else
-                  user.attributes = user_params(params)
-                end
+                params.merge!({username: cpf}) if params[:username].blank? && new_user
+                user.attributes = user_params(params)
                 user.valid?
+
                 if !user.errors[:username].blank?
                   username = user.name.slice(' ') # by name
                   user.username = [username[0].downcase, username[1].downcase].join('_')[0..19] rescue ''
