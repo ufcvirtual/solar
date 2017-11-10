@@ -15,8 +15,27 @@ class QuestionImage < ActiveRecord::Base
           path: ':rails_root/media/questions/images/:id_:basename.:extension',
           url: '/media/questions/images/:id_:basename.:extension'
 
+  before_save :replace_image_name
+
   def self.list(question_id)
     QuestionImage.where(question_id: question_id)
       .select('DISTINCT question_images.id, question_images.legend, question_images.image_file_name, question_images.image_content_type, question_images.image_file_size, question_images.image_updated_at, question_images.img_alt')
   end
+
+  Paperclip.interpolates :normalized_image_file_name do |attachment, style|
+    attachment.instance.normalized_image_file_name
+  end
+
+  def normalized_image_file_name
+    image_name= image_file_name.split('.')
+    extension = image_name.last
+    image_name.pop
+    image_name_2 = image_name.to_sentence(two_words_connector: '_')
+   "#{image_name_2.gsub( /[^a-zA-Z0-9_\.]/, '_')}.#{extension}"
+  end
+
+  private
+    def replace_image_name
+      self.image_file_name = normalized_image_file_name
+    end
 end
