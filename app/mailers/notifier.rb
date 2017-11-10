@@ -1,4 +1,7 @@
+
 class Notifier < ActionMailer::Base
+  include BulkEmailHelper
+  
   default YAML::load(File.open('config/mailer.yml'))['default_sender']
 
   def send_mail(recipients, subject, message, files, from = nil)
@@ -45,5 +48,19 @@ class Notifier < ActionMailer::Base
     mail(to: @lesson.user.email,
          subject: t('notifier.imported_from_private.subject'))
   end
+
+  def job_send_mail
+    amount = Job.count_jobs_30_minute
+    jobs = Job.list_jobs_not_send
+    jobs.each do |job|
+      amount = amount + job.amount
+      if amount <= 500
+        clone_job = job.dup
+        Delayed::Worker.new.run(job) 
+        Job.update_status_job(clone_job)
+      end  
+    end
+    Job.delete_jobs
+  end 
 
 end

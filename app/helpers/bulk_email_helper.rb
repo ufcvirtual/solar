@@ -1,31 +1,16 @@
 module BulkEmailHelper
+
   def send_mass_email(emails, message)
-    jobs = Delayed::Job.where(failed_at: nil)
-
-    emails_in_jobs = []
-    jobs.each do |job|
-      emails_in_jobs += job.handler.scan(/[A-Za-z0-9._-]+@\w+/)
-    end
-
+    #blocos de emails
     max_size = 500
-    quantum_time = 480
+    emails_in_jobs = emails.in_groups_of(max_size, false).to_a
 
-    self_email = message.sender.email.scan(/[A-Za-z0-9._-]+@\w+/).first
-    emails_in_jobs.delete(self_email)
-    offset = emails_in_jobs.uniq.size
-    excess = offset % max_size
-
-    if emails.size > max_size * 0.7
-      time = excess > max_size * 0.3 ? offset + quantum_time : offset
-    else
-      time = excess > max_size * 0.7 ? offset + quantum_time : offset
+    emails_in_jobs.each do |e|
+        job = Notifier.delay.send_mail(e, message.subject, new_msg_template, message.files, message.sender.email)
+        job.amount = e.count
+        job.save!
     end
-
-    count = 0
-    while count < emails.size
-      Notifier.delay(run_at: (time/16).minutes.from_now).send_mail(emails.slice(count, max_size), message.subject, new_msg_template, message.files, message.sender.email)
-      time += quantum_time
-      count += max_size
-    end
+    Notifier.job_send_mail 
   end
+  
 end

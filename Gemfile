@@ -67,7 +67,10 @@ gem 'coffee-rails'
 
 gem 'rest-client'
 
-gem 'rufus-scheduler', "~> 2.0.24"
+gem 'rufus-scheduler'
+
+#fila de emails
+gem 'delayed_job_active_record'
 
 group :development do
   gem "rb-readline", "~> 0.5.1"
@@ -87,6 +90,9 @@ group :development do
   gem 'flamegraph'
   gem 'stackprof'     # For Ruby MRI 2.1+
   gem 'fast_stack'    # For Ruby MRI 2.0
+
+  gem 'cpf_utils'
+  gem 'faker'
 end
 
 group :development, :test do

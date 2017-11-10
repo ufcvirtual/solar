@@ -98,12 +98,12 @@ class MessagesController < ApplicationController
 
         @message.files << original_files if original_files and not original_files.empty?
         @message.save!
-
-        Thread.new do
-          Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files, current_user.email).deliver
-        end
-
-        # send_mass_email(emails, @message)
+        #Thread.new do 
+          #Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files, current_user.email).deliver
+        #end
+        Thread.new do 
+          send_mass_email(emails, @message)
+        end  
       end
 
       redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages)

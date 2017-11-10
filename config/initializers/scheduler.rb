@@ -16,4 +16,13 @@ if (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['run_scheduler'] 
     Exam.correction_cron  
   end
 
+  #execulte a cada 60 segundos, após o inicio do sistema
+  scheduler.in '60s' do
+    Notifier.job_send_mail
+  end
+  #execulte a cada 15 minutos
+  scheduler.every '15m' do
+    Notifier.job_send_mail
+  end
+
 end
