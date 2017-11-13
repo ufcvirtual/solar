@@ -29,6 +29,7 @@ class QuestionItem < ActiveRecord::Base
   before_destroy :can_destroy?
 
   after_create :replace_audio, if: '(!item_audio_file_name.blank?)'
+  after_create :replace_image, if: '(!item_image_file_name.blank?)'
 
   def can_destroy?
     raise 'in_use' if exam_responses.any?
@@ -46,9 +47,25 @@ class QuestionItem < ActiveRecord::Base
    "#{audio_name_2.gsub( /[^a-zA-Z0-9_\.]/, '_')}.#{extension}"
   end
 
-  private
-  def replace_audio
-    self.update_attributes(:item_audio_file_name => normalized_item_audio_file_name)
+  Paperclip.interpolates :normalized_item_image_file_name do |attachment, style|
+    attachment.instance.normalized_item_image_file_name
   end
-  
+
+  def normalized_item_image_file_name
+    image_name = item_image_file_name.split('.')
+    extension = image_name.last
+    image_name.pop
+    image_name_2 = image_name.to_sentence(two_words_connector: '_')
+   "#{image_name_2.gsub( /[^a-zA-Z0-9_\.]/, '_')}.#{extension}"
+  end
+
+  private
+    def replace_audio
+      self.update_attributes(:item_audio_file_name => normalized_item_audio_file_name)
+    end
+
+    def replace_image
+      self.update_attributes(:item_image_file_name => normalized_item_image_file_name)
+    end
+
 end

@@ -164,10 +164,12 @@ class ExamsController < ApplicationController
           @pdf = 1
 
 
-          render pdf: t('exams.result_exam.title_pdf', name: @exam.name),
-             template: 'exams/result_exam.html.haml',
-             layout: false,
-             disposition: 'attachment'
+          # render pdf: t('exams.result_exam.title_pdf', name: @exam.name),
+          #    template: 'exams/result_exam.html.haml',
+          #    layout: false,
+          #    disposition: 'attachment'
+
+          send_data ReportsHelper.result_exam(@ats, @exam, current_user, @grade_pdf, @exam_questions, @preview, @last_attempt, @disabled).render, :filename => "#{t('exams.result_exam.title_pdf', name: @exam.name)}.pdf", :type => "application/pdf", disposition: 'inline'
 
         else
          render :open

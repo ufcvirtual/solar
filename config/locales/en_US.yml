@@ -2424,7 +2424,7 @@ en_US:
       default_final_weight: Sets all final weights as 100
       finish: Finish
       draggable_title: ANALYZER
-      draggable_info: Click and drag to move the component 
+      draggable_info: Click and drag to move the component
   curriculum_units:
     success:
       created: Subject was successfully created.
@@ -3615,6 +3615,7 @@ en_US:
     print: Print result
     selected_correctly: Correctly selected item
     selected_incorrectly: Incorrectly selected item
+    correct_item: Correct item not selected
     not_selected_incorrectly: Incorrectly not selected item
     comment: Comment about item
     list:
@@ -3849,6 +3850,9 @@ en_US:
       email_of: of
       email: "Please do not respond to this message. This is an automatic email from Solar 2.0"
       itens_corrected: "Corrected item(s): "
+      itens_marked: "Marked item(s): "
+      true_item: "True item"
+      false_item: "False item"
       true_items: "True item(s): "
       false_items: "False item(s): "
       frequency: Frequency

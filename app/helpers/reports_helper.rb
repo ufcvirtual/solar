@@ -1,5 +1,6 @@
 require "prawn"
 require "prawn/table"
+require "nokogiri"
 
 module ReportsHelper
 
@@ -9,25 +10,16 @@ module ReportsHelper
   end
 
   def self.generate_pdf type, ats, user, curriculum_unit, is_student, grade, tool, access, access_count, public_files
-    info = {
-      :Title        => "Solar",
-      :Author       => "UFC Virtual",
-      :Subject      => "Solar system reports",
-      :Keywords     => "reports",
-      :Creator      => "ACME Soft App",
-      :Producer     => "Prawn",
-      :CreationDate => Time.now
-    }
+    pdf = inicializa_pdf(:landscape)
 
-    pdf = Prawn::Document.new(info: info, page_size: "A4", page_layout: :landscape)
-
-    # Cabeçalho
+    # Logo da UFC e data de geração do pdf
     pdf.text I18n.t('scores.pdf.time', time: I18n.l(Time.now, format: :long)), size: 7, align: :right
     pdf.move_down 3
     cursor = pdf.cursor
     pdf.image "#{Rails.root}/app/assets/images/ufc.png", width: 150, height: 50, position: :left
     pdf.image "#{Rails.root}/app/assets/images/ufcVirtual.png", width: 70, height: 50, at: [700, cursor]
 
+    # Título do pdf
     pdf.text ats.info, size: 14, style: :bold, align: :center
     pdf.move_down 10
     pdf.text  I18n.t(:report, scope: [:scores, :info]) + I18n.t(type, scope: [:scores, :info]), size: 12, align: :center
@@ -89,18 +81,196 @@ module ReportsHelper
     end
 
     # Enumerando paginas
-    string = I18n.t('reports.commun_texts.pages')
-    options = { :at => [pdf.bounds.right - 150, 0],
-                :width => 150,
-                :align => :right,
-                :start_count_at => 1 }
+    page_enumeration(pdf)
 
-    pdf.number_pages string, options
+    return pdf
+  end
+
+  def self.result_exam(ats, exam, user, grade_pdf, exam_questions, preview, last_attempt, disabled)
+    pdf = inicializa_pdf(:portrait)
+
+    # Logo da UFC e data de geração do pdf
+    pdf.text I18n.t('scores.pdf.time', time: I18n.l(Time.now, format: :long)), size: 7, align: :right
+    pdf.move_down 3
+    cursor = pdf.cursor
+    pdf.image "#{Rails.root}/app/assets/images/ufc.png", width: 120, height: 50, position: :left
+    pdf.image "#{Rails.root}/app/assets/images/ufcVirtual.png", width: 70, height: 50, at: [460, cursor]
+    pdf.move_down 10
+
+    # Título do pdf
+    pdf.text ats.info, size: 14, style: :bold, align: :center
+    pdf.move_down 10
+    pdf.text  I18n.t(:report, scope: [:scores, :info]) + I18n.t('exams.result_exam.title_pdf', name: exam.name), size: 12, align: :center
+
+    pdf.image "#{Rails.root}/app/assets/images/#{user.user_photo(:medium)}", width: 110, height: 100, alt: I18n.t(:mysolar_alt_img_user)
+
+    pdf.bounding_box([125, pdf.cursor + 100], width: 290, height: 100) do
+      pdf.move_down 10
+      pdf.text user.name, size: 12, style: :bold, align: :center
+      pdf.text "(#{user.nick})", size: 12, style: :bold, align: :center
+      pdf.move_down 10
+      pdf.text strip_htlm_tags(I18n.t('scores.info.grade_i', grade: (grade_pdf.blank? ? ' - ' : grade_pdf.to_s))), align: :center
+      # pdf.transparent(0.5) { pdf.stroke_bounds }
+    end
+    pdf.move_down 20
+
+    # Corpo da prova
+    number_question = 0
+
+    exam_questions.each_with_index do |question, idx|
+      exam_responses = last_attempt.exam_responses.where(question_id: question.id).first
+      number_question = number_question + 1
+
+      score = I18n.t('exams.open.scores', score: question.score) if disabled || preview
+      anull = I18n.t('exams.open.anull') if question.annulled
+      text = QuestionText.find(question.question_text_id).text unless question.question_text_id.nil?
+
+      # Texto associado a questão
+      unless question.question_text_id.nil?
+        pdf.text strip_htlm_tags((Nokogiri::HTML(text)).inner_html), align: :center
+        pdf.move_down 10
+      end
+
+      # Enunciado da questão
+      question_text = strip_htlm_tags((Nokogiri::HTML([question.enunciation, anull, score].compact.join(' '))).inner_html)
+      pdf.text "#{number_question}) #{question_text}", align: :justify
+      pdf.move_down 10
+
+      # Enunciado com imagem
+      question_images = QuestionImage.list(question.id)
+      render_images(pdf, question_images)
+
+      disabled = disabled || question.annulled
+
+      number_question_response = -1
+      arr_alf = ('A'..'Z').to_a
+      arra_correted, arra_correted2, arra_marked, arra_marked2 = [], [], [], []
+
+      responses = question.question_items.joins(:exam_responses_question_items).where(exam_responses_question_items: {:'exam_response_id' => exam_responses.id}).select("question_items.id, question_items.description, question_items.item_image_file_name AS image_name, question_items.value AS correct_value, exam_responses_question_items.value AS marked_value, question_items.comment")
+
+      responses.each do |item|
+        number_question_response += 1
+
+        arra_marked << arr_alf[number_question_response] if item.marked_value == "t"
+        arra_marked2 << arr_alf[number_question_response] if item.marked_value == "f"
+        arra_correted << arr_alf[number_question_response] if item.correct_value == "t"
+        arra_correted2 << arr_alf[number_question_response] if item.correct_value == "f"
+        image_name = "#{item.id}_#{item.image_name}" unless item.image_name.blank?
+
+        if item.marked_value == item.correct_value
+          if question.type_question.to_i == Question::UNIQUE
+            bullet(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_correctly')}) #{item.description}", "0B610B")
+          elsif question.type_question.to_i == Question::MULTIPLE
+            checkbox(pdf, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_correctly')}) #{item.description}", item.marked_value, "0B610B")
+          else
+            selected_correctly = I18n.t('exams.result_exam_user.true_item') if item.marked_value == "t"
+            selected_correctly = I18n.t('exams.result_exam_user.false_item') if item.marked_value == "f"
+            dropdown(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_correctly')}) (#{selected_correctly}) #{item.description}", "0B610B")
+          end
+        else
+          if (item.correct_value == "f" && item.marked_value == "t")
+            if question.type_question.to_i == Question::UNIQUE
+              bullet(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) #{item.description}", "E03838")
+            elsif question.type_question.to_i == Question::MULTIPLE
+              checkbox(pdf, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) #{item.description}", item.marked_value, "E03838")
+            else
+              dropdown(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) (#{I18n.t('exams.result_exam_user.false_item')}) #{item.description}", "E03838")
+            end
+          elsif item.correct_value == "t" && item.marked_value != "t"
+            if question.type_question.to_i == Question::UNIQUE
+              bullet(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.correct_item')}) #{item.description}", "E03838")
+            elsif question.type_question.to_i == Question::MULTIPLE
+              checkbox(pdf, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.correct_item')}) #{item.description}", item.marked_value, "E03838")
+            else
+              dropdown(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) (#{I18n.t('exams.result_exam_user.true_item')}) #{item.description}", "E03838")
+            end
+          else
+            if question.type_question.to_i == Question::UNIQUE
+              bullet(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) #{item.description}", "2900C2")
+            elsif question.type_question.to_i == Question::MULTIPLE
+              checkbox(pdf, image_name, "#{arr_alf[number_question_response]}) #{item.description}", item.marked_value, "2900C2")
+            else
+              selected_correctly = I18n.t('exams.result_exam_user.true_item') if item.correct_value == "t"
+              selected_correctly = I18n.t('exams.result_exam_user.false_item') if item.correct_value == "f"
+              dropdown(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) (#{selected_correctly}) #{item.description}", "E03838")
+            end
+          end
+        end
+
+        pdf.move_down 5
+        pdf.text "#{item.comment}" unless item.comment.blank?
+        pdf.move_down 10
+      end
+
+      if question.type_question.to_i == Question::UNIQUE || question.type_question.to_i == Question::MULTIPLE
+        pdf.text I18n.t('exams.result_exam_user.itens_marked') + arra_marked.join(", ")
+        pdf.text I18n.t('exams.result_exam_user.itens_corrected') + arra_correted.join(", ")
+      end
+
+      if question.type_question.to_i != Question::UNIQUE && question.type_question.to_i != Question::MULTIPLE
+        pdf.text I18n.t('exams.result_exam_user.itens_marked')
+        pdf.text I18n.t('exams.result_exam_user.true_items') + arra_marked.join(", ")
+        pdf.text I18n.t('exams.result_exam_user.false_items') + arra_marked2.join(", ")
+
+        pdf.move_down 10
+
+        pdf.text I18n.t('exams.result_exam_user.itens_corrected')
+        pdf.text I18n.t('exams.result_exam_user.true_items') + arra_correted.join(", ")
+        pdf.text I18n.t('exams.result_exam_user.false_items') + arra_correted2.join(", ")
+      end
+
+      pdf.move_down 10
+    end
+
+    # Enumerando paginas
+    page_enumeration(pdf)
 
     return pdf
   end
 
   private
+    def self.inicializa_pdf(orientation)
+      info = {
+        :Title        => "Solar",
+        :Author       => "UFC Virtual",
+        :Subject      => "Solar system reports",
+        :Keywords     => "reports",
+        :Creator      => "ACME Soft App",
+        :Producer     => "Prawn",
+        :CreationDate => Time.now
+      }
+
+      Prawn::Font::AFM.hide_m17n_warning = true
+
+      Prawn::Document.new(info: info, page_size: "A4", page_layout: orientation) do |pdf|
+        pdf.font_families.update("Ubuntu Condensed" => {
+          :normal => "#{Rails.root}/app/assets/stylesheets/fonts/ubuntucondensed-regular-webfont.ttf",
+          })
+
+        pdf.font_families.update("PT Sans" => {
+          :normal => "#{Rails.root}/app/assets/stylesheets/fonts/pt_sans-web-regular-webfont.ttf",
+          :bold => "#{Rails.root}/app/assets/stylesheets/fonts/pt_sans-web-bold-webfont.ttf",
+          :italic => "#{Rails.root}/app/assets/stylesheets/fonts/pt_sans-web-italic-webfont.ttf",
+          :bold_italic => "#{Rails.root}/app/assets/stylesheets/fonts/pt_sans-web-bolditalic-webfont.ttf",
+          })
+
+        pdf.font "PT Sans", :style => :normal
+      end
+    end
+
+    def self.strip_htlm_tags(string)
+      ActionView::Base.full_sanitizer.sanitize(string)
+    end
+
+    def self.page_enumeration(pdf)
+      string = I18n.t('reports.commun_texts.pages')
+      options = { :at => [pdf.bounds.right - 150, 0],
+                  :width => 150,
+                  :align => :right,
+                  :start_count_at => 1 }
+
+      pdf.number_pages string, options
+    end
 
     def self.line_itens(pdf, type, tool)
       # Cabeçalho da tabela
@@ -199,8 +369,62 @@ module ReportsHelper
       end
     end
 
-    def self.strip_htlm_tags(string)
-      ActionView::Base.full_sanitizer.sanitize(string)
+    def self.bullet(pdf, marked_value, image, text, color = "000000")
+      pdf.image "#{Rails.root}/app/assets/images/bullet.png", width: 12, height: 12, at: [0, pdf.cursor]
+      pdf.bounding_box([0, pdf.cursor], width: 10, height: 12) do
+        value = marked_value ? "•" : " "
+        pdf.text(value, align: :center, valign: :center)
+      end
+      pdf.move_up 12
+      pdf.span(500, position: :right) do
+        pdf.text strip_htlm_tags(text), align: :justify, color: color
+      end
+      pdf.move_down 5
+      pdf.image "#{Rails.root}/media/questions/items/#{image}" unless image.blank?
+    end
+
+    EMPTY_CHECKBOX   = "\u2610" # "☐"
+    CHECKED_CHECKBOX = "\u2611" # "☑"
+    EXED_CHECKBOX    = "\u2612" # "☒"
+    CHECKBOX_FONT    = "#{Rails.root}/app/assets/stylesheets/fonts/DejaVuSans.ttf"
+
+    def self.checkbox(pdf, image, label, checked, color = "000000")
+      pdf.font "#{CHECKBOX_FONT}" do
+        pdf.text strip_htlm_tags((checked ? "#{CHECKED_CHECKBOX} #{label}" : "#{EMPTY_CHECKBOX} #{label}")), color: color
+      end
+      pdf.move_down 5
+      pdf.image "#{Rails.root}/media/questions/items/#{image}" unless image.blank?
+    end
+
+    def self.dropdown(pdf, marked_value, image, text, color = "000000")
+      pdf.image "#{Rails.root}/app/assets/images/box.png", width: 20, height: 12, at: [0, pdf.cursor]
+      pdf.bounding_box([0, pdf.cursor], width: 10, height: 12) do
+        if marked_value == nil
+          value = ""
+        else
+          value = marked_value == "t" ? I18n.t('questions.form.t_option') : I18n.t('questions.form.f_option')
+        end
+        pdf.text(value, align: :center, valign: :center)
+      end
+      pdf.move_up 12
+      pdf.span(500, position: :right) do
+        pdf.text strip_htlm_tags(text), align: :justify, color: color
+      end
+      pdf.move_down 5
+      pdf.image "#{Rails.root}/media/questions/items/#{image}" unless image.blank?
+    end
+
+    def self.render_images(pdf, images)
+      Timeout::timeout(10) do
+        images.each do |q_image|
+          pdf.image "#{Rails.root}/media/questions/images/#{q_image.id}_#{q_image.image_file_name}", alt: q_image.img_alt unless q_image.image_file_name.blank?
+          pdf.move_down 10
+          pdf.text q_image.legend, align: :center unless q_image.legend.blank?
+          pdf.move_down 10
+        end
+      end
+    rescue
+      false
     end
 
 end
