@@ -102,7 +102,7 @@ module V1
             params{ requires :matriculas }
             before do
               load_enrollments = params[:matriculas]
-              @user             = verify_or_create_user(load_enrollments[:cpf], true)
+              @user             = verify_or_create_user(load_enrollments[:cpf])
               @groups           = JSON.parse(load_enrollments[:turmas])
               @student_profile  = 1 # Aluno => 1
 

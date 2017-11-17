@@ -10,19 +10,13 @@ class Course < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
   validates :code, presence: true, uniqueness: { case_sensitive: false }, if: 'edx_course.nil?'
   validate :unique_name, unless: 'edx_course.nil? or courses_names.nil?'
-
   validates :min_hours, numericality: { greater_than_or_equal_to: 0, allow_blank: true, less_than_or_equal_to: 100 }
-
   validates_length_of :code, maximum: 40
-
   validates :passing_grade, :min_grade_to_final_exam, :min_final_exam_grade, :final_exam_passing_grade, numericality: { greater_than_or_equal_to: 0, allow_blank: true, less_than_or_equal_to: 10 }
-
   validate :smaller_than_passing_grade, if: '!passing_grade.blank? && !min_grade_to_final_exam.blank?'
-
   validates :passing_grade, presence: true, if: 'passing_grade.blank? && (!min_grade_to_final_exam.blank? || !min_final_exam_grade.blank? || !final_exam_passing_grade.blank?)'
 
   after_save :update_digital_class, if: "code_changed? || name_changed?"
-  
   before_update :update_correspondent_uc, if: '!ignore_uc'
   after_destroy :destroy_correspondent_uc, if: '!ignore_uc'
 

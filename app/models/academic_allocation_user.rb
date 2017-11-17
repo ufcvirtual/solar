@@ -353,10 +353,8 @@ class AcademicAllocationUser < ActiveRecord::Base
 
     course = allocation_tag.get_course
     uc = allocation_tag.get_curriculum_unit
-
     min_hours = (uc.min_hours || course.min_hours)
 
-    # pode ser fórum na oferta e aluno ter 2 matriculas ativas (aglutinação ou outro motivo)
     allocation = Allocation.joins(:profile).where(user_id: user_id, allocation_tag_id: allocation_tag.lower_related, status: Allocation_Activated).where('cast(profiles.types & ? as boolean)', Profile_Type_Student)
 
     allocation = allocation.where('final_grade IS NOT NULL').first || allocation.first

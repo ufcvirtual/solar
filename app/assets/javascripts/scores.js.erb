@@ -117,7 +117,7 @@ function remove_situation(btn){
 }
 
 $(function(){
-   $('.tb_list_students ul.dropdown-menul i input[type="checkbox"]').change(function(){
+   $('.tb_list_students ul.dropdown-menu li input[type="checkbox"]').change(function(){
     if(!!$(this).prop('checked'))
       $('.'+$(this).val()).removeClass('invisible');
     else
@@ -158,6 +158,5 @@ $(function(){
   $(".dropdown-menu").on("focus", function (e) {
     $(".nav_item_dropdown")[0].focus();
   });
-
 
 });
