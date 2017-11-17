@@ -27,18 +27,19 @@ module ReportsHelper
     pdf.image "#{Rails.root}/app/assets/images/#{user.user_photo(:medium)}", width: 120, height: 110, alt: I18n.t(:mysolar_alt_img_user)
 
     pdf.bounding_box([125, pdf.cursor + 100], width: 520, height: 110) do
-      pdf.move_down 10
+      pdf.move_down 5
       pdf.text user.name, size: 12, style: :bold, align: :center
       pdf.text "(#{user.nick})", size: 12, style: :bold, align: :center
-      pdf.move_down 10
+      pdf.move_down 5
       pdf.text strip_htlm_tags(curriculum_unit.try(:working_hours).nil? ? I18n.t('scores.info.uc_without_wh') : I18n.t('scores.info.frequency_uc', wh: curriculum_unit.try(:working_hours))), align: :center
-      pdf.move_down 10
       if is_student
+        pdf.text strip_htlm_tags(I18n.t('scores.info.final_exam_grade', grade: (grade.final_exam_grade.blank? ? ' - ' : grade.final_exam_grade))), align: :center
         unless grade.final_grade.blank?
           pdf.text strip_htlm_tags(I18n.t('scores.info.grade_i', grade: grade.final_grade.round(2).to_s)), align: :center
         end
-        unless grade.working_hours.blank?
-          pdf.text strip_htlm_tags(I18n.t('scores.info.frequency_i', wh: grade.working_hours)), align: :center
+        pdf.text strip_htlm_tags(I18n.t('scores.info.frequency_i', wh: (grade.working_hours.blank? ? 0 : grade.working_hours))), align: :center
+        unless grade.grade_situation.blank?
+          pdf.text strip_htlm_tags(I18n.t('scores.info.situation2', situation: I18n.t("scores.index.#{Allocation.status_name(grade.grade_situation)}"))), align: :center
         end
       end
     end

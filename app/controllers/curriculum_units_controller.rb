@@ -101,7 +101,7 @@ class CurriculumUnitsController < ApplicationController
 
   # PUT /curriculum_units/1
   def update
-    @curriculum_unit.attributes.merge!(curriculum_unit_params)
+    @curriculum_unit.attributes = @curriculum_unit.attributes.merge!(curriculum_unit_params)
     set_course_data
     if @curriculum_unit.save
       message = @curriculum_unit.verify_evaluative_tools ? ['warning', t('curriculum_units.warning.working_hours')] : ['notice', t('curriculum_units.success.updated')]

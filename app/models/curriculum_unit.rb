@@ -17,6 +17,7 @@ class CurriculumUnit < ActiveRecord::Base
   validates :name, :curriculum_unit_type, :resume, :syllabus, :objectives, :code, presence: true
   validates :working_hours, numericality: { greater_than: 0, allow_blank: true}
   validates :min_hours, numericality: { greater_than_or_equal_to: 0, allow_blank: true, less_than_or_equal_to: 100 }
+  validates :working_hours, presence: true, if: 'working_hours.blank? && !min_hours.blank?' 
 
   after_save :update_digital_class, if: "code_changed? || name_changed?"
 
