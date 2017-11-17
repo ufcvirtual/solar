@@ -255,11 +255,20 @@ en_US:
         objectives: Objectives
         prerequisites: Prerequisites
         resume: Resume
-        passing_grade: Passing grade
         working_hours: Working Hours
+        passing_grade: Minimum final grade to approval
+        min_hours: Minimum percentage (%) of hours to approval
+        min_grade_to_final_exam: Minimum final grade to do final exam
+        min_final_exam_grade: Minimum final exam grade allowed
+        final_exam_passing_grade: Minimum final grade to approval after final exam
       course:
         name: Name
         code: Code
+        passing_grade: Minimum final grade to approval
+        min_hours: Minimum percentage (%) of hours to approval
+        min_grade_to_final_exam: Minimum final grade to do final exam
+        min_final_exam_grade: Minimum final exam grade allowed
+        final_exam_passing_grade: Minimum final grade to approval after final exam
       discussion_post:
         content: Content
       post:
@@ -2417,6 +2426,11 @@ en_US:
       rules: "<div>1) If it is a frequency activity, the maximum working hours sum must be equal to the curriculum unit working hours.<br/><br/><div>2) If it is evaluative, distinct final weigh sum must be 100.</div> <br/> <i>Example: Discussion 1 with final weight 40, Chat 2 with final weight 40, Exam with final weight 60. 40 (all activities with final weight 40) + 60 (all activities with final weight 60) = 100.</i> (CORRECT) <br/> <i>Exemple: Discussion 1 with final weight 40, Chat 2 with final weight 45, Exam with final weight 60. 40 (all activities with final weight 40) + 45 (all activities with final weight 45) + 60 (all activities with final weight 60) = 145.</i> (INCORRECT)</div><br/><div>If an activity is defined as equivalent to another, it should have the same working hours, weight and final weight than main activity. If those values are missing or incorrect, it will be defined as the same value as main activity.</div><br/><div>3) After change something here and finish it, all students final grade will be automatically recalculated.</div><br/><div>4) By defining an activity as evaluative, student's final grade will be automatically calculated considering that all grades have a range from 0 to 10.</div>"
       rule_wh1: "<div>5) You can't define an activity as frquency while curriculum unit doesn't have working hours.</div>"
       rule_wh2: "<div>5) <b>Curriculum Unit working hours: %{working_hours}</b>. Therefore, maximum working hours sum can't be above this value.</div>"
+      rule_passing_grade: "<div> 6) <b>Minimum final grade to approval: %{passing_grade}</b></div>"
+      rule_min_hours: "<div> 7) <b>Minimum percentage (%) of hours to approval: %{min_hours}</b></div>"
+      rule_min_grade_to_final_exam: "<div> 8) <b>Minimum final grade to do final exam: %{min_grade_to_final_exam}</b></div>"
+      rule_min_final_exam_grade: "<div> 9) <b>Minimum final exam grade allowed: %{min_final_exam_grade}</b></div>"
+      rule_final_exam_passing_grade: "<div> 10) <b>Minimum final grade to approval after final exam: %{final_exam_passing_grade}</b></div>"
       expand: Expand all
       compress: Compress all
       share_wh: Share working/hours
@@ -2459,7 +2473,13 @@ en_US:
       edit_curriculum_unit: Edit Subject
     informations:
       warning: "<b>Important:</b> This course has no subject, therefore some information is not available."
+      warning2: "<b>Important:</b> This subject has no course, therefore some information is not available."
       summary: Table which content have all basic information about course or curriculum_unit such syllabus, objectives, passing grade, period, resume, prerequisites and responsibles.
+      min_hours: Minimum percentage (%) of hours to approval
+      min_grade_to_final_exam: Minimum final grade to do final exam
+      min_final_exam_grade: Minimum final exam grade allowed
+      final_exam_passing_grade: Minimum final grade to approval after final exam
+      passing_grade: Minimum final grade to approval
     users:
       message: Send message
       public_files: See public files
@@ -2583,6 +2603,7 @@ en_US:
       created: Course wasn't created.
       updated: Course wasn't updated.
       deleted: Course wasn't deleted.
+      passing_grade: must be smaller than minimum grade to approval
   support_materials:
     success:
       created: Support Material was successfully created.
@@ -3157,6 +3178,10 @@ en_US:
         evaluative: 'Evaluative [1]'
         frequency: 'Frequency [2]'
         notevaluative: 'Not Evaluative [3]'
+        summary: 'Summary [4]'
+        pdf: 'Print PDF [P]'
+        situation: Set Situation [S]
+        remove_situation: Remove Situation [R]
       code:
         exam: 69
         webconference: 87
@@ -3168,6 +3193,10 @@ en_US:
         evaluative: 97
         frequency: 98
         notevaluative: 99
+        summary: 100
+        pdf: 80
+        situation: 83
+        remove_situation: 82
     evaluatives:
       name:
         responsibles: "Responsibles [R]"
@@ -3326,7 +3355,7 @@ en_US:
       participation: "Participations in Discussions"
       access_to_the_course: "Access to the Group"
       no_students: There are no students
-      list_of_students: List of students
+      list_of_students: List of students with info about their grades, hours and activities
       evaluated: EV
       not_sent: NS
       without_group: WG
@@ -3361,6 +3390,24 @@ en_US:
       select_group: Select group
       faults: Faults
       af: A.F
+      summary: Summary
+      situation: Situation
+      af_grade: Final Exam
+      pending: Pending
+      final_exam_pending: Subject to final exam
+      approved: Approved
+      final_exam_approved: Approved by final exam
+      failed: Failed
+      failed_working_hours: Failed by working hours
+      undefined: Undefined
+      set_situation: 'Set situations'
+      remove_situation: 'Remove situations'
+      situation1: "- Student's situations will be <b>automatically defined at %{date}</b>. If you want to define situations <b>before this date, click on  '%{btn_name}'</b>. Defining situations too early may set improper situations."
+      situation2: "- It's only possible to set student's situations if course has necessary <b>params of grade or working hour</b> setted and group was <b>managed</b>."
+      situation3: "- Once automatically situation setting date reached (%{date}), it won't be possible to remove student's situations."
+      situation4: "- By removing sutdent's situations, all will be setted as 'Pending' or 'Undefined' until they're setted again."
+      situation5: "- Once situation was defined, at every new evaluation or working hours, student's situation will be immediately updated."
+      confirm: Last evaluative activity haven't happened yet. Are you sure that you want to set situations?
     info:
       assignments: Assignments
       date_range: Date range
@@ -3396,6 +3443,8 @@ en_US:
       tool: 'Tool'
       title: Title
       grade_i: "<b>Final Grade:</b> %{grade}"
+      final_exam_grade: "<b>Final exam grade:</b> %{grade}"
+      situation2: "<b>Situation: </b> <br/> %{situation}"
       frequency_i: "<b>Frequency:</b> %{wh} w/h"
       reports: Reports (PDF)
       report: "Report: "
@@ -3485,6 +3534,7 @@ en_US:
       student_frequency: "%{name} Report - Frequency Activities"
       student_not_evaluative: "%{name} Report - Not Evaluative Activities"
       student_all: "%{name} Report - All"
+      general: Scores Report - Summary
     access:
       date: Date
       time: Time
@@ -3494,12 +3544,18 @@ en_US:
       situation: It's not possible to evaluate yet. Activity haven't started or student haven't sent anything yet.
       situation2: It's not possible to see yet. Activity haven't started or student haven't sent anything yet or student is without a group.
       not_possible: It's not possible to access this page.
+      not_possible_set_situation: It's not possible to set student's situation
+      not_possible_remove_situation: It's not possible to remove student's situation
+      not_possible_remove_situation_date: It's not possible to remove student's situation. Automatically situation update date have already been reached.
     pdf:
       time: "This report was generated at %{time}"
     list:
       summary_evaluative: "This table contains all the evaluation tool: (exams, assignment, chats, assignments, webconferences the shedule events)."
       summary_frequency: "This table contains all the frequency tool: (exams, assignment, chats, assignments, webconferences the shedule events)."
       summary_notevaluative: "This table contains all the not evaluation tool: (exams, assignment, chats, assignments, webconferences the shedule events)."
+    notice:
+      setted_situation: Situations setted successfully
+      removed_situation: Situations removed successfully
 
   lesson_notes:
     error:
@@ -4267,8 +4323,13 @@ en_US:
       opened: can't be defined. Tool hasn't started yet.
       group: must be from the same group and activity than this evaluation.
       not_participant: can't be defined. Student is not a participant of this Chat Room.
+      final_exam: "Student doesn't have enough working hours or doesn't meet minimun requirements to do the final exam. Verify necessary requirements at 'Program' menu."
+      final_exam_status: "This action cannot be executed. Student was already evaluated on final exam activities and this update would make that the student would not meet necessary requirements to do a final exam."
+      general: It was not possible to execute action
     success:
       evaluated: Student successfully evaluated.
+    warning:
+      equivalency_evaluated: Student evaluated successfully. Equivalent activity already been evaluated, therefore this evaluation may not be considered to final grade calculation and situation. To consider this evaluation, remove the equivalent activity evaluation.
 
   faq:
     search: Search by key words

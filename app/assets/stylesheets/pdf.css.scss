@@ -207,7 +207,7 @@ $new_after_evaluation_background: #e6f0fc;
     background: $tool_table_title_background;
     border: 1px;
   }
-  .evaluated, .evaluated a {
+  .evaluated, .evaluated a, .approved, .final_exam_approved {
     color: $evaluated_corrected_color;
   }
 
@@ -219,15 +219,15 @@ $new_after_evaluation_background: #e6f0fc;
     color: $evaluated_sent_color;
   }
 
-  .not_sent, .not_sent a{
+  .not_sent, .not_sent a, .failed, .failed_working_hours{
     color: $evaluated_not_sent_color;
   }
 
-  .not_started, .not_started a {
+  .not_started, .not_started a, .undefined, .pending {
     color: $evaluated_not_started_color;
   }
 
-  .to_send, .to_send a, .retake, .retake a{
+  .to_send, .to_send a, .retake, .retake a, .final_exam_pending{
     color: $evaluated_to_send_color;
   }
 
@@ -409,7 +409,7 @@ td.assignment_without_group a
   }
 }
 
-td.new_after_evaluation{
+li.new_after_evaluation{
     font-size: 10pt;
     padding: 5px;
     background-color: $new_after_evaluation_background;

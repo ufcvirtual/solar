@@ -11,13 +11,19 @@ class AcademicAllocationUsersController < ApplicationController
     end
     @academic_allocation_user = AcademicAllocationUser.where(id: result[:id]).first
     errors = result[:errors]
-
     score = Score.evaluative_frequency_situation(at_id, acu_params[:user_id], acu_params[:group_id], params[:id], params[:tool].downcase, acu_params[:score_type]).first.situation
+
+
 
     if errors.any?
       render json: { success: false, alert: errors.join("<br/>") }, status: :unprocessable_entity
     else
-      render json: { success: true, notice: t('academic_allocation_users.success.evaluated'), situation: t("scores.index.#{score}"), class_td: score, situation_complete: t(score.to_sym) }
+      if !@academic_allocation_user.academic_allocation.try(:equivalent_academic_allocation_id).blank? && AcademicAllocationUser.where(academic_allocation_id: @academic_allocation_user.academic_allocation.equivalent_academic_allocation_id, user_id: @academic_allocation_user.user_id).any?
+        render json: { success: true, warning: t('academic_allocation_users.warning.equivalency_evaluated'), situation: t("scores.index.#{score}"), class_td: score, situation_complete: t(score.to_sym) }
+      else
+        render json: { success: true, notice: t('academic_allocation_users.success.evaluated'), situation: t("scores.index.#{score}"), class_td: score, situation_complete: t(score.to_sym) }
+      end
+      
     end
   end
 

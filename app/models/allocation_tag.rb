@@ -53,7 +53,18 @@ class AllocationTag < ActiveRecord::Base
       when 'curriculum_unit'
         self
     end
-  end  
+  end
+
+  def get_course
+    case refer_to
+      when 'group'
+        group.course
+      when 'offer'
+        offer.course
+      when 'course'
+        self
+    end
+  end
 
   def is_responsible?(user_id)
     check_if_user_has_profile_type(user_id)
@@ -227,7 +238,7 @@ class AllocationTag < ActiveRecord::Base
     if scores
       msg_query = Message.get_query('users.id', 'outbox', ats, { ignore_trash: false, ignore_user: true })
 
-      select << 'users.name, COALESCE(posts.count,0) AS u_posts, COALESCE(posts.count_discussions,0) AS discussions, COALESCE(logs.count,0) AS u_logs, COALESCE(sent_msgs.count,0) AS u_sent_msgs, COALESCE(grades.final_grade, 0) AS u_grade, COALESCE(exams.count,0) AS exams, COALESCE(logs_a.count,0) AS webconferences, COALESCE(assignments.count,0) AS assignments, COALESCE(events.count,0) AS schedule_events, COALESCE(chats.count,0) AS chat_rooms, COALESCE(wh.working_hours, 0) AS working_hours'
+      select << 'users.name, COALESCE(posts.count,0) AS u_posts, COALESCE(posts.count_discussions,0) AS discussions, COALESCE(logs.count,0) AS u_logs, COALESCE(sent_msgs.count,0) AS u_sent_msgs, COALESCE(grades.final_grade, 0) AS u_grade, COALESCE(grades.final_exam_grade, 0) AS af_grade, COALESCE(exams.count,0) AS exams, COALESCE(logs_a.count,0) AS webconferences, COALESCE(assignments.count,0) AS assignments, COALESCE(events.count,0) AS schedule_events, COALESCE(chats.count,0) AS chat_rooms, COALESCE(wh.working_hours, 0) AS working_hours, COALESCE(grades.grade_situation, allocations.grade_situation) AS grade_situation'
 
       relations << <<-SQL
         LEFT JOIN (
@@ -300,7 +311,7 @@ class AllocationTag < ActiveRecord::Base
         ) chats ON chats.user_id = users.id
       SQL
 
-      group << 'posts.count, logs.count, sent_msgs.count, COALESCE(grades.final_grade, 0), posts.count_discussions, exams.count, logs_a.count, assignments.count, events.count, chats.count, COALESCE(wh.working_hours, 0)'
+      group << 'posts.count, logs.count, sent_msgs.count, COALESCE(grades.final_grade, 0), COALESCE(grades.final_exam_grade, 0), posts.count_discussions, exams.count, logs_a.count, assignments.count, events.count, chats.count, COALESCE(wh.working_hours, 0), COALESCE(grades.grade_situation, allocations.grade_situation)'
     else
       select << "users.*, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name"
     end
@@ -321,9 +332,47 @@ class AllocationTag < ActiveRecord::Base
 
   def recalculate_students_grades
     ats = lower_related if group.nil?
-    alls = allocations.includes(:profile).where(status: Allocation_Activated, allocation_tag_id: ats || id).where('cast(profiles.types & ? as boolean) AND final_grade IS NOT NULL', Profile_Type_Student)
+    alls = allocations.includes(:profile).where(status: Allocation_Activated, allocation_tag_id: (ats || id)).where('cast(profiles.types & ? as boolean) AND final_grade IS NOT NULL', Profile_Type_Student)
     alls.map(&:calculate_final_grade)
     alls.map(&:calculate_working_hours)
+  end
+
+  def set_students_situations(manually = false)
+    ats = lower_related if group.nil?
+    alls = Allocation.includes(:profile).where(status: Allocation_Activated, allocation_tag_id: (ats || id)).where('cast(profiles.types & ? as boolean) AND final_grade IS NOT NULL', Profile_Type_Student)
+
+    if alls.empty?
+      alls = [] 
+      alls << Allocation.includes(:profile).where(status: Allocation_Activated, allocation_tag_id: (ats || id)).where('cast(profiles.types & ? as boolean)', Profile_Type_Student)
+    else
+      alls << Allocation.includes(:profile).where(status: Allocation_Activated, allocation_tag_id: (ats || id)).where('cast(profiles.types & ? as boolean) AND user_id NOT IN (?)', Profile_Type_Student, alls.map(&:user_id))
+    end
+
+    alls.flatten.each do |allocation|
+      allocation.set_situation(manually)
+    end
+  end
+
+  def remove_students_situations
+    ats = lower_related if group.nil?
+    alls = Allocation.joins(:profile).where(status: Allocation_Activated, allocation_tag_id: (ats || id)).where('cast(profiles.types & ? as boolean) AND grade_situation != 0 AND grade_situation != 6', Profile_Type_Student)
+    alls.update_all grade_situation: Allocation::Pending
+    update_attributes setted_situation: false
+  end
+
+  def can_set_situation_automatically?
+    if situation_date.blank?
+      last_date = AcademicTool.last_date(id)
+      update_attributes situation_date: last_date[:date], situation_date_ac_id: last_date[:ac_id]
+    end
+
+    course = get_course
+    uc = get_curriculum_unit
+
+    hours_defined = (!uc.working_hours.blank? && (!course.min_hours.blank? || !uc.min_hours.blank?))
+    has_passing_grade = !course.passing_grade.blank?
+
+    return (!setted_situation && (!situation_date.nil? && Date.today >= situation_date) && (has_passing_grade || hours_defined))
   end
 
   ### triggers

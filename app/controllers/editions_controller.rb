@@ -146,7 +146,9 @@ class EditionsController < ApplicationController
     @tools = @tools.group_by { |t| t['academic_tool_type'] }
 
     @groups = Group.joins(:allocation_tag).where(allocation_tags: { id: @allocation_tags_ids })
-    @working_hours = @groups.first.curriculum_unit.try(:working_hours)
+    @curriculum_unit = @groups.first.curriculum_unit
+    @course = @groups.first.course
+    @working_hours = @curriculum_unit.try(:working_hours)
 
   end
 
@@ -172,12 +174,14 @@ class EditionsController < ApplicationController
     final_weight_errors = []
     acs_errors = []
     ats_errors = []
+    changes = []
 
     max_working_hours = at.first.offers.first.try(:curriculum_unit).try(:working_hours)
 
     ActiveRecord::Base.transaction do
       params[:academic_allocations].each do |data|
         acs = AcademicAllocation.where(id: data['acs'].delete('[]').split(',')).each do |ac|
+
 
           attributes = {'evaluative' => false, 'weight' => 1, 'final_weight' => 100, 'equivalent_academic_allocation_id' => nil, 'final_exam' => false, 'frequency' => false, 'max_working_hours' => 0 }
 
@@ -200,6 +204,8 @@ class EditionsController < ApplicationController
           end
 
           attributes.merge!(data.slice('evaluative', 'weight', 'equivalent_academic_allocation_id', 'final_exam', 'frequency', 'max_working_hours', 'final_weight'))
+
+          changes << {previous: ac.as_json, after: attributes}
 
           unless ac.update_attributes(attributes)
             errors << {ac: ac, messages: ac.errors.full_messages}
@@ -232,6 +238,8 @@ class EditionsController < ApplicationController
           end
         end
 
+        last_date = AcademicTool.last_date(at.id)
+        at.update_attributes situation_date: last_date[:date], situation_date_ac_id: last_date[:ac_id]
         # recalculating users final grades (if exists)
         at.recalculate_students_grades
       end
@@ -240,6 +248,8 @@ class EditionsController < ApplicationController
       raise 'error' unless errors.blank? && working_hours_errors.blank? && final_weight_errors.blank?
     end
 
+    LogAction.create(log_type: LogAction::TYPE[:update], user_id: current_user.id, ip: get_remote_ip, description: "management changes: #{changes.as_json}") rescue nil
+   
     message = AcademicAllocationUser.any_evaluated?(allocation_tags_ids) ? t('evaluative_tools.warnings.changes') : t('evaluative_tools.success.manage')
     render json: { success: true, notice: message }
   rescue CanCan::AccessDenied

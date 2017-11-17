@@ -80,10 +80,12 @@ class CurriculumUnitsController < ApplicationController
     authorize! :create, CurriculumUnit
 
     @curriculum_unit = CurriculumUnit.new(curriculum_unit_params.merge!({user_id: current_user.id}))
+    set_course_data
 
     if @curriculum_unit.save
       render json: {success: true, message: t('curriculum_units.success.created'), type_message: 'notice', code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
     else
+      set_course_data_error
       render :new
     end
 
@@ -94,14 +96,18 @@ class CurriculumUnitsController < ApplicationController
 
   # GET /curriculum_units/1/edit
   def edit
+    @course = Course.find_by_name_and_code(@curriculum_unit.name, @curriculum_unit.code) if @curriculum_unit.curriculum_unit_type_id == 3
   end
 
   # PUT /curriculum_units/1
   def update
-    if @curriculum_unit.update_attributes(curriculum_unit_params)
+    @curriculum_unit.attributes.merge!(curriculum_unit_params)
+    set_course_data
+    if @curriculum_unit.save
       message = @curriculum_unit.verify_evaluative_tools ? ['warning', t('curriculum_units.warning.working_hours')] : ['notice', t('curriculum_units.success.updated')]
       render json: {success: true, message: message[1], type_message: message[0], code_name: @curriculum_unit.code_name, id: @curriculum_unit.id}
     else
+      set_course_data_error
       render :edit
     end
   rescue => error
@@ -128,6 +134,7 @@ class CurriculumUnitsController < ApplicationController
   def informations
     authorize! :show, CurriculumUnit, on: [@allocation_tag_id]
     @offer = Offer.where(id: RelatedTaggable.where(group_at_id: @allocation_tags_ids).pluck(:offer_id).compact).first
+    @course = @offer.course
   end
 
   def participants
@@ -138,7 +145,7 @@ class CurriculumUnitsController < ApplicationController
   private
 
     def curriculum_unit_params
-      params.require(:curriculum_unit).permit(:code, :name, :curriculum_unit_type_id, :resume, :syllabus, :passing_grade, :objectives, :prerequisites, :credits, :working_hours)
+      params.require(:curriculum_unit).permit(:code, :name, :curriculum_unit_type_id, :resume, :syllabus, :objectives, :prerequisites, :credits, :working_hours, :min_hours)
     end
 
     def curriculum_data
@@ -161,6 +168,25 @@ class CurriculumUnitsController < ApplicationController
 
       if params.include?(:search)
         @curriculum_units = @curriculum_units.select {|uc| uc[:code].downcase.include?(params[:search].downcase) or uc[:name].downcase.include?(params[:search].downcase)}
+      end
+    end
+
+    def set_course_data
+      if @curriculum_unit.curriculum_unit_type_id == 3
+        @curriculum_unit.passing_grade = params[:curriculum_unit][:passing_grade]
+        @curriculum_unit.min_grade_to_final_exam = params[:curriculum_unit][:min_grade_to_final_exam]
+        @curriculum_unit.min_final_exam_grade = params[:curriculum_unit][:min_final_exam_grade]
+        @curriculum_unit.final_exam_passing_grade = params[:curriculum_unit][:final_exam_passing_grade]
+      end
+    end
+
+    def set_course_data_error
+      if @curriculum_unit.curriculum_unit_type_id == 3
+        @course = Course.new
+        @course.passing_grade = params[:curriculum_unit][:passing_grade]
+        @course.min_grade_to_final_exam = params[:curriculum_unit][:min_grade_to_final_exam]
+        @course.min_final_exam_grade = params[:curriculum_unit][:min_final_exam_grade]
+        @course.final_exam_passing_grade = params[:curriculum_unit][:final_exam_passing_grade]
       end
     end
 

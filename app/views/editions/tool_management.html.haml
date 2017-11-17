@@ -27,7 +27,12 @@
     - if @working_hours.blank?
       %div.rules_and_info=raw t('.rule_wh1')
     - else
-      %div.rules_and_info=raw t('.rule_wh2', working_hours: @working_hours)
+      %div.rules_and_info=raw t('.rule_wh2', working_hours: @working_hours)    
+    %div.rules_and_info= raw t('.rule_passing_grade', passing_grade: @course.try(:passing_grade))
+    %div.rules_and_info= raw t('.rule_min_hours', min_hours: (@curriculum_unit.try(:min_hours) || @course.try(:min_hours)))
+    %div.rules_and_info= raw t('.rule_min_grade_to_final_exam', min_grade_to_final_exam: @course.try(:min_grade_to_final_exam))
+    %div.rules_and_info= raw t('.rule_min_final_exam_grade', min_final_exam_grade: @course.try(:min_final_exam_grade))
+    %div.rules_and_info= raw t('.rule_final_exam_passing_grade', final_exam_passing_grade: @course.try(:final_exam_passing_grade))
   
   .management
     = form_tag manage_tools_editions_path, id: 'form_manage_tools_editions', method: :put do        
@@ -161,12 +166,16 @@
       return false;
     }
 
-    var each_value = parseInt(total/inputs.length);
+    var each_value = Number(total)/Number(inputs.length);
+    var semitotal = +0;
     for (i = 0; i < inputs.length; i++) {
-      if (i < total%inputs.length){
-        inputs[i].value = each_value + 1;
+      if (i != (inputs.length - 1)){
+        inputs[i].value = each_value.toFixed(2);
+        semitotal = Number(Number(semitotal)+Number(each_value.toFixed(2)));
       }
-      else { inputs[i].value = each_value; }
+      else { 
+        inputs[i].value = Number(Number(each_value.toFixed(2)) + Number(Number(total)-Number(semitotal)-Number(each_value.toFixed(2)))).toFixed(2);
+      }
     }
     setTimeout(function() {
       initializer_analizer();

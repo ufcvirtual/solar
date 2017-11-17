@@ -290,3 +290,13 @@ form .schedule_dates input{
   vertical-align: bottom;
   display: inline-block;
 }
+
+#course_form{
+  .form_label:first-child{
+    width: 27%;
+  }
+
+  .string.required input{
+    width: 66%;
+  }
+}

@@ -84,7 +84,7 @@ class CoursesController < ApplicationController
   private
 
     def course_params
-      params.require(:course).permit(:name, :code)
+      params.require(:course).permit(:name, :code, :passing_grade, :min_grade_to_final_exam, :min_final_exam_grade, :final_exam_passing_grade, :min_hours)
     end
 
     def render_course_success_json(method)

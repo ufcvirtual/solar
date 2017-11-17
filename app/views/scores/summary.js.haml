@@ -1,0 +1,7 @@
+$('.users').append('#{escape_javascript(render partial: "pending_summary", locals: { users: @users })}');
+$('a.load-more-users').attr('href', '#{summary_scores_path page: @users.next_page}');
+$('a.load-more-users').attr("aria-label", "#{t(:load_items)}"); 
+$(".tb_list").trigger("update");
+
+- if @users.next_page.blank?
+  $('a.load-more-users').remove();

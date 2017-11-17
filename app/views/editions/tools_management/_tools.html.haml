@@ -92,9 +92,12 @@
     $("input[id$='final_exam']").change(function(){
       var parent = $(this).parents('tr');
       var value  = $(this).prop('checked');
-      parent.find("input[id$='weight']").prop('disabled', !!value);
-      parent.find("input[id$='final_weight']").prop('disabled', !!value);
-      parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !!value);
+
+      if(parent.find("select[id$='equivalent_academic_allocation_id']").val() == '' && !!value){
+        parent.find("input[id$='weight']").prop('disabled', !!value);
+        parent.find("input[id$='final_weight']").prop('disabled', !!value);
+      }
+
       var frequency = parent.find("input[id$='frequency']");
       if(frequency.data('change') == 'true'){
         frequency.prop('disabled', !!value);
@@ -105,9 +108,12 @@
     $("select[id$='equivalent_academic_allocation_id']").change(function(){
       var parent = $(this).parents('tr');
       var value  = $(this).val() == '';
-      parent.find("input[id$='weight']").prop('disabled', !value);
-      parent.find("input[id$='final_exam']").prop('disabled', !value);
-      parent.find("input[id$='final_weight']").prop('disabled', !value);
+
+      if(!parent.find("input[id$='final_exam']").prop('checked')){
+        parent.find("input[id$='weight']").prop('disabled', !value);
+        parent.find("input[id$='final_weight']").prop('disabled', !value);      
+      }
+
       parent.find("input[id$='max_working_hours']").prop('disabled', !value);
     });
 

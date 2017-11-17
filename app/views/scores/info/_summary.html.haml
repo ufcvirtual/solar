@@ -1,0 +1,6 @@
+.info_summary{:'data-url' => info_summary_scores_path(user_id: user.id)}
+  - g = AcademicAllocationUser.get_grade_finish(user.id, allocation_tag_id)
+  .final_exam_grade= raw t('scores.info.final_exam_grade', grade: (g.final_exam_grade.blank? ? ' - ' : g.final_exam_grade))
+  .grade= raw t('scores.info.grade_i', grade: (g.final_grade.blank? ? ' - ' : g.final_grade.round(2).to_s))
+  .frequency= raw t('scores.info.frequency_i', wh: g.working_hours || 0)
+  .situation= raw t("scores.info.situation2", situation: t("scores.index.#{Allocation.status_name(g.grade_situation)}"))

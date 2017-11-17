@@ -1,6 +1,7 @@
 class Allocation < ActiveRecord::Base
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
+  Pending, FinalExamPending, Approved, FinalExamApproved, Failed, FailedFrequency, Undefined = 0, 1, 2, 3, 4, 5, 6
 
   belongs_to :allocation_tag
   belongs_to :user
@@ -155,7 +156,6 @@ class Allocation < ActiveRecord::Base
   end
 
   def self.responsibles(allocation_tags_ids)
-   
     includes(:profile, :user)
       .where("allocation_tag_id IN (?) AND allocations.status = ? AND (cast(profiles.types & ? as boolean))", allocation_tags_ids, Allocation_Activated, Profile_Type_Class_Responsible)
       .order("users.name")
@@ -178,8 +178,21 @@ class Allocation < ActiveRecord::Base
   end
 
   def calculate_final_grade(grade=nil)
-    ats = allocation_tag.related
-    grades = AcademicAllocation.find_by_sql <<-SQL
+    calculate_parcial_grade
+    calculate_final_exam_grade
+  end
+
+  def calculate_parcial_grade(manually = false)
+    grades = parcial_grade_calculation(allocation_tag.related)
+    pg = grades.first[:grade].to_f.round(2)
+
+    update_attributes parcial_grade: pg, final_grade: (final_exam_grade.blank? ? pg : ((pg+final_exam_grade)/2).to_f.round(2))
+
+    set_situation(manually)
+  end
+
+  def parcial_grade_calculation(ats)
+    AcademicAllocation.find_by_sql <<-SQL
       WITH groups AS ( 
         SELECT group_participants.group_assignment_id AS group_id 
         FROM group_participants 
@@ -187,7 +200,7 @@ class Allocation < ActiveRecord::Base
       )
       SELECT SUM(ac.grade) as grade
       FROM (
-        SELECT  (academic_allocations.final_weight::float/100)*SUM(COALESCE(acu.grade, acu_eq.max_grade, 0)*academic_allocations.weight)/SUM(academic_allocations.weight) AS grade
+        SELECT (academic_allocations.final_weight::float/100)*SUM(COALESCE(acu.grade, acu_eq.max_grade, 0)*academic_allocations.weight)/SUM(academic_allocations.weight) AS grade
         FROM academic_allocations
         LEFT JOIN academic_allocation_users acu    ON acu.academic_allocation_id = academic_allocations.id AND (acu.user_id = #{user_id} OR acu.group_assignment_id IN (select group_id from groups))
         LEFT JOIN (
@@ -209,31 +222,124 @@ class Allocation < ActiveRecord::Base
         GROUP BY academic_allocations.final_weight
       ) ac;
     SQL
-
-    afs = AcademicAllocation.find_by_sql <<-SQL
-      WITH groups AS ( 
-        SELECT group_participants.group_assignment_id AS group_id 
-        FROM group_participants 
-        WHERE user_id = #{user_id}
-      )
-      SELECT SUM(acu.grade)/COUNT(acu.id) AS grade
-      FROM academic_allocations
-      LEFT JOIN academic_allocation_users acu  ON acu.academic_allocation_id = academic_allocations.id AND (acu.user_id = #{user_id} OR acu.group_assignment_id IN (select group_id from groups))
-      WHERE
-        academic_allocations.evaluative = true
-        AND
-        academic_allocations.allocation_tag_id IN (#{ats.join(',')})
-        AND
-        academic_allocations.final_exam = true
-        AND
-        acu.grade IS NOT NULL;
-    SQL
-
-    update_attributes final_grade: ((afs.empty? || afs.first[:grade].blank?) ? grades.first[:grade] : (grades.first[:grade].to_f+afs.first[:grade].to_f)/2).to_f.round(2)
   end
 
-  def get_working_hours
-    Allocation.get_working_hours(user_id, allocation_tag)
+  def calculate_final_exam_grade(manually = false)
+    course = allocation_tag.get_course
+    uc = allocation_tag.get_curriculum_unit
+    ats = allocation_tag.related
+    min_hours = (uc.min_hours || course.min_hours)
+
+    # if final_exam rules not defined or (have enough hours and everything is ok)
+    if (course.passing_grade.blank? || ((parcial_grade < course.passing_grade && (course.min_grade_to_final_exam.blank? || course.min_grade_to_final_exam <= parcial_grade)) && (course.min_hours.blank? || uc.working_hours.blank? || (min_hours*0.01)*uc.working_hours <= working_hours)))
+       afs = AcademicAllocation.find_by_sql <<-SQL
+        WITH groups AS ( 
+          SELECT group_participants.group_assignment_id AS group_id 
+          FROM group_participants 
+          WHERE user_id = #{user_id}
+        )
+        SELECT SUM(COALESCE(acu.grade, acu_eq.max_grade, 0))/COUNT(acu.id) AS grade
+        FROM academic_allocations
+        LEFT JOIN academic_allocation_users acu  ON acu.academic_allocation_id = academic_allocations.id AND (acu.user_id = #{user_id} OR acu.group_assignment_id IN (select group_id from groups))
+        LEFT JOIN (
+            SELECT max(grade) AS max_grade, equivalent.equivalent_academic_allocation_id
+            FROM academic_allocation_users acu2 
+            LEFT JOIN academic_allocations equivalent ON acu2.academic_allocation_id = equivalent.id
+            WHERE (acu2.user_id = #{user_id} OR acu2.group_assignment_id IN (select group_id from groups)) 
+            AND equivalent.equivalent_academic_allocation_id IS NOT NULL
+            GROUP BY equivalent_academic_allocation_id
+          ) acu_eq ON academic_allocations.id = acu_eq.equivalent_academic_allocation_id
+        WHERE
+          academic_allocations.evaluative = true
+          AND
+          academic_allocations.allocation_tag_id IN (#{ats.join(',')})
+          AND
+          academic_allocations.final_exam = true
+          AND
+          academic_allocations.equivalent_academic_allocation_id IS NULL
+          AND
+          acu.grade IS NOT NULL;
+      SQL
+      update_attributes final_exam_grade: ((afs.empty? || afs.first[:grade].blank?) ? nil : afs.first[:grade].to_f.round(2))
+    elsif !final_exam_grade.blank?
+      raise 'af'
+      # update_attributes final_exam_grade: nil
+    end
+
+    update_attributes final_grade: (final_exam_grade.blank? ? parcial_grade : ((parcial_grade+final_exam_grade)/2).to_f.round(2))
+
+    set_situation(manually)
+  end
+
+  def set_situation(manually = false)
+    course = allocation_tag.get_course
+    uc = allocation_tag.get_curriculum_unit
+    date = allocation_tag.situation_date
+    min_hours = (uc.min_hours || course.min_hours)
+
+    if date.blank?
+      last_date = AcademicTool.last_date(allocation_tag.id)
+      allocation_tag.update_attributes situation_date: last_date[:date], situation_date_ac_id: last_date[:ac_id]
+    end
+
+    hours_defined = (!uc.working_hours.blank? && !min_hours.blank?)
+    has_passing_grade = !course.passing_grade.blank?
+
+    calculate_final_grade if parcial_grade.blank? && !final_grade.blank?
+
+    # if today should update situation or mannually update and has passing grade or hours defined
+    if ((!date.nil? && Date.today >= date) || manually || allocation_tag.setted_situation) && (has_passing_grade || hours_defined)
+
+      # if hours defined and doesnt have enough hours
+      if (hours_defined && (working_hours.blank? || ((min_hours*0.01)*uc.working_hours > working_hours)))
+        update_attributes grade_situation: FailedFrequency
+      elsif has_passing_grade
+        # if parcial grade is already enough
+        if (!parcial_grade.blank? && parcial_grade >= course.passing_grade)
+          update_attributes grade_situation: Approved
+        # if parcial grade is not enough
+        else
+          # if there is a minimum grade to final exam and parcial grade still is not enough
+          if (parcial_grade.blank? || (!course.min_grade_to_final_exam.blank? && course.min_grade_to_final_exam > parcial_grade))
+            update_attributes grade_situation: Failed
+          # if parcial grade is enough or there isnt a minimum grade to final exam
+          else
+            # if doesnt have a final exam grade
+            if final_exam_grade.blank?
+              update_attributes grade_situation: FinalExamPending
+            # has a final exam grade 
+            else
+              # if there is a minimum grade to final exam and it is not enough
+              if !course.min_final_exam_grade.blank? && course.min_final_exam_grade > final_exam_grade
+                update_attributes grade_situation: Failed
+              # if there is no minimum grade to final exam OR there is and it is enough
+              else 
+                # if there is a minimum passing grade after final exam and final grade is not enough
+                if !course.final_exam_passing_grade.blank? && course.final_exam_passing_grade > final_grade
+                  update_attributes grade_situation: Failed
+                # final grade is enough 
+                elsif !course.final_exam_passing_grade.blank?
+                  update_attributes grade_situation: FinalExamApproved
+                # if there isnt a minimum passing grade after final exam and final grade is not enoguh
+                elsif course.passing_grade > final_grade
+                  update_attributes grade_situation: Failed
+                # if there isnt a minimum passing grade after final exam and final grade is enoguh
+                else
+                  update_attributes grade_situation: FinalExamApproved
+                end # !course.final_exam_passing_grade.blank? && course.final_exam_passing_grade > final_grade
+              end # !course.min_final_exam_grade.blank? && course.min_final_exam_grade > final_exam_grade
+            end # !course.min_grade_to_final_exam.blank? && course.min_grade_to_final_exam > parcial_grade
+          end # min_grade_to_final_exam > parcial_grade
+        end # parcial_grade >= course.passing_grade
+      end # has_passing_grade
+      allocation_tag.update_attributes setted_situation: true
+    elsif (has_passing_grade || hours_defined)
+      update_attributes grade_situation: Pending
+      allocation_tag.update_attributes setted_situation: false
+    else
+      update_attributes grade_situation: Undefined
+      allocation_tag.update_attributes setted_situation: false
+    end
   end
 
   def calculate_working_hours
@@ -273,6 +379,18 @@ class Allocation < ActiveRecord::Base
     SQL
 
     hours.first['working_hours'].to_i rescue 0
+  end
+
+  def self.status_name(status)
+    case status.to_i
+    when 0; 'pending'
+    when 1; 'final_exam_pending'
+    when 2; 'approved'
+    when 3; 'final_exam_approved'
+    when 4; 'failed'
+    when 5; 'failed_working_hours'
+    when 6; 'undefined'
+    end
   end
 
   private

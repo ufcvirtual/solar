@@ -24,17 +24,17 @@
 
     = csrf_meta_tags
     = yield(:head)
-    = raw YAML::load(File.open('config/facebook.yml'))['tags'].join
+    / = raw YAML::load(File.open('config/facebook.yml'))['tags'].join
   %body
     #fb-root
     :javascript
-      (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=#{YAML::load(File.open('config/facebook.yml'))['appid']}";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
+      // (function(d, s, id) {
+      //   var js, fjs = d.getElementsByTagName(s)[0];
+      //   if (d.getElementById(id)) return;
+      //   js = d.createElement(s); js.id = id;
+      //   js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=#{YAML::load(File.open('config/facebook.yml'))['appid']}";
+      //   fjs.parentNode.insertBefore(js, fjs);
+      // }(document, 'script', 'facebook-jssdk'));
     %section#login_wrapper
       = link_to t(:main_content), "#login-form", accesskey: "1", class: "invisible", id: 'accesskey_maincontent'
       = yield

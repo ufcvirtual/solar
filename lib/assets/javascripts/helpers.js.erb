@@ -607,6 +607,14 @@ function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
   }
 
   flash_message(data.notice, 'notice');
+  flash_message(data.warning, 'warning');
+
+  if(!!$('.info_summary').length){
+    $.get($('.info_summary').data('url'), function(data){
+      console.log(data);
+      $('.info_summary').replaceWith(data);
+    });
+  }
 }
 
 function hide_or_show_info(link){

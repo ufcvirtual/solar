@@ -108,7 +108,7 @@ tr#activities{
 }
 
 #scores_notes.legend_score_footer, .tb_list_students{
-  .evaluated, .evaluated a {
+  .evaluated, .evaluated a, .approved, .final_exam_approved {
     color: $color_green_font;
   }
 
@@ -128,7 +128,7 @@ tr#activities{
     color: $sent_color_link;
   }
 
-  .not_sent {
+  .not_sent, .failed, .failed_working_hours {
     color: $not_sent_color_font;
   }
 
@@ -136,12 +136,12 @@ tr#activities{
    color: $not_sent_color;
   }
 
-  .not_started, .not_started a {
+  .not_started, .not_started a, .undefined, .pending {
     color: $color_almost_gray_content;
     text-decoration: none;
   }
 
-  .to_send, .to_send a {
+  .to_send, .to_send a, .final_exam_pending {
     color: $color_main;
     text-decoration: none; 
   }
@@ -156,6 +156,13 @@ tr#activities{
 
   .evaluated, .sent, .not_sent, .not_started, .to_send, .without_group{
     white-space: nowrap;
+  }
+
+  li.new_after_evaluation{
+    padding: 5px;
+    background-color: $blue_warning_background_bkg;
+    color: $color_black;
+    display: inline-block;
   }
 }
 
@@ -178,13 +185,6 @@ table#list_of_students{
   }
 }
 
-#scores_notes table{
-  td.new_after_evaluation{
-    padding: 5px;
-    background-color: $blue_warning_background_bkg;
-    color: $color_black;
-  }
-}
 
 table#list_of_students thead{
   height: 48px;
@@ -220,7 +220,7 @@ table.general{
     padding-right: 17%;
     .left{
       float: left;
-      .grade,.frequency{
+      .grade,.frequency, .final_exam_grade, .situation{
         text-align: center;
       }
     }
@@ -274,7 +274,7 @@ tbody{
 
 
 #tabs{
-  margin-left: 28%;
+  margin-left: 20%;
   li{
     display: inline-block;
     padding: 2px;
@@ -348,9 +348,8 @@ tbody{
     }
   }
 
-  .link_pdf{
-    margin-left: 45%;
-    display: inline-block;
+  .link_btns_scores{
+    text-align: center;
   }
 
   .dropdown-menu{

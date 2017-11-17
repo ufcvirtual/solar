@@ -38,7 +38,7 @@ module V1
         params do
           requires :name, :code, type: String
           optional :curriculum_unit_type_id, type: Integer, default: 2#, values: -> { CurriculumUnitType.all.map(&:id) }
-          optional :resume, :syllabus, :objectives, :passing_grade, :prerequisites, :working_hours, :credits
+          optional :resume, :syllabus, :objectives, :prerequisites, :working_hours, :credits
           optional :update_if_exists, type: Boolean, default: false
         end
         post "/" do
@@ -57,8 +57,8 @@ module V1
           requires :id, type: Integer#, values: -> { CurriculumUnit.all.map(&:id) }
           optional :name, :code, type: String
           optional :curriculum_unit_type_id, type: Integer#, values: -> { CurriculumUnitType.all.map(&:id) }
-          optional :resume, :syllabus, :objectives, :passing_grade, :prerequisites, :working_hours, :credits
-          at_least_one_of :code, :name, :resume, :syllabus, :objectives, :passing_grade, :prerequisites, :working_hours, :credits
+          optional :resume, :syllabus, :objectives, :prerequisites, :working_hours, :credits
+          at_least_one_of :code, :name, :resume, :syllabus, :objectives, :prerequisites, :working_hours, :credits
         end
         put ":id" do
           begin

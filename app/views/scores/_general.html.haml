@@ -1,17 +1,11 @@
-%div{ class: 'link_pdf' }
+%div{ class: 'link_btns_scores' }
   = link_to t('scores.index.print_pdf'), general_scores_path(report: true, format: :pdf), :target => "_blank", class: "btn"
 
 .parent
-  %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('.list_of_students')}
+  %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('scores.index.list_of_students')}
     %thead
       %tr.lines
         %th#student{style: "width: 100px;"}= t("scores.index.student")
-        %th#access_to_the_course= t('scores.index.access_to_the_course')
-        - unless @wh.nil?
-          %th#frequency= t('scores.index.frequency')
-          %th#faults= t('scores.index.faults')
-        %th#final_grade= t('scores.index.final_grade')
-        %th#af= t('scores.index.af')
         %th#public_files= t('scores.index.public_files')
         %th#assignment= t("activerecord.models.assignment")
         %th#exam= t("activerecord.models.exam")

@@ -1,0 +1,39 @@
+%div{ class: 'link_btns_scores' }
+  = link_to t('scores.index.print_pdf'), summary_scores_path(report: true, format: :pdf), :target => "_blank", class: "btn", :'data-shortcut'=> t("shortcut.scores.code.pdf"), :'data-shortcut-name'=> t("shortcut.scores.name.pdf")
+  - if can? :set_situation, Score, { on: @allocation_tag_id }
+    = link_to t('scores.index.set_situation'), '#', class: "btn", :'data-confirm' => (!@allocation_tag.situation_date.blank? && Date.today < @allocation_tag.situation_date && !@allocation_tag.setted_situation), onclick: 'set_situation(this);', :'data-url' => set_situation_scores_path, onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.scores.code.situation"), :'data-shortcut-name'=> t("shortcut.scores.name.situation")
+    - if !@allocation_tag.situation_date.blank? && Date.today < @allocation_tag.situation_date
+      = link_to t('scores.index.remove_situation'), '#', class: "btn", onclick: 'remove_situation(this);', :'data-url' => remove_situation_scores_path,onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.scores.code.remove_situation"), :'data-shortcut-name'=> t("shortcut.scores.name.remove_situation")
+
+%br
+%ul.title-warning
+  - unless @allocation_tag.situation_date.blank?
+    - unless Date.today > @allocation_tag.situation_date
+      %li=raw t('scores.index.situation1', date: l(@allocation_tag.situation_date), btn_name: t('scores.index.set_situation'))
+      %li=raw t('scores.index.situation4')
+    %li=raw t('scores.index.situation3', date: l(@allocation_tag.situation_date))
+  %li=raw t('scores.index.situation2')
+  %li=raw t('scores.index.situation5')
+%br
+
+.parent
+  %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('scores.index.list_of_students')}
+    %thead
+      %tr.lines
+        %th#student{style: "width: 100px;"}= t("scores.index.student")
+        %th#access_to_the_course= t('scores.index.access_to_the_course')
+        - unless @wh.nil?
+          %th#frequency= t('scores.index.frequency')
+          %th#faults= t('scores.index.faults')
+        %th#af_grade= t('scores.index.af_grade')
+        %th#final_grade= t('scores.index.final_grade')
+        %th#situation= t('scores.index.situation')
+
+    %tbody.users
+      - if @users.blank?
+        %tr.lines
+          %td{colspan: 10}= t('scores.index.no_data')
+      - else
+        = render partial: 'pending_summary', locals: { users: @users }
+- unless @users.blank?
+  = link_to content_tag(:i, nil, class: "icon-ellipsis"), summary_scores_path(page: @users.next_page), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items), :'aria-label' => t(:load_items)  if @users.next_page

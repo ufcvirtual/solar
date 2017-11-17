@@ -13,7 +13,7 @@
         = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit', :"data-link-edit" => edit_discussion_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".edit")
         = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_discussion',  :"data-link-delete" => discussion_path(id: ':id', :allocation_tags_ids => @allocation_tags_ids), disabled: true, :'data-tooltip' => t(".delete")
 
-  - unless @discussions.nil? or @discussions.empty?
+  - unless @discussions.blank?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
     %table.tb_list
       %thead

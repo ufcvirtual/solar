@@ -41,7 +41,9 @@
     #tabs.tabs_index{:'data-div' => '.tb_list_students'}
       %ul
         %li
-          %a.general.active{href: '#', :'data-url' => general_scores_path, onclick: 'change_tab(this); return false;', onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.evaluatives.code.all"), :'data-shortcut-name'=> t("shortcut.evaluatives.name.all")}=t('scores.index.general')
+          %a.summary.active{href: '#', :'data-url' => summary_scores_path, onclick: 'change_tab(this); return false;', onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.scores.code.summary"), :'data-shortcut-name'=> t("shortcut.scores.name.summary")}=t('scores.index.summary')
+        %li
+          %a.general{href: '#', :'data-url' => general_scores_path, onclick: 'change_tab(this); return false;', onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.evaluatives.code.all"), :'data-shortcut-name'=> t("shortcut.evaluatives.name.all")}=t('scores.index.general')
         %li
           %a.evaluative{href: '#', :'data-url' => evaluative_scores_path,onclick: 'change_tab(this); return false;', onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.evaluatives.code.evaluative"), :'data-shortcut-name'=> t("shortcut.evaluatives.name.evaluative")}=t('scores.index.evaluative')
         %li
@@ -51,32 +53,31 @@
               %a.frequency{href: '#', :'data-url' => frequency_scores_path, onclick: 'change_tab(this); return false;', onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.evaluatives.code.frequency"), :'data-shortcut-name'=> t("shortcut.evaluatives.name.frequency")}=t('scores.index.frequency')
 
   .tb_list_students
-    = render partial: 'general'
+    = render partial: 'summary'
 
 %div{:'data-shortcut'=> t("shortcut.evaluatives.code.legends"), :'data-shortcut-name'=> t("shortcut.evaluatives.name.legends"), :'data-shortcut-focus' => 'true'}
   .legend
     = t(".subtitle")
   %ul#scores_notes.legend_score_footer
     %li.evaluated
-      %abbr{tiltle: t(".evaluated_complete")}= t(".evaluated")
+      %abbr{title: t(".evaluated_complete")}= t(".evaluated")
       = t(".evaluated_complete")
     %li.not_sent
-      %abbr{tiltle: t(".not_sent_complete")}= t(".not_sent")
+      %abbr{title: t(".not_sent_complete")}= t(".not_sent")
       = t(".not_sent_complete")
     %li.without_group
-      %abbr{tiltle: t(".without_group_complete")}= t(".without_group")
+      %abbr{title: t(".without_group_complete")}= t(".without_group")
       = t(".without_group_complete")
     %li.sent
-      %abbr{tiltle: t(".sent_complete")}= t(".sent")
+      %abbr{title: t(".sent_complete")}= t(".sent")
       = t(".sent_complete")
     %li.to_send
-      %abbr{tiltle: t(".to_send_complete")}= t(".to_send")
+      %abbr{title: t(".to_send_complete")}= t(".to_send")
       = t(".to_send_complete")
     %li.not_started
-      %abbr{tiltle: t(".not_started_complete")}= t(".not_started")
+      %abbr{title: t(".not_started_complete")}= t(".not_started")
       = t(".not_started_complete")
-    %table
-      %td.new_after_evaluation
-        = t(".new_after_evaluation")
+    %li.new_after_evaluation
+      = t(".new_after_evaluation")
 
 = javascript_include_tag 'scores'

@@ -1197,3 +1197,9 @@ res229:
   controller: 'notifications'
   action: 'mark_as_mandatory'
   description: 'Marcar aviso como de leitura obrigatória'
+
+res230:
+  id: 230
+  controller: 'scores'
+  action: 'set_situation'
+  description: 'Definir situação dos alunos de uma turma'

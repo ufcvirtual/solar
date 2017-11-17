@@ -235,10 +235,14 @@ Solar::Application.routes.draw do
       get :evaluative, to: :evaluatives_frequency, type: 'evaluative'
       get :frequency, to: :evaluatives_frequency, type: 'frequency'
       get :not_evaluative, to: :evaluatives_frequency
-      get :general
+      get :general, type: 'general'
+      get :summary, to: :general, type: 'summary'
       get :redirect_to_evaluate
       get :reports_pdf
       get :redirect_to_open
+      put :set_situation
+      put :remove_situation
+      get :info_summary
     end
   end
 

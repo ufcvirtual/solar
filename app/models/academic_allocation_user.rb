@@ -62,8 +62,8 @@ class AcademicAllocationUser < ActiveRecord::Base
 
   def verify_grade
     unless academic_allocation.academic_tool_type == 'Exam'
-        errors.add(:grade, I18n.t('academic_allocation_users.errors.not_evaluative')) if !academic_allocation.evaluative && academic_allocation.academic_tool_type != 'Assignment'
-        errors.add(:grade, I18n.t('academic_allocation_users.errors.lower_than_10')) if grade > 10
+      errors.add(:grade, I18n.t('academic_allocation_users.errors.not_evaluative')) if !academic_allocation.evaluative && academic_allocation.academic_tool_type != 'Assignment'
+      errors.add(:grade, I18n.t('academic_allocation_users.errors.lower_than_10')) if grade > 10
     end
   end
 
@@ -119,10 +119,12 @@ class AcademicAllocationUser < ActiveRecord::Base
   def recalculate_final_grade(allocation_tag_id)
     get_user.compact.each do |user|
       allocations = Allocation.includes(:profile).where(user_id: user, status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).lower_related).where('cast(profiles.types & ? as boolean)', Profile_Type_Student)
-      allocation = allocations.where('final_grade IS NOT NULL').first || allocations.first
+      allocation = allocations.where('final_grade IS NOT NULL OR working_hours IS NOT NULL').first || allocations.first
 
-      allocation.calculate_final_grade
       allocation.calculate_working_hours
+      
+      allocation.calculate_parcial_grade unless academic_allocation.final_exam
+      allocation.calculate_final_exam_grade
     end
   end
 
@@ -147,15 +149,25 @@ class AcademicAllocationUser < ActiveRecord::Base
         acu.status = tool_type.constantize.verify_previous(acu.id) ? STATUS[:sent] : STATUS[:empty]
       end
 
-      if acu.save
-        tool_type.constantize.update_previous(ac.id, user_id, acu.id) if acu.try(:created_at) == acu.try(:updated_at) && !user_id.nil?
-        acu.recalculate_final_grade(ac.allocation_tag_id)
-        return {id: acu.id, errors: []}
-      else
-        return {id: acu.try(:id), errors: acu.errors.full_messages}
+      return {id: acu.try(:id), errors: [I18n.t('academic_allocation_users.errors.final_exam')]} if (!acu.grade.blank? && acu.grade != evaluation[:grade] && !acu.can_evaluate?)
+
+      ActiveRecord::Base.transaction do
+        if acu.save
+          tool_type.constantize.update_previous(ac.id, user_id, acu.id) if acu.try(:created_at) == acu.try(:updated_at) && !user_id.nil?
+          acu.recalculate_final_grade(ac.allocation_tag_id)
+          return {id: acu.id, errors: []}
+        else
+          return {id: acu.try(:id), errors: acu.errors.full_messages}
+        end
       end
     else
       return {id: acu.try(:id), errors: [I18n.t('academic_allocation_users.errors.student_group')]}
+    end
+  rescue => error
+    if error.to_s == 'af'
+      return {id: acu.try(:id), errors: [I18n.t('academic_allocation_users.errors.final_exam_status')]}
+    else
+      return {id: acu.try(:id), errors: [I18n.t('academic_allocation_users.errors.general')]}
     end
   end
 
@@ -336,8 +348,21 @@ class AcademicAllocationUser < ActiveRecord::Base
     Allocation.where(user_id: user_id, allocation_tag_id: at_id).last
   end 
 
-  def self.getAFUser(user_id, allocation_tag_id)
-    AcademicAllocationUser.joins(:academic_allocation).where(user_id: user_id, academic_allocations: {final_exam: 'true', allocation_tag_id: allocation_tag_id}).pluck(:grade).first
-  end 
+  def can_evaluate?
+    return true unless academic_allocation.final_exam
+
+    course = allocation_tag.get_course
+    uc = allocation_tag.get_curriculum_unit
+
+    min_hours = (uc.min_hours || course.min_hours)
+
+    # pode ser fórum na oferta e aluno ter 2 matriculas ativas (aglutinação ou outro motivo)
+    allocation = Allocation.joins(:profile).where(user_id: user_id, allocation_tag_id: allocation_tag.lower_related, status: Allocation_Activated).where('cast(profiles.types & ? as boolean)', Profile_Type_Student)
+
+    allocation = allocation.where('final_grade IS NOT NULL').first || allocation.first
+
+    # if final_exam rules not defined or (have enough hours and everything is ok)
+    return true if (course.passing_grade.blank? || ((!allocation.parcial_grade.blank? && (allocation.parcial_grade < course.passing_grade && (course.min_grade_to_final_exam.blank? || course.min_grade_to_final_exam <= allocation.parcial_grade))) && (min_hours.blank? || uc.working_hours.blank? || (min_hours*0.01)*uc.working_hours <= allocation.working_hours)))
+  end
 
 end

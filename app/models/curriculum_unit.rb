@@ -15,12 +15,12 @@ class CurriculumUnit < ActiveRecord::Base
   validates :code, uniqueness: { case_sensitive: false }, length: { maximum: 40 }, allow_blank: false
   validates :name, length: { maximum: 120 }
   validates :name, :curriculum_unit_type, :resume, :syllabus, :objectives, :code, presence: true
-  validates :passing_grade, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10, allow_blank: true}
   validates :working_hours, numericality: { greater_than: 0, allow_blank: true}
+  validates :min_hours, numericality: { greater_than_or_equal_to: 0, allow_blank: true, less_than_or_equal_to: 100 }
 
   after_save :update_digital_class, if: "code_changed? || name_changed?"
 
-  attr_accessor :ignore_course
+  attr_accessor :ignore_course, :passing_grade, :min_grade_to_final_exam, :min_final_exam_grade, :final_exam_passing_grade
 
   def any_lower_association?
     offers.count > 0
@@ -85,7 +85,8 @@ class CurriculumUnit < ActiveRecord::Base
 
     ## para curso livre, é criado um curso com o mesmo nome e codigo da UC
     def create_correspondent_course
-      course = Course.new code: code, name: name
+      course = Course.new code: code, name: name, passing_grade: passing_grade, min_grade_to_final_exam: min_grade_to_final_exam, min_final_exam_grade: min_final_exam_grade, final_exam_passing_grade: final_exam_passing_grade
+
       course.user_id = user_id
       course.save
       errors.messages.merge!(course.errors.messages) unless course.save
@@ -94,7 +95,7 @@ class CurriculumUnit < ActiveRecord::Base
 
     def update_correspondent_course
       # changes => {key: [before, after]}
-      return unless self.valid? && changes.any? && (changes.has_key?(:name) || changes.has_key?(:code))
+      return unless self.valid? && ((changes.any? && changes.has_key?(:name) || changes.has_key?(:code)) || !passing_grade.blank? || !min_grade_to_final_exam.blank? || !min_final_exam_grade.blank? || !final_exam_passing_grade.blank?)
 
       before_name = changes[:name].nil? ? name : changes[:name].first
       before_code = changes[:code].nil? ? code : changes[:code].first
@@ -102,7 +103,7 @@ class CurriculumUnit < ActiveRecord::Base
       course = Course.find_by_name_and_code(before_name, before_code)
       unless course.blank?
         course.ignore_uc = true
-        if course && !course.update_attributes(code: code, name: name)
+        if course && !course.update_attributes(code: code, name: name, passing_grade: passing_grade, min_grade_to_final_exam: min_grade_to_final_exam, min_final_exam_grade: min_final_exam_grade, final_exam_passing_grade: final_exam_passing_grade)
           errors.messages.merge!(course.errors.messages)
           return false
         end

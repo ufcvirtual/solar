@@ -16,7 +16,7 @@
       = f.button :submit, :class => "btn",  value: t('scores.index.print_pdf')
 
 .parent
-  %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('.list_of_students')  }
+  %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('scores.index.list_of_students')  }
     %thead
       - if @acs.any?
         %tr.lines.moviment

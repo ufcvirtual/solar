@@ -89,8 +89,35 @@ function up(element) {
   $(element).closest("li").prev("li").find(".nav_item_dropdown").focus();
 }
 
+function set_situation(btn){
+  if($(btn).data('confirm')){
+    if (!confirm("<%=I18n.t('scores.index.confirm')%>"))
+      return false;
+  }
+
+  $.put($(btn).data('url'), function(data){
+    $('#tabs .summary').click();
+    flash_message(data.notice, 'notice');
+  }).error(function(data){
+    var data = $.parseJSON(data.responseText);
+    if (typeof(data.alert) != "undefined")
+      flash_message(data.alert, 'alert');
+  });
+}
+
+function remove_situation(btn){
+  $.put($(btn).data('url'), function(data){
+    $('#tabs .summary').click();
+    flash_message(data.notice, 'notice');
+  }).error(function(data){
+    var data = $.parseJSON(data.responseText);
+    if (typeof(data.alert) != "undefined")
+      flash_message(data.alert, 'alert');
+  });
+}
+
 $(function(){
-   $('.tb_list_students ul.dropdown-menu li input[type="checkbox"]').change(function(){
+   $('.tb_list_students ul.dropdown-menul i input[type="checkbox"]').change(function(){
     if(!!$(this).prop('checked'))
       $('.'+$(this).val()).removeClass('invisible');
     else
@@ -131,4 +158,6 @@ $(function(){
   $(".dropdown-menu").on("focus", function (e) {
     $(".nav_item_dropdown")[0].focus();
   });
+
+
 });

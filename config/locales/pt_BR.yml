@@ -292,11 +292,20 @@ pt_BR:
         objectives: Objetivos
         prerequisites: Pré-requisitos
         resume: Resumo
-        passing_grade: Média
         working_hours: Carga Horária
+        passing_grade: Média mínima para aprovação
+        min_hours: Porcentagem (%) mínima de horas para aprovação
+        min_grade_to_final_exam: Média mínima para realização de AF
+        min_final_exam_grade: Nota mínima permitida para AF
+        final_exam_passing_grade: Média mínima para aprovação após realização de AF
       course:
         name: Nome
         code: Código
+        passing_grade: Média mínima para aprovação
+        min_hours: Porcentagem (%) mínima de horas para aprovação
+        min_grade_to_final_exam: Média mínima para realização de AF
+        min_final_exam_grade: Nota mínima permitida para AF
+        final_exam_passing_grade: Média mínima para aprovação após realização de AF
       discussion_post:
         content: Conteúdo
       post:
@@ -2641,6 +2650,11 @@ pt_BR:
       rules: "<div>1) Se a atividade for de frequência, o somatório das cargas horárias máximas de cada turma deve ser igual à carga horária da disciplina</div><br/><div>2) Se a atividade for avaliativa, o somatório dos pesos finais distintos deve ser de 100. <br/> <i>Exemplo: Fórum 1 com peso final 40, Chat 2 com peso final 40, Prova com peso final 60. Cálculo automático: 40 (todas as atividades com peso final 40) + 60 (todas as atividades com peso final 60) = 100.</i> (CORRETO) <br/> <i>Exemplo: Fórum 1 com peso final 40, Chat 2 com peso final 45, Prova com peso final 60. 40 (todas as atividades com peso final 40) + 45 (todas as atividades com peso final 45) + 60 (todas as atividades com peso final 60) = 145.</i> (INCORRETO)</div><br/><div>3) Ao realizar uma alteração nesta tela e clicar em finalizar, a média final de cada aluno será recalculada automaticamente de acordo com as novas definições.</div><br/><div>4) Ao definir uma atividade como avaliativa, a média final dos alunos será calculada automaticamente considerando que todas as notas tenham valor de 0 a 10.</div>"
       rule_wh1: "<div>5) Não é possível definir uma atividade como de frequência enquanto a disciplina não possuir carga horária.</div>"
       rule_wh2: "<div>5) <b>A carga horária da disciplina é: %{working_hours}</b>. Portanto, a soma das cargas horárias máximas das atividades de frequência não pode ultrapassar este valor.</div>"
+      rule_passing_grade: "<div> 6) <b>Média mínima para aprovação: %{passing_grade}</b></div>"
+      rule_min_hours: "<div> 7) <b>Porcentagem (%) mínima de horas para aprovação: %{min_hours}</b></div>"
+      rule_min_grade_to_final_exam: "<div> 8) <b>Média mínima para realização de AF: %{min_grade_to_final_exam}</b></div>"
+      rule_min_final_exam_grade: "<div> 9) <b>Nota mínima permitida para AF: %{min_final_exam_grade}</b></div>"
+      rule_final_exam_passing_grade: "<div> 10) <b>Média mínima para aprovação após realização de AF: %{final_exam_passing_grade}</b></div>"
       expand: Expandir todos
       compress: Comprimir todos
       share_wh: Dividir carga horária
@@ -2683,7 +2697,13 @@ pt_BR:
       edit_curriculum_unit: Editar Disciplina
     informations:
       warning: "<b>Importante:</b> Este curso não possui uma disciplina, portanto algumas informações não estão disponíveis."
+      warning2: "<b>Importante:</b> Esta disciplina não possui um curso, portanto algumas informações não estão disponíveis."
       summary: "Tabela contendo todas as informações básicas do curso e/ou disciplina, como ementa, objetivos, média, período, resumo, pré-requisitos e responsáveis."
+      min_hours: Porcentagem (%) mínima de horas para aprovação
+      min_grade_to_final_exam: Média mínima para realização de AF
+      min_final_exam_grade: Nota mínima permitida para AF
+      final_exam_passing_grade: Média mínima para aprovação após realização de AF
+      passing_grade: Média mínima para aprovação
     users:
       message: Enviar mensagem
       public_files: Visualizar arquivos públicos
@@ -2810,6 +2830,7 @@ pt_BR:
       created: Não foi possível criar curso.
       updated: Não foi possível atualizar curso.
       deleted: Não foi possível deletar curso.
+      passing_grade: deve ser menor que a média mínima para aprovação
 
   support_materials:
     success:
@@ -3454,6 +3475,10 @@ pt_BR:
         evaluative: 'Avaliativo [1]'
         frequency: 'Frequência [2]'
         notevaluative: 'Não Avaliativo [3]'
+        summary: 'Resumo [4]'
+        pdf: 'Gerar PDF [I]'
+        situation: Definir Situação [S]
+        remove_situation: Remover Situação [R]
       code:
         exam: 80
         webconference: 87
@@ -3465,6 +3490,10 @@ pt_BR:
         evaluative: 97
         frequency: 98
         notevaluative: 99
+        summary: 100
+        pdf: 73
+        situation: 83
+        remove_situation: 82
     evaluatives:
       name:
         responsibles: "Responsáveis [R]"
@@ -3575,7 +3604,7 @@ pt_BR:
       participation: "Participações em Fóruns"
       access_to_the_course: "Acessos à Turma"
       no_students: Não há alunos
-      list_of_students: Lista de estudantes
+      list_of_students: Lista de estudantes com informações sobre suas notas, horas e atividades
       evaluated_complete: Atividade avaliada (nota ou frequência) ou com comentário
       not_sent_complete: Atividade não enviada e com período encerrado
       without_group_complete: Aluno sem grupo
@@ -3610,6 +3639,24 @@ pt_BR:
       select_group: Selecionar Turma
       faults: Faltas
       af: A.F
+      summary: Resumo
+      situation: Situação
+      af_grade: A.F
+      pending: Pendente
+      final_exam_pending: Sujeito a AF
+      approved: Aprovado
+      final_exam_approved: Aprovado por AF
+      failed: Reprovado
+      failed_working_hours: Reprovado por faltas
+      undefined: Indefinido
+      set_situation: 'Definir situações'
+      remove_situation: 'Remover situações'
+      situation1: "- As situações dos alunos serão <b>definidas automaticamente na data %{date}</b>. Caso deseje definir as situações <b>antes da data prevista, clique em '%{btn_name}'</b>. Definir situações cedo demais poderá ocasionar em  situações indevidas."
+      situation2: "- Só é possível definir a situação de alunos quando o curso possui os <b>parâmetros de nota ou carga horária</b> cadastrados e a turma foi <b>gerenciada</b>."
+      situation3: "- Uma vez atingida a data de definição automática de situação (%{date}), não será possível remover a situação dos alunos."
+      situation4: "- Ao remover as situações dos alunos, todas serão definidas como 'Pendente' ou 'Indefinida' até que sejam definidas novamente."
+      situation5: "- Uma vez definida a situação, a cada nova avaliação, carga horária e afins, a situação do aluno será imediatamente atualizada."
+      confirm: A última atividade avaliativa ainda não aconteceu. Tem certeza que deseja definir as situações?
     info:
       assignments: Trabalhos
       date_range: Período
@@ -3639,7 +3686,9 @@ pt_BR:
       not_evaluative: Não Avaliativa
       workload: Carga Horária
       student: "Aluno: "
-      grade_i: "<b>Nota Final:</b> %{grade}"
+      grade_i: "<b>Média Final:</b> %{grade}"
+      final_exam_grade: "<b>A.F:</b> %{grade}"
+      situation2: "<b>Situação: </b> <br/>%{situation}"
       frequency_i: "<b>Frequência:</b> %{wh} h/a"
       uc_without_wh: "Disciplina sem carga horária"
       frequency_uc: "<b>Carga horária da disciplina:</b> %{wh} h/a"
@@ -3706,6 +3755,7 @@ pt_BR:
       student_frequency: Relatório %{name} - Atividades de Frequência
       student_not_evaluative: Relatório %{name} - Atividades Não Avaliativas
       student_all: Relatório %{name} - Todas
+      summary: Relatório Acompanhamento - Resumo
     situation:
       not_started: Não iniciado
       to_answer: A responder
@@ -3738,12 +3788,18 @@ pt_BR:
       situation: Não é possível avaliar ainda, pois a atividade não foi iniciada ou o aluno ainda não a realizou.
       situation2: Não é possível visualizar ainda, pois a atividade não foi iniciada ou o aluno ainda não a realizou ou o aluno está sem grupo.
       not_possible: Não é possível acessar a página desejada.
+      not_possible_set_situation: Não foi possível definir a situação dos alunos.
+      not_possible_remove_situation: Não foi possível remover a situação dos alunos.
+      not_possible_remove_situation_date: Não foi possível remover a situação dos alunos, pois a data de atualização automática já foi atingida.
     pdf:
       time: "Este relatório foi gerado em %{time}"
     list:
       summary_evaluative: "Está tabela contém todas as ferramentas avaliativas: (provas, atividades, chats, fóruns, webconferências e eventos agendados)."
       summary_frequency: "Está tabela contém todas as ferramentas de frequência: (provas, atividades, chats, fóruns, webconferências e eventos agendados)."
       summary_notevaluative: "Está tabela contém todas as ferramentas não avaliativas: (provas, atividades, chats, fóruns, webconferências e eventos agendados)."
+    notice:
+      setted_situation: Situações definidas com sucesso
+      removed_situation: Situações removidas com sucesso
 
   lesson_notes:
     error:
@@ -4519,8 +4575,13 @@ pt_BR:
       opened: não pode ser definida, pois a atividade ainda não iniciou.
       group: deve ser da mesma atividade e turma desta avaliação
       not_participant: não pode ser definida, pois o aluno não é participante deste Chat.
+      final_exam: "O aluno não possui carga horária o suficiente ou não atende os requisitos para realizar a AF. Consulte os requisitos necessários no menu 'Programa'."
+      final_exam_status: "Esta ação não pode ser realizada, pois o aluno já foi avaliado em atividades de AF e esta alteração impediria que o aluno atenda os requisitos necessários para realizar uma avaliação final."
+      general: Não foi possível realizar a ação
     success:
       evaluated: Estudante avaliado com sucesso.
+    warning:
+      equivalency_evaluated: Estudante avaliado com sucesso. A atividade equivalente já havia sido avaliada, portanto esta avaliação poderá não ser levada em consideração no cálculo da média e situação do aluno. Para considerar esta nota ou carga horária, remova a avaliação feita na atividade equivalente.
 
   faq:
     search: Pesquisar por palavras-chave

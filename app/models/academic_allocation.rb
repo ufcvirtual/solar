@@ -30,7 +30,7 @@ class AcademicAllocation < ActiveRecord::Base
   validate :verify_assignment_offer_date_range, if: :assignment?
 
   validates :weight, presence: true, numericality: { greater_than: 0,  only_float: true }, if: 'evaluative? && !final_exam? && equivalent_academic_allocation_id.nil?'
-  validates :final_weight, presence: true, numericality: { greater_than: 0,  only_float: true, smaller_than: 101 }, if: 'evaluative? && !final_exam? && equivalent_academic_allocation_id.nil?'
+  validates :final_weight, presence: true, numericality: { greater_than: 0,  only_float: true, smaller_than: 100.1 }, if: 'evaluative? && !final_exam? && equivalent_academic_allocation_id.nil?'
   validates :max_working_hours, presence: true, numericality: { greater_than: 0,  only_float: true, allow_blank: true }, if: 'frequency? && !final_exam? && equivalent_academic_allocation_id.nil?'
 
   validate :verify_equivalents, if: 'equivalent_academic_allocation_id_changed? && !equivalent_academic_allocation_id.nil?'
@@ -38,6 +38,9 @@ class AcademicAllocation < ActiveRecord::Base
 
   before_save :set_evaluative_params, on: :update, unless: 'new_record?'
   before_save :change_dependencies, on: :update, unless: 'new_record?'
+
+  before_destroy :set_situation_date
+  after_destroy :verify_management
 
   def set_evaluative_params
     self.frequency = get_curriculum_unit.try(:working_hours).blank? ? false : frequency
@@ -49,7 +52,6 @@ class AcademicAllocation < ActiveRecord::Base
     elsif final_exam
       self.weight = 0
       self.final_weight = 0
-      self.equivalent_academic_allocation_id = nil
       self.max_working_hours = 0
       self.frequency = false
     end
@@ -261,6 +263,19 @@ class AcademicAllocation < ActiveRecord::Base
       new_object
     rescue
       nil
+    end
+
+    def set_situation_date
+      AllocationTag.where(situation_date_ac_id: id).each do |at|
+        last_date = AcademicTool.last_date(at.id, id)
+        at.update_attributes situation_date: last_date[:date], situation_date_ac_id: last_date[:ac_id]
+      end
+    end
+
+    def verify_management
+      if evaluative || frequency
+        allocation_tag.recalculate_students_grades
+      end
     end
 
 end

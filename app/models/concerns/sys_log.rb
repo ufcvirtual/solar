@@ -92,7 +92,7 @@ module SysLog
           d = "#{params[:controller]}: #{params.except('controller').to_s}" if d.blank?
         end
 
-        LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: get_remote_ip, academic_allocation_id: academic_allocation_id, description: description) unless description.nil?
+        LogAction.create(log_type: LogAction::TYPE[request_method(request.request_method)], user_id: current_user.id, ip: get_remote_ip, academic_allocation_id: academic_allocation_id, description: description, allocation_tag_id: (active_tab[:url][:allocation_tag_id] rescue nil)) unless description.nil?
       end
 
   end # Actions

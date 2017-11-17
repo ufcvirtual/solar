@@ -1,4 +1,4 @@
-- if @curriculum_unit.nil?
+- if @curriculum_unit.blank?
   .title-warning=raw t(".warning")
 .block_wrapper
   .block_title
@@ -25,11 +25,23 @@
           %th.act_like_td#semester= t(:semester_date) 
           %td{headers: 'semester'}= [l(@offer.start_date), l(@offer.end_date)].join(" - ")
       %tr.lines
-        %th.act_like_td#grade= t(:passing_grade) 
-        %td{headers: 'grade'}= @curriculum_unit.try(:passing_grade)
+        %th.act_like_td#grade= t('.passing_grade') 
+        %td{headers: 'grade'}= @course.try(:passing_grade)
+      %tr.lines
+        %th.act_like_td#grade= t('.min_grade_to_final_exam') 
+        %td{headers: 'grade'}= @course.try(:min_grade_to_final_exam)
+      %tr.lines
+        %th.act_like_td#grade= t('.min_final_exam_grade') 
+        %td{headers: 'grade'}= @course.try(:min_final_exam_grade)
+      %tr.lines
+        %th.act_like_td#grade= t('.final_exam_passing_grade') 
+        %td{headers: 'grade'}= @course.try(:final_exam_passing_grade)
       %tr.lines
         %th.act_like_td#wh= t(:working_hours) 
         %td{headers: 'wh'}= @curriculum_unit.try(:working_hours)
+      %tr.lines
+        %th.act_like_td#grade= t('.min_hours') 
+        %td{headers: 'min_hours'}= (@curriculum_unit.try(:min_hours) || @course.try(:min_hours))
       %tr.lines.responsibles
         %th.act_like_td#responsibles= t(:curriculum_unit_responsible) 
         %td{headers: 'responsibles'}

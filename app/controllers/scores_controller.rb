@@ -1,6 +1,7 @@
 class ScoresController < ApplicationController
 
   include Bbb
+  include SysLog::Actions
 
   before_filter :prepare_for_group_selection, only: :index
   before_filter :prepare_for_pagination, only: :index
@@ -10,18 +11,20 @@ class ScoresController < ApplicationController
   require 'will_paginate/array'
   def index
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
-    @group = AllocationTag.find(@allocation_tag_id).groups.first
+    @allocation_tag = AllocationTag.find(@allocation_tag_id)
+    @allocation_tag.set_students_situations if @allocation_tag.can_set_situation_automatically?
 
-    ats = AllocationTag.find(@allocation_tag_id).related.join(',')
-    @responsibles = AllocationTag.get_participants(@allocation_tag_id, { responsibles: true, profiles: Profile.with_access_on("create", "posts").join(",") }, true) if current_user.profiles_with_access_on("responsibles", "scores", AllocationTag.find(@allocation_tag_id).related).any?
+    @group = @allocation_tag.groups.first
+
+    ats = @allocation_tag.related
+    @responsibles = AllocationTag.get_participants(@allocation_tag_id, { responsibles: true, profiles: Profile.with_access_on("create", "posts").join(",") }, true) if current_user.profiles_with_access_on("responsibles", "scores", ats).any?
 
     @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true).paginate(:page => params[:page], :per_page => 20)
-    @tools = ( ats.empty? ? [] : EvaluativeTool.count_tools(ats) )
+    @tools = ( ats.empty? ? [] : EvaluativeTool.count_tools(ats.join(',')) )
     @tools_list = EvaluativeTool.descendants
 
-    @wh = AllocationTag.find(@allocation_tag_id).get_curriculum_unit.try(:working_hours)
+    @wh = @allocation_tag.get_curriculum_unit.try(:working_hours)
   end
-
 
   require 'will_paginate/array'
   def evaluatives_frequency
@@ -98,23 +101,24 @@ class ScoresController < ApplicationController
     @wh = AllocationTag.find(@allocation_tag_id).get_curriculum_unit.try(:working_hours)
     ats = AllocationTag.find(@allocation_tag_id).related.join(',')
     @tools = ( ats.empty? ? [] : EvaluativeTool.count_tools(ats) )
+    @allocation_tag = AllocationTag.find(@allocation_tag_id)
 
     if params[:report]
       @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true)
       @ats = AllocationTag.find(@allocation_tag_id)
 
-      render pdf:         t("scores.reports.general"),
+      render pdf:         t("scores.reports.#{params[:type]}"),
              orientation: 'Landscape',
-             template: 'scores/general.html.haml',
+             template: "scores/#{params[:type]}.html.haml",
              layout: false,
              disposition: 'attachment'
 
     else
       @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true).paginate(:page => params[:page], :per_page => 20)
       respond_to do |format|
-        format.html { render partial: 'general'  }
+        format.html { render partial: "#{params[:type]}"  }
         format.json { render json: @users }
-        format.js
+        format.js { render "#{params[:type]}.js.haml" }
       end
     end
   rescue => error
@@ -268,6 +272,13 @@ class ScoresController < ApplicationController
     render :info
   end
 
+  def info_summary
+    authorize! :index, Score, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
+    render partial: 'scores/info/summary', locals: {user: User.find(params[:user_id]), allocation_tag_id: allocation_tag_id}
+  rescue => error
+    render status: :unauthorized
+  end
+
   def amount_access
     allocation_tag_id = active_tab[:url][:allocation_tag_id]
 
@@ -359,6 +370,35 @@ class ScoresController < ApplicationController
     render json: { alert: t(:no_permission) }, status: :unprocessable_entity
   rescue => error
     render json: { alert: t('scores.error.not_possible') }, status: :unprocessable_entity
+  end
+
+  def set_situation
+    authorize! :set_situation, Score, { on: allocation_tag_id = active_tab[:url][:allocation_tag_id]}
+
+    allocation_tag = AllocationTag.find(allocation_tag_id)
+    allocation_tag.set_students_situations(true)
+
+    render json: {success: true, notice: t('scores.notice.setted_situation')}
+  rescue => error
+    Rails.logger.info "[APP] [ERROR] [SET SITUATION SCORES] error: #{error}"
+    render json: { alert: t('scores.error.not_possible_set_situation') }, status: :unprocessable_entity
+  end
+
+  def remove_situation
+    authorize! :set_situation, Score, { on: allocation_tag_id = active_tab[:url][:allocation_tag_id]}
+
+    allocation_tag = AllocationTag.find(allocation_tag_id)
+    raise 'date' if allocation_tag.situation_date <= Date.today
+    allocation_tag.remove_students_situations
+
+    render json: {success: true, notice: t('scores.notice.removed_situation')}
+  rescue => error
+    Rails.logger.info "[APP] [ERROR] [SET SITUATION SCORES] error: #{error}"
+    if error == 'date'
+      render json: { alert: t('scores.error.not_possible_remove_situation') }, status: :unprocessable_entity
+    else
+      render json: { alert: t('scores.error.not_possible_remove_situation_date') }, status: :unprocessable_entity
+    end
   end
 
 end
