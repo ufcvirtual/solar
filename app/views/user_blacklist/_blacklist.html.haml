@@ -5,7 +5,8 @@
         %th= t(:cpf)
         %th{style: 'width: 40%;'}= t(:name)
         %th= t('user_blacklist.index.created_at')
-        %th= t('user_blacklist.index..added_by')
+        %th= t('user_blacklist.index.updated_at')
+        %th= t('user_blacklist.index.added_by')
         %th.no_sort{style: 'width: 40px;'}
     %tbody.user_blacklist
       = render 'blacklist_body'

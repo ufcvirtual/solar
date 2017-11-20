@@ -2734,6 +2734,7 @@ en_US:
       delete: Delete
       created_at: Created at
       added_by: Added by
+      updated_at: Updated at
     new:
       new: Add CPF to blacklist
       cpf: CPF
