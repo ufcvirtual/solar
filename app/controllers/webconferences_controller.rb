@@ -224,6 +224,8 @@ class WebconferencesController < ApplicationController
     @academic_allocation = acs.where(allocation_tag_id: @allocation_tag_id).first
 
     @acu = AcademicAllocationUser.find_one(@academic_allocation.id, params[:user_id],nil, false, @can_evaluate)
+
+    @is_student = @user.is_student?([@allocation_tag_id].flatten)
     
     @maxwh = acs.first.max_working_hours
     @back = params.include?(:back)

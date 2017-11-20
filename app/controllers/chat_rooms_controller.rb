@@ -130,6 +130,8 @@ class ChatRoomsController < ApplicationController
             
       @acu = AcademicAllocationUser.find_one(@academic_allocation.id, params[:user_id],nil, false, can_evaluate)
 
+      @is_student = @user.is_student?([@allocation_tag_id])
+
       @back = params.include?(:back)
 
       respond_to do |format|
