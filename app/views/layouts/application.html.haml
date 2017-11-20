@@ -188,7 +188,9 @@
                 %li{class: "language pt_BR #{(selected == locales.first) ? 'selected' : ''}"}= link_to 'Português (BR)', url_for(locale: locales.first)
                 %li{class: "language en_US #{(selected == locales.last) ? 'selected' : ''}"}= link_to 'English (USA)', url_for(locale: locales.last)
 
-
+    #loading
+      %h2=t(:page_loading)
+      %div= image_tag('loading.gif') 
 
     %div{class: 'modal'}
       %div{class: 'modal-content'}

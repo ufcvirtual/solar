@@ -41,7 +41,9 @@
 
     $('a.change_offer').click(function(){
       var div = $(this);
+      loading_page(div);
       $.get($(this).data('url'), function(data){
+        $.fancybox.close();
         $('.mysolar_portlets_content tbody.offers').replaceWith(data);
         $('a.change_offer.hide').removeClass('hide');
         div.addClass('hide');

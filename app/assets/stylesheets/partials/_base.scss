@@ -338,3 +338,9 @@ a.disabled{
 i.noscript{
   color: $removed_permission_color;
 }
+
+#loading{
+  text-align: center;
+  margin-top: 18%;
+  display: none;
+}

@@ -115,10 +115,12 @@
   }
 
   function manage_tools(button){
+    loading_page($(button));
     $(button).parents('form:first').serialize_and_submit({
       error_message: '',
       complement_success: function(data){
         $('tr.red').removeClass('red');
+        $.fancybox.close();
       },
       complement_error: function(data) {
         $('tr.red').removeClass('red');

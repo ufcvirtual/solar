@@ -669,3 +669,7 @@ function loadFocus(){
     $.cookie("listIdFocu", arrIdFocus);
   });
 }
+
+function loading_page(element){
+  $(element).call_fancybox({open: true, content: $('#loading')});
+}
