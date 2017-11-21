@@ -1154,7 +1154,7 @@ en_US:
       remove_post: "Post delete success"
       draft: "<a class='draft_version_explain' href='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'> Draft (?)</a>"
       draft2: Explanation of the post Draft
-      fv_explain: "<p> A draft post is visible only to the user who created it and it can be published at any time, as long as the forum still is in its posting period.</p> <p>If the draft is the only answer to a parent post and this post is deleted, the draft will also be erased.</p>"
+      fv_explain: "<p> A draft post is visible only to the user who created it and it can be published at any time, as long as the forum still is in its posting period.</p> <p>If the draft is the only answer to a parent post and this post is deleted, the draft will also be erased. He also will be erased if parent post is turned into draft post pai for transformado para rascunho antes da publicação do post filho.</p>"
       fv_explain_alt: "A draft post is visible only to the user who created it and it can be published at any time, as long as the forum still is in its posting period. If the draft is the only answer to a parent post and this post is deleted, the draft will also be erased."
     create:
       created: "Post was successfully created"

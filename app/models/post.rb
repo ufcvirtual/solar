@@ -35,6 +35,7 @@ class Post < ActiveRecord::Base
 
   before_save :set_parent, if: '!new_record? && parent_id_changed?'
   before_save :set_draft, if: 'draft.nil?'
+  before_save :remove_draft_children, if: 'draft_changed? && draft'
 
   attr_accessor :merge
 
@@ -53,7 +54,15 @@ class Post < ActiveRecord::Base
   end
 
   def can_set_draft?
-    errors.add(:base, I18n.t('posts.error.back_to_draft')) if children.any?
+    errors.add(:base, I18n.t('posts.error.back_to_draft')) if children.where(draft: false).any?
+  end
+
+  def remove_draft_children
+    # if changed from published to draft and all children are drafts
+    if draft && !draft_was && children.where(draft: true).count == children.count
+      # remove children
+      children.map(&:destroy)
+    end
   end
 
   # cant turn into draft a post already published

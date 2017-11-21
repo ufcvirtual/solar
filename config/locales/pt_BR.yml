@@ -1334,8 +1334,8 @@ pt_BR:
       remove_post: "Postagem removida com suceso"
       draft: "<a class='draft_version_explain' href='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'>Rascunho (?)</a>"
       draft2: Explicação sobre o rascunho do post
-      fv_explain: "<p>Um post rascunho é visível apenas para o usuário que o criou e poderá ser publicado a qualquer momento, desde que o fórum esteja no seu período de postagem.</p><p>Caso o rascunho seja a única resposta a um post pai e este seja apagado, o rascunho também será apagado.</p>"
-      fv_explain_alt: "Um post rascunho é visível apenas para o usuário que o criou e poderá ser publicado a qualquer momento, desde que o fórum esteja no seu período de postagem. aso o rascunho seja a única resposta a um post pai e este seja apagado, o rascunho também será apagado."
+      fv_explain: "<p>Um post rascunho é visível apenas para o usuário que o criou e poderá ser publicado a qualquer momento, desde que o fórum esteja no seu período de postagem.</p><p>Caso o rascunho seja a única resposta a um post pai e este seja apagado, o rascunho também será apagado. Ele também será apagado se o post pai for transformado para rascunho antes da publicação do post filho.</p>"
+      fv_explain_alt: "Um post rascunho é visível apenas para o usuário que o criou e poderá ser publicado a qualquer momento, desde que o fórum esteja no seu período de postagem. aso o rascunho seja a única resposta a um post pai e este seja apagado, o rascunho também será apagado. Ele também será apagado se o post pai for transformado para rascunho antes da publicação do post filho."
     create:
       created: "Postagem criada com sucesso"
       not_created: "A postagem não foi criada"
