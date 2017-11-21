@@ -16,14 +16,14 @@ module AcademicTool
     before_save :set_situation_date, if: 'merge.nil?', on: :update
 
     after_create  do 
-      send_email (false) if self.schedule.verify_by_to_date?
+      send_email (false) if respond_to?(:schedule) && self.schedule.verify_by_to_date?
     end  
 
     before_update do
-      send_email (true) if self.schedule.verify_by_to_date?
+      send_email (true) if respond_to?(:schedule) && self.schedule.verify_by_to_date?
     end
 
-    before_destroy :send_email, prepend: true, if: 'schedule.verify_by_to_date?'
+    before_destroy :send_email, prepend: true, if: 'respond_to?(:schedule) && schedule.verify_by_to_date?'
 
 
     attr_accessor :allocation_tag_ids_associations, :merge
