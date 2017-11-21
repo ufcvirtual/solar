@@ -117,6 +117,14 @@ module V1
           end
         end
 
+        params{requires :cpf, type: String}
+        get "verify/:cpf" do
+          begin
+            user_blacklist = UserBlacklist.where(cpf: params[:cpf].delete('.').delete('-')).first
+            {exists_on_blacklist: !user_blacklist.blank?}
+          end
+        end
+
       end # user
 
       namespace :profiles do
