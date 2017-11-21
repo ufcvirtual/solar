@@ -136,7 +136,6 @@ module V1
             error = 0
 
             cpf = params[:cpf].delete('.').delete('-')
-            # user = User.where(cpf: params[:cpf].delete('.').delete('-')).first
             if params[:email].present?
               error = error | 2 if User.where("lower(email) = ? AND cpf != ?", params[:email].downcase, cpf).any?
             end
