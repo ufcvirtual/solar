@@ -54,6 +54,8 @@ commit.sh
 sink_master.sh
 sink_development.sh
 sink_sem_commit.sh
-ship.sh
+ship_test.sh
+ship_development.sh
+sink_test.sh
 config/digital_class_access_token.txt
 .ruby-version
