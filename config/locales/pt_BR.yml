@@ -2663,6 +2663,11 @@ pt_BR:
       finish: Finalizar
       draggable_title: ANALISADOR
       draggable_info: Clique e arraste para mover o componente
+    mail:
+      subject_new: 'Aviso: Nova atividade'
+      subject_update: 'Aviso: Alteração em atividade'
+      subject_delete: 'Aviso: Exclusão de atividade'
+
   curriculum_units:
     success:
       created: Disciplina criada com sucesso.

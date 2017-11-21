@@ -2439,6 +2439,11 @@ en_US:
       finish: Finish
       draggable_title: ANALYZER
       draggable_info: Click and drag to move the component
+    mail:
+      subject_new: 'Warning: New activity'
+      subject_update: 'Warning: Active change'
+      subject_delete: 'Warning: Deletion of activity'
+      
   curriculum_units:
     success:
       created: Subject was successfully created.

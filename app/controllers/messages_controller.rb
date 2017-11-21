@@ -1,7 +1,6 @@
 class MessagesController < ApplicationController
   include FilesHelper
   include MessagesHelper
-  include BulkEmailHelper
   include SysLog::Actions
 
   before_filter :prepare_for_group_selection, only: [:index]
@@ -102,7 +101,7 @@ class MessagesController < ApplicationController
           #Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files, current_user.email).deliver
         #end
         Thread.new do 
-          send_mass_email(emails, @message)
+          Job.send_mass_email(emails, @message.subject, new_msg_template, @message.files, current_user.email)
         end  
       end
 

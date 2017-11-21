@@ -24,9 +24,10 @@ class Schedule < ActiveRecord::Base
   validate :verify_offer, unless: 'verify_offer_ats.blank?'
 
   before_destroy :can_destroy?
+  before_update :copy_object
 
   # check_end_date: caso esteja setado, a data final sera obrigatoria / verify_current_date: verifica se o periodo eh valido dada a data/ano atual
-  attr_accessor :check_end_date, :verify_current_date, :verify_today, :verify_offer_ats
+  attr_accessor :check_end_date, :verify_current_date, :verify_today, :verify_offer_ats, :copy_schedule
 
   def start_date_before_end_date
     errors.add(:start_date, I18n.t(:range_date_error, scope: [:discussions, :error])) unless start_date.nil? || end_date.nil? || (start_date <= end_date)
@@ -59,4 +60,12 @@ class Schedule < ActiveRecord::Base
       errors.add(:start_date, I18n.t('schedules.errors.offer_start_end')) if offer.end_date < start_date
     end
   end
+
+  def copy_object
+    @copy_schedule = Schedule.find(self.id) unless self.id.nil? 
+  end 
+
+  def verify_by_to_date?
+    (start_date <= Date.today+2.day) ? true : false
+  end 
 end
