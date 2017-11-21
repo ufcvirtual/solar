@@ -27,7 +27,7 @@
   .comments
     = render partial: 'comments/list', locals: { comments: @alluser.try(:comments), tool: @discussion, tool_type: 'Discussion' }
   
-  - if evaluate && @user.is_student?(@allocation_tags)
+  - if evaluate && @is_student
     = simple_form_for :academic_allocation_user, url: evaluate_discussion_path(@discussion), html: { method: :put } do |f|
     
       = f.input :user_id, as: :hidden, input_html: { value: @user.id }

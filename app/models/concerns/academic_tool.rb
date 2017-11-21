@@ -44,7 +44,7 @@ module AcademicTool
           FROM assignments 
           JOIN schedules ON schedules.id = assignments.schedule_id 
           JOIN academic_allocations ac ON ac.academic_tool_id = assignments.id AND academic_tool_type = 'Assignment'
-          WHERE ac.allocation_tag_id = #{at} AND evaluative = 't' AND final_exam = 'f' #{where}
+          WHERE ac.allocation_tag_id = #{at} AND (evaluative = 't' OR frequency = 't') AND final_exam = 'f' #{where}
           GROUP BY ac.id
 
           UNION 
@@ -53,7 +53,7 @@ module AcademicTool
           FROM discussions 
           JOIN schedules ON schedules.id=discussions.schedule_id 
           JOIN academic_allocations ac ON ac.academic_tool_id = discussions.id AND academic_tool_type = 'Discussion'
-          WHERE ac.allocation_tag_id = #{at} AND evaluative = 't' AND final_exam = 'f' #{where}
+          WHERE ac.allocation_tag_id = #{at} AND (evaluative = 't' OR frequency = 't') AND final_exam = 'f' #{where}
           GROUP BY ac.id
 
           UNION 
@@ -62,7 +62,7 @@ module AcademicTool
           FROM chat_rooms 
           JOIN schedules on schedules.id = chat_rooms.schedule_id 
           JOIN academic_allocations ac ON ac.academic_tool_id = chat_rooms.id AND academic_tool_type = 'ChatRoom'
-          WHERE ac.allocation_tag_id = #{at} AND evaluative = 't' AND final_exam = 'f' #{where}
+          WHERE ac.allocation_tag_id = #{at} AND (evaluative = 't' OR frequency = 't') AND final_exam = 'f' #{where}
           GROUP BY ac.id
 
           UNION 
@@ -71,7 +71,7 @@ module AcademicTool
           FROM exams 
           JOIN schedules on schedules.id = exams.schedule_id 
           JOIN academic_allocations ac ON ac.academic_tool_id = exams.id AND academic_tool_type = 'Exam'
-          WHERE ac.allocation_tag_id = #{at} AND evaluative = 't' AND final_exam = 'f' #{where}
+          WHERE ac.allocation_tag_id = #{at} AND (evaluative = 't' OR frequency = 't') AND final_exam = 'f' #{where}
           GROUP BY ac.id
 
           UNION 
@@ -80,7 +80,7 @@ module AcademicTool
           FROM schedule_events
           JOIN schedules on schedules.id = schedule_events.schedule_id 
           JOIN academic_allocations ac ON ac.academic_tool_id = schedule_events.id AND academic_tool_type = 'ScheduleEvent'
-          WHERE ac.allocation_tag_id = #{at} AND evaluative = 't' AND final_exam = 'f' #{where}
+          WHERE ac.allocation_tag_id = #{at} AND (evaluative = 't' OR frequency = 't') AND final_exam = 'f' #{where}
           GROUP BY ac.id
 
           UNION 
@@ -88,7 +88,7 @@ module AcademicTool
           SELECT MAX((initial_time + (interval '1 mins')*duration)::date) AS ed, ac.id AS ac_id
           FROM webconferences
           JOIN academic_allocations ac ON ac.academic_tool_id = webconferences.id AND academic_tool_type = 'Webconference'
-          WHERE ac.allocation_tag_id = #{at} AND evaluative = 't' AND final_exam = 'f' #{where}
+          WHERE ac.allocation_tag_id = #{at} AND (evaluative = 't' OR frequency = 't') AND final_exam = 'f' #{where}
           GROUP BY ac.id
 
         ) dates
@@ -104,6 +104,8 @@ module AcademicTool
     end
 
     {date: max_date, ac_id: date.first.ac_id}
+  rescue
+    {date: nil, ac_id: nil}
   end
 
   private

@@ -139,7 +139,7 @@
               %th#di_not_dat.center.date{style: "width: 40%;"}= t(:date_range, scope: [:scores, :info])
               %th#di_not_sit.center{style: "width: 20%;"}= t(:situation, :scope => [:scores, :info])
               %th#di_not_amo.center{style: "width: 2%;"}= t(:interactions, scope: [:scores, :info])
-              - if @can_comment
+              - if @can_comment && @is_student
                 %th#di_not_btn.center.no_sort{style: "width: 2%;"}
               - if @current_user_is_student
                 %th.center#di_not_comment{style: "width: 2%;"}=t(:comments, scope: [:scores, :info])
@@ -180,7 +180,7 @@
                   = [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(' - ')
                 %td.center{class: "assignment_#{discussion.situation} #{['discussion','u', discussion.id.to_s, @user.id.to_s].join('_')} situation", headers: "di_not_sit"}= t("scores.situation.#{discussion.situation}")
                 %td.center{headers: "di_not_amo"}= link_to discussion.count, user_discussion_posts_path(discussion.academic_tool_id, @user.id), class: 'to_evaluate_post', :'data-tooltip'=> t(:discussions_participation, scope: [:scores, :info]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:discussions_participation, scope: [:scores, :info])
-                - if @can_comment
+                - if @can_comment && @is_student
                   %td.center{headers: "di_not_btn"}= link_to content_tag(:i, nil, class: "icon-write"), user_discussion_posts_path(discussion.academic_tool_id, @user.id, score_type: 'not_evaluative'), class: 'btn to_evaluate_post', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])  
                 - if @current_user_is_student
                   %td.center{headers: "di_not_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_discussions_path(ac_id: discussion.id, tool_id: discussion.academic_tool_id), class: "btn #{discussion.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: discussion.count_comments), :'aria-label' => t('comments.summary.count_alt', count: discussion.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'

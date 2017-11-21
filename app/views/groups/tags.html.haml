@@ -25,7 +25,8 @@
 = javascript_include_tag 'tooltip'
 
 :javascript
-  $(".btn_remove_groups_fancybox, .btn_unbind_groups_fancybox").click(function(){
+  $(".btn_remove_groups_fancybox, .btn_unbind_groups_fancybox").click(function(event){
+    event.preventDefault();
     var groups_ids = $('[name="ckb_group"]:checked', $(this).parent().parent().parent()).map(function() { return this.value; }).get();
     var url = $(this).data("link").replace("param_id", groups_ids);
 

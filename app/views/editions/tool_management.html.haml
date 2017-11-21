@@ -123,6 +123,7 @@
         $.fancybox.close();
       },
       complement_error: function(data) {
+        $.fancybox.close();
         $('tr.red').removeClass('red');
         var data = $.parseJSON(data.responseText)
 
