@@ -94,10 +94,13 @@ module V1
           end
         end # /
 
-        params { requires :cpf, type: String }
+        params do
+          requires :cpf, type: String
+          optional :only_if_exists, type: Boolean, default: false
+        end
         post "import/:cpf" do
           begin
-            verify_or_create_user(params[:cpf].delete('.').delete('-'))
+            verify_or_create_user(params[:cpf].delete('.').delete('-'), false, params[:only_if_exists])
             {ok: :ok}
           rescue => error
             raise error
