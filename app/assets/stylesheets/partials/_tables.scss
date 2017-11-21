@@ -76,6 +76,7 @@ table.tb_list {
     /*    border-right: 1px solid $border_color;*/
     // white-space: normal;
     word-wrap: break-word;
+    word-break: break-all;
   }
 
   td:last-child, th.act_like_td:last-child {
