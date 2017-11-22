@@ -62,7 +62,7 @@ class User < ActiveRecord::Base
   validates :nick, presence: true, length: { within: 3..34 }
   validates :birthdate, presence: true
   validates :username, presence: true, length: { within: 3..20 }, uniqueness: {case_sensitive: false}
-  validates :password, presence: true, confirmation: true, unless: Proc.new { |a| a.password.blank? || a.integrated? }
+  validates :password, presence: true, confirmation: true, unless: Proc.new { |a| !a.encrypted_password.blank? || a.integrated? }
   # validates :alternate_email, format: { with: email_format }, uniqueness: {case_sensitive: false}, unless: 'alternate_email.blank?'
   validates :email, presence: true, confirmation: true, uniqueness: {case_sensitive: false}, format: { with: email_format }, unless: Proc.new { |a| a.already_email_error_or_email_not_changed? }
   validates :special_needs, presence: true, if: :has_special_needs?
@@ -656,9 +656,7 @@ class User < ActiveRecord::Base
   end
 
   def self.user_ma_attributes(user_data)
-    data = { name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == 'M'), cell_phone: user_data[17],
-      nick: (user_data[7].nil? ? ([user_data[2].split(' ')[0], user_data[2].split(' ')[1]].join(' ')) : user_data[7]), telephone: user_data[18],
-      special_needs: ((user_data[19].blank? || user_data[19].downcase == 'nenhuma') ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13],      address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]), email: (user_data[8].blank? ? [user_data[0], MODULO_ACADEMICO['tmp_email_provider']].join('@') : user_data[8]), integrated: true }
+    data = { name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == 'M'), cell_phone: (user_data[17].blank? ? nil : user_data[17][0..19]), nick: (user_data[7].nil? ? ([user_data[2].split(' ')[0], user_data[2].split(' ')[1]].join(' ')) : user_data[7]), telephone: (user_data[18].blank? ? nil : user_data[18][0..19]), special_needs: ((user_data[19].blank? || user_data[19].downcase == 'nenhuma') ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13], address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]), email: (user_data[8].blank? ? [user_data[0], MODULO_ACADEMICO['tmp_email_provider']].join('@') : user_data[8]), integrated: true }
 
     if !user_data[6].blank?
       data.merge!({encrypted_password: user_data[6]})

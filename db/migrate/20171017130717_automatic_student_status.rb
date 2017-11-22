@@ -9,8 +9,10 @@ class AutomaticStudentStatus < ActiveRecord::Migration
     offers = Offer.joins(:curriculum_unit).where('curriculum_units.passing_grade IS NOT NULL')
     offers.each do |offer|
       course = offer.course
-      course.passing_grade = offer.curriculum_unit.passing_grade
-      course.save
+      unless course.nil?
+        course.passing_grade = offer.try(:curriculum_unit).try(:passing_grade)
+        course.save
+      end
     end
 
     remove_column :curriculum_units, :passing_grade
