@@ -47,3 +47,12 @@
         flash_message(data.alert, 'alert');
     });
   }
+
+  function hide_or_show(icon){
+    var div = $(icon).parents('.exam:first').find('.block_content');
+    div.slideToggle();
+    div.parent().find('.icon-arrow-down-triangle:first').toggleClass('invisible');
+    div.parent().find('.icon-arrow-up-triangle').toggleClass('invisible');
+    div.parent().find('.show_questions:first').toggleClass('invisible');
+    div.parent().find('.hide_questions').toggleClass('invisible');
+  }
