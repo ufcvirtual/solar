@@ -3302,51 +3302,57 @@ en_US:
         menu_dc_lesson: "Digital Class"
         menu_dc_lesson_key: "Shift + I"
         menu_discussion: "Discussions"
-        menu_discussion_key: "Shift + F"
-        menu_portfolio: "Portfolio"
-        menu_portfolio_key: "Shift + T"
-        menu_exam: "Tests"
-        menu_exam_key: "Shift + E"
+        menu_discussion_key: "Shift + D"
+        menu_portfolio: "Portfolio (Assignments)"
+        menu_portfolio_key: "Shift + A"
+        menu_exam: "Tests (Exams)"
+        menu_exam_key: "Shift + T"
         menu_score_student: "Scores"
-        menu_score_student_key: "Shift + C"
+        menu_score_student_key: "Shift + S"
         menu_chat: "Chat"
-        menu_chat_key: "Shift + A"
+        menu_chat_key: "Shift + C"
         menu_webconference: "Webconference"
         menu_webconference_key: "Shift + W"
-        menu_score_professor: "Teacher Score"
+        menu_score_professor: "Teacher Scores"
         menu_score_professor_key: "Shift + O"
         menu_program: "Program"
         menu_program_key: "Shift + P"
         menu_agenda: "Agenda"
-        menu_agenda_key: "Shift + D"
+        menu_agenda_key: "Shift + G"
         menu_bibliography: "Bibliography"
         menu_bibliography_key: "Shift + B"
         menu_participants: "Participants"
         menu_participants_key: "Shift + R"
-        menu_content_edition: "Content"
+        menu_content_edition: "Edition Content"
         menu_content_edition_key: "Shift + N"
         menu_messages: "Messages"
-        menu_messages_key: "Shift + S"
+        menu_messages_key: "Shift + M"
         menu_registration: "Registration"
-        menu_registration_key: "Shift + G"
+        menu_registration_key: "Shift + T"
+        menu_home: "Curriculum Unit Home"
+        menu_home: "Shift + H"
       code:
         menu_lesson: 76
         menu_support_material: 85
         menu_dc_lesson: 73
-        menu_discussion: 70
-        menu_portfolio: 84
+        menu_discussion: 68
+        menu_portfolio: 65
         menu_exam: 69
-        menu_score_student: 67
-        menu_chat: 65
+        menu_score_student: 83
+        menu_chat: 67
         menu_webconference: 87
         menu_score_professor: 79
         menu_program: 80
-        menu_agenda: 68
+        menu_agenda: 71
         menu_bibliography: 66
         menu_participants: 82
         menu_content_edition: 78
-        menu_messages: 83
-        menu_registration: 71
+        menu_messages: 77
+        menu_registration: 84
+        menu_home: 72
+      complement:
+        menu_portfolio: " (Assignments)"
+        menu_exam: " (Exams)"
     comments:
       name:
         title: "Comments [C]"

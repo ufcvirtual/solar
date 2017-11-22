@@ -115,7 +115,7 @@
               .mysolar_menu_group
                 %ul
                   %li.mysolar_menu_title_single{'data-menu-bread' => 'menu_home', 'data-contexts' => [Context_Curriculum_Unit]}
-                    = link_to t(:menu_home), active_tab[:breadcrumb].first[:url], class: 'mysolar_menu_title', :'data-shortcut-shift' => true
+                    = link_to t(:menu_home), active_tab[:breadcrumb].first[:url], class: 'mysolar_menu_title', :'data-shortcut-shift' => true, :'data-shortcut' => t(:menu_home, scope: "shortcut.vertical_menu.code"), :'data-shortcut-shift' => true, :'data-shortcut-complement' => (I18n.translate!(:menu_home, scope: "shortcut.vertical_menu.complement", raise: true) rescue '')
 
             = raw menu_list
 
@@ -644,32 +644,10 @@
       }
     });
 
-    function fixed_shortcut() {
-      $(".submenu").each(function(){
-        underline_shortcut_letter_multiple(this);
-        remove_underline_shortcut_multiple(this);
-      });
-
-      $(".mysolar_menu_title_single").each(function() {
-        var menu_item_name = $(this).find("a").text().trim();
-        switch( menu_item_name ) {
-          case "Home":
-            $(this).find("a").attr('data-shortcut', 72);
-            break;
-          case "Início":
-            $(this).find("a").attr('data-shortcut', 73);
-            break;
-        }
-        underline_shortcut_letter_single(this);
-        remove_underline_shortcut_single(this);
-      });
-    }
-
     //focus do flash message
     $(function(){
       loadFocus();
       focus_element_time('#flash_message_span');
-      fixed_shortcut();
 
       $(".close").on("click keypress", function(event){
         var keynum = event.which || event.keyCode;
@@ -692,11 +670,8 @@
         }
 
         if(e.shiftKey) {
-          $(".submenu").each(function(){
-            put_underline_shortcut_multiple(this);
-          });
-          $(".mysolar_menu_title_single").each(function() {
-            put_underline_shortcut_single(this);
+          $('[data-shortcut-shift = "true"]', '.submenu, .mysolar_menu_title_single').each(function(){
+            put_underline_shortcut(this);
           });
         }
 
@@ -709,11 +684,8 @@
       });
 
       $(document).keyup(function (e) {
-        $(".submenu").each(function(){
-          remove_underline_shortcut_multiple(this);
-        });
-        $(".mysolar_menu_title_single").each(function() {
-          remove_underline_shortcut_single(this);
+        $('[data-shortcut-shift = "true"]', '.submenu, .mysolar_menu_title_single').each(function(){
+          remove_underline_shortcut(this);
         });
       });
     });

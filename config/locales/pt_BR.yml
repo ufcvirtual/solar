@@ -3567,12 +3567,14 @@ pt_BR:
         menu_bibliography_key: "Shift + B"
         menu_participants: "Participantes"
         menu_participants_key: "Shift + E"
-        menu_content_edition: "Conteúdo"
+        menu_content_edition: "Edição de Conteúdo"
         menu_content_edition_key: "Shift + D"
         menu_messages: "Mensagens"
         menu_messages_key: "Shift + N"
         menu_registration: "Matrícula"
         menu_registration_key: "Shift + U"
+        menu_home: "Tela inicial da disciplina"
+        menu_home_key: "Shift + I"
       code:
         menu_lesson: 65
         menu_support_material: 77
@@ -3591,6 +3593,9 @@ pt_BR:
         menu_content_edition: 68
         menu_messages: 78
         menu_registration: 85
+        menu_home: 73
+      complement:
+        menu_portfolio: " (Trabalhos)"
     comments:
       name:
         title: "Comentários [C]"
