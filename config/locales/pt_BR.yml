@@ -1326,7 +1326,10 @@ pt_BR:
       to_evaluate: Avaliar/Comentar
       grade: '(Nota: %{grade})'
       frequency: '(Frequência: %{wh}hs)'
-      download: "Download %{file}, tamanho: %{size}"
+      download: "Baixar aqrquivo %{file}, tamanho: %{size}"
+      open: "Abrir arquivo %{file}, tamanho: %{size}"
+      open_site: "Abrir site %{file}"
+      open_site_new_tab: "Abrir site em nova aba %{file}"
       post: "ª postagem: "
       answer_post: "Reposta da "
       res_post: "ª postagem"
@@ -1870,6 +1873,7 @@ pt_BR:
   support_material_error_no_file_sent: Nenhum arquivo enviado
   support_material_error_delete_file: Erro ao tentar excluir arquivo
   support_material_sent_on: Enviado em
+  support_material_download: Download
   support_material_size: Tamanho
   support_material_name: Nome
   link_site_img: Link para site externo %{site} será aberto em uma nova aba ou janela

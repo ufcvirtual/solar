@@ -1146,7 +1146,10 @@ en_US:
       to_evaluate: Evaluate/Comment
       grade: '(Grade: %{grade})'
       frequency: '(Frequency: %{wh})'
-      download: "Download %{file}, size %{size}"
+      download: "Download file %{file}, size %{size}"
+      open: "Open file %{file}, size %{size}"
+      open_site: "Open site %{file}"
+      open_site_new_tab: "Open the site in new tab %{file}"
       post: "ª Post: "
       answer_post: "Answer of "
       res_post: "ª post"
@@ -1658,6 +1661,7 @@ en_US:
   support_material_error_no_file_sent: No file sent
   support_material_error_delete_file: Error when trying to delete file
   support_material_sent_on: Sent on
+  support_material_download: Download
   support_material_size: Size
   support_material_name: Name
   support_send_document: DOCUMENT
