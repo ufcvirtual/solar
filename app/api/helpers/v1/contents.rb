@@ -58,7 +58,7 @@ module V1::Contents
     ActiveRecord::Base.transaction do
       # cant unmerge if never merged
       raise 'not merged' if !merge && !Merge.where(main_group_id: main_group.id, secundary_group_id: secundary_group.id).last.try(:type_merge)
-      
+    
       Merge.create! main_group_id: main_group.id, secundary_group_id: secundary_group.id, type_merge: merge
       
       remove_all_content(to_at) unless merge
@@ -77,7 +77,6 @@ module V1::Contents
 
       LogAction.create(log_type: LogAction::TYPE[:create], user_id: 0, ip: request.headers['HTTP_CLIENT_IP'], description: "merge: transfering content from #{from_group.allocation_tag.info} to #{to_group.allocation_tag.info}, merge type: #{merge}") rescue nil
     end
-
   end
 
   # remove posts, academic_allocation_users, group_assignments, chat_messages and dependents
@@ -122,7 +121,6 @@ module V1::Contents
 
   def copy_object(object_to_copy, merge_attributes={}, is_file = false, nested = nil, call_methods = {}, acu=false)
     new_object = object_to_copy.class.where(object_to_copy.attributes.except('id', 'children_count', 'updated_at', 'new_after_evaluation', 'academic_allocation_user_id', 'created_at', 'group_updated_at', 'draft').merge!(merge_attributes)).first_or_initialize
-
 
     new_object.draft = object_to_copy.draft if object_to_copy.respond_to?(:draft)
     new_object.created_at = object_to_copy.created_at if object_to_copy.respond_to?(:created_at)
@@ -213,7 +211,6 @@ module V1::Contents
           ac = AcademicAllocation.joins(:webconference).where(allocation_tag_id: to_at, academic_tool_type: 'Webconference').where("origin_meeting_id = '?' OR origin_meeting_id = ? OR academic_tool_id = ?", web.academic_tool_id, [from_at, web.academic_tool_id].join('_'), web.academic_tool_id).order('id').last
           get_acu(ac.id, from_acu_without_access, from_acu_without_access.user_id) #rescue nil
         end
-
       end
     end
   end

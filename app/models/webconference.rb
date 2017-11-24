@@ -23,7 +23,7 @@ class Webconference < ActiveRecord::Base
   validate :cant_change_date, on: :update, if: 'initial_time_changed? || duration_changed?'
   validate :cant_change_shared, on: :update, if: 'shared_between_groups_changed?'
 
-  validate :verify_quantity, if: '!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed? || new_record?)'
+  validate :verify_quantity, if: '!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed? || new_record?) && merge.nil?'
 
   validate :verify_offer, if: '!(duration.nil? || initial_time.nil?) && (new_record? || initial_time_changed? || duration_changed?) && !allocation_tag_ids_associations.blank?'
 
@@ -181,7 +181,6 @@ class Webconference < ActiveRecord::Base
         !over?
       end
     end
-
     return true
   rescue 
     return false
@@ -198,11 +197,15 @@ class Webconference < ActiveRecord::Base
       if (on_going? || over?)
         objs = Webconference.joins(:academic_allocations).where(attributes.except('id', 'origin_meeting_id', 'created_at', 'updated_at')).where(academic_allocations: { allocation_tag_id: to_at })
         obj = (objs.collect{|obj| obj if obj.get_mettingID(to_at) == meeting_id}).compact.first
-        obj = Webconference.create attributes.except('id').merge!(origin_meeting_id: meeting_id) if obj.nil?
+        if obj.nil?
+          obj = Webconference.new attributes.except('id', 'origin_meeting_id').merge!('origin_meeting_id' => meeting_id)
+          obj.merge = true
+          obj.save
+        end
       end
-      
+            
       new_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Webconference', academic_tool_id: (obj.try(:id) || id)).first_or_create
-
+      
       if over? && !new_ac.nil? && !new_ac.id.nil?
         old_ac = academic_allocations.where(allocation_tag_id: from_at).try(:first) || academic_allocations.where(allocation_tag_id: AllocationTag.find(from_at).related).first
         LogAction.where(log_type: LogAction::TYPE[:access_webconference], academic_allocation_id: old_ac.id).each do |log|
@@ -216,9 +219,9 @@ class Webconference < ActiveRecord::Base
             new_acu.merge = true
             new_acu.save
           end
-
+      
           log = LogAction.where(log.attributes.except('id', 'academic_allocation_id', 'academic_allocation_user_id').merge!(academic_allocation_id: new_ac.id)).first_or_initialize
-
+      
           log.academic_allocation_user_id = new_acu.try(:id)
           log.save
         end
