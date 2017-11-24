@@ -132,6 +132,7 @@ class AssignmentWebconference < ActiveRecord::Base
         else
           academic_allocation_user.new_after_evaluation = true
         end
+        academic_allocation_user.merge = merge
         academic_allocation_user.save(validate: false)
       end
     end
