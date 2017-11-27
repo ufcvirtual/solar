@@ -687,7 +687,13 @@ class User < ActiveRecord::Base
       allocation_tag_ids.each do |at|
         al = allocations.build(allocation_tag_id: at, profile_id: profile)
         al.attributes = { status: status, updated_by_user_id: by_user }
-        result[(al.save) ? :success : :error] << al
+        if al.save
+          result[:success] << al
+          al.calculate_working_hours
+          al.calculate_final_grade
+        else
+          result[:error] << al
+        end
       end
     end
     result[:success] = [] if allocation_tag_ids.size != result[:success].size
