@@ -711,8 +711,6 @@ Solar::Application.routes.draw do
   get '/media/support_material_files/:file.:extension', to: 'access_control#support_material_file'
   get "/media/messages/:file.:extension", to: "access_control#message"
   # get "/media/discussions/post/:file.:extension", to: "access_control#post"
-  get '/media/support_material_files/*path',    to: 'access_control#support_material'
-
 
   get '/media/questions/images/:file.:extension', to: 'access_control#question_image'
   get '/media/questions/items/:file.:extension', to: 'access_control#question_item'
