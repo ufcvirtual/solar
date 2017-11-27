@@ -1106,6 +1106,8 @@ en_US:
       title: Title
     form:
       groups: Groups
+    index: 
+      external_link: Open on a new tab
     error:
       file: One or more files until 30MB must be selected.
   title: "Title"
@@ -1149,7 +1151,7 @@ en_US:
       download: "Download file %{file}, size %{size}"
       open: "Open file %{file}, size %{size}"
       open_site: "Open site %{file}"
-      open_site_new_tab: "Open the site in new tab %{file}"
+      open_site_new_tab: "Open site on a new tab (%{file})"
       post: "ª Post: "
       answer_post: "Answer of "
       res_post: "ª post"

@@ -73,4 +73,7 @@ class SupportMaterialFile < ActiveRecord::Base
     self.find_files(at_ids).group_by {|f| f.folder}
   end
 
+  def self.verify_file_type(name)
+    (name.last(4).eql?('.aac') || name.last(4).eql?('.m4a') || name.last(4).eql?('.mp4') || name.last(4).eql?('.m4v')) 
+  end
 end

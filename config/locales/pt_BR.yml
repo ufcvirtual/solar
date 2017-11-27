@@ -1282,6 +1282,8 @@ pt_BR:
       title: Título
     form:
       groups: Turmas
+    index: 
+      external_link: Abrir em nova aba
     error:
       file: Um ou mais arquivos de até 30MB devem ser selecionados.
 
@@ -1329,7 +1331,7 @@ pt_BR:
       download: "Baixar aqrquivo %{file}, tamanho: %{size}"
       open: "Abrir arquivo %{file}, tamanho: %{size}"
       open_site: "Abrir site %{file}"
-      open_site_new_tab: "Abrir site em nova aba %{file}"
+      open_site_new_tab: "Abrir o site em uma nova aba (%{file})"
       post: "ª postagem: "
       answer_post: "Reposta da "
       res_post: "ª postagem"
