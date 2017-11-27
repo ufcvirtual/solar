@@ -4081,6 +4081,9 @@ en_US:
         associated_text: Associated text
         new: New Text
         import: Import from issues
+      media:
+        add_images: Add Images
+        add_audios: Add audio
     labels:
       labels: 'labels: '
     error:

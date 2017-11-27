@@ -4334,6 +4334,9 @@ pt_BR:
         associated_text: Texto associado
         new: Novo texto
         import: Importar de questões desta prova
+      media:
+        add_images: Adicionar imagens
+        add_audios: Adicionar áudios
     labels:
       labels: 'palavras-chave: '
     error:
