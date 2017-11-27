@@ -20,6 +20,7 @@ Solar::Application.routes.draw do
   get :privacy_policy, to: 'pages#privacy_policy', as: :privacy_policy
   get :faq, to: 'pages#faq', as: :faq
   get :tutorials_login, to: "pages#tutorials_login", as: :tutorials_login
+  get :general_shortcuts, to: 'pages#general_shortcuts', as: :general_shortcuts
 
 
   resources :users do

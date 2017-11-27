@@ -3387,8 +3387,9 @@ pt_BR:
       result_search: "Ir para tabela com o resultado da busca"
 
   shortcut:
-    shortcut_link: "Atalhos gerais [? + Shift]"
-    shortcut_menu_title: "Atalhos do Teclado"
+    shortcut_link: "Atalhos gerais [Shift + ?]"
+    shortcut_link_code: 191
+    shortcut_menu_title: "Atalhos gerais (teclado)"
     no_shortcuts: "Sem atalhos"
     close: "Fechar"
     click_to_close: "Clique para fechar janela de atalhos"

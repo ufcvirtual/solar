@@ -3143,8 +3143,9 @@ en_US:
       result_search: "Access table with search's result"
 
   shortcut:
-    shortcut_link: "General shortcuts [? + Shift]"
-    shortcut_menu_title: "Keyboard Shortcuts"
+    shortcut_link: "General shortcuts [Shift + ?]"
+    shortcut_link_code: 191
+    shortcut_menu_title: "General Shortcuts (keyboard)"
     no_shortcuts: "No shortcuts"
     close: "Close"
     click_to_close: "Click to close shortcuts window"
