@@ -7,7 +7,7 @@ class PostsController < ApplicationController
   before_filter :prepare_for_pagination
   before_filter :set_current_user, only: [:destroy, :create, :update, :publish]
 
-  load_and_authorize_resource except: [:index, :user_posts, :create, :show, :evaluate, :publish]
+  load_and_authorize_resource except: [:index, :user_posts, :create, :show, :evaluate, :publish, :post_files]
 
   ## GET /discussions/1/posts
   ## GET /discussions/1/posts/20120217/[news, history]/order/asc/limit/10
@@ -168,6 +168,16 @@ class PostsController < ApplicationController
     end
   rescue => error
     render json: { alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
+  end
+
+  def post_files
+     @discussion, @user = Discussion.find(2), current_user
+    authorize! :index, Discussion, { on: [@allocation_tags = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.pluck(:id)], read: true }
+    post = Post.find(params[:id])
+    @files = post.files
+    respond_to do |format|
+      format.json { render json: @files }
+    end
   end
 
   private

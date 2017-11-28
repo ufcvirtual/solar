@@ -102,6 +102,19 @@ function update_post(obj, post, parent) {
   CKEDITOR.instances['post_content'].setData($(obj).closest('.forum_post_wrapper').children('.forum_post_inner_content').html());
   clear_input_file();
 
+  
+  var url_for = "<%= Rails.application.routes.url_helpers.post_files_post_path(id: ':id') %>";
+  $.get(url_for.replace(':id', post), function(data) { 
+    if(data.length>0 && data != "undefined") {  
+      $(".attachment_title_", $('.posts')).removeClass("invisible");
+      $(".attachment_title_").show();
+      for(var i = 0; i < data.length; i++) {
+        var file = data[i];
+        add_up_file(file.id, file.attachment_file_name, file.attachment_file_size)
+      }
+    }  
+  });  
+
   return false;
 }
 
@@ -206,4 +219,63 @@ function clear_input_file(){
   $('.hidden_input_file').val("");
   $('.attachment_title_').hide();
   $('.input.files').remove();
+  $('._id').remove();
+}
+
+function add_up_file(id, input_value, size) {
+  if ($(".file_input:last").length)
+    var nested_form = $(".file_input:first", $('.posts'));
+
+  var new_form = nested_form.clone();
+
+  var input_name = $("input[type='file']", new_form).attr("name");
+  var input_name_destroy = $(".destroy_input_file", new_form).attr("name");
+  var input_id_destroy = $(".destroy_input_file", new_form).attr("id");
+
+  input_name = input_name.replace(new RegExp(/\[[0-9]+\]/), "[" + id + "]");
+  input_name_destroy = input_name_destroy.replace(new RegExp(/\[[0-9]+\]/), "[" + id + "]");
+  input_id_destroy = input_id_destroy.replace(new RegExp(/\_[0-9]+\_/), "_" + id + "_");
+
+  var input_id = "<input id='post_files_attributes_"+id+"_id' name='post[files_attributes]["+id+"][id]' type='hidden' value='"+id+"' class='_id'>";
+
+  var _destroy = $(".destroy_input_file", new_form);
+  var attachment = $("input[type='file']", new_form);
+
+  $(attachment).attr("name", input_name);
+  $(_destroy).attr("data-file-id", id);
+  $(_destroy).attr("id", input_id_destroy);
+  $(_destroy).attr("name", input_name_destroy); 
+
+  $(new_form).insertAfter( nested_form.last() );
+  $('#'+input_id_destroy).after(input_id);
+
+  $(".attachment_title_", $('.posts')).removeClass("invisible");
+  $(".attachment_title_").show();
+
+  var text_aria_label = "<%= I18n.t('posts.post.remove_file') %>"+': ' + input_value + ' ' +humanFileSize(size);
+  var new_file_name = "<div class='input files'> <label></label> <span class='file' data-input-file-name=" + input_name + " data-input-file-id=" + id + ">" + input_value + "<i class='icon-cross-square warning remove_file_saved' tabindex= '0' aria-label= '"+text_aria_label+"' data-tooltip= '"+text_aria_label+"' ></i> </span> </div>";
+
+  if ($(".list_files_to_send_ .files:last").lenght)
+    $(".list_files_to_send_ .files:last").after(new_file_name);
+  else
+    $(".list_files_to_send_").append(new_file_name);
+
+  $(".remove_file_saved", $('.posts')).on("click keypress", function(event){
+    var keynum = event.which || event.keyCode;
+
+    if( keynum == 13 || event.type == 'click'){
+      var span_file = $(this).parents('span.file');
+      $("input[data-file-id=" + span_file.data("input-file-id") + "]").val(1);
+      
+      $(span_file).parents('div.input.files').remove();
+
+      if (!$(".list_files_to_send_").children().length)
+        $(".attachment_title_").addClass("invisible");
+    }    
+  });
+}
+
+function humanFileSize(size){
+  var i = Math.floor( Math.log(size) / Math.log(1024) );
+  return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB'][i];
 }

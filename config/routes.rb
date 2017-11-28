@@ -173,6 +173,7 @@ Solar::Application.routes.draw do
     member do
       get :to_evaluate , to: 'posts#index', as: :evaluate
       put :publish
+      get :post_files
     end
     resources :post_files, only: [:new, :create, :destroy, :download] do
       get :download, on: :member

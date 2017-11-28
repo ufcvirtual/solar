@@ -64,6 +64,8 @@ class PostFilesController < ApplicationController
 
   def destroy
     @post_file.can_change?
+    @post_file.verify_children_with_raise
+    
     File.delete(@post_file.attachment.path) if File.exist?(@post_file.attachment.path)
     LogAction.create(log_type: LogAction::TYPE[:destroy], user_id: current_user.id, ip: get_remote_ip, description: "post_file: #{@post_file.id} - #{@post_file.attachment_file_name}, post: #{@post_file.post.id}") rescue nil
     @post_file.delete
