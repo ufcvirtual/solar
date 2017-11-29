@@ -64,25 +64,6 @@ div.forum_navigation {
     max-width: $forum_post_width;
     background-color: $color_main_light; // FIXME: antes ele nao ficava explicitamente dentro de forum_post, verificar funcionamento
   }
-  .forum_post {
-    margin-top: 5px;
-
-    .forum_post_wrapper {
-      max-width: $forum_post_width - $forum_indentation;
-    }
-    .forum_post {
-
-      .forum_post_wrapper {
-        max-width: $forum_post_width - $forum_indentation*2;
-      }
-      .forum_post {
-
-        .forum_post_wrapper {
-          max-width: $forum_post_width - $forum_indentation*3;
-        }
-      }
-    }
-  }
 }
 
 .forum_post_wrapper {

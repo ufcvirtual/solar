@@ -708,8 +708,9 @@ class User < ActiveRecord::Base
         al.attributes = { status: status, updated_by_user_id: by_user }
         if al.save
           result[:success] << al
-          al.calculate_working_hours
-          al.calculate_final_grade
+
+          al.calculate_working_hours rescue nil
+          al.calculate_final_grade rescue nil
         else
           result[:error] << al
         end
