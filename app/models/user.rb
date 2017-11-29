@@ -314,6 +314,25 @@ class User < ActiveRecord::Base
     (only_id) ? profiles.map(&:id) : profiles
   end
 
+  def self.with_access_on(action,controller,allocation_tags_ids)
+    User.find_by_sql <<-SQL
+      SELECT users.id, email, cpf 
+      FROM users
+      JOIN allocations ON allocations.user_id = users.id
+      JOIN profiles ON allocations.profile_id = profiles.id
+      JOIN permissions_resources ON permissions_resources.profile_id = profiles.id
+      JOIN resources   ON resources.id = permissions_resources.resource_id
+      WHERE 
+        resources.action = '#{action}'
+        AND
+        resources.controller = '#{controller}'
+        AND
+        allocations.status = #{Allocation_Activated}
+        AND
+        (allocations.allocation_tag_id IN (#{allocation_tags_ids.join(',')}))
+    SQL
+  end
+
   def get_allocation_tags_ids_from_profiles(responsible = true, observer = false)
     query = {
       status: Allocation_Activated,

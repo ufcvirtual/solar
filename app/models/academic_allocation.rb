@@ -42,6 +42,20 @@ class AcademicAllocation < ActiveRecord::Base
   before_destroy :set_situation_date
   after_destroy :verify_management
 
+  attr_accessor :merge
+
+  after_create if: 'verify_tool' do
+    AcademicTool.send_email(academic_tool, [self], false)
+  end
+
+  before_destroy if: 'verify_tool', prepend: true do
+    AcademicTool.send_email(academic_tool, [self]) if academic_tool.verify_can_destroy
+  end
+
+  def verify_tool
+    academic_tool.verify_start && merge.nil? && (!academic_tool.respond_to?(:status_changed?) || academic_tool.status)
+  end
+
   def set_evaluative_params
     self.frequency = get_curriculum_unit.try(:working_hours).blank? ? false : frequency
     self.max_working_hours = nil unless self.frequency

@@ -217,6 +217,7 @@ module Bbb
   end
 
   def remove_record(recordId, at=nil)
+    return true if server.blank?
     raise 'error' if !at.nil? && at.class == Array
     raise 'copy' unless self.class.to_s != 'Webconference' || origin_meeting_id.blank?
     ids = recordings([], at).collect{|a| a[:recordID]}
@@ -250,16 +251,18 @@ module Bbb
   def can_destroy?
     raise raise CanCan::AccessDenied if respond_to?(:is_onwer?) && !is_onwer?
     raise 'date_range'               if respond_to?(:in_time?)  && !in_time?
-    raise 'unavailable'              unless bbb_online?
+    raise 'unavailable'              unless server.blank? || bbb_online?
     raise 'not_ended'                unless !started? || is_over?
+    raise 'acu'                      if academic_allocation_users.any?
   end
 
   def can_remove_records?
     raise raise CanCan::AccessDenied if respond_to?(:is_onwer?) && !is_onwer?
     raise 'date_range'               if respond_to?(:in_time?)  && !in_time?
-    raise 'unavailable'              unless bbb_online?
+    raise 'unavailable'              unless server.blank? || bbb_online?
     raise 'not_ended'                unless !started? || is_over?
     raise 'copy'                     unless self.class.to_s != 'Webconference' || origin_meeting_id.blank?
+    raise 'acu'                      if academic_allocation_users.any?
   end
 
   def meeting_info(user_id, at_id = nil, meetings = nil)

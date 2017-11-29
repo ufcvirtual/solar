@@ -15,18 +15,38 @@ module AcademicTool
 
     before_save :set_situation_date, if: 'merge.nil?', on: :update
 
-    after_create  do 
-      send_email (false) if respond_to?(:schedule) && self.schedule.verify_by_to_date?
-    end  
-
-    before_update do
-      send_email (true) if respond_to?(:schedule) && self.schedule.verify_by_to_date?
+    after_update if: 'notify_change?' do
+      send_email(true) 
     end
 
-    before_destroy :send_email, prepend: true, if: 'respond_to?(:schedule) && schedule.verify_by_to_date?'
-
-
     attr_accessor :allocation_tag_ids_associations, :merge
+  end
+
+  def notify_change?
+    (
+      merge.nil? && (
+        (
+          respond_to?(:schedule) && (schedule.previous_changes.has_key?(:start_date) || schedule.previous_changes.has_key?(:end_date))
+        ) || (
+          respond_to?(:initial_time) && (initial_time_changed? || duration_changed?)
+        ) || (
+          respond_to?(:start_hour) && (start_hour_changed? || end_hour_changed?)
+        ) || (
+          respond_to?(:status_changed?) && status_changed?
+        ) 
+      ) && verify_start
+    )
+
+  end
+
+  def verify_start
+    (
+      (
+        respond_to?(:schedule) && (
+          schedule.start_date <= Date.today+2.days || (schedule.previous_changes.has_key?(:start_date) && !schedule.previous_changes[:start_date].try(:first).blank? && schedule.previous_changes[:start_date].try(:first).try(:to_date) <= Date.today+2.days)
+        )
+      ) || (respond_to?(:initial_time) && (initial_time.to_date <= Date.today + 2.days || (!initial_time_was.blank? && initial_time_was.to_date <= Date.today + 2.days)))
+    )
   end
 
   def offer_opened?
@@ -108,86 +128,131 @@ module AcademicTool
     {date: nil, ac_id: nil}
   end
 
-  private
+  def self.send_email(object, acs, verify_type='delete')
+    object.send_email(verify_type, acs)
+  end
 
-    def send_email(verify_type='delete')
-      
-      files = Array.new
-      academic_allocations.each do |ac|
-        emails = Array.new
-        Allocation.where(allocation_tag_id: ac.allocation_tag_id).each do |al|
-          unless emails.include?(al.user.email)
-            emails.push(al.user.email)
-          end  
-        end  
-        if verify_type == true
-          template_mail = update_msg_template(ac.allocation_tag.info)
-          subject =  I18n.t('editions.mail.subject_update')
-        elsif verify_type == 'delete'  
-          template_mail = delete_msg_template(ac.allocation_tag.info)
-          subject = I18n.t('editions.mail.subject_delete')
-        else
-          template_mail = new_msg_template(ac.allocation_tag.info)
-          subject = I18n.t('editions.mail.subject_new')
-        end  
-        Thread.new do
-          Job.send_mass_email(emails, subject, template_mail, files, nil)
+    def send_email(verify_type='delete', acs=nil)
+      ats = (acs.nil? ? academic_allocations : acs).map(&:allocation_tag).flatten.uniq rescue [acs.allocation_tag]
+
+      ats.each do |at|
+        emails = User.with_access_on('receive_academic_tool_notification','emails',[at.id]).map(&:email)
+
+        unless emails.empty?
+          if ((verify_type == 'delete') || (respond_to?(:status_changed?) && (status_changed? && !status)))
+            if (verify_can_destroy)
+              unless self.class.to_s == 'Notification'
+                template_mail = delete_msg_template(at.info)
+                subject = I18n.t('editions.mail.subject_delete')
+              end
+            end
+          elsif !verify_type || (respond_to?(:status_changed?) && status_changed? && status)
+            template_mail = new_msg_template(at.info)
+            subject = I18n.t('editions.mail.subject_new')
+          elsif verify_type
+            unless self.class.to_s == 'Notification'
+              template_mail = update_msg_template(at.info)
+              subject =  I18n.t('editions.mail.subject_update')
+            end
+          end
+
+          unless subject.blank?
+            Thread.new do
+              Job.send_mass_email(emails, subject, template_mail)
+            end
+          end
         end
-      end  
-    
+      end
     end 
     
+  def verify_can_destroy
+    return true if !respond_to?(:can_destroy?)
+    result = can_destroy?
+    return true if result.blank?
+    return result
+  rescue
+    return false
+  end
+
+  private
+
     def new_msg_template(info)
-      description = self.class.to_s == 'ChatRoom' || self.class.to_s == 'ScheduleEvent' || self.class.to_s == 'Webconference' ? self.title : self.name
-      if self.class.to_s == 'Webconference'
-        end_d = self.initial_time + self.duration * 60
-        start_date = self.initial_time.strftime("%d/%m/%Y %H:%M")
-        end_date =  end_d.strftime("%d/%m/%Y %H:%M")
-      else
-        start_date = self.schedule.start_date
-        end_date = self.schedule.end_date
-      end  
+      if respond_to?(:initial_time)
+        start_date = initial_time.strftime("%d/%m/%Y %H:%M")
+        end_date = (initial_time + (duration * 60)).strftime("%d/%m/%Y %H:%M")
+      elsif respond_to?(:schedule)
+        start_date = schedule.start_date
+        end_date = schedule.end_date
+      end
 
-      %{
-        Caros alunos, <br/>
-        ________________________________________________________________________<br/><br/>
-        Informamos que a atividade #{description} do curso #{info} foi criada com o período de #{start_date}  à #{end_date}.
-      }
+      hours = (respond_to?(:start_hour) && !start_hour.blank?) ? "de #{start_hour} às #{end_hour}" : ""
+
+      unless start_date.blank?
+        %{
+          Informamos que um #{I18n.t("activerecord.models.#{self.class.to_s.tableize.singularize}")} de nome #{respond_to?(:title) ? self.title : self.name} de #{info} foi criado(a) com o período de #{start_date} à #{end_date} #{hours}.
+          <br/><br/><br/>
+          Não responda esta mensagem. Este é um email automático do Solar 2.0.
+        }
+      end
     end
+
     def update_msg_template(info)
-      description = self.class.to_s == 'ChatRoom' || self.class.to_s == 'ScheduleEvent' || self.class.to_s == 'Webconference' ? self.title : self.name
-      if self.class.to_s == 'Webconference'
-        web = Webconference.find(self.id)
+      if respond_to?(:initial_time)
+        changes1 = [initial_time_was, initial_time].compact
+        start_date = [changes1.first.strftime("%d/%m/%Y %H:%M"), changes1.last.strftime("%d/%m/%Y %H:%M")]
 
-        end_d = self.initial_time + self.duration * 60
-        copy_end_d = web.initial_time + web.duration * 60
+        changes2 = [duration_was, duration].compact
+        end_date = [(changes1.first + (changes2.first * 60)).strftime("%d/%m/%Y %H:%M"), (changes1.last + (changes2.last * 60)).strftime("%d/%m/%Y %H:%M")]
+      elsif respond_to?(:schedule)
+        changes = schedule.previous_changes[:start_date].compact rescue [schedule.start_date]
+        start_date = [changes.first, changes.last]
 
-        start_date = self.initial_time.strftime("%d/%m/%Y %H:%M")
-        end_date =  end_d.strftime("%d/%m/%Y %H:%M")
+        changes = schedule.previous_changes[:end_date].compact rescue [schedule.end_date]
+        end_date = [changes.first, changes.last]
+      end
 
-        copy_start_date = web.initial_time.strftime("%d/%m/%Y %H:%M")
-        copy_end_date = copy_end_d.strftime("%d/%m/%Y %H:%M")
+      dates = if start_date.size == 1 && end_date.size == 1
+        " para #{start_date.last} à #{end_date.last}"
       else
-        start_date = self.schedule.start_date
-        end_date = self.schedule.end_date
+        " de #{start_date.first} à #{end_date.first} para #{start_date.last} à #{end_date.last}"
+      end
 
-        copy_start_date = self.schedule.copy_schedule.nil? ? start_date : self.schedule.copy_schedule.start_date
-        copy_end_date = self.schedule.copy_schedule.nil? ? end_date : self.schedule.copy_schedule.end_date
-      end  
+      if respond_to?(:start_hour)
+        changes1 = [start_hour_was, start_hour].compact.reject { |c| c.empty? } 
+        start_hour = [changes1.first, changes1.last]
 
-      %{
-        Caros alunos, <br/>
-        ________________________________________________________________________<br/><br/>
-        Informamos que a atividade #{description} do curso #{info} teve seu período alterado de #{copy_start_date} à #{copy_end_date} para #{start_date} à #{end_date}.
-      }
+        changes2 = [end_hour_was, end_hour].compact.reject { |c| c.empty? }
+        end_hour = [changes2.first, changes2.last]
+
+        hours = if changes1.any? || changes2.any?
+          if start_hour_was.blank?
+            ". O horário foi definido para #{start_hour.last} às #{end_hour.last}"
+          elsif start_hour.blank?
+            ". O horário de #{start_hour.first} às #{end_hour.first} foi removido"
+          elsif !start_hour.blank?
+            ". O horário foi alterado de #{start_hour.first} às #{end_hour.first} para #{start_hour.last} às #{end_hour.last}"
+          else
+            ". O horário se manteve de #{start_hour.first} às #{end_hour.first}"
+          end
+        else
+          ''
+        end
+      end
+
+      unless start_date.blank?
+        %{
+          Informamos que a atividade (#{I18n.t("activerecord.models.#{self.class.to_s.tableize.singularize}")}) #{respond_to?(:title) ? self.title : self.name} de #{info} teve seu período alterado #{dates} #{hours}.
+          <br/><br/><br/>
+          Não responda esta mensagem. Este é um email automático do Solar 2.0.
+        }
+      end
     end
 
     def delete_msg_template(info)
-      description = self.class.to_s == 'ChatRoom' || self.class.to_s == 'ScheduleEvent' || self.class.to_s == 'Webconference' ? self.title : self.name
       %{
-        Caros alunos, <br/>
-        ________________________________________________________________________<br/><br/>
-        Informamos que a atividade #{description} do curso #{info} foi removida.
+        Informamos que a atividade (#{I18n.t("activerecord.models.#{self.class.to_s.tableize.singularize}")}) #{respond_to?(:title) ? self.title : self.name} de #{info} foi removida.
+        <br/><br/><br/>
+          Não responda esta mensagem. Este é um email automático do Solar 2.0.
       }
     end
 

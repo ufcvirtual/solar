@@ -16,13 +16,15 @@ if (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['run_scheduler'] 
     Exam.correction_cron  
   end
 
-  #execulte a cada 60 segundos, após o inicio do sistema
+  #execute, a cada 60 segundos, após o inicio do sistema
   scheduler.in '60s' do
     Job.job_send_mail
   end
-  #execulte a cada 15 minutos
-  scheduler.every '15m' do
-    Job.job_send_mail
+  #execute a cada 15 minutos
+  if (YAML::load(File.open('config/mailer.yml'))['mass_emails']['scheduled_time'] rescue false)
+    scheduler.every "#{YAML::load(File.open('config/mailer.yml'))['mass_emails']['scheduled_time']}m" do
+      Job.job_send_mail
+    end
   end
 
 end

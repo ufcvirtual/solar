@@ -246,6 +246,7 @@ pt_BR:
       notification_file: Arquivo
       post_file: Arquivo
       comment_file: Arquivo
+      email: Email
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -1596,6 +1597,7 @@ pt_BR:
       shared: Esta webconferência já foi encerrada. Este campo não pode ser alterado.
       removed_record: Gravação removida ou vazia
       copy: Não é possível remover a gravação desta webconferência, pois ela é uma cópia. É necessário remover a gravação da webconferência original.
+      acu: Não é possível remover a gravação ou webconferência, pois há alunos avaliados/com comentários.
     preview:
       delete_record: Remover gravação
       placeholder: Digite qualquer valor a ser buscado na tabela desta página
@@ -4174,7 +4176,7 @@ pt_BR:
       email_infor: "Para verificar mais informações sobre seu resultado ou sobre a correção, estes já estão disponíveis no menu de Provas no Solar."
       email_infor_compl: "teve seu período encerrado e sua nota foi calculada"
       email_of: do
-      email: "Por favor não responda essa mensagem. Esse é um email automático do Solar 2.0."
+      email: "Por favor não responda esta mensagem. Este é um email automático do Solar 2.0."
       itens_corrected: "Iten(s) correto(s): "
       itens_marked: "Iten(s) marcado(s): "
       true_item: "Item verdadeiro"

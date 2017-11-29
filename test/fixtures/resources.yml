@@ -1203,3 +1203,9 @@ res230:
   controller: 'scores'
   action: 'set_situation'
   description: 'Definir situação dos alunos de uma turma'
+
+res231:
+  id: 231
+  controller: 'emails'
+  action: 'receive_academic_tool_notification'
+  description: 'Receber avisos, por email, informando sobre criação, edição ou remoção de atividades'

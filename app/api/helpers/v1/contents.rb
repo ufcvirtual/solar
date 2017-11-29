@@ -146,7 +146,9 @@ module V1::Contents
 
     (from_acs_tools - to_acs_tools).each do |missing_tool_id|
       if call_method.nil?
-        AcademicAllocation.create(allocation_tag_id: to_at, academic_tool_type: type, academic_tool_id: missing_tool_id)
+        ac = AcademicAllocation.new(allocation_tag_id: to_at, academic_tool_type: type, academic_tool_id: missing_tool_id)
+        ac.merge = true
+        ac.save
       else
         type.constantize.find(missing_tool_id).send(call_method, to_at, from_at)
       end

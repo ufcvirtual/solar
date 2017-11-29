@@ -10,7 +10,6 @@ class Webconference < ActiveRecord::Base
 
   belongs_to :moderator, class_name: 'User', foreign_key: :user_id
 
-
   has_many :academic_allocations, as: :academic_tool, dependent: :destroy
   has_many :allocation_tags, through: :academic_allocations
   has_many :groups, through: :allocation_tags
@@ -168,7 +167,7 @@ class Webconference < ActiveRecord::Base
   end
 
   def remove_records
-    Webconference.remove_record(academic_allocations) if origin_meeting_id.blank?
+    Webconference.remove_record(academic_allocations) if origin_meeting_id.blank? && !server.blank?
   end
 
   def can_add_group?(ats = [])
@@ -204,7 +203,9 @@ class Webconference < ActiveRecord::Base
         end
       end
             
-      new_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Webconference', academic_tool_id: (obj.try(:id) || id)).first_or_create
+      new_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Webconference', academic_tool_id: (obj.try(:id) || id)).first_or_initialize
+      new_ac.merge = true
+      new_ac.save
       
       if over? && !new_ac.nil? && !new_ac.id.nil?
         old_ac = academic_allocations.where(allocation_tag_id: from_at).try(:first) || academic_allocations.where(allocation_tag_id: AllocationTag.find(from_at).related).first

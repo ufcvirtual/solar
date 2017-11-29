@@ -210,6 +210,7 @@ en_US:
       notification_file: File
       post_file: File
       comment_file: File
+      email: Email
     attributes:
       user:
         password: "Password"
@@ -1408,6 +1409,7 @@ en_US:
       shared: This webconference already happened. It's not possible to change this field.
       removed_record: Removed or empty record
       copy: It's not possible to remove this webconference record. This webconferenceis a copy. It's necessary to remove original webconference's record.
+      acu: It's not possible to remove this webconferences or its record. There are evaluated students or with comments.
     preview:
       delete_record: Remove record
       placeholder: Type any value to be searched at the table of this page

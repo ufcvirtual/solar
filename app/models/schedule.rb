@@ -63,9 +63,6 @@ class Schedule < ActiveRecord::Base
 
   def copy_object
     @copy_schedule = Schedule.find(self.id) unless self.id.nil? 
-  end 
+  end
 
-  def verify_by_to_date?
-    (start_date <= Date.today+2.day) ? true : false
-  end 
 end
