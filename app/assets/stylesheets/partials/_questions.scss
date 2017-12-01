@@ -127,13 +127,30 @@
       width: 298px;
     }
     i, a.comment, a.image_icon, a.audio_icon{
-      float: right;
+      display: inline;
+
+      //float: right;
       padding-bottom: 10px;
       padding-left: 2px;
     }
+    a.image_icon, a.audio_icon{
+      float: right;
+    }
     a.comment{
       margin-right: 0px;
+
+      i.icon-comment {
+        float: right;
+      }
     }
+
+    .duplicatable_nested_form {
+
+      a.remove_nested_fields_link{
+        float: right;
+      }
+    }
+
     [id^='cke_question_items_attributes_']{
       width: 316px;
       margin-left: 8px;
@@ -176,7 +193,11 @@
           max-height: 130px;
         }
         .add_file{
-          margin-left: -1px;
+          margin-left: -30px;
+          display: inline;
+        }
+        i.icon-trash {
+          float: right;
         }
       }
       input[type='text']{
@@ -219,7 +240,11 @@
           vertical-align: middle;
         }
         .add_file{
-          margin-left: -1px;
+          margin-left: -30px;
+          display: inline;
+        }
+        i.icon-trash {
+          float: right;
         }
       }
       input[type='text']{
