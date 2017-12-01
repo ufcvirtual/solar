@@ -111,7 +111,7 @@ function generate_shortcut_list(){
 
 // reload shortcut list method in case of dynamically created elements
 function reload_shortcut_list(){
-  $('.shortcut_floating_box').children(':not(h2, .close_dropdown)').remove();
+  $('.shortcut_floating_box').children(':not(h2, .close_dropdown, .shortcut_title)').remove();
   generate_shortcut_list();
 }
 

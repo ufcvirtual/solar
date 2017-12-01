@@ -65,9 +65,10 @@
                   = acf.text_field :max_working_hours, label: false, disabled: !ac.frequency || ac.final_exam, oninput: 'initializer_analizer()'
                   = t('editions.tools.wh')
                 - select_tools = AcademicAllocation.where(id: (tools_ids - ac.acs), allocation_tag_id: ats_ids.map(&:to_i)).select('DISTINCT ON(academic_tool_id, academic_tool_type) id, academic_tool_id, academic_tool_type')
-                %td= select_tools.blank? ? '-' : acf.collection_select(:equivalent_academic_allocation_id, select_tools, :id, :tool_type_name, {include_blank: true}, {disabled: (!ac.evaluative && !ac.frequency) || ac.final_exam})
+                %td= select_tools.blank? ? '-' : acf.collection_select(:equivalent_academic_allocation_id, select_tools, :id, :tool_type_name,  {include_blank: true}, {disabled: (!ac.evaluative && !ac.frequency) || ac.final_exam,  oninput: 'selected_equiv()'})
                 = acf.hidden_field "allocation_tags_ids", value: ats_ids.map(&:to_i)
                 = acf.hidden_field "acs", value: ac.acs.map(&:to_i)
+
 
 = javascript_include_tag "tablesorter", "tooltip", "groups_tags", 'shortcut'
 
@@ -146,6 +147,13 @@
     parent.parent().find('.icon-arrow-up-triangle').removeClass('invisible');
   }
 
+  function hide_or_show_ul(elem){
+    var ul = $(elem).siblings('ul');
+    ul.slideToggle();
+    $(elem).parent().find('.icon-arrow-down-triangle').toggleClass('invisible');
+    $(elem).parent().find('.icon-arrow-up-triangle').toggleClass('invisible');
+  }
+
   function initializer_analizer(){
    
     $('.analise_errors_li').remove();
@@ -157,6 +165,7 @@
     var groups_wh_list = [];
     var class_ch = "analise_errors_li correct_t";
     var ul = $('#analise_errors');
+    var _wh = $('#working_hours_input').val();
     
     $("#form_manage_tools_editions input").each(function(){
 
@@ -231,8 +240,9 @@
         if(String($(this).attr("disabled")) == 'undefined'){
           var groups_wh = $(this).closest('.working_hours').siblings('.final_weight').first().find('.groups').val();
           groups_wh = groups_wh.split(' ');
-
+     
           for(igwh = 0; igwh < groups_wh.length; igwh++) {
+
               var t_wh =false;
               for(wh = 0; wh < groups_wh_list.length; wh++) {
 
@@ -246,7 +256,7 @@
                 }
               }
               if(t_wh == false){
-                groups_wh_list.push([groups_wh[igwh], $(this).val()]);
+                groups_wh_list.push([groups_wh[igwh], Number($(this).val())]);
               }
             
 
@@ -254,31 +264,33 @@
         }  
       }  
     });
-    weight.sort();
-    for(i = 0; i < weight.length; i++) {
-      name = "#{I18n.t('editions.tools.group')}"+(i+1)+': '+weight[i];
-      ul.append("<li class='analise_errors_li'>"+name+'</li>');
-    }
     
     for(glt = 0; glt < groups_list.length; glt++) {
-      var class_g = "analise_errors_li correct_t";
-      if(groups_list[glt][1] < 100)
-        class_g = "analise_errors_li not_correct_t";
-      else if(groups_list[glt][1] > 100)  
-        class_g = "analise_errors_li error_t"; 
+      var id = 'ul_'+glt;
 
+      var class_g = "analise_errors_li correct_t";
+      if(groups_list[glt][1] != 100)
+        class_g = "analise_errors_li error_t";      
+
+      text = "#{I18n.t('editions.tools.detail_weight')}"+ groups_list[glt][0];
+        
       group = "#{I18n.t('editions.tools.total_final_weight')}"+ groups_list[glt][0] +': '+ parseFloat(groups_list[glt][1].toFixed(2));
-      ul.append("<li class='" + class_g + "' >"+group+"</li>"); 
+      ul.append("<li class='" + class_g + "'><a href='#' onclick='hide_or_show_ul(this); return false;' class='" + class_g + "' aria-label='"+text+"''>"+group+" <i class='icon-arrow-down-triangle'></i><i class='icon-arrow-up-triangle invisible'></i><a/><ul id='"+id+"' ></ul> </li>"); 
+
+      for(i = 0; i < weight.length; i++) {
+        if(weight[i][0]==groups_list[glt][0]){
+          name = "#{I18n.t('editions.tools.group')}"+(i+1)+': '+weight[i];
+          $('#'+id).append("<li class='analise_child_li'>"+name+'</li>');
+        } 
+      }
+      $('#'+id).hide();
     }
     //carga horária  
-    for(glt = 0; glt < groups_wh_list.length; glt++) {
+    for(gltw = 0; gltw < groups_wh_list.length; gltw++) {
       var class_ch = "analise_errors_li correct_t";
-      if(groups_wh_list[glt][1] < 64)
-        class_ch = "analise_errors_li not_correct_t";
-      else if(groups_wh_list[glt][1] > 64)  
-        class_ch = "analise_errors_li error_t"; 
-
-      group = "#{I18n.t('editions.tools.total_wh')}"+ groups_wh_list[glt][0] + ': '+ parseFloat(groups_wh_list[glt][1].toFixed(2));
+      if(groups_wh_list[gltw][1] != _wh)
+        class_ch = "analise_errors_li error_t";
+      group = "#{I18n.t('editions.tools.total_wh')}"+ groups_wh_list[gltw][0] + ': '+ parseFloat(groups_wh_list[gltw][1].toFixed(2));
       ul.append("<li class='" + class_ch + "' >"+group+"</li>"); 
     }
     

@@ -2427,6 +2427,7 @@ en_US:
       total_final_weight: 'TOTAL(Final Weight): '
       total_wh: 'TOTAL(Working Hour): '
       group: 'GROUP '
+      detail_weight: 'Detail of final weight '
     tool_management:
       how_it_works_title: "<b>How it works</b>"
       how_it_works: "<div> This activity management allows to define which activities are evaluative or not and which ones will have some working hours to attend to by the student.</div><br/><div>To indicates that an <b>activity is evaluative</b>, just check 'Evaluative' field and inform it's weight and final weight.</div><br/><div>The <b>weight</b> corresponds to the activity's weight in comparison to the other ones at the time of the student final grade automatic calculation. If it is a default weight (activities with same weight), just sets 1.</div><div><i>Weight example: Chat weight 2, Discussion weight 3. Automatic calculation: (2*chatGrade + 3*discussionGrade)/(2+3)</i></div><br/><div>The <b>final weight</b> corresponds to how many % some group of activities (grouped by a common final weight) will count at the student final grade automatic calculation.</div><div><i>Final weight example: Chat 40%, Discussion 40%, Exam 60%. Automatic calculation: 0,4*(chatGrade + discussionGrade) + 0,6*(examGrade)</i></div><div><i>Weight and final weight example: Chat weight 2 40%, Discussion weight 3 40%, Exam weight 1 60%. Calcule: [0,4*(2*chatGrade + 3*discussionGrade) + 0,6*(examGrade)]/(2+3+1)</i></div><br/><div>The <b>Final Evaluation</b> indicates if this activity will be a part of the final grade automatic calculation as a final exam. That is, <i>(studentFinalGrade + gradeFE)/2</i></div><div>If an activity is defined as Final Exam, it won't have working hours, weight and final weight. If those values are informed, they will be ignored.</div><br/><div>An activity <b>equivalent</b> to another means that if a student don't have the first, his grade will be from the second one.</div><div>If this values are incorrect or incomplete, will be used main activity values.</div><div><i>Example: Discussion 2 is equivalent to Discussion 1. The grade will be the one from discussion 1. If the student don't have a grade to this activity, it will be from discussion 2.</i></div>"
@@ -2439,6 +2440,7 @@ en_US:
       rule_min_grade_to_final_exam: "<div> 8) <b>Minimum final grade to do final exam: %{min_grade_to_final_exam}</b></div>"
       rule_min_final_exam_grade: "<div> 9) <b>Minimum final exam grade allowed: %{min_final_exam_grade}</b></div>"
       rule_final_exam_passing_grade: "<div> 10) <b>Minimum final grade to approval after final exam: %{final_exam_passing_grade}</b></div>"
+      rule_window_analyzer: "<div> 11) The <b>Analyzer</b> is a help window for whether the settings of the evaluative actives are performed correctly. It calculates in real time the <b>final weight</a> and the <b>class hours</b>. When the texts become green in the Analyzer it means either you can click Finish. </dib>"
       expand: Expand all
       compress: Compress all
       share_wh: Share working/hours
@@ -2447,6 +2449,10 @@ en_US:
       finish: Finish
       draggable_title: ANALYZER
       draggable_info: Click and drag to move the component
+      groups_final_weight: Groups by final weight
+      open_window_analyzer: 'Open Window: ANALYZER'
+      window_analyzer_home: Home analyzer click to close
+      window_analyzer_end: End analyzer click to close 
     mail:
       subject_new: 'Warning: New activity'
       subject_update: 'Warning: Active change'
@@ -3367,6 +3373,13 @@ en_US:
         title: "Comments [C]"
       code:
         title: 67
+    editions:
+      name:
+        window: "Analyzer [A]"
+        analyzer_position: "Analyzer Start Position [Shift + A]"
+      code:
+        window: 65
+        analyzer_position: 65
 
   scores:
     index:

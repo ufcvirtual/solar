@@ -2651,6 +2651,7 @@ pt_BR:
       total_final_weight: 'TOTAL(Peso Final): '
       total_wh: 'TOTAL(Carga horária): '
       group: 'GRUPO '
+      detail_weight: 'Detalhar peso final '
     tool_management:
       how_it_works_title: "<b>Como funciona</b>"
       how_it_works: "<div> Esta gerência permite definir quais atividades serão avaliativas ou não e quais terão carga horária a ser computada ou não como frequência pelo aluno.</div><br/><div>Para indicar que uma <b>atividade é avaliativa</b>, basta marcar o campo 'Avaliativa' e indicar o peso desta atividade e o peso final.</div><br/><div>O <b>peso</b> é correspondente ao peso que a atividade terá em relação as demais para o cálculo da média do aluno. Se for um peso padrão (atividades com mesmo peso), basta informar 1 no espaço 'peso' de cada atividade.</div><div><i>Exemplo de média das atividades com peso: Chat peso 2, Fórum peso 3. Cálculo automático da nota: (2*notaChat + 3*notaForum)/(2+3)</i></div><div><i>Exemplo de média das atividades com peso padrão: Chat peso 1, Fórum peso 1. Cálculo automático da nota: (notaChat + notaForum)/(2)</i></div><br/><div>O <b>peso final</b> é correspondente a quantos por centos (%) determinado grupo de atividades (agrupadas por um peso final em comum) valerá no cálculo da média do aluno. Se for um peso padrão (atividades com mesmo peso final), basta informar 100 no espaço 'peso final' de cada atividade.</div><div><i>Exemplo de média das atividades com peso final: Chat 40%, Fórum 40%, Prova 60%. Cálculo automático da nota: 0,4*(notaChat + notaForum) + 0,6*(notaProva)</i></div><div><i>Exemplo de média das atividades com peso e peso final: Chat peso 2 40%, Fórum peso 3 40%, Prova peso 1 60%. Cálculo automático da nota: [0,4*(2*notaChat + 3*notaForum) + 0,6*(notaProva)]/(2+3+1)</i></div><br/><div>A <b>Avaliação Final</b> serve para indicar se esta atividade entrará para o cálculo automático da média como Avaliação Final. Ou seja, <i>(médiaAluno + notaAF)/2</i></div><div>Se houver opção pela Avaliação Final, esta não terá carga horária, peso e peso final. Se estes valores forem informados, serão ignorados.</div><br/><div>Uma atividade <b>equivalente</b> a outra significa que se o aluno não realizar a primeira, a nota usada será a da segunda.</div><div>Se uma atividade é definida como equivalente de outra, ela deverá ter a mesma carga horária e os mesmos peso e peso final da principal. Se estes valores forem informados de modo incorreto ou não forem informados, serão utilizados os valores da atividade principal.</div><div><i>Exemplo: Fórum 2 é equivalente a Fórum 1. A nota que será utilizada para a média do aluno é a do Fórum 1. Caso o Fórum 1 não possua nota, a nota a ser utilizada será a do Fórum 2.</i></div>"
@@ -2663,6 +2664,7 @@ pt_BR:
       rule_min_grade_to_final_exam: "<div> 8) <b>Média mínima para realização de AF: %{min_grade_to_final_exam}</b></div>"
       rule_min_final_exam_grade: "<div> 9) <b>Nota mínima permitida para AF: %{min_final_exam_grade}</b></div>"
       rule_final_exam_passing_grade: "<div> 10) <b>Média mínima para aprovação após realização de AF: %{final_exam_passing_grade}</b></div>"
+      rule_window_analyzer: "<div> 11) O <b>Analisador</b> é uma janela de ajudar para quer as configurações das atividas avaliativa sejam realizadas de forma correta. O mesmo calcula em tempo real o <b>peso final</b> e a <b>carga horária</b> das turmas. Quando os textos ficarem verdes no Analisador significa quer você pode clicar em Finalizar.</div>"
       expand: Expandir todos
       compress: Comprimir todos
       share_wh: Dividir carga horária
@@ -2671,6 +2673,10 @@ pt_BR:
       finish: Finalizar
       draggable_title: ANALISADOR
       draggable_info: Clique e arraste para mover o componente
+      groups_final_weight: Grupos por peso final
+      open_window_analyzer: 'Abrir Janela: ANALISADOR'
+      window_analyzer_home: Início analisador clique para fechar
+      window_analyzer_end: Fim analisador clique para fechar  
     mail:
       subject_new: 'Aviso: Nova atividade'
       subject_update: 'Aviso: Alteração em atividade'
@@ -3613,8 +3619,10 @@ pt_BR:
     editions:
       name:
         window: "Analizador [A]"
+        analyzer_position: "Posição inicial Analizador [Shift + A]"
       code:
         window: 65
+        analyzer_position: 65
 
   scores:
     index:
