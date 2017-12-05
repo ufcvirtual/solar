@@ -3,7 +3,6 @@ class PagesController < ApplicationController
   before_filter :authenticate_user!, except: [:index, :privacy_policy, :apps, :tutorials, :faq, :tutorials_login]
   before_filter :set_active_tab_to_home, only: :tutorials
   layout 'login', only: [:apps, :faq, :tutorials_login, :privacy_policy]
-  layout false, only: :general_shortcuts
 
   def tutorials
     @verify_route_tutorial = false
@@ -24,6 +23,7 @@ class PagesController < ApplicationController
   end
 
   def general_shortcuts
+    render layout: false
   end
 
 end
