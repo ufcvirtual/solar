@@ -5,6 +5,9 @@ ul.notifications {
   li{
     padding: 4px;
     word-break: break-word;
+    a{
+      word-break: break-word;
+    }
   }
 }
 
@@ -30,6 +33,9 @@ ul.notifications {
   #lightBoxDialogTitle{
     .prev, .next{
       float: right;
+    }
+    h1{
+      word-break: break-all;
     }
   }
 }

@@ -148,6 +148,7 @@ div.block_module, div.block_exam{
 }
 
 #page_title {
+  word-break: break-all;
   > .block_content_text {
     border: none;
     font-size: 9pt;
