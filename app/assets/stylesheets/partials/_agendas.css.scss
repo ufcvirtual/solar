@@ -123,16 +123,12 @@ a.fc-event-title{
   color: $color_black_buttons;
 }
 
-//By high contrast theme
-.list_events .fc-event.fc-event-title{
-  background-color: $exclusive_background_color;
-}
-
 .list_events .fc-event.fc-event-title{
   font-size: 10pt;
   cursor: pointer;
+  background-color: $exclusive_background_color;
+  word-break: break-all;
 }
-
 
 .calendar_schedules .legend{
   font-size: 11pt;
@@ -155,6 +151,7 @@ a.fc-event-title{
         background-color: $color_white;
       }
     .event_details_dropdown{
+      word-break: break-all;
       h1, h2, h3, h4, .group_label label{
         font-family: 'PT Sans', sans-serif;
         background-color: $color_white;
