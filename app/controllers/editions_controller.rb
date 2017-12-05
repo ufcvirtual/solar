@@ -135,7 +135,7 @@ class EditionsController < ApplicationController
   end
 
   def tool_management
-    @allocation_tags_ids = params[:allocation_tags_ids].split(' ')
+    @allocation_tags_ids = params[:allocation_tags_ids].split(' ').flatten.map(&:to_i)
     @tool_name = params[:tool_name]
 
     raise 'only_groups_and_offer' if AllocationTag.where(id: @allocation_tags_ids).where('group_id IS NOT NULL OR offer_id IS NOT NULL').count != @allocation_tags_ids.size
@@ -258,20 +258,20 @@ class EditionsController < ApplicationController
     alert = []
     
     errors.each do |error|
-      alert << "#{t(error[:ac].academic_tool_type.tableize.singularize.to_sym, scope: [:activerecord, :models])} #{error[:ac].tool_name}: #{error[:messages].join('; ')}"
+      alert << ("#{t(error[:ac].academic_tool_type.tableize.singularize.to_sym, scope: [:activerecord, :models])} #{error[:ac].tool_name}: #{error[:messages].join('; ')}" rescue error)
     end
     
-    working_hours_errors.each do |error|
+    (working_hours_errors || []).each do |error|
       alert << ["#{error[:at].groups.map(&:code).join(', ')}", t('evaluative_tools.errors.working_hour_error', max: max_working_hours, wh: error[:wh])].join(': ')
     end
 
-    final_weight_errors.each do |error|
+    (final_weight_errors || []).each do |error|
       alert << ["#{error[:at].groups.map(&:code).join(', ')}", t('evaluative_tools.errors.final_weight_error', sum: error[:sum])].join(': ')
     end
 
     alert = alert.uniq.join('<br/>')
     alert = t('evaluative_tools.errors.general_message') if alert.blank?
-    render json: { success: false, alert: alert, acs: acs_errors.uniq.map(&:to_s), ats: ats_errors.uniq.map(&:to_s) }, status: :unprocessable_entity
+    render json: { success: false, alert: alert, acs: (acs_errors.uniq.map(&:to_s) rescue []), ats: (ats_errors.uniq.map(&:to_s) rescue []) }, status: :unprocessable_entity
   end
 
 end

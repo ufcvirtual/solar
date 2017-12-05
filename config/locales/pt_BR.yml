@@ -2634,6 +2634,7 @@ pt_BR:
       chats_call: 'Gerenciar chats avaliativos / de frequência'
       assignments_call: 'Gerenciar trabalhos avaliativos / de frequência'
       webconferences_call: 'Gerenciar webconferências avaliativas / de frequência'
+      offer_period: Oferta já encerrou
     tools:
       expand: Expandir
       compress: Comprimir

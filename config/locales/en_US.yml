@@ -2410,6 +2410,7 @@ en_US:
       chats_call: 'Manage evaluative / frequency chats'
       assignments_call: 'Manage evaluative / frequency assignments'
       webconferences_call: 'Manage evaluative / frequency webconferences'
+      offer_period: Offer already ended
     tools:
       expand: Expand
       compress: Compress
