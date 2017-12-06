@@ -24,7 +24,7 @@ class Post < ActiveRecord::Base
   after_create :increment_counter
   after_destroy :decrement_counter, :update_acu, :remove_drafts_children, :decrement_counter_draft
   after_save :update_acu
-  after_save :change_counter_draft, on: :update, if: '!parent_id.nil? && draft_changed?'
+  after_save :change_counter_draft, if: '!parent_id.nil? && draft_changed?'
 
   validates :content, :profile_id, presence: true
 
@@ -175,7 +175,6 @@ class Post < ActiveRecord::Base
 
     def increment_counter
       Post.increment_counter('children_count', parent_id)
-      Post.increment_counter('children_drafts_count', parent_id) if draft
     end
 
     def decrement_counter
