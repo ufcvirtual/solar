@@ -202,8 +202,8 @@ module V1
 
         ids = []
         [params[:file]].flatten.each do |file|
-          # post_attachment = PostFile.new({ discussion_post_id: post.id, attachment: ActionDispatch::Http::UploadedFile.new(file) })
-          post_attachment = post.files.build(attachment: ActionDispatch::Http::UploadedFile.new(file))
+          post_attachment = PostFile.new({ discussion_post_id: post.id, attachment: ActionDispatch::Http::UploadedFile.new(file) })
+          # post_attachment = post.files.build(attachment: ActionDispatch::Http::UploadedFile.new(file))
           ids << post_attachment.id if post_attachment.save
         end # each
 
