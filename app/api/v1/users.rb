@@ -37,10 +37,10 @@ module V1
       namespace :user do
 
         params do
-          requires :name, :nick, :cpf, :email, type: String
+          requires :name, :cpf, :email, type: String
           requires :gender, type: Boolean
           requires :birthdate, type: Date
-          optional :username, :cell_phone, :telephone, :address, :address_number, :address_neighborhood, :zipcode, :country, :state, :city, :special_needs, :institution
+          optional :username, :cell_phone, :telephone, :address, :address_number, :address_neighborhood, :zipcode, :country, :state, :city, :special_needs, :institution, :nick
         end
 
         post "/" do
@@ -62,7 +62,8 @@ module V1
               ActiveRecord::Base.transaction do
                 if new_user
                   new_password = ('0'..'z').to_a.shuffle.first(8).join
-                  params.merge!({password: new_password}) 
+                  params.merge!({password: new_password})
+                  params.merge!({nick: params[:name].split(' ').first}) if params[:nick].blank?
                 end
                 params.merge!({username: cpf}) if params[:username].blank? && new_user
                 user.attributes = user_params(params)
