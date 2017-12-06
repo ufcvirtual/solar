@@ -142,6 +142,24 @@ module V1
           }
         end
 
+        desc "Todas as turmas por semestre, tipo de curso, curso, disciplina e status da turma"
+        params do
+          requires :semester, type: String
+          optional :curriculum_unit_type_id, default: 2, type: Integer
+          optional :only_active, default: false, type: Boolean
+          optional :course_id_or_code, :discipline_id_or_code, type: String
+
+        end
+        get :all , rabl: "groups/all" do
+          query =  ["semesters.name = :semester"]                                 
+          query << "curriculum_units.curriculum_unit_type_id = :curriculum_unit_type_id"                                          if params[:curriculum_unit_type_id].present?
+          query << "(courses.id::text = :course_id_or_code OR courses.code=:course_id_or_code)"                            if params[:course_id_or_code].present?
+          query << "(curriculum_units.id::text = :discipline_id_or_code OR curriculum_units.code = :discipline_id_or_code)"if params[:discipline_id_or_code].present?
+          @group_status = true                                                                                                    if params[:only_active].present?
+
+          @offers = Offer.joins(:semester, :curriculum_unit, :course).where(query.join(' AND '), params.slice(:semester, :curriculum_unit_type_id, :course_id_or_code, :discipline_id_or_code))          
+        end
+
       end # groups
 
       namespace :group do
