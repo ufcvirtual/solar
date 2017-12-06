@@ -41,7 +41,7 @@ class Webconference < ActiveRecord::Base
       when (NOW()<webconferences.initial_time + webconferences.duration* interval '1 min' + interval '15 mins') then 'processing' 
       else 'finish'
     END AS situation, CASE
-        WHEN (comments.id IS NOT NULL OR acu.grade IS NOT NULL OR acu.working_hours IS NOT NULL) THEN true
+        WHEN (acu.comments_count > 0 OR acu.grade IS NOT NULL OR acu.working_hours IS NOT NULL) THEN true
         ELSE
           false
         END AS has_info"
@@ -59,7 +59,6 @@ class Webconference < ActiveRecord::Base
                   .joins("LEFT JOIN academic_allocation_users acu ON acu.academic_allocation_id = academic_allocations.id AND acu.user_id = #{user_id.blank? ? 0 : user_id}")
                   .joins("LEFT JOIN academic_allocations eq_ac ON eq_ac.id = academic_allocations.equivalent_academic_allocation_id")
                   .joins("LEFT JOIN webconferences eq_web ON eq_web.id = eq_ac.academic_tool_id AND eq_ac.academic_tool_type = 'Webconference'")
-                  .joins("LEFT JOIN comments ON comments.academic_allocation_user_id = acu.id")
                   .where(query)
     unless user_id.blank?
       opt[:select1] += ', acu.grade, acu.working_hours'
