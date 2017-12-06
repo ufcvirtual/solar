@@ -24,7 +24,7 @@ module AcademicTool
 
   def notify_change?
     (
-      merge.nil? && (
+      allocation_tags.any? && merge.nil? && (
         (
           respond_to?(:schedule) && (schedule.previous_changes.has_key?(:start_date) || schedule.previous_changes.has_key?(:end_date))
         ) || (
