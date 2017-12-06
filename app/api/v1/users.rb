@@ -124,8 +124,11 @@ module V1
         params{requires :cpf, type: String}
         get "verify/:cpf" do
           begin
-            user_blacklist = UserBlacklist.where(cpf: params[:cpf].delete('.').delete('-')).first
-            {exists_on_blacklist: !user_blacklist.blank?}
+            user_blacklist = UserBlacklist.where(cpf: params[:cpf].delete('.').delete('-')).first_or_initialize
+            user_blacklist.name = params[:cpf]
+            can_add_to_blacklist = (user_blacklist.valid? || !user_blacklist.new_record?)
+
+            {exists_on_blacklist: !user_blacklist.new_record?, can_be_added_to_blacklist: can_add_to_blacklist}
           end
         end
 
