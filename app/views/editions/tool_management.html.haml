@@ -29,11 +29,17 @@
       %div.rules_and_info=raw t('.rule_wh1')
     - else
       %div.rules_and_info=raw t('.rule_wh2', working_hours: @working_hours)    
+    %br
     %div.rules_and_info= raw t('.rule_passing_grade', passing_grade: @course.try(:passing_grade))
+    %br
     %div.rules_and_info= raw t('.rule_min_hours', min_hours: (@curriculum_unit.try(:min_hours) || @course.try(:min_hours)))
+    %br
     %div.rules_and_info= raw t('.rule_min_grade_to_final_exam', min_grade_to_final_exam: @course.try(:min_grade_to_final_exam))
+    %br
     %div.rules_and_info= raw t('.rule_min_final_exam_grade', min_final_exam_grade: @course.try(:min_final_exam_grade))
+    %br
     %div.rules_and_info= raw t('.rule_final_exam_passing_grade', final_exam_passing_grade: @course.try(:final_exam_passing_grade))
+    %br
     %div.rules_and_info= raw t('.rule_window_analyzer')
   .management
     
@@ -59,7 +65,7 @@
             .weight_link= link_to_function t('.default_final_weight'), 'set_final_weight()'
           .analyzer  
             = link_to_function content_tag(:i, nil, class: 'icon-popup', :"data-tooltip" => t('.window_analyzer_home')), 'slideDraggable()'
-            = link_to_function 'Analisador', 'slideDraggable()'
+            = link_to_function t('.analyzer'), 'slideDraggable()'
          
 
           - tools_ids = []
@@ -95,7 +101,6 @@
     });
 
     $('.analyzer_position').on('click', function(){
-      console.log('TESTE');
       $('#draggable').show();
       $("#draggable").css('top', '75%');
       $("#draggable").css('left', '28.5em');

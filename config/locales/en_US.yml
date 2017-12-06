@@ -2441,7 +2441,7 @@ en_US:
       rule_min_grade_to_final_exam: "<div> 8) <b>Minimum final grade to do final exam: %{min_grade_to_final_exam}</b></div>"
       rule_min_final_exam_grade: "<div> 9) <b>Minimum final exam grade allowed: %{min_final_exam_grade}</b></div>"
       rule_final_exam_passing_grade: "<div> 10) <b>Minimum final grade to approval after final exam: %{final_exam_passing_grade}</b></div>"
-      rule_window_analyzer: "<div> 11) The <b>Analyzer</b> is a help window for whether the settings of the evaluative actives are performed correctly. It calculates in real time the <b>final weight</a> and the <b>class hours</b>. When the texts become green in the Analyzer it means either you can click Finish. </dib>"
+      rule_window_analyzer: "<div> 11) O <b>Analyzer</b> is a tool that allows you to execute correctly activities configurations. By pressing shortcut 'A' or clicking on 'Analyzer' link, a window will show up. It will show the calculation, at real time, of groups <b>final weight</b> and  <b>working hours</b>. In way that will be easier to identify which groups are with final weight 100 and working hours equal to the informed on these instructions. The green text  ilustrates that the calculation is OK and the red text shows that there are something wrong with the calculation: there are more or less hours or final weight. When everything is green or when all final weight are 100 and the working hours are the same as showned at these instructions, click on 'Finish'</div>"
       expand: Expand all
       compress: Compress all
       share_wh: Share working/hours
@@ -2452,8 +2452,9 @@ en_US:
       draggable_info: Click and drag to move the component
       groups_final_weight: Groups by final weight
       open_window_analyzer: 'Open Window: ANALYZER'
-      window_analyzer_home: Home analyzer click to close
-      window_analyzer_end: End analyzer click to close 
+      window_analyzer_home: Home analyzer (click to close)
+      window_analyzer_end: End analyzer (click to close)
+      analyzer: Analyzer
     mail:
       subject_new: 'Warning: New activity'
       subject_update: 'Warning: Active change'
