@@ -122,7 +122,9 @@ class AcademicAllocation < ActiveRecord::Base
       ga = GroupAssignment.where(academic_allocation_id: id, group_name: acu.user.name[0..19]).first_or_initialize
       ga.merge = true
       ga.save!
-      gp = GroupParticipant.where(user_id: acu.user_id, group_assignment_id: ga.id).first_or_create
+      gp = GroupParticipant.where(user_id: acu.user_id, group_assignment_id: ga.id).first_or_initialize
+      gp.merge = true
+      gp.save!
       acu.update_attributes group_assignment_id: ga.id
     end
   end
