@@ -153,10 +153,11 @@ module V1
                 error = error | 4
               elsif (user.username.downcase != params[:username].downcase)
 
-              user.username = params[:username].downcase
-              user.synchronizing = true
-              user.valid?
-              error = error | 8 if user.errors[:username].any?
+                user.username = params[:username].downcase
+                user.synchronizing = true
+                user.valid?
+                error = error | 8 if user.errors[:username].any?
+              end
             end
 
             {result: error}
