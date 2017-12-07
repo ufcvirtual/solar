@@ -51,7 +51,8 @@ class SupportMaterialFile < ActiveRecord::Base
 
   def link_path(api: false)
     raise 'not link' unless is_link?
-
+    
+    return 'http://www.youtube.com/embed/' + url.split('v=')[1].split('&')[0] if !api && url.include?('youtube') && !url.include?('embed') && url.include?('list')
     return 'http://www.youtube.com/embed/' + url.split('v=')[1] if !api && url.include?('youtube') && !url.include?('embed')
     url
   end
@@ -72,4 +73,7 @@ class SupportMaterialFile < ActiveRecord::Base
     self.find_files(at_ids).group_by {|f| f.folder}
   end
 
+  def self.verify_file_type(name)
+    (name.last(4).eql?('.aac') || name.last(4).eql?('.m4a') || name.last(4).eql?('.mp4') || name.last(4).eql?('.m4v')) 
+  end
 end

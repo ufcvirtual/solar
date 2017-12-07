@@ -42,6 +42,20 @@ class AcademicAllocation < ActiveRecord::Base
   before_destroy :set_situation_date
   after_destroy :verify_management
 
+  attr_accessor :merge
+
+  after_create if: 'verify_tool' do
+    AcademicTool.send_email(academic_tool, [self], false)
+  end
+
+  before_destroy if: 'verify_tool', prepend: true do
+    AcademicTool.send_email(academic_tool, [self]) if academic_tool.verify_can_destroy
+  end
+
+  def verify_tool
+    !allocation_tag_id.nil? && academic_tool.verify_start && merge.nil? && (!academic_tool.respond_to?(:status_changed?) || academic_tool.status)
+  end
+
   def set_evaluative_params
     self.frequency = get_curriculum_unit.try(:working_hours).blank? ? false : frequency
     self.max_working_hours = nil unless self.frequency
@@ -108,7 +122,9 @@ class AcademicAllocation < ActiveRecord::Base
       ga = GroupAssignment.where(academic_allocation_id: id, group_name: acu.user.name[0..19]).first_or_initialize
       ga.merge = true
       ga.save!
-      gp = GroupParticipant.where(user_id: acu.user_id, group_assignment_id: ga.id).first_or_create
+      gp = GroupParticipant.where(user_id: acu.user_id, group_assignment_id: ga.id).first_or_initialize
+      gp.merge = true
+      gp.save!
       acu.update_attributes group_assignment_id: ga.id
     end
   end

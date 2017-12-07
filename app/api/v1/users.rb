@@ -37,10 +37,10 @@ module V1
       namespace :user do
 
         params do
-          requires :name, :nick, :cpf, :email, type: String
+          requires :name, :cpf, :email, type: String
           requires :gender, type: Boolean
           requires :birthdate, type: Date
-          optional :username, :cell_phone, :telephone, :address, :address_number, :address_neighborhood, :zipcode, :country, :state, :city, :special_needs, :institution
+          optional :username, :cell_phone, :telephone, :address, :address_number, :address_neighborhood, :zipcode, :country, :state, :city, :special_needs, :institution, :nick
         end
 
         post "/" do
@@ -62,7 +62,8 @@ module V1
               ActiveRecord::Base.transaction do
                 if new_user
                   new_password = ('0'..'z').to_a.shuffle.first(8).join
-                  params.merge!({password: new_password}) 
+                  params.merge!({password: new_password})
+                  params.merge!({nick: params[:name].split(' ').first}) if params[:nick].blank?
                 end
                 params.merge!({username: cpf}) if params[:username].blank? && new_user
                 user.attributes = user_params(params)
@@ -94,10 +95,13 @@ module V1
           end
         end # /
 
-        params { requires :cpf, type: String }
+        params do
+          requires :cpf, type: String
+          optional :only_if_exists, type: Boolean, default: false
+        end
         post "import/:cpf" do
           begin
-            verify_or_create_user(params[:cpf].delete('.').delete('-'))
+            verify_or_create_user(params[:cpf].delete('.').delete('-'), false, params[:only_if_exists])
             {ok: :ok}
           rescue => error
             raise error
@@ -120,8 +124,11 @@ module V1
         params{requires :cpf, type: String}
         get "verify/:cpf" do
           begin
-            user_blacklist = UserBlacklist.where(cpf: params[:cpf].delete('.').delete('-')).first
-            {exists_on_blacklist: !user_blacklist.blank?}
+            user_blacklist = UserBlacklist.where(cpf: params[:cpf].delete('.').delete('-')).first_or_initialize
+            user_blacklist.name = params[:cpf]
+            can_add_to_blacklist = (user_blacklist.valid? || !user_blacklist.new_record?)
+
+            {exists_on_blacklist: !user_blacklist.new_record?, can_be_added_to_blacklist: can_add_to_blacklist}
           end
         end
 
@@ -134,6 +141,7 @@ module V1
         get "validates/:cpf" do
           begin
             error = 0
+            user = User.where(cpf: params[:cpf]).first_or_initialize
 
             cpf = params[:cpf].delete('.').delete('-')
             if params[:email].present?
@@ -141,11 +149,15 @@ module V1
             end
 
             if params[:username].present?
-              error = error | 4 if User.where("lower(username) = ? AND cpf != ?", params[:username].downcase, cpf).any?
+              if User.where("lower(username) = ? AND cpf != ?", params[:username].downcase, cpf).any?
+                error = error | 4
+              elsif (user.username.downcase != params[:username].downcase)
 
-              user = User.new username: params[:username].downcase
-              user.valid?
-              error = error | 8 if user.errors[:username].any?
+                user.username = params[:username].downcase
+                user.synchronizing = true
+                user.valid?
+                error = error | 8 if user.errors[:username].any?
+              end
             end
 
             {result: error}

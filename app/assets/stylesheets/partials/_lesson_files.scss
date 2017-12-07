@@ -92,6 +92,7 @@
     color: $color_black;
     a.dynatree-title{
       color: $color_black;
+      word-break: break-all;
     }
     #initial_file > a.dynatree-title{
       color: #e7aa3f;

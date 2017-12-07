@@ -52,22 +52,23 @@
               = button_tag t('.publish'), class: "btn btn_main submit_post", id: "submit_post", type: :button, :'data-draft' => false
 
             
-
-            = form.simple_fields_for :files do |files|
-              .file_input
-                = files.input :_destroy, as: :hidden, input_html: { value: 0, class: "destroy_input_file", :"data-file-id" => files.object.id }
-                = files.input :attachment, label: false, input_html: { id: 'fileupload', class: 'hidden_input_file' }
-            %br
-            %br
-            %h3.attachment_title_.invisible= t("posts.post.file_list")
-            .input.list_files_to_send_
-              - @post.files.each do |file|
-                - if file.persisted?
-                  .input.files
-                    %label
-                    %span#file{:"data-file-id" => file.id}
-                      %span{ tabindex: "0" }= file.attachment_file_name
-                      %i.icon-cross-square.warning.remove_file{ tabindex: "0" }
+            #form_attached
+              = form.simple_fields_for :files do |files|
+                .file_input
+                  = files.input :_destroy, as: :hidden, input_html: { value: 0, class: "destroy_input_file", :"data-file-id" => files.object.id }
+                  = files.input :attachment, label: false, input_html: { id: 'fileupload', class: 'hidden_input_file' }
+                  
+              %br
+              %br
+              %h3.attachment_title_.invisible= t("posts.post.file_list")
+              .input.list_files_to_send_
+                - @post.files.each do |file|
+                  - if file.persisted?
+                    .input.files
+                      %label
+                      %span#file{:"data-file-id" => file.id}
+                        %span{ tabindex: "0" }= file.attachment_file_name
+                        %i.icon-cross-square.warning.remove_file{ tabindex: "0" }
 
       .forum_post_new
 
@@ -266,15 +267,20 @@
       var nested_form = $(".file_input:first", $('.posts'));
 
     function add_new_file() {
+
       var new_form = nested_form.clone();
+
       var forms_on_page = $(".file_input", $('.posts')).length;
       var input_name = $("input[type='file']", new_form).attr("name");
+
       input_name = input_name.replace(new RegExp(/\[[0-9]+\]/), "[" + forms_on_page + "]");
+
       $("input", new_form).attr("name", input_name);
 
       $(new_form).insertAfter( nested_form.last() );
       $("input[type='file']", new_form).click();
       $(".attachment_title_", $('.posts')).removeClass("invisible");
+      $(".attachment_title_").show();
 
       $("input[type='file']", new_form).change(function(){
         
@@ -323,10 +329,6 @@
 
   });
 
-  function humanFileSize(size){
-    var i = Math.floor( Math.log(size) / Math.log(1024) );
-    return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB'][i];
-  }
 
   function publish_post(btn){
     $.put($(btn).data('url'), {draft: false}, function(data){

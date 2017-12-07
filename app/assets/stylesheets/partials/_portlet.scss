@@ -68,6 +68,9 @@ table tr.block_title th {
   min-height: 135px;
   max-height: 160px;
   overflow: auto;
+  .block_content_line{
+    word-break: break-all;
+  }
 }
 
 /**

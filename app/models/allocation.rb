@@ -45,6 +45,9 @@ class Allocation < ActiveRecord::Base
     self.status = Allocation_Activated
     self.save!
 
+    calculate_working_hours
+    calculate_final_grade
+
     send_email_to_enrolled_user
   end
 
@@ -285,7 +288,8 @@ class Allocation < ActiveRecord::Base
     hours_defined = (!uc.working_hours.blank? && !min_hours.blank?)
     has_passing_grade = !course.passing_grade.blank?
 
-    calculate_final_grade if parcial_grade.blank? && !final_grade.blank?
+    calculate_final_grade if parcial_grade.blank? && (manually || !final_grade.blank?)
+    calculate_working_hours if (working_hours.blank? || working_hours == 0) && manually
 
     # if today should update situation or mannually update and has passing grade or hours defined
     if ((!date.nil? && Date.today >= date) || manually || allocation_tag.setted_situation) && (has_passing_grade || hours_defined)

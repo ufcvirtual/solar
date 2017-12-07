@@ -36,3 +36,15 @@ h2.support_material_title {
     }
   }
 }
+
+.support_material.open{
+  text-align: center;
+  vertical-align: middle;
+  height: 100%;
+  video{
+    vertical-align: middle;
+  }
+  div{
+    height: 100%;
+  }
+}

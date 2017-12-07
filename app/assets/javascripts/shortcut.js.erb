@@ -1,5 +1,7 @@
 $(function(){
   shortcut(); // call shortcut after page load
+
+  $('#shortcut_link').call_fancybox({'maxWidth': '700px'});
 });
 
 /**
@@ -109,93 +111,44 @@ function generate_shortcut_list(){
 
 // reload shortcut list method in case of dynamically created elements
 function reload_shortcut_list(){
-  $('.shortcut_floating_box').children(':not(h2, .close_dropdown)').remove();
+  $('.shortcut_floating_box').children(':not(h2, .close_dropdown, .shortcut_title)').remove();
   generate_shortcut_list();
 }
 
-function underline_shortcut_letter_multiple(element){
-  var menu_itens = $(element).find("a");
-  for(var i = 0; i < menu_itens.length; i++) {
-    var shortcut_letter = String.fromCharCode($(menu_itens[i]).attr('data-shortcut')).toLowerCase();
-
-    if(shortcut_letter.toUpperCase() === $(menu_itens[i]).text()[0]) {
-      var new_menu_item = $(menu_itens[i]).text().replace(shortcut_letter.toUpperCase(), '<span style="text-decoration: underline">' + shortcut_letter.toUpperCase() + '</span>');
-    } else if ($(menu_itens[i]).text().trim() == "Discussions") {
-      var new_menu_item = $(menu_itens[i]).text().replace("Discussions", 'Discussions <span style="display: none">(<span style="text-decoration: underline">F</span>orum)</span>');
-    } else {
-      var new_menu_item = $(menu_itens[i]).text().replace(shortcut_letter, '<span style="text-decoration: underline">' + shortcut_letter + '</span>');
-    }
-
-    $(menu_itens[i]).html(new_menu_item);
-  }
-}
-
-function underline_shortcut_letter_single(element){
-  var menu_item = $(element).find("a");
-  var shortcut_letter = String.fromCharCode($(menu_item).attr('data-shortcut')).toLowerCase();
-
-  if(shortcut_letter.toUpperCase() === $(menu_item).text()[0]) {
-    var new_menu_item = $(menu_item).text().replace(shortcut_letter.toUpperCase(), '<span style="text-decoration: underline">' + shortcut_letter.toUpperCase() + '</span>');
-  } else {
-    var new_menu_item = $(menu_item).text().replace(shortcut_letter, '<span style="text-decoration: underline">' + shortcut_letter + '</span>');
+// function callend to add an underline on main menu to ilustrate shortcuts
+function put_underline_shortcut(element) {
+  // if menu has some complement text, add to it
+  if($(element).data('shortcut-complement')){
+    if($(element).text().indexOf($(element).data('shortcut-complement')) < 0)
+      $(element).html($(element).text() + $(element).data('shortcut-complement'));
   }
 
-  $(menu_item).html(new_menu_item);
-}
+  // get char from menu
+  var char = String.fromCharCode($(element).data('shortcut'));
+  // get location of shortcut char at menu text
+  var location = $(element).text().indexOf(char);
 
-function remove_underline_shortcut_multiple(element) {
-  var menu_itens = $(element).find("a");
-  for(var i = 0; i < menu_itens.length; i++) {
-    if ($(menu_itens[i]).text().includes("Discussions")) {
-      $(menu_itens[i]).find("span").css("display", "none");
-    } else {
-      $(menu_itens[i]).find("span").css("text-decoration", "none");
+  // if not found, search for lower case
+  if(location < 0)
+    location = $(element).text().indexOf(char.toLowerCase());
+
+  // if found
+  if(location >= 0){
+    // if first letter or have complementary text, add underline to uppercase char
+    if(location == 0 || $(element).data('shortcut-complement'))
+      $(element).html($(element).text().replace(char, '<span class="shortcut_help" style="text-decoration: underline">'+char.toUpperCase()+'</span>'));
+    else{
+      // if not first letter and dont have complementary text, add underline to lowercase char
+      $(element).html($(element).text().replace(char.toLowerCase(), '<span class="shortcut_help" style="text-decoration: underline">'+char.toLowerCase()+'</span>'));
     }
   }
 }
 
-function put_underline_shortcut_multiple(element) {
-  var menu_itens = $(element).find("a");
-  for(var i = 0; i < menu_itens.length; i++) {
-    if ($(menu_itens[i]).text().includes("Discussions")) {
-      $(menu_itens[i]).find("span").css("display", "inline");
-    } else {
-      $(menu_itens[i]).find("span").css("text-decoration", "underline");
-    }
-  }
-}
-
-function remove_underline_shortcut_single(element) {
-  $(element).find("a").find("span").css("text-decoration", "none");
-}
-
-function put_underline_shortcut_single(element) {
-  $(element).find("a").find("span").css("text-decoration", "underline");
-}
-
-function open_shortcut_window(event, element) {
-  var keynum = event.which || event.keyCode;
-  if((event.which == 191 && event.shiftKey) || event.type == 'click' || (keynum == 13 && element !== undefined) ) {
-    $(".modal").css("display", "block");
-    $(".begin-shortcut").focus();
-    $('*').not('.modal-content *').each(function(){
-      $(this).prop('tabindex', -1);
-    });
-    $('.modal-content p, .modal-content h2').each(function(){
-      $(this).prop('tabindex', 0);
-    });
-  }
-}
-
-function close_shortcut_window(event) {
-  var keynum = event.which || event.keyCode;
-  if (keynum == 27 || keynum == 13) {
-    $(".modal").css("display", "none");
-    $('*').not('.modal-content *').each(function(){
-      $(this).removeAttr('tabindex');
-    });
-    $('.modal-content p, .modal-content h2').each(function(){
-      $(this).removeAttr('tabindex');
-    });
-  }
+// remove underline ilustration of shortcut
+function remove_underline_shortcut(element) {
+  // if element has shortcut_help, remove text decoration
+  $(element).find("span.shortcut_help").css("text-decoration", "none");
+  // if element has complement text, remove it
+  if($(element).data('shortcut-complement'))
+    $(element).html($(element).text().replace($(element).data('shortcut-complement'), ''));
 }

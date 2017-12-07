@@ -22,4 +22,8 @@ class PagesController < ApplicationController
   	render 'tutorials'
   end
 
+  def general_shortcuts
+    render layout: false
+  end
+
 end

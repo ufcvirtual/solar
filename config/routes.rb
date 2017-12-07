@@ -20,6 +20,7 @@ Solar::Application.routes.draw do
   get :privacy_policy, to: 'pages#privacy_policy', as: :privacy_policy
   get :faq, to: 'pages#faq', as: :faq
   get :tutorials_login, to: "pages#tutorials_login", as: :tutorials_login
+  get :general_shortcuts, to: 'pages#general_shortcuts', as: :general_shortcuts
 
 
   resources :users do
@@ -172,6 +173,7 @@ Solar::Application.routes.draw do
     member do
       get :to_evaluate , to: 'posts#index', as: :evaluate
       put :publish
+      get :post_files
     end
     resources :post_files, only: [:new, :create, :destroy, :download] do
       get :download, on: :member
@@ -711,7 +713,6 @@ Solar::Application.routes.draw do
   get "/media/messages/:file.:extension", to: "access_control#message"
   # get "/media/discussions/post/:file.:extension", to: "access_control#post"
   get '/media/support_material_files/*path',    to: 'access_control#support_material'
-
 
   get '/media/questions/images/:file.:extension', to: 'access_control#question_image'
   get '/media/questions/items/:file.:extension', to: 'access_control#question_item'

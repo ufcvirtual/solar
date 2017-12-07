@@ -246,6 +246,7 @@ pt_BR:
       notification_file: Arquivo
       post_file: Arquivo
       comment_file: Arquivo
+      email: Email
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -1282,6 +1283,8 @@ pt_BR:
       title: Título
     form:
       groups: Turmas
+    index: 
+      external_link: Abrir em nova aba
     error:
       file: Um ou mais arquivos de até 30MB devem ser selecionados.
 
@@ -1326,7 +1329,10 @@ pt_BR:
       to_evaluate: Avaliar/Comentar
       grade: '(Nota: %{grade})'
       frequency: '(Frequência: %{wh}hs)'
-      download: "Download %{file}, tamanho: %{size}"
+      download: "Baixar aqrquivo %{file}, tamanho: %{size}"
+      open: "Abrir arquivo %{file}, tamanho: %{size}"
+      open_site: "Abrir site %{file}"
+      open_site_new_tab: "Abrir o site em uma nova aba (%{file})"
       post: "ª postagem: "
       answer_post: "Reposta da "
       res_post: "ª postagem"
@@ -1591,6 +1597,7 @@ pt_BR:
       shared: Esta webconferência já foi encerrada. Este campo não pode ser alterado.
       removed_record: Gravação removida ou vazia
       copy: Não é possível remover a gravação desta webconferência, pois ela é uma cópia. É necessário remover a gravação da webconferência original.
+      acu: Não é possível remover a gravação ou webconferência, pois há alunos avaliados/com comentários.
     preview:
       delete_record: Remover gravação
       placeholder: Digite qualquer valor a ser buscado na tabela desta página
@@ -1870,6 +1877,7 @@ pt_BR:
   support_material_error_no_file_sent: Nenhum arquivo enviado
   support_material_error_delete_file: Erro ao tentar excluir arquivo
   support_material_sent_on: Enviado em
+  support_material_download: Download
   support_material_size: Tamanho
   support_material_name: Nome
   link_site_img: Link para site externo %{site} será aberto em uma nova aba ou janela
@@ -2626,6 +2634,7 @@ pt_BR:
       chats_call: 'Gerenciar chats avaliativos / de frequência'
       assignments_call: 'Gerenciar trabalhos avaliativos / de frequência'
       webconferences_call: 'Gerenciar webconferências avaliativas / de frequência'
+      offer_period: Oferta já encerrou
     tools:
       expand: Expandir
       compress: Comprimir
@@ -2643,6 +2652,7 @@ pt_BR:
       total_final_weight: 'TOTAL(Peso Final): '
       total_wh: 'TOTAL(Carga horária): '
       group: 'GRUPO '
+      detail_weight: 'Detalhar peso final '
     tool_management:
       how_it_works_title: "<b>Como funciona</b>"
       how_it_works: "<div> Esta gerência permite definir quais atividades serão avaliativas ou não e quais terão carga horária a ser computada ou não como frequência pelo aluno.</div><br/><div>Para indicar que uma <b>atividade é avaliativa</b>, basta marcar o campo 'Avaliativa' e indicar o peso desta atividade e o peso final.</div><br/><div>O <b>peso</b> é correspondente ao peso que a atividade terá em relação as demais para o cálculo da média do aluno. Se for um peso padrão (atividades com mesmo peso), basta informar 1 no espaço 'peso' de cada atividade.</div><div><i>Exemplo de média das atividades com peso: Chat peso 2, Fórum peso 3. Cálculo automático da nota: (2*notaChat + 3*notaForum)/(2+3)</i></div><div><i>Exemplo de média das atividades com peso padrão: Chat peso 1, Fórum peso 1. Cálculo automático da nota: (notaChat + notaForum)/(2)</i></div><br/><div>O <b>peso final</b> é correspondente a quantos por centos (%) determinado grupo de atividades (agrupadas por um peso final em comum) valerá no cálculo da média do aluno. Se for um peso padrão (atividades com mesmo peso final), basta informar 100 no espaço 'peso final' de cada atividade.</div><div><i>Exemplo de média das atividades com peso final: Chat 40%, Fórum 40%, Prova 60%. Cálculo automático da nota: 0,4*(notaChat + notaForum) + 0,6*(notaProva)</i></div><div><i>Exemplo de média das atividades com peso e peso final: Chat peso 2 40%, Fórum peso 3 40%, Prova peso 1 60%. Cálculo automático da nota: [0,4*(2*notaChat + 3*notaForum) + 0,6*(notaProva)]/(2+3+1)</i></div><br/><div>A <b>Avaliação Final</b> serve para indicar se esta atividade entrará para o cálculo automático da média como Avaliação Final. Ou seja, <i>(médiaAluno + notaAF)/2</i></div><div>Se houver opção pela Avaliação Final, esta não terá carga horária, peso e peso final. Se estes valores forem informados, serão ignorados.</div><br/><div>Uma atividade <b>equivalente</b> a outra significa que se o aluno não realizar a primeira, a nota usada será a da segunda.</div><div>Se uma atividade é definida como equivalente de outra, ela deverá ter a mesma carga horária e os mesmos peso e peso final da principal. Se estes valores forem informados de modo incorreto ou não forem informados, serão utilizados os valores da atividade principal.</div><div><i>Exemplo: Fórum 2 é equivalente a Fórum 1. A nota que será utilizada para a média do aluno é a do Fórum 1. Caso o Fórum 1 não possua nota, a nota a ser utilizada será a do Fórum 2.</i></div>"
@@ -2655,6 +2665,7 @@ pt_BR:
       rule_min_grade_to_final_exam: "<div> 8) <b>Média mínima para realização de AF: %{min_grade_to_final_exam}</b></div>"
       rule_min_final_exam_grade: "<div> 9) <b>Nota mínima permitida para AF: %{min_final_exam_grade}</b></div>"
       rule_final_exam_passing_grade: "<div> 10) <b>Média mínima para aprovação após realização de AF: %{final_exam_passing_grade}</b></div>"
+      rule_window_analyzer: "<div> 11) O <b>Analisador</b> é uma ferramenta que permite ajudá-lo a realizar as configurações das atividades de forma correta. Ao pressionar a tecla de atalho 'A' ou clicar no link 'Analisador', uma janela surgirá. Ela mostrará o cálculo, em tempo real, do <b>peso final</b> e da <b>carga horária</b> das turmas. Deste modo, ficará mais fácil identificar se as turmas estão com o peso final 100 e a carga horária de acordo com o informado nessas instruções. O texto verde ilustrará que o cálculo está OK e o texto vermelho ilustrará que o cálculo indica que há uma quantidade a mais ou a menos de horas ou no peso final. Quando tudo estiver verde ou quando todos os pesos finais forem 100 e as horas corresponderem às horas da disciplina, clique em 'Finalizar'</div>"
       expand: Expandir todos
       compress: Comprimir todos
       share_wh: Dividir carga horária
@@ -2663,6 +2674,11 @@ pt_BR:
       finish: Finalizar
       draggable_title: ANALISADOR
       draggable_info: Clique e arraste para mover o componente
+      groups_final_weight: Grupos por peso final
+      open_window_analyzer: 'Abrir Janela: ANALISADOR'
+      window_analyzer_home: Início analisador (clique para fechar)
+      window_analyzer_end: Fim analisador (clique para fechar)
+      analyzer: Analisador
     mail:
       subject_new: 'Aviso: Nova atividade'
       subject_update: 'Aviso: Alteração em atividade'
@@ -3383,8 +3399,9 @@ pt_BR:
       result_search: "Ir para tabela com o resultado da busca"
 
   shortcut:
-    shortcut_link: "Atalhos gerais [? + Shift]"
-    shortcut_menu_title: "Atalhos do Teclado"
+    shortcut_link: "Atalhos gerais [Shift + ?]"
+    shortcut_link_code: 191
+    shortcut_menu_title: "Atalhos gerais (teclado)"
     no_shortcuts: "Sem atalhos"
     close: "Fechar"
     click_to_close: "Clique para fechar janela de atalhos"
@@ -3567,12 +3584,14 @@ pt_BR:
         menu_bibliography_key: "Shift + B"
         menu_participants: "Participantes"
         menu_participants_key: "Shift + E"
-        menu_content_edition: "Conteúdo"
+        menu_content_edition: "Edição de Conteúdo"
         menu_content_edition_key: "Shift + D"
         menu_messages: "Mensagens"
         menu_messages_key: "Shift + N"
         menu_registration: "Matrícula"
         menu_registration_key: "Shift + U"
+        menu_home: "Tela inicial da disciplina"
+        menu_home_key: "Shift + I"
       code:
         menu_lesson: 65
         menu_support_material: 77
@@ -3591,6 +3610,9 @@ pt_BR:
         menu_content_edition: 68
         menu_messages: 78
         menu_registration: 85
+        menu_home: 73
+      complement:
+        menu_portfolio: " (Trabalhos)"
     comments:
       name:
         title: "Comentários [C]"
@@ -3599,8 +3621,10 @@ pt_BR:
     editions:
       name:
         window: "Analizador [A]"
+        analyzer_position: "Posição inicial Analizador [Shift + A]"
       code:
         window: 65
+        analyzer_position: 65
 
   scores:
     index:
@@ -4162,7 +4186,7 @@ pt_BR:
       email_infor: "Para verificar mais informações sobre seu resultado ou sobre a correção, estes já estão disponíveis no menu de Provas no Solar."
       email_infor_compl: "teve seu período encerrado e sua nota foi calculada"
       email_of: do
-      email: "Por favor não responda essa mensagem. Esse é um email automático do Solar 2.0."
+      email: "Por favor não responda esta mensagem. Este é um email automático do Solar 2.0."
       itens_corrected: "Iten(s) correto(s): "
       itens_marked: "Iten(s) marcado(s): "
       true_item: "Item verdadeiro"
@@ -4324,6 +4348,9 @@ pt_BR:
         associated_text: Texto associado
         new: Novo texto
         import: Importar de questões desta prova
+      media:
+        add_images: Adicionar imagens
+        add_audios: Adicionar áudios
     labels:
       labels: 'palavras-chave: '
     error:

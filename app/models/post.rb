@@ -24,7 +24,7 @@ class Post < ActiveRecord::Base
   after_create :increment_counter
   after_destroy :decrement_counter, :update_acu, :remove_drafts_children, :decrement_counter_draft
   after_save :update_acu
-  after_save :decrement_counter_draft, on: :update
+  after_save :change_counter_draft, if: '!parent_id.nil? && draft_changed?'
 
   validates :content, :profile_id, presence: true
 
@@ -175,7 +175,6 @@ class Post < ActiveRecord::Base
 
     def increment_counter
       Post.increment_counter('children_count', parent_id)
-      Post.increment_counter('children_drafts_count', parent_id) if draft
     end
 
     def decrement_counter
@@ -184,6 +183,14 @@ class Post < ActiveRecord::Base
 
     def decrement_counter_draft
       Post.decrement_counter('children_drafts_count', parent_id) unless parent.blank? || parent.try(:children_drafts_count) == 0 || !draft_was
+    end
+
+    def change_counter_draft
+      if draft
+        Post.increment_counter('children_drafts_count', parent_id)
+      else
+        Post.decrement_counter('children_drafts_count', parent_id) unless parent.try(:children_drafts_count) == 0
+      end
     end
 
     def update_acu
@@ -197,6 +204,7 @@ class Post < ActiveRecord::Base
         else
           academic_allocation_user.new_after_evaluation = true
         end
+        academic_allocation_user.merge = merge
         academic_allocation_user.save(validate: false)
       end
     end

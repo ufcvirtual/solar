@@ -1,41 +1,35 @@
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 99999;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto; /* Enable scroll if needed */
-  background-color: $color_black;
-  background-color: rgba($color_black ,0.4);
-}
+.general_shortcuts{
+  ul.left{
+    float: left;
+  }
+  ul.right{
+    float: right;
+  }
+  ul{
+    padding: 5px;
+    width: 47%;
+    background-color: $form_background_color;
+  }
+  .tag {
+    color: $font_color;
+    border: 1px solid $language_border_color;
+    background-color: $color_white;
+    border-radius: 2px;
+    padding: 3px 6px;
+    text-align: center;
+    display: inline-block;
+    width: 30%;
 
-.modal-header {
-  background-color: $color_main_mysolar;
-  width: 100%;
-  height: 100%;
-  padding: 20px;
-  margin-left: -20px;
-  margin-top: -20px;
-}
-
-.modal-header h2 {
-  color: $color_white;
-}
-
-
-.modal-content {
-  background-color: $block_groups_background;
-  margin: 15% auto;
-  padding: 20px;
-  width: 60%;
-}
-
-.flex-container {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 25px;
+  }
+  .title{
+    width: 60%;
+    display: inline-block;
+    word-break: break-all;
+    vertical-align: middle;
+  }
+  li{
+    padding: 2px;
+  }
 }
 
 .divider {
@@ -43,19 +37,6 @@
   width: 5%;
 }
 
-.flex-item span {
-  color: $font_color;
-  float: right;
-  border: 1px solid $language_border_color;
-  background-color: $color_white;
-  border-radius: 2px;
-  padding: 3px 6px;
-}
-
-.flex-item {
-  width: 40%;
-  font-size: 10pt;
-}
 
 /* The Close Button */
 .close {
@@ -73,8 +54,9 @@
 #draggable{
   z-index: 1;
   position: fixed;
-  left: 92.5em;
-  padding: 0.7em;
+  left: 28.5em;
+  padding: 0.8em;
+  top: 75%;
 
   .ui-widget-content_title{
     z-index: 1;
@@ -125,6 +107,20 @@
     padding: 0.3em;
     margin-top: 0.3em;
   }
+  h2{
+    text-align: center; 
+    margin: 0; 
+    font-weight: bold; 
+  }
+  .analise_child_li{
+    color: $color_black;
+    font-weight: normal;
+    padding-left: 0.7em;
+  }
 }
-#draggable ul li { margin: 0.1em 0; padding: 0.1em 0; } * html #draggable ul li { height: 1%; }
+#draggable{ 
+  min-width: 200px;
+  ul li { margin: 0.1em 0; padding: 0.1em 0; } * html #draggable ul li { height: 1%; }
+}
+#content_draggable{ max-height: 400px; overflow: auto; }
 

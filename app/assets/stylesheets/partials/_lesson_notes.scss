@@ -8,6 +8,13 @@
   width: 770px;
   min-height: 400px;
 
+  .block_title{
+    word-break: break-all;
+    h2{
+      position: relative;
+    }
+  }
+
   .block_content{
 
     background-color: $color_white_base;

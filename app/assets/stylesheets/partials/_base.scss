@@ -344,3 +344,10 @@ i.noscript{
   margin-top: 18%;
   display: none;
 }
+
+.fancybox-opened{
+  .fancybox-title{
+    word-break: break-all;
+    text-align: center;
+  }
+}

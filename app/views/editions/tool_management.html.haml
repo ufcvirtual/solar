@@ -1,16 +1,17 @@
 .tool_management{ :'data-link-list' => tool_management_editions_path(allocation_tag_ids: @allocation_tag_ids) }
-  %a{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'data-shortcut' => t("shortcut.editions.code.window"), :'data-shortcut-name' => t("shortcut.editions.name.window"), id: 'open_window', class: 'hidden'}
-    = 'Abrir Janela: ANALISADOR'
+  %a{ onkeydown: 'click_on_keypress(event, this);', :'data-shortcut' => t("shortcut.editions.code.window"), :'data-shortcut-name' => t("shortcut.editions.name.window"), class: 'hidden open_window'}
+
+  %a{ onkeydown: 'click_on_keypress(event, this);', :'data-shortcut' => t("shortcut.editions.code.analyzer_position"), :'data-shortcut-name' => t("shortcut.editions.name.analyzer_position"), :'data-shortcut-shift' => 'true', class: 'hidden analyzer_position'}
+
   .ui-widget-content{ id: 'draggable', :'data-tooltip' => t(".draggable_info")}  
+    %a{ href: '#', :'aria-label' => t('.window_analyzer_home'), :title => t('.window_analyzer_home'),class: 'open_window'}
     .ui-widget-content_title
       %h2= t('.draggable_title')  
-      %a{ href: '#', :"data-dropdown" => "#dropdown_eq_draggable", onkeydown: 'click_on_keypress(event, this);' }
-        %i.icon-arrow-down-triangle{:'aria-hidden'=>'true'}
-      .dropdown.dropdown-tip{id: "dropdown_eq_draggable"}
-        %ul{ class: 'dropdown-menu' }
-          = raw t('.draggable_info')
+
       = link_to content_tag(:i, nil, class: "icon-cancel-circle"), "#", class: 'close_draggable', :'data-tooltip' => t("shortcut.close"), :'aria-label' => t("shortcut.close")
-    %ul{id: 'analise_errors'}
+    #content_draggable  
+      %ul{id: 'analise_errors'}
+    %a{ href: '#', :'aria-label' => t('.window_analyzer_end'), :title => t('.window_analyzer_end'),class: 'open_window'}  
   .title-warning
     %div.how_it_works_title
       = link_to_function raw(t('.how_it_works_title')), 'hide_or_show_info(this)'
@@ -28,14 +29,22 @@
       %div.rules_and_info=raw t('.rule_wh1')
     - else
       %div.rules_and_info=raw t('.rule_wh2', working_hours: @working_hours)    
+    %br
     %div.rules_and_info= raw t('.rule_passing_grade', passing_grade: @course.try(:passing_grade))
+    %br
     %div.rules_and_info= raw t('.rule_min_hours', min_hours: (@curriculum_unit.try(:min_hours) || @course.try(:min_hours)))
+    %br
     %div.rules_and_info= raw t('.rule_min_grade_to_final_exam', min_grade_to_final_exam: @course.try(:min_grade_to_final_exam))
+    %br
     %div.rules_and_info= raw t('.rule_min_final_exam_grade', min_final_exam_grade: @course.try(:min_final_exam_grade))
+    %br
     %div.rules_and_info= raw t('.rule_final_exam_passing_grade', final_exam_passing_grade: @course.try(:final_exam_passing_grade))
-  
+    %br
+    %div.rules_and_info= raw t('.rule_window_analyzer')
   .management
-    = form_tag manage_tools_editions_path, id: 'form_manage_tools_editions', method: :put do        
+    
+    = form_tag manage_tools_editions_path, id: 'form_manage_tools_editions', method: :put do 
+
       - if @tools.any?
         %div
           .expand_hide
@@ -54,6 +63,10 @@
           .set_final_weight
             = link_to_function content_tag(:i, nil, class: 'icon-clipboard', :"data-tooltip" => t('.default_final_weight')), 'set_final_weight()'
             .weight_link= link_to_function t('.default_final_weight'), 'set_final_weight()'
+          .analyzer  
+            = link_to_function content_tag(:i, nil, class: 'icon-popup', :"data-tooltip" => t('.window_analyzer_home')), 'slideDraggable()'
+            = link_to_function t('.analyzer'), 'slideDraggable()'
+         
 
           - tools_ids = []
           - @tools.collect{|key, value| value}.flatten.each do |tool|
@@ -65,9 +78,11 @@
         - @tools.each do |key, value|
           = render partial: 'editions/tools_management/tools', locals: { tool_name: key, tools: value, wh: @working_hours.blank?, tools_ids: tools_ids }
         = button_to_function t('.finish'), 'manage_tools(this)', class: 'btn'
+        = hidden_field_tag 'working_hours_input', @working_hours
       - else
         .text_none
           = t(:item_search_no_found)
+         
 
 :javascript
   $(document).ready(function(){
@@ -79,12 +94,23 @@
     }
   });
   $(function(){
+
     reload_shortcut_list();
-    $('#open_window').on('click', function(){
-      $('#draggable').show();
+    $('.open_window').on('click', function(){
+      $('#draggable').slideToggle();
     });
 
-    initializer_analizer();
+    $('.analyzer_position').on('click', function(){
+      $('#draggable').show();
+      $("#draggable").css('top', '75%');
+      $("#draggable").css('left', '28.5em');
+    });
+
+
+    setTimeout(function() {
+      initializer_analizer();
+    }, 800); 
+
     $('.close_draggable').on('click', function(){
       $('#draggable').hide();
     });
@@ -105,10 +131,19 @@
     }
   }
 
+  function slideDraggable(){
+    $('#draggable').slideToggle();
+  }
+
   function check_checkbox(event, object){
     if(event.target.tagName == 'TD')
       $('input', $(object)).last().click();
 
+    setTimeout(function() {
+      initializer_analizer();
+    }, 200);  
+  }
+  function selected_equiv(){
     setTimeout(function() {
       initializer_analizer();
     }, 200);  
@@ -143,6 +178,10 @@
       }
     });
   }
+
+  $(".ui-widget-content").mouseover(function() {
+    $(this).css("cursor","move");
+  });
 
   function show_all(){
     $('.tools_by_tool_type').slideDown();
@@ -212,4 +251,3 @@
       initializer_analizer();
     }, 200);
   }
-

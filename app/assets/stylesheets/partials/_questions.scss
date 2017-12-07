@@ -127,13 +127,30 @@
       width: 298px;
     }
     i, a.comment, a.image_icon, a.audio_icon{
-      float: right;
+      display: inline;
+
+      //float: right;
       padding-bottom: 10px;
       padding-left: 2px;
     }
-    a.comment{
-      margin-right: 20px;
+    a.image_icon, a.audio_icon{
+      float: right;
     }
+    a.comment{
+      margin-right: 0px;
+
+      i.icon-comment {
+        float: right;
+      }
+    }
+
+    .duplicatable_nested_form {
+
+      a.remove_nested_fields_link{
+        float: right;
+      }
+    }
+
     [id^='cke_question_items_attributes_']{
       width: 316px;
       margin-left: 8px;
@@ -176,7 +193,11 @@
           max-height: 130px;
         }
         .add_file{
-          margin-left: -1px;
+          margin-left: -30px;
+          display: inline;
+        }
+        i.icon-trash {
+          float: right;
         }
       }
       input[type='text']{
@@ -219,7 +240,11 @@
           vertical-align: middle;
         }
         .add_file{
-          margin-left: -1px;
+          margin-left: -30px;
+          display: inline;
+        }
+        i.icon-trash {
+          float: right;
         }
       }
       input[type='text']{
@@ -342,6 +367,14 @@
       a.remove_nested_fields_link{
         float:right;
       }
+    }
+
+    #labels {
+      .nested_exam_question_question_question_labels{
+        .input.string {
+          display: inline;
+        }
+      }      
     }
   }
   .add_nested_fields_link{
@@ -511,24 +544,34 @@
 .labels{
   #question_text{
     //width: 500px;
-    display: flex;
+
+    //display: flex;
+    display: block;
+    margin-top: 15px;
     #associated_text{
       text-align: left;
       height: 80px;
-      width: 10%; 
+      width: 10%;
+      display: inline;
 
       #form_associated_text{
-        width: 150px;
+        //width: 150px;
+        width: 100px;
         text-align: left;
+
+        padding-right: 0px;
       }
     }
     #associated_radio{
       line-height: 2em;
       text-align: left;
-      height: 80px;
-      width: 79%;
-      display: flex;
-      flex-direction: column;
+      //height: 80px;
+      //width: 79%;
+      //display: flex;
+      //flex-direction: column;
+      display: inline-block;
+      width:300px;
+
       align-content: top;
       label{
         width: 200px;
@@ -568,4 +611,12 @@
       text-align: left;
     }
   }
-}  
+}
+
+.question_form {
+  .right_buttons{
+    .question_media_button{
+      margin-bottom: 0px;
+    }
+  }
+}

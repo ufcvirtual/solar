@@ -1,27 +1,20 @@
-.lesson.open
-	.content{ :"data-url" => open_support_material_files_path(@file) }
-		- if @file.is_file? && @file.attachment_content_type.index('audio')
-			.audios
-				.audio  
-					%span.hide=t(:audio_suggestions)
-					%audio{ src: @file.path, autoplay: false, controls: 'true', name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"} 
-						%track{ kind: "captions"}
-					= link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :"aria-label" => t('questions.questions.up_down')), 'down_speed()'
-					= link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :"aria-label" => t('questions.questions.up_speed')), 'up_speed()'	  	
-		  
-		- elsif @file.is_file? && (@file.attachment_file_name.last(4).eql?('.aac') || @file.attachment_file_name.last(4).eql?('.m4a') || @file.attachment_content_type.index('video') || @file.attachment_file_name.last(4).eql?('.mp4') || @file.attachment_file_name.last(4).eql?('.m4v')) 
-			%span.hide=t(:audio_suggestions)
-			%video{ src: @file.path, autoplay: false, controls: 'true', name: 'audioQuestion', preload: 'auto', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}  
-				%track{ kind: "captions"}  
-				%track{ kind: "descriptions"}
-		- else 
-			%iframe#content_support_material_file{ title: @file.title, src: @file.path, width: '100%', height: '100%', name: 'content_support_material_file', target: '_self', frameborder: 0, framespacing: 0 }
-
-= javascript_include_tag 'audios'			
-
-:javascript
-
-	$(function(){
-		document.domain = "#{YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['domain']}";
-
-	}); 
+.support_material.open
+  %div{ :"data-url" => open_support_material_files_path(@file) }
+    - if @file.is_file? && @file.attachment_content_type.index('audio')
+      .audios
+        .audio  
+          %span.hide=t(:audio_suggestions)
+          %audio{ src: @file.path, autoplay: false, controls: 'true', name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"} 
+            %track{ kind: "captions"}
+          = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :"aria-label" => t('questions.questions.up_down')), 'down_speed()'
+          = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :"aria-label" => t('questions.questions.up_speed')), 'up_speed()'     
+      
+    - elsif @file.is_file? && SupportMaterialFile.verify_file_type(@file.attachment_file_name)
+      %span.hide=t(:audio_suggestions)
+      %video{ src: @file.path, autoplay: false, controls: 'true', name: 'audioQuestion', preload: 'auto', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}  
+        %track{ kind: "captions"}  
+        %track{ kind: "descriptions"}
+    - else 
+      %object{ data: @file.path, width: '100%', height: '100%', id: @file.id, :'aria-label' => 'Por favor visite o site para acessar este conteudo:'+@file.path }
+      
+= javascript_include_tag 'audios'     

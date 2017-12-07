@@ -58,7 +58,7 @@ class ExamQuestionsController < ApplicationController
 
   def edit
     @exam_question = ExamQuestion.find(params[:id])
-    @question_text = QuestionText.find(@exam_question.question.question_text_id) unless @exam_question.question.question_text_id.blank?
+    @question_text = @exam_question.question.question_text.nil? == true ? "" : @exam_question.question.question_text.text 
     build_exam_question
   end
 

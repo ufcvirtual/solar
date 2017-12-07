@@ -5,9 +5,9 @@ class PostsController < ApplicationController
 
   # before_filter :authenticate_user!
   before_filter :prepare_for_pagination
-  before_filter :set_current_user, only: [:destroy, :create, :update, :publish]
+  before_filter :set_current_user, only: [:destroy, :create, :update, :publish, :post_files]
 
-  load_and_authorize_resource except: [:index, :user_posts, :create, :show, :evaluate, :publish]
+  load_and_authorize_resource except: [:index, :user_posts, :create, :show, :evaluate, :publish, :post_files]
 
   ## GET /discussions/1/posts
   ## GET /discussions/1/posts/20120217/[news, history]/order/asc/limit/10
@@ -168,6 +168,17 @@ class PostsController < ApplicationController
     end
   rescue => error
     render json: { alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
+  end
+
+  # render files to update a post
+  def post_files
+    post = Post.find(params[:id])
+    post.can_change?
+    respond_to do |format|
+      format.json { render json: post.files }
+    end
+  rescue
+    render json: { alert: post.errors.full_messages.join('; ') }, status: :unprocessable_entity
   end
 
   private

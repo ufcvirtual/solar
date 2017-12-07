@@ -55,7 +55,7 @@
                 - if active_tab[:url][:context] == 2 && params[:bread] == "menu_score_student"
                   %li#link_to_shortcut.sub_nav_menu= link_to t("shortcut.shortcut_link"), "#", class: "sub_nav_item"
                 %li.sub_nav_menu= link_to t(:high_contrast_link), "#", accesskey: 6, :'data-url' => update_theme_personal_configurations_path, :'data-theme' => "#{user_session[:theme]}", id: "mysolar_high_contrast_option", class: "sub_nav_item", remote: true
-                %li.sub_nav_menu= link_to t('shortcut.shortcut_link'), "#", accesskey: 8, onclick: 'open_shortcut_window(event)', onkeydown: 'open_shortcut_window(event, this)', class: "sub_nav_item"
+                %li.sub_nav_menu= link_to t('shortcut.shortcut_link'), general_shortcuts_path , accesskey: 8, class: "fancybox.ajax sub_nav_item", :'aria-label' => t('shortcut.shortcut_link') + t("fancybox.open"), :'data-shortcut' => t('shortcut.shortcut_link_code'), :'data-shortcut-shift' => true, id: 'shortcut_link'
                 - if I18n.locale.to_s == 'pt_BR'
                   %li.sub_nav_menu=link_to t(:libras), 'http://www.vlibras.gov.br/', target: '_blank', 'aria-label'=> t(:libras) + t(:new_window), class: "sub_nav_item"
             %li#mysolar_top_help.mysolar_top_submenu_label_regular.nav_menu
@@ -115,7 +115,7 @@
               .mysolar_menu_group
                 %ul
                   %li.mysolar_menu_title_single{'data-menu-bread' => 'menu_home', 'data-contexts' => [Context_Curriculum_Unit]}
-                    = link_to t(:menu_home), active_tab[:breadcrumb].first[:url], class: 'mysolar_menu_title', :'data-shortcut-shift' => true
+                    = link_to t(:menu_home), active_tab[:breadcrumb].first[:url], class: 'mysolar_menu_title', :'data-shortcut-shift' => true, :'data-shortcut' => t(:menu_home, scope: "shortcut.vertical_menu.code"), :'data-shortcut-shift' => true, :'data-shortcut-complement' => (I18n.translate!(:menu_home, scope: "shortcut.vertical_menu.complement", raise: true) rescue '')
 
             = raw menu_list
 
@@ -191,69 +191,6 @@
     #loading
       %h2=t(:page_loading)
       %div= image_tag('loading.gif') 
-
-    %div{class: 'modal'}
-      %div{class: 'modal-content'}
-        %a{href: "#", class: 'close visuallyhidden begin-shortcut', :'aria-label' => t("shortcut.click_to_close") }= t('shortcut.begin')
-        %header{class: 'modal-header'}
-          %a{href: "#", class: 'close', title: t("shortcut.close"), :'aria-label' => t("shortcut.click_to_close")} &times;
-          %h2{class: 'block_title'}= t('shortcut.shortcut_menu_title')
-        %article{class: 'block_content_text flex-container'}
-          %div{class: 'flex-item'}
-            %p
-              = t('shortcut.vertical_menu.name.menu_lesson')
-              %span= t('shortcut.vertical_menu.name.menu_lesson_key')
-            %p
-              = t('shortcut.vertical_menu.name.menu_support_material')
-              %span= t('shortcut.vertical_menu.name.menu_support_material_key')
-            %p
-              = t('shortcut.vertical_menu.name.menu_dc_lesson')
-              %span= t('shortcut.vertical_menu.name.menu_dc_lesson_key')
-            %p
-              = t('shortcut.vertical_menu.name.menu_discussion')
-              %span= t('shortcut.vertical_menu.name.menu_discussion_key')
-            %p
-              = t('shortcut.vertical_menu.name.menu_portfolio')
-              %span= t('shortcut.vertical_menu.name.menu_portfolio_key')
-            %p
-              = t('shortcut.vertical_menu.name.menu_exam')
-              %span= t('shortcut.vertical_menu.name.menu_exam_key')
-            %p
-              = t('shortcut.vertical_menu.name.menu_score_student')
-              %span= t('shortcut.vertical_menu.name.menu_score_student_key')
-            %p
-              = t('shortcut.vertical_menu.name.menu_chat')
-              %span= t('shortcut.vertical_menu.name.menu_chat_key')
-            %p
-              = t('shortcut.vertical_menu.name.menu_webconference')
-              %span= t('shortcut.vertical_menu.name.menu_webconference_key')
-          %div{class: 'divider'}
-          %div{class: 'flex-item'}
-            %p
-              = t('shortcut.vertical_menu.name.menu_score_professor')
-              %span= t('shortcut.vertical_menu.name.menu_score_professor_key')
-            %p
-              = t('shortcut.vertical_menu.name.menu_program')
-              %span= t('shortcut.vertical_menu.name.menu_program_key')
-            %p
-              = t('shortcut.vertical_menu.name.menu_agenda')
-              %span= t('shortcut.vertical_menu.name.menu_agenda_key')
-            %p
-              = t('shortcut.vertical_menu.name.menu_bibliography')
-              %span= t('shortcut.vertical_menu.name.menu_bibliography_key')
-            %p
-              = t('shortcut.vertical_menu.name.menu_participants')
-              %span= t('shortcut.vertical_menu.name.menu_participants_key')
-            %p
-              = t('shortcut.vertical_menu.name.menu_content_edition')
-              %span= t('shortcut.vertical_menu.name.menu_content_edition_key')
-            %p
-              = t('shortcut.vertical_menu.name.menu_messages')
-              %span= t('shortcut.vertical_menu.name.menu_messages_key')
-            %p
-              = t('shortcut.vertical_menu.name.menu_registration')
-              %span= t('shortcut.vertical_menu.name.menu_registration_key')
-        %a{href: "#", class: 'close visuallyhidden', :'aria-label' => t("shortcut.click_to_close") }= t('shortcut.end')
 
   :javascript
 
@@ -494,13 +431,6 @@
       $($("#page_title h1").children("span")[0]).removeAttr("title")
     });
 
-    $("#shortcut").call_fancybox({
-      minWidth: '50%',
-      minHeight: '50%',
-      height: 'auto',
-      closeBtn : true
-    });
-
     //Select theme function
     $("#mysolar_high_contrast_option").click(function(){
       $.put($(this).data("url"), {"theme": $(this).data("theme")}, function(data){
@@ -644,32 +574,10 @@
       }
     });
 
-    function fixed_shortcut() {
-      $(".submenu").each(function(){
-        underline_shortcut_letter_multiple(this);
-        remove_underline_shortcut_multiple(this);
-      });
-
-      $(".mysolar_menu_title_single").each(function() {
-        var menu_item_name = $(this).find("a").text().trim();
-        switch( menu_item_name ) {
-          case "Home":
-            $(this).find("a").attr('data-shortcut', 72);
-            break;
-          case "Início":
-            $(this).find("a").attr('data-shortcut', 73);
-            break;
-        }
-        underline_shortcut_letter_single(this);
-        remove_underline_shortcut_single(this);
-      });
-    }
-
     //focus do flash message
     $(function(){
       loadFocus();
       focus_element_time('#flash_message_span');
-      fixed_shortcut();
 
       $(".close").on("click keypress", function(event){
         var keynum = event.which || event.keyCode;
@@ -679,9 +587,6 @@
       });
 
       $(document).keydown(function (e) {
-        open_shortcut_window(e);
-        close_shortcut_window(e);
-
         if (e.which === 27) {
           $("#dropdown_menu").slideUp(150);
           $(".dropdown").hide(150);
@@ -692,11 +597,8 @@
         }
 
         if(e.shiftKey) {
-          $(".submenu").each(function(){
-            put_underline_shortcut_multiple(this);
-          });
-          $(".mysolar_menu_title_single").each(function() {
-            put_underline_shortcut_single(this);
+          $('[data-shortcut-shift = "true"]', '.submenu, .mysolar_menu_title_single').each(function(){
+            put_underline_shortcut(this);
           });
         }
 
@@ -709,11 +611,8 @@
       });
 
       $(document).keyup(function (e) {
-        $(".submenu").each(function(){
-          remove_underline_shortcut_multiple(this);
-        });
-        $(".mysolar_menu_title_single").each(function() {
-          remove_underline_shortcut_single(this);
+        $('[data-shortcut-shift = "true"]', '.submenu, .mysolar_menu_title_single').each(function(){
+          remove_underline_shortcut(this);
         });
       });
     });

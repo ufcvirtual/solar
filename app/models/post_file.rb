@@ -11,7 +11,7 @@ class PostFile < ActiveRecord::Base
   validates_attachment_content_type_in_black_list :attachment
 
   #validate :can_change?, if: 'merge.nil?'
-  before_destroy :can_change?, if: 'merge.nil?'
+  before_destroy :verify_children_with_raise, :can_change?, if: 'merge.nil?'
 
   has_attached_file :attachment,
     path: ":rails_root/media/discussions/post/:id_:basename.:extension",
@@ -27,6 +27,13 @@ class PostFile < ActiveRecord::Base
     unless post.discussion.in_time?
       errors.add(:base, I18n.t('posts.error.date_range_expired'))
       raise 'date_range_expired'
+    end
+  end
+
+   def verify_children_with_raise
+    if post.children.where(draft: false).any?
+      errors.add(:base, I18n.t('posts.error.children'))
+      raise 'children'
     end
   end
 

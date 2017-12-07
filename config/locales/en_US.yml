@@ -210,6 +210,7 @@ en_US:
       notification_file: File
       post_file: File
       comment_file: File
+      email: Email
     attributes:
       user:
         password: "Password"
@@ -1106,6 +1107,8 @@ en_US:
       title: Title
     form:
       groups: Groups
+    index: 
+      external_link: Open on a new tab
     error:
       file: One or more files until 30MB must be selected.
   title: "Title"
@@ -1146,7 +1149,10 @@ en_US:
       to_evaluate: Evaluate/Comment
       grade: '(Grade: %{grade})'
       frequency: '(Frequency: %{wh})'
-      download: "Download %{file}, size %{size}"
+      download: "Download file %{file}, size %{size}"
+      open: "Open file %{file}, size %{size}"
+      open_site: "Open site %{file}"
+      open_site_new_tab: "Open site on a new tab (%{file})"
       post: "ª Post: "
       answer_post: "Answer of "
       res_post: "ª post"
@@ -1403,6 +1409,7 @@ en_US:
       shared: This webconference already happened. It's not possible to change this field.
       removed_record: Removed or empty record
       copy: It's not possible to remove this webconference record. This webconferenceis a copy. It's necessary to remove original webconference's record.
+      acu: It's not possible to remove this webconferences or its record. There are evaluated students or with comments.
     preview:
       delete_record: Remove record
       placeholder: Type any value to be searched at the table of this page
@@ -1658,6 +1665,7 @@ en_US:
   support_material_error_no_file_sent: No file sent
   support_material_error_delete_file: Error when trying to delete file
   support_material_sent_on: Sent on
+  support_material_download: Download
   support_material_size: Size
   support_material_name: Name
   support_send_document: DOCUMENT
@@ -2402,6 +2410,7 @@ en_US:
       chats_call: 'Manage evaluative / frequency chats'
       assignments_call: 'Manage evaluative / frequency assignments'
       webconferences_call: 'Manage evaluative / frequency webconferences'
+      offer_period: Offer already ended
     tools:
       expand: Expand
       compress: Compress
@@ -2419,6 +2428,7 @@ en_US:
       total_final_weight: 'TOTAL(Final Weight): '
       total_wh: 'TOTAL(Working Hour): '
       group: 'GROUP '
+      detail_weight: 'Detail of final weight '
     tool_management:
       how_it_works_title: "<b>How it works</b>"
       how_it_works: "<div> This activity management allows to define which activities are evaluative or not and which ones will have some working hours to attend to by the student.</div><br/><div>To indicates that an <b>activity is evaluative</b>, just check 'Evaluative' field and inform it's weight and final weight.</div><br/><div>The <b>weight</b> corresponds to the activity's weight in comparison to the other ones at the time of the student final grade automatic calculation. If it is a default weight (activities with same weight), just sets 1.</div><div><i>Weight example: Chat weight 2, Discussion weight 3. Automatic calculation: (2*chatGrade + 3*discussionGrade)/(2+3)</i></div><br/><div>The <b>final weight</b> corresponds to how many % some group of activities (grouped by a common final weight) will count at the student final grade automatic calculation.</div><div><i>Final weight example: Chat 40%, Discussion 40%, Exam 60%. Automatic calculation: 0,4*(chatGrade + discussionGrade) + 0,6*(examGrade)</i></div><div><i>Weight and final weight example: Chat weight 2 40%, Discussion weight 3 40%, Exam weight 1 60%. Calcule: [0,4*(2*chatGrade + 3*discussionGrade) + 0,6*(examGrade)]/(2+3+1)</i></div><br/><div>The <b>Final Evaluation</b> indicates if this activity will be a part of the final grade automatic calculation as a final exam. That is, <i>(studentFinalGrade + gradeFE)/2</i></div><div>If an activity is defined as Final Exam, it won't have working hours, weight and final weight. If those values are informed, they will be ignored.</div><br/><div>An activity <b>equivalent</b> to another means that if a student don't have the first, his grade will be from the second one.</div><div>If this values are incorrect or incomplete, will be used main activity values.</div><div><i>Example: Discussion 2 is equivalent to Discussion 1. The grade will be the one from discussion 1. If the student don't have a grade to this activity, it will be from discussion 2.</i></div>"
@@ -2431,6 +2441,7 @@ en_US:
       rule_min_grade_to_final_exam: "<div> 8) <b>Minimum final grade to do final exam: %{min_grade_to_final_exam}</b></div>"
       rule_min_final_exam_grade: "<div> 9) <b>Minimum final exam grade allowed: %{min_final_exam_grade}</b></div>"
       rule_final_exam_passing_grade: "<div> 10) <b>Minimum final grade to approval after final exam: %{final_exam_passing_grade}</b></div>"
+      rule_window_analyzer: "<div> 11) The <b>Analyzer</b> is a tool that allows you to execute correctly activities configurations. By pressing shortcut 'A' or clicking on 'Analyzer' link, a window will show up. It will show the calculation, at real time, of groups <b>final weight</b> and  <b>working hours</b>. In way that will be easier to identify which groups are with final weight 100 and working hours equal to the informed on these instructions. The green text  ilustrates that the calculation is OK and the red text shows that there are something wrong with the calculation: there are more or less hours or final weight. When everything is green or when all final weight are 100 and the working hours are the same as showned at these instructions, click on 'Finish'</div>"
       expand: Expand all
       compress: Compress all
       share_wh: Share working/hours
@@ -2439,6 +2450,11 @@ en_US:
       finish: Finish
       draggable_title: ANALYZER
       draggable_info: Click and drag to move the component
+      groups_final_weight: Groups by final weight
+      open_window_analyzer: 'Open Window: ANALYZER'
+      window_analyzer_home: Home analyzer (click to close)
+      window_analyzer_end: End analyzer (click to close)
+      analyzer: Analyzer
     mail:
       subject_new: 'Warning: New activity'
       subject_update: 'Warning: Active change'
@@ -3139,8 +3155,9 @@ en_US:
       result_search: "Access table with search's result"
 
   shortcut:
-    shortcut_link: "General shortcuts [? + Shift]"
-    shortcut_menu_title: "Keyboard Shortcuts"
+    shortcut_link: "General shortcuts [Shift + ?]"
+    shortcut_link_code: 191
+    shortcut_menu_title: "General Shortcuts (keyboard)"
     no_shortcuts: "No shortcuts"
     close: "Close"
     click_to_close: "Click to close shortcuts window"
@@ -3302,56 +3319,69 @@ en_US:
         menu_dc_lesson: "Digital Class"
         menu_dc_lesson_key: "Shift + I"
         menu_discussion: "Discussions"
-        menu_discussion_key: "Shift + F"
-        menu_portfolio: "Portfolio"
-        menu_portfolio_key: "Shift + T"
-        menu_exam: "Tests"
-        menu_exam_key: "Shift + E"
+        menu_discussion_key: "Shift + D"
+        menu_portfolio: "Portfolio (Assignments)"
+        menu_portfolio_key: "Shift + A"
+        menu_exam: "Tests (Exams)"
+        menu_exam_key: "Shift + T"
         menu_score_student: "Scores"
-        menu_score_student_key: "Shift + C"
+        menu_score_student_key: "Shift + S"
         menu_chat: "Chat"
-        menu_chat_key: "Shift + A"
+        menu_chat_key: "Shift + C"
         menu_webconference: "Webconference"
         menu_webconference_key: "Shift + W"
-        menu_score_professor: "Teacher Score"
+        menu_score_professor: "Teacher Scores"
         menu_score_professor_key: "Shift + O"
         menu_program: "Program"
         menu_program_key: "Shift + P"
         menu_agenda: "Agenda"
-        menu_agenda_key: "Shift + D"
+        menu_agenda_key: "Shift + G"
         menu_bibliography: "Bibliography"
         menu_bibliography_key: "Shift + B"
         menu_participants: "Participants"
         menu_participants_key: "Shift + R"
-        menu_content_edition: "Content"
+        menu_content_edition: "Edition Content"
         menu_content_edition_key: "Shift + N"
         menu_messages: "Messages"
-        menu_messages_key: "Shift + S"
+        menu_messages_key: "Shift + M"
         menu_registration: "Registration"
-        menu_registration_key: "Shift + G"
+        menu_registration_key: "Shift + T"
+        menu_home: "Curriculum Unit Home"
+        menu_home: "Shift + H"
       code:
         menu_lesson: 76
         menu_support_material: 85
         menu_dc_lesson: 73
-        menu_discussion: 70
-        menu_portfolio: 84
+        menu_discussion: 68
+        menu_portfolio: 65
         menu_exam: 69
-        menu_score_student: 67
-        menu_chat: 65
+        menu_score_student: 83
+        menu_chat: 67
         menu_webconference: 87
         menu_score_professor: 79
         menu_program: 80
-        menu_agenda: 68
+        menu_agenda: 71
         menu_bibliography: 66
         menu_participants: 82
         menu_content_edition: 78
-        menu_messages: 83
-        menu_registration: 71
+        menu_messages: 77
+        menu_registration: 84
+        menu_home: 72
+      complement:
+        menu_portfolio: " (Assignments)"
+        menu_exam: " (Exams)"
     comments:
       name:
         title: "Comments [C]"
       code:
         title: 67
+    editions:
+      name:
+        window: "Analyzer [A]"
+        analyzer_position: "Analyzer Start Position [Shift + A]"
+      code:
+        window: 65
+        analyzer_position: 65
 
   scores:
     index:
@@ -4070,6 +4100,9 @@ en_US:
         associated_text: Associated text
         new: New Text
         import: Import from issues
+      media:
+        add_images: Add Images
+        add_audios: Add audio
     labels:
       labels: 'labels: '
     error:

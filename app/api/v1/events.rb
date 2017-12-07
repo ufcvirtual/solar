@@ -14,16 +14,11 @@ module V1
       put "/:id" do
         begin
           event = ScheduleEvent.find(params[:id])
-          old_start_hour = event.start_hour
-          old_end_hour = event.end_hour
-          old_start_date = event.schedule.start_date
-          old_end_date = event.schedule.end_date
           ActiveRecord::Base.transaction do
 
             # if editing all groups of event (when size is not one)
             if event.academic_allocations.size == params[:groups].size && params[:groups].size > 1
               start_hour, end_hour = params[:start].split(":"), params[:end].split(":")
-              
               
               event.schedule.update_attributes! start_date: params[:date], end_date: params[:date]
               event.api = true
@@ -43,8 +38,6 @@ module V1
                 # remove event if last group or remove group ac 
                 event.api = true
                 event.destroy
-
-                send_email(group_events.first[:id], true, old_start_date, old_end_date, old_start_hour, old_end_hour) 
               end
 
               {id: group_events.first[:id]}
@@ -75,7 +68,6 @@ module V1
             offer = get_offer(params[:curriculum_unit_code], params[:course_code], params[:semester])
             group_events = create_event(params, offer.allocation_tag.related, offer)
           end
-          send_email(group_events.first[:id], false) 
           group_events
         end
 
@@ -89,20 +81,18 @@ module V1
       end
       delete "/:ids" do
         begin
-          puts 'Apagando eventos'
           ScheduleEvent.transaction do
             offer = get_offer(params[:curriculum_unit_code], params[:course_code], params[:semester])
             events = ScheduleEvent.where(id: params[:ids].split(","))
-            p offer
-            p events
             params[:groups].each do |code|
               group = get_offer_group(offer, code)
               group_at = group.allocation_tag.id
 
               events.each do |event|
                 if event.academic_allocations.size > 1 || event.academic_allocations.first.allocation_tag_id != group_at
-                  send_email(event.id)
-                  event.academic_allocations.where(allocation_tag_id: group_at).destroy_all
+                  acs = event.academic_allocations.where(allocation_tag_id: group_at)
+                  AcademicTool.send_email(event, acs)
+                  acs.destroy_all
                 else
                   event.api = true
                   raise event.errors.full_messages unless event.destroy

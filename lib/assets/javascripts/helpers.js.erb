@@ -206,6 +206,9 @@ $.fn.call_fancybox = function (options) {
           locked: false,
           closeClick: false
         },
+        title : {
+          type : 'inside'
+        },
         autoDimensions: true,
         width: '100px',
         maxHeight: '60%'
@@ -380,6 +383,10 @@ function save_values_ckeditor(blank_message){
     var ckf = $('#'+CKEDITOR.instances[name].id+'_contents iframe');
     var content = ckf.contents().find('body').html();
     var displayNone = (ckf.parents(".nested_fields[style*='display: none']").length > 0) ? true : false;
+
+    if(ckf.parent().parent().parent()[0].id == 'cke_question_texts_text'){
+      continue;
+    }
 
     if ((typeof content != 'undefined') && (!displayNone)) {
       count++;
