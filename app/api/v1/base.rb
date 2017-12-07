@@ -20,6 +20,7 @@ module V1
     mount Taggables
     mount Savs
     mount Comments
+    mount Webconferences
 
     mount RemoveAfterChanges
   end
