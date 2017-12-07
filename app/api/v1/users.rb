@@ -141,6 +141,7 @@ module V1
         get "validates/:cpf" do
           begin
             error = 0
+            user = User.where(cpf: params[:cpf]).first_or_initialize
 
             cpf = params[:cpf].delete('.').delete('-')
             if params[:email].present?
@@ -148,9 +149,12 @@ module V1
             end
 
             if params[:username].present?
-              error = error | 4 if User.where("lower(username) = ? AND cpf != ?", params[:username].downcase, cpf).any?
+              if User.where("lower(username) = ? AND cpf != ?", params[:username].downcase, cpf).any?
+                error = error | 4
+              elsif (user.username.downcase != params[:username].downcase)
 
-              user = User.new username: params[:username].downcase
+              user.username = params[:username].downcase
+              user.synchronizing = true
               user.valid?
               error = error | 8 if user.errors[:username].any?
             end
