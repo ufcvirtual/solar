@@ -384,6 +384,10 @@ function save_values_ckeditor(blank_message){
     var content = ckf.contents().find('body').html();
     var displayNone = (ckf.parents(".nested_fields[style*='display: none']").length > 0) ? true : false;
 
+    if(ckf.parent().parent().parent()[0].id == 'cke_question_texts_text'){
+      continue;
+    }
+
     if ((typeof content != 'undefined') && (!displayNone)) {
       count++;
       if ( (content == "<p><br></p>" || content == "") && (count > 0) ) {
