@@ -1,21 +1,22 @@
-object @offers
-
-@offers.each do |of|
-	of.status = @group_status
-end	
+collection @offers
 
 child :course do
-  attributes :code, :name
+  attributes :id, :code, :name
 end
 
 child :curriculum_unit do
-  attributes :name, :code, :resume, :syllabus, :credits, :working_hours
+  attributes :id, :name, :code, :resume, :syllabus, :credits, :working_hours
   node(:curriculum_unit_type) { |uc| uc.curriculum_unit_type.description }
 end
 
-child get_groups: :groups do 
-  attributes :code, :status
-  node(:count_students) { |g| g.students_participants.count }
+child :semester do
+  attributes :name
 end
 
-
+child @groups do
+  attributes :id, :code, :status
+  node :students do |g|
+    students = g.students_participants
+    {count: students.count, names: (students.map(&:name) rescue [])}
+  end
+end

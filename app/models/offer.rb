@@ -11,6 +11,7 @@ class Offer < ActiveRecord::Base
   has_one :curriculum_unit_type, through: :curriculum_unit
 
   has_many :groups
+  has_many :active_groups, conditions: 'status=true', class_name: 'Group', foreign_key: "offer_id"
   has_many :academic_allocations, through: :allocation_tag
   has_many :lesson_modules,       through: :academic_allocations, source: :academic_tool, source_type: "LessonModule"
   has_many :assignments,          through: :academic_allocations, source: :academic_tool, source_type: "Assignment"
@@ -35,7 +36,7 @@ class Offer < ActiveRecord::Base
 
   after_save :update_digital_class, if: "curriculum_unit_id_changed? || course_id_changed? || semester_id_changed?"
 
-  attr_accessor :type_id, :verify_current_date, :status
+  attr_accessor :type_id, :verify_current_date
 
   def must_be_unique
     equal_offers = Offer.find_all_by_course_id_and_curriculum_unit_id_and_semester_id(course_id, curriculum_unit_id, semester_id)
@@ -139,10 +140,6 @@ class Offer < ActiveRecord::Base
   def is_active?
     Date.today <= end_date
   end
-
-  def get_groups
-    groups = self.status.nil? ? Group.where(offer_id: self.id) : Group.where("offer_id = ? AND status = ?", self.id, 'true')
-  end  
 
   def parent_name
     curriculum_unit.nil? ? course.name : curriculum_unit.name
