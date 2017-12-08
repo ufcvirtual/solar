@@ -7,7 +7,7 @@
     .block_content
       .questions
         - text = QuestionText.find(@question.question_text_id).text.html_safe unless @question.question_text_id.nil?
-        - unless @question.question_text_id.nil?  
+        - unless @question.question_text_id.nil? 
           %ul.question_texts  
             %li#question_text    
               .legend 

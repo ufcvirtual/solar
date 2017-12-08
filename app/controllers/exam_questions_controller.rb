@@ -59,7 +59,6 @@ class ExamQuestionsController < ApplicationController
   def edit
     @exam_question = ExamQuestion.find(params[:id])
     @question_text = QuestionText.find(@exam_question.question.question_text_id) unless @exam_question.question.question_text_id.blank?
-    #@question_text = @exam_question.question.question_text.nil? == true ? "" : @exam_question.question.question_text.text 
     build_exam_question
   end
 
@@ -70,6 +69,12 @@ class ExamQuestionsController < ApplicationController
     if params['question_texts']['media_question'].to_i == 1
       if !params['question_texts_id'].blank?
         @question_text = QuestionText.find(params['question_texts_id'])
+
+        if !@question_text.text.blank? && (@question_text.text != params['question_texts']['text'].strip)
+          @question_text.text = params['question_texts']['text']
+          @question_text.save
+        end
+
         @exam_question.question.question_text_id = @question_text.id
       elsif !params['question_texts']['text'].blank?
         @question_text = QuestionText.new(text: params['question_texts']['text'])
