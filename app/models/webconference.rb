@@ -263,4 +263,18 @@ class Webconference < ActiveRecord::Base
     errors.add(:initial_time, I18n.t('schedules.errors.offer_end')) if offer.end_date < (initial_time + duration.minutes).to_date
     errors.add(:initial_time, I18n.t('schedules.errors.offer_start')) if offer.start_date > initial_time.to_date
   end
+
+  def comments_by_user
+    return [] if User.current.blank?
+    acu = AcademicAllocationUser.find_one(ac_id, User.current.id)
+    return [] if acu.blank?
+    acu.comments
+  end
+
+  def get_all_recordings_urls
+    urls = []
+    urls << recordings([], at_id).collect{|r| Bbb.get_recording_url(r)}
+    urls.flatten
+  end
+
 end
