@@ -26,28 +26,30 @@ class ExamQuestionsController < ApplicationController
     authorize! :create, Question, { on: at_ids = @exam_question.exam.allocation_tags.map(&:id) }
     @exam_question.question.user_id = current_user.id
 
-    if !params['question_texts']['text'].blank?
-      @question_text = QuestionText.new(text: params['question_texts']['text'])
-      @question_text.save
-      @exam_question.question.question_text_id = @question_text.id
-    elsif !params['question_texts_id'].blank?
-      @question_text = QuestionText.find(params['question_texts_id'])
-      @exam_question.question.question_text_id = @question_text.id
-    end  
-
-    if @exam_question.save
-      if @exam_question.exam.questions.size > 1
-        render partial: 'question', locals: { question: @exam_question.question, exam_question: @exam_question, exam: @exam_question.exam, hide_columns: false, can_see_preview: true }
-      else
-        redirect_to exam_questions_path(exam_id: @exam_question.exam_id, allocation_tags_ids: at_ids)
-      end
-    else
-      @errors = []
-      @exam_question.errors.each do |attribute, erro|
-        @object = "exam_question_"+ attribute.to_s
-        @errors << t(attribute) + erro
+    ActiveRecord::Base.transaction do
+      if !params['question_texts']['text'].blank?
+        @question_text = QuestionText.new(text: params['question_texts']['text'])
+        @question_text.save
+        @exam_question.question.question_text_id = @question_text.id
+      elsif !params['question_texts_id'].blank?
+        @question_text = QuestionText.find(params['question_texts_id'])
+        @exam_question.question.question_text_id = @question_text.id
       end  
-      render json: { success: false, alert: @errors.join(', '), object: @object.gsub('.', '_')}, status: :unprocessable_entity
+
+      if @exam_question.save
+        if @exam_question.exam.questions.size > 1
+          render partial: 'question', locals: { question: @exam_question.question, exam_question: @exam_question, exam: @exam_question.exam, hide_columns: false, can_see_preview: true }
+        else
+          redirect_to exam_questions_path(exam_id: @exam_question.exam_id, allocation_tags_ids: at_ids)
+        end
+      else
+        @errors = []
+        @exam_question.errors.each do |attribute, erro|
+          @object = "exam_question_"+ attribute.to_s
+          @errors << t(attribute) + erro
+        end  
+        render json: { success: false, alert: @errors.join(', '), object: @object.gsub('.', '_')}, status: :unprocessable_entity
+      end
     end
 
   rescue CanCan::AccessDenied

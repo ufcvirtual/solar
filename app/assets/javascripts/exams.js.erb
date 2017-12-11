@@ -85,7 +85,7 @@ function show_text(element){
   div.stop().slideToggle();
   $('.show_questions_description_ico', $(element).parent()).each(function(){
     $(this).toggle();
-
+    $.fancybox.update();
   });
   if(div.is(':visible'))
     focus_element(div);
