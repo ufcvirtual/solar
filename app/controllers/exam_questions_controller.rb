@@ -58,14 +58,15 @@ class ExamQuestionsController < ApplicationController
 
   def edit
     @exam_question = ExamQuestion.find(params[:id])
-    @question_text = @exam_question.question.question_text.nil? == true ? "" : @exam_question.question.question_text.text 
+    @question_text = QuestionText.find(@exam_question.question.question_text_id) unless @exam_question.question.question_text_id.blank?
+    #@question_text = @exam_question.question.question_text.nil? == true ? "" : @exam_question.question.question_text.text 
     build_exam_question
   end
 
   def update
     authorize! :update, Question
     @exam_question = ExamQuestion.find params[:id]
-    
+
     if params['question_texts']['media_question'].to_i == 1
       if !params['question_texts_id'].blank?
         @question_text = QuestionText.find(params['question_texts_id'])

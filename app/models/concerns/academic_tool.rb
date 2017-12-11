@@ -136,7 +136,7 @@ module AcademicTool
       ats = (acs.nil? ? academic_allocations : acs).map(&:allocation_tag).flatten.uniq rescue [acs.allocation_tag]
 
       ats.each do |at|
-        emails = User.with_access_on('receive_academic_tool_notification','emails',[at.id]).map(&:email)
+        emails = User.with_access_on('receive_academic_tool_notification','emails',[at.id]).map(&:email).uniq
 
         unless emails.empty?
           if ((verify_type == 'delete') || (respond_to?(:status_changed?) && (status_changed? && !status)))
