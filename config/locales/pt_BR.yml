@@ -3398,6 +3398,9 @@ pt_BR:
       all: Todos
       result_search: "Ir para tabela com o resultado da busca"
 
+  draggable:    
+    close: Fechar analisador
+
   shortcut:
     shortcut_link: "Atalhos gerais [Shift + ?]"
     shortcut_link_code: 191
@@ -3621,10 +3624,10 @@ pt_BR:
     editions:
       name:
         window: "Analizador [A]"
-        analyzer_position: "Posição inicial Analizador [Shift + A]"
+        analyzer_position: "Posição inicial Analizador [Shift + L]"
       code:
         window: 65
-        analyzer_position: 65
+        analyzer_position: 83
 
   scores:
     index:
