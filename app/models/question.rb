@@ -25,6 +25,8 @@ class Question < ActiveRecord::Base
 
   validates :enunciation, :type_question, presence: true
 
+  validate :enunciation_presence
+
   validate :verify_labels, :verify_files
 
   validate :verify_privacy, if: 'privacy_changed? && privacy && !new_record?'
@@ -33,6 +35,10 @@ class Question < ActiveRecord::Base
   before_destroy { question_labels.clear }
 
   before_save :get_labels
+
+  def enunciation_presence
+    errors.add :enunciation, :blank  if enunciation.blank? || enunciation == '<br>' || enunciation == '<p><br></p>'
+  end
 
   def reject_images(img)
     (img[:image].blank? && (new_record? || img[:id].blank?))
