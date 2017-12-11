@@ -3154,6 +3154,9 @@ en_US:
       profile: Profile
       result_search: "Access table with search's result"
 
+  draggable:    
+    close: Close analyzer
+
   shortcut:
     shortcut_link: "General shortcuts [Shift + ?]"
     shortcut_link_code: 191
@@ -3378,10 +3381,10 @@ en_US:
     editions:
       name:
         window: "Analyzer [A]"
-        analyzer_position: "Analyzer Start Position [Shift + A]"
+        analyzer_position: "Analyzer Start Position [Shift + L]"
       code:
         window: 65
-        analyzer_position: 65
+        analyzer_position: 83
 
   scores:
     index:
