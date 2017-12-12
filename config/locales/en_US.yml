@@ -2411,6 +2411,7 @@ en_US:
       assignments_call: 'Manage evaluative / frequency assignments'
       webconferences_call: 'Manage evaluative / frequency webconferences'
       offer_period: Offer already ended
+      same_type_af: must have same value at 'Final Exam'
     tools:
       expand: Expand
       compress: Compress
