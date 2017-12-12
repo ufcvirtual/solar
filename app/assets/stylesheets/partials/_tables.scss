@@ -62,7 +62,7 @@ table.tb_list {
 
   a {
     text-decoration: underline;
-    word-break: break-all; 
+    word-break: break-word; 
   }
 
   h4 {
@@ -76,7 +76,7 @@ table.tb_list {
     /*    border-right: 1px solid $border_color;*/
     // white-space: normal;
     word-wrap: break-word;
-    word-break: break-all;
+    word-break: break-word;
   }
 
   td:last-child, th.act_like_td:last-child {
