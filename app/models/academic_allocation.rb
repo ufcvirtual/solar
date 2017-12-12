@@ -135,7 +135,7 @@ class AcademicAllocation < ActiveRecord::Base
     errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.single_equivalent')) if AcademicAllocation.where(equivalent_academic_allocation_id: equivalent_academic_allocation_id).where('id != :id', { id: id }).any? && (academic_tool_type != 'ChatRoom' || ChatRoom.where(id: [academic_tool_id, eq_ac.academic_tool_id]).map(&:chat_type).include?(0))
 
     errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.nested')) if AcademicAllocation.where(equivalent_academic_allocation_id: id).any? && !equivalent_academic_allocation_id.nil?
-    # errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.same_type')) if academic_tool_type != eq_ac.academic_tool_type
+    errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.same_type_af')) final_exam != eq_ac.final_exam #if academic_tool_type != eq_ac.academic_tool_type
 
     errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.eq_evaluative')) if evaluative != eq_ac.try(:evaluative)
     errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.eq_frequency')) if frequency != eq_ac.try(:frequency)
