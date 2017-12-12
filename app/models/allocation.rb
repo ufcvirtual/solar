@@ -310,7 +310,11 @@ class Allocation < ActiveRecord::Base
           else
             # if doesnt have a final exam grade
             if final_exam_grade.blank?
-              update_attributes grade_situation: FinalExamPending
+              if allocation_tag.academic_allocations.where(final_exam: true).any?
+                update_attributes grade_situation: FinalExamPending
+              else
+                update_attributes grade_situation: Failed
+              end
             # has a final exam grade 
             else
               # if there is a minimum grade to final exam and it is not enough
