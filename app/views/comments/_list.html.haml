@@ -26,6 +26,7 @@
       $.get("#{new_comment_path(tool_id: tool.id, tool: tool_type, student_id: (@student_id || @user.try(:id)), group_id: @group_id, score_type: @score_type)}", function(data){
         $(".comment_form").html(data);
         $("#no_itens_message_comment").addClass('hide_message');
+        $.fancybox.update();
       }).error(function(data){
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")
