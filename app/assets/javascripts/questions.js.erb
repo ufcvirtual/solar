@@ -85,6 +85,8 @@ function go_to_items(){
   $('#dot-medias').removeClass('active');
   $('li.items').addClass('active');
   $('#dot-items').addClass('active');
+  $.fancybox.update();
+  $('.block_content').css('width', '600');
 }
 
 function go_to_medias(){
@@ -97,6 +99,8 @@ function go_to_medias(){
   $('#dot-items').removeClass('active');
   $('li.medias').addClass('active');
   $('#dot-medias').addClass('active');
+  $.fancybox.update();
+  $('.block_content').css('width', 'auto');
 }
 
 function back(){
@@ -109,7 +113,8 @@ function back(){
   $('li.medias').removeClass('active');
   $('#dot-items').removeClass('active');
   $('#dot-medias').removeClass('active');
-
+  $.fancybox.update();
+  $('.block_content').css('width', 'auto');
 }
 function back_medias(){
   go_to_medias();
@@ -201,7 +206,7 @@ function edit_question(icon, replace_list){
             for(name in CKEDITOR.instances){
               CKEDITOR.instances[name].setData("");
               CKEDITOR.remove(CKEDITOR.instances[name]);
-            }
+            } 
           }
       });
     }).error(function(data){
