@@ -241,7 +241,7 @@ class Allocation < ActiveRecord::Base
           FROM group_participants 
           WHERE user_id = #{user_id}
         )
-        SELECT SUM(COALESCE(acu.grade, acu_eq.max_grade, 0))/COUNT(acu.id) AS grade
+        SELECT SUM(COALESCE(acu.grade, acu_eq.max_grade, 0))/COUNT(academic_allocations.id) AS grade
         FROM academic_allocations
         LEFT JOIN academic_allocation_users acu  ON acu.academic_allocation_id = academic_allocations.id AND (acu.user_id = #{user_id} OR acu.group_assignment_id IN (select group_id from groups))
         LEFT JOIN (
@@ -261,7 +261,7 @@ class Allocation < ActiveRecord::Base
           AND
           academic_allocations.equivalent_academic_allocation_id IS NULL
           AND
-          acu.grade IS NOT NULL;
+          (acu.grade IS NOT NULL OR acu_eq.max_grade IS NOT NULL);
       SQL
       update_attributes final_exam_grade: ((afs.empty? || afs.first[:grade].blank?) ? nil : afs.first[:grade].to_f.round(2))
     elsif !final_exam_grade.blank?
@@ -275,6 +275,7 @@ class Allocation < ActiveRecord::Base
   end
 
   def set_situation(manually = false)
+
     course = allocation_tag.get_course
     uc = allocation_tag.get_curriculum_unit
     date = allocation_tag.situation_date
@@ -293,7 +294,6 @@ class Allocation < ActiveRecord::Base
 
     # if today should update situation or mannually update and has passing grade or hours defined
     if ((!date.nil? && Date.today >= date) || manually || allocation_tag.setted_situation) && (has_passing_grade || hours_defined)
-
       # if hours defined and doesnt have enough hours
       if (hours_defined && (working_hours.blank? || ((min_hours*0.01)*uc.working_hours > working_hours)))
         update_attributes grade_situation: FailedFrequency
