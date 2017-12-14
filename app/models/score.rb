@@ -674,7 +674,7 @@ class Score # < ActiveRecord::Base
             NULL as moderator,
             exams.duration::text,
             NULL as server,
-            COALESCE(exams.result_release::timestamp, ((s.end_date || ' ' || COALESCE(exams.end_hour, '23:59'))::timestamp + interval '1 min')::timestamp) AS release_date,
+            COALESCE(exams.result_release::timestamp, ((s.end_date || ' ' || COALESCE(CASE WHEN exams.end_hour='' THEN NULL ELSE exams.end_hour END, '23:59'))::timestamp + interval '2 min')::timestamp) AS release_date,
             CASE 
               WHEN (current_date >= s.start_date AND current_date <= s.end_date) AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time > to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time < to_timestamp(exams.end_hour, 'HH24:MI:SS')::time) THEN true
               ELSE 
