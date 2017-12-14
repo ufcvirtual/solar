@@ -80,7 +80,7 @@ class Score # < ActiveRecord::Base
         #{evaluated_status}
         WHEN assignments.id IS NOT NULL AND assignments.type_assignment = #{Assignment_Type_Group} AND gp.id IS NULL THEN 'without_group'
         WHEN (current_date < schedules.start_date AND (assignments.start_hour IS NULL OR assignments.start_hour = '')) OR (current_date = schedules.start_date AND (assignments.start_hour IS NOT NULL AND assignments.start_hour != '' AND current_time<to_timestamp(assignments.start_hour, 'HH24:MI:SS')::time)) OR (current_date < schedules.start_date AND (assignments.start_hour IS NOT NULL AND assignments.start_hour != '')) then 'not_started'
-        WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Assignment' AND (af.id IS NOT NULL OR (aw.id IS NOT NULL))))) THEN 'sent'
+        WHEN (#{sent_status} OR ((academic_allocation_users.status IS NULL OR academic_allocation_users.status = 2) AND (academic_allocations.academic_tool_type = 'Assignment' AND (af.id IS NOT NULL OR (aw.id IS NOT NULL))))) THEN 'sent'
         WHEN schedules.end_date >= current_date THEN 'to_send'
         ELSE 
           'not_sent'
@@ -112,7 +112,7 @@ class Score # < ActiveRecord::Base
       users.id AS user_id, users.name AS user_name, users.active, NULL AS group,
       CASE
         #{evaluated_status}
-        WHEN (#{sent_status} OR  academic_allocation_users.status = 1 OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'ChatRoom' AND chat_messages.id IS NOT NULL))) THEN 'sent'
+        WHEN (#{sent_status} OR  academic_allocation_users.status = 1 OR ((academic_allocation_users.status IS NULL OR academic_allocation_users.status = 2)  AND (academic_allocations.academic_tool_type = 'ChatRoom' AND chat_messages.id IS NOT NULL))) THEN 'sent'
         WHEN schedules.start_date > current_date OR (schedules.start_date = current_date AND current_time < to_timestamp(chat_rooms.start_hour, 'HH24:MI:SS')::time) THEN 'not_started'
         WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (chat_rooms.start_hour IS NULL OR current_time>to_timestamp(chat_rooms.start_hour, 'HH24:MI:SS')::time ) AND (chat_rooms.end_hour IS NULL OR current_time<=to_timestamp(chat_rooms.end_hour, 'HH24:MI:SS')::time) THEN 'to_send'
         ELSE 
@@ -142,7 +142,7 @@ class Score # < ActiveRecord::Base
       users.id AS user_id, users.name AS user_name, users.active, NULL AS group,
       CASE
         #{evaluated_status}
-        WHEN (#{sent_status} OR academic_allocation_users.status = 1 OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Discussion' AND discussion_posts.id IS NOT NULL))) THEN 'sent'
+        WHEN (#{sent_status} OR academic_allocation_users.status = 1 OR ((academic_allocation_users.status IS NULL OR academic_allocation_users.status = 2) AND (academic_allocations.academic_tool_type = 'Discussion' AND discussion_posts.id IS NOT NULL))) THEN 'sent'
         WHEN schedules.start_date > current_date THEN 'not_started'
         WHEN schedules.start_date <= current_date AND schedules.end_date >= current_date THEN 'to_send'
         ELSE 
@@ -230,7 +230,7 @@ class Score # < ActiveRecord::Base
       users.id AS user_id, users.name AS user_name, users.active, NULL AS group,
       CASE
         #{evaluated_status}
-        WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.id IS NOT NULL))) THEN 'sent'
+        WHEN (#{sent_status} OR ((academic_allocation_users.status IS NULL OR academic_allocation_users.status = 2) AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.id IS NOT NULL))) THEN 'sent'
         WHEN webconferences.initial_time > now() THEN 'not_started'
         WHEN webconferences.initial_time + (interval '1 min')*webconferences.duration > now() THEN 'to_send'
         ELSE 
@@ -284,7 +284,7 @@ class Score # < ActiveRecord::Base
               #{evaluated_status}
               WHEN assignments.id IS NOT NULL AND assignments.type_assignment = #{Assignment_Type_Group} AND ga.id IS NULL THEN 'without_group'
               WHEN (current_date < schedules.start_date AND (assignments.start_hour IS NULL OR assignments.start_hour = '')) OR (current_date = schedules.start_date AND (assignments.start_hour IS NOT NULL AND assignments.start_hour != '' AND current_time<to_timestamp(assignments.start_hour, 'HH24:MI:SS')::time)) OR (current_date < schedules.start_date AND (assignments.start_hour IS NOT NULL AND assignments.start_hour != '')) then 'not_started'
-              WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Assignment' AND (af.id IS NOT NULL OR (aw.id IS NOT NULL))))) THEN 'sent'
+              WHEN (#{sent_status} OR ((academic_allocation_users.status IS NULL  OR academic_allocation_users.status = 2) AND (academic_allocations.academic_tool_type = 'Assignment' AND (af.id IS NOT NULL OR (aw.id IS NOT NULL))))) THEN 'sent'
               WHEN schedules.end_date >= current_date THEN 'to_send'
               ELSE 
                 'not_sent'
@@ -304,7 +304,7 @@ class Score # < ActiveRecord::Base
           SELECT 
           CASE
             #{evaluated_status}
-            WHEN (#{sent_status} OR  academic_allocation_users.status = 1 OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'ChatRoom' AND chat_messages.id IS NOT NULL))) THEN 'sent'
+            WHEN (#{sent_status} OR  academic_allocation_users.status = 1 OR ((academic_allocation_users.status IS NULL OR academic_allocation_users.status = 2) AND (academic_allocations.academic_tool_type = 'ChatRoom' AND chat_messages.id IS NOT NULL))) THEN 'sent'
             WHEN schedules.start_date > current_date OR (schedules.start_date = current_date AND current_time < to_timestamp(chat_rooms.start_hour, 'HH24:MI:SS')::time) THEN 'not_started'
             WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (chat_rooms.start_hour IS NULL OR current_time>to_timestamp(chat_rooms.start_hour, 'HH24:MI:SS')::time ) AND (chat_rooms.end_hour IS NULL OR current_time<=to_timestamp(chat_rooms.end_hour, 'HH24:MI:SS')::time) THEN 'to_send'
             ELSE 
@@ -325,7 +325,7 @@ class Score # < ActiveRecord::Base
           SELECT 
           CASE
               #{evaluated_status}
-              WHEN (#{sent_status} OR academic_allocation_users.status = 1 OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Discussion' AND discussion_posts.id IS NOT NULL))) THEN 'sent'
+              WHEN (#{sent_status} OR academic_allocation_users.status = 1 OR ((academic_allocation_users.status IS NULL OR academic_allocation_users.status = 2) AND (academic_allocations.academic_tool_type = 'Discussion' AND discussion_posts.id IS NOT NULL))) THEN 'sent'
               WHEN schedules.start_date > current_date THEN 'not_started'
               WHEN schedules.start_date <= current_date AND schedules.end_date >= current_date THEN 'to_send'
               ELSE 
@@ -387,7 +387,7 @@ class Score # < ActiveRecord::Base
           SELECT 
               CASE
             #{evaluated_status}
-            WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.id IS NOT NULL))) THEN 'sent'
+            WHEN (#{sent_status} OR ((academic_allocation_users.status IS NULL OR academic_allocation_users.status = 2) AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.id IS NOT NULL))) THEN 'sent'
             WHEN webconferences.initial_time > now() THEN 'not_started'
             WHEN webconferences.initial_time + (interval '1 min')*webconferences.duration > now() THEN 'to_send'
             ELSE 
@@ -473,7 +473,7 @@ class Score # < ActiveRecord::Base
               END AS closed,
             CASE
              #{evaluated_status}
-             WHEN (#{sent_status} OR academic_allocation_users.status = 1 OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Discussion' AND discussion_posts.id IS NOT NULL))) THEN 'sent'
+             WHEN (#{sent_status} OR academic_allocation_users.status = 1 OR ((academic_allocation_users.status IS NULL OR academic_allocation_users.status = 2) AND (academic_allocations.academic_tool_type = 'Discussion' AND discussion_posts.id IS NOT NULL))) THEN 'sent'
              WHEN s.start_date > current_date THEN 'not_started'
              WHEN s.start_date <= current_date AND s.end_date >= current_date THEN 'opened'
              WHEN s.end_date < current_date THEN 'closed'
@@ -619,7 +619,7 @@ class Score # < ActiveRecord::Base
               END AS closed,
               CASE 
                 #{evaluated_status}   
-                WHEN (#{sent_status} OR  academic_allocation_users.status = 1 OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'ChatRoom' AND chat_messages.count > 0))) THEN 'sent'
+                WHEN (#{sent_status} OR  academic_allocation_users.status = 1 OR ((academic_allocation_users.status IS NULL OR academic_allocation_users.status = 2) AND (academic_allocations.academic_tool_type = 'ChatRoom' AND chat_messages.count > 0))) THEN 'sent'
                 WHEN schedules.start_date > current_date OR (schedules.start_date = current_date AND current_time < to_timestamp(chat_rooms.start_hour, 'HH24:MI:SS')::time) THEN 'not_started'
                 WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (chat_rooms.start_hour IS NULL OR current_time>to_timestamp(chat_rooms.start_hour, 'HH24:MI:SS')::time ) AND (chat_rooms.end_hour IS NULL OR current_time<=to_timestamp(chat_rooms.end_hour, 'HH24:MI:SS')::time) THEN 'opened'
                 ELSE
@@ -820,7 +820,7 @@ class Score # < ActiveRecord::Base
               END AS closed,
             CASE
               #{evaluated_status}
-              WHEN (#{sent_status} OR (academic_allocation_users.status IS NULL AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.id IS NOT NULL))) THEN 'sent'
+              WHEN (#{sent_status} OR ((academic_allocation_users.status IS NULL OR academic_allocation_users.status = 2) AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.id IS NOT NULL))) THEN 'sent'
               when NOW()>webconferences.initial_time AND NOW()<(webconferences.initial_time + webconferences.duration* interval '1 min') then 'in_progress'
               when NOW() < webconferences.initial_time then 'scheduled'
               when (NOW()<webconferences.initial_time + webconferences.duration* interval '1 min' + interval '15 mins') then 'processing'

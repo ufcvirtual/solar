@@ -25,14 +25,15 @@
                   %td{align: "left", headers: "ev_eva_she"}
                     .title= schedule_event.name
                     .description
-                      - if schedule_event.description.size > 80
-                        .description_slice= raw schedule_event.description.slice(0..80) << "..."
-                        .description_complete= raw schedule_event.description
-                        .more_or_less
-                          %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: schedule_event.name) }= t('common_between_pages.more')
-                          %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: schedule_event.name)}= t('common_between_pages.less')
-                      - else
-                        = raw schedule_event.description
+                      - unless schedule_event.description.blank?
+                        - if schedule_event.description.size > 80
+                          .description_slice= raw schedule_event.description.slice(0..80) << "..."
+                          .description_complete= raw schedule_event.description
+                          .more_or_less
+                            %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: schedule_event.name) }= t('common_between_pages.more')
+                            %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: schedule_event.name)}= t('common_between_pages.less')
+                        - else
+                          = raw schedule_event.description
                     .equivalent
                       - unless schedule_event.eq_name.blank?
                         %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{schedule_event.id}", onkeydown: 'click_on_keypress(event, this);' }
@@ -86,14 +87,15 @@
                   %td{align: "left", headers: "ev_fre_she"}
                     .title= schedule_event.name
                     .description
-                      - if schedule_event.description.size > 80
-                        .description_slice= raw schedule_event.description.slice(0..80) << "..."
-                        .description_complete= raw schedule_event.description
-                        .more_or_less
-                          %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: schedule_event.name) }= t('common_between_pages.more')
-                          %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: schedule_event.name)}= t('common_between_pages.less')
-                      - else
-                        = raw schedule_event.description
+                      - unless schedule_event.description.blank?
+                        - if schedule_event.description.size > 80
+                          .description_slice= raw schedule_event.description.slice(0..80) << "..."
+                          .description_complete= raw schedule_event.description
+                          .more_or_less
+                            %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: schedule_event.name) }= t('common_between_pages.more')
+                            %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: schedule_event.name)}= t('common_between_pages.less')
+                        - else
+                          = raw schedule_event.description
                     .equivalent
                       - unless schedule_event.eq_name.blank?
                         %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{schedule_event.id}", onkeydown: 'click_on_keypress(event, this);' }
@@ -146,14 +148,15 @@
                   %td{align: "left", headers: "ev_not_she"}
                     .title= schedule_event.name
                     .description
-                      - if schedule_event.description.size > 80
-                        .description_slice= raw schedule_event.description.slice(0..80) << "..."
-                        .description_complete= raw schedule_event.description
-                        .more_or_less
-                          %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: schedule_event.name) }= t('common_between_pages.more')
-                          %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: schedule_event.name)}= t('common_between_pages.less')
-                      - else
-                        = raw schedule_event.description
+                      - unless schedule_event.description.blank?
+                        - if schedule_event.description.size > 80
+                          .description_slice= raw schedule_event.description.slice(0..80) << "..."
+                          .description_complete= raw schedule_event.description
+                          .more_or_less
+                            %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: schedule_event.name) }= t('common_between_pages.more')
+                            %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: schedule_event.name)}= t('common_between_pages.less')
+                        - else
+                          = raw schedule_event.description
                     .equivalent
                       - unless schedule_event.eq_name.blank?
                         %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{schedule_event.id}", onkeydown: 'click_on_keypress(event, this);' }
