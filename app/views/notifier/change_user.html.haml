@@ -13,7 +13,7 @@
       %p= "Senha: #{@password}"
     - else
       - if @user.integrated && !@user.on_blacklist?
-        %p= link_to('Não lembra sua senha?', "https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do")
+        %p= link_to('Não lembra sua senha?', "https://si3.ufc.br/admin/public/recuperar_senha.jsf")
       - else
         %p= link_to('Não lembra sua senha?', edit_password_url(@user, reset_password_token: @token))
     %br

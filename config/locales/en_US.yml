@@ -1622,8 +1622,14 @@ en_US:
       invalid_token: 'Invalid authentication token.'
       timeout: 'Your session expired, please sign in again to continue.'
       inactive: 'Your account was not activated yet.'
+      invalid_login: Invalid username.
       user:
         not_found_in_database: 'Username or password invalid.'
+    login:
+      signed_in: 'Signed in successfully.'
+      signed_out: 'Signed out successfully.'
+      user:
+        not_found_in_database: 'Signed out successfully.'
     sessions:
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
@@ -1637,7 +1643,7 @@ en_US:
       updated: 'Your password was changed successfully. You are now signed in.'
       updated_not_active: 'Your password was changed successfully.'
       send_paranoid_instructions: "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
-      ma_request: "To recover your access data, go to the address: <a href='https://www.moduloacademico.ufc.br/moduloacademico/' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico</a>."
+      ma_request: "To recover your access data, go to the address: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
     password:
       change_my_password: Change
     passwords:
@@ -1670,13 +1676,13 @@ en_US:
         hello: "Hello %{email}!"
         request: "Someone has requested a link to change your password."
         request_info: "You can do this through the link below."
-        request_info_ma: "As you are an user integrated with Módulo Acadêmico, you must recover your password through it. To do so, access the link below."
+        request_info_ma: "As you are an user integrated with Sigaa, you must recover your password through it. To do so, access the link below."
         ignore: "If you didn't request this, please ignore this email."
         change: "Your password won't change until you access the link above and create a new one."
         username_info: "Your username is: %{username}."
     users:
       user:
-        ma_login_email_msg: "It wasn't possible to verify username and email at Módulo Acadêmico, thus your username and email were defined, respectively, as your CPF and an invalid and random value. Please redefine them."
+        ma_login_email_msg: "It wasn't possible to verify username and email at Sigaa, thus your username and email were defined, respectively, as your CPF and an invalid and random value. Please redefine them."
         updated: 'You updated your account successfully.'
         signed_up: 'Welcome! You have signed up successfully.'
   support_folder_name: Support Material
@@ -2183,12 +2189,12 @@ en_US:
       edit: Edit
       change_password: Change password
       message_not_found: No user found
-      synchronize: Synchronize with Módulo Acadêmico
-      import: Import data from Módulo Acadêmico
       name: Name
       email: Email
       username: Username
       cpf: CPF
+      synchronize: Synchronize with Sigaa
+      import: Import data from Sigaa
     informations:
       detailed: "Detailed Information"
       personal_data: "Personal Data"
@@ -3091,25 +3097,28 @@ en_US:
   users:
     errors:
       ma:
-        already_exists: already exists on Módulo Acadêmico
-        only_by: can be updated only by Módulo Acadêmico
-        cant_connect: Can't be updated at this moment. Incomplete conection with Módulo Acadêmico.
-        problem_accessing: Problems happened while accessing Módulo Acadêmico. Please try again.
-        login: 'Connection with Módulo Acadêmico has failed, your CPF was used as username. Please try define it again.'
-        email: 'Connection with Módulo Acadêmico has failed, your email was set as an invalid value. Please try define it again.'
+        already_exists: already exists on Sigaa
+        only_by: can be updated only by Sigaa
+        cant_connect: Can't be updated at this moment. Incomplete conection with Sigaa.
+        problem_accessing: Problems happened while accessing Sigaa. Please try again.
+        login: 'Connection with Sigaa has failed, your CPF was used as username. Please try define it again.'
+        email: 'Connection with Sigaa has failed, your email was set as an invalid value. Please try define it again.'
         login_email: 'ma_login_email_msg'
-        synchronize: Error while synchronizing data with Módulo Acadêmico. Please try again.
-        error_synchronize: "It was not possible to synchronize with Módulo Acadêmico because of the following motive(s): %{errors}. Please correct those problems at <a href='https://www.moduloacademico.ufc.br/moduloacademico/' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico</a>"
+        synchronize: Error while synchronizing data with Sigaa. Please try again.
+        error_synchronize: "It was not possible to synchronize with Sigaa because of the following motive(s): %{errors}. Please correct those problems at <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>"
+        selfregistration: "Please do your selfregistration on Sigaa (<a href='https://si3.ufc.br/sigaa/public/cadastro/discente.jsf' target='_blank'>https://si3.ufc.br/sigaa/public/cadastro/discente.jsf</a>). If you've already made it, verify your cpf on 'Registration' or request to atendimento@virtual.ufc.br to import your data."
       cpf_admin: "Only Administrators can update a CPF. To do so, get in touch with atendimento@virtual.ufc.br informing name, current CPF, new CPF and the reason to change it."
+      cpf_as_username: "can't be another's suser CPF"
+      multiple_sessions: "It's not possible to be logged on multiple devices at same time."
     notices:
       ma:
-        use_ma_data: "Your access data were imported from Módulo Acadêmico. To change or recover your access data, go to the address: <a href='https://www.moduloacademico.ufc.br/moduloacademico/' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico</a>."
+        use_ma_data: "Your access data were imported from Sigaa. To change or recover your access data, go to the address: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
         synchronize: Data synchronized successfully.
     warnings:
       ma:
-        cpf_not_verified: "It wasn't possible to verify your CPF at Módulo Acadêmico. After logged in, synchronize your data."
-        cpf_not_found: CPF not found at no Módulo Acadêmico
-        not_possible_syncrhonize: It wasn't possible to syncrhonize with Módulo Acadêmico.
+        cpf_not_verified: "It wasn't possible to verify your CPF at Sigaa. After logged in, synchronize your data."
+        cpf_not_found: CPF not found at no Sigaa
+        not_possible_syncrhonize: It wasn't possible to syncrhonize with Sigaa.
       cpf: "To change your CPF, get in touch with atendimento@virtual.ufc.br informing your name, current CPF, new CPF and the reason to change it."
     show:
       not_informed: Not informed
@@ -3132,8 +3141,15 @@ en_US:
       books: "Books: "
       phrase: "Phrase: "
       site: "Site: "
-      integrated: "Integrated with Módulo Acadêmico: "
+      integrated: "Integrated with Sigaa: "
       blacklist: "Exists at Blacklist: "
+      access_data: "Access Data"
+      username: "Username: "
+      email: "Email: "
+      previous_username: "Previous Username: "
+      previous_email: "Previous Email: "
+      last_access: "Last access: "
+      selfregistration: "Has made his selfregistration at Sigaa: "
       y: 'Yes'
       n: 'No'
     request_profile:
@@ -3177,7 +3193,7 @@ en_US:
         updated: Failed to update settings
 
   mysolar:
-    synchronize: Synchronize with Módulo Acadêmico
+    synchronize: Synchronize with Sigaa
     profiles: Profiles
     closed_uc: (closed subject)
     configure: Settings
@@ -4446,10 +4462,10 @@ en_US:
       whats_solar: 'What is Solar?'
       whats_ava: 'What is a LMS?'
       uab_forgot_login_password: "I'm a UAB student or professor and I don't remember my username or password. What should I do?"
-      forgot_login_password_ma: "I don't remember my username or password, but I have access to Módulo Acadêmico. What should I do?"
-      forgot_login_password_sync1: "I can't remember my username or password and also don't have access to Módulo Acadêmico. What should I do?"
-      forgot_login_password_sync2: "I've tryed to register or recover my password, but my data was imported from Módulo Acadêmico and I don't have access to it."
-      forgot_login_password_sync3: "I've tryed recover my password, but I've received a message directing me to Módulo Acadêmico, but I don't have access to it. What should I do?"
+      forgot_login_password_ma: "I don't remember my username or password, but I have access to Sigaa. What should I do?"
+      forgot_login_password_sync1: "I can't remember my username or password and also don't have access to Sigaa. What should I do?"
+      forgot_login_password_sync2: "I've tryed to register or recover my password, but my data was imported from Sigaa and I don't have access to it."
+      forgot_login_password_sync3: "I've tryed recover my password, but I've received a message directing me to Sigaa, but I don't have access to it. What should I do?"
       forgot_login_password: 'Forgot my username and/or password.'
       recovery_password_email: "I already have access to Solar and tryed to recover my password, but I got the following message 'E-mail não encontrado'."
       verify_registration: "I can't remember my username and password and my email was not found. How do I find out if I already have an account at Solar?"
@@ -4486,20 +4502,20 @@ en_US:
     answers:
       whats_solar: "Solar 2.0 is a LMS, learning management system, developed by Virtual UFC Institute (Instituto UFC Virtual), of Federal University of Ceará (Universidade Federal do Ceará). <br/> It is oriented to the teacher and the student, allowing the publication of courses and interaction with them. It was developed to enhance the learning from the relationship with its own graphical user interface environment, so that the user has access to various learning tools and content sharing. <br/> The system is supported by a philosophy of interaction and not of control"
       whats_ava: "LMS - Learning Management Systems are softwares available online which allow the realization of web-courses or even the help and complement of classroom courses by the web."
-      uab_forgot_login_password: "Go to the <a href='https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do' target='_blank'>Módulo Acadêmico</a> to recover your password. <br/> After recovering and updating your password, go back to Solar 2.0 and use the same username and password. If you can't recover your password at Módulo Acadêmico, please Se você não consegue recuperar sua senha no Módulo Acadêmico, please go to your course secretariat."
-      forgot_login_password_ma: "Go to the <a href='https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do' target='_blank'>Módulo Acadêmico</a> to recover your password. After recovering and updating your password, go back to Solar 2.0 and use the same username and password of Módulo Acadêmico."
+      uab_forgot_login_password: "Go to the <a href='https://si3.ufc.br/admin/public/recuperar_senha.jsf' target='_blank'>Sigaa</a> to recover your password. <br/> After recovering and updating your password, go back to Solar 2.0 and use the same username and password. If you can't recover your password at Sigaa, please Se você não consegue recuperar sua senha no Sigaa, please go to your course secretariat."
+      forgot_login_password_ma: "Go to the <a href='https://si3.ufc.br/admin/public/recuperar_senha.jsf' target='_blank'>Sigaa</a> to recover your password. After recovering and updating your password, go back to Solar 2.0 and use the same username and password of Sigaa."
       forgot_login_password_sync: "Get in touch with atendimento@virtual.ufc.br explaining your situation. Remember of informing your cpf and email. Solar support will correct your data and will send, after, an email to recover your password."
       forgot_login_password: "At login page of Solar 2.0 (www.solar.virtual.ufc.br):<br/> ‣ Click on 'Forgot your password?' </br> ‣ Type your registred email. </br> Click on 'Send'. </br> You will receive an email with instructions to choose a new password."
       recovery_password_email: "Get in touch with atendimento@virtual.ufc.br explaining your situation. Remember of informing your cpf and email. Solar support will correct your data and will send, after, an email to recover your password."
       verify_registration: "To know if you already exists at Solar 2.0 or not, you just have to access login page and click on tab 'Sign Up'. On this tab, you will have to type your cpf and click on 'Verify'. Solar will check if you already is registred or not."
-      ma: ‣ Integrated to Módulo Acadêmico
-      not_ma: ‣ Not integrated to Módulo Acadêmico
+      ma: ‣ Integrated to Sigaa
+      not_ma: ‣ Not integrated to Sigaa
       update_data: "To change your data, you have first to be loged in at Solar. After login, follow these steps: </br> ‣ Click on your name at the top of the screen besides the clock<br/>‣ Click on 'Change Profile'<br/>‣ Change the data you want<br/>‣ Click on 'Confirma', the blue botton at the bottom of the page<br/> Didn't understand? You can watch our <a href='https://www.youtube.com/watch?v=cRN-wNAjutk&list=PL79md4kx41yXcTYI6XgnzXyEAAIxL5asx&index=6' target='_blank'>video tutorial</a> (portuguese)."
-      update_data_ma: "To change your data, you have to access Módulo Acadêmico and make the wanted changes.<br/> Username, password or email changes are send to Solar automatically. Any other change must be synchronized with Solar. To do so, after logging in, you must: <br/> ‣ Click on your name at the top of the page besides the clock<br/> ‣ Click on 'Synchronize with Módulo Acadêmico'"
-      update_data_ma_cant: "In this case, your registration at Solar is linked to Módulo Acadêmico."
-      have_access: ‣ If you have access to Módulo Acadêmico
-      dont_have_access: ‣ If you don't have access to Módulo Acadêmico
-      update_data_ma_cant2: "Get in touch with atendimento@virtual.ufc.br explaining your situation so our team verify if it's possible to unlink your profile or not. Remember of informing your cpf and email. <br/> If possible, support will respond with a positive message; Otherwise, it will send you to STI so you can recover your Módulo Acadêmico data."
+      update_data_ma: "To change your data, you have to access Sigaa and make the wanted changes.<br/> Username, password or email changes are send to Solar automatically. Any other change must be synchronized with Solar. To do so, after logging in, you must: <br/> ‣ Click on your name at the top of the page besides the clock<br/> ‣ Click on 'Synchronize with Sigaa'"
+      update_data_ma_cant: "In this case, your registration at Solar is linked to Sigaa."
+      have_access: ‣ If you have access to Sigaa
+      dont_have_access: ‣ If you don't have access to Sigaa
+      update_data_ma_cant2: "Get in touch with atendimento@virtual.ufc.br explaining your situation so our team verify if it's possible to unlink your profile or not. Remember of informing your cpf and email. <br/> If possible, support will respond with a positive message; Otherwise, it will send you to STI so you can recover your Sigaa data."
       invalid_token: "Every password recovery email from Solar 2.0 gives you an url which will allow to choose a new password. Therefore, this url contains a token that is only valid for 24 hours.If your token is invalid, you must generate a new url. See 'Forgot my username and/or password.'"
       how_to_enroll: "To enroll at a subject, it's necessary be registered at Solar 2.0, have logged in and follow these steps: </br> ‣ Access left menu at 'Enrollment' <br/> ‣ Search for subject and course wanted, remembering that it will only be available the courses with opened enrollment period. <br/> ‣ After locating wanted subject, click at 'Enroll'<br/> Didn't understand? You can also watch our <a href='https://www.youtube.com/watch?v=35uwbsETkyY&index=1&list=PL79md4kx41yXcTYI6XgnzXyEAAIxL5asx' target='_blank'>video tutorial</a> (portuguese). <br/> Your request will have to be accepted by responsibles. They will first analyse your request and then accept it or not. When accepted, you will receive an email from Solar 2.0."
       pendent_enroll: "Every enrollment request is not accepted automatically. They all have, therefore, to be accepted or not by responsibles of course. At the moment one enrollment is accepted, the student will receive an email letting him know."
@@ -4587,8 +4603,8 @@ en_US:
       groups_number: Amount of Groups
       users_number: Amount of Registered Users
       users_number_active: Amount of Active Users
-      users_number_module_bound: Users Linked to the MA - Academic Module
-      users_number_module_unbound: Users Unlinked to the MA - Academic Module
+      users_number_module_bound: Users Linked to the Sigaa
+      users_number_module_unbound: Users Unlinked to the Sigaa
       disciplines_amount: Disciplines Amount
       files_portifolio: Assignment files Amount
       number_of_students: Number of active registered students

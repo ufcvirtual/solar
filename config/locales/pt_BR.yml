@@ -682,13 +682,13 @@ pt_BR:
   team: "Equipe"
   forgot_password: "O que fazer se esqueci minha senha? "
   UAB_courses: "‣ Sou aluno ou professor dos cursos da UAB:"
-  answer_UAB_courses: "Dirija-se ao Módulo Acadêmico a fim de recuperar sua senha: <a href='https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do</a>. Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Módulo Acadêmico. Se você não consegue recuperar sua senha no Módulo Acadêmico, favor dirigir-se à secretaria de seu curso."
+  answer_UAB_courses: "Dirija-se ao Sigaa a fim de recuperar sua senha: <a href='https://si3.ufc.br/admin/public/recuperar_senha.jsf' target='_blank'>https://si3.ufc.br/admin/public/recuperar_senha.jsf</a>. Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Sigaa. Se você não consegue recuperar sua senha no Sigaa, favor dirigir-se à secretaria de seu curso."
   tutor: "‣ Não sou aluno nem professor dos cursos da UAB, mas sou tutor ou coordenador:"
-  signin_modulo_academico: "‣ Possuo acesso ao Módulo Acadêmico:"
-  answer_signin_modulo_academico: "Dirija-se ao Módulo Acadêmico a fim de recuperar sua senha: <a href='https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do' target='_blank'> https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do</a> Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Módulo Acadêmico."
-  without_modulo_academico: "‣ Não possuo acesso ao Módulo Acadêmico:"
+  signin_modulo_academico: "‣ Possuo acesso ao Sigaa:"
+  answer_signin_modulo_academico: "Dirija-se ao Sigaa a fim de recuperar sua senha: <a href='https://si3.ufc.br/admin/public/recuperar_senha.jsf' target='_blank'> https://si3.ufc.br/admin/public/recuperar_senha.jsf</a> Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Sigaa."
+  without_modulo_academico: "‣ Não possuo acesso ao Sigaa:"
   answer_without_modulo_academico: "Na tela de login do Solar 2.0 <a href='www.solar.virtual.ufc.br' target='_blank'>(www.solar.virtual.ufc.br)</a>, clique em 'Esqueceu a sua senha?'<br/>Informe o email cadastrado.<br/>Clique em 'Enviar'."
-  received_message: "‣ Recebi a seguinte mensagem me direcionando ao Módulo Acadêmico: 'Para recuperar seus dados de acesso, vá ao endereço: https://www.moduloacademico.ufc.br/moduloacademico':"
+  received_message: "‣ Recebi a seguinte mensagem me direcionando ao Sigaa: 'Para recuperar seus dados de acesso, vá ao endereço: https://si3.ufc.br/sigaa/verTelaLogin.do':"
   answer_received_message: "Entre em contato com o <a href='atendimento@virtual.ufc.br' target='_blank'> atendimento@virtual.ufc.br</a> relatando a situação e aguarde um email para recuperação de senha."
   received_message_instructions: "‣ Recebi a seguinte mensagem: 'Você receberá um email com instruções sobre como resetar sua senha em alguns minutos':"
   answer_received_message_instructions: "Aguarde o email para recuperação de senha."
@@ -699,22 +699,22 @@ pt_BR:
   answer_second_without_UAB_courses: "Acesse a aba 'Cadastrar'. Clique em 'Verificar'. Preencha os campos do cadastro e prossiga até a conclusão do cadastro"
   first_time_solar: "O que fazer para acessar o Solar 2.0 pela primeira vez?"
   student_UAB: "‣ Sou aluno ou professor dos cursos da UAB:"
-  answer_student_UAB: "Utilize o mesmo login e senha do Módulo Acadêmico."
+  answer_student_UAB: "Utilize o mesmo login e senha do Sigaa."
   user_or_password: "‣ Recebi uma mensagem de 'Usuário ou senha inválidos'"
   answer_user_or_password: "Acesse a aba 'Cadastrar'.<br/>Clique em 'Verificar'."
-  received_message_data: "‣ Recebi uma mensagem 'Seus dados de acesso foram importados do Módulo Acadêmico. Para alterar ou recuperar seus dados de acesso, vá ao endereço: https://www.moduloacademico.ufc.br/moduloacademico'."
-  answer_received_message_data: "Seus dados foram importados do Módulo Acadêmico. Utilize o mesmo login e senha do Módulo Acadêmico para efetuar o login no sistema."
+  received_message_data: "‣ Recebi uma mensagem 'Seus dados de acesso foram importados do Sigaa. Para alterar ou recuperar seus dados de acesso, vá ao endereço: https://si3.ufc.br/sigaa/verTelaLogin.do'."
+  answer_received_message_data: "Seus dados foram importados do Sigaa. Utilize o mesmo login e senha do Sigaa para efetuar o login no sistema."
   answer_no_student_UAB: "Tente efetuar o login com os dados prévios do Solar 1.2"
   message_support: "‣ O atendimento me retornou informando que meus dados não podem ser alterados?"
-  answer_message_support: "Acesse o Módulo Acadêmico: <a href='https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do' target='_blank'> https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do</a>. Coloque, no login, o número do seu CPF e, na senha, seu primeiro nome em letras maiúsculas. Após conseguir acesso no Módulo Acadêmico, atualize seus dados, principalmente email, login e senha. Retorne ao Solar 2.0 e, na tela de login, clique em 'Cadastrar' e informe seu cpf. Isto irá atualizar seus dados no Solar 2.0. Após ter seus dados atualizados, acesse o ambiente com o login e senha definidos no Módulo Acadêmico. "
+  answer_message_support: "Acesse o Sigaa: <a href='https://si3.ufc.br/admin/public/recuperar_senha.jsf' target='_blank'> https://si3.ufc.br/admin/public/recuperar_senha.jsf</a>. Coloque, no login, o número do seu CPF e, na senha, seu primeiro nome em letras maiúsculas. Após conseguir acesso no Sigaa, atualize seus dados, principalmente email, login e senha. Retorne ao Solar 2.0 e, na tela de login, clique em 'Cadastrar' e informe seu cpf. Isto irá atualizar seus dados no Solar 2.0. Após ter seus dados atualizados, acesse o ambiente com o login e senha definidos no Sigaa. "
   no_message: "‣ Não recebi nenhuma mensagem:"
   answer_no_message: "Preencha os campos do cadastro e prossiga até a conclusão do cadastro."
   data_wrong: "Meus dados estão incorretos no sistema?"
-  integrated_module: "‣ Sou integrado com o Módulo Acadêmico: "
-  answer_integrated_module: "Após efetuar o login, acesse o menu superior. Clique em seu nome. No submenu, clique em 'Sincronizar com Módulo Acadêmico'. Seus dados serão importados do Módulo Acadêmico."
+  integrated_module: "‣ Sou integrado com o Sigaa: "
+  answer_integrated_module: "Após efetuar o login, acesse o menu superior. Clique em seu nome. No submenu, clique em 'Sincronizar com Sigaa'. Seus dados serão importados do Sigaa."
   persistent_error: "‣ Meus dados continuam errados:"
-  answer_persistent_error: "Acesse o Módulo Acadêmico (<a href='https://www.moduloacademico.ufc.br/moduloacademico/' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico</a>) e atualize seus dados nesse. Retorne ao Solar 2.0 e, novamente, tente 'Sincronizar com Módulo Acadêmico'."
-  no_integrated_module: "‣ Não sou integrado com o Módulo Acadêmico:"
+  answer_persistent_error: "Acesse o Sigaa (<a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>) e atualize seus dados nesse. Retorne ao Solar 2.0 e, novamente, tente 'Sincronizar com Sigaa'."
+  no_integrated_module: "‣ Não sou integrado com o Sigaa:"
   answer_no_integrated_module: "Após efetuar o login, acesse o menu superior. Clique em seu nome. No submenu, clique em 'Editar perfil'. Edite seus dados e clique em 'Confirmar'."
   email_wrong: "‣ Não consigo efetuar o login no sistema e meu email está incorreto:"
   solar_erro: "Meu ambiente está com comportamento de modo estranho?"
@@ -1841,8 +1841,14 @@ pt_BR:
       invalid_token: 'Invalid authentication token.'
       timeout: 'Sua sessão expirou, por favor faça login novamente para continuar.'
       inactive: 'Sua conta ainda não foi ativada.'
+      invalid_login: Login inválido.
       user:
         not_found_in_database: 'Usuário ou senha inválidos.'
+    login:
+      signed_in: 'Login efetuado com sucesso.'
+      signed_out: 'Logout efetuado com sucesso.'
+      user:
+        already_signed_out: Logout efetuado com sucesso
     sessions:
       signed_in: 'Login efetuado com sucesso.'
       signed_out: 'Logout efetuado com sucesso.'
@@ -1856,7 +1862,7 @@ pt_BR:
       updated: 'Sua senha foi modificada com sucesso. Você agora está logado.'
       updated_not_active: 'Sua senha foi modificada com sucesso. Você agora está logado.'
       send_paranoid_instructions: "Um link de recuperação de senha será enviado para seu email, caso ele exista em nossa base de dados."
-      ma_request: "Para recuperar seus dados de acesso, vá ao endereço: <a href='https://www.moduloacademico.ufc.br/moduloacademico/' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico</a>."
+      ma_request: "Para recuperar seus dados de acesso, vá ao endereço: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
     password:
       change_my_password: Alterar
     passwords:
@@ -1889,13 +1895,13 @@ pt_BR:
         hello: "Olá %{email}!"
         request: "Alguém solicitou um link para alterar sua senha. "
         request_info: "Você pode fazer isso através do link abaixo."
-        request_info_ma: "Como você é um usuário integrado ao Módulo Acadêmico, você deve realizar a recuperação de senha através desse. Para isso, acesse o link abaixo."
+        request_info_ma: "Como você é um usuário integrado ao Sigaa, você deve realizar a recuperação de senha através desse. Para isso, acesse o link abaixo."
         ignore: "Se não foi você quem solicitou este link, por favor ignore este email."
         change: "Sua senha não vai ser modificada enquanto você não acessar o link e criar uma nova."
         username_info: "Seu login é: %{username}."
     users:
       user:
-        ma_login_email_msg: "Não foi possível verificar login e email no módulo acadêmico, portanto seu login e email foram definidos, respectivamente, como seu CPF e um valor inválido e aleatório. Favor redefiní-los."
+        ma_login_email_msg: "Não foi possível verificar login e email no Sigaa, portanto seu login e email foram definidos, respectivamente, como seu CPF e um valor inválido e aleatório. Favor redefiní-los."
         updated: 'Dados atualizados com sucesso.'
         signed_up: 'Bem vindo! Sua conta foi criada com sucesso.'
 
@@ -2412,12 +2418,12 @@ pt_BR:
       edit: Editar
       change_password: Alterar senha
       message_not_found: Nenhum usuário encontrado
-      synchronize: Sincronizar com Módulo Acadêmico
-      import: Importar dados do Módulo Acadêmico
       name: Nome
       email: Email
       username: Login
       cpf: CPF
+      synchronize: Sincronizar com Sigaa
+      import: Importar dados do Sigaa
     informations:
       detailed: "Informações Detalhadas"
       personal_data: "Dados Pessoais"
@@ -3012,26 +3018,26 @@ pt_BR:
       evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por mensagem. Deste modo, ao avaliar/informar a frequência de um acesso, todos as outras mensagens do aluno terão a mesma nota/carga horária.'
 
   user_blacklist:
-    add: Desvincular do MA
-    remove: Voltar vínculo com MA
-    cpf_cannot_be_added: 'Não pode ser desvinculado do Módulo Acadêmico.'
+    add: Desvincular do Sigaa
+    remove: Voltar vínculo com Sigaa
+    cpf_cannot_be_added: 'Não pode ser desvinculado do Sigaa.'
     success:
-      created: "CPF '%{cpf}' desvinculado do MA com sucesso."
-      deleted: "CPF '%{cpf}' voltou a ser vinculado ao MA com sucesso."
+      created: "CPF '%{cpf}' desvinculado do Sigaa com sucesso."
+      deleted: "CPF '%{cpf}' voltou a ser vinculado ao Sigaa com sucesso."
     error:
-      created: Erro ao desvincular CPF do MA.
-      deleted: Erro ao retornar vínculo do CPF com o MA.
+      created: Erro ao desvincular CPF do Sigaa.
+      deleted: Erro ao retornar vínculo do CPF com o Sigaa.
     index:
       warning: "<b>Importante:</b> Esses CPFs não necessariamente já estão cadastrados no ambiente."
       cpf_or_name: CPF ou Nome
-      title: CPFs desvinculados do MA
+      title: CPFs desvinculados do Sigaa
       new: Adicionar CPF
       delete: Excluir
       created_at: Adic. Em
       added_by: Adic. Por
       updated_at: Alt. Em
     new:
-      new: Desvincular CPF do MA
+      new: Desvincular CPF do Sigaa
       cpf: CPF
       name: Nome
 
@@ -3342,25 +3348,28 @@ pt_BR:
   users:
     errors:
       ma:
-        already_exists: já em uso no Módulo Acadêmico
-        only_by: pode ser alterado apenas pelo Módulo Acadêmico
-        cant_connect: não pode ser alterado no momento. Conexão incompleta com o Módulo Acadêmico.
-        problem_accessing: Ocorreram problemas ao acessar o Módulo Acadêmico. Favor tentar novamente.
-        login: 'Falha na conexão com o Módulo Acadêmico, utilizando CPF como login. Tente defini-lo novamente.'
-        email: 'Falha na conexão com o Módulo Acadêmico, definindo email como um endereço inválido. Tente defini-lo novamente.'
+        already_exists: já em uso no Sigaa
+        only_by: pode ser alterado apenas pelo Sigaa
+        cant_connect: não pode ser alterado no momento. Conexão incompleta com o Sigaa.
+        problem_accessing: Ocorreram problemas ao acessar o Sigaa. Favor tentar novamente.
+        login: 'Falha na conexão com o Sigaa, utilizando CPF como login. Tente defini-lo novamente.'
+        email: 'Falha na conexão com o Sigaa, definindo email como um endereço inválido. Tente defini-lo novamente.'
         login_email: 'ma_login_email_msg'
-        synchronize: Erro ao sincronizar dados com o Módulo Acadêmico. Favor tentar novamente.
-        error_synchronize: "Não foi possível sincronizar dados com o Módulo Acadêmico pelo(s) seguinte(s) motivo(s): %{errors}. Favor corrigir o(s) problemas(s) relatado(s) em <a href='https://www.moduloacademico.ufc.br/moduloacademico/' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico</a>"
+        synchronize: Erro ao sincronizar dados com o Sigaa. Favor tentar novamente.
+        error_synchronize: "Não foi possível sincronizar dados com o Sigaa pelo(s) seguinte(s) motivo(s): %{errors}. Favor corrigir o(s) problemas(s) relatado(s) em <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>"
+        selfregistration: "Faça seu autocadastro no sigaa (<a href='https://si3.ufc.br/sigaa/public/cadastro/discente.jsf' target='_blank'>https://si3.ufc.br/sigaa/public/cadastro/discente.jsf</a>). Caso já o tenha feito, verifique seu cpf em 'Cadastrar' ou solicite ao atendimento@virtual.ufc.br para importar seus dados."
       cpf_admin: 'Apenas administradores podem alterar CPF. Para fazer a mudança, entre em contato com o atendimento@virtual.ufc.br informando nome, CPF atual, novo CPF e o motivo para a mudança.'
+      cpf_as_username: 'não pode ser o CPF de outro usuário'
+      multiple_sessions: "Não é possível ficar logado em múltiplos dispositivos ao mesmo tempo."
     notices:
       ma:
-        use_ma_data: "Seus dados de acesso foram importados do Módulo Acadêmico. Para alterar ou recuperar seus dados de acesso, vá ao endereço: <a href='https://www.moduloacademico.ufc.br/moduloacademico/' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico</a>."
+        use_ma_data: "Seus dados de acesso foram importados do Sigaa. Para alterar ou recuperar seus dados de acesso, vá ao endereço: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
         synchronize: Dados sincronizados com sucesso.
     warnings:
       ma:
-        cpf_not_verified: "Não foi possível verificar o CPF no Módulo Acadêmico. Se faz necessário que você, após logado, sincronize seus dados."
-        cpf_not_found: CPF não encontrado no Módulo Acadêmico
-        not_possible_syncrhonize: Não foi possível sincronizar com o Módulo Acadêmico.
+        cpf_not_verified: "Não foi possível verificar o CPF no Sigaa. Se faz necessário que você, após logado, sincronize seus dados."
+        cpf_not_found: CPF não encontrado no Sigaa
+        not_possible_syncrhonize: Não foi possível sincronizar com o Sigaa.
       cpf: "Para alterar seu CPF, entre em contato com o atendimento@virtual.ufc.br informando seu nome, CPF atual, novo CPF e o motivo para a mudança."
     show:
       not_informed: Não informado
@@ -3383,8 +3392,15 @@ pt_BR:
       books: "Livros: "
       phrase: "Frase: "
       site: "Site: "
-      integrated: "Integrado com o Módulo Acadêmico: "
-      blacklist: "Manualmente desvinculado do Módulo Acadêmico: "
+      integrated: "Integrado com o Sigaa: "
+      blacklist: "Manualmente desvinculado do Sigaa: "
+      access_data: "Dados de acesso"
+      selfregistration: "Realizou autocadastro no Sigaa: "
+      username: "Login: "
+      email: "Email: "
+      previous_username: "Login anterior: "
+      previous_email: "Email anterior: "
+      last_access: "Último acesso: "
       y: Sim
       n: Não
     request_profile:
@@ -3428,7 +3444,7 @@ pt_BR:
         updated: Falha ao atualizar as configurações
 
   mysolar:
-    synchronize: Sincronizar com Módulo Acadêmico
+    synchronize: Sincronizar com Sigaa
     profiles: Perfis
     closed_uc: (disciplina encerrada)
     configure: Configurações
@@ -4699,10 +4715,10 @@ pt_BR:
       whats_solar: 'O que é o Solar?'
       whats_ava: 'O que é um AVA?'
       uab_forgot_login_password: 'Sou aluno ou professor da UAB e não lembro meu login ou senha. O que fazer?'
-      forgot_login_password_ma: 'Não lembro meu login ou senha do Solar, mas tenho acesso ao Módulo Acadêmico. O que fazer?'
-      forgot_login_password_sync1: 'Não lembro meu login ou senha do Solar e também não tenho acesso ao Módulo Acadêmico. O que fazer?'
-      forgot_login_password_sync2: 'Tentei fazer cadastro ou recuperar senha e meus dados foram importados do Módulo Acadêmico, mas não tenho acesso ao Módulo Acadêmico.'
-      forgot_login_password_sync3: 'Tentei recuperar minha senha, mas recebi uma mensagem me direcionando ao Módulo Acadêmico, mas não tenho acesso a ele.  O que devo fazer?'
+      forgot_login_password_ma: 'Não lembro meu login ou senha do Solar, mas tenho acesso ao Sigaa. O que fazer?'
+      forgot_login_password_sync1: 'Não lembro meu login ou senha do Solar e também não tenho acesso ao Sigaa. O que fazer?'
+      forgot_login_password_sync2: 'Tentei fazer cadastro ou recuperar senha e meus dados foram importados do Sigaa, mas não tenho acesso ao Sigaa.'
+      forgot_login_password_sync3: 'Tentei recuperar minha senha, mas recebi uma mensagem me direcionando ao Sigaa, mas não tenho acesso a ele.  O que devo fazer?'
       forgot_login_password: 'Esqueci meu login e/ou senha.'
       recovery_password_email: "Já tenho cadastro no Solar e tentei recuperar minha senha, mas recebi a seguinte mensagem 'E-mail não encontrado'."
       verify_registration: "Não lembro meu login e senha e meu email não foi encontrado. Como descubro se já tenho cadastro no Solar?"
@@ -4739,20 +4755,20 @@ pt_BR:
     answers:
       whats_solar: "O Solar 2.0 é um AVA, ambiente virtual de aprendizagem, desenvolvido pelo Instituto UFC Virtual, da Universidade Federal do Ceará. <br/> Ele é orientado ao professor e ao aluno, possibilitando a publicação de cursos e a interação com eles. Ele foi desenvolvido visando potencializar o aprendizado a partir da relação com a própria interface gráfica do ambiente, de modo que o usuário tenha acesso a várias ferramentas de aprendizagem e compartilhamento de conteúdo.  <br/> O ambiente é apoiado numa filosofia de interação e não de controle."
       whats_ava: "AVAs - Ambientes Virtuais de Aprendizagem são softwares disponíveis online que permitem a realização de cursos via web ou, até mesmo, o auxílio e complemento a cursos presenciais via web."
-      uab_forgot_login_password: "Dirija-se ao Módulo Acadêmico a fim de recuperar sua senha: https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do. <br/> Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Módulo Acadêmico. Se você não consegue recuperar sua senha no Módulo Acadêmico, favor dirigir-se à secretaria de seu curso."
-      forgot_login_password_ma: "Dirija-se ao Módulo Acadêmico a fim de recuperar sua senha: https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Módulo Acadêmico."
+      uab_forgot_login_password: "Dirija-se ao Sigaa a fim de recuperar sua senha: <a href='https://si3.ufc.br/admin/public/recuperar_senha.jsf' target='_blank'> https://si3.ufc.br/admin/public/recuperar_senha.jsf</a>. <br/> Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Sigaa. Se você não consegue recuperar sua senha no Sigaa, favor dirigir-se à secretaria de seu curso."
+      forgot_login_password_ma: "Dirija-se ao Sigaa a fim de recuperar sua senha: <a href='https://si3.ufc.br/admin/public/recuperar_senha.jsf' target='_blank'>https://si3.ufc.br/admin/public/recuperar_senha.jsf</a> Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Sigaa."
       forgot_login_password_sync: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação. Lembre-se de informar seu cpf e email. O atendimento do Solar irá corrigir seus dados e enviará, posteriormente, um email para recuperação de senha."
       forgot_login_password: "Na tela de login do Solar 2.0 (www.solar.virtual.ufc.br):<br/> ‣ Clique em 'Esqueceu a sua senha?' </br> ‣ Informe o email cadastrado. </br> ‣ Clique em 'Enviar'. </br> Você receberá um email com as instruções para gerar uma nova senha."
       recovery_password_email: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação. Lembre-se de informar seu cpf e email. O atendimento do Solar irá corrigir seus dados e enviará, posteriormente, um email para recuperação de senha."
       verify_registration: "Para saber se você já tem cadastro ou não no Solar 2.0, basta acessar a tela inicial e clicar na aba 'Cadastrar'. Nesta aba, você deverá digitar seu cpf e clicar em 'Verificar'. O Solar irá verificar se você já possui ou não cadastro."
-      ma: ‣ Integrado ao Módulo Acadêmico
-      not_ma: ‣ Não integrado ao Módulo Acadêmico
+      ma: ‣ Integrado ao Sigaa
+      not_ma: ‣ Não integrado ao Sigaa
       update_data: "Para alterar seus dados cadastrais, você deve primeiro estar logado no Solar. Após o login, efetuar os seguintes passos: </br> ‣ Clicar no seu nome no topo da tela ao lado do relógio<br/>‣ Clicar em 'Editar Perfil'<br/>‣ Alterar os dados desejados<br/>‣ Clicar em 'Confirmar', botão azul localizado ao fim da tela<br/> Não entendeu? Você pode ver também nosso <a href='https://www.youtube.com/watch?v=cRN-wNAjutk&list=PL79md4kx41yXcTYI6XgnzXyEAAIxL5asx&index=6' target='_blank'>vídeo-tutorial</a>."
-      update_data_ma: "Para alterar seus dados cadastrais, você deve acessar o Módulo Acadêmico e realizar as alterações desejadas.<br/> Alterações de login, senha ou email são enviadas ao Solar automaticamente. Qualquer outra alteração deve ser sincronizada com o Solar. Para isso, após o login, você deve: <br/> ‣ Clicar no seu nome no topo da tela ao lado do relógio<br/> ‣ Clicar em 'Sincronizar com Módulo Acadêmico'"
-      update_data_ma_cant: "Neste caso, seu cadastro no Solar está vinculado ao Módulo Acadêmico."
-      have_access: ‣ Se possuir acesso ao Módulo Acadêmico
-      dont_have_access: ‣ Se não possuir acesso ao Módulo Acadêmico
-      update_data_ma_cant2: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação para que nossa equipe verifique se é possível desvincular seu perfil ou não. Lembre-se de informar seu cpf e email. <br/> Se for possível, o atendimento retornará o contato com uma mensagem positiva; caso contrário, deverá encaminhá-lo ao setor do STI para recuperar seus dados do Módulo Acadêmico."
+      update_data_ma: "Para alterar seus dados cadastrais, você deve acessar o Sigaa e realizar as alterações desejadas.<br/> Alterações de login, senha ou email são enviadas ao Solar automaticamente. Qualquer outra alteração deve ser sincronizada com o Solar. Para isso, após o login, você deve: <br/> ‣ Clicar no seu nome no topo da tela ao lado do relógio<br/> ‣ Clicar em 'Sincronizar com Sigaa'"
+      update_data_ma_cant: "Neste caso, seu cadastro no Solar está vinculado ao Sigaa."
+      have_access: ‣ Se possuir acesso ao Sigaa
+      dont_have_access: ‣ Se não possuir acesso ao Sigaa
+      update_data_ma_cant2: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação para que nossa equipe verifique se é possível desvincular seu perfil ou não. Lembre-se de informar seu cpf e email. <br/> Se for possível, o atendimento retornará o contato com uma mensagem positiva; caso contrário, deverá encaminhá-lo ao setor do STI para recuperar seus dados do Sigaa."
       invalid_token: "Todo email de recuperação de senha do Solar 2.0 fornece um link que permitirá gerar uma nova senha. Entretanto, este link conterá um token que só terá validade por 24h. Se seu token está inválido, você precisa gerar um novo link. Ver 'Esqueci meu login e/ou senha.'"
       how_to_enroll: "Para solicitar matrícula em uma disciplina, é necessário ter cadastro no Solar 2.0, efetuar o login e realizar os seguintes passos: </br> ‣ Acessar o menu lateral esquerdo em 'Matrícula' <br/> ‣ Procurar pela disciplina e curso desejados, lembrando que estarão disponíveis apenas os cursos cujo período de matrícula não foi encerrado. <br/> ‣ Ao localizar a disciplina desejada, clicar em 'Matricular' <br/> Não entendeu? Você pode ver também nosso <a href='https://www.youtube.com/watch?v=35uwbsETkyY&index=1&list=PL79md4kx41yXcTYI6XgnzXyEAAIxL5asx' target='_blank'>vídeo-tutorial</a>. <br/> Sua solicitação está sujeita a aceitação. Portanto, ela primeiro será analisada pelos responsáveis e, em seguida, será aceita ou não. Ao ser aceita, você receberá um email do Solar 2.0."
       pendent_enroll: "As solicitações de matrícula realizadas pelo aluno no Solar 2.0 não são aceitas automaticamente, estando, portanto, sujeitas a aceitação dos responsáveis pela disciplina em questão. No momento em que uma matrícula é aceita, o aluno receberá um email do Solar 2.0 comunicando."
@@ -4841,8 +4857,8 @@ pt_BR:
       groups_number: Quantidade de Turmas
       users_number: Quantidade de Usuários Cadastrados
       users_number_active: Quantidade de Usuários Ativos
-      users_number_module_bound: Usuários Vinculados ao MA - Modulo Acadêmico
-      users_number_module_unbound: Usuários Desvinculados ao MA - Modulo Acadêmico
+      users_number_module_bound: Usuários Vinculados ao Sigaa
+      users_number_module_unbound: Usuários Desvinculados ao Sigaa
       disciplines_amount: Quantidade de Disciplinas
       files_portifolio: Quantidade de Arquivos Postados no Portfólio
       number_of_students: Quantidade de alunos ativos matriculados
