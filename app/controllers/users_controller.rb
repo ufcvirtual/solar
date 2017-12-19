@@ -28,13 +28,15 @@ class UsersController < ApplicationController
 
       begin
 
-        if user && integrated # if user exists and system is integrated
+        if user && integrated && !user.on_blacklist? # if user exists and system is integrated
           begin
             user_data = User.connect_and_import_user(user_cpf) # try to import
             raise if user_data.nil? # user don't exist at MA
             user.synchronize(user_data) # synchronize user with new MA data
             if user.errors.any?
               redirect_to login_path, alert: t("users.errors.ma.error_synchronize", errors: user.errors.full_messages.join(', ')).html_safe
+            elsif !user.selfregistration
+              redirect_to login_path, alert: t("users.errors.ma.selfregistration").html_safe
             else
               redirect_to login_path, notice: t("users.notices.ma.use_ma_data").html_safe
             end
@@ -46,16 +48,18 @@ class UsersController < ApplicationController
         else # if user don't exist
           raise if !(integrated)
           user = User.new cpf: user_cpf
-          user.connect_and_validates_user unless user.on_blacklist? # try to create user with MA data
+          user.synchronize unless user.on_blacklist? # try to create user with MA data
 
           if user.new_record? # doesn't exist at MA
             redirect_to new_user_registration_path(cpf: user_cpf)
+          elsif !user.selfregistration
+            redirect_to login_path, alert: t("users.errors.ma.selfregistration").html_safe
           else # user was imported and registered with MA data
             redirect_to login_path, notice: t("users.notices.ma.use_ma_data").html_safe
           end
         end
 
-      rescue
+      rescue => error
         flash[:warning] = t("users.warnings.ma.cpf_not_verified") if integrated && !(User.new(cpf: user_cpf).on_blacklist?)
         redirect_to new_user_registration_path(cpf: params[:cpf])
       end

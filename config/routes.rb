@@ -1,6 +1,6 @@
 Solar::Application.routes.draw do
 
-  devise_for :users, controllers: { registrations: "devise/users", passwords: "devise/users_passwords" }
+  devise_for :users, controllers: { registrations: "devise/users", passwords: "devise/users_passwords", sessions: "devise/login" }
 
   authenticated :user do
     get "/", to: "users#mysolar", as: :solar_home
@@ -8,10 +8,10 @@ Solar::Application.routes.draw do
 
   devise_scope :user do
     get  :login, to: "devise/sessions#new"
-    post :login, to: "devise/sessions#create"
+    post :login, to: "devise/login#create"
     get  :logout, to: "devise/sessions#destroy"
     get "/", to: "devise/sessions#new"
-    resources :sessions, only: [:create]
+    resources :login, only: [:create]
   end
 
   get :home, to: "users#mysolar", as: :home
