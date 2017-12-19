@@ -80,7 +80,7 @@ class User < ActiveRecord::Base
   validates_length_of :address_neighborhood, maximum: 49
   validates_length_of :zipcode, maximum: 9
   validates_length_of :country, :city, maximum: 90
-  validates_length_of :address ,maximum: 150
+  validates_length_of :country, :city, :address ,maximum: 150
   validates_length_of :institution, maximum: 120
   validates_length_of :cell_phone, maximum: 100
   validates_length_of :telephone, maximum: 50
@@ -220,11 +220,6 @@ class User < ActiveRecord::Base
 
     SQL
     (all.first['count'].to_i != 0)
-  end
-
-  def set_previous
-    self.previous_username = nil if username_changed? && !previous_username.blank?
-    self.previous_email = nil if email_changed? && !previous_email.blank?
   end
 
   def set_previous
@@ -640,12 +635,17 @@ class User < ActiveRecord::Base
       self.synchronizing = true
       ma_attributes.merge!({encrypted_password: encrypted_password}) if ma_attributes[:encrypted_password].blank? && ma_attributes[:password].blank?
       self.attributes = attributes.merge!(ma_attributes)
+<<<<<<< 24e02c4fe7d13673976b2610aa7c5bf042f12dcb
 
       raise "username in use #{ma_attributes}, can't replace" unless verify_column(self, 'username')
       unless email.blank?
         raise "email in use #{ma_attributes}, can't replace" unless verify_column(self, 'email')
       end
 
+=======
+      raise "username in use #{ma_attributes}, can't replace" unless verify_column(self, 'username')
+      raise "email in use #{ma_attributes}, can't replace" unless verify_column(self, 'email')
+>>>>>>> [#152144516] Integração com sigaa: criptografia ao logar, autocadastro, substituicao de login ou email em uso, alteracao dos textos que referenciam o ma, adaptar tamanho das colunas para o mesmo do sigaa, armazenar antigo email ou login
       set_previous
       save
       self.synchronizing = false
@@ -938,6 +938,7 @@ class User < ActiveRecord::Base
     def login_differ_from_cpf
       any_user = User.where(cpf: self.class.cpf_without_mask(username))
       errors.add(:username, I18n.t('users.errors.cpf_as_username')) if (new_record? && any_user.any?) || (any_user.where('id <> ?', id).any?)
+<<<<<<< 24e02c4fe7d13673976b2610aa7c5bf042f12dcb
     end
 
     def verify_column(user, column)
