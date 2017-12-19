@@ -52,6 +52,8 @@ class User < ActiveRecord::Base
   after_save :log_update_user
   after_save :update_digital_class_user, if: '(!new_record? && (name_changed? || email_changed? || cpf_changed?) && !digital_class_user_id.nil?)', on: :update
 
+  before_save :set_previous, if: '(!new_record? && ((username_changed? && !previous_username.blank?) || email_changed? && !previous_email.blank?)) && (!synchronizing)'
+
   @has_special_needs
 
   attr_accessor :login, :has_special_needs, :synchronizing
@@ -70,8 +72,12 @@ class User < ActiveRecord::Base
 
   validates_length_of :address_neighborhood, maximum: 49
   validates_length_of :zipcode, maximum: 9
-  validates_length_of :country, :city, :address ,maximum: 90
+  validates_length_of :country, :city, maximum: 90
+  validates_length_of :country, :city, :address ,maximum: 150
   validates_length_of :institution, maximum: 120
+  validates_length_of :cell_phone, maximum: 100
+  validates_length_of :telephone, maximum: 50
+  validates_length_of :email, maximum: 200
 
   validate :integration, if: Proc.new{ |a| !a.new_record? && !a.on_blacklist? && a.integrated? && (a.synchronizing.nil? || !a.synchronizing) }
   validate :data_integration, if: Proc.new{ |a| (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO["integrated"]) && (a.new_record? || username_changed? || email_changed? || cpf_changed?) && (a.synchronizing.nil? || !a.synchronizing) }
@@ -211,6 +217,11 @@ class User < ActiveRecord::Base
 
     SQL
     (all.first['count'].to_i != 0)
+  end
+
+  def set_previous
+    self.previous_username = nil if username_changed? && !previous_username.blank?
+    self.previous_email = nil if email_changed? && !previous_email.blank?
   end
 
   ## Na criação, o usuário recebe o perfil de usuario basico
@@ -476,7 +487,7 @@ class User < ActiveRecord::Base
         params.merge!({ nick: user.username || params[:username] }) if user.nick.nil?
 
         if user.new_record?
-          new_password  = ('0'..'z').to_a.shuffle.first(8).join
+          new_password  = Devise.friendly_token.first(6)
           user.password = new_password
         end
 
@@ -614,7 +625,11 @@ class User < ActiveRecord::Base
 
       self.synchronizing = true
       ma_attributes.merge!({encrypted_password: encrypted_password}) if ma_attributes[:encrypted_password].blank? && ma_attributes[:password].blank?
-      update_attributes(ma_attributes)
+      self.attributes = attributes.merge!(ma_attributes)
+      raise "username in use #{ma_attributes}, can't replace" unless verify_column(self, 'username')
+      raise "email in use #{ma_attributes}, can't replace" unless verify_column(self, 'email')
+      set_previous
+      save
       self.synchronizing = false
 
       if errors.any?
@@ -626,7 +641,8 @@ class User < ActiveRecord::Base
     else
       return nil
     end
-  rescue
+  rescue => error
+    Rails.logger.info "\n [ERROR] [SYNCHRONIZE USER] [#{Time.now}] [USER CPF #{cpf}] message: #{error}"
     return false
   end
 
@@ -656,45 +672,42 @@ class User < ActiveRecord::Base
   def self.validate_user_result(result, client, cpf, user = nil)
     unless result.nil?
       result = result[:int]
-      if result.include?('6') && !User.new(cpf: cpf).on_blacklist? # unavailable cpf, thus already in use by MA
-        user_data = User.connect_and_import_user(cpf, client)
-        unless user_data.nil? # if user exists
-          # verify if cpf, username or email already exists
-          unless User.find_by_cpf(user_data[0]) || User.find_by_username(user_data[5]) || User.find_by_email(user_data[8])
-            ma_attributes = User.user_ma_attributes(user_data) # import all data from MA user
-            ma_attributes.merge!({encrypted_password: user.encrypted_password}) if !user.nil? && ma_attributes[:encrypted_password].blank?
-            (user.nil? ? (user = User.new(ma_attributes)) : (user.attributes = ma_attributes))
-            user.errors.clear # clear all errors, so the system can import and save user's data
-            return user.save(validate: false) if user.new_record? # if user don't exist, saves it without validation (all necessary data must come from MA)
-          else
-            cpf_user = User.find_by_cpf(user_data[0])
-            cpf_user.synchronize(user_data) unless cpf_user.nil? # if exists user with the same cpf, synchronize data
-          end
-        else
-          return nil
-        end
+      cpf_user = User.find_by_cpf(cpf)
+      cpf_user = User.new(cpf: cpf) if cpf_user.nil?
+      if result.include?('6') && !cpf_user.on_blacklist? && (cpf_user.new_record? || cpf_user.integrated) # unavailable cpf, thus 
+          cpf_user.synchronize
       else
-        return nil if user.nil? # if user don't exist yet
-        user.errors.add(:username, I18n.t('users.errors.ma.already_exists')) if result.include?('1')  # unavailable login/username, thus already in use by MA
-        user.errors.add(:username, I18n.t('users.errors.invalid'))           if result.include?('2')  # invalid login/username
-        user.errors.add(:password, I18n.t('users.errors.invalid'))           if result.include?('3')  # invalid password
-        user.errors.add(:email, I18n.t('users.errors.ma.already_exists'))    if result.include?('4')  # unavailable email, thus already in use by MA
-        user.errors.add(:email, I18n.t('users.errors.invalid'))              if result.include?('5')  # invalid email
-        user.errors.add(:cpf, I18n.t('users.errors.invalid'))                if result.include?('7')  # invalid cpf
-        user.errors.add(:base, I18n.t('users.errors.ma.problem_accessing'))  if result.include?('99') # unknown error
+        User.ma_errors(result, user)
       end
+    else
+      User.ma_errors(result, user)
     end
   end
 
+  def self.ma_errors(result, user)
+    return nil if result.empty? || result == ['6']
+    return nil if user.nil? # if user don't exist yet
+    user.errors.add(:username, I18n.t('users.errors.ma.already_exists')) if result.include?('1')  # unavailable login/username, thus already in use by MA
+    user.errors.add(:username, I18n.t('users.errors.invalid'))           if result.include?('2')  # invalid login/username
+    user.errors.add(:password, I18n.t('users.errors.invalid'))           if result.include?('3')  # invalid password
+    user.errors.add(:email, I18n.t('users.errors.ma.already_exists'))    if result.include?('4')  # unavailable email, thus already in use by MA
+    user.errors.add(:email, I18n.t('users.errors.invalid'))              if result.include?('5')  # invalid email
+    user.errors.add(:cpf, I18n.t('users.errors.invalid'))                if result.include?('7')  # invalid cpf
+    user.errors.add(:base, I18n.t('users.errors.ma.problem_accessing'))  if result.include?('99') # unknown error
+
+  end
+
   def self.user_ma_attributes(user_data)
-    data = { name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == 'M'), cell_phone: (user_data[17].blank? ? nil : user_data[17][0..19]), nick: (user_data[7].nil? ? ([user_data[2].split(' ')[0], user_data[2].split(' ')[1]].join(' ')) : user_data[7]), telephone: (user_data[18].blank? ? nil : user_data[18][0..19]), special_needs: ((user_data[19].blank? || user_data[19].downcase == 'nenhuma') ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13], address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]), email: (user_data[8].blank? ? [user_data[0], MODULO_ACADEMICO['tmp_email_provider']].join('@') : user_data[8]), integrated: true }
+    data = { name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == 'M'), cell_phone: user_data[17], nick: (user_data[7].nil? ? ([user_data[2].split(' ')[0], user_data[2].split(' ')[1]].join(' ')) : user_data[7]), telephone: user_data[18], special_needs: ((user_data[19].blank? || user_data[19].downcase == 'nenhuma') ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13], address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]), email: (user_data[8].blank? ? [user_data[0], MODULO_ACADEMICO['tmp_email_provider']].join('@') : user_data[8]), integrated: true }
 
     if !user_data[6].blank?
-      data.merge!({encrypted_password: user_data[6]})
-    elsif data[:encrypted_password].blank?
+      data.merge!({password: user_data[6]})
+    elsif data[:password].blank?
       # generate a random passowrd just to create user successfully
-      data.merge!({password: ('0'..'z').to_a.shuffle.first(8).join})
+      data.merge!({password: Devise.friendly_token.first(6)})
     end
+
+    data.merge!({selfregistration: !(user_data[6].blank? || user_data[5].blank? || user_data[8].blank?)})
 
     return data
   end
@@ -863,11 +876,66 @@ class User < ActiveRecord::Base
     end
 
 
+  require 'digest/md5'
+  def valid_password?(password)
+    integrated = integrated? && !on_blacklist?
+
+    password = Digest::MD5.hexdigest(password) if integrated && selfregistration
+
+    Devise.secure_compare(Digest::SHA1.hexdigest(password), self.encrypted_password) 
+  end
+
+  def change_username
+    self.previous_username = username
+    self.username = cpf
+    self.synchronizing = true
+    save(validate: false)
+    Thread.new do
+      Notifier.change_user(self).deliver
+    end
+  end
+
+  def change_email
+    self.previous_email = email
+    self.email = [cpf, MODULO_ACADEMICO['tmp_email_provider']].join('@')
+    self.synchronizing = true
+    save(validate: false)
+  end
 
   private
 
     def login_differ_from_cpf
       any_user = User.where(cpf: self.class.cpf_without_mask(username))
-      errors.add(:username, I18n.t(:new_user_msg_cpf_error)) if (new_record? && any_user.any?) || (any_user.where('id <> ?', id).any?)
+      errors.add(:username, I18n.t('users.errors.cpf_as_username')) if (new_record? && any_user.any?) || (any_user.where('id <> ?', id).any?)
     end
+
+    def verify_column(user, column)
+      same_column = User.where("lower(#{column}) = '#{user.send(column.to_sym).downcase}' AND cpf != '#{user.cpf}'")
+
+      # ver se tem mais de um usuario com esse login
+      if same_column.any?
+        # se sim, é integrado e não tá na blacklist?
+        if user.integrated && !user.on_blacklist? && selfregistration
+          # altera todos os outros
+          same_column.map{|u| u.send("change_#{column}".to_sym)}
+        # não é integrado ou tá na blacklist?
+        else
+          # há algum usuário integrado com mesmo login?
+          integrated = same_column.joins('LEFT JOIN user_blacklist ub ON ub.cpf = users.cpf').where(integrated: true).where('ub.id IS NULL')
+          change_username if integrated.any?
+          # muda dos outros
+          (same_column - integrated).map{|u| u.send("change_#{column}".to_sym)}
+          # sincroniza os integrados para atualizar dados
+          integrated.map(&:synchronize)
+
+          # verifica se ainda há usuários com mesmo username (integrados que vieram do sigaa com o mesmo login)
+          remaining_users = User.where("lower(#{column}) = '#{user.send(column.to_sym).downcase}' AND cpf != '#{user.cpf}'")
+          # true ou false de acordo com o resultado
+          return remaining_users.empty?
+        end        
+      else
+        return true
+      end
+    end
+
 end

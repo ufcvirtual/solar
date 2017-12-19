@@ -22,6 +22,15 @@
 
   .block_content
     .block_title
+      %h2= t(".access_data")
+    %div= t(".last_access") + (last_accessed(@user.id) || '')
+    %div= t(".username") + (@user.username || '')
+    %div= t(".email") + (@user.email || '')
+    %div= t(".previous_username") + @user.previous_username unless @user.previous_username.blank?
+    %div= t(".previous_email") + @user.previous_email unless @user.previous_email.blank?
+
+  .block_content
+    .block_title
       %h2= t(".contact")
     %div
       = @user.address
@@ -41,6 +50,7 @@
       %h2= t(".others")
     %div= t(".institution") + (@user.institution.nil? ? t(".not_informed") : @user.institution.to_s)
     %div= t(".integrated") + (@user.integrated ? t(".y") : t(".n"))
+    %div= t(".selfregistration") + (@user.selfregistration ? t(".y") : t(".n"))
     %div= t(".blacklist") + (@user.on_blacklist? ? t(".y") : t(".n"))
 
   .block_content
