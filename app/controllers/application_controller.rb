@@ -26,6 +26,8 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im, :get_theme
   after_filter :log_navigation
 
+  before_filter :check_concurrent_session
+
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
       format.html {
@@ -385,6 +387,15 @@ class ApplicationController < ActionController::Base
       @user_session_exam = false
       authenticate_user!
       user_session[:blocking_content] = Exam.verify_blocking_content(current_user.try(:id) || User.current.try(:id)) if user_session[:blocking_content].blank?
+    end
+  end
+
+  def check_concurrent_session
+    if !current_user.nil? && !(user_session[:token] == current_user.session_token)
+      sign_out current_user
+      redirect_to login_path, alert: t('users.errors.multiple_sessions')
+    else
+      return true
     end
   end
 

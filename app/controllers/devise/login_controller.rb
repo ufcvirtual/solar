@@ -24,11 +24,6 @@ class Devise::LoginController < Devise::SessionsController
         current_user.save(validate: false)
       end
     end
-    
-  rescue CanCan::AccessDenied
-    Rails.logger.info "\n\n aaaaaaaaaaaaaaa \n\n"
-  rescue => error
-    Rails.logger.info "\n\n PEGOU ERRO #{error} \n\n"
   end
 
   protected
