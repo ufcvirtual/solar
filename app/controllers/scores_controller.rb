@@ -74,11 +74,13 @@ class ScoresController < ApplicationController
       @chatRoomidx      = params[:ChatRoomidx]      unless params[:ChatRoomidx].blank?
       @webconferenceidx = params[:Webconferenceidx] unless params[:Webconferenceidx].blank?
 
-      render pdf:         t("scores.reports.general_#{@score_type}"),
-             orientation: 'Landscape',
-             template: 'scores/evaluatives_frequency.html.haml',
-             layout: false,
-             disposition: 'attachment'
+      # render pdf:         t("scores.reports.general_#{@score_type}"),
+      #        orientation: 'Landscape',
+      #        template: 'scores/evaluatives_frequency.html.haml',
+      #        layout: false,
+      #        disposition: 'attachment'
+
+      send_data ReportsHelper.accompaniment_evaluatives_frequency(@ats, @score_type, @users, @scores, @acs, @examidx, @assignmentidx, @scheduleEventidx, @discussionidx, @chatRoomidx, @webconferenceidx).render, :filename => "#{t("scores.reports.general_#{@score_type}")}.pdf", :type => "application/pdf", disposition: 'inline'
 
     else
       @users = Score.get_users(ats).paginate(page: params[:page], per_page: 20)
@@ -107,11 +109,13 @@ class ScoresController < ApplicationController
       @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true)
       @ats = AllocationTag.find(@allocation_tag_id)
 
-      render pdf:         t("scores.reports.#{params[:type]}"),
-             orientation: 'Landscape',
-             template: "scores/#{params[:type]}.html.haml",
-             layout: false,
-             disposition: 'attachment'
+      # render pdf:         t("scores.reports.#{params[:type]}"),
+      #        orientation: 'Landscape',
+      #        template: "scores/#{params[:type]}.html.haml",
+      #        layout: false,
+      #        disposition: 'attachment'
+
+      send_data ReportsHelper.accompaniment_general(@ats, @wh, @users, @allocation_tag_id, @tools, params[:type]).render, :filename => "#{t("scores.reports.#{params[:type]}")}.pdf", :type => "application/pdf", disposition: 'inline'
 
     else
       @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true).paginate(:page => params[:page], :per_page => 20)
