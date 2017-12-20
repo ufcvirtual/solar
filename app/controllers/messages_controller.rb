@@ -165,15 +165,23 @@ class MessagesController < ApplicationController
   end
 
   def contacts
+    @content_student = false
+    @content_responsibles = false
     unless (@allocation_tag_id = params[:allocation_tag_id]).nil?
       allocation_tag = AllocationTag.find(@allocation_tag_id)
       @group         = allocation_tag.group
-      @contacts      = User.all_at_allocation_tags(allocation_tag.related, Allocation_Activated, true)
+      @contacts      = User.all_at_allocation_tags(allocation_tag.related, Allocation_Activated, true, true)
     else
       @contacts = current_user.user_contacts.map(&:user)
     end
-
+    
     @reply_to = (params[:reply_to].blank? ? [] : User.where(id: params[:reply_to].split(',')).map(&:to_msg))
+    unless params[:reply_to].blank?
+      @list = @contacts.find_all_by_id(params[:reply_to].split(',')) 
+      @content_student = @list.any? { |u| u.types.to_i==Profile_Type_Student }
+      @content_responsibles = @list.any? { |u| u.types.to_i==Profile_Type_Class_Responsible }
+
+    end
     render partial: 'contacts'
   end
 

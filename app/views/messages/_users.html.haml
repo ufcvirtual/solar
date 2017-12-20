@@ -1,8 +1,20 @@
 .list_user_contacts
   - unless @users.empty?
-    #users{ class: "users_at_#{@allocation_tags_ids}" }
-      = link_to_function t(".add_all"), "add_all_contacts(this)", id: "add_all", :'aria-label' => t('.add_all_alt'), onkeydown: 'click_on_keypress(event, this);'
-      - @users.each do |user|
-        .contact= link_to_function "#{user.name} <#{user.email}>", "add_contact(this, true, null, '"+user.name+"', '"+user.email+"')", "data-user-id" => user.id, "data-at" => @allocation_tags_ids, :'aria-label' => t('.user_alt', name: user.name, email: user.email), onkeydown: 'click_on_keypress(event, this);'
+    %ul#users{ class: "users_at_#{@allocation_tags_ids}" }
+      %li= link_to_function t(".add_all"), "add_all_contacts(this)", id: "add_all", :'aria-label' => t('.add_all_alt'), onkeydown: 'click_on_keypress(event, this);'
+      %li.button_add_students_list
+        = link_to_function raw(t(".add_students")), "add_all_students(this)", id: "add_stu", :'aria-label' => t('.add_stu_alt'), onkeydown: 'click_on_keypress(event, this);'
+        %ul.add_students_list
+          - @users.each do |user|
+            - if user.types.to_i==Profile_Type_Student
+              - perfils = user.profile_name.delete! '{}' '"'
+              %li.contact.li_contacts= link_to_function "#{user.name} <#{user.email}> (#{perfils})", "add_contact(this, true, null, '"+user.name+"', '"+user.email+"', '"+user.profile_name+"', '"+user.types+"')", "data-user-id" => user.id, "data-user-type" => user.types, "data-at" => @allocation_tags_ids, :'aria-label' => t('.user_alt', name: user.name, email: user.email), onkeydown: 'click_on_keypress(event, this);' 
+      %li.button_add_responsibles_list
+        = link_to_function raw(t(".add_responsibles")), "add_all_responsibles(this)", id: "add_res", :'aria-label' => t('.add_res_alt'), onkeydown: 'click_on_keypress(event, this);'
+        %ul.add_responsibles_list
+          - @users.each do |user|
+            - unless user.types.to_i==Profile_Type_Student
+              - perfils = user.profile_name.delete! '{}' '"'
+              %li.contact.li_contacts= link_to_function "#{user.name} <#{user.email}> (#{perfils})", "add_contact(this, true, null, '"+user.name+"', '"+user.email+"', '"+user.profile_name+"', '"+user.types+"')", "data-user-id" => user.id, "data-user-type" => user.types, "data-at" => @allocation_tags_ids, :'aria-label' => t('.user_alt', name: user.name, email: user.email), onkeydown: 'click_on_keypress(event, this);' 
   - else
     %div{ style: "margin-top:15%; margin-left:32%" }= t(".no_user_found")

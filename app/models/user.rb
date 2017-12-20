@@ -385,10 +385,11 @@ class User < ActiveRecord::Base
     where(conditions).where(["translate(cpf,'.-','') = :value OR lower(username) = :value", { value: login.strip.downcase }]).first
   end
 
-  def self.all_at_allocation_tags(allocation_tags_ids, status = Allocation_Activated, interacts = false)
+  def self.all_at_allocation_tags(allocation_tags_ids, status = Allocation_Activated, interacts = false, perfils = false)
     query = interacts ? "cast(profiles.types & #{Profile_Type_Student} as boolean) OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)" : ''
     joins(allocations: :profile).where(active: true, allocations: { status: status, allocation_tag_id: allocation_tags_ids }).where(query)
       .select('DISTINCT users.id').select('users.name, users.email')
+      .select('array_agg(DISTINCT profiles.name) profile_name, profiles.types').group('users.id, users.name, users.email, profiles.types') unless perfils.blank?
   end
 
   # Searches all users which "type" column includes "text"

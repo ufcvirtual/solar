@@ -16,8 +16,26 @@
 
       %h3.selected= t('.to')
       .contacts-selected
-        - [@reply_to].flatten.compact.each do |contact|
-          .contact{ class: contact[:id].nil? ? 'help' : '' }= link_to_function contact[:resume], "$(this).parents('div.contact').remove()", "data-user-id" => contact[:id], "data-selected" => true, :'aria-label' => t('messages.users.user_remove_alt', name: contact[:name], email: contact[:email])
+        - if @content_student
+          %ul.users_at_students#users
+            %li.button_add_students_list
+              = link_to_function raw(t("messages.users.add_students")), "del_all_students(this)", id: "del_stu", :'aria-label' => t('messages.users.del_stu_alt'), onkeydown: 'click_on_keypress(event, this);'
+              %ul.add_students
+                - [@reply_to].flatten.compact.each do |contact|
+                  - user = @contacts.find(contact[:id])    
+                  - if user.types.to_i==Profile_Type_Student
+                    - perfils = user.profile_name.delete! '{}' '"'
+                    %li.contact.li_contacts{ class: contact[:id].nil? ? 'help' : '' }= link_to_function contact[:resume] + " (#{perfils})", "$(this).parents('div.contact').remove()", "data-user-id" => contact[:id], "data-user-type" => user.types, "data-selected" => true, :'aria-label' => t('messages.users.user_remove_alt', name: contact[:name], email: contact[:email]) 
+        - if @content_responsibles
+          %ul.users_at_responsibles#users
+            %li
+              = link_to_function raw(t("messages.users.add_responsibles")), "del_all_responsibles(this)", id: "del_res", :'aria-label' => t('messages.users.del_res_alt'), onkeydown: 'click_on_keypress(event, this);'
+              %ul.add_responsibles
+                - [@reply_to].flatten.compact.each do |contact|
+                  - user = @contacts.find(contact[:id])  
+                  - unless user.types.to_i==Profile_Type_Student  
+                    - perfils = user.profile_name.delete! '{}' '"'
+                    %li.contact.li_contacts{ class: contact[:id].nil? ? 'help' : '' }= link_to_function contact[:resume] + " (#{perfils})", "$(this).parents('div.contact').remove()", "data-user-id" => contact[:id], "data-user-type" => user.types, "data-selected" => true, :'aria-label' => t('messages.users.user_remove_alt', name: contact[:name], email: contact[:email]) 
 
     .block_buttons
       .right
@@ -26,11 +44,10 @@
 
 :javascript
   
-  function add_contact(link, append, html, u_name, u_email){
-
+  function add_contact(link, append, html, u_name, u_email, u_perfil, u_type){
     var msg_arial_label = "#{t('messages.users.user_remove_alt', name: 'u_name', email: 'u_email')}".replace(/u_name/g, u_name).replace('u_email', u_email);
 
-    var user = "<div class='contact'><a aria-label='"+msg_arial_label+"' data-at='"+$(link).data('at')+"' data-user-id='"+$(link).data("user-id")+"' href='#' onclick='remove_contact(this, \""+u_name+"\", \""+u_email+"\"); return false;'>"+$(link).html()+"</a></div>";
+    var user = "<li class='contact li_contacts'><a aria-label='"+msg_arial_label+"' data-at='"+$(link).data('at')+"' data-user-id='"+$(link).data("user-id")+"' data-user-type='"+$(link).data("user-types")+"' href='#' onclick='remove_contact(this, \""+u_name+"\", \""+u_email+"\", \""+u_perfil+"\", \""+u_type+"\"); return false;'>"+$(link).html()+"</a></li>";
     
   
     if (!!$('.contacts-selected .contact a[data-user-id="' + $(link).data("user-id") + '"]').length){
@@ -50,39 +67,142 @@
     if (!append){ // se não for pra dar o append
       html.push(user);
     }else{
-      $(".contacts-selected").prepend(user);
+      //adiciona os alunos
+      if(u_type == "#{Profile_Type_Student}"){
+        var arial_label = "#{t('messages.users.del_stu_alt')}";
+
+        var ul_stu = "<ul class='users_at_students' id='users'><li> <a aria-label='"+"#{t('messages.users.del_stu_alt')}"+"' href='#' id='del_stu' onclick='del_all_students(this); return false;' onkeydown='click_on_keypress(event, this);'><b> "+"#{t("messages.users.add_students")}"+" </b></a><ul class='add_students'>"
+        if($(".contacts-selected").children(".users_at_students").length==0){
+          $(".contacts-selected").append(ul_stu);
+        }
+        $('.add_students').append(user);
+        hide_add_students_list();
+      }else{
+        var ul_res = "<ul class='users_at_responsibles' id='users'><li> <a aria-label='"+"#{t('messages.users.del_res_alt')}"+"' href='#' id='del_res' onclick='del_all_responsibles(this); return false;' onkeydown='click_on_keypress(event, this);'><b>"+"#{t("messages.users.add_responsibles")}"+"</b></a><ul class='add_responsibles'>"
+        if($(".contacts-selected").children(".users_at_responsibles").length==0){
+          $(".contacts-selected").append(ul_res);
+        }
+        $('.add_responsibles').append(user);
+        hide_add_responsibles_list();
+      }  
+      
       add_all_message();
     }
   }
 
-  function remove_contact(link, u_name, u_email){
+  function remove_contact(link, u_name, u_email, u_perfil, u_type){
     var msg_arial_label = "#{t('messages.users.user_alt', name: 'u_name', email: 'u_email')}".replace(/u_name/g, u_name).replace('u_email', u_email);
-    var user = "<div class='contact'><a aria-label = '"+msg_arial_label+"' data-at='"+$(link).data('at')+"' data-user-id='"+$(link).data("user-id")+"' href='#' onclick='add_contact(this, true, null, \""+u_name+"\", \""+u_email+"\"); return false;'>"+$(link).html()+"</a></div>";
+    var user = "<li class='contact li_contacts'><a aria-label = '"+msg_arial_label+"' data-at='"+$(link).data('at')+"' data-user-id='"+$(link).data("user-id")+"' data-user-type='"+$(link).data("user-types")+"' href='#' onclick='add_contact(this, true, null, \""+u_name+"\", \""+u_email+"\", \""+u_perfil+"\", \""+u_type+"\"); return false;'>"+$(link).html()+"</a></li>";
 
-    if (!$('.contacts-list .contact a[data-user-id="' + $(link).data("user-id") + '"]').length)
-      $(".contacts-list .users_at_"+$(link).data("at")).append(user);
+    //if (!$('.contacts-list .contact a[data-user-id="' + $(link).data("user-id") + '"]').length)
+     // $(".contacts-list .users_at_"+$(link).data("at")).append(user);
 
     $(link).parent().text("#{t('messages.sucess_removed')}").click().delay(2000).fadeOut();  
     $(link).parent().remove();
     add_all_message();
+    if(u_type == "#{Profile_Type_Student}"){
+
+      if($(".contacts-list").find(".add_students_list").length==0){
+        var ul_stu = "<ul class='button_add_students_list'><li> <a aria-label='"+"#{t('messages.users.add_stu_alt')}"+"' href='#' id='add_stu' onclick='add_all_students(this); return false;' onkeydown='click_on_keypress(event, this);'><b>"+"#{t("messages.users.add_students")}"+"</b></a><ul class='add_students_list'>";
+        $(".contacts-list").append(ul_stu);
+      }
+      $('.add_students_list').append(user);
+      hide_del_students_list();
+    }else{
+      if($(".contacts-list").find(".add_responsibles_list").length==0){
+        var ul_res = "<ul class='button_add_responsibles_list'><li> <a aria-label='"+"#{t('messages.users.add_res_alt')}"+"' href='#' id='add_res' onclick='add_all_responsibles(this); return false;' onkeydown='click_on_keypress(event, this);'><b>"+"#{t("messages.users.add_responsibles")}"+"</b></a><ul class='add_responsibles_list'>";
+        $(".contacts-list").append(ul_res);
+      }  
+      $('.add_responsibles_list').append(user);
+      hide_del_responsibles_list();
+    }
   }
 
   function add_all_contacts(){
-    var html = new Array();
-    $(".contacts-list:visible .contact a").each(function(){
-      add_contact(this, false, html);
+    add_all_students(this);
+    add_all_responsibles(this);
+  }
+
+  function add_all_students(elem){
+   // var html = new Array();
+   // if($(".contacts-selected").children(".users_at_students").length==0){
+   //   var ul_stu = "<ul class='users_at_students' id='users'><li> <a aria-label='' href='#' id='del_stu' onclick='del_all_students(this); return false;' onkeydown='click_on_keypress(event, this);'><b>Alunos</b></a><ul class='add_students'>"
+  //    $(".contacts-selected").append(ul_stu);
+  //  }
+    $(".contacts-list:visible .add_students_list .contact a").each(function(){
+      //add_contact(this, false, html, null, null, null, $(this).data('user-type'));
+      $(this).click();
     });
 
-    $('.contacts-selected').append(html.join(""));
-
+    //$('.add_students').append(html.join(""));
+    hide_add_students_list();
     add_all_message();
     focus_element('.block_content h3.selected');
   }
 
+  function add_all_responsibles(elem){
+    $(".contacts-list:visible .add_responsibles_list .contact a").each(function(){
+      $(this).click();
+    });
+
+    hide_add_responsibles_list();
+    add_all_message();
+    focus_element('.block_content h3.selected');
+  }
+
+  function del_all_students(elem){
+   // var html = new Array();
+   // if($(".contacts-list").find(".add_students_list").length==0){
+    //  var ul_stu = "<ul class='button_add_students_list'><li> <a aria-label='' href='#' id='add_stu' onclick='add_all_students(this); return false;' onkeydown='click_on_keypress(event, this);'><b>Alunos</b></a><ul class='add_students_list'>";
+   //     $(".contacts-list").append(ul_stu);
+   // }
+    $(".contacts-selected:visible .add_students .contact a").each(function(){
+      $(this).click();
+    });
+
+   // $('.add_students_list').append(html.join(""));
+    hide_del_students_list();
+    focus_element('.block_content h3.selected');
+  }
+
+   function del_all_responsibles(elem){
+    $(".contacts-selected:visible .add_responsibles .contact a").each(function(){
+      $(this).click();
+    });
+
+    hide_del_responsibles_list();
+    focus_element('.block_content h3.selected');
+  }
+
+
+  function hide_add_students_list(){
+    if($(".contacts-list:visible .add_students_list .contact a").length==0){
+      $('.button_add_students_list').remove();
+    }
+  }
+
+  function hide_add_responsibles_list(){
+    if($(".contacts-list:visible .add_responsibles_list .contact a").length==0){
+      $('.button_add_responsibles_list').remove();
+    }
+  }
+
+  function hide_del_students_list(){
+    if($(".contacts-selected:visible .add_students .contact a").length==0){
+      $('.users_at_students').remove();
+    }
+  }
+  function hide_del_responsibles_list(){
+    if($(".contacts-selected:visible .add_responsibles .contact a").length==0){
+      $('.users_at_responsibles').remove();
+    }
+  }
+
   function add_all_message(){
     var users_list = $(".contacts-list #users");
-    if (!!users_list.children(".contact").size()){
-      if (!users_list.children("#add_all").length)
+  
+    if (!!users_list.find(".contact").size()){
+      if (!users_list.find("#add_all").length)
         users_list.prepend('<a href="#" id="add_all" onclick="add_all_contacts(); return false;">#{t('.add_all')}</a>');
     }else{
       $("#add_all").remove();
@@ -115,8 +235,12 @@
     var contacts_to_show = [];
     var contacts = [];
     $(".contacts-selected a").each(function(){
-      contacts.push($(this).data("user-id"));
-      contacts_to_show.push($(this).text());
+      if(typeof($(this).data("user-id")) != "undefined"){
+
+        contacts.push($(this).data("user-id"));
+        user_contact = $(this).text().substring(0, $(this).text().indexOf(">")+1);
+        contacts_to_show.push(user_contact);
+      }
     });
 
     $("#message_to").val(contacts_to_show.join(", "));

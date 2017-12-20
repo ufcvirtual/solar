@@ -3040,10 +3040,17 @@ pt_BR:
       help_message: Enviar mensagem para o atendimento?
     users:
       add_all: Adicionar todos
+      add_responsibles: "<b>Responsáveis</b>"
+      add_students: "<b>Alunos</b>"
       no_user_found: Nenhum usuário encontrado
       add_all_alt: Clique para adicionar todos os usuários à lista de destinatários
       user_alt: "%{name} (Clique para adicionar o usuário %{name} de email %{email} à lista de destinatários)"
       user_remove_alt: "%{name} (Clique para remover o usuário %{name} de email %{email} da lista de destinatários)"
+      add_stu_alt: Clique para adicionar todos os alunos à lista de destinatários
+      add_res_alt: Clique para adicionar todos os responsáveis à lista de destinatários
+      del_stu_alt: Clique para remover todos os alunos da lista de destinatários
+      del_res_alt: Clique para remover todos os responsáveis da lista de destinatários
+      responsibles: Responsáveis
     errors:
       recipients: "Uma mensagem deve possuir, no mínimo, 1 destinatário."
       permission: Você não tem acesso aos dados informados.
