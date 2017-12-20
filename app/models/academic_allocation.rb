@@ -53,7 +53,7 @@ class AcademicAllocation < ActiveRecord::Base
   end
 
   def verify_tool
-    !allocation_tag_id.nil? && academic_tool.verify_start && merge.nil? && (!academic_tool.respond_to?(:status_changed?) || academic_tool.status)
+    !allocation_tag_id.nil? && academic_tool.verify_start && merge.nil? && (!academic_tool.respond_to?(:status_changed?) || academic_tool.status) && (allocation_tag.group_id.nil? || allocation_tag.group.status)
   end
 
   def set_evaluative_params
