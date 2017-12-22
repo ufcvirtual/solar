@@ -4664,7 +4664,8 @@ en_US:
     all: All
     attached_files: Attachments
     remove_file: Remove attachment %{name}
-    files_added: File added
+    file_added: File added
+    remove_file: Remove file
 
   ip_control:
     info:

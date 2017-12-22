@@ -4910,7 +4910,8 @@ pt_BR:
     all: Todos
     attached_files: Anexos
     remove_file: Remover anexo %{name}
-    files_added: Arquivo adicionado
+    file_added: Arquivo adicionado
+    remove_file: Remover arquivo
 
   ip_control:
     info:
