@@ -1329,7 +1329,7 @@ pt_BR:
       to_evaluate: Avaliar/Comentar
       grade: '(Nota: %{grade})'
       frequency: '(Frequência: %{wh}hs)'
-      download: "Baixar aqrquivo %{file}, tamanho: %{size}"
+      download: "Baixar arquivo %{file}, tamanho: %{size}"
       open: "Abrir arquivo %{file}, tamanho: %{size}"
       open_site: "Abrir site %{file}"
       open_site_new_tab: "Abrir o site em uma nova aba (%{file})"
