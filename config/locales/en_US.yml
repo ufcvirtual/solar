@@ -1107,7 +1107,7 @@ en_US:
       title: Title
     form:
       groups: Groups
-    index: 
+    index:
       external_link: Open on a new tab
     error:
       file: One or more files until 30MB must be selected.
@@ -2460,7 +2460,7 @@ en_US:
       subject_new: 'Warning: New activity'
       subject_update: 'Warning: Active change'
       subject_delete: 'Warning: Deletion of activity'
-      
+
   curriculum_units:
     success:
       created: Subject was successfully created.
@@ -3162,7 +3162,7 @@ en_US:
       profile: Profile
       result_search: "Access table with search's result"
 
-  draggable:    
+  draggable:
     close: Close analyzer
 
   shortcut:
@@ -4664,6 +4664,7 @@ en_US:
     all: All
     attached_files: Attachments
     remove_file: Remove attachment %{name}
+    files_added: File added
 
   ip_control:
     info:

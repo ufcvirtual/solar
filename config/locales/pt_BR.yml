@@ -1283,7 +1283,7 @@ pt_BR:
       title: Título
     form:
       groups: Turmas
-    index: 
+    index:
       external_link: Abrir em nova aba
     error:
       file: Um ou mais arquivos de até 30MB devem ser selecionados.
@@ -3406,7 +3406,7 @@ pt_BR:
       all: Todos
       result_search: "Ir para tabela com o resultado da busca"
 
-  draggable:    
+  draggable:
     close: Fechar analisador
 
   shortcut:
@@ -4910,6 +4910,7 @@ pt_BR:
     all: Todos
     attached_files: Anexos
     remove_file: Remover anexo %{name}
+    files_added: Arquivo adicionado
 
   ip_control:
     info:
