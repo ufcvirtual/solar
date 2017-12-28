@@ -902,6 +902,10 @@ class User < ActiveRecord::Base
     save(validate: false)
   end
 
+  def update_users_with_same_column(column)
+    verify_column(self, column)
+  end
+
   private
 
     def login_differ_from_cpf
@@ -910,8 +914,7 @@ class User < ActiveRecord::Base
     end
 
     def verify_column(user, column)
-      same_column = User.where("lower(#{column}) = '#{user.send(column.to_sym).downcase}' AND cpf != '#{user.cpf}'")
-
+      same_column = User.where("lower(#{column}) = '#{user.send(column.to_sym).downcase}' AND users.cpf != '#{user.cpf}'")
       # ver se tem mais de um usuario com esse login
       if same_column.any?
         # se sim, é integrado e não tá na blacklist?
