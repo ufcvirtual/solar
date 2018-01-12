@@ -3997,6 +3997,7 @@ pt_BR:
       deleted: Prova deletada com sucesso
       status: Status da prova alterado com sucesso
       finish: Prova finalizada com sucesso
+      status_error: Equivalent proof, test status can not be changed.
     index:
       description: Descrição
       availability: Disponibilidade

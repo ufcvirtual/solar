@@ -3751,6 +3751,7 @@ en_US:
       deleted: Exam was successfully deleted
       status: Exam's status successfully updated
       finish: Exam was successfully completed
+      status_error: Prova com equivalência, o status da prova não pode ser alterado.
     index:
       description: Description
       availability: Availability
