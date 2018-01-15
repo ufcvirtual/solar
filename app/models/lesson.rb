@@ -35,6 +35,7 @@ class Lesson < ActiveRecord::Base #< Event
 
   validates :lesson_module, :schedule, presence: true
   validates :name, :type_lesson, presence: true
+  validates :name, length: { maximum: 200 }
   validates :address, presence: true, if: '!is_draft? && persisted?'
 
   validate :address_is_ok?
