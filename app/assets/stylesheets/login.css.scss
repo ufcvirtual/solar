@@ -942,6 +942,7 @@ i.noscript{
   color: $login_warning_color;
 }
 
+<<<<<<< 3d826e0e3d372996c49c1f2741741082a8bfa7d0
 .title, .app h2{
   color: $color_white_base;
   font-size: 11pt;
@@ -974,4 +975,8 @@ i.noscript{
     }
     margin-bottom: 0;
   }
+}
+
+.clear {
+  clear: both;
 }
