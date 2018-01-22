@@ -838,14 +838,14 @@ select option{
   padding:0 0 0 10px;
   display:block;
   #li_1{
-    display:inline; 
+    display:inline;
     float:left;
-    padding-right:10px; 
-    margin-right:10px; 
+    padding-right:10px;
+    margin-right:10px;
     border-right:1px solid #EDEDED;
     a{
-      font-family: sans,sans-serif; 
-      text-decoration: none; 
+      font-family: sans,sans-serif;
+      text-decoration: none;
       color:white;
     }
   }
@@ -853,9 +853,9 @@ select option{
     a{
       font-family: sans, sans-serif;
       right: 1px solid #EDEDED;
-      text-decoration: none; 
-      color: white; 
-    }  
+      text-decoration: none;
+      color: white;
+    }
   }
 
 }
@@ -936,4 +936,8 @@ select option{
 
 i.noscript{
   color: $login_warning_color;
+}
+
+.clear {
+  clear: both;
 }
