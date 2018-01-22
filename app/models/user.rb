@@ -54,6 +54,8 @@ class User < ActiveRecord::Base
 
   before_save :set_previous, if: '(!new_record? && ((username_changed? && !previous_username.blank?) || email_changed? && !previous_email.blank?)) && (!synchronizing)'
 
+  before_validation :verify_if_login_has_invalid_character
+
   @has_special_needs
 
   attr_accessor :login, :has_special_needs, :synchronizing
@@ -162,6 +164,11 @@ class User < ActiveRecord::Base
     users = User.where(cpf: cpf_to_check) if new_record? || cpf_to_check != cpf_of_user
 
     errors.add(:cpf, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) unless users.nil? || users.empty?
+  end
+
+  def verify_if_login_has_invalid_character
+    pattern = /[^a-zA-Z0-9]/
+    errors.add(:username, I18n.t(:form_login_notice)) if pattern.match(username)
   end
 
   def inactive_message
@@ -674,7 +681,7 @@ class User < ActiveRecord::Base
       result = result[:int]
       cpf_user = User.find_by_cpf(cpf)
       cpf_user = User.new(cpf: cpf) if cpf_user.nil?
-      if result.include?('6') && !cpf_user.on_blacklist? && (cpf_user.new_record? || cpf_user.integrated) # unavailable cpf, thus 
+      if result.include?('6') && !cpf_user.on_blacklist? && (cpf_user.new_record? || cpf_user.integrated) # unavailable cpf, thus
           cpf_user.synchronize
       else
         User.ma_errors(result, user)
@@ -882,7 +889,7 @@ class User < ActiveRecord::Base
 
     password = Digest::MD5.hexdigest(password) if integrated && selfregistration
 
-    Devise.secure_compare(Digest::SHA1.hexdigest(password), self.encrypted_password) 
+    Devise.secure_compare(Digest::SHA1.hexdigest(password), self.encrypted_password)
   end
 
   def change_username
@@ -935,7 +942,7 @@ class User < ActiveRecord::Base
           remaining_users = User.where("lower(#{column}) = '#{user.send(column.to_sym).downcase}' AND cpf != '#{user.cpf}'")
           # true ou false de acordo com o resultado
           return remaining_users.empty?
-        end        
+        end
       else
         return true
       end

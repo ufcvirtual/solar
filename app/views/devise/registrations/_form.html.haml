@@ -40,7 +40,7 @@
                 = t(:form_special_needs)
               - f.collection_radio_buttons :has_special_needs, [[true, t('special_needs_yes')] ,[false, t('special_needs_no')]], :first, :last, default: false do |b|
                 =b.label(:"data-value" => b.value, :'aria-label' => t(:form_special_needs)+ ': '+ b.text) { b.radio_button + b.text }
-           
+
           #special_needs_line.field.invisible
             = f.input :special_needs
 
@@ -53,7 +53,8 @@
         #access.form-panel
           .field
             = f.input :nick
-          #username.field
+          #warning_login.required_info.invisible=t(:form_login_notice)
+          #username.field.clear
             = f.input :username
           #password.field
             = f.input :password, required: true
@@ -63,7 +64,8 @@
             = f.input :email, required: true
           #confirmEmail.field
             = f.input :email_confirmation, required: true
-          #alternate-email.field  
+          #alternate-email.field
+            #span.hint_text
             = f.input :alternate_email
           %p.required_info
             = t(:required_fields)
@@ -121,35 +123,54 @@
 = javascript_include_tag 'jquery.ui.datepicker-pt-BR', 'jquery.ui.datepicker-en-US'
 
 :javascript
-  
+
   $('#user_name').focus();
   $("#user_birthdate").mask("#{I18n.t('date.formats.mask')}");
 
   $(function(){
     $('#accesskey_maincontent').prop('href', '#register-header');
 
+    $("#user_username").on("keyup focusout",function(){
+      var login = $(this).val();
+      var pattern = /[^a-zA-Z0-9@_]/g;
+
+      if( pattern.test(login) ) {
+        $("#warning_login").removeClass("invisible");
+      } else {
+        $("#warning_login").addClass("invisible");
+      }
+
+      // var that = this;
+      // $(this).val(
+      //   $(that).val().replace(/[^a-zA-Z0-9@_]/g, function(){
+      //     $("#warning_login").removeClass("invisible");
+      //     return '';
+      //   })
+      // );
+    });
+
     var options = $.extend($.datepicker.regional["#{I18n.locale.to_s.gsub('_', '-')}"]);
     $("#user_birthdate").datepicker(options);
 
     setTimeout(function(){
       focuErro();
-    }, 400);    
-    
+    }, 400);
+
   });
 
   function up_focus(id){
     setTimeout(function() {
       $('#'+id).focus();
       focuErro();
-    }, 100); 
+    }, 100);
 
-   
+
   }
 
   function focuErro(){
 
     if($(".error").val() != undefined) {
-      $(".error").each( function(index, value) {         
+      $(".error").each( function(index, value) {
         var label = $(this).siblings()[0];
         var text = $(label).text()+': '+$(this).text();
         $(label).attr("aria-label",text);
@@ -163,8 +184,8 @@
           $("#next_1").click();
           if ($(el).is(":visible")) {
             $(".error").siblings()[0].focus();
-          } 
+          }
         }
-      } 
+      }
     }
   }

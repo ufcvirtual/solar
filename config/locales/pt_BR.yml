@@ -765,6 +765,7 @@ pt_BR:
   form_institution: "Instituição"
   form_special_needs: "Necessidades especiais"
   form_password_confirmation: "Confirmação da senha"
+  form_login_notice: "Por favor, use apenas letras e números."
   form_email_confirmation: "Confirmação do e-mail"
   form_email: "E-mail"
   form_google_play: 'Disponível no Google Play'
@@ -3361,6 +3362,7 @@ pt_BR:
       cpf_admin: 'Apenas administradores podem alterar CPF. Para fazer a mudança, entre em contato com o atendimento@virtual.ufc.br informando nome, CPF atual, novo CPF e o motivo para a mudança.'
       cpf_as_username: 'não pode ser o CPF de outro usuário'
       multiple_sessions: "Não é possível ficar logado em múltiplos dispositivos ao mesmo tempo."
+      username: "Por favor, use apenas letras e números."
     notices:
       ma:
         use_ma_data: "Seus dados de acesso foram importados do Sigaa. Para alterar ou recuperar seus dados de acesso, vá ao endereço: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
