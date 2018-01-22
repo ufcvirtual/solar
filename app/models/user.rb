@@ -55,6 +55,8 @@ class User < ActiveRecord::Base
 
   before_save :set_previous, if: '(!new_record? && ((username_changed? && !previous_username.blank?) || email_changed? && !previous_email.blank?)) && (!synchronizing)'
 
+  before_validation :verify_if_login_has_invalid_character
+
   @has_special_needs
 
   attr_accessor :login, :has_special_needs, :synchronizing
@@ -165,6 +167,11 @@ class User < ActiveRecord::Base
     users = User.where(cpf: cpf_to_check) if new_record? || cpf_to_check != cpf_of_user
 
     errors.add(:cpf, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) unless users.nil? || users.empty?
+  end
+
+  def verify_if_login_has_invalid_character
+    pattern = /[^a-zA-Z0-9]/
+    errors.add(:username, I18n.t(:form_login_notice)) if pattern.match(username)
   end
 
   def inactive_message
