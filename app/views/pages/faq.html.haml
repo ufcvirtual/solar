@@ -28,6 +28,12 @@
         %h4.title= t('faq.questions.uab_forgot_login_password')
       .invisible
         %p.title_child_first= raw t('faq.answers.uab_forgot_login_password')
+
+    .question
+      = link_to '#', onkeydown: 'click_on_keypress(event, this);', onclick: 'slide_info(this, event)', class: 'title' do
+        %h4.title= t('faq.questions.uab_selfregistration')
+      .invisible
+        %p.title_child_first= raw t('faq.answers.uab_selfregistration')
       
     .question
       = link_to '#void', onkeydown: 'click_on_keypress(event, this);', onclick: 'slide_info(this, event)', class: 'title' do
@@ -75,9 +81,9 @@
       = link_to '#void', onkeydown: 'click_on_keypress(event, this);', onclick: 'slide_info(this, event)', class: 'title' do
         %h4.title= t('faq.questions.update_data')
       .invisible
-        %h4.title_child_first= raw t('faq.answers.ma')
-        %p.title_child_second= raw t('faq.answers.update_data')
         %h4.title_child_first= raw t('faq.answers.not_ma')
+        %p.title_child_second= raw t('faq.answers.update_data')
+        %h4.title_child_first= raw t('faq.answers.ma')
         %p.title_child_second=raw t('faq.answers.update_data_ma')
 
     .question

@@ -32,9 +32,12 @@ module V1::General
     user = User.new(cpf: cpf) unless user || only_if_exists
 
     return true if only_if_exists && user.blank?
-    
+
+    return user if user.selfregistration
+
     if user.can_synchronize?  && (!ignore_synchronize || user.new_record?)
       import = user.synchronize
+      return user if(import.blank? && !user.new_record?)
       raise user.errors.full_messages.join(', ') unless import || user.errors.empty?
     end
 
