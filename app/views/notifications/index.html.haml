@@ -3,8 +3,8 @@
     - tr_class = notification.read ? "read" : "unread"
     %li.lines{class: tr_class, id: notification.id}
       %a{ href: '#', "data-link-show" => notification_path(notification), "data-notification-idx" => idx }
-        .title= sanitize truncate(notification.title, length: 150)
-        .description= sanitize truncate(notification.description, length: 200)
+        .title= truncate(strip_tags(notification.title), length: 150)
+        .description= truncate(strip_tags(notification.description), length: 200)
         %span.visuallyhidden= t('fancybox.open')
 
 :javascript
@@ -16,5 +16,5 @@
     $('li.read a').bind("keypress click", function(){
       $(this).call_fancybox({href : $(this).data('link-show'), open: true});
     });
-    
+
   });
