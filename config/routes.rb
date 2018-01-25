@@ -39,7 +39,7 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :personal_configurations do 
+  resources :personal_configurations do
       put :update_theme, on: :collection
   end
 
@@ -294,6 +294,7 @@ Solar::Application.routes.draw do
       get "academic/:curriculum_unit_type_id/semesters", to: "editions#semesters", as: :academic_semesters
       get "academic/:curriculum_unit_type_id/groups", to: "editions#groups", as: :academic_groups
       get "academic/:curriculum_unit_type_id/edx_courses", to: "editions#edx_courses", as: :academic_edx_courses
+      get :details_ac
     end
   end
 

@@ -3,15 +3,15 @@
 
   %a{ onkeydown: 'click_on_keypress(event, this);', :'data-shortcut' => t("shortcut.editions.code.analyzer_position"), :'data-shortcut-name' => t("shortcut.editions.name.analyzer_position"), :'data-shortcut-shift' => 'true', class: 'hidden analyzer_position'}
 
-  .ui-widget-content{ id: 'draggable', :'data-tooltip' => t(".draggable_info")}  
+  .ui-widget-content{ id: 'draggable', :'data-tooltip' => t(".draggable_info")}
     %a{ href: '#', :'aria-label' => t('.window_analyzer_home'), :title => t('.window_analyzer_home'),class: 'close_draggable', id: 'draggable_open_window'}
     .ui-widget-content_title
-      %h2= t('.draggable_title')  
+      %h2= t('.draggable_title')
 
       = link_to content_tag(:i, nil, class: "icon-cancel-circle"), "#", class: 'close_draggable', :'data-tooltip' => t("draggable.close"), :'aria-label' => t("draggable.close")
-    #content_draggable  
+    #content_draggable
       %ul{id: 'analise_errors'}
-    %a{ href: '#', :'aria-label' => t('.window_analyzer_end'), :title => t('.window_analyzer_end'),class: 'close_draggable'}  
+    %a{ href: '#', :'aria-label' => t('.window_analyzer_end'), :title => t('.window_analyzer_end'),class: 'close_draggable'}
   .title-warning
     %div.how_it_works_title
       = link_to_function raw(t('.how_it_works_title')), 'hide_or_show_info(this)', id: 'how_it_works_title'
@@ -28,22 +28,22 @@
     - if @working_hours.blank?
       %div.rules_and_info=raw t('.rule_wh1')
     - else
-      %div.rules_and_info=raw t('.rule_wh2', working_hours: @working_hours)    
+      %div.rules_and_info=raw t('.rule_wh2', working_hours: @working_hours)
     %br
-    %div.rules_and_info= raw t('.rule_passing_grade', passing_grade: @course.try(:passing_grade))
+    %div.rules_and_info= raw t('.rule_passing_grade', passing_grade: (@course.try(:passing_grade) || t('.not_defined')))
     %br
-    %div.rules_and_info= raw t('.rule_min_hours', min_hours: (@curriculum_unit.try(:min_hours) || @course.try(:min_hours)))
+    %div.rules_and_info= raw t('.rule_min_hours', min_hours: (@curriculum_unit.try(:min_hours) || @course.try(:min_hours) || t('.not_defined')))
     %br
-    %div.rules_and_info= raw t('.rule_min_grade_to_final_exam', min_grade_to_final_exam: @course.try(:min_grade_to_final_exam))
+    %div.rules_and_info= raw t('.rule_min_grade_to_final_exam', min_grade_to_final_exam: (@course.try(:min_grade_to_final_exam) || t('.not_defined')))
     %br
-    %div.rules_and_info= raw t('.rule_min_final_exam_grade', min_final_exam_grade: @course.try(:min_final_exam_grade))
+    %div.rules_and_info= raw t('.rule_min_final_exam_grade', min_final_exam_grade: (@course.try(:min_final_exam_grade) || t('.not_defined')))
     %br
-    %div.rules_and_info= raw t('.rule_final_exam_passing_grade', final_exam_passing_grade: @course.try(:final_exam_passing_grade))
+    %div.rules_and_info= raw t('.rule_final_exam_passing_grade', final_exam_passing_grade: (@course.try(:final_exam_passing_grade) || t('.not_defined')))
     %br
     %div.rules_and_info= raw t('.rule_window_analyzer')
   .management
-    
-    = form_tag manage_tools_editions_path, id: 'form_manage_tools_editions', method: :put do 
+
+    = form_tag manage_tools_editions_path, id: 'form_manage_tools_editions', method: :put do
 
       - if @tools.any?
         %div
@@ -63,10 +63,10 @@
           .set_final_weight
             = link_to_function content_tag(:i, nil, class: 'icon-clipboard', :"data-tooltip" => t('.default_final_weight')), 'set_final_weight()'
             .weight_link= link_to_function t('.default_final_weight'), 'set_final_weight()'
-          .analyzer  
+          .analyzer
             = link_to_function content_tag(:i, nil, class: 'icon-popup', :"data-tooltip" => t('.window_analyzer_home')), 'slideDraggable()'
             = link_to_function t('.analyzer'), 'slideDraggable()'
-         
+
 
           - tools_ids = []
           - @tools.collect{|key, value| value}.flatten.each do |tool|
@@ -82,7 +82,7 @@
       - else
         .text_none
           = t(:item_search_no_found)
-         
+
 
 :javascript
   $(document).ready(function(){
@@ -95,10 +95,9 @@
     $('#draggable_open_window').focus();
   });
   $(function(){
-
     reload_shortcut_list();
     $('.open_window').on('click', function(){
-      slideDraggable();      
+      slideDraggable();
     });
 
     $('.analyzer_position').on('click', function(){
@@ -111,7 +110,7 @@
 
     setTimeout(function() {
       initializer_analizer();
-    }, 800); 
+    }, 800);
 
     $('.close_draggable').on('click', function(){
       $('#draggable').hide();
@@ -142,21 +141,34 @@
       $('#draggable_open_window').focus();
     }else{
       $('#how_it_works_title').focus();
-    }  
+    }
   }
 
   function check_checkbox(event, object){
+    var ckb = $('input', $(object)).last();
     if(event.target.tagName == 'TD')
-      $('input', $(object)).last().click();
+      ckb.click();
+
+    if($(object).hasClass('fe')){
+      final_exam(ckb);
+    }else{
+      if($(object).hasClass('ev')){
+        evaluative(ckb);
+      }else{
+        if($(object).hasClass('f')){
+          frequency(ckb);
+        }
+      }
+    }
 
     setTimeout(function() {
       initializer_analizer();
-    }, 200);  
+    }, 200);
   }
   function selected_equiv(){
     setTimeout(function() {
       initializer_analizer();
-    }, 200);  
+    }, 200);
   }
 
   function manage_tools(button){
@@ -225,7 +237,7 @@
         inputs[i].value = each_value.toFixed(2);
         semitotal = Number(Number(semitotal)+Number(each_value.toFixed(2)));
       }
-      else { 
+      else {
         inputs[i].value = Number(Number(each_value.toFixed(2)) + Number(Number(total)-Number(semitotal)-Number(each_value.toFixed(2)))).toFixed(2);
       }
     }
@@ -243,7 +255,7 @@
       flash_message("#{I18n.t('evaluative_tools.warnings.no_evaluative_tools')}", 'warning');
       return false;
     }
-    
+
     inputs.val(1);
   }
 
@@ -260,4 +272,44 @@
     setTimeout(function() {
       initializer_analizer();
     }, 200);
+  }
+
+  function final_exam(ckb){
+    var parent = $(ckb).parents('tr');
+    var value  = $(ckb).prop('checked');
+
+    parent.find("input[id$='weight']").prop('disabled', value);
+    parent.find("input[id$='final_weight']").prop('disabled', value);
+    parent.find("input[id$='max_working_hours']").prop('disabled', value);
+  }
+
+  function frequency(ckb){
+    var parent = $(ckb).parents('tr');
+    var value  = $(ckb).prop('checked');
+
+    parent.find("input[id$='max_working_hours']").prop('disabled', !value);
+
+    if(!$("#"+$(ckb).prop('id').replace('frequency', 'evaluative')).prop('checked')){
+      parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !value);
+      if(!value)
+        parent.find("select[id$='equivalent_academic_allocation_id']").val('');
+    }
+  }
+
+  function evaluative(ckb){
+    var parent = $(ckb).parents('tr');
+    var value  = !!$(ckb).prop('checked');
+
+    if(parent.find("input[id$='final_exam']").prop('checked'))
+      parent.find("input[id$='final_exam']").prop('checked', false);
+    parent.find("input[id$='final_exam']").prop('disabled', !value);
+    parent.find("input[id$='weight']").prop('disabled', !value);
+    parent.find("input[id$='final_weight']").prop('disabled', !value);
+
+
+    if(!$("#"+$(ckb).prop('id').replace('evaluative', 'frequency')).prop('checked')){
+      parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !value);
+      if(!value)
+        parent.find("select[id$='equivalent_academic_allocation_id']").val('');
+    }
   }

@@ -57,7 +57,8 @@ class AcademicAllocation < ActiveRecord::Base
   end
 
   def set_evaluative_params
-    self.frequency = get_curriculum_unit.try(:working_hours).blank? ? false : frequency
+    uc = get_curriculum_unit
+    self.frequency = uc.try(:working_hours).blank? ? false : frequency
     self.max_working_hours = nil unless self.frequency
     if !evaluative
       self.weight = 1
@@ -68,6 +69,12 @@ class AcademicAllocation < ActiveRecord::Base
       self.final_weight = 0
       self.max_working_hours = 0
       self.frequency = false
+    else
+      if uc.try(:curriculum_unit_type_id).to_i == 2
+        self.weight = 1
+      else
+        self.final_weight = 100
+      end
     end
     unless equivalent_academic_allocation_id.nil?
       ac = AcademicAllocation.find(equivalent_academic_allocation_id)

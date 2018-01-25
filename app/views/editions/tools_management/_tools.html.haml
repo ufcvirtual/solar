@@ -1,4 +1,5 @@
 .block_wrapper.module.tools
+  - distant_course = (@curriculum_unit.try(:curriculum_unit_type_id).try(:to_i) == 2 || false)
   .block_title_exam.block_exam
     %h2
       .icons
@@ -13,23 +14,23 @@
             %th.name= t('editions.tools.name')
             %th= t('editions.tools.period')
             %th= t('editions.tools.evaluative')
-            %th= t('editions.tools.weight')
-            %th= t('editions.tools.final_weight')
             %th= t('editions.tools.final_exam')
+            - unless distant_course
+              %th= t('editions.tools.weight')
+            - else
+              %th= t('editions.tools.final_weight')
             %th= t('editions.tools.frequency')
             %th= t('editions.tools.max_wh')
             %th= t('editions.tools.equivalent')
 
         %tbody
           - tools.each do |ac|
-            - if @groups.first.curriculum_unit.curriculum_unit_type_id.to_i == 2
-              - if ac.academic_tool_type == 'ScheduleEvent'
-                - ac.final_weight = ac.final_weight > 60 ? 60 : ac.final_weight
-              - else
-                - ac.final_weight = ac.final_weight > 40 ? 40 : ac.final_weight
+            - final_weight = ac.final_weight
+            - if distant_course && !ac.evaluative
+              - final_weight = (ac.academic_tool_type == 'ScheduleEvent' && ScheduleEvent.find(ac.academic_tool_id).type_event == Presential_Test) ? 60 : 40
 
             - ats_ids = ac.ats.delete('{}').split(',')
-            - array_group_code = Array.new 
+            - array_group_code = Array.new
             - groups = Group.joins(:allocation_tag).where(allocation_tags: {id: ats_ids.map(&:to_i)}).compact
             //oferta
             - if groups.empty?
@@ -38,34 +39,30 @@
 
             - groups.each do |g|
               - array_group_code.push(g.code+',')
- 
+
             = fields_for 'academic_allocations[]', ac do |acf|
               %tr.lines{ class: [ats_ids.map{|at| 'at_'+at}, ac.acs.map{|ac| 'ac_'+ac}].join(' ') }
+                = hidden_field_tag 'groups', array_group_code, class: 'groups_analyzer'
                 %td.desc
                   %div
-                    .title= ac.name
-                    .description
-                      .minimun
-                        = raw ac.description.to_s.truncate(200)
-                        - if ac.description.try(:size).to_i > 200
-                          = link_to_function content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('editions.evaluative_tools.expand_description')), 'expand_or_compress(this)'
-                      .complete.invisible
-                        = raw ac.description
-                        = link_to_function content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('editions.evaluative_tools.compress_description')), 'expand_or_compress(this)'
+                    .title
+                      = ac.name
+                      = link_to content_tag(:i, nil, class: 'icon-eye', :'aria-hidden'=>'true'), details_ac_editions_path(ats: ats_ids, description: ac.description, name: ac.name), class: 'show_ac', :'data-tooltip' => t('.details'), :'aria-label'=> t('.details_about', name: ac.name) + t('fancybox.open')
                     - if groups.blank?
                       = t('editions.tools.offer')
                     - else
                       .group_label= render "groups/groups_tags", groups: groups, tool: ac.academic_tool_id, all_groups: nil, paths: nil
                 %td
-                  - hours = (ac.start_hour.blank?) ? '' : (ac.end_hour.blank?) ? ac.start_hour : [ac.start_hour, ac.end_hour].join(I18n.t('schedules.to')) 
+                  - hours = (ac.start_hour.blank?) ? '' : (ac.end_hour.blank?) ? ac.start_hour : [ac.start_hour, ac.end_hour].join(I18n.t('schedules.to'))
                   = t('editions.evaluative_tools.full_period', dstart: ac.start_date.to_date, dend: ac.end_date.to_date , hours: hours)
-                %td.ckb{onclick: 'check_checkbox(event, this)'}= acf.check_box :evaluative, label: false
-                %td.weight= acf.text_field :weight, label: false, disabled: !ac.evaluative || ac.final_exam
-                %td.final_weight
-                  = acf.text_field :final_weight, label: false, disabled: !ac.evaluative  || ac.final_exam, oninput: 'initializer_analizer()'
-                  = hidden_field_tag 'groups', array_group_code, class: 'groups'
-                %td.ckb{onclick: 'check_checkbox(event, this)'}= acf.check_box :final_exam, label: false, disabled: !ac.evaluative
-                %td.ckb{onclick: 'check_checkbox(event, this)'}= acf.check_box :frequency, label: false, disabled: (wh || ac.final_exam), :'data-change' => !wh  && !ac.final_exam
+                %td.ckb.ev{onclick: 'check_checkbox(event, this)'}= acf.check_box :evaluative, label: false
+                %td.ckb.fe{onclick: 'check_checkbox(event, this)'}= acf.check_box :final_exam, label: false, disabled: !ac.evaluative
+                - unless distant_course
+                  %td.weight= acf.text_field :weight, label: false, disabled: !ac.evaluative || ac.final_exam
+                - else
+                  %td.final_weight
+                    = acf.text_field :final_weight, label: false, disabled: !ac.evaluative  || ac.final_exam, oninput: 'initializer_analizer()', value: final_weight
+                %td.ckb.f{onclick: 'check_checkbox(event, this)'}= acf.check_box :frequency, label: false, disabled: (wh || ac.final_exam), :'data-change' => !wh  && !ac.final_exam
                 %td.working_hours
                   = acf.text_field :max_working_hours, label: false, disabled: !ac.frequency || ac.final_exam, oninput: 'initializer_analizer()'
                   = t('editions.tools.wh')
@@ -79,37 +76,14 @@
 
 :javascript
   $(function(){
+
+    $(".show_ac").call_fancybox({
+      autoDimensions: false,
+      maxWidth: 402,
+      maxHeight: 500
+    });
+
     $("#draggable").draggable({ scroll: true });
-
-    $("input[id$='evaluative']").change(function(){
-      var parent = $(this).parents('tr');
-      var value  = !!$(this).prop('checked');
-      var field = parent.find("input[id$='weight']");
-      field.prop('disabled', !value);
-      parent.find("input[id$='final_weight']").prop('disabled', !value);
-      parent.find("input[id$='final_exam']").prop('disabled', !value);
-      if(!$("#"+$(this).prop('id').replace('evaluative', 'frequency')).prop('checked')){
-        parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !value);
-        if(!value)
-          parent.find("select[id$='equivalent_academic_allocation_id']").val('');
-      }
-    });
-
-    $("input[id$='final_exam']").change(function(){
-      var parent = $(this).parents('tr');
-      var value  = $(this).prop('checked');
-
-      if(parent.find("select[id$='equivalent_academic_allocation_id']").val() == '' && !!value){
-        parent.find("input[id$='weight']").prop('disabled', !!value);
-        parent.find("input[id$='final_weight']").prop('disabled', !!value);
-      }
-
-      var frequency = parent.find("input[id$='frequency']");
-      if(frequency.data('change') == 'true'){
-        frequency.prop('disabled', !!value);
-        parent.find("input[id$='max_working_hours']").prop('disabled', !!value);
-      }
-    });
 
     $("select[id$='equivalent_academic_allocation_id']").change(function(){
       var parent = $(this).parents('tr');
@@ -117,25 +91,12 @@
 
       if(!parent.find("input[id$='final_exam']").prop('checked')){
         parent.find("input[id$='weight']").prop('disabled', !value);
-        parent.find("input[id$='final_weight']").prop('disabled', !value);      
+        parent.find("input[id$='final_weight']").prop('disabled', !value);
       }
 
       parent.find("input[id$='max_working_hours']").prop('disabled', !value);
     });
 
-    $("input[id$='frequency']").change(function(){
-      var parent = $(this).parents('tr');
-      var value  = $(this).prop('checked');
-      var field = parent.find("input[id$='max_working_hours']");
-      field.prop('disabled', !value);
-
-      if(!$("#"+$(this).prop('id').replace('frequency', 'evaluative')).prop('checked')){
-        parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !value);
-        if(!value)
-          parent.find("select[id$='equivalent_academic_allocation_id']").val('');
-      }
-    });
-   
   });
 
   function hide_or_show(icon){
@@ -158,12 +119,12 @@
     $(elem).parent().find('.icon-arrow-down-triangle').toggleClass('invisible');
     $(elem).parent().find('.icon-arrow-up-triangle').toggleClass('invisible');
   }
-  /* 
+  /*
   // Gera os dados para o analisador
-  // Percorri todos os campos input do formulario desde que estejam habilitados(disabled=false)
+  // Percorre todos os campos input do formulario desde que estejam habilitados(disabled=false)
   */
   function initializer_analizer(){
-   
+
     $('.analise_errors_li').remove();
     var soma = 0;
     var soma_ch = 0;
@@ -174,19 +135,20 @@
     var class_ch = "analise_errors_li correct_t";
     var ul = $('#analise_errors');
     var _wh = $('#working_hours_input').val();
-    //percorri todos os inputs
+
+    //percorre todos os inputs
     $("#form_manage_tools_editions input").each(function(){
 
       var string = String($(this).attr('id'));
       //verifica se o input é de peso final
       if(string.indexOf("final_weight")>-1){
-        //verifica se input não está desabilitado
+        //verifica se input nao esta desabilitado
         if(String($(this).attr("disabled")) == 'undefined'){
           var offer = false;
           //pega as turmas da linha do input no formulario
-          var groups = $(this).siblings('.groups').val(); 
+          var groups = $(this).parents('tr').find('.groups_analyzer').val();
           groups = groups.split(',');
-          //laço das turmas da linha
+          //laco das turmas da linha
           for(i = 0; i < groups.length-1; i++) {
             //pega o valor do input e converte para um float com duas casas decimais
             var valor = parseFloat(Number($(this).val()).toFixed(2));
@@ -194,128 +156,131 @@
             if(groups[i] == '' || groups[i] == 'undefined' || groups[i] == null){
               offer = true;
             }
-            
+
             if(offer==false){
               // forma os grupos com os totais de peso final
               var t_gl = false;
-              // verifica se a turma está foi inserida no array de turmas (groups_list)
-              for(gl= 0; gl < groups_list.length; gl++) { 
+              // verifica se a turma foi inserida no array de turmas (groups_list)
+              for(gl= 0; gl < groups_list.length; gl++) {
                 if( $.inArray(groups[i], groups_list[gl]) !== -1){
                   t_gl = true;
-                }      
+                }
               }
-              // adiciona a turma no array de turmas (groups_list), porém é verifica se a linha não é uma oferta e se a turma não havia sido inserida anteriormente.
+              // adiciona a turma no array de turmas (groups_list), porem e verifica se a linha nao eh uma oferta e se a turma nao havia sido inserida anteriormente
               if(t_gl==false && offer==false){
                 groups_list.push([groups[i], 0]); // [grupo, peso final]
               }
 
               var test = false;
-              // verifica se o peso final já existe para referida turma
-              for(w = 0; w < weight.length; w++) { 
+              // verifica se o peso final ja existe para referida turma
+              for(w = 0; w < weight.length; w++) {
                 if(( $.inArray(groups[i], weight[w]) !== -1) && ($.inArray(valor, weight[w]) !== -1)){
                   test = true;
                 }
               }
               //Adiciona o peso final ao array weight[grupo, valor]
               if(test==false && offer==false){
-                weight.push([groups[i], valor]); 
-                // percorri o array com as turmas groups_list[grupo, valor] e atualizar o valor do grupo
-                for(g = 0; g < groups_list.length; g++) { 
+                weight.push([groups[i], valor]);
+                // percorre o array com as turmas groups_list[grupo, valor] e atualiza o valor do grupo
+                for(g = 0; g < groups_list.length; g++) {
                   if( groups_list[g][0] == groups[i] ){
                     groups_list[g][1] = Number(groups_list[g][1]) + valor;
-                  } 
+                  }
                 }
               }
 
-            }else{ 
+            }else{
               //oferta
-              // percorri todos os grupos groups_list[grupo, valor]
-              for(g = 0; g < groups_list.length; g++) { 
+              // percorre todos os grupos groups_list[grupo, valor]
+              for(g = 0; g < groups_list.length; g++) {
                 var t_off = false;
                 //verifica se o valor já existe para referida turma
-                for(w = 0; w < weight.length; w++) { 
+                for(w = 0; w < weight.length; w++) {
                   if(( $.inArray(groups_list[g][0], weight[w]) !== -1) && ($.inArray(valor, weight[w]) !== -1)){
                     t_off = true;
                   }
                 }
-                //adiciona ao array de turmas caso o valor ainda não exista no array
+                //adiciona ao array de turmas caso o valor ainda nao exista no array
                 if(t_off==false){
-                  weight.push([groups_list[g][0], valor]); 
+                  weight.push([groups_list[g][0], valor]);
                   //altera o valor no total por grupo
                   groups_list[g][1] = Number(groups_list[g][1]) + valor;
                 }
 
-              }  
-              
-            }  
-          }  
-        }  
-      } 
-     
-      //Carga horária: percorri todos inputs de carga horária que estejam com disabled falso.
-      // groups_wh_list[grupo, valor] = contém todas os grupos e as soma das cargas horárias de cada.
+              }
+
+            }
+          }
+        }
+      }
+
+      //Carga horária: percorre todos inputs de carga horária que estejam com disabled falso
+      // groups_wh_list[grupo, valor] = contem todas os grupos e as soma das cargas horarias de cada
       if(string.indexOf("max_working_hours")>-1){
         if(String($(this).attr("disabled")) == 'undefined'){
-          //pegar os grupos da linha
-          var groups_wh = $(this).closest('.working_hours').siblings('.final_weight').first().find('.groups').val();
+          //pega os grupos da linha
+          var groups_wh = $(this).parents('tr').find('.groups_analyzer').val();
           groups_wh = groups_wh.split(',');
-          //percorri todos os grupos da linha
+          //percorre todos os grupos da linha
           for(igwh = 0; igwh < groups_wh.length-1; igwh++) {
-              var t_wh =false;
+            var t_wh =false;
 
-              for(wh = 0; wh < groups_wh_list.length; wh++) {
-                // verifica se o grupo já existe no array de grupos: groups_wh_list
-                if( groups_wh_list[wh][0] == groups_wh[igwh] ){
-                  t_wh = true;
-                  groups_wh_list[wh][1] = Number(groups_wh_list[wh][1]) + Number($(this).val());
-                }
-                //Oferta: atualizar as turmas existentes no array de grupos: groups_wh_list
-                if(groups_wh[igwh] == '' || groups_wh[igwh] == 'undefined' || groups_wh[igwh] == null){
-                  t_wh = true;
-                  groups_wh_list[wh][1] = Number(groups_wh_list[wh][1]) + Number($(this).val());
-                }
+            for(wh = 0; wh < groups_wh_list.length; wh++) {
+              // verifica se o grupo já existe no array de grupos: groups_wh_list
+              if( groups_wh_list[wh][0] == groups_wh[igwh] ){
+                t_wh = true;
+                groups_wh_list[wh][1] = Number(groups_wh_list[wh][1]) + Number($(this).val());
               }
-              // adiciona um novo grupo na lista de grupos da carga horária: groups_wh_list[grupo, valor]
-              if(t_wh == false){
-                groups_wh_list.push([groups_wh[igwh], Number($(this).val())]);
+              //Oferta: atualizar as turmas existentes no array de grupos: groups_wh_list
+              if(groups_wh[igwh] == '' || groups_wh[igwh] == 'undefined' || groups_wh[igwh] == null){
+                t_wh = true;
+                groups_wh_list[wh][1] = Number(groups_wh_list[wh][1]) + Number($(this).val());
               }
-            
-
+            }
+            // adiciona um novo grupo na lista de grupos da carga horária: groups_wh_list[grupo, valor]
+            if(t_wh == false){
+              groups_wh_list.push([groups_wh[igwh], Number($(this).val())]);
+            }
           }
-        }  
-      }  
-    });
-    // peso final
-    // É formado uma lista principal com o peso final de cada grupo
-    // Cada grupo de peso final possui uma sub-list com os grupos de valores.
-    for(glt = 0; glt < groups_list.length; glt++) {
-      var id = 'ul_'+glt;
-
-      var class_g = "analise_errors_li correct_t";
-      if(groups_list[glt][1] != 100)
-        class_g = "analise_errors_li error_t";      
-      // texto para assebilidade
-      texto = "#{I18n.t('editions.tools.detail_weight')}"+ groups_list[glt][0] +'= '+ parseFloat(groups_list[glt][1].toFixed(2));
-      // texto de exibição  
-      group = "#{I18n.t('editions.tools.total_final_weight')}"+ groups_list[glt][0] +': '+ parseFloat(groups_list[glt][1].toFixed(2));
-      //forma a lista principal
-      ul.append("<li class='" + class_g + "'><a href='#' onclick='hide_or_show_ul(this); return false;' class='" + class_g + "' aria-label='"+texto+"''>"+group+" <i class='icon-arrow-down-triangle'></i><i class='icon-arrow-up-triangle invisible'></i><a/><ul id='"+id+"' ></ul> </li>"); 
-      //gera a sub-lista
-      for(i = 0; i < weight.length; i++) {
-        if(weight[i][0]==groups_list[glt][0]){
-          name = "#{I18n.t('editions.tools.group')}"+(i+1)+': '+weight[i];
-          $('#'+id).append("<li class='analise_child_li'>"+name+'</li>');
-        } 
+        }
       }
-      $('#'+id).hide(); // esconde a sub-lista
+    });
+
+    if("#{distant_course}" == 'true'){
+      // peso final
+      // É formado uma lista principal com o peso final de cada grupo
+      // Cada grupo de peso final possui uma sub-list com os grupos de valores
+      for(glt = 0; glt < groups_list.length; glt++) {
+        var id = 'ul_'+glt;
+
+        var class_g = "analise_errors_li correct_t";
+        if(groups_list[glt][1] != 100)
+          class_g = "analise_errors_li error_t";
+        // texto para acessibilidade
+        texto = "#{I18n.t('editions.tools.detail_weight')}"+ groups_list[glt][0] +'= '+ parseFloat(groups_list[glt][1].toFixed(2));
+        // texto de exibicao
+        group = "#{I18n.t('editions.tools.total_final_weight')}"+ groups_list[glt][0] +': '+ parseFloat(groups_list[glt][1].toFixed(2));
+        //forma a lista principal
+        ul.append("<li class='" + class_g + "'><a href='#' onclick='hide_or_show_ul(this); return false;' class='" + class_g + "' aria-label='"+texto+"''>"+group+" <i class='icon-arrow-down-triangle'></i><i class='icon-arrow-up-triangle invisible'></i><a/><ul id='"+id+"' ></ul> </li>");
+        //gera a sub-lista
+        for(i = 0; i < weight.length; i++) {
+          if(weight[i][0]==groups_list[glt][0]){
+            name = "#{I18n.t('editions.tools.group')}"+(i+1)+': '+weight[i];
+            $('#'+id).append("<li class='analise_child_li'>"+name+'</li>');
+          }
+        }
+        $('#'+id).hide(); // esconde a sub-lista
+      }
+      //adiciona a lista com os grupos de carga horária ao final
     }
-    //adiciona a lista com os grupos de carga horária ao final
+
     for(gltw = 0; gltw < groups_wh_list.length; gltw++) {
       var class_ch = "analise_errors_li correct_t";
       if(groups_wh_list[gltw][1] != _wh)
         class_ch = "analise_errors_li error_t";
       group = "#{I18n.t('editions.tools.total_wh')}"+ groups_wh_list[gltw][0] + ': '+ parseFloat(groups_wh_list[gltw][1].toFixed(2));
-      ul.append("<li class='" + class_ch + "' >"+group+"</li>"); 
+      ul.append("<li class='" + class_ch + "' >"+group+"</li>");
     }
-    
+
   }
+

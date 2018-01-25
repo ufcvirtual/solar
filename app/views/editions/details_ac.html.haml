@@ -1,0 +1,9 @@
+.show_ac
+  %h1#lightBoxDialogTitle= @name
+
+  .form-inputs.block_content.show
+    %span.label_info= sanitize(@description)
+
+    .schedule_dates
+      .right_buttons
+        = button_to_function t("agendas.close"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"

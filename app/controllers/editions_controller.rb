@@ -2,7 +2,7 @@ include EdxHelper
 
 class EditionsController < ApplicationController
 
-  layout false, only: [:tool_management]
+  layout false, only: [:tool_management, :details_ac]
 
   def items
     if active_tab[:url][:allocation_tag_id].blank?
@@ -204,7 +204,6 @@ class EditionsController < ApplicationController
           end
 
           attributes.merge!(data.slice('evaluative', 'weight', 'equivalent_academic_allocation_id', 'final_exam', 'frequency', 'max_working_hours', 'final_weight'))
-
           changes << {previous: ac.as_json, after: attributes}
 
           unless ac.update_attributes(attributes)
@@ -222,7 +221,7 @@ class EditionsController < ApplicationController
           if acs.any?
             wh = acs.sum(:max_working_hours)
             if wh != max_working_hours
-              working_hours_errors << {at: at, wh: wh} 
+              working_hours_errors << {at: at, wh: wh}
               ats_errors << at.id
             end
           end
@@ -249,18 +248,18 @@ class EditionsController < ApplicationController
     end
 
     LogAction.create(log_type: LogAction::TYPE[:update], user_id: current_user.id, ip: get_remote_ip, description: "management changes: #{changes.as_json}") rescue nil
-   
+
     message = AcademicAllocationUser.any_evaluated?(allocation_tags_ids) ? t('evaluative_tools.warnings.changes') : t('evaluative_tools.success.manage')
     render json: { success: true, notice: message }
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t('evaluative_tools.errors.permission')}, status: :unprocessable_entity
   rescue => error
     alert = []
-    
+
     errors.each do |error|
       alert << ("#{t(error[:ac].academic_tool_type.tableize.singularize.to_sym, scope: [:activerecord, :models])} #{error[:ac].tool_name}: #{error[:messages].join('; ')}" rescue error)
     end
-    
+
     (working_hours_errors || []).each do |error|
       alert << ["#{error[:at].groups.map(&:code).join(', ')}", t('evaluative_tools.errors.working_hour_error', max: max_working_hours, wh: error[:wh])].join(': ')
     end
@@ -272,6 +271,13 @@ class EditionsController < ApplicationController
     alert = alert.uniq.join('<br/>')
     alert = t('evaluative_tools.errors.general_message') if alert.blank?
     render json: { success: false, alert: alert, acs: (acs_errors.uniq.map(&:to_s) rescue []), ats: (ats_errors.uniq.map(&:to_s) rescue []) }, status: :unprocessable_entity
+  end
+
+  def details_ac
+    authorize! :tool_management, Edition, { on: params[:ats] }
+
+    @name = params[:name]
+    @description = params[:description]
   end
 
 end
