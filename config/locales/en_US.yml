@@ -2413,6 +2413,8 @@ en_US:
       webconferences_call: 'Manage evaluative / frequency webconferences'
       offer_period: Offer already ended
       same_type_af: must have same value at 'Final Exam'
+      details: See description
+      details_about: Access description about %{name}
     tools:
       expand: Expand
       compress: Compress

@@ -47,7 +47,7 @@
                   %div
                     .title
                       = ac.name
-                      = link_to content_tag(:i, nil, class: 'icon-eye', :'aria-hidden'=>'true'), details_ac_editions_path(ats: ats_ids, description: ac.description, name: ac.name), class: 'show_ac', :'data-tooltip' => t('.details'), :'aria-label'=> t('.details_about', name: ac.name) + t('fancybox.open')
+                      = link_to content_tag(:i, nil, class: 'icon-eye', :'aria-hidden'=>'true'), details_ac_editions_path(ats: ats_ids, description: ac.description, name: ac.name), class: 'show_ac', :'data-tooltip' => t('editions.evaluative_tools.details'), :'aria-label'=> t('editions.evaluative_tools.details_about', name: ac.name) + t('fancybox.open')
                     - if groups.blank?
                       = t('editions.tools.offer')
                     - else
