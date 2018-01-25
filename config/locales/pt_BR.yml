@@ -4605,6 +4605,7 @@ pt_BR:
       itself: não pode ser ela mesma.
       event_evaluative: não pode ser definido, pois eventos do tipo Recesso ou Feriado não podem ser avaliativos.
       event_frequency: não pode ser definido, pois eventos do tipo Recesso ou Feriado não podem ser de frequência.
+      same_type_af: deve ter o mesmo valor no campo 'Avaliação Final'
     success:
       manage: Atividades gerenciadas com sucesso.
     warnings:
