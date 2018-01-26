@@ -29,6 +29,8 @@
             - if distant_course && !ac.evaluative
               - final_weight = (ac.academic_tool_type == 'ScheduleEvent' && ScheduleEvent.find(ac.academic_tool_id).type_event == Presential_Test) ? 60 : 40
 
+            - final_weight = (final_weight.to_i == final_weight ? final_weight.to_i : final_weight)
+
             - ats_ids = ac.ats.delete('{}').split(',')
             - array_group_code = Array.new
             - groups = Group.joins(:allocation_tag).where(allocation_tags: {id: ats_ids.map(&:to_i)}).compact
@@ -58,13 +60,13 @@
                 %td.ckb.ev{onclick: 'check_checkbox(event, this)'}= acf.check_box :evaluative, label: false
                 %td.ckb.fe{onclick: 'check_checkbox(event, this)'}= acf.check_box :final_exam, label: false, disabled: !ac.evaluative
                 - unless distant_course
-                  %td.weight= acf.text_field :weight, label: false, disabled: !ac.evaluative || ac.final_exam
+                  %td.weight= acf.text_field :weight, label: false, disabled: !ac.evaluative || ac.final_exam, value: (ac.weight.to_i == ac.weight ? ac.try(:weight).to_i : ac.try(:weight))
                 - else
                   %td.final_weight
                     = acf.text_field :final_weight, label: false, disabled: !ac.evaluative  || ac.final_exam, oninput: 'initializer_analizer()', value: final_weight
                 %td.ckb.f{onclick: 'check_checkbox(event, this)'}= acf.check_box :frequency, label: false, disabled: (wh || ac.final_exam), :'data-change' => !wh  && !ac.final_exam
                 %td.working_hours
-                  = acf.text_field :max_working_hours, label: false, disabled: !ac.frequency || ac.final_exam, oninput: 'initializer_analizer()'
+                  = acf.text_field :max_working_hours, label: false, disabled: !ac.frequency || ac.final_exam, oninput: 'initializer_analizer()', value: (ac.try(:max_working_hours).try(:to_i) == ac.try(:max_working_hours) ? ac.max_working_hours.to_i : ac.max_working_hours)
                   = t('editions.tools.wh')
                 - select_tools = AcademicAllocation.where(id: (tools_ids - ac.acs), allocation_tag_id: ats_ids.map(&:to_i)).select('DISTINCT ON(academic_tool_id, academic_tool_type) id, academic_tool_id, academic_tool_type')
                 %td= select_tools.blank? ? '-' : acf.collection_select(:equivalent_academic_allocation_id, select_tools, :id, :tool_type_name,  {include_blank: true}, {disabled: (!ac.evaluative && !ac.frequency),  oninput: 'selected_equiv()'})
