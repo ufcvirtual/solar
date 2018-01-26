@@ -281,10 +281,15 @@
     var parent = $(ckb).parents('tr');
     var value  = $(ckb).prop('checked');
 
+    if(!value && parent.find("select[id$='equivalent_academic_allocation_id']").val() != '')
+      return true;
+
     parent.find("input[id$='weight']").prop('disabled', value);
     parent.find("input[id$='final_weight']").prop('disabled', value);
-    parent.find("input[id$='max_working_hours']").prop('disabled', value);
     parent.find("input[id$='frequency']").prop('disabled', value);
+
+    if((!value && parent.find("input[id$='frequency']").prop('checked')) || value)
+      parent.find("input[id$='max_working_hours']").prop('disabled', value);
   }
 
   function frequency(ckb){
