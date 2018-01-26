@@ -2108,6 +2108,7 @@ en_US:
       unbind: Group successfully unbinded.
       remove: Group successfully removed.
       activated: Group(s) succesfully activated.
+      activated: Group(s) succesfully deactivated.
     error:
       created: Group wasn't created.
       updated: Group wasn't updated.

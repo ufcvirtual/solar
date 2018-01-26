@@ -2326,6 +2326,7 @@ pt_BR:
       unbind: Turma desvinculada com sucesso.
       remove: Turma removida com sucesso.
       activated: Turma(s) ativada(s) com sucesso.
+      deactivated: Turma(s) desativada(s) com sucesso.
     error:
       created: Não foi possível criar turma.
       updated: Não foi possível atualizar turma.
