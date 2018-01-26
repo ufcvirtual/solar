@@ -4916,9 +4916,8 @@ pt_BR:
       general_message: Não foi possível realizar a ação desejada
     all: Todos
     attached_files: Anexos
-    remove_file: Remover anexo %{name}
+    remove_file: "Remover anexo %{name} (%{size}MB)"
     file_added: Arquivo adicionado
-    remove_file: Remover arquivo
 
   ip_control:
     info:

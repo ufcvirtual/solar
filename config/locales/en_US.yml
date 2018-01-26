@@ -4670,9 +4670,8 @@ en_US:
       general_message: It was not possible to execute action
     all: All
     attached_files: Attachments
-    remove_file: Remove attachment %{name}
+    remove_file: Remove attachment %{name} (%{size}MB)
     file_added: File added
-    remove_file: Remove file
 
   ip_control:
     info:
