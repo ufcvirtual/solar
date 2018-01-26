@@ -146,8 +146,11 @@
 
   function check_checkbox(event, object){
     var ckb = $('input', $(object)).last();
-    if(event.target.tagName == 'TD')
+    if(event.target.tagName == 'TD'){
+      if($(object).hasClass('f') && ckb.prop('disabled'))
+        return true;
       ckb.click();
+    }
 
     if($(object).hasClass('fe')){
       final_exam(ckb);
@@ -281,6 +284,7 @@
     parent.find("input[id$='weight']").prop('disabled', value);
     parent.find("input[id$='final_weight']").prop('disabled', value);
     parent.find("input[id$='max_working_hours']").prop('disabled', value);
+    parent.find("input[id$='frequency']").prop('disabled', value);
   }
 
   function frequency(ckb){
