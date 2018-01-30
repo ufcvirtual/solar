@@ -10,6 +10,8 @@ class AcademicAllocationUsersController < ApplicationController
       Exam.find(params[:id]).recalculate_grades(acu_params[:user_id]) rescue nil
     end
     @academic_allocation_user = AcademicAllocationUser.where(id: result[:id]).first
+    @academic_allocation_user.evaluated_by_responsible = true
+    @academic_allocation_user.save
     errors = result[:errors]
     score = Score.evaluative_frequency_situation(at_id, acu_params[:user_id], acu_params[:group_id], params[:id], params[:tool].downcase, acu_params[:score_type]).first.situation
 
