@@ -57,6 +57,9 @@
             - if !@working_hours.blank? && @groups.size == 1
               = link_to_function content_tag(:i, nil, class: 'icon-clock', :"data-tooltip" => t('.share_wh')), "equal_frequencies(#{@working_hours})"
               .frequency_link= link_to_function t('.share_wh'), "equal_frequencies(#{@working_hours})"
+          .frequency_automatic
+            = link_to_function content_tag(:i, nil, class: 'icon-clock', :"data-tooltip" => t('.automatic_wh_tooltip')), "automatic_frequencies()"
+            .frequency_link= link_to_function t('.automatic_wh'), "automatic_frequencies()"
           .set_weight
             = link_to_function content_tag(:i, nil, class: 'icon-clipboard', :"data-tooltip" => t('.default_weight')), 'set_weight()'
             .weight_link= link_to_function t('.default_weight'), 'set_weight()'
@@ -246,6 +249,13 @@
     }, 200);
   }
 
+  function automatic_frequencies() {
+    if (!confirm("#{I18n.t(:are_you_sure)}"))
+      return false;
+
+    $('td.af input').not(':disabled').prop('checked', true);
+  }
+
   function set_weight(){
     if (!confirm("#{I18n.t(:are_you_sure)}"))
       return false;
@@ -288,6 +298,7 @@
     var value  = $(ckb).prop('checked');
 
     parent.find("input[id$='max_working_hours']").prop('disabled', !value);
+    parent.find("input[id$='frequency_automatic']").prop('disabled', !value);
 
     if(!$("#"+$(ckb).prop('id').replace('frequency', 'evaluative')).prop('checked')){
       parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !value);
