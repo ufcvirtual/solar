@@ -2,6 +2,7 @@ class PostsController < ApplicationController
   require "em-websocket"
 
   include SysLog::Actions
+  include AutomaticFrequencyHelper
 
   # before_filter :authenticate_user!
   before_filter :prepare_for_pagination
@@ -35,7 +36,6 @@ class PostsController < ApplicationController
       @display_mode = p['display_mode'] ||= 'tree'
       @post = Post.new
       @post.files.build
-   
 
       if (p['display_mode'] == "list" || params[:format] == "json")
         # se for em forma de lista ou para o mobilis, pesquisa pelo método posts
@@ -46,10 +46,10 @@ class PostsController < ApplicationController
       elsif (@display_mode == 'user' )
         my_list = true
         @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags, current_user.id, my_list).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
-      else  
+      else
         @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags, current_user.id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
       end
-      
+
       if current_user.is_student?([@allocation_tags].flatten)
         @acu = AcademicAllocationUser.find_or_create_one(@academic_allocation.id, [@allocation_tags].flatten, current_user.id, nil)
       end
@@ -66,7 +66,7 @@ class PostsController < ApplicationController
           end
         }
       end
-    end  
+    end
   end
 
   def new
@@ -98,7 +98,7 @@ class PostsController < ApplicationController
         format.html { render layout: false }
         format.json { render json: @posts }
       end
-    end  
+    end
   end
 
   ## POST /discussions/:id/posts
@@ -106,6 +106,7 @@ class PostsController < ApplicationController
     authorize! :create, Post
 
     if new_post_under_discussion(Discussion.find(params[:discussion_id]))
+      set_automatic_frequency(@post)
       render json: {result: 1, post_id: @post.id, parent_id: @post.parent_id}, status: :created
     else
       render json: { result: 0, alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
@@ -138,6 +139,7 @@ class PostsController < ApplicationController
   def publish
     @post = Post.find(params[:id])
     @post.update_attributes draft: false
+    set_automatic_frequency(@post)
     render json: { success: true, post_id: @post.id, discussion_id: @post.discussion.id, content: @post.content, ac_id: @post.academic_allocation_id, parent_id: @post.parent_id }, status: :ok
   rescue => error
     render_json_error(error, 'discussions.error')
@@ -151,7 +153,7 @@ class PostsController < ApplicationController
     allocation_tag_id = active_tab[:url][:allocation_tag_id]
     can_interact = post.discussion.user_can_interact?(current_user.id)
     can_post = can?(:create, Post, on: [allocation_tag_id])
-    @can_evaluate = (can? :evaluate, Discussion, {on: [@allocation_tags]}) 
+    @can_evaluate = (can? :evaluate, Discussion, {on: [@allocation_tags]})
 
     @researcher = (params[:researcher] == "true" or params[:researcher] == true)
     @class_participants = AllocationTag.get_participants(allocation_tag_id, { all: true }).map(&:id)
@@ -162,6 +164,7 @@ class PostsController < ApplicationController
   ## DELETE /posts/1
   def destroy
     if @post.destroy
+      remove_automatic_frequency(@post)
       render json: { result: :ok }
     else
       render json: { alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
@@ -193,7 +196,7 @@ class PostsController < ApplicationController
 
       aau = AcademicAllocationUser.find_or_create_one(academic_allocation.id, active_tab[:url][:allocation_tag_id], current_user.id, nil, true, nil)
 
-      @post = Post.new(post_params)     
+      @post = Post.new(post_params)
       @post.user_id = current_user.id
       @post.academic_allocation_id = academic_allocation.id
       @post.academic_allocation_user_id = aau.try(:id)
@@ -202,6 +205,3 @@ class PostsController < ApplicationController
     end
 
 end
-
-
-

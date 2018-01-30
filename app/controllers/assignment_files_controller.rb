@@ -4,6 +4,7 @@ class AssignmentFilesController < ApplicationController
   include FilesHelper
   include AssignmentsHelper
   include IpRealHelper
+  include AutomaticFrequencyHelper
 
   before_filter :set_current_user, only: [:destroy, :create]
   before_filter :get_ac, only: :new
@@ -27,6 +28,7 @@ class AssignmentFilesController < ApplicationController
     @assignment_file.user = current_user
 
     if @assignment_file.save
+      set_automatic_frequency(@assignment_file)
       render partial: 'file', locals: { file: @assignment_file, disabled: false }
     else
       render json: { success: false, alert: @assignment_file.errors.full_messages.join(', ') }, status: :unprocessable_entity
@@ -41,6 +43,7 @@ class AssignmentFilesController < ApplicationController
     @assignment_file = AssignmentFile.find(params[:id])
     set_ip_user
     @assignment_file.destroy
+    remove_automatic_frequency(@assignment_file)
 
     render json: { success: true, notice: t('assignment_files.success.removed') }
   rescue CanCan::AccessDenied

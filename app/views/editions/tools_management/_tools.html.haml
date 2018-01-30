@@ -20,6 +20,7 @@
             - else
               %th= t('editions.tools.final_weight')
             %th= t('editions.tools.frequency')
+            %th= t('editions.tools.frequency_automatic')
             %th= t('editions.tools.max_wh')
             %th= t('editions.tools.equivalent')
 
@@ -65,6 +66,7 @@
                   %td.final_weight
                     = acf.text_field :final_weight, label: false, disabled: !ac.evaluative  || ac.final_exam, oninput: 'initializer_analizer()', value: final_weight
                 %td.ckb.f{onclick: 'check_checkbox(event, this)'}= acf.check_box :frequency, label: false, disabled: (wh || ac.final_exam), :'data-change' => !wh  && !ac.final_exam
+                %td.ckb.af{onclick: 'check_checkbox(event, this)'}= acf.check_box :frequency_automatic, label: false, disabled: !ac.frequency
                 %td.working_hours
                   = acf.text_field :max_working_hours, label: false, disabled: !ac.frequency || ac.final_exam, oninput: 'initializer_analizer()', value: (ac.try(:max_working_hours).try(:to_i) == ac.try(:max_working_hours) ? ac.max_working_hours.to_i : ac.max_working_hours)
                   = t('editions.tools.wh')
@@ -287,11 +289,10 @@
 
     for(gltw = 0; gltw < groups_wh_list.length; gltw++) {
       var class_ch = "analise_errors_li correct_t";
-      if(groups_wh_list[gltw][1] != _wh)
+      if(parseInt(groups_wh_list[gltw][1]) != _wh)
         class_ch = "analise_errors_li error_t";
       group = "#{I18n.t('editions.tools.total_wh')}"+ groups_wh_list[gltw][0] + ': '+ parseFloat(groups_wh_list[gltw][1].toFixed(2));
       ul.append("<li class='" + class_ch + "' >"+group+"</li>");
     }
 
   }
-

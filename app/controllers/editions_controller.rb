@@ -183,7 +183,7 @@ class EditionsController < ApplicationController
         acs = AcademicAllocation.where(id: data['acs'].delete('[]').split(',')).each do |ac|
 
 
-          attributes = {'evaluative' => false, 'weight' => 1, 'final_weight' => 100, 'equivalent_academic_allocation_id' => nil, 'final_exam' => false, 'frequency' => false, 'max_working_hours' => 0 }
+          attributes = {'evaluative' => false, 'weight' => 1, 'final_weight' => 100, 'equivalent_academic_allocation_id' => nil, 'final_exam' => false, 'frequency' => false, 'frequency_automatic' => false, 'max_working_hours' => 0 }
 
           unless data['equivalent_academic_allocation_id'].blank?
             begin
@@ -203,7 +203,8 @@ class EditionsController < ApplicationController
             end
           end
 
-          attributes.merge!(data.slice('evaluative', 'weight', 'equivalent_academic_allocation_id', 'final_exam', 'frequency', 'max_working_hours', 'final_weight'))
+          attributes.merge!(data.slice('evaluative', 'weight', 'equivalent_academic_allocation_id', 'final_exam', 'frequency', 'frequency_automatic', 'max_working_hours', 'final_weight'))
+
           changes << {previous: ac.as_json, after: attributes}
 
           unless ac.update_attributes(attributes)

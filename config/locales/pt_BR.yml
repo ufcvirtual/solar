@@ -2181,7 +2181,7 @@ pt_BR:
       download: Baixar zip
       name: Nome
       size: Tamanho
-    notification:
+    notifications:
       final_date_smaller_than_offer: Data final não pode ser maior do que o período oferta.
     summarized:
       title: Informações do trabalho %{assignment_name} do aluno/grupo %{name}
@@ -2652,6 +2652,7 @@ pt_BR:
       equivalent: Equivalente à
       frequency: Frequência
       max_wh: Carga Horária Máxima
+      frequency_automatic: "Frequência Automática"
       offer: Atividade cadastrada na Oferta
       wh: 'h/a'
       total_final_weight: 'TOTAL(Peso Final): '
@@ -2674,6 +2675,8 @@ pt_BR:
       expand: Expandir todos
       compress: Comprimir todos
       share_wh: Dividir carga horária
+      automatic_wh: "Frequências Automáticas"
+      automatic_wh_tooltip: "Ao selecionar frequência automática, os participantes de uma atividade (alunos) automaticamente irão receber a carga horária máxima cadastrada para respectiva atividade. Essa carga horária poderá ser alterada pelos responsáveis"
       default_weight: Definir todos os pesos como 1
       default_final_weight: Definir todos os pesos finais como 100
       finish: Finalizar

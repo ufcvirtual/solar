@@ -21,6 +21,7 @@ module EvaluativeTool
         weight,
         final_exam,
         max_working_hours,
+        frequency_automatic,
         equivalent_academic_allocation_id,
         array_agg(allocation_tag_id) AS ats,
         name AS name,
@@ -34,7 +35,7 @@ module EvaluativeTool
       LEFT JOIN schedules ON schedules.id = schedule_id
       WHERE academic_tool_type = 'Assignment'
         AND allocation_tag_id IN (#{ats})
-      GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, equivalent_academic_allocation_id, weight, final_weight, name, enunciation, start_date, end_date, start_hour, end_hour
+      GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, frequency_automatic, equivalent_academic_allocation_id, weight, final_weight, name, enunciation, start_date, end_date, start_hour, end_hour
 
       UNION(
         SELECT DISTINCT
@@ -48,6 +49,7 @@ module EvaluativeTool
           weight,
           final_exam,
           max_working_hours,
+          frequency_automatic,
           equivalent_academic_allocation_id,
           array_agg(allocation_tag_id) AS ats,
           name AS name,
@@ -61,7 +63,7 @@ module EvaluativeTool
         LEFT JOIN schedules ON schedules.id = schedule_id
         WHERE academic_tool_type = 'Discussion'
           AND allocation_tag_id IN (#{ats})
-        GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, equivalent_academic_allocation_id, weight, final_weight, name, description, start_date, end_date
+        GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, frequency_automatic, equivalent_academic_allocation_id, weight, final_weight, name, description, start_date, end_date
       )
 
       UNION(
@@ -76,6 +78,7 @@ module EvaluativeTool
           weight,
           final_exam,
           max_working_hours,
+          frequency_automatic,
           equivalent_academic_allocation_id,
           array_agg(allocation_tag_id) AS ats,
           title AS name,
@@ -89,7 +92,7 @@ module EvaluativeTool
         LEFT JOIN schedules ON schedules.id = schedule_id
         WHERE academic_tool_type = 'ChatRoom'
           AND allocation_tag_id IN (#{ats})
-        GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, equivalent_academic_allocation_id, weight, final_weight, title, description, start_date, end_date, start_hour, end_hour
+        GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, frequency_automatic, equivalent_academic_allocation_id, weight, final_weight, title, description, start_date, end_date, start_hour, end_hour
       )
 
       UNION(
@@ -104,6 +107,7 @@ module EvaluativeTool
           weight,
           final_exam,
           max_working_hours,
+          frequency_automatic,
           equivalent_academic_allocation_id,
           array_agg(allocation_tag_id) AS ats,
           name AS name,
@@ -118,7 +122,7 @@ module EvaluativeTool
         WHERE academic_tool_type = 'Exam'
           AND allocation_tag_id IN (#{ats})
           AND exams.status = 't'
-        GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, equivalent_academic_allocation_id, weight, final_weight, name, description, start_date, end_date, start_hour, end_hour
+        GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, frequency_automatic, equivalent_academic_allocation_id, weight, final_weight, name, description, start_date, end_date, start_hour, end_hour
       )
 
       UNION(
@@ -133,6 +137,7 @@ module EvaluativeTool
           weight,
           final_exam,
           max_working_hours,
+          frequency_automatic,
           equivalent_academic_allocation_id,
           array_agg(allocation_tag_id) AS ats,
           title AS name,
@@ -147,7 +152,7 @@ module EvaluativeTool
         WHERE academic_tool_type = 'ScheduleEvent'
           AND allocation_tag_id IN (#{ats})
           AND (schedule_events.type_event != #{Recess} AND schedule_events.type_event != #{Holiday})
-        GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, equivalent_academic_allocation_id, weight, final_weight, title, description, start_date, end_date, start_hour, end_hour
+        GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, frequency_automatic, equivalent_academic_allocation_id, weight, final_weight, title, description, start_date, end_date, start_hour, end_hour
       )
 
       UNION(
@@ -162,6 +167,7 @@ module EvaluativeTool
           weight,
           final_exam,
           max_working_hours,
+          frequency_automatic,
           equivalent_academic_allocation_id,
           array_agg(allocation_tag_id) AS ats,
           title AS name,
@@ -174,7 +180,7 @@ module EvaluativeTool
         LEFT JOIN webconferences ON webconferences.id = academic_tool_id AND academic_tool_type = 'Webconference'
         WHERE academic_tool_type = 'Webconference'
           AND allocation_tag_id IN (#{ats})
-        GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, equivalent_academic_allocation_id, weight, final_weight, title, description, initial_time, duration
+        GROUP BY academic_tool_type, academic_tool_id, evaluative, frequency, final_exam, max_working_hours, frequency_automatic, equivalent_academic_allocation_id, weight, final_weight, title, description, initial_time, duration
       )
 
       ORDER BY academic_tool_type, name;

@@ -2428,6 +2428,7 @@ en_US:
       equivalent: Equivalent to
       frequency: Frequency
       max_wh: Maximum Working Hour
+      frequency_automatic: Automatic Frequency
       offer: Activity saved to offer
       wh: 'w/h'
       total_final_weight: 'TOTAL(Final Weight): '
@@ -2450,6 +2451,8 @@ en_US:
       expand: Expand all
       compress: Compress all
       share_wh: Share working/hours
+      automatic_wh: Automatic Frequencies
+      automatic_wh_tooltip: "When selecting the automatic frequency, the participants in activity (students) will automatically receive the maximum work hours registered for it. This work hours may be changed by those responsible for the activity"
       default_weight: Sets all weights as 1
       default_final_weight: Sets all final weights as 100
       finish: Finish
