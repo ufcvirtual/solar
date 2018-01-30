@@ -107,7 +107,7 @@ class GroupsController < ApplicationController
     @tool      = tool_model.find(params[:tool_id])
     @groups    = @tool.groups
 
-    @paths = { remove: remove_group_from_assignments_path(id: 'param_id', tool_id: @tool.id), 
+    @paths = { remove: remove_group_from_assignments_path(id: 'param_id', tool_id: @tool.id),
               unbind: unbind_group_from_assignments_path(id: 'param_id', tool_id: @tool.id) }
   end
 

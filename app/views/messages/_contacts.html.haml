@@ -22,20 +22,20 @@
               = link_to_function raw(t("messages.users.add_students")), "del_all_students(this)", id: "del_stu", :'aria-label' => t('messages.users.del_stu_alt'), onkeydown: 'click_on_keypress(event, this);'
               %ul.add_students
                 - [@reply_to].flatten.compact.each do |contact|
-                  - user = @contacts.find(contact[:id])    
+                  - user = @contacts.find(contact[:id])
                   - if user.types.to_i==Profile_Type_Student
-                    - perfils = user.profile_name.delete! '{}' '"'
-                    %li.contact.li_contacts{ class: contact[:id].nil? ? 'help' : '' }= link_to_function contact[:resume] + " (#{perfils})", "$(this).parents('div.contact').remove()", "data-user-id" => contact[:id], "data-user-type" => user.types, "data-selected" => true, :'aria-label' => t('messages.users.user_remove_alt', name: contact[:name], email: contact[:email]) 
+                    - profiles = user.profile_name.delete! '{}' '"'
+                    %li.contact.li_contacts{ class: contact[:id].nil? ? 'help' : '' }= link_to_function contact[:resume] + " (#{profiles})", "$(this).parents('div.contact').remove()", "data-user-id" => contact[:id], "data-user-type" => user.types, "data-selected" => true, :'aria-label' => t('messages.users.user_remove_alt', name: contact[:name], email: contact[:email])
         - if @content_responsibles
           %ul.users_at_responsibles#users
             %li
               = link_to_function raw(t("messages.users.add_responsibles")), "del_all_responsibles(this)", id: "del_res", :'aria-label' => t('messages.users.del_res_alt'), onkeydown: 'click_on_keypress(event, this);'
               %ul.add_responsibles
                 - [@reply_to].flatten.compact.each do |contact|
-                  - user = @contacts.find(contact[:id])  
-                  - unless user.types.to_i==Profile_Type_Student  
-                    - perfils = user.profile_name.delete! '{}' '"'
-                    %li.contact.li_contacts{ class: contact[:id].nil? ? 'help' : '' }= link_to_function contact[:resume] + " (#{perfils})", "$(this).parents('div.contact').remove()", "data-user-id" => contact[:id], "data-user-type" => user.types, "data-selected" => true, :'aria-label' => t('messages.users.user_remove_alt', name: contact[:name], email: contact[:email]) 
+                  - user = @contacts.find(contact[:id])
+                  - unless user.types.to_i==Profile_Type_Student
+                    - profiles = user.profile_name.delete! '{}' '"'
+                    %li.contact.li_contacts{ class: contact[:id].nil? ? 'help' : '' }= link_to_function contact[:resume] + " (#{profiles})", "$(this).parents('div.contact').remove()", "data-user-id" => contact[:id], "data-user-type" => user.types, "data-selected" => true, :'aria-label' => t('messages.users.user_remove_alt', name: contact[:name], email: contact[:email])
 
     .block_buttons
       .right
@@ -43,13 +43,13 @@
         = button_to_function t(:save), "msg_add_contacts()", class: "btn btn_main btn_lightbox", alt: t(:save), type: 'button'
 
 :javascript
-  
+
   function add_contact(link, append, html, u_name, u_email, u_perfil, u_type){
     var msg_arial_label = "#{t('messages.users.user_remove_alt', name: 'u_name', email: 'u_email')}".replace(/u_name/g, u_name).replace('u_email', u_email);
 
     var user = "<li class='contact li_contacts'><a aria-label='"+msg_arial_label+"' data-at='"+$(link).data('at')+"' data-user-id='"+$(link).data("user-id")+"' data-user-type='"+$(link).data("user-types")+"' href='#' onclick='remove_contact(this, \""+u_name+"\", \""+u_email+"\", \""+u_perfil+"\", \""+u_type+"\"); return false;'>"+$(link).html()+"</a></li>";
-    
-  
+
+
     if (!!$('.contacts-selected .contact a[data-user-id="' + $(link).data("user-id") + '"]').length){
       var added_user_msg = $(link).siblings(".already_added");
       if(!added_user_msg.length){
@@ -84,8 +84,8 @@
         }
         $('.add_responsibles').append(user);
         hide_add_responsibles_list();
-      }  
-      
+      }
+
       add_all_message();
     }
   }
@@ -94,10 +94,7 @@
     var msg_arial_label = "#{t('messages.users.user_alt', name: 'u_name', email: 'u_email')}".replace(/u_name/g, u_name).replace('u_email', u_email);
     var user = "<li class='contact li_contacts'><a aria-label = '"+msg_arial_label+"' data-at='"+$(link).data('at')+"' data-user-id='"+$(link).data("user-id")+"' data-user-type='"+$(link).data("user-types")+"' href='#' onclick='add_contact(this, true, null, \""+u_name+"\", \""+u_email+"\", \""+u_perfil+"\", \""+u_type+"\"); return false;'>"+$(link).html()+"</a></li>";
 
-    //if (!$('.contacts-list .contact a[data-user-id="' + $(link).data("user-id") + '"]').length)
-     // $(".contacts-list .users_at_"+$(link).data("at")).append(user);
-
-    $(link).parent().text("#{t('messages.sucess_removed')}").click().delay(2000).fadeOut();  
+    $(link).parent().text("#{t('messages.sucess_removed')}").click().delay(2000).fadeOut();
     $(link).parent().remove();
     add_all_message();
     if(u_type == "#{Profile_Type_Student}"){
@@ -112,7 +109,7 @@
       if($(".contacts-list").find(".add_responsibles_list").length==0){
         var ul_res = "<ul class='button_add_responsibles_list'><li> <a aria-label='"+"#{t('messages.users.add_res_alt')}"+"' href='#' id='add_res' onclick='add_all_responsibles(this); return false;' onkeydown='click_on_keypress(event, this);'><b>"+"#{t("messages.users.add_responsibles")}"+"</b></a><ul class='add_responsibles_list'>";
         $(".contacts-list").append(ul_res);
-      }  
+      }
       $('.add_responsibles_list').append(user);
       hide_del_responsibles_list();
     }
@@ -124,17 +121,10 @@
   }
 
   function add_all_students(elem){
-   // var html = new Array();
-   // if($(".contacts-selected").children(".users_at_students").length==0){
-   //   var ul_stu = "<ul class='users_at_students' id='users'><li> <a aria-label='' href='#' id='del_stu' onclick='del_all_students(this); return false;' onkeydown='click_on_keypress(event, this);'><b>Alunos</b></a><ul class='add_students'>"
-  //    $(".contacts-selected").append(ul_stu);
-  //  }
     $(".contacts-list:visible .add_students_list .contact a").each(function(){
-      //add_contact(this, false, html, null, null, null, $(this).data('user-type'));
       $(this).click();
     });
 
-    //$('.add_students').append(html.join(""));
     hide_add_students_list();
     add_all_message();
     focus_element('.block_content h3.selected');
@@ -151,16 +141,10 @@
   }
 
   function del_all_students(elem){
-   // var html = new Array();
-   // if($(".contacts-list").find(".add_students_list").length==0){
-    //  var ul_stu = "<ul class='button_add_students_list'><li> <a aria-label='' href='#' id='add_stu' onclick='add_all_students(this); return false;' onkeydown='click_on_keypress(event, this);'><b>Alunos</b></a><ul class='add_students_list'>";
-   //     $(".contacts-list").append(ul_stu);
-   // }
     $(".contacts-selected:visible .add_students .contact a").each(function(){
       $(this).click();
     });
 
-   // $('.add_students_list').append(html.join(""));
     hide_del_students_list();
     focus_element('.block_content h3.selected');
   }
@@ -200,7 +184,7 @@
 
   function add_all_message(){
     var users_list = $(".contacts-list #users");
-  
+
     if (!!users_list.find(".contact").size()){
       if (!users_list.find("#add_all").length)
         users_list.prepend('<a href="#" id="add_all" onclick="add_all_contacts(); return false;">#{t('.add_all')}</a>');

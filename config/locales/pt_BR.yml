@@ -2326,6 +2326,7 @@ pt_BR:
       unbind: Turma desvinculada com sucesso.
       remove: Turma removida com sucesso.
       activated: Turma(s) ativada(s) com sucesso.
+      deactivated: Turma(s) desativada(s) com sucesso.
     error:
       created: Não foi possível criar turma.
       updated: Não foi possível atualizar turma.
@@ -2637,6 +2638,8 @@ pt_BR:
       webconferences_call: 'Gerenciar webconferências avaliativas / de frequência'
       offer_period: Oferta já encerrou
       same_type_af: deve ter o mesmo valor no campo 'Avaliação Final'
+      details: Ver descrição
+      details_about: Acessar descrição de %{name}
     tools:
       expand: Expandir
       compress: Comprimir
@@ -3940,8 +3943,9 @@ pt_BR:
       final: "Versão Final <a id='final_version_explain' href='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'>(?)</a>"
       final2: Explicação sobre a versão final
       fv_explain: "&nbsp;&nbsp;&nbsp;&nbsp;O tutor ou professor responsável pela avaliação tem, como papel, avaliar o aluno/grupo com base em seus arquivos enviados e webconferências criadas. Para avaliar uma webconferência, os responsáveis devem analisar as gravações existentes para, então, avaliar o desempenho do aluno. Entretanto, durante a execução do trabalho, o aluno ou o grupo de alunos pode agendar e gravar uma ou mais webconferências. Estas webconferências podem ser feitas, por exemplo, para reuniões entre os membros de uma equipe, para testes, para praticar uma apresentação etc. Ou seja, nem todas as webconferências cadastradas e gravadas precisam, necessariamente, servir para avaliação. <br/><br/> &nbsp;&nbsp;&nbsp;&nbsp;A fim de informar ao responsável qual ou quais das webconferências devem ser consideradas para avaliação, o aluno pode marcar uma ou mais webconferências como Versão Final. Desse modo, o responsável poderá avaliar apenas as webconferências marcadas dentre todas as agendadas e/ou gravadas. Se achar necessário, o responsável poderá analisar e avaliar todas as gravações disponíveis."
+      start_recordding: Iniciar com gravação
       back: 'Voltar à lista de webconferências'
-      name: 'Gravações de '
+      reccording_title: 'Gravações de '
       final_tr: Versão Final
     webconference:
       edit: Editar
@@ -4606,6 +4610,7 @@ pt_BR:
       itself: não pode ser ela mesma.
       event_evaluative: não pode ser definido, pois eventos do tipo Recesso ou Feriado não podem ser avaliativos.
       event_frequency: não pode ser definido, pois eventos do tipo Recesso ou Feriado não podem ser de frequência.
+      same_type_af: deve ter o mesmo valor no campo 'Avaliação Final'
     success:
       manage: Atividades gerenciadas com sucesso.
     warnings:
@@ -4915,9 +4920,8 @@ pt_BR:
       general_message: Não foi possível realizar a ação desejada
     all: Todos
     attached_files: Anexos
-    remove_file: Remover anexo %{name}
+    remove_file: "Remover anexo %{name} (%{size}MB)"
     file_added: Arquivo adicionado
-    remove_file: Remover arquivo
 
   ip_control:
     info:

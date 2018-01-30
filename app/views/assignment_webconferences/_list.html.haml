@@ -22,9 +22,10 @@
   %table.tb_list#tb_lw{summary: t("assignments.list.summary_web"), style: (no_webconferences ? "display: none" : "") }
     %thead{style: (no_webconferences ? "display: none" : "")}
       %tr.lines
-        %th#name_web= t('.name')
+        %th.center#name_web= t('.name')
         %th.date_column.center#period_web= t('.period')
-        %th.aw_status#status_web= t('.status')
+        %th.center.aw_status#status_web= t('.status')
+        %th.center#start_record_web= t('.start_recordding')
         %th.aw_record#record_web= t('.record')
         - if disabled
           %th.aw_final#final_web= raw t('.final_tr')
@@ -79,6 +80,6 @@
       div.append($(data)[2]);
       div.removeClass('invisible');
 
-      div.find('h3').html("#{t('.name')}" + $(web).data('name'));
+      div.find('h3').html("#{t('.reccording_title')}" + $(web).data('name'));
     });
   }

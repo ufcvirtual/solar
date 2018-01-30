@@ -2108,6 +2108,7 @@ en_US:
       unbind: Group successfully unbinded.
       remove: Group successfully removed.
       activated: Group(s) succesfully activated.
+      activated: Group(s) succesfully deactivated.
     error:
       created: Group wasn't created.
       updated: Group wasn't updated.
@@ -2413,6 +2414,8 @@ en_US:
       webconferences_call: 'Manage evaluative / frequency webconferences'
       offer_period: Offer already ended
       same_type_af: must have same value at 'Final Exam'
+      details: See description
+      details_about: Access description about %{name}
     tools:
       expand: Expand
       compress: Compress
@@ -3696,8 +3699,9 @@ en_US:
       final2: Explanation about final version
       fv_explain: "&nbsp;&nbsp; The tutor or professor responsible by evaluation has, as role, evaluate the student or group based on it's sent files and created webconferences. To evaluate a webconference, responsibles must analyse the existing recordings to, then, evaluate the student. However, during the execution of the assignment, the student or group of students may schedule and record one or more webconferences. These webconferences may be used, for example, to meetings between group members, to tests, to practice etc. That is, not all webconferences scheduled and recorded need, necessarily, be used to evaluation. <br/><br/> &nbsp;&nbsp;To inform the responsible wich ones of the webconferences must be used to evaluation, the student can define one or more as Final Version.  That way, the responsible will be able to evaluate only the webconferences defined as final version within all the ones scheduled and/or recorded. If necessary, responsibles may evaluate all recordings available."
       back: 'Back to webconferences list'
-      name: "Webconference's recordings:"
+      reccording_title: "Webconference's recordings:"
       final_tr: Final Version
+      start_recordding: Iniciar com gravação
     webconference:
       edit: Edit
       record: Remove record
@@ -4360,6 +4364,7 @@ en_US:
       event_evaluative: "can't be defined, Reccess or Holiday events can't be evaluative."
       event_frequency: "can't be defined, Reccess or Holiday events can't be frequency."
       same_type: 'Must have same type of equivalency'
+      same_type_af: must have same value at 'Final Exam'
     success:
       manage: Activities managed successfully.
     warnings:
@@ -4669,9 +4674,8 @@ en_US:
       general_message: It was not possible to execute action
     all: All
     attached_files: Attachments
-    remove_file: Remove attachment %{name}
+    remove_file: Remove attachment %{name} (%{size}MB)
     file_added: File added
-    remove_file: Remove file
 
   ip_control:
     info:
