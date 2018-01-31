@@ -77,7 +77,7 @@ function shortcut(){
               break;
             }
           }
-        } else {
+        } else if (!e.ctrlKey) {
           for (var i = 0; i < element.length; i++) {
             if( ($(element[i]).data('shortcut-alt') == undefined || $(element[i]).data('shortcut-alt') == false) && ($(element[i]).data('shortcut-shift') == undefined || $(element[i]).data('shortcut-shift') == false) ) {
               if($(element[i]).data('shortcut-focus') == undefined || $(element[i]).data('shortcut-focus') != true){
