@@ -93,10 +93,19 @@
 
       if(!parent.find("input[id$='final_exam']").prop('checked')){
         parent.find("input[id$='weight']").prop('disabled', !value);
-        parent.find("input[id$='final_weight']").prop('disabled', !value);
-      }
+        parent.find("input[id$='frequency']").prop('disabled', !value);
 
-      parent.find("input[id$='max_working_hours']").prop('disabled', !value);
+        if(value && parent.find("input[id$='weight']").prop('checked'))
+          parent.find("input[id$='final_weight']").prop('disabled', !value);
+
+        if(value && parent.find("input[id$='frequency']").prop('checked'))
+          parent.find("input[id$='max_working_hours']").prop('disabled', !value);
+
+        if(!value){
+          parent.find("input[id$='final_weight']").prop('disabled', !value);
+          parent.find("input[id$='max_working_hours']").prop('disabled', !value);
+        }
+      }
     });
 
   });
