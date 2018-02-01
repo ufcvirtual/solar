@@ -25,6 +25,9 @@
   td[headers^='comments'] a{
     text-decoration: none;
   }
+  td[headers="frequencyindiv"], td[headers="frequencygroup"]{
+    padding: 6px 5px 4px;
+  }
 }
 
 .new_assignment{
@@ -41,4 +44,3 @@
     cursor: pointer;
   }
 }
-

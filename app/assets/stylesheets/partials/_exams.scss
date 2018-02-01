@@ -304,13 +304,13 @@
         .q_text{
           background-color:$background_light_beige;
           text-align: center;
-          overflow:auto; 
+          overflow:auto;
           display: none;
           padding: 1.0em;
           max-height: 30em;
-        }  
+        }
 
-      } 
+      }
 
     }
 
@@ -617,6 +617,9 @@
         padding-left: 0;
         padding-right: 0;
       }
+    }
+    td[headers="e_frequency"] {
+      padding: 6px 5px 4px;
     }
   }
 

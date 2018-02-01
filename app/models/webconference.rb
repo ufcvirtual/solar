@@ -1,5 +1,5 @@
 class Webconference < ActiveRecord::Base
-  
+
   before_destroy :can_destroy?, :remove_records
 
   include Bbb
@@ -27,18 +27,18 @@ class Webconference < ActiveRecord::Base
   validate :verify_offer, if: '!(duration.nil? || initial_time.nil?) && (new_record? || initial_time_changed? || duration_changed?) && !allocation_tag_ids_associations.blank?'
 
   def link_to_join(user, at_id = nil, url = false)
-    ((on_going? && bbb_online? && have_permission?(user, at_id.to_i)) ? (url ? bbb_join(user, at_id) : ActionController::Base.helpers.link_to((title rescue name), bbb_join(user, at_id), target: '_blank')) : (title rescue name)) 
+    ((on_going? && bbb_online? && have_permission?(user, at_id.to_i)) ? (url ? bbb_join(user, at_id) : ActionController::Base.helpers.link_to((title rescue name), bbb_join(user, at_id), target: '_blank')) : (title rescue name))
   end
 
   def self.all_by_allocation_tags(allocation_tags_ids, opt = { asc: true }, user_id = nil)
     query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids } }
 
-    select = "users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency, academic_allocations.max_working_hours, academic_allocations.final_exam, eq_web.title AS eq_name, webconferences.initial_time || '' AS start_hour, webconferences.initial_time + webconferences.duration* interval '1 min' || '' AS end_hour, webconferences.initial_time AS start_date, CASE
+    select = "users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency, academic_allocations.frequency_automatic, academic_allocations.max_working_hours, academic_allocations.final_exam, eq_web.title AS eq_name, webconferences.initial_time || '' AS start_hour, webconferences.initial_time + webconferences.duration* interval '1 min' || '' AS end_hour, webconferences.initial_time AS start_date, CASE
       WHEN acu.grade IS NOT NULL OR acu.working_hours IS NOT NULL THEN 'evaluated'
       WHEN (acu.status = 1 OR (acu.status IS NULL AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.count > 0))) THEN 'sent'
       when NOW()>webconferences.initial_time AND NOW()<(webconferences.initial_time + webconferences.duration* interval '1 min') then 'in_progress'
       when NOW() < webconferences.initial_time then 'scheduled'
-      when (NOW()<webconferences.initial_time + webconferences.duration* interval '1 min' + interval '15 mins') then 'processing' 
+      when (NOW()<webconferences.initial_time + webconferences.duration* interval '1 min' + interval '15 mins') then 'processing'
       else 'finish'
     END AS situation, CASE
         WHEN (acu.comments_count > 0 OR acu.grade IS NOT NULL OR acu.working_hours IS NOT NULL) THEN true
@@ -95,9 +95,9 @@ class Webconference < ActiveRecord::Base
       offers.first.allocation_tag.info
     else
       at = AllocationTag.find(at_id)
-      at.info  
+      at.info
     end
-  rescue 
+  rescue
     web = Webconference.find(id)
     offer = web.offers.first
     offer = web.groups.first.offer if offer.blank?
@@ -138,7 +138,7 @@ class Webconference < ActiveRecord::Base
   end
 
   def have_permission?(user, at_id = nil)
-    (student_or_responsible?(user.id, at_id) || 
+    (student_or_responsible?(user.id, at_id) ||
       (
         ats = (shared_between_groups || at_id.nil?) ? academic_allocations.flatten.map(&:allocation_tag_id).flatten : [at_id].flatten
         allocations_with_acess =  user.allocation_tags_ids_with_access_on('interact','webconferences', false, true)
@@ -174,13 +174,13 @@ class Webconference < ActiveRecord::Base
       verify_quantity(ats) if ats.any?
     else
       if ats.any?
-        !over? && verify_quantity(ats) 
-      else 
+        !over? && verify_quantity(ats)
+      else
         !over?
       end
     end
     return true
-  rescue 
+  rescue
     return false
   end
 
@@ -201,11 +201,11 @@ class Webconference < ActiveRecord::Base
           obj.save
         end
       end
-            
+
       new_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Webconference', academic_tool_id: (obj.try(:id) || id)).first_or_initialize
       new_ac.merge = true
       new_ac.save
-      
+
       if over? && !new_ac.nil? && !new_ac.id.nil?
         old_ac = academic_allocations.where(allocation_tag_id: from_at).try(:first) || academic_allocations.where(allocation_tag_id: AllocationTag.find(from_at).related).first
         LogAction.where(log_type: LogAction::TYPE[:access_webconference], academic_allocation_id: old_ac.id).each do |log|
@@ -219,9 +219,9 @@ class Webconference < ActiveRecord::Base
             new_acu.merge = true
             new_acu.save
           end
-      
+
           log = LogAction.where(log.attributes.except('id', 'academic_allocation_id', 'academic_allocation_user_id').merge!(academic_allocation_id: new_ac.id)).first_or_initialize
-      
+
           log.academic_allocation_user_id = new_acu.try(:id)
           log.save
         end
@@ -236,8 +236,8 @@ class Webconference < ActiveRecord::Base
               .where(academic_allocation_id: acs, log_type: LogAction::TYPE[:access_webconference], allocations: { allocation_tag_id: at_id })
               .where(user_query)
               .where("cast( profiles.types & '#{Profile_Type_Student}' as boolean ) OR cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )")
-              .select("log_actions.created_at, users.name AS user_name, allocation_tags.id AS at_id, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name, users.id AS user_id, acu.grade AS grade, acu.working_hours AS wh, 
-                CASE 
+              .select("log_actions.created_at, users.name AS user_name, allocation_tags.id AS at_id, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name, users.id AS user_id, acu.grade AS grade, acu.working_hours AS wh,
+                CASE
                 WHEN students.id IS NULL THEN false
                 ELSE true
                 END AS is_student,

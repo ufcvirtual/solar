@@ -67,7 +67,7 @@
 
 
         %td.center{headers: "evaluative_#{@id_table}" }=raw (chat.final_exam == 't') ? t(chat.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(chat.evaluative, scope: [:scores, :info])
-        %td.center{headers: "frequency_#{@id_table}" }= raw t(chat.frequency, scope: [:common_between_pages, :frequency], hours: chat.max_working_hours)
+        %td.center{headers: "frequency_#{@id_table}" }= raw t(chat.frequency, scope: [:common_between_pages, :frequency], hours: chat.max_working_hours, automatic: (!@is_student && chat.frequency_automatic == "t" ? t("common_between_pages.frequency.a") : ""))
         - if @is_student && other==false
           %td.center{headers: "summary_#{@id_table}"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_chat_rooms_path(ac_id: chat.id, tool_id: chat.academic_tool_id), class: "btn #{chat.has_info == 't' ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt', tool: chat.name, count: chat.count_comments), :'aria-label' => t('comments.summary.title_alt', tool: chat.name, count: chat.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
         - if history && (!@is_student || !other)
