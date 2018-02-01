@@ -248,7 +248,6 @@ class ExamsController < ApplicationController
     end
     raise 'not_finished' unless exam.ended?
     raise 'result_release_date' unless exam.allow_calculate_grade?
-    # grade, wh = exam.recalculate_grades(user_id, nil, true)
     grade, wh = exam.recalculate_grades(user_id, active_tab[:url][:allocation_tag_id], true)
     render json: { success: true, grade: grade, wh: wh, status: t('exams.situation.corrected'), notice: t('calculate_grade', scope: 'exams.list') }
   rescue => error
@@ -273,30 +272,8 @@ class ExamsController < ApplicationController
     authorize! :change_status, Exam, { on: params[:allocation_tags_ids] }
     exam = Exam.find(params[:id])
     exam.can_change_status?
-    if exam.status==true
-      verify = true
-      exam.academic_allocations.each do |ac|
-        if AcademicAllocation.where(equivalent_academic_allocation_id: ac.id).count > 0
-          verify = false
-        else
-          ac.evaluative = false
-          ac.frequency = false
-          ac.final_exam = false
-          ac.save!
-        end
-      end
-      if verify
-        exam.update_attributes status: !exam.status
-        render_exam_success_json('status')
-      else
-        render json: { success: false, alert: t('status_error', scope: 'exams.success') }
-      end
-    else
-      exam.update_attributes status: !exam.status
-      render_exam_success_json('status')
-    end
-
-
+    exam.update_attributes status: !exam.status
+    render_exam_success_json('status')
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error

@@ -35,6 +35,19 @@ class Exam < Event
   after_save :set_random_questions, if: 'status_changed? || random_questions_changed? || number_questions_changed?'
   after_save :recalculate_grades,   if: 'attempts_correction_changed? || (result_email_changed? && result_email)'
 
+  after_save :redefine_management, if: 'status_changed? && !status'
+
+  def redefine_management
+    return true if academic_allocations.blank?
+    academic_allocations.each do |ac|
+      ac.evaluative = false
+      ac.frequency = false
+      ac.final_exam = false
+      ac.equivalent_academic_allocation_id = nil
+      ac.save!
+    end
+  end
+
   def recalculate_grades(user_id=nil, ats=nil, all=nil)
     if ended?
       grade = 0.00
@@ -320,6 +333,7 @@ class Exam < Event
     raise 'imported'          if !status && !can_publish
     raise 'change_period'     if !status && started?
     # raise 'autocorrect' if !status && questions.where(type: [0,1,2])
+    raise 'equivalent' if AcademicAllocation.where(equivalent_academic_allocation_id: academic_allocations.map(&:id)).count > 0
   end
 
   def can_import?(question = nil)
@@ -424,7 +438,7 @@ class Exam < Event
     # ExamUserAttempt only exists if ACU exists, no need to update previous
     return false
   end
-  
+
   def release_date
     result_release || ([schedule.end_date.to_s, (end_hour || '23:59')].join(' ').to_time + 1.minute)
   end

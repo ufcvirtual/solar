@@ -4002,7 +4002,6 @@ pt_BR:
       deleted: Prova deletada com sucesso
       status: Status da prova alterado com sucesso
       finish: Prova finalizada com sucesso
-      status_error: Equivalent proof, test status can not be changed.
     index:
       description: Descrição
       availability: Disponibilidade
@@ -4163,6 +4162,7 @@ pt_BR:
       controlled_date: Não é possível remover IPs de provas já iniciadas ou encerradas
       result_release_date: Só será possível calcular a nota a partir da data e horário cadastrados para sua liberação
       cant_change_release_result: resultados já foram liberados
+      equivalent: Prova com equivalência, status não pode ser alterado.
     show:
       groups: Turmas
       empty_group: Turma vazia

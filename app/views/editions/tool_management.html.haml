@@ -112,9 +112,11 @@
       initializer_analizer();
     }, 800);
 
-    $('.close_draggable').on('click', function(){
+    $('.close_draggable').on('click', function(e){
+      e.preventDefault();
       $('#draggable').hide();
-      $('#how_it_works_title').focus();
+      $('.management').focus();
+      return false;
     });
   });
 
