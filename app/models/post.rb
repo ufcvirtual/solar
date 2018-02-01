@@ -160,6 +160,37 @@ class Post < ActiveRecord::Base
     end
   end
 
+  def send_mail(at)
+    post = Post.find(self.parent_id)
+    user = User.find(post.user_id)
+    notification_mail_post = NotificationMail.where(:user_id => post.user_id).pluck(:post).first
+    if notification_mail_post.nil? || notification_mail_post
+
+      subject = "#{I18n.t('posts.mail.subject')}"
+      msg = self.template_mail(user, at.info, post)
+      Thread.new do
+        Job.send_mass_email([user.email], subject, msg)
+      end
+
+    end  
+
+  end 
+
+  def template_mail(user, info, post)
+    %{
+      <b>#{info} </b><br/>
+      <br/>
+      #{discussion.name}
+      <br/>
+      ________________________________________________________________________<br/>
+      #{I18n.t('posts.mail.text')}
+      <br/>
+      #{user.name}: #{self.content}   
+      ________________________________________________________________________<br/>
+      #{I18n.t('posts.mail.text_resp')} #{post.content}
+    }
+  end 
+
   private
 
     def set_level
@@ -208,4 +239,6 @@ class Post < ActiveRecord::Base
         academic_allocation_user.save(validate: false)
       end
     end
+
+    
 end
