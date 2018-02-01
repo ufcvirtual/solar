@@ -1,0 +1,19 @@
+= simple_form_for @configure, :method => :put, html: {id: "configure_form"} do |f|
+  %h1#lightBoxDialogTitle= t(".notification_mail")
+
+  .form-inputs.block_content
+    = f.input :name, :input_html => { :value => @user.name, :disabled => 'true' }
+    = f.input :message, as: :boolean, checked_value: true, unchecked_value: false, :input_html => { onchange: 'change();' }
+    = f.input :post, as: :boolean, checked_value: true, unchecked_value: false, :input_html => { onchange: 'change();' }
+    = f.input :exam, as: :boolean, checked_value: true, unchecked_value: false, :input_html => { onchange: 'change();' }
+
+
+:javascript
+
+
+  function change() { 
+    if ( !confirm("#{I18n.t(:message_confirm_user)}"))
+      return false;
+    
+    $('form#configure_form').serialize_and_submit({});
+  }

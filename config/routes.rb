@@ -36,13 +36,17 @@ Solar::Application.routes.draw do
       get :profiles
       get :request_profile
       get :get_history_offers
+      get :configure
     end
   end
 
-  resources :personal_configurations do
-      put :update_theme, on: :collection
+  resources :notification_mails do
+    put :notification_mails, on: :member
   end
 
+  resources :personal_configurations do 
+      put :update_theme, on: :collection
+  end
 
   resources :social_networks, only: [] do
     collection do

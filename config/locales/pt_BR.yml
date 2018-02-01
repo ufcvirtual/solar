@@ -546,6 +546,11 @@ pt_BR:
         attachment_file_size: Tamanho
         attachment: Arquivo
         attachment_file_name: Arquivo
+      notification_mail:
+        message: Receber emails de Mensagens
+        post: Receber emails de Postagens(Fóruns)
+        exam: Receber emails com notas de provas 
+        name: 'Nome:' 
     errors:
       uniqueness: "Registro já existe no sistema"
       template:
@@ -3378,12 +3383,18 @@ pt_BR:
       title: "Recuperação de senha para %{name}"
       url: "Url de recuperação de senha"
       reset_password_not_required: Não foi solicitada recuperação de senha.
+    configure:
+      notification_mail: Gerenciar Notificações de Emails 
+      success:
+        updated: Configurações atualizada com sucesso
+      error:
+        updated: Falha ao atualizar as configurações
 
   mysolar:
     synchronize: Sincronizar com Módulo Acadêmico
     profiles: Perfis
     closed_uc: (disciplina encerrada)
-
+    configure: Configurações de Emails
   portlets:
     curricular_unit:
       type: Tipo

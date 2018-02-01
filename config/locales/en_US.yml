@@ -485,6 +485,11 @@ en_US:
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
         attachment: File
         attachment_file_name: File
+      notification_mail:
+        message: Receive email messages
+        post: Receive email news from Posts (Forums)
+        exam: Receive emails with test scores 
+        name: 'Name:'
 
     errors:
       uniqueness: "Record already exists in the system"
@@ -3136,10 +3141,18 @@ en_US:
       title: "Password recovery to %{name}"
       url: "Recovery password url"
       reset_password_not_required: It wasn't requested any password recovery.
+    configure:
+      notification_mail: Manage Email Notifications
+      success:
+        updated: Settings updated successfully
+      error:
+        updated: Failed to update settings
+
   mysolar:
     synchronize: Synchronize with Módulo Acadêmico
     profiles: Profiles
     closed_uc: (closed subject)
+    configure: Configurations of emails
   portlets:
     curricular_unit:
       type: Type
