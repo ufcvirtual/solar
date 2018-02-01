@@ -1383,7 +1383,7 @@ pt_BR:
       draft: Não é possível responder um post de rascunho
       back_to_draft: Não é possível definir como rascunho um post com respostas.
     mail:
-      subject: POST RESPOSTA  
+      subject: POST RESPOSTA
       text: Você recebeu a seguinte resposta
       text_resp: 'Para seu post:'
 
