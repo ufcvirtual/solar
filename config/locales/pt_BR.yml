@@ -549,8 +549,8 @@ pt_BR:
       notification_mail:
         message: Receber emails de Mensagens
         post: Receber emails de Postagens(Fóruns)
-        exam: Receber emails com notas de provas 
-        name: 'Nome:' 
+        exam: Receber emails com notas de provas
+        name: 'Nome:'
     errors:
       uniqueness: "Registro já existe no sistema"
       template:
@@ -3391,7 +3391,7 @@ pt_BR:
       url: "Url de recuperação de senha"
       reset_password_not_required: Não foi solicitada recuperação de senha.
     configure:
-      notification_mail: Gerenciar Notificações de Emails 
+      notification_mail: Gerenciar Notificações de Emails
       success:
         updated: Configurações atualizada com sucesso
       error:
@@ -4922,8 +4922,10 @@ pt_BR:
     more_alt: Ver descrição completa de %{tool}
     less_alt: Ver descrição resumida de %{tool}
     frequency:
-      t: 'Sim <br/>(máx: %{hours}h)'
+      t: 'Sim <br/>(máx: %{hours}h%{automatic})'
       f: Não
+      a: "<br/>automática"
+      d: "definida pelo responsável"
     ev_final_exam:
       t: 'Sim <br/>(AF)'
       f: Não

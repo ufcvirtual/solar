@@ -12,7 +12,7 @@
               %li
                 = participant.name
                 - unless @class_participants.include? participant.id
-                  %span{:"data-tooltip" => t('.moved_allocation'), :'aria-label' => t(".moved_allocation")}= content_tag :i, nil, class: 'icon-warning moved_allocation' 
+                  %span{:"data-tooltip" => t('.moved_allocation'), :'aria-label' => t(".moved_allocation")}= content_tag :i, nil, class: 'icon-warning moved_allocation'
 
   %section.student_files.files
     = render partial: 'assignment_files/list', locals: { files: @acu.try(:assignment_files), disabled: true }
@@ -22,7 +22,7 @@
 
   %section.comments
     = render partial: 'comments/list', locals: { comments: @acu.try(:comments), tool: @assignment, tool_type: 'Assignment' }
-  
+
   - if @can_evaluate
     = simple_form_for :academic_allocation_user, url: evaluate_assignment_path(@assignment), html: { method: :put, id: 'academic_allocation_user_grade_form' } do |f|
       = f.input :user_id, as: :hidden, input_html: { value: @student_id }
@@ -30,8 +30,9 @@
       = f.input :score_type, as: :hidden,  input_html: { value: @score_type }
       .form-inputs.block_content
         .inline
+          - automatic = "\n(" + (@ac.frequency_automatic && !@acu.try(:evaluated_by_responsible) ? strip_tags(t("common_between_pages.frequency.a")) : t("common_between_pages.frequency.d")) + ")"
           = f.input :grade, required: true, as: :float, :step => 0.01, label: t(".grade"), input_html: { value: @acu.try(:grade), min:0, max:10 }
-          = f.input :working_hours, required: true, as: :float, label: t(".frequency"), input_html: { value: @acu.try(:working_hours), min:0, max: @ac.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh: @ac.max_working_hours.to_s ) } if @frequency
+          = f.input :working_hours, required: true, as: :float, label: t(".frequency") + automatic, input_html: { value: @acu.try(:working_hours), min:0, max: @ac.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh: @ac.max_working_hours.to_s ) } if @frequency
           = link_to_function t('webconferences.list_access.finish_evaluation'), 'finish_evaluation(this)', class: 'btn btn_main', onkeydown: 'click_on_keypress(event, this);'
 
 :javascript
