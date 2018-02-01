@@ -112,7 +112,7 @@ class UsersController < ApplicationController
       end
     end
   end
-
+ 
   # synchronize user data with ma
   def synchronize_ma
     user = params.include?(:id) ? User.find(params[:id]) : current_user
@@ -134,6 +134,23 @@ class UsersController < ApplicationController
 
   def profiles
     @allocations = current_user.allocations.where("profile_id != 12").order("profile_id").paginate(page: params[:page])
+    respond_to do |format|
+      format.html { render layout: false if params[:layout] }
+      format.js
+    end
+  end
+
+  def configure
+    @user   = current_user
+    if @user.notification_mail.nil?
+      notifify_email = NotificationMail.new
+      notifify_email.user_id = @user.id
+      notifify_email.save!
+    else
+      notifify_email = @user.notification_mail
+    end  
+    @configure = notifify_email
+
     respond_to do |format|
       format.html { render layout: false if params[:layout] }
       format.js

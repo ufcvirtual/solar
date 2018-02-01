@@ -93,7 +93,9 @@ class MessagesController < ApplicationController
         @message.allocation_tag_id = @allocation_tag_id
 
         raise "error" if params[:message][:contacts].empty?
-        emails = User.where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
+        emails = User.joins('LEFT JOIN notification_mails AS nmail ON users.id = nmail.user_id')
+                      .where("(nmail.message IS NULL OR nmail.message=TRUE)")
+                      .where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
 
         @message.files << original_files if original_files and not original_files.empty?
         @message.save!
@@ -106,25 +108,25 @@ class MessagesController < ApplicationController
       end
 
       redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages)
-    rescue => error
-      @unreads = Message.unreads(current_user.id, @allocation_tag_id)
-      unless @allocation_tag_id.nil?
-        allocation_tag      = AllocationTag.find(@allocation_tag_id)
-        @group              = allocation_tag.group
-        @contacts           = User.all_at_allocation_tags(RelatedTaggable.related(group_id: @group.id), Allocation_Activated, true)
-      else
-        @contacts = current_user.user_contacts.map(&:user)
-      end
-      @message.files.build
+    # rescue => error
+    #   @unreads = Message.unreads(current_user.id, @allocation_tag_id)
+    #   unless @allocation_tag_id.nil?
+    #     allocation_tag      = AllocationTag.find(@allocation_tag_id)
+    #     @group              = allocation_tag.group
+    #     @contacts           = User.all_at_allocation_tags(RelatedTaggable.related(group_id: @group.id), Allocation_Activated, true)
+    #   else
+    #     @contacts = current_user.user_contacts.map(&:user)
+    #   end
+    #   @message.files.build
 
-      @message.errors.each do |attribute, erro|
-        @attribute = attribute
-      end
-      @reply_to = []
-      @reply_to = User.where(id: params[:message][:contacts].split(',')).select("id, (name||' <'||email||'>') as resume")
+    #   @message.errors.each do |attribute, erro|
+    #     @attribute = attribute
+    #   end
+    #   @reply_to = []
+    #   @reply_to = User.where(id: params[:message][:contacts].split(',')).select("id, (name||' <'||email||'>') as resume")
 
-      #flash.now[:alert] = @message.errors.full_messages.join(', ')
-      render :new
+    #   #flash.now[:alert] = @message.errors.full_messages.join(', ')
+    #   render :new
     end
   end
 
