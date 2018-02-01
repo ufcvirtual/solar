@@ -298,18 +298,17 @@
 
     }
     #question_text{
-      text-align: center;
       .legend{
-          background-color:#FFF8CC;
+        background-color: $exam_yellow;
+        text-align: center;
         .q_text{
           background-color:$background_light_beige;
-          text-align: center;
-          overflow:auto;
+          overflow-y:auto;
           display: none;
           padding: 1.0em;
-          max-height: 30em;
+          max-height: 15em;
+          text-align: justify;
         }
-
       }
 
     }
