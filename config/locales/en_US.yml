@@ -3776,7 +3776,6 @@ en_US:
       deleted: Exam was successfully deleted
       status: Exam's status successfully updated
       finish: Exam was successfully completed
-      status_error: Prova com equivalência, o status da prova não pode ser alterado.
     index:
       description: Description
       availability: Availability
@@ -3936,6 +3935,7 @@ en_US:
       controlled_date: "It's not possible to remove IPs of ended or started exams"
       result_release_date: It'll only be possible to calculate grade after date and time registered to it's release
       cant_change_release_result: result already released
+      equivalent: Equivalent exam, status can't be updated
     show:
       groups: Groups
       empty_group: Empty group
