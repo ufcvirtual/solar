@@ -17,7 +17,7 @@ class AdministrationsController < ApplicationController
 
     @type_search, @text_search = params[:type_search], [URI.unescape(params[:user]).split(' ').compact.join('%'), '%'].join unless params[:user].blank?
     allocation_tags_ids = current_user.allocation_tags_ids_with_access_on(['users'], 'administrations', true, true)
-    @users      = User.find_by_text_ignoring_characters(@text_search, @type_search, allocation_tags_ids).paginate(page: params[:page])
+    @users      = User.find_by_text_ignoring_characters(@text_search, @type_search, allocation_tags_ids).paginate(page: params[:page], per_page: Rails.application.config.items_per_page)
     @can_change = current_user.profiles_with_access_on('update_user', 'administrations').any?
 
     respond_to do |format|
