@@ -49,6 +49,7 @@ class DiscussionsController < ApplicationController
 
     @discussion = Discussion.new
     @discussion.build_schedule(start_date: Date.current, end_date: Date.current)
+    @discussion.enunciation_files.build
   end
 
   def create

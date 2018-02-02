@@ -14,6 +14,27 @@
           .left= s.input :start_date, as: :string, input_html: {id: 'from-date', value: l(@discussion.schedule.start_date.try(:to_date) || Date.today, format: :datepicker)}
           .right_form= s.input :end_date, as: :string, input_html: {id: 'until-date', value: l(@discussion.schedule.end_date.try(:to_date) || Date.today, format: :datepicker)}
 
+      .input.files
+        = f.label t(".files")
+        %i.icon-paperclip.new_file
+      
+      = f.simple_fields_for :enunciation_files do |files|
+        .file_input
+          = files.input :_destroy, as: :hidden, input_html: {value: 0, class: "destroy_input_file", :"data-file-id" => files.object.id}
+          = files.input :attachment, label: false, input_html: {id: "fileupload"}
+      
+      .input.list_files_to_send
+        - @discussion.enunciation_files.each do |ef|
+          - if ef.persisted?
+            .input.files
+              %label
+              %span#file{:"data-file-id" => ef.id}
+                = ef.attachment_file_name
+                %i.icon-cross-square.warning.remove_file
+        - if @files_errors
+          %span.field_with_errors.error= @files_errors
+
+
       = render "groups/codes"
 
       .form-actions.right_buttons
