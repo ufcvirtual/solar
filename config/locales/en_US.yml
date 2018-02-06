@@ -1201,9 +1201,9 @@ en_US:
       draft: It's not possible to reply a draft post
       back_to_draft: It's not possible to set as draft a post with replies.
     mail:
-      subject: POST ANSWER  
+      subject: POST ANSWER
       text: You have received the following answer
-      text_resp: 'For your post:' 
+      text_resp: 'For your post:'
 
   post_files:
     new:
