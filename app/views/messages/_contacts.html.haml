@@ -25,7 +25,7 @@
                   - user = @contacts.find(contact[:id])
                   - if user.types.to_i==Profile_Type_Student
                     - profiles = user.profile_name.delete! '{}' '"'
-                    %li.contact.li_contacts{ class: contact[:id].nil? ? 'help' : '' }= link_to_function contact[:resume] + " (#{profiles})", "$(this).parents('div.contact').remove()", "data-user-id" => contact[:id], "data-user-type" => user.types, "data-selected" => true, :'aria-label' => t('messages.users.user_remove_alt', name: contact[:name], email: contact[:email])
+                    %li.contact.li_contacts{ class: contact[:id].nil? ? 'help' : '' }= link_to_function contact[:resume] + " (#{profiles})", "$(this).parents('li.contact').remove()", "data-user-id" => contact[:id], "data-user-type" => user.types, "data-selected" => true, :'aria-label' => t('messages.users.user_remove_alt', name: contact[:name], email: contact[:email])
         - if @content_responsibles
           %ul.users_at_responsibles#users
             %li
@@ -35,7 +35,7 @@
                   - user = @contacts.find(contact[:id])
                   - unless user.types.to_i==Profile_Type_Student
                     - profiles = user.profile_name.delete! '{}' '"'
-                    %li.contact.li_contacts{ class: contact[:id].nil? ? 'help' : '' }= link_to_function contact[:resume] + " (#{profiles})", "$(this).parents('div.contact').remove()", "data-user-id" => contact[:id], "data-user-type" => user.types, "data-selected" => true, :'aria-label' => t('messages.users.user_remove_alt', name: contact[:name], email: contact[:email])
+                    %li.contact.li_contacts{ class: contact[:id].nil? ? 'help' : '' }= link_to_function contact[:resume] + " (#{profiles})", "$(this).parents('li.contact').remove()", "data-user-id" => contact[:id], "data-user-type" => user.types, "data-selected" => true, :'aria-label' => t('messages.users.user_remove_alt', name: contact[:name], email: contact[:email])
 
     .block_buttons
       .right

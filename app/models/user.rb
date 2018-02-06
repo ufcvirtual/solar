@@ -386,8 +386,11 @@ class User < ActiveRecord::Base
   end
 
   def self.all_at_allocation_tags(allocation_tags_ids, status = Allocation_Activated, interacts = false)
-    query = interacts ? "cast(profiles.types & #{Profile_Type_Student} as boolean) OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)" : ''
-    joins(allocations: :profile).where(active: true, allocations: { status: status, allocation_tag_id: allocation_tags_ids }).where(query)
+    query = []
+    query <<  "(cast(profiles.types & #{Profile_Type_Student} as boolean) OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean))" if interacts
+    query << "allocations.allocation_tag_id IN (#{allocation_tags_ids.join(',')})" unless allocation_tags_ids.blank?
+
+    joins(allocations: :profile).where(active: true, allocations: { status: status }).where(query.join(' AND '))
       .select('DISTINCT users.id').select('users.name, users.email')
       .select('array_agg(DISTINCT profiles.name) profile_name, profiles.types').group('users.id, users.name, users.email, profiles.types')
   end
