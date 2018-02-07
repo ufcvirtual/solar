@@ -4,7 +4,7 @@
 %td= @allocation.updated_by.try(:username)
 %td= l(@allocation.updated_at)
 %td.right_buttons
-  = link_to_function content_tag(:i, nil, class: 'icon-edit'), 'manage(this)', :"show-link" => admin_allocation_path(@allocation), :"edit-link" => edit_admin_allocation_path(@allocation), class:  'btn btn_manage_allocation'
+  = link_to content_tag(:i, nil, class: 'icon-edit'), "#", onclick: 'manage(this)', :"show-link" => admin_allocation_path(@allocation), :"edit-link" => edit_admin_allocation_path(@allocation), class:  'btn btn_manage_allocation'
 
 :javascript
   eval("#{show_flash}")

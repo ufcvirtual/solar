@@ -58,7 +58,7 @@ class Question < ActiveRecord::Base
 
   def get_labels
     self.question_labels = self.question_labels.collect do |label|
-      QuestionLabel.find_or_create_by_name(label.name)
+      QuestionLabel.find_or_create_by(name: label.name)
     end
   end
 

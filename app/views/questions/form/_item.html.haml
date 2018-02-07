@@ -6,9 +6,9 @@
       - count += 1
       .duplicatable_nested_form
         = i.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash', :'data-tooltip' => t('questions.form.items.remove'))
-        = link_to_function content_tag(:i, nil, class: 'icon-comment'), 'add_comment(this)', class: 'comment', :'data-tooltip' => t('questions.form.items.comments')
-        = link_to_function content_tag(:i, nil, class: 'icon-pictures'), 'add_image(this)', class: 'image_icon', :'data-tooltip' => t('questions.form.items.images')
-        = link_to_function content_tag(:i, nil, class: 'icon-music'), 'add_audio(this)', class: 'audio_icon', :'data-tooltip' => t('questions.form.items.audios')
+        = link_to content_tag(:i, nil, class: 'icon-comment'), "#", onclick: 'add_comment(this)', class: 'comment', :'data-tooltip' => t('questions.form.items.comments')
+        = link_to content_tag(:i, nil, class: 'icon-pictures'), "#", onclick: 'add_image(this)', class: 'image_icon', :'data-tooltip' => t('questions.form.items.images')
+        = link_to content_tag(:i, nil, class: 'icon-music'), "#", onclick: 'add_audio(this)', class: 'audio_icon', :'data-tooltip' => t('questions.form.items.audios')
         .inline
           .inputs
             = i.check_box :value
@@ -27,12 +27,12 @@
                 %img{ src: i.object.item_image.as_json, id: 'image_item' }
               = i.input :item_image, as: :file, label: false
               - if i.object.item_image_file_name
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), "remove_file_item(this, 'img')", :'data-url' => remove_image_item_exam_question_path(i.object, question_id: i.object.question.id)
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_file_item_tmp(this, "img")', class: 'trash-tmp', style: 'display: none'
+                = link_to content_tag(:i, nil, class: 'icon-trash'), "#", onclick: "remove_file_item(this, 'img')", :'data-url' => remove_image_item_exam_question_path(i.object, question_id: i.object.question.id)
+                = link_to content_tag(:i, nil, class: 'icon-trash'), "#", onclick: 'remove_file_item_tmp(this, "img")', class: 'trash-tmp', style: 'display: none'
               - else
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_file_item_tmp(this, "img")'
+                = link_to content_tag(:i, nil, class: 'icon-trash'), "#", onclick: 'remove_file_item_tmp(this, "img")'
 
-              = link_to_function t('questions.form.items.add_image'), 'add_file(this)', class: 'btn btn_main add_file'
+              = link_to t('questions.form.items.add_image'), "#", onclick: 'add_file(this)', class: 'btn btn_main add_file'
 
             .info
               = i.input :img_alt, label: t('questions.form.items.alt')
@@ -46,12 +46,12 @@
                   %p= t("errors.messages.audio")
               = i.input :item_audio, as: :file, label: false
               - if i.object.item_audio_file_name
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_file_item(this, "audio")', :'data-url' => remove_audio_item_exam_question_path(i.object, question_id: i.object.question.id)
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), "remove_file_item_tmp(this, 'audio')", class: 'trash-tmp', style: 'display: none'
+                = link_to content_tag(:i, nil, class: 'icon-trash'), "#", onclick: 'remove_file_item(this, "audio")', :'data-url' => remove_audio_item_exam_question_path(i.object, question_id: i.object.question.id)
+                = link_to content_tag(:i, nil, class: 'icon-trash'), "#", onclick: "remove_file_item_tmp(this, 'audio')", class: 'trash-tmp', style: 'display: none'
               - else
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), "remove_file_item_tmp(this, 'audio')"
+                = link_to content_tag(:i, nil, class: 'icon-trash'), "#", onclick: "remove_file_item_tmp(this, 'audio')"
 
-              = link_to_function t('questions.form.items.add_audio'), 'add_file(this)', class: 'btn btn_main add_file'
+              = link_to t('questions.form.items.add_audio'), "#", onclick: 'add_file(this)', class: 'btn btn_main add_file'
             .info
               = i.input :audio_description, as: :text, label: t('questions.form.items.audio_description')
               = i.label t('questions.form.audio.aud_desc'), class: 'alt'

@@ -388,7 +388,7 @@ Solar::Application.routes.draw do
       get :student
       get :summarized
       get :participants
-      put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Assignment', as: :evaluate
+      put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Assignment', as: :evaluate
     end
 
     collection do
@@ -535,8 +535,8 @@ Solar::Application.routes.draw do
       get :open
       get "at/:allocation_tag_id/download", to: :download, type: :all, as: :download_all
       get "at/:allocation_tag_id/folder/:folder/download", to: :download, type: :folder, as: :download_folder
-      get "at/download", to: :download, type: :all, as: :download_all
-      get "at/folder/:folder/download", to: :download, type: :folder, as: :download_folder
+      get "at/download", to: :download, type: :all, as: :download_all_1
+      get "at/folder/:folder/download", to: :download, type: :folder, as: :download_folder_1
       put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: 'unbind', tool_type: 'SupportMaterialFile', as: :unbind_group_from
       put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: 'remove', tool_type: 'SupportMaterialFile', as: :remove_group_from
       put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: 'add'   , tool_type: 'SupportMaterialFile', as: :add_group_to
@@ -698,7 +698,7 @@ Solar::Application.routes.draw do
 
   resources :savs, only: :index, defaults: { format: 'json' }
 
-  match '/select_group', to: 'application#select_group', as: :select_group
+  match '/select_group', to: 'application#select_group', as: :select_group, :via => [:get, :post]
 
   get '/media/lessons/:id/:file(.:extension)', to: 'access_control#lesson_media', index: true
   get '/media/lessons/:id/:folder/*path',    to: 'access_control#lesson_media', index: false

@@ -49,8 +49,8 @@
                     .audio
                       %audio{ src: i.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
                         %p= t("errors.messages.audio")
-                      = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), 'down_speed()'
-                      = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), 'up_speed()'
+                      = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), "#", onclick: 'down_speed()'
+                      = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), "#", onclick: 'up_speed()'
                       - audio_is = 1
                     - if i.object.audio_description?
                       .audio_description
@@ -108,8 +108,8 @@
                     .audio
                       %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
                         %p= t("errors.messages.audio")
-                      = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), 'down_speed()'
-                      = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), 'up_speed()'
+                      = link_to_ content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), "#", onclick: 'down_speed()'
+                      = link_tocontent_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), "#", onclick: 'up_speed()'
                       - audio_is = 1
                     - if b.object.audio_description?
                       .audio_description
@@ -174,8 +174,8 @@
                     .audio
                       %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
                         %p= t("errors.messages.audio")
-                      = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), 'down_speed()'
-                      = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), 'up_speed()'
+                      = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), "#", onclick: 'down_speed()'
+                      = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), "#", onclick: 'up_speed()'
                       - audio_is = 1 
                     - if b.object.audio_description?
                       .audio_description

@@ -47,7 +47,7 @@
       .input
         = f.label :controlled
         = f.input :controlled, as: :boolean, label: false
-        = link_to_function (image_tag "#{@assignment.controlled ? 'released' : 'rejected'}.png"), 'change(this, ["#with_control", "#without_control"])', :'data-tooltip' => (@assignment.controlled ? t('.environment_controlled') : t('.environment_not_controlled')), :'data-id' => 'controlled', :'data-active' => t('.environment_controlled'), :'data-not-active' => t('.environment_not_controlled')
+        = link_to (image_tag "#{@assignment.controlled ? 'released' : 'rejected'}.png"), "#", onclick: 'change(this, ["#with_control", "#without_control"])', :'data-tooltip' => (@assignment.controlled ? t('.environment_controlled') : t('.environment_not_controlled')), :'data-id' => 'controlled', :'data-active' => t('.environment_controlled'), :'data-not-active' => t('.environment_not_controlled')
         - if @assignment.errors[:controlled].any?
           %span.field_with_errors.error= @assignment.errors[:controlled].first
 

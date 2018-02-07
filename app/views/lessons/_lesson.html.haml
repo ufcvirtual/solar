@@ -2,7 +2,7 @@
 %td{headers: "name_#{lesson.lesson_module_id}"}
   - closed = " (#{t(:lesson_closed_short)})"
   - if lesson.closed?
-    = (@not_offer_area ? (link_to_function lesson.name + closed, 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, onkeydown: 'click_on_keypress(event, this);') : link_to(lesson.name + closed, '#', disabled: true, class: 'disabled', :'aria-label' => lesson.name + closed + t(:disabled)))
+    = (@not_offer_area ? (link_to lesson.name + closed, "#", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, onkeydown: 'click_on_keypress(event, this);') : link_to(lesson.name + closed, '#', disabled: true, class: 'disabled', :'aria-label' => lesson.name + closed + t(:disabled)))
   - else
     - unless lesson.address.blank?
       - text = []
@@ -17,7 +17,7 @@
       - text << lesson.name
       - text << t('fancybox.open')
 
-      = link_to_function lesson.name, 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, :'aria-label' => text.join(' '), onkeydown: 'click_on_keypress(event, this);'
+      = link_to lesson.name, "#", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, :'aria-label' => text.join(' '), onkeydown: 'click_on_keypress(event, this);'
     - else
       = link_to(lesson.name, '#', disabled: true)
       .test_lesson= "(#{ (lesson.is_file? ? t(:lesson_without_initial_file) : t(:lesson_without_url)) })"

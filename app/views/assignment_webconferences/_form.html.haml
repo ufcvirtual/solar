@@ -1,6 +1,6 @@
 = simple_form_for(@assignment_webconference, html: { id: 'awebconference_form', class: 'awebconference_form' }) do |f|
   %span.form_requirement= t(:required_fields)
-  %h1#lightBoxDialogTitle= t((f.object.persisted? ? t('.edit') : t('.new')), scope: [:webconferences, :form])
+  %h1#lightBoxDialogTitle= t((f.object.persisted? ? 'edit' : 'new'), scope: [:webconferences, :form])
   .flash_message_wrapper
 
   .form-inputs.block_content.webconference
@@ -19,8 +19,9 @@
     = f.input :is_recorded, as: :boolean, boolean_style: :inline, input_html: { :'data-tooltip' => t('.record_tooltip') }
 
     .form-actions.right_buttons
-      = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button', alt: t(:cancel)
-      = button_to_function t(:save), 'save_assignment_awebconference()', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button'
+      = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(:cancel)
+      = button_tag t(:save), :type => 'button', :onclick => "save_assignment_awebconference()", class: 'btn btn_main btn_lightbox', alt: t(:save)
+
 
 = javascript_include_tag 'tooltip', 'jquery-ui-timepicker-addon'
 

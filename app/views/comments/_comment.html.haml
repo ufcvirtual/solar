@@ -8,8 +8,8 @@
         %span{class: "comment_#{comment.id}", :'data-value' => comment.comment}=simple_format comment.comment
         - if comment.user_id == current_user.id
           .comment_button
-            = link_to_function content_tag(:i, nil, class: "icon-edit"), "edit_comment(this)", class: 'btn edit_comment', :"data-url" => edit_comment_path(comment), :"data-tooltip" => t(".edit"), :'aria-label' => t(".edit")
-            = link_to_function content_tag(:i, nil, class: "icon-trash"), "remove_comment(this)", class: 'btn', :"data-url" => comment_path(comment, score_type: @score_type), :"data-remove-link" => comment_path(comment, score_type: @score_type), :"data-tooltip" => t('.remove'), :'aria-label' => t(".remove")
+            = link_to content_tag(:i, nil, class: "icon-edit"), "#", onclick: "edit_comment(this)", class: 'btn edit_comment', :"data-url" => edit_comment_path(comment), :"data-tooltip" => t(".edit"), :'aria-label' => t(".edit")
+            = link_to content_tag(:i, nil, class: "icon-trash"), "#", onclick: "remove_comment(this)", class: 'btn', :"data-url" => comment_path(comment, score_type: @score_type), :"data-remove-link" => comment_path(comment, score_type: @score_type), :"data-tooltip" => t('.remove'), :'aria-label' => t(".remove")
       .forum_post_attachment
         - unless comment.files.blank?
           %h3= t('.attached_files')

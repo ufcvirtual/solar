@@ -3534,8 +3534,8 @@ en_US:
       new_no: No
       new_after_evaluation: Changed after evaluation
       last_five: "Here are listed only the last five accesses"
-      f: 'No'
-      t: 'Yes'
+      'false': 'No'
+      'true': 'Yes'
       equivalency: (Is a equivalency)
       equivalent: "<b>This activty is equivalent to the following main activity:</b><br/> %{name}"
       equalities: '(See equalities)'
@@ -4687,16 +4687,16 @@ en_US:
     more_alt: See complete description of %{tool}
     less_alt: See compressed description of %{tool}
     frequency:
-      t: 'Yes <br/>(max: %{hours}h)%{automatic})'
-      f: 'No'
+      'true': 'Yes <br/>(max: %{hours}h)%{automatic})'
+      'false': 'No'
       a: "<br/>automactic"
       d: defined by responsible
     ev_final_exam:
-      t: 'Yes <br/>(Final Exam)'
-      f: 'No'
+      'true': 'Yes <br/>(Final Exam)'
+      'false': 'No'
     final_exam:
-      t: 'Yes'
-      f:  'No'
+      'true': 'Yes'
+      'false':  'No'
     hours: '%{hours}h'
     error:
       general_message: It was not possible to execute action

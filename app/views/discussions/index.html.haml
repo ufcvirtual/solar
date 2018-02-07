@@ -18,11 +18,11 @@
 
       %tbody
         - @discussions.each do |discussion|
-          %tr{class: "lines #{(discussion.closed == 't' && (!discussion.situation.include?("extra_time"))) ? 'period_ended' : '' } "}
+          %tr{class: "lines #{(discussion.closed == true && (!discussion.situation.include?("extra_time"))) ? 'period_ended' : '' } "}
             %td{headers: 'discussions' }
-              - if discussion.opened == 't'
+              - if discussion.opened == true
                 = link_to discussion.name, discussion_posts_path(discussion_id: discussion.academic_tool_id), {class: 'link_content'}
-              - elsif discussion.closed == 't'
+              - elsif discussion.closed == true
                 = link_to discussion.name, discussion_posts_path(discussion_id: discussion.academic_tool_id)
               - else
                 .title= discussion.name
@@ -59,11 +59,12 @@
                 %td.center{class: "assignment_opened", headers: 'situation'}= t("scores.situation.opened")
               -else
                 %td.center{class: "assignment_not_started", headers: 'situation'}= t("scores.situation.not_started")
-            %td.center{headers: 'evaluative' }=raw (discussion.final_exam == 't' ? t(discussion.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(discussion.evaluative, scope: [:scores, :info]))
-            %td.center{headers: "frequency" }=raw t(discussion.frequency, scope: [:common_between_pages, :frequency], hours: discussion.max_working_hours, automatic: (!@is_student && discussion.frequency_automatic == "t" ? t("common_between_pages.frequency.a") : ""))
-            - if @is_student
-              %td.center{headers: 'summary'}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_discussions_path(ac_id: discussion.id, tool_id: discussion.academic_tool_id), class: "btn #{discussion.has_info == 't' ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt', tool: discussion.name, count: discussion.count_comments), :'aria-label' => t('comments.summary.title_alt', tool: discussion.name, count: discussion.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
 
+            %td.center{headers: 'evaluative' }=raw (discussion.final_exam == true ? t(discussion.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(discussion.evaluative, scope: [:scores, :info]))
+            %td.center{headers: 'frequency' }= raw t(discussion.frequency, scope: [:common_between_pages, :frequency], hours: discussion.max_working_hours)
+            - if @is_student
+              %td.center{headers: 'summary'}=  link_to content_tag(:i, nil, class: 'icon-comment'), "#", onclick: "open_summary(this); return false", class: "btn #{discussion.has_info == 't' ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt', tool: discussion.name, count: discussion.count_comments), :'data-url' => summary_discussions_path(ac_id: discussion.id, tool_id: discussion.academic_tool_id), :'aria-label' => t('comments.summary.title_alt', tool: discussion.name, count: discussion.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+            
   - else
     .block_content.block_content_text= t(:forum_message)
 
