@@ -4922,7 +4922,7 @@ pt_BR:
     more_alt: Ver descrição completa de %{tool}
     less_alt: Ver descrição resumida de %{tool}
     frequency:
-      'true': 'Sim <br/>(máx: %{hours}h%{automatic})'
+      'true': 'Sim <br/>(máx: %{hours}h)'
       'false': Não
       a: "<br/>automática"
       d: "definida pelo responsável"
