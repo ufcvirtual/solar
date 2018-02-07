@@ -4,9 +4,9 @@
 %tr.lines{ class: "web_#{webconference.id}" }
   %td.right{headers: "name_web" }
     - unless webconference.on_going?
-      = link_to webconference.title, '#', {disabled: true, :'aria-label' => t('webconferences.index.access_web', web: webconference.title) + t(:disabled), class: 'title'}
+      = link_to webconference.title, '#', disabled: true, :'aria-label' => t('webconferences.index.access_web', web: webconference.title) + t(:disabled), class: 'title'
     - else
-      = link_to webconference.title, "#", onclick: 'access_awebconference(this)', {:'aria-label' => t('webconferences.index.access_web', web: webconference.title)+t(:new_window), onkeydown: 'click_on_keypress(event, this);', :'data-url' => access_assignment_webconference_path(webconference.id, student_id: @student_id, group_id: @group_id)}
+      = link_to webconference.title, "#", onclick: 'access_awebconference(this)', :'aria-label' => t('webconferences.index.access_web', web: webconference.title)+t(:new_window), onkeydown: 'click_on_keypress(event, this);', :'data-url' => access_assignment_webconference_path(webconference.id, student_id: @student_id, group_id: @group_id)
   %td.center{headers: "period_web" }= [l(webconference.initial_time, format: :at_date), l(webconference.initial_time+webconference.duration.minutes, format: :at_date)].join(' - ')
   %td.center{headers: "status_web" }
     = (unavailable ? t(:unavailable, scope: [:webconferences, :list]) : status)

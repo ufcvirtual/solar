@@ -1,23 +1,42 @@
 class Event < ActiveRecord::Base
   self.abstract_class = true
 
+  # scope em classe abstrata com BUG no rails 4.0.0, provavel correção no Rails 5
+  
   # recupera os eventos que pertençam ao periodo visualizado e que tenham relação com as allocations_tags passadas
-  scope :between, -> (start_time, end_time, allocation_tags) { joins(:schedule, academic_allocations: :allocation_tag).where('
-    ((schedules.end_date < ?) OR (schedules.start_date < ?)) AND ((schedules.start_date > ?) OR (schedules.end_date > ?))
-    AND allocation_tags.id IN (?)', format_date(end_time), format_date(end_time), format_date(start_time), format_date(start_time), allocation_tags) }
-
+  # scope :between, -> (start_time, end_time, allocation_tags) { joins(:schedule, academic_allocations: :allocation_tag).where('
+  #   ((schedules.end_date < ?) OR (schedules.start_date < ?)) AND ((schedules.start_date > ?) OR (schedules.end_date > ?))
+  #   AND allocation_tags.id IN (?)', format_date(end_time), format_date(end_time), format_date(start_time), format_date(start_time), allocation_tags) }
+  def self.between(start_time, end_time, allocation_tags)
+    joins(:schedule, academic_allocations: :allocation_tag)
+    .where('
+     ((schedules.end_date < ?) OR (schedules.start_date < ?)) AND ((schedules.start_date > ?) OR (schedules.end_date > ?))
+     AND allocation_tags.id IN (?)', format_date(end_time), format_date(end_time), format_date(start_time), format_date(start_time), allocation_tags)
+  end  
 
   # recupera os eventos que vao iniciar "de hoje em diante" ou ja começaram, mas ainda vao terminar
-  scope :after, -> (today, allocation_tags) { joins(:schedule, academic_allocations: :allocation_tag).where('
-    ((schedules.start_date >= ?) OR (schedules.end_date >= ?)) AND allocation_tags.id IN (?)',
-    format_date(today.to_date), format_date(today.to_date), allocation_tags) }
+  # scope :after, -> (today, allocation_tags) { joins(:schedule, academic_allocations: :allocation_tag).where('
+  #   ((schedules.start_date >= ?) OR (schedules.end_date >= ?)) AND allocation_tags.id IN (?)',
+  #   format_date(today.to_date), format_date(today.to_date), allocation_tags) }
+  def self.after(today, allocation_tags)
+    joins(:schedule, academic_allocations: :allocation_tag)
+    .where('((schedules.start_date >= ?) OR (schedules.end_date >= ?)) AND allocation_tags.id IN (?)', format_date(today.to_date), format_date(today.to_date), allocation_tags)
+  end  
 
   # recupera os eventos que englobam o dia de hoje
-  scope :of_today, -> (day, allocation_tags) { joins(:schedule, academic_allocations: :allocation_tag).where('
-    (? BETWEEN schedules.start_date AND schedules.end_date) AND allocation_tags.id IN (?)',
-    format_date(day.to_date), allocation_tags) }
+  # scope :of_today, -> (day, allocation_tags) { joins(:schedule, academic_allocations: :allocation_tag).where('
+  #   (? BETWEEN schedules.start_date AND schedules.end_date) AND allocation_tags.id IN (?)',
+  #   format_date(day.to_date), allocation_tags) }
+  def self.of_today(day, allocation_tags)
+    joins(:schedule, academic_allocations: :allocation_tag)
+    .where('(? BETWEEN schedules.start_date AND schedules.end_date) AND allocation_tags.id IN (?)', format_date(day.to_date), allocation_tags)
+  end  
 
-  scope :by_ats, -> (allocation_tags) { joins(academic_allocations: :allocation_tag).where('allocation_tags.id IN (?)', allocation_tags) }
+  #scope :by_ats, -> (allocation_tags) { joins(academic_allocations: :allocation_tag).where('allocation_tags.id IN (?)', allocation_tags) }
+
+  def self.by_ats(allocation_tags)
+    joins(academic_allocations: :allocation_tag).where('allocation_tags.id IN (?)', allocation_tags)
+  end  
 
   CANT_EDIT = ['lesson']
 
@@ -98,21 +117,16 @@ class Event < ActiveRecord::Base
 
     (Event.descendants.map do |event|
       limited = event.limited(user, allocation_tags_ids) if event.respond_to?(:limited)
-       if list
-
-        events = event.after(Date.today, allocation_tags_ids)
-        puts 'TESTE'
-        p event.object_id
-        p event
-      else
-        start_date, end_date =  if params[:semester]
-                                  [params[:start], params[:end]]
-                                else
-                                  [Time.at(params['start'].to_i), Time.at(params['end'].to_i)]
-                                end
-        events = event.between(start_date, end_date, allocation_tags_ids)
-      end
-      p events       
+      events =  if list
+                  event.scoped.after(Date.today, allocation_tags_ids)
+                else
+                  start_date, end_date =  if params[:semester]
+                                            [params[:start], params[:end]]
+                                          else
+                                            [Time.at(params['start'].to_i), Time.at(params['end'].to_i)]
+                                          end
+                  event.scoped.between(start_date, end_date, allocation_tags_ids)
+                end
       (limited.nil? ? events : (limited & events))
     end).uniq
   end
