@@ -2,8 +2,8 @@
   %tr.lines{ :'data-id' => lesson.id }
     %td.icon
       .lesson_arrows
-        .lesson_arrow_up= link_to_function image_tag('lesson/up_arrow.png'), 'up(this)'
-        .lesson_arrow_down= link_to_function image_tag('lesson/down_arrow.png'), 'down(this)'
+        .lesson_arrow_up= link_to image_tag('lesson/up_arrow.png'), "#", onclick: 'up(this)'
+        .lesson_arrow_down= link_to image_tag('lesson/down_arrow.png'), "#", onclick: 'down(this)'
     %td= lesson.lesson_module.name
     %td= lesson.name
     %td= (lesson.is_file? ? t('lessons.list.file_type') : t('lessons.list.link_type'))
@@ -11,8 +11,8 @@
     %td.start= text_field_tag "start_date_#{lesson.id}"
     %td.end= text_field_tag "end_date_#{lesson.id}"
     %td= check_box_tag "receive_updates_#{lesson.id}", true, false
-    %td= link_to_function content_tag(:i, nil, class: 'icon-eye'), 'open_lesson(this);', :'data-tooltip' => t('lessons.import.list.preview_tooltip')
-    %td.icon= link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_lesson(this);', :'data-tooltip' => t('lessons.import.conclude.delete')
+    %td= link_to content_tag(:i, nil, class: 'icon-eye'), "#", onclick: 'open_lesson(this);', :'data-tooltip' => t('lessons.import.list.preview_tooltip')
+    %td.icon= link_to content_tag(:i, nil, class: 'icon-trash'), "#", onclick: 'remove_lesson(this);', :'data-tooltip' => t('lessons.import.conclude.delete')
 
 = javascript_include_tag 'tooltip'
 

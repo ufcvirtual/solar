@@ -12,7 +12,7 @@
         %th.center.no_sort{style: "width: 7%", id: "message_history_#{@id_table}"}= t(".message_history")
   %tbody
     - chats.each do |chat|
-      - opened = chat.opened == 't' && chat.closed == 'f'
+      - opened = chat.opened == true && chat.closed == false
       %tr{class: "lines #{'period_ended' unless opened}"}
         %td{headers: "detail_#{@id_table}" }
           - if opened && can_open_link && other == false
@@ -58,18 +58,18 @@
         - if @is_student
           %td.center{class: "assignment_#{chat.situation}", headers: "situation_#{@id_table}"}= t("scores.situation.#{chat.situation}")
         - else
-          - if chat.closed=='t'
+          - if chat.closed==true
             %td.center{class: "assignment_closed", headers: "situation_#{@id_table}"}= t("scores.situation.closed")
-          - elsif chat.opened=='t'
+          - elsif chat.opened==true
             %td.center{class: "assignment_opened", headers: "situation_#{@id_table}"}= t("scores.situation.opened")
           -else
             %td.center{class: "assignment_not_started", headers: "situation_#{@id_table}"}= t("scores.situation.not_started")
 
 
-        %td.center{headers: "evaluative_#{@id_table}" }=raw (chat.final_exam == 't') ? t(chat.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(chat.evaluative, scope: [:scores, :info])
-        %td.center{headers: "frequency_#{@id_table}" }= raw t(chat.frequency, scope: [:common_between_pages, :frequency], hours: chat.max_working_hours, automatic: (!@is_student && chat.frequency_automatic == "t" ? t("common_between_pages.frequency.a") : ""))
+        %td.center{headers: "evaluative_#{@id_table}" }=raw (chat.final_exam == true) ? t(chat.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(chat.evaluative, scope: [:scores, :info])
+        %td.center{headers: "frequency_#{@id_table}" }= raw t(chat.frequency, scope: [:common_between_pages, :frequency], hours: chat.max_working_hours)
         - if @is_student && other==false
-          %td.center{headers: "summary_#{@id_table}"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_chat_rooms_path(ac_id: chat.id, tool_id: chat.academic_tool_id), class: "btn #{chat.has_info == 't' ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt', tool: chat.name, count: chat.count_comments), :'aria-label' => t('comments.summary.title_alt', tool: chat.name, count: chat.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+          %td.center{headers: "summary_#{@id_table}"}= link_to content_tag(:i, nil, class: 'icon-comment'), "#", onclick: 'open_summary(this)', :'data-url' => summary_chat_rooms_path(ac_id: chat.id, tool_id: chat.academic_tool_id), class: "btn #{chat.has_info == true ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt', tool: chat.name, count: chat.count_comments), :'aria-label' => t('comments.summary.title_alt', tool: chat.name, count: chat.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
         - if history && (!@is_student || !other)
           %td{align: "center", headers: "message_history_#{@id_table}"}= link_to content_tag(:i, nil, class: 'icon-history'), messages_chat_room_path(chat.academic_tool_id), class: "btn history", :"data-tooltip" => t(".message_history"), :'aria-label' => t(".message_history")+t('fancybox.open')
         - else

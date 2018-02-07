@@ -51,7 +51,7 @@
   = render partial: 'assignment_webconferences/list', locals: { webconferences: @acu.try(:assignment_webconferences), disabled: false }
 
 .block_wrapper{ style: 'float:left' }
-  = link_to t(:back), :back, { class: "btn", id: 'back'  }
+  = link_to t(:back), :back, class: "btn", id: 'back'
 
 :javascript
   $('#page_title').attr("tabindex", "0");

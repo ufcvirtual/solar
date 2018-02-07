@@ -4,15 +4,15 @@
   %tr.lines{ :'data-id' => question.id, :'data-exam-id' => exam.id }
     %td.icon
       .lesson_arrows
-        .lesson_arrow_up= link_to_function image_tag('lesson/up_arrow.png'), 'up(this)'
-        .lesson_arrow_down= link_to_function image_tag('lesson/down_arrow.png'), 'down(this)'
+        .lesson_arrow_up= link_to image_tag('lesson/up_arrow.png'), "#", onclick: 'up(this)'
+        .lesson_arrow_down= link_to image_tag('lesson/down_arrow.png'), "#", onclick: 'down(this)'
     %td= exam.name
     %td= raw question.enunciation
     %td= question.type
     %td= exam.allocation_tag_info
     %td= number_field_tag "score_#{question.id}", (question.respond_to?(:score) ? question.score : 0.00), { min: 0, max: 10 }
-    %td.icon= link_to_function content_tag(:i, nil, class: 'icon-eye'), 'preview_question(this);', :'data-tooltip' => t('.preview_tooltip'),:'data-url' => question_path(question), class: 'preview_question', disabled: !(@can_see_preview && question.can_see?(true))
-    %td.icon= link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_question(this);', :'data-tooltip' => t('.delete')
+    %td.icon= link_to content_tag(:i, nil, class: 'icon-eye'),"#", onclick: 'preview_question(this);', :'data-tooltip' => t('.preview_tooltip'),:'data-url' => question_path(question), class: 'preview_question', disabled: !(@can_see_preview && question.can_see?(true))
+    %td.icon= link_to content_tag(:i, nil, class: 'icon-trash'), "#", onclick: 'remove_question(this);', :'data-tooltip' => t('.delete')
     = hidden_field_tag "exam_#{question.id}", exam.id
 
 = javascript_include_tag 'tooltip', 'jquery.mask'

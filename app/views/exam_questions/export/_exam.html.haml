@@ -8,7 +8,7 @@
       %td{ style: 'text-align:center;' }= question.privacy? ? content_tag(:i, nil, class: 'icon-lock', :'data-tooltip' => t('questions.question.private')) : content_tag(:i, nil, class: 'icon-minus', :"data-tooltip" => t('questions.question.public'))
       %td= number_field_tag "score_#{exam.id}", 0.00, { min: 0, max: 10 }
       = hidden_field_tag "question_#{exam.id}", question.id
-      %td.icon= link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_exam(this);', :'data-tooltip' => t('lessons.import.conclude.delete')
+      %td.icon= link_to content_tag(:i, nil, class: 'icon-trash'), "#", onclick: 'remove_exam(this);', :'data-tooltip' => t('lessons.import.conclude.delete')
       = hidden_field_tag "exam_#{question.id}", exam.id
 
 = javascript_include_tag 'tooltip'

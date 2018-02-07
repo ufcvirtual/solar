@@ -132,9 +132,9 @@
               #flash_message{ class: name }
                 = content_tag(:span, msg, id: "flash_message_span")
                 - if @attribute.blank?
-                  = link_to_function content_tag(:i, nil, class: 'icon-cross'), "erase_flash_messages(true)", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
+                  = link_to content_tag(:i, nil, class: 'icon-cross'), "#", onclick: "erase_flash_messages(true)", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
                 - else
-                  = link_to_function content_tag(:i, nil, class: 'icon-cross'), "erase_flash_messages(true, "+@attribute.to_s+")", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
+                  = link_to content_tag(:i, nil, class: 'icon-cross'), "#", onclick: "erase_flash_messages(true, "+@attribute.to_s+")", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
           - name = active_tab[:breadcrumb].last[:name].gsub(".", "-") unless active_tab[:breadcrumb].last[:name].nil?
           #breadcrumb= raw show_breadcrumb
           - if is_curriculum_unit_selected?

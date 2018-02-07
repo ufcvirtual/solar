@@ -40,8 +40,8 @@
                 .audio
                   %audio{ src: q_audio.audio, autoplay: false, controls: true, name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' => (q_audio.description.blank? ? '' : t('exams.open.audio', alt: q_audio.description))}
                     %p= t("errors.messages.audio")
-                  = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), 'down_speed()'
-                  = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), 'up_speed()'
+                  = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), "#", onclick: 'down_speed()'
+                  = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), "#", onclick: 'up_speed()'
                 .legend{class: class_.blank? ? '' : 'legend-description'}
                   - unless q_audio.description.blank?
                     %p{:'aria-hidden' => 'true'}= q_audio.description

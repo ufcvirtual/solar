@@ -149,6 +149,7 @@ class ChatRoomsController < ApplicationController
       @chat_room, allocation_tag_id = ChatRoom.find(params[:id]), active_tab[:url][:allocation_tag_id]
       @score_type = params[:score_type]
       authorize! :show, ChatRoom, on: [allocation_tag_id]
+     # @allocation_tags = AllocationTag.find(allocation_tag_id)
       @academic_allocation = AcademicAllocation.where(academic_tool_id: @chat_room.id, academic_tool_type: 'ChatRoom', allocation_tag_id: allocation_tag_id).first
       all_participants = @chat_room.participants.where(academic_allocations: { allocation_tag_id: allocation_tag_id })
       @researcher = current_user.is_researcher?(AllocationTag.find(allocation_tag_id).related)
@@ -157,7 +158,7 @@ class ChatRoomsController < ApplicationController
       raise CanCan::AccessDenied if (all_participants.any? && all_participants.joins(:user).where(users: { id: current_user }).empty?) && !responsible && !(@researcher)
 
       @can_evaluate = can? :evaluate, ChatRoom, {on: allocation_tag_id}
-      @can_comment = can? :create, Comment, {on: [@allocation_tags]}
+      @can_comment = can? :create, Comment, {on: [allocation_tag_id]}
 
       @messages = @chat_room.get_messages(allocation_tag_id, (params.include?(:user_id) ? {user_id: params[:user_id]} : {}))
     end

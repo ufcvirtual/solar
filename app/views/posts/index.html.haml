@@ -79,7 +79,7 @@
         = render partial: 'post', locals: { post: post, display_mode: @display_mode, can_interact: @can_interact, can_post: @can_post, current_user: @user, new_post: false, number: '', comments: (@acu.try(:comments).count rescue nil)}
 
 .block_wrapper
-  = link_to t(:back), :back, { class: 'btn' , id: 'back' }, :'aria-label' => t(:back)
+  = link_to t(:back), :back, class: 'btn' , id: 'back', :'aria-label' => t(:back)
 
 #fv_explain.invisible
   %h1= t('posts.post.draft2')

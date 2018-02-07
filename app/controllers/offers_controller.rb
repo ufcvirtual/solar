@@ -38,6 +38,8 @@ class OffersController < ApplicationController
     authorize! :edit, Offer, on: [@offer.allocation_tag.id]
     @type_id = params[:type_id].to_i
 
+    #@offer.course.build
+
     @offer.build_period_schedule if @offer.period_schedule.nil?
     @offer.build_enrollment_schedule if @offer.enrollment_schedule.nil?
   end
