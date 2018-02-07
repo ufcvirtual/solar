@@ -112,7 +112,9 @@ class DiscussionsController < ApplicationController
   private
 
     def discussion_params
-      params.require(:discussion).permit(:name, :description, schedule_attributes: [:id, :start_date, :end_date])
+      params.require(:discussion).permit(:name, :description,
+       schedule_attributes: [:id, :start_date, :end_date],
+       enunciation_files_attributes: [:id, :attachment, :_destroy])
     end
 
     def render_discussion_success_json(method)
