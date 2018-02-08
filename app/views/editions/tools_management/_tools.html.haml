@@ -289,9 +289,9 @@
 
     for(gltw = 0; gltw < groups_wh_list.length; gltw++) {
       var class_ch = "analise_errors_li correct_t";
-      if(parseInt(groups_wh_list[gltw][1]) != _wh)
+      if(groups_wh_list[gltw][1].toFixed(2) != parseFloat(_wh).toFixed(2))
         class_ch = "analise_errors_li error_t";
-      group = "#{I18n.t('editions.tools.total_wh')}"+ groups_wh_list[gltw][0] + ': '+ parseFloat(groups_wh_list[gltw][1].toFixed(2));
+      group = "#{I18n.t('editions.tools.total_wh')}"+ groups_wh_list[gltw][0] + ': '+ groups_wh_list[gltw][1].toFixed(2);
       ul.append("<li class='" + class_ch + "' >"+group+"</li>");
     }
 
