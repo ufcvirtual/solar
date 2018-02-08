@@ -163,6 +163,7 @@
           groups = groups.split(',');
           //laco das turmas da linha
           for(i = 0; i < groups.length-1; i++) {
+            groups[i] = groups[i].trim();
             //pega o valor do input e converte para um float com duas casas decimais
             var valor = parseFloat(Number($(this).val()).toFixed(2));
             //verifica se a linha é de turmas ou oferta
