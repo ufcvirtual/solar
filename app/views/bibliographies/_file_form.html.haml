@@ -1,6 +1,6 @@
 .input.string.files
   = file_field_tag 'files[]'     , type: :file, multiple: true
-  = button_to_function t(:select_files), 'add_files()', class: 'btn add_files'
+  = button_tag t(:select_files), :type => 'button', :onclick => "add_files()", class: 'btn add_files'
   %span.error
   .files_list
 

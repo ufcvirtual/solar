@@ -332,7 +332,7 @@ class AllocationTag < ActiveRecord::Base
 
   def recalculate_students_grades
     ats = lower_related if group.nil?
-    alls = allocations.includes(:profile).where(status: Allocation_Activated, allocation_tag_id: (ats || id)).where('cast(profiles.types & ? as boolean) AND final_grade IS NOT NULL', Profile_Type_Student)
+    alls = allocations.includes(:profile).where(status: Allocation_Activated, allocation_tag_id: (ats || id)).where('cast(profiles.types & ? as boolean) AND final_grade IS NOT NULL', Profile_Type_Student).references(:profile)
     alls.map(&:calculate_final_grade)
     alls.map(&:calculate_working_hours)
   end

@@ -58,23 +58,32 @@ class RelatedTaggable < ActiveRecord::Base
 
     unless options[:upper] && options[:lower]
       if options[:lower]
+
         RelatedTaggable.joins('JOIN allocation_tags ON ((allocation_tags.group_id IS NOT NULL AND allocation_tags.group_id = related_taggables.group_id) OR 
           (allocation_tags.curriculum_unit_id IS NOT NULL AND allocation_tags.curriculum_unit_id = related_taggables.curriculum_unit_id) OR (allocation_tags.offer_id IS NOT NULL AND allocation_tags.offer_id = related_taggables.offer_id) OR
           (allocation_tags.curriculum_unit_type_id IS NOT NULL AND allocation_tags.curriculum_unit_type_id = related_taggables.curriculum_unit_type_id) OR (allocation_tags.course_id IS NOT NULL AND allocation_tags.course_id = related_taggables.course_id))')
           .where(allocation_tags: { id: array_of_ats })
           .select('COALESCE(related_taggables.group_at_id, related_taggables.offer_at_id, related_taggables.curriculum_unit_at_id, related_taggables.course_at_id, related_taggables.curriculum_unit_type_at_id) AS at_id').map(&:at_id).map(&:to_i).uniq
       elsif options[:upper]
+
+        # allocation_tags = find_by_sql <<-SQL
+        #   SELECT ARRAY[ats.at_g, ats.at_o, ats.at_c, ats.at_uc, ats.at_type] AS ats_ids
+        #   FROM (
+        #     SELECT array_agg(CASE WHEN allocation_tags.group_id IS NOT NULL THEN related_taggables.group_at_id ELSE 0 END) AS at_g, array_agg(CASE WHEN allocation_tags.offer_id IS NOT NULL OR allocation_tags.group_id IS NOT NULL THEN related_taggables.offer_at_id ELSE 0 END) AS at_o, array_agg(CASE WHEN allocation_tags.course_id IS NOT NULL OR allocation_tags.offer_id IS NOT NULL OR allocation_tags.group_id IS NOT NULL THEN related_taggables.course_at_id ELSE 0 END) AS at_c, array_agg(CASE WHEN allocation_tags.curriculum_unit_id IS NOT NULL OR allocation_tags.offer_id IS NOT NULL OR allocation_tags.group_id IS NOT NULL THEN related_taggables.curriculum_unit_at_id ELSE 0 END) AS at_uc, array_agg(CASE WHEN allocation_tags.curriculum_unit_type_id IS NOT NULL OR allocation_tags.curriculum_unit_id IS NOT NULL OR allocation_tags.offer_id IS NOT NULL OR allocation_tags.group_id IS NOT NULL THEN related_taggables.curriculum_unit_type_at_id ELSE 0 END) AS at_type
+        #       FROM related_taggables
+        #       JOIN allocation_tags ON ((allocation_tags.group_id IS NOT NULL AND allocation_tags.group_id =   related_taggables.group_id) OR (allocation_tags.curriculum_unit_id IS NOT NULL AND allocation_tags.curriculum_unit_id = related_taggables.curriculum_unit_id) OR (allocation_tags.offer_id IS NOT NULL AND allocation_tags.offer_id = related_taggables.offer_id) or (allocation_tags.curriculum_unit_type_id IS NOT NULL AND allocation_tags.curriculum_unit_type_id = related_taggables.curriculum_unit_type_id) OR (allocation_tags.course_id IS NOT NULL AND allocation_tags.course_id = related_taggables.course_id))
+        #       WHERE(allocation_tags.id IN (#{array_of_ats.join(',')}))
+        #     ) as ats
+        #     GROUP BY ats_ids;
+        # SQL
         allocation_tags = find_by_sql <<-SQL
-          SELECT ARRAY[ats.at_g, ats.at_o, ats.at_c, ats.at_uc, ats.at_type] AS ats_ids
-          FROM (
-            SELECT array_agg(CASE WHEN allocation_tags.group_id IS NOT NULL THEN related_taggables.group_at_id ELSE 0 END) AS at_g, array_agg(CASE WHEN allocation_tags.offer_id IS NOT NULL OR allocation_tags.group_id IS NOT NULL THEN related_taggables.offer_at_id ELSE 0 END) AS at_o, array_agg(CASE WHEN allocation_tags.course_id IS NOT NULL OR allocation_tags.offer_id IS NOT NULL OR allocation_tags.group_id IS NOT NULL THEN related_taggables.course_at_id ELSE 0 END) AS at_c, array_agg(CASE WHEN allocation_tags.curriculum_unit_id IS NOT NULL OR allocation_tags.offer_id IS NOT NULL OR allocation_tags.group_id IS NOT NULL THEN related_taggables.curriculum_unit_at_id ELSE 0 END) AS at_uc, array_agg(CASE WHEN allocation_tags.curriculum_unit_type_id IS NOT NULL OR allocation_tags.curriculum_unit_id IS NOT NULL OR allocation_tags.offer_id IS NOT NULL OR allocation_tags.group_id IS NOT NULL THEN related_taggables.curriculum_unit_type_at_id ELSE 0 END) AS at_type
+            SELECT (array_agg(CASE WHEN allocation_tags.group_id IS NOT NULL THEN related_taggables.group_at_id ELSE 0 END) || array_agg(CASE WHEN allocation_tags.offer_id IS NOT NULL OR allocation_tags.group_id IS NOT NULL THEN related_taggables.offer_at_id ELSE 0 END) || array_agg(CASE WHEN allocation_tags.course_id IS NOT NULL OR allocation_tags.offer_id IS NOT NULL OR allocation_tags.group_id IS NOT NULL THEN related_taggables.course_at_id ELSE 0 END) || array_agg(CASE WHEN allocation_tags.curriculum_unit_id IS NOT NULL OR allocation_tags.offer_id IS NOT NULL OR allocation_tags.group_id IS NOT NULL THEN related_taggables.curriculum_unit_at_id ELSE 0 END) || array_agg(CASE WHEN allocation_tags.curriculum_unit_type_id IS NOT NULL OR allocation_tags.curriculum_unit_id IS NOT NULL OR allocation_tags.offer_id IS NOT NULL OR allocation_tags.group_id IS NOT NULL THEN related_taggables.curriculum_unit_type_at_id ELSE 0 END)) AS ats_ids
               FROM related_taggables
               JOIN allocation_tags ON ((allocation_tags.group_id IS NOT NULL AND allocation_tags.group_id =   related_taggables.group_id) OR (allocation_tags.curriculum_unit_id IS NOT NULL AND allocation_tags.curriculum_unit_id = related_taggables.curriculum_unit_id) OR (allocation_tags.offer_id IS NOT NULL AND allocation_tags.offer_id = related_taggables.offer_id) or (allocation_tags.curriculum_unit_type_id IS NOT NULL AND allocation_tags.curriculum_unit_type_id = related_taggables.curriculum_unit_type_id) OR (allocation_tags.course_id IS NOT NULL AND allocation_tags.course_id = related_taggables.course_id))
               WHERE(allocation_tags.id IN (#{array_of_ats.join(',')}))
-            ) as ats
-            GROUP BY ats_ids;
         SQL
-        allocation_tags.first['ats_ids'].to_s.delete('{}NULL').split(',').map(&:to_i).delete_if { |at| at == 0 }.uniq
+
+        allocation_tags.first['ats_ids'].to_s.delete('[]NULL').split(',').map(&:to_i).delete_if { |at| at == 0 }.uniq
       end
     else
 
@@ -94,7 +103,7 @@ class RelatedTaggable < ActiveRecord::Base
           FROM related_taggables
           JOIN allocation_tags ON ((allocation_tags.group_id IS NOT NULL AND allocation_tags.group_id = related_taggables.group_id) OR (allocation_tags.curriculum_unit_id IS NOT NULL AND allocation_tags.curriculum_unit_id = related_taggables.curriculum_unit_id) OR (allocation_tags.offer_id IS NOT NULL AND allocation_tags.offer_id = related_taggables.offer_id) OR (allocation_tags.curriculum_unit_type_id IS NOT NULL AND allocation_tags.curriculum_unit_type_id = related_taggables.curriculum_unit_type_id) OR (allocation_tags.course_id IS NOT NULL AND allocation_tags.course_id = related_taggables.course_id))
           WHERE(allocation_tags.id IN (#{array_of_ats.join(',')}));
-        SQL
+      SQL
 
       allocation_tags.first['ats_ids'].to_s.delete('[]NULL').split(',').map(&:to_i).delete_if { |at| at == 0 }.uniq
     end

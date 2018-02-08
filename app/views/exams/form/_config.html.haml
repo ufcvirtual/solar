@@ -46,14 +46,16 @@
     %span.field_with_errors.error= @exam.errors[:controlled].first
 
 .form-actions.right_buttons#without_control
-  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default cancel', type: 'button'
-  = button_to_function t('.previous'), 'back(event)', class: 'btn btn_default btn_main', type: 'button', onkeypress: 'back(event)'
-  = button_to_function t(:save), 'save_exam(event)', class: 'btn btn_main btn_main', alt: t(:save), type: 'button', onkeypress: 'save_exam(event)'
+  = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox'
+  = button_tag t('.previous'), :type => 'button', :onclick => "back(event)", class: 'btn btn_default btn_main', onkeypress: 'back(event)'
+  = button_tag t(:save), :type => 'button', :onclick => "save_exam(event)", class: 'btn btn_default btn_main', onkeypress: 'save_exam(event)', alt: t(:save)
 
 .form-actions.right_buttons.invisible#with_control
-  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox cancel', alt: t(:cancel), type: 'button', onkeydown: 'exit(event)'
-  = button_to_function t('.previous'), 'back_to_info(event)', class: 'btn btn_default btn_main btn_lightbox', alt: t('.previous'), type: 'button', onkeypress: 'back_to_info(event)'
-  = button_to_function t('.continue'), 'go_to_controls(event)', id: "__continue", class: 'btn btn_main btn_lightbox', alt: t('.continue'), type: 'button', onkeypress: 'go_to_controls(event)'
+  = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox cancel', alt: t(:cancel), onkeydown: 'exit(event)'
+  = button_tag t('.previous'), :type => 'button', :onclick => "back_to_info(event)", class: 'btn btn_default btn_main btn_lightbox', onkeypress: 'back_to_info(event)', alt: t('.previous')
+  = button_tag t('.continue'), :type => 'button', :onclick => "go_to_controls(event)", class: 'btn btn_main btn_lightbox', onkeypress: 'go_to_controls(event)', alt: t('.continue'), id: "__continue"
+  
+ 
 
 :javascript
 

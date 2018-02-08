@@ -118,14 +118,14 @@ class Event < ActiveRecord::Base
     (Event.descendants.map do |event|
       limited = event.limited(user, allocation_tags_ids) if event.respond_to?(:limited)
       events =  if list
-                  event.scoped.after(Date.today, allocation_tags_ids)
+                  event.after(Date.today, allocation_tags_ids)
                 else
                   start_date, end_date =  if params[:semester]
                                             [params[:start], params[:end]]
                                           else
                                             [Time.at(params['start'].to_i), Time.at(params['end'].to_i)]
                                           end
-                  event.scoped.between(start_date, end_date, allocation_tags_ids)
+                  event.between(start_date, end_date, allocation_tags_ids)
                 end
       (limited.nil? ? events : (limited & events))
     end).uniq
