@@ -32,7 +32,7 @@
 
             - final_weight = (final_weight.to_i == final_weight ? final_weight.to_i : final_weight)
 
-            - ats_ids = ac.ats.delete('{}').split(',')
+            - ats_ids = ac.ats.to_s.delete('[]').split(',')
             - array_group_code = Array.new
             - groups = Group.joins(:allocation_tag).where(allocation_tags: {id: ats_ids.map(&:to_i)}).compact
             //oferta

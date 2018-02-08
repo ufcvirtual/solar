@@ -35,7 +35,7 @@
         %span.checkbox_label= label_tag :have_end_date, t('.enable_end_date')
 
     .form-actions.right_buttons
-      = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+      = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox'
       = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", alt: t(:save), id: "save"
 
 :javascript

@@ -51,7 +51,7 @@
             = link_to content_tag(:i, nil, class: 'icon-resize-enlarge', :"data-tooltip" => t('.expand')), "#", onclick: 'show_all()'
             .expand_link= link_to t('.expand'), "#", onclick: 'show_all()'
             = link_to content_tag(:i, nil, class: 'icon-resize-shrink', :"data-tooltip" => t('.compress')), "#", onclick: 'hide_all()'
-            .compress_link= link_to_ t('.compress'), "#", onclick: 'hide_all()'
+            .compress_link= link_to t('.compress'), "#", onclick: 'hide_all()'
         %div
           .frequency_equally
             - if !@working_hours.blank? && @groups.size == 1
@@ -59,7 +59,7 @@
               .frequency_link= link_to t('.share_wh'), "#", onclick: "equal_frequencies(#{@working_hours})"
           .set_weight
             = link_to content_tag(:i, nil, class: 'icon-clipboard', :"data-tooltip" => t('.default_weight')), "#", onclick: 'set_weight()'
-            .weight_link= link_to_ t('.default_weight'), "#", onclick: 'set_weight()'
+            .weight_link= link_to t('.default_weight'), "#", onclick: 'set_weight()'
           .set_final_weight
 
             = link_to content_tag(:i, nil, class: 'icon-clipboard', :"data-tooltip" => t('.default_final_weight')), "#", onclick: 'set_final_weight()'
@@ -71,14 +71,14 @@
 
           - tools_ids = []
           - @tools.collect{|key, value| value}.flatten.each do |tool|
-            - acs = tool.ids.delete('{}').split(',')
+            - acs = tool.ids.to_s.delete('[]').split(',')
             - tool['acs'] = acs.uniq
             - tools_ids << acs
           - tools_ids = tools_ids.flatten.uniq
 
         - @tools.each do |key, value|
           = render partial: 'editions/tools_management/tools', locals: { tool_name: key, tools: value, wh: @working_hours.blank?, tools_ids: tools_ids }
-        = button_to_function t('.finish'), 'manage_tools(this)', class: 'btn'
+        = button_tag t('.finish'), :type => 'button', :onclick => "manage_tools(this)", class: 'btn'
         = hidden_field_tag 'working_hours_input', @working_hours
       - else
         .text_none

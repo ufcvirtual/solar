@@ -10,5 +10,5 @@
     = f.add_nested_fields_link :question_items, t('.add'), class: 'btn add_options'
 
 .form-actions.right_buttons
-  = button_to_function t(:back), 'back()', class: 'btn btn_default', type: 'button', id: '_back'
-  = button_to_function t(:save), "save_question(#{eq.nil? ? 0 : eq.object.exam_id}, #{f.object.type_question.nil? ? false : f.object.type_question})", class: 'btn btn_main', type: 'button'
+  = button_tag t(:back), :type => 'button', :onclick => "back()", class: 'btn btn_default', id: '_back'
+  = button_tag t(:save), :type => 'button', :onclick => "save_question(#{eq.nil? ? 0 : eq.object.exam_id}, #{f.object.type_question.nil? ? false : f.object.type_question})", class: 'btn btn_main'

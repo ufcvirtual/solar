@@ -182,5 +182,5 @@
   = link_to (image_tag "#{f.object.have_media? ? 'released' : 'rejected'}.png"), "#", onclick: 'change(this)', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => t('questions.form.add_media'), id: 'add_media_link'
 
 .form-actions.right_buttons
-  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
-  = button_to_function t('.continue'), 'go_to_medias()', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button', id: 'go_to'
+  = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(:cancel)
+  = button_tag t('.continue'), :type => 'button', :onclick => "go_to_medias()", class: 'btn btn_main btn_lightbox', alt: t(:save), id: 'go_to'

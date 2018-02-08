@@ -3,8 +3,8 @@
 = render partial: 'ip_control/ip_real_fields', locals: { f: f }
 
 .right_buttons.clear
-  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
-  = button_to_function t('.previous'), 'back()', class: 'btn btn_default btn_main btn_lightbox', type: 'button'
+  = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(:cancel)
+  = button_tag t('.previous'), :type => 'button', :onclick => "back()", class: 'btn btn_default btn_main btn_lightbox'
   = button_tag t(:save), :class => "btn btn_main btn_lightbox", type: "button", id: "_save"
 
 :css

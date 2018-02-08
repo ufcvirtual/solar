@@ -8,4 +8,4 @@
   %td= allocation.updated_by.try(:username)
   %td
     - status, link = (allocation.status == Allocation_Activated) ? ["deactivate", deactivate_allocation_path(id: allocation, text_search: @text_search, admin: @admin)] : ["activate", activate_allocation_path(id: allocation, text_search: @text_search, admin: @admin)]
-    = button_to_function t("allocations.designates.#{status}"), "change_status(this)", class: "btn btn_caution #{status}", alt: t("allocations.designates.#{status}_user", user_name: allocation.user.name), :'data-link' => link, :"data-link-list" => show_profile_allocation_path(allocation, allocation_tags_ids: @allocation_tags_ids, admin: @admin)
+    = text_field_tag t("allocations.designates.#{status}"), t("allocations.designates.#{status}"), :type => 'button', :onclick => "change_status(this)", class: "btn btn_caution #{status}", alt: t("allocations.designates.#{status}_user", user_name: allocation.user.name), :'data-link' => link, :"data-link-list" => show_profile_allocation_path(allocation, allocation_tags_ids: @allocation_tags_ids, admin: @admin)

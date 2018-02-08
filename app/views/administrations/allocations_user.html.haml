@@ -38,7 +38,7 @@
     .block_content_text.block_content_text_list.text_none= t('.no_data')
 
   .right_buttons
-    = button_to_function t(:close, scope: [:administrations]), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
+    = button_tag t(:close, scope: [:administrations]), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox'
 
 = javascript_include_tag 'tablesorter'
 

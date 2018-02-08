@@ -46,6 +46,7 @@ class LessonsController < ApplicationController
     authorize! :list, Lesson, { on: @allocation_tags_ids }
 
     @all_groups = Group.where(offer_id: params[:offer_id])
+
     @academic_allocations = LessonModule.academic_allocations_by_ats(@allocation_tags_ids.split(' '), page: params[:page])
   rescue
     render nothing: true, status: 500

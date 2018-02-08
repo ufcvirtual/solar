@@ -14,7 +14,7 @@ class EditionsController < ApplicationController
     authorize! :content, Edition, on: @allocation_tags_ids
     @user_profiles       = current_user.resources_by_allocation_tags_ids(@allocation_tags_ids)
     @allocation_tags_ids = @allocation_tags_ids.join(" ")
-
+    
     render partial: 'items'
   rescue=> error
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
@@ -229,7 +229,8 @@ class EditionsController < ApplicationController
         end
 
         # getting errors to final_weight
-        acs = AcademicAllocation.where(allocation_tag_id: at.related, evaluative: true).where('final_exam = false').select('distinct final_weight').pluck(:final_weight)
+        acs = AcademicAllocation.where(allocation_tag_id: at.related, evaluative: true).where('final_exam = false').pluck('DISTINCT final_weight')
+ 
         if acs.any?
           sum = acs.inject(:+) || 0
           if sum != 100
@@ -243,7 +244,6 @@ class EditionsController < ApplicationController
         # recalculating users final grades (if exists)
         at.recalculate_students_grades
       end
-
       errors = errors.delete_if {|x| x == true}
       raise 'error' unless errors.blank? && working_hours_errors.blank? && final_weight_errors.blank?
     end
