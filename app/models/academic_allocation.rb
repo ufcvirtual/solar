@@ -38,6 +38,7 @@ class AcademicAllocation < ActiveRecord::Base
 
   before_save :set_evaluative_params, on: :update, unless: 'new_record?'
   before_save :change_dependencies, on: :update, unless: 'new_record?'
+  before_save :set_automatic_frequency_to_false, on: :update, if: "frequency && academic_tool_type == 'ScheduleEvent'"
 
   before_destroy :set_situation_date
   after_destroy :verify_management
@@ -299,6 +300,11 @@ class AcademicAllocation < ActiveRecord::Base
       if evaluative || frequency
         allocation_tag.recalculate_students_grades
       end
+    end
+
+    def set_automatic_frequency_to_false
+      self.frequency_automatic = false if academic_tool_type == 'ScheduleEvent'
+      return nil
     end
 
 end
