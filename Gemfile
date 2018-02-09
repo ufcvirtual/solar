@@ -27,7 +27,8 @@ gem "fancybox2-rails", "~> 0.2.5"
 
 gem "haml", "~> 4.0.5"
 gem "haml-rails", "~> 0.4.0", group: :development
-gem "ckeditor", "~> 4.0.11"
+# gem "ckeditor", "~> 4.0.11"
+gem "ckeditor", ">= 4.2.4"
 
 gem "fullcalendar-rails", "~> 1.6.4.0"
 gem "momentjs-rails", "~> 2.8.3"
