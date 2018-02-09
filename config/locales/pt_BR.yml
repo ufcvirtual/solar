@@ -2399,6 +2399,10 @@ pt_BR:
       message_not_found: Nenhum usuário encontrado
       synchronize: Sincronizar com Módulo Acadêmico
       import: Importar dados do Módulo Acadêmico
+      name: Nome
+      email: Email
+      username: Login
+      cpf: CPF  
     informations:
       detailed: "Informações Detalhadas"
       personal_data: "Dados Pessoais"
