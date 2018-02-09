@@ -3882,13 +3882,14 @@ en_US:
       anull: " (Annulled question)"
       scores: '( %{score} scores )'
       number_question: 'Exam with %{no_question} questions'
-      image: "Image %{alt}."
+      image: "Image %{alt}. Click to enlarge."
       legend: " Legend: %{legend}"
       image_item: "Item %{item} image: %{alt}."
       audio: "Audio's legend: %{alt}."
       audio_item: "Item %{item} audio's."
       audio2: "Audio %{desc}."
       audio_text: "Text version of audio: %{desc}."
+      image_zoom: "Click to enlarge"
     finish:
       confirm: Are you sure you want to finish the exam?
     summary:
