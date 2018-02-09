@@ -2172,6 +2172,10 @@ en_US:
       message_not_found: No user found
       synchronize: Synchronize with Módulo Acadêmico
       import: Import data from Módulo Acadêmico
+      name: Name
+      email: Email
+      username: Username
+      cpf: CPF  
     informations:
       detailed: "Detailed Information"
       personal_data: "Personal Data"
