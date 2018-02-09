@@ -44,7 +44,7 @@
               - array_group_code.push(g.code+',')
 
             = fields_for 'academic_allocations[]', ac do |acf|
-              %tr.lines{ class: [ats_ids.map{|at| 'at_'+at}, ac.acs.map{|ac| 'ac_'+ac}].join(' ') }
+              %tr.lines{ class: [ats_ids.map{|at| 'at_'+at}, ac.acs.map{|ac| 'ac_'+ac}, tool_name].join(' ') }
                 = hidden_field_tag 'groups', array_group_code, class: 'groups_analyzer'
                 %td.desc
                   %div

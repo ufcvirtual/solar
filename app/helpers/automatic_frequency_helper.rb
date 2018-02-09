@@ -11,7 +11,7 @@ module AutomaticFrequencyHelper
   private
 
     def automatic_frequency(type, activity)
-      unless activity.nil?
+      unless activity.nil? || activity.academic_allocation_user_id.nil?
         academic_allocation_user = activity.class.to_s == "AcademicAllocationUser" ? activity : AcademicAllocationUser.find(activity.academic_allocation_user_id)
         academic_allocation = AcademicAllocation.find(academic_allocation_user.academic_allocation_id)
 

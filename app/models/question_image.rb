@@ -11,9 +11,9 @@ class QuestionImage < ActiveRecord::Base
   validates_attachment_content_type_in_black_list :image
 
   has_attached_file :image,
-          styles: { small: '150x150', medium: '220x220', large: '300x300' },
-          path: ':rails_root/media/questions/images/:id_:basename.:extension',
-          url: '/media/questions/images/:id_:basename.:extension'
+          styles: { small: '150x150>', medium: '250x250>', large: '350x350>' },
+          path: ':rails_root/media/questions/images/:id_:basename_:style.:extension',
+          url: '/media/questions/images/:id_:basename_:style.:extension'
 
   before_save :replace_image_name
 

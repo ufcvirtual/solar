@@ -4128,13 +4128,14 @@ pt_BR:
       anull: " (Questão Anulada)"
       scores: '( %{score} pontos )'
       number_question: 'Prova com %{no_question} questões'
-      image: "Imagem %{alt}."
+      image: "Imagem %{alt}. Clique para ampliar"
       legend: " Legenda: %{legend}"
       image_item: "Imagem do item %{item}: %{alt}."
       audio: "Legenda do áudio: %{alt}."
       audio_item: "Áudio do item %{item}."
       audio2: "Áudio %{desc}."
       audio_text: "Versão textual do áudio: %{desc}."
+      image_zoom: "Clique para ampliar"
     finish:
       confirm: Tem certeza que deseja finalizar a prova?
     summary:

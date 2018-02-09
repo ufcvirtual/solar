@@ -25,18 +25,20 @@
               .q_text
                 = raw text
       %h3.question{:'data-shortcut'=> t("shortcut.exam.code.enunciation"), :'data-shortcut-name'=> t("shortcut.exam.name.enunciation"), :'data-shortcut-focus' => 'true'}
-        .number= number_question.to_s + ')'
-        .enunciation{id: "radio_#{number_question}"}= raw [question.enunciation, anull, score].compact.join(' ')
+        %span.number= number_question.to_s + ')'
+        %span.enunciation{id: "radio_#{number_question}"}= raw [question.enunciation, anull, score].compact.join(' ')
       - question_images = get_question_images(question.id)
       - @question_audios = get_question_audios(question.id)
       
       - unless question_images.nil?
         %ul.question_images
           - question_images.each do |q_image|
-            %li.image{class: (q_image.legend.blank? || @pdf == 1) ? '' : 'legend'}
+            /%li.image{class: (q_image.legend.blank? || @pdf == 1) ? '' : 'legend'}
+            %li.image
               - unless @pdf == 1
-                .image
-                  = image_tag q_image.image(get_image_size(question_images.count)), alt: q_image.img_alt, :'aria-label' => t('exams.open.image', alt: q_image.img_alt) + (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend))
+                .zoom
+                  %p= t('exams.open.image_zoom')
+                  = image_tag q_image.image.url(get_image_size(question_images.count)), :class => 'item_image', alt: q_image.img_alt, :'aria-label' => t('exams.open.image', alt: q_image.img_alt) + (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend)), :"data-zoom-url" => q_image.image.url(:original)
                 - unless q_image.legend.blank?
                   .legend{:'aria-hidden' => 'true'}= q_image.legend
               - else
@@ -45,7 +47,7 @@
         %ul.question_audios
           - @question_audios.each do |q_audio|
             .visuallyhidden=t(:audio_suggestions)
-            - class_ = nil    
+            - class_ = nil
             - if !q_audio.description.blank? && !q_audio.audio_description.blank?
               - class_ = 1
             %li.audio{class: (@pdf == 1 ? '' : 'legend')}
@@ -69,8 +71,6 @@
                   %p.text= q_audio.audio_description
               - else
                 .audio_pdf=t('exams.open.audio2', desc: q_audio.description) + (q_audio.audio_description.blank? ? '' : t('exams.open.audio_text', desc: q_audio.audio_description))
-
-
       - if @preview
         = render 'exams/open/question_preview', { question: question }
       - else
@@ -82,7 +82,7 @@
 - if @disabled && @exam.attempts_correction == Exam::AVERAGE && @pdf!=1
   = link_to t(:back), link, { class: 'btn link_open_exam open-exam-result'}
 
-= javascript_include_tag 'tooltip', 'audios'
+= javascript_include_tag 'tooltip', 'audios', 'zoom/jquery.zoom'
 
 :javascript
   
@@ -103,4 +103,9 @@
 
   });
 
- 
+  $('.item_image').each(function(){
+    var original_img_url = $(this).attr('data-zoom-url');
+    $(this)
+    .parent()
+    .zoom({url: original_img_url, on: 'click'});
+  });
