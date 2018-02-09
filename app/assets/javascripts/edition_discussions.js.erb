@@ -2,6 +2,7 @@
 
 function save_discussion(){
   $('form#discussion_form').serialize_and_submit({
+    files: true,
     replace_list: div_to_replace
   });
 }
