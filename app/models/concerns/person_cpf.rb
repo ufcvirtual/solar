@@ -16,7 +16,7 @@ module PersonCpf
 
   def cpf_ok
     #cpf = Cpf.new(self.cpf)
-    errors.add(:cpf, I18n.t(:new_user_msg_cpf_error)) if not(cpf.nil?) and not(valid_cpf?(cpf))
+    errors.add(:cpf, I18n.t(:new_user_msg_cpf_error)) if not(cpf.nil?) and not(PersonCpf.valid_cpf?(cpf))
   end
 
 
