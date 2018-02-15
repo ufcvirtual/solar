@@ -4,8 +4,8 @@ class CurriculumUnit < ActiveRecord::Base
   belongs_to :curriculum_unit_type
 
   has_many :offers
-  has_many :groups,               through: :offers, uniq: true
-  has_many :courses,              through: :offers, uniq: true
+  has_many :groups,               -> { uniq }, through: :offers
+  has_many :courses,              -> { uniq }, through: :offers
   has_many :academic_allocations, through: :allocation_tag
 
   before_create  :create_correspondent_course,  if: 'curriculum_unit_type_id == 3'

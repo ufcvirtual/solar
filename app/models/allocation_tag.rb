@@ -10,7 +10,7 @@ class AllocationTag < ActiveRecord::Base
   has_many :allocations, dependent: :destroy
   has_many :academic_allocations, dependent: :restrict_with_error # nao posso deletar uma ferramenta academica se tiver conteudo
 
-  has_many :users, through: :allocations, uniq: true
+  has_many :users, -> { uniq }, through: :allocations
 
   has_many :savs, dependent: :destroy
 

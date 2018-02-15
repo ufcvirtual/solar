@@ -5,11 +5,11 @@ class AcademicAllocationUser < ActiveRecord::Base
   belongs_to :group_assignment
 
   has_one :allocation_tag, through: :academic_allocation
-  has_one :exam,           through: :academic_allocation, conditions: { academic_allocations: { academic_tool_type: 'Exam' }}
-  has_one :assignment,     through: :academic_allocation, conditions: { academic_allocations: { academic_tool_type: 'Assignment' }}
-  has_one :chat_room,      through: :academic_allocation, conditions: { academic_allocations: { academic_tool_type: 'ChatRoom' }}
-  has_one :schedule_event, through: :academic_allocation, conditions: { academic_allocations: { academic_tool_type: 'ScheduleEvent' }}
-  has_one :discussion,     through: :academic_allocation, conditions: { academic_allocations: { academic_tool_type: 'Discussion' }}
+  has_one :exam,            -> { where academic_allocations: { academic_tool_type: 'Exam' }}, through: :academic_allocation
+  has_one :assignment,      -> { where academic_allocations: { academic_tool_type: 'Assignment' }}, through: :academic_allocation
+  has_one :chat_room,       -> { where academic_allocations: { academic_tool_type: 'ChatRoom' }}, through: :academic_allocation
+  has_one :schedule_event,  -> { where academic_allocations: { academic_tool_type: 'ScheduleEvent' }}, through: :academic_allocation
+  has_one :discussion,      -> { where academic_allocations: { academic_tool_type: 'Discussion' }}, through: :academic_allocation
 
   has_many :exam_user_attempts, dependent: :destroy
   has_many :exam_responses, through: :exam_user_attempts

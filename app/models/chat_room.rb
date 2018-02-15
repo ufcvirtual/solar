@@ -8,7 +8,7 @@ class ChatRoom < Event
 
   has_many :messages, class_name: 'ChatMessage', through: :academic_allocations, source: :chat_messages
   has_many :participants, class_name: 'ChatParticipant', through: :academic_allocations, source: :chat_participants
-  has_many :users, through: :participants, select: ['users.name', 'users.nick', 'users.id'], uniq: true
+  has_many :users, -> { select('users.name', 'users.nick', 'users.id').uniq}, through: :participants
   has_many :allocations, through: :participants
 
   accepts_nested_attributes_for :schedule
