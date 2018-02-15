@@ -23,11 +23,15 @@
           %th.no_sort{align: "center", style: "width: 26%;"}=t :forum_table_date
       %tbody
         - @discussions.each do |discussion|
+          - has_file = (not discussion.enunciation_files.empty?)
           %tr.lines{id: "tr_#{discussion.id}"}
             %td{style: 'text-align:center;'}= check_box_tag :ckb_discussion, discussion.id, false, {class: "ckb_discussion"}
             %td
               %div
-                .title= discussion.name
+                .title
+                  = discussion.name
+                  - if has_file
+                    %i.icon-paperclip
                 .description
                   .minimun= raw(truncate discussion.description, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
                   .complete.invisible
