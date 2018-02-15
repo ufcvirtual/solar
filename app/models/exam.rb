@@ -311,7 +311,7 @@ class Exam < Event
         authors.name AS author_name,
         updated_by.name AS updated_by_name,
         replace(replace(translate(array_agg(distinct labels.name)::text,'{}', ''),'\"', ''),',',', ') AS labels,
-        exam_questions.score
+        exam_questions.score, questions.user_id, questions.updated_by_user_id
       FROM questions
       JOIN exam_questions ON questions.id = exam_questions.question_id
       LEFT JOIN users AS authors ON questions.user_id = authors.id

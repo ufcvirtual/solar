@@ -395,7 +395,11 @@ pt_BR:
         grade: Nota
       exam_question:
         score: Pontuação
+        privacy: Privacidade
+        question:
+          privacy: Privacidade
       question:
+        privacy: Privacidade
         name: 'Título'
         enunciation: Enunciado
         question: Uma Questão
@@ -4251,6 +4255,7 @@ pt_BR:
   question:
     question: 'Questão '
     enunciation: 'Enunciado '
+    privacy: 'Privacidade '
     question_images:
       image: Imagem
       legend: Legenda

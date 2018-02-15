@@ -2,7 +2,7 @@ class ExamQuestionsController < ApplicationController
 
   include SysLog::Actions
 
-  before_filter :set_current_user, only: [:order, :annul, :import, :export, :copy, :publish]
+  before_filter :set_current_user, only: [:order, :annul, :import, :export, :copy, :publish, :index]
 
   layout false, except: :index
 
@@ -34,7 +34,7 @@ class ExamQuestionsController < ApplicationController
       elsif !params['question_texts_id'].blank?
         @question_text = QuestionText.find(params['question_texts_id'])
         @exam_question.question.question_text_id = @question_text.id
-      end  
+      end
 
       if @exam_question.save
         if @exam_question.exam.questions.size > 1
@@ -47,7 +47,7 @@ class ExamQuestionsController < ApplicationController
         @exam_question.errors.each do |attribute, erro|
           @object = "exam_question_"+ attribute.to_s
           @errors << t(attribute) + erro
-        end  
+        end
         render json: { success: false, alert: @errors.join(', '), object: @object.gsub('.', '_')}, status: :unprocessable_entity
       end
     end
@@ -86,13 +86,13 @@ class ExamQuestionsController < ApplicationController
 
     else
       @exam_question.question.question_text_id = nil
-    end   
+    end
 
     if @exam_question.update_attributes exam_question_params
       if !params['question_texts_id'].blank? && params['question_texts']['media_question'].to_i == 0
         if Question.where(:question_text_id => params['question_texts_id']).count == 0
           QuestionText.find(params['question_texts_id']).destroy
-        end  
+        end
       end
       render partial: 'question', locals: { question: @exam_question.question, exam_question: @exam_question, exam: @exam_question.exam, hide_columns: false, can_see_preview: true }
     else
@@ -100,7 +100,8 @@ class ExamQuestionsController < ApplicationController
       @exam_question.errors.each do |attribute, erro|
         @object = "exam_question_"+ attribute.to_s
         @errors << t(attribute) + erro
-      end  
+      end
+
       render json: { success: false, alert: @errors.join(', '), object: @object.gsub('.', '_')}, status: :unprocessable_entity
     end
 
@@ -126,7 +127,7 @@ class ExamQuestionsController < ApplicationController
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
     render_json_error(error, 'questions.error')
-  end 
+  end
 
   def publish
     authorize! :change_status, Question
@@ -168,10 +169,10 @@ class ExamQuestionsController < ApplicationController
     exam_question = ExamQuestion.find(params[:id])
     authorize! :annul, Question, { on: exam_question.exam.allocation_tags.map(&:id) }
     exam_question.can_change_annulled?
-    exam_question.update_attributes annulled: true 
-   
+    exam_question.update_attributes annulled: true
+
     log(exam_question.exam, "question: #{exam_question.question_id} [annul] exam: #{exam_question.exam_id}, #{exam_question.log_description.merge!(exam: exam_question.exam.attributes)}", LogAction::TYPE[:update]) rescue nil
-    
+
     render json: { success: true, notice: t('exam_questions.success.annulled') }
   rescue => error
     render_json_error(error, 'exam_questions.errors')
@@ -213,18 +214,18 @@ class ExamQuestionsController < ApplicationController
 
   def import_text
     question_text = QuestionText.find params[:id]
-    render partial: 'questions/form/import_text', locals: { f: question_text, eq: nil } 
-  end  
+    render partial: 'questions/form/import_text', locals: { f: question_text, eq: nil }
+  end
 
   def import_details
     authorize! :import_export, Question
 
     if params[:search_method].to_i == 1
-      @questions = Question.joins(:exam_questions).where(exam_questions: { id: params[:ids].split(' ').flatten.compact }).select('questions.*, exam_questions.exam_id AS exam_id, exam_questions.score AS score').uniq 
+      @questions = Question.joins(:exam_questions).where(exam_questions: { id: params[:ids].split(' ').flatten.compact }).select('questions.*, exam_questions.exam_id AS exam_id, exam_questions.score AS score').uniq
     else
-      @questions = Question.find(params[:ids].split(' ').flatten.compact).uniq 
+      @questions = Question.find(params[:ids].split(' ').flatten.compact).uniq
       raise 'bank_without_exam' if params[:exam_id].to_i == 0
-    end  
+    end
     @exam = Exam.find(params[:exam_id].to_i) rescue nil
 
     @can_see_preview = can? :show, Question
@@ -243,12 +244,12 @@ class ExamQuestionsController < ApplicationController
 
       authorize! :import_export, Question, { on: params[:allocation_tags_ids].split(' ').flatten }
 
-      
+
       params[:questions].split(';').each do |question_hash|
         question_hash = question_hash.split(',')
         question      = Question.find(question_hash[0])
         question.can_import_or_export?(current_user)
-         
+
         if params[:exam_id].blank? || params[:exam_id].to_i.zero?
           raise 'bank_without_exam' if question_hash[2].blank?
           exam  = Exam.find(question_hash[2])
@@ -256,7 +257,7 @@ class ExamQuestionsController < ApplicationController
           if exams.any?
             exam_id = exams.first.id
           else
-            schedule = Schedule.create exam.schedule.attributes.except('id') 
+            schedule = Schedule.create exam.schedule.attributes.except('id')
             new_exam = Exam.new exam.attributes.except('id', 'schedule_id', 'status').merge({ status: false, schedule_id: schedule.id })
             new_exam.allocation_tag_ids_associations = params[:allocation_tags_ids].split(' ').flatten
             new_exam.merge = true
@@ -342,13 +343,13 @@ class ExamQuestionsController < ApplicationController
         exam.can_import?
 
         raise CanCan::AccessDenied unless can? :import_export, Question, { on: exam.allocation_tags.map(&:id) }
-       
+
         exam_question = ExamQuestion.create!({ 'question_id' => question.id, 'score' => question_hash[2].to_i, 'exam_id' => exam.id })
 
         log(exam, "question: #{question.id} [export] exam: #{exam.id}, #{exam_question.log_description }", LogAction::TYPE[:create]) rescue nil
       end
     end
-    
+
     render json: { success: true, msg: t('exam_questions.success.exported') }
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
@@ -381,7 +382,7 @@ class ExamQuestionsController < ApplicationController
     params.require(:exam_question).permit(
       :exam_id, :score, :order,
       question_attributes: [
-        :id, :name, :enunciation, :type_question, 
+        :id, :name, :enunciation, :type_question, :privacy,
         question_items_attributes: [:id, :item_image, :value, :description, :_destroy, :comment, :img_alt, :item_audio, :audio_description],
         question_images_attributes: [:id, :image, :legend, :img_alt, :_destroy],
         question_labels_attributes: [:id, :name, :_destroy],
@@ -401,7 +402,7 @@ class ExamQuestionsController < ApplicationController
   end
 
   def build_exam_question
-    if @exam_question.question.nil? 
+    if @exam_question.question.nil?
       @exam_question.build_question do |q|
         q.question_images.build
         q.question_labels.build

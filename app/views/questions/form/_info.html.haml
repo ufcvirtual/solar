@@ -62,7 +62,7 @@
       $("#_back").attr("onclick","back_medias()");
       $("#question_texts_media_question").attr("checked","true");
     }
-    
+
   });
 
   function change(elem){
@@ -71,7 +71,7 @@
 
     var src = $(elem).find('img').attr('src');
     if (src=='/assets/released.png'){
-      var newsrc = '/assets/rejected.png'; 
+      var newsrc = '/assets/rejected.png';
       $("#go_to").attr("onclick","go_to_items()");
       $("#_back").attr("onclick","back()");
 
@@ -82,7 +82,7 @@
 
     }
     $(elem).find('img').attr('src', newsrc );
-   
+
   }
 
   function set_image_input(){
@@ -135,12 +135,12 @@
     while(i<total){
       var id = initialID+i+endID;
       var id_desc = initialID+i+"_description";
-      
+
       if($("#"+id).is(":visible") && $("#"+id_desc).is(":visible")) {
         if($("#"+id).val()=='' && $("#"+id_desc).val()==''){
           $("#"+id).focus();
           return true;
-        }  
+        }
       }else{
         if($("#"+id).is(":visible") && $("#"+id).val()==''){
           $("#"+id).focus();
@@ -148,14 +148,14 @@
         }
       }
       i++;
-    }    
+    }
   }
 
- 
+
 
 .question_type
   = f.label t('questions.new.privacy')
-  = f.select :privacy, ([ [t('questions.new.public'), 0], [t('questions.new.private'), 1] ]), include_blank: false
+  = f.select :privacy, ([ [t('questions.new.public'), false], [t('questions.new.private'), true] ]), include_blank: false
 
 .question_type
   = f.label t('questions.new.type_question')
