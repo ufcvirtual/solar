@@ -17,9 +17,12 @@ class PublicFile < ActiveRecord::Base
   
   before_save :verify_offer, if: 'merge.nil?'
 
-  default_scope order: 'attachment_updated_at DESC'
-
+  #default_scope order: 'attachment_updated_at DESC'
   attr_accessor :merge
+
+  def order
+   'attachment_updated_at DESC'
+  end
 
   def can_remove?
     raise CanCan::AccessDenied unless user_id == User.current.id

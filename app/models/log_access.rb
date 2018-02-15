@@ -3,12 +3,17 @@ class LogAccess < ActiveRecord::Base
   belongs_to :user
   belongs_to :allocation_tag
 
-  default_scope order: 'created_at DESC'
+  #default_scope order: 'created_at DESC'
 
+  
   TYPE = {
     login: 1,
     group_access: 2
   }
+  
+  def order
+   'created_at DESC'
+  end
 
   def type_name
     type = case log_type

@@ -2,9 +2,13 @@ class ExamResponsesQuestionItem < ActiveRecord::Base
   belongs_to :exam_response
   belongs_to :question_item
 
-  default_scope { order(:id) }
+  #default_scope { order(:id) }
 
   validates_uniqueness_of :exam_response_id, scope: [:question_item_id]
+
+  def order
+    'id'
+   end 
 
   def comment
     question_item.comment

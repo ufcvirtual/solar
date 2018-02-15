@@ -1,6 +1,6 @@
 class AssignmentEnunciationFile < ActiveRecord::Base
 
-  default_scope order: 'attachment_updated_at DESC'
+  #default_scope order: 'attachment_updated_at DESC'
 
   belongs_to :assignment
 
@@ -11,4 +11,8 @@ class AssignmentEnunciationFile < ActiveRecord::Base
   has_attached_file :attachment,
     path: ":rails_root/media/assignment/enunciation/:id_:basename.:extension",
     url: "/media/assignment/enunciation/:id_:basename.:extension"
+
+  def order
+   'attachment_updated_at DESC'
+  end
 end

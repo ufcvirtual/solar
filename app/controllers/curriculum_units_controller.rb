@@ -158,7 +158,7 @@ class CurriculumUnitsController < ApplicationController
     def list_portlet_discussion_posts(allocation_tags)
       Post.joins(:academic_allocation)
         .includes(:user)
-        .where(academic_allocations: {allocation_tag_id: allocation_tags})
+        .where(academic_allocations: {allocation_tag_id: allocation_tags}).references(:user)
         .select(%{substring("content" from 0 for 255) AS content}).select('discussion_posts.*, users.nick')
         .order("discussion_posts.updated_at DESC").limit(Rails.application.config.items_per_page.to_i)
     end

@@ -25,7 +25,7 @@ class AssignmentWebconference < ActiveRecord::Base
 
   validates :academic_allocation_user_id, presence: true
 
-  default_scope order: 'updated_at DESC'
+  #default_scope order: 'updated_at DESC'
 
   after_save :update_acu
   after_destroy :update_acu
@@ -35,6 +35,10 @@ class AssignmentWebconference < ActiveRecord::Base
     raise 'date_range'         unless assignment.in_time?
   end
 
+  def order
+   'updated_at DESC'
+  end
+  
   def delete_with_dependents
     self.delete
   end

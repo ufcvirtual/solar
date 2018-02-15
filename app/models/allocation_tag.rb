@@ -8,7 +8,7 @@ class AllocationTag < ActiveRecord::Base
 
   has_many :schedule_events
   has_many :allocations, dependent: :destroy
-  has_many :academic_allocations, dependent: :restrict # nao posso deletar uma ferramenta academica se tiver conteudo
+  has_many :academic_allocations, dependent: :restrict_with_error # nao posso deletar uma ferramenta academica se tiver conteudo
 
   has_many :users, through: :allocations, uniq: true
 
