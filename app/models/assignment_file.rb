@@ -24,8 +24,12 @@ class AssignmentFile < ActiveRecord::Base
   validates_attachment_size :attachment, less_than: 26.megabyte, message: ' '
   validates_attachment_content_type_in_black_list :attachment
 
-  default_scope order: 'attachment_updated_at DESC'
+  #default_scope order: 'attachment_updated_at DESC'
 
+  def order
+   'attachment_updated_at DESC'
+  end
+  
   def can_change?
     raise 'date_range_expired' unless assignment.in_time?
   end

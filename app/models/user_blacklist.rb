@@ -1,13 +1,17 @@
 class UserBlacklist < ActiveRecord::Base
   include PersonCpf
 
-  default_scope order: 'name ASC'
+  #default_scope order: 'name ASC'
 
   belongs_to :user
 
   validates :name, presence: true
 
   validate :cpf_can_go_to_blacklist?
+
+  def order
+   'name ASC'
+  end
 
   def self.search(text)
     text = [URI.unescape(text).split(' ').compact.join("%"), "%"].join

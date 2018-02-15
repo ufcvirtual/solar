@@ -47,41 +47,49 @@ class LogAction < ActiveRecord::Base
 
   def self.new_user(params)
     params.merge!(log_type: TYPE[:new_user])
+    params[:description] = params[:description].to_s
     create(params)
   end
 
   def self.block_user(params)
     params.merge!(log_type: TYPE[:block_user])
+    params[:description] = params[:description].to_s
     create(params)
   end
 
   def self.request_password(params)
     params.merge!(log_type: TYPE[:request_password])
+    params[:description] = params[:description].to_s
     create(params)
   end
 
   def self.creating(params)
     params.merge!(log_type: TYPE[:create])
+    params[:description] = params[:description].to_s
     create(params)
   end
 
   def self.updating(params)
     params.merge!(log_type: TYPE[:update])
+    params[:description] = params[:description].to_s
     create(params)
   end
 
   def self.destroying(params)
     params.merge!(log_type: TYPE[:destroy])
+    params[:description] = params[:description].to_s
     create(params)
   end
 
   def self.access_webconference(params)
     params.merge!(log_type: TYPE[:access_webconference])
+    params[:description] = params[:description].to_s
     create(params)
   end
 
   def self.access_digital_class_lesson(params)
     params.merge!(log_type: TYPE[:access_digital_class_lesson])
+    params[:description] = params[:description].to_s
     create(params)
   end
 

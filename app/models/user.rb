@@ -92,8 +92,11 @@ class User < ActiveRecord::Base
     content_type: ['image/jpeg', 'image/png', 'image/gif', 'image/pjpeg'],
     message: :invalid_type
 
-  default_scope order: 'users.name ASC'
+  #default_scope order: 'users.name ASC'
 
+  def order
+   'users.name ASC'
+  end
   ## Este metodo define os atributos na hora de criar um objeto. Logo, redefine os atributos ja existentes e define
   ## o valor de has_special_needs a partir do que eh passado da pagina na criacao de um usuario (create)
   def initialize(attributes = {})
