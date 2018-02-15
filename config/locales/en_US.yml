@@ -316,6 +316,7 @@ en_US:
         name: Title
         enunciation: Enunciation
         question: One Question
+        privacy: Privacy
       question_labels:
         name: Labels
       question_items:
@@ -4004,6 +4005,7 @@ en_US:
   question:
     question: 'Question '
     enunciation: 'Enunciation '
+    privacy: 'Privacy '
     question_images:
       image: Image
       legend: Enunciation
