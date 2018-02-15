@@ -53,7 +53,8 @@
             - if @is_student
               %td.center{class: "assignment_#{discussion.situation}", headers: 'situation'}= t("scores.situation.#{discussion.situation}")
             - else
-              - if discussion.closed=='t'
+              - p discussion.closed
+              - if discussion.closed==true
                 %td.center{class: "assignment_closed", headers: 'situation'}= t("scores.situation.closed")
               - elsif discussion.opened=='t'
                 %td.center{class: "assignment_opened", headers: 'situation'}= t("scores.situation.opened")
@@ -63,7 +64,7 @@
             %td.center{headers: 'evaluative' }=raw (discussion.final_exam == true ? t(discussion.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(discussion.evaluative, scope: [:scores, :info]))
             %td.center{headers: 'frequency' }= raw t(discussion.frequency, scope: [:common_between_pages, :frequency], hours: discussion.max_working_hours)
             - if @is_student
-              %td.center{headers: 'summary'}=  link_to content_tag(:i, nil, class: 'icon-comment'), "#", onclick: "open_summary(this); return false", class: "btn #{discussion.has_info == 't' ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt', tool: discussion.name, count: discussion.count_comments), :'data-url' => summary_discussions_path(ac_id: discussion.id, tool_id: discussion.academic_tool_id), :'aria-label' => t('comments.summary.title_alt', tool: discussion.name, count: discussion.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+              %td.center{headers: 'summary'}=  link_to content_tag(:i, nil, class: 'icon-comment'), "#", onclick: "open_summary(this); return false", class: "btn #{discussion.has_info == true ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt', tool: discussion.name, count: discussion.count_comments), :'data-url' => summary_discussions_path(ac_id: discussion.id, tool_id: discussion.academic_tool_id), :'aria-label' => t('comments.summary.title_alt', tool: discussion.name, count: discussion.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
             
   - else
     .block_content.block_content_text= t(:forum_message)
