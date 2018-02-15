@@ -190,7 +190,7 @@ class User < ActiveRecord::Base
     SQL
 
     researcher_profiles = profiles_with_access_on('cant_see_info', 'users', allocation_tags_ids, false, true)
-    (all.first['count'] != '0' && all.first['count'] == researcher_profiles.first['count'])
+    (all.first['count'].to_i != 0 && all.first['count'] == researcher_profiles.first['count'])
   end
 
   def is_student?(allocation_tags_ids)
@@ -211,8 +211,7 @@ class User < ActiveRecord::Base
         ) AS ids;
 
     SQL
-
-    (all.first['count'] != '0')
+    (all.first['count'].to_i != 0)
   end
 
   ## Na criação, o usuário recebe o perfil de usuario basico
