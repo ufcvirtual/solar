@@ -118,7 +118,7 @@ class AcademicAllocationUser < ActiveRecord::Base
   # call after every acu grade change
   def recalculate_final_grade(allocation_tag_id)
     get_user.compact.each do |user|
-      allocations = Allocation.includes(:profile).where(user_id: user, status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).lower_related).where('cast(profiles.types & ? as boolean)', Profile_Type_Student)
+      allocations = Allocation.includes(:profile).references(:profile).where(user_id: user, status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).lower_related).where('cast(profiles.types & ? as boolean)', Profile_Type_Student)
       allocation = allocations.where('final_grade IS NOT NULL OR working_hours IS NOT NULL').first || allocations.first
 
       allocation.calculate_working_hours
