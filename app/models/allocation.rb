@@ -8,11 +8,11 @@ class Allocation < ActiveRecord::Base
   belongs_to :profile
   belongs_to :updated_by, class_name: "User", foreign_key: :updated_by_user_id
 
-  has_one :course,               through: :allocation_tag, conditions: ['course_id is not null']
-  has_one :curriculum_unit,      through: :allocation_tag, conditions: ['curriculum_unit_id is not null']
-  has_one :offer,                through: :allocation_tag, conditions: ['offer_id is not null']
-  has_one :group,                through: :allocation_tag, conditions: ['group_id is not null']
-  has_one :curriculum_unit_type, through: :allocation_tag, conditions: ['curriculum_unit_type_id is not null']
+  has_one :course,               -> { where('course_id is not null')}, through: :allocation_tag
+  has_one :curriculum_unit,      -> { where('curriculum_unit_id is not null')}, through: :allocation_tag
+  has_one :offer,                -> { where('offer_id is not null')}, through: :allocation_tag
+  has_one :group,                -> { where('group_id is not null')}, through: :allocation_tag
+  has_one :curriculum_unit_type, -> { where('curriculum_unit_type_id is not null')}, through: :allocation_tag
 
   has_many :chat_rooms
   has_many :chat_messages

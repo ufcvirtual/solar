@@ -3,7 +3,7 @@ class ExamUserAttempt < ActiveRecord::Base
   include ControlledDependency
 
   belongs_to :academic_allocation_user
-  belongs_to :academic_allocation, conditions: { academic_tool_type: 'Exam' }
+  belongs_to :academic_allocation, -> { where academic_tool_type: 'Exam' }
 
   has_one :exam, through: :academic_allocation_user
   has_one :allocation_tag, through: :academic_allocation_user

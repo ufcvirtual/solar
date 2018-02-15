@@ -6,7 +6,7 @@ class Post < ActiveRecord::Base
   belongs_to :parent, class_name: 'Post'
   belongs_to :user
 
-  belongs_to :academic_allocation, conditions: { academic_tool_type: 'Discussion' }
+  belongs_to :academic_allocation, -> { where academic_tool_type: 'Discussion' }
   belongs_to :academic_allocation_user
 
   validates :parent, presence: true, unless: 'parent_id.blank?'
