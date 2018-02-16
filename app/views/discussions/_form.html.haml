@@ -7,7 +7,7 @@
       = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
       = f.input :name
-      = f.input :description
+      = f.input :description, as: :ckeditor
 
       = f.fields_for :schedule, defaults: {required: true} do |s|
         .schedule_dates
@@ -41,7 +41,7 @@
         = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(".cancel")
         = button_to_function t(".save"), "save_discussion()" , class: "btn btn_main btn_lightbox", alt: t(".save"), type: "button"
 
-= javascript_include_tag "edition_discussions"
+= javascript_include_tag "edition_discussions", 'ckeditor/init'
 
 :javascript
 
@@ -98,5 +98,20 @@
       e.preventDefault();
       add_new_file();
     });
+
+    CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
+
+    CKEDITOR.editorConfig = function (config) {
+      config.toolbar =
+        [
+          { name: 'clipboard', items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+          { name: 'insert', items : ['EqnEditor'] },
+          { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
+          { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }
+        ];
+
+        config.extraPlugins = 'eqneditor,oembed';
+        config.resize_enabled = false;
+    };
     
   });
