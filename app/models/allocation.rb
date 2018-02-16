@@ -44,9 +44,9 @@ class Allocation < ActiveRecord::Base
   def activate!
     self.status = Allocation_Activated
     self.save!
-
-    calculate_working_hours
-    calculate_final_grade
+    
+    calculate_working_hours unless allocation_tag.nil?
+    calculate_final_grade unless allocation_tag.nil?
 
     send_email_to_enrolled_user
   end
@@ -351,7 +351,7 @@ class Allocation < ActiveRecord::Base
   end
 
   def calculate_working_hours
-    update_attributes working_hours: Allocation.get_working_hours(user_id, allocation_tag)
+    update_attributes working_hours: Allocation.get_working_hours(user_id, allocation_tag) 
   end
 
   def self.get_working_hours(user_id, allocation_tag, tool=nil)
