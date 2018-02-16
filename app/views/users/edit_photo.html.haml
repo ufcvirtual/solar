@@ -8,3 +8,4 @@
   .alter_photo_text= t(:photo_text)
   /id="my_personal_data_button"
   = f.submit t(:send), id: "photo_submit", class: "btn btn_default", style: "font-size: 12pt;"
+  = link_to t(:remove_photo), remove_photo_path, class: 'btn btn_caution delete_photo', style: "font-size: 12pt;"
