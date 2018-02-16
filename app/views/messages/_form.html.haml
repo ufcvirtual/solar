@@ -56,7 +56,7 @@
     #div_new_message
       .visuallyhidden= label_tag :content, t('.content'), id: 'content'
       .visuallyhidden= link_to t('.go_to_ckeditor'), '#', onclick: "CKEDITOR.instances['message_content'].focus();", onkeydown: "CKEDITOR.instances['message_content'].focus();"
-      = f.input :content, options{ label: false, as: :ckeditor}
+      = f.input :content, as: :ckeditor, label: false
 
     = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'message_content', number: '2', field: t('.content_speech')}
     .message_new_action
