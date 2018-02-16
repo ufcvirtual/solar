@@ -167,10 +167,10 @@ class WebconferencesController < ApplicationController
       set_automatic_frequency(acu)
       render json: { success: true, url: url }
     end
-  # rescue CanCan::AccessDenied
-  #   render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
-  # rescue => error
-  #   render json: { success: false, alert: t('webconferences.error.access') }, status: :unprocessable_entity
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
+  rescue => error
+    render json: { success: false, alert: t('webconferences.error.access') }, status: :unprocessable_entity
   end
 
   def list_access
