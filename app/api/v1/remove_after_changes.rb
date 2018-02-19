@@ -3,8 +3,6 @@ module V1
 
     before { verify_ip_access_and_guard! }
 
-    # codTurma e codigo dizem respeito ao nome da turma
-
     namespace :load do
 
         namespace :groups do
