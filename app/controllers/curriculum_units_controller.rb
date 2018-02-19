@@ -135,6 +135,7 @@ class CurriculumUnitsController < ApplicationController
     authorize! :show, CurriculumUnit, on: [@allocation_tag_id]
     @offer = Offer.where(id: RelatedTaggable.where(group_at_id: @allocation_tags_ids).pluck(:offer_id).compact).first
     @course = @offer.course
+    @group = AllocationTag.find(@allocation_tag_id).try(:group)
   end
 
   def participants

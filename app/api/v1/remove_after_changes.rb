@@ -3,6 +3,8 @@ module V1
 
     before { verify_ip_access_and_guard! }
 
+    # codTurma e codigo dizem respeito ao nome da turma
+
     namespace :load do
 
         namespace :groups do
@@ -15,7 +17,8 @@ module V1
               user       = verify_or_create_user(allocation[:cpf])
               profile_id = get_profile_id(allocation[:perfil])
 
-              destination = get_destination(allocation[:codDisciplina], allocation[:codGraduacao], allocation[:codTurma], (allocation[:periodo].blank? ? allocation[:ano] : "#{allocation[:ano]}.#{allocation[:periodo]}"))
+              destination = get_destination(allocation[:codDisciplina], allocation[:codGraduacao], allocation[:nomeTurma], (allocation[:periodo].blank? ? allocation[:ano] : "#{allocation[:ano]}.#{allocation[:periodo]}"))
+
               destination.allocate_user(user.id, profile_id)
 
               {ok: :ok}
@@ -30,8 +33,7 @@ module V1
             profile_id = get_profile_id(allocation[:perfil])
 
             begin
-              destination = get_destination(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:codigo], (group_info[:periodo].blank? ? group_info[:ano] : "#{group_info[:ano]}.#{group_info[:periodo]}"))
-              destination.cancel_allocations(user.id, profile_id, nil, {}, true) if destination
+              destination = get_destination(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:nome], (group_info[:periodo].blank? ? group_info[:ano] : "#{group_info[:ano]}.#{group_info[:periodo]}"))
 
               {ok: :ok}
             end
@@ -89,7 +91,7 @@ module V1
               ActiveRecord::Base.transaction do
                 semester = verify_or_create_semester(semester_name, offer_period)
                 offer    = verify_or_create_offer(semester, {curriculum_unit_id: uc.id, course_id: course.id}, offer_period)
-                group    = verify_or_create_group({offer_id: offer.id, code: load_group[:codigo]})
+                group    = verify_or_create_group({offer_id: offer.id, code: load_group[:code], name: load_group[:name], location_name: load_group[:location_name], location_office: load_group[:location_office]})
 
                 allocate_professors(group, cpfs || [])
               end
@@ -107,7 +109,7 @@ module V1
               @student_profile  = 1 # Aluno => 1
 
               @groups = @groups.collect do |group_info|
-                get_group_by_codes(group_info["codDisciplina"], group_info["codGraduacao"], group_info["codigo"], (group_info["periodo"].blank? ? group_info["ano"] : "#{group_info["ano"]}.#{group_info["periodo"]}")) unless group_info["codDisciplina"] == 78
+                get_group_by_names(group_info["codDisciplina"], group_info["codGraduacao"], group_info["nome"], (group_info["periodo"].blank? ? group_info["ano"] : "#{group_info["ano"]}.#{group_info["periodo"]}")) unless group_info["codDisciplina"] == 78
               end # Se cód. graduação for 78, desconsidera (por hora, vem por engano).
 
               raise ActiveRecord::RecordNotFound if @groups.include?(nil)
@@ -133,23 +135,10 @@ module V1
 
           end # segment
 
-          # PUT load/groups/cancel_students_enrollments
-          params{ requires :semester, type: String }
-          put :cancel_students_enrollments do
-            begin
-              ActiveRecord::Base.transaction do
-                semester = Semester.find_by_name(params[:semester])
-                cancel_all_allocations(1, semester.id) # Aluno => 1
-              end
-
-              { ok: :ok }
-            end
-          end
-
           # GET load/groups/enrollments
-          params { requires :codDisciplina, :codGraduacao, :codTurma, :periodo, :ano, type: String }
+          params { requires :codDisciplina, :codGraduacao, :nomeTurma, :periodo, :ano, type: String }
           get :enrollments, rabl: "users/list" do
-            group  = get_group_by_codes(params[:codDisciplina], params[:codGraduacao], params[:codTurma], (params[:periodo].blank? ? params[:ano] : "#{params[:ano]}.#{params[:periodo]}"))
+            group  = get_group_by_names(params[:codDisciplina], params[:codGraduacao], params[:nomeTurma], (params[:periodo].blank? ? params[:ano] : "#{params[:ano]}.#{params[:periodo]}"))
             raise ActiveRecord::RecordNotFound if group.nil?
             begin
               @users = group.students_participants
@@ -216,8 +205,10 @@ module V1
             begin
               ActiveRecord::Base.transaction do
                 offer = get_offer(params[:CodigoDisciplina], params[:CodigoCurso], params[:Periodo])
-                params[:Turmas].each do |code|
-                  group_events << create_event1(get_offer_group(offer, code), params[:DataInserida])
+                params[:Turmas].each do |group_name|
+                  group = get_offer_group(offer, group_name)
+                  Rails.logger.info "\n\n AAA #{group.as_json}"
+                  group_events << create_event1(get_offer_group(offer, group_name), params[:DataInserida])
                 end
               end
 

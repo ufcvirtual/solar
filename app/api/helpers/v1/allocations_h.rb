@@ -59,7 +59,7 @@ module V1::AllocationsH
 
     raise ActiveRecord::RecordNotFound if users.empty?
 
-    object.cancel_allocations(nil, params[:profile_id]) if params[:remove_previous_allocations]
+    [objects].flatten.map{|object| object.cancel_allocations(nil, params[:profile_id])} if params[:remove_previous_allocations]
 
     users.each do |user|
       user.cancel_allocations(params[:profile_id]) if params[:remove_user_previous_allocations]

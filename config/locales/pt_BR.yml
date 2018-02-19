@@ -562,7 +562,11 @@ pt_BR:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
         attachment_file_name: Arquivo
-
+        name: 'Nome:'
+      group:
+        code: Código
+        name: Nome
+        location: Localização
     errors:
       uniqueness: "Registro já existe no sistema"
       template:
@@ -2342,6 +2346,7 @@ pt_BR:
       enabled: Ativada
       disabled: Desativada
       activation: Ativação
+      name: Nome
     groups_tags:
       groups: Turmas
       add: Adicionar
@@ -2778,6 +2783,7 @@ pt_BR:
       min_final_exam_grade: Nota mínima permitida para AF
       final_exam_passing_grade: Média mínima para aprovação após realização de AF
       passing_grade: Média mínima para aprovação
+      group_location: Localização da turma
     users:
       message: Enviar mensagem
       public_files: Visualizar arquivos públicos
