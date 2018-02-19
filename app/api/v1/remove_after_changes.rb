@@ -3,8 +3,6 @@ module V1
 
     before { verify_ip_access_and_guard! }
 
-    # codTurma e codigo dizem respeito ao nome da turma
-
     namespace :load do
 
         namespace :groups do
@@ -17,13 +15,7 @@ module V1
               user       = verify_or_create_user(allocation[:cpf])
               profile_id = get_profile_id(allocation[:perfil])
 
-Rails.logger.info "\n\n\n AAA #{allocation.as_json}"
-
               destination = get_destination(allocation[:codDisciplina], allocation[:codGraduacao], allocation[:nomeTurma], (allocation[:periodo].blank? ? allocation[:ano] : "#{allocation[:ano]}.#{allocation[:periodo]}"))
-
-              Rails.logger.info "\n\n\n BBB #{destination.as_json}"
-
-              Rails.logger.info "\n\n\n CC #{user.as_json}"
 
               destination.allocate_user(user.id, profile_id)
 
@@ -41,6 +33,7 @@ Rails.logger.info "\n\n\n AAA #{allocation.as_json}"
             begin
               destination = get_destination(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:nome], (group_info[:periodo].blank? ? group_info[:ano] : "#{group_info[:ano]}.#{group_info[:periodo]}"))
 
+              destination.cancel_allocations(user.id, profile_id) if destination
               {ok: :ok}
             end
           end # block_profile
@@ -213,7 +206,6 @@ Rails.logger.info "\n\n\n AAA #{allocation.as_json}"
                 offer = get_offer(params[:CodigoDisciplina], params[:CodigoCurso], params[:Periodo])
                 params[:Turmas].each do |group_name|
                   group = get_offer_group(offer, group_name)
-                  Rails.logger.info "\n\n AAA #{group.as_json}"
                   group_events << create_event1(get_offer_group(offer, group_name), params[:DataInserida])
                 end
               end
