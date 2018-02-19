@@ -3,6 +3,8 @@ module V1
 
     before { verify_ip_access_and_guard! }
 
+    # codTurma e codigo dizem respeito ao nome da turma
+
     namespace :load do
 
         namespace :groups do
@@ -144,19 +146,6 @@ module V1
             end
 
           end # segment
-
-          # PUT load/groups/cancel_students_enrollments
-          params{ requires :semester, type: String }
-          put :cancel_students_enrollments do
-            begin
-              ActiveRecord::Base.transaction do
-                semester = Semester.find_by_name(params[:semester])
-                cancel_all_allocations(1, semester.id) # Aluno => 1
-              end
-
-              { ok: :ok }
-            end
-          end
 
           # GET load/groups/enrollments
           params { requires :codDisciplina, :codGraduacao, :nomeTurma, :periodo, :ano, type: String }

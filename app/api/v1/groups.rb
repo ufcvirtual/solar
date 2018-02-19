@@ -292,7 +292,8 @@ module V1
             query = []
             query << "lower(groups.code) = '#{params[:group_code].downcase}'" unless params[:group_code].blank?
             query << "lower(groups.name) = '#{params[:group_name].downcase}'" unless params[:group_name].blank?
-            group = Group.joins(offer: [:semester, :course, :curriculum_unit]).where(semesters: { name: params[:semester] },
+            group = Group.joins(offer: [:semester, :course, :curriculum_unit])
+                         .where(semesters: { name: params[:semester] },
                             curriculum_units: { code: params[:curriculum_unit_code], curriculum_unit_type_id: params[:curriculum_unit_type_id] },
                             courses: { code: params[:course_code] }
                          ).where(query.join(' AND ')).first
@@ -316,7 +317,8 @@ module V1
             query = []
             query << "lower(groups.code) = '#{params[:group_code].downcase}'" unless params[:group_code].blank?
             query << "lower(groups.name) = '#{params[:group_name].downcase}'" unless params[:group_name].blank?
-            group = Group.joins(offer: [:semester, :course, :curriculum_unit]).where(semesters: { name: params[:semester] },
+            group = Group.joins(offer: [:semester, :course, :curriculum_unit])
+                         .where(semesters: { name: params[:semester] },
                             curriculum_units: { code: params[:curriculum_unit_code], curriculum_unit_type_id: params[:curriculum_unit_type_id] },
                             courses: { code: params[:course_code] }
                          ).where(query.join(' AND ')).first
@@ -344,7 +346,8 @@ module V1
             query << "lower(groups.code) = '#{params[:group_code].downcase}'" unless params[:group_code].blank?
             query << "lower(groups.name) = '#{params[:group_name].downcase}'" unless params[:group_name].blank?
 
-            group = Group.joins(offer: [:semester, :course, :curriculum_unit]).where(semesters: { name: params[:semester] },
+            group = Group.joins(offer: [:semester, :course, :curriculum_unit])
+                         .where(semesters: { name: params[:semester] },
                             curriculum_units: { code: params[:curriculum_unit_code], curriculum_unit_type_id: params[:curriculum_unit_type_id] },
                             courses: { code: params[:course_code] }
                          ).where(query.join(' AND ')).first
