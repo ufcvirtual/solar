@@ -1,6 +1,6 @@
 object @group
 
-attributes :id, :code
+attributes :id, :code, :name
 
 glue @group.offer.semester do
   attributes name: :semester

@@ -179,7 +179,7 @@ class GroupsController < ApplicationController
   private
 
     def group_params
-      params.require(:group).permit(:offer_id, :code)
+      params.require(:group).permit(:offer_id, :code, :name, :location)
     end
 
     def map_to_xml_or_json

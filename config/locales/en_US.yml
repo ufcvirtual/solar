@@ -495,7 +495,11 @@ en_US:
       discussion_enunciation_file:
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
         attachment_file_name: File
-
+        name: 'Name:'
+      group:
+        code: Code
+        name: Name
+        location: Location
     errors:
       uniqueness: "Record already exists in the system"
       template:
@@ -2113,6 +2117,7 @@ en_US:
       enabled: Enabled
       disabled: Disabled
       activation: Activation
+      name: Name
     groups_tags:
       groups: Groups
       add: Add
@@ -2543,6 +2548,7 @@ en_US:
       min_final_exam_grade: Minimum final exam grade allowed
       final_exam_passing_grade: Minimum final grade to approval after final exam
       passing_grade: Minimum final grade to approval
+      group_location: Group's location
     users:
       message: Send message
       public_files: See public files

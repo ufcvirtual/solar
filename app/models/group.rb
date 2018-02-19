@@ -21,11 +21,17 @@ class Group < ActiveRecord::Base
 
   validates :code, :offer_id, presence: true
 
-  validate :unique_code_on_offer, unless: 'offer_id.nil? || code.nil? || !code_changed?'
+  validate :unique_code_on_offer_by_name, unless: 'offer_id.nil? || code.nil? || !code_changed?'
+  validate :unique_name_on_offer, unless: 'offer_id.nil? || name.blank? || !name_changed?'
 
-  validates_length_of :code, maximum: 40
+  validates :code, length: { maximum: 40 }
+  validates :name, :location, length: { maximum: 100 }
 
   validates :digital_class_directory_id, uniqueness: true, on: :update, unless: 'digital_class_directory_id.blank?'
+
+  before_save :set_empty_name, if: 'name.blank?'
+
+  validate :name_mandatory_if_distant, if: 'name.blank?'
 
   after_save :update_digital_class, if: "code_changed?"
 
@@ -66,7 +72,7 @@ class Group < ActiveRecord::Base
       course: offer.course.try(:name) || '',
       curriculum_unit: offer.curriculum_unit.try(:name) || '',
       semester: offer.semester.name,
-      group: code
+      group: get_code_name
     }
   end
 
@@ -107,24 +113,29 @@ class Group < ActiveRecord::Base
     # if error 400, ja existe la
   end
 
+  def get_code_name
+    # show groups name with code only if uab (distance)
+    (name.blank? || curriculum_unit.blank? || curriculum_unit.curriculum_unit_type_id != 2 || name == code) ? code : "#{code} (#{name})"
+  end
+
   def params_to_directory
     { name: code, discipline: curriculum_unit.code_name, course: course.code_name, tags: [semester.name, curriculum_unit_type.description].join(',') }
   end
 
   def self.get_directory_by_groups(group_id)
     Group.find(group_id).digital_class_directory_id
-  end  
+  end
 
   def self.get_group_from_directory(diretory_id)
     Group.where('digital_class_directory_id = ?', diretory_id)
-  end  
+  end
 
   def self.get_group_from_lesson(lesson)
     directories_ids = []
     lesson['directories'].each do |d|
       directories_ids << d['id']
-    end 
-    groups = Group.where({digital_class_directory_id: directories_ids}) 
+    end
+    groups = Group.where({digital_class_directory_id: directories_ids})
   end
 
   def self.verify_or_create_at_digital_class(groups)
@@ -143,8 +154,26 @@ class Group < ActiveRecord::Base
 
   private
 
-    def unique_code_on_offer
-      errors.add(:code, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) if Group.where(offer_id: offer_id).where("lower(code) = '#{code.downcase}'").any?
+    def unique_code_on_offer_by_name
+      groups = Group.where(offer_id: offer_id)
+      if name.blank?
+        errors.add(:code, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) if groups.where("lower(code) = '#{code.downcase}' AND (name IS NULL OR name = '')").any?
+      else
+        errors.add(:code, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) if groups.where("lower(code) = '#{code.downcase}' AND lower(name) = '#{name.downcase}'").any?
+      end
+    end
+
+    def unique_name_on_offer
+      errors.add(:name, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) if Group.where(offer_id: offer_id).where("lower(name) = '#{name.downcase}'").any?
+    end
+
+    # garantees that name will be nil when blank
+    def set_empty_name
+      self.name = nil
+    end
+
+    def name_mandatory_if_distant
+      errors.add(:name, I18n.t(:blank, scope: [:activerecord, :errors, :messages])) if offer.try(:curriculum_unit).try(:curriculum_unit_type_id) == 2
     end
 
 end

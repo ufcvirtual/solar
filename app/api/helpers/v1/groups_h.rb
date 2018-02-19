@@ -1,31 +1,48 @@
 module V1::GroupsH
 
-  def get_group(params)
-    group = (params[:group_id].nil? ? get_group_by_codes(params[:curriculum_unit_code], params[:course_code], params[:group_code], params[:semester]) : Group.find(params[:group_id]))
-    raise ActiveRecord::RecordNotFound if group.nil?
-  end
-
-  def get_group_by_codes(curriculum_unit_code, course_code, code, semester)
-    group = Group.joins(offer: :semester).where(code: code, offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first, course_id: Course.where(code: course_code).first}, semesters: {name: semester}).first
+  def get_groups_by_code(curriculum_unit_code, course_code, code, semester)
+    # besides the name, groups are searched by its name
+    group = Group.joins(offer: :semester).where(code: code, offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first, course_id: Course.where(code: course_code).first}, semesters: {name: semester})
 
     raise "group not found to uc: #{curriculum_unit_code}; course: #{course_code}; semester: #{semester} with code: #{code}" if group.blank?
 
     group
   end
 
-  def get_offer_group(offer, group_code)
-    offer.groups.where("lower(code) = lower(?)", group_code).first rescue ActiveRecord::RecordNotFound
+  def get_group_by_names(curriculum_unit_code, course_code, name, semester)
+    # besides the name, groups are searched by its name
+    group = Group.joins(offer: :semester).where(name: name, offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first, course_id: Course.where(code: course_code).first}, semesters: {name: semester}).first
+
+    raise "group not found to uc: #{curriculum_unit_code}; course: #{course_code}; semester: #{semester} with name: #{name}" if group.blank?
+
+    group
+  end
+
+  def get_group_by_code_and_name(curriculum_unit_code, course_code, name, semester, code)
+    # besides the name, groups are searched by its name
+    group = Group.joins(offer: :semester).where(name: name, code: code, offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first, course_id: Course.where(code: course_code).first}, semesters: {name: semester}).first
+
+    raise "group not found to uc: #{curriculum_unit_code}; course: #{course_code}; semester: #{semester} with name: #{name} and code: #{code}" if group.blank?
+
+    group
+  end
+
+  def get_offer_group(offer, group_name)
+    offer.groups.where("lower(name) = lower(?)", group_name).first rescue ActiveRecord::RecordNotFound
   end
 
   def verify_or_create_group(params)
-    group = Group.where(group_params(params)).first_or_initialize
+    group = Group.where(offer_id: params[:offer_id], name: params[:name]).first_or_initialize
+
+    groups.location = [params[:location_name], params[:location_office]].join(' - ') unless params[:location_name].blank? && params[:location_office].blank?
+    group.code = params[:code]
     group.status = true
     group.save!
     group
   end
 
   def group_params(params)
-    ActionController::Parameters.new(params).except("route_info").permit("code", "offer_id")
+    ActionController::Parameters.new(params).except("route_info").permit("code", "offer_id", "location", "name")
   end
 
   def get_group_students_info(allocation_tag_id, group)
@@ -85,7 +102,7 @@ module V1::GroupsH
       LEFT JOIN (
         SELECT COUNT(discussion_posts.id) AS count, COUNT(DISTINCT academic_allocations.academic_tool_id) AS count_discussions, discussion_posts.user_id AS user_id
         FROM discussion_posts
-        JOIN academic_allocations ON academic_allocations.id = discussion_posts.academic_allocation_id 
+        JOIN academic_allocations ON academic_allocations.id = discussion_posts.academic_allocation_id
         WHERE academic_allocations.allocation_tag_id IN (#{related_ats_ids})
         AND discussion_posts.draft = 'f'
         GROUP BY discussion_posts.user_id
@@ -124,14 +141,14 @@ module V1::GroupsH
             WHERE academic_allocation_user_id = academic_allocation_users.id
           )
           OR EXISTS (
-            SELECT id 
-            FROM assignment_files 
+            SELECT id
+            FROM assignment_files
             WHERE academic_allocation_user_id = academic_allocation_users.id AND attachment_file_name IS NOT NULL
           )
         )
         GROUP BY COALESCE(academic_allocation_users.user_id, gp.user_id, 0)
       ) assignments ON assignments.user_id = users.id
-      WHERE 
+      WHERE
         allocations.allocation_tag_id = #{allocation_tag_id}
         AND cast(profiles.types & #{Profile_Type_Student} as boolean)
         AND allocations.status        = #{Allocation_Activated}
@@ -163,22 +180,22 @@ module V1::GroupsH
         SELECT COUNT(DISTINCT assignments.id) AS count, academic_allocations.allocation_tag_id AS at FROM assignments
         JOIN academic_allocations ON academic_allocations.academic_tool_id = assignments.id AND academic_tool_type = 'Assignment'
         GROUP BY academic_allocations.allocation_tag_id
-      ) assignments ON assignments.at = allocation_tags.id 
+      ) assignments ON assignments.at = allocation_tags.id
       LEFT JOIN (
         SELECT COUNT(DISTINCT discussions.id) AS count, academic_allocations.allocation_tag_id AS at  FROM discussions
         JOIN academic_allocations ON academic_allocations.academic_tool_id = discussions.id AND academic_tool_type = 'Discussion'
         GROUP BY academic_allocations.allocation_tag_id
-      ) discussions ON discussions.at = allocation_tags.id 
+      ) discussions ON discussions.at = allocation_tags.id
       LEFT JOIN (
         SELECT COUNT(DISTINCT chat_rooms.id) AS count, academic_allocations.allocation_tag_id AS at FROM chat_rooms
         JOIN academic_allocations ON chat_rooms.id = academic_allocations.academic_tool_id AND academic_tool_type = 'ChatRoom'
         GROUP BY academic_allocations.allocation_tag_id
-      ) chat_rooms ON chat_rooms.at = allocation_tags.id 
+      ) chat_rooms ON chat_rooms.at = allocation_tags.id
       LEFT JOIN (
         SELECT COUNT(DISTINCT webconferences.id) AS count, academic_allocations.allocation_tag_id AS at  FROM webconferences
         JOIN academic_allocations ON webconferences.id = academic_allocations.academic_tool_id AND academic_tool_type = 'Webconference'
         GROUP BY academic_allocations.allocation_tag_id
-      ) webconferences ON webconferences.at = allocation_tags.id 
+      ) webconferences ON webconferences.at = allocation_tags.id
       WHERE groups.id = #{group.id}
       GROUP BY groups.id, assignments.count, webconferences.count, discussions.count, chat_rooms.count;
     SQL
@@ -200,7 +217,7 @@ module V1::GroupsH
     SQL
     @posts = posts.first.try(:count)
 
-    web_access = LogAction.find_by_sql <<-SQL 
+    web_access = LogAction.find_by_sql <<-SQL
         SELECT COUNT(DISTINCT log_actions.id) AS count, academic_allocations.allocation_tag_id AS at FROM log_actions
         JOIN academic_allocations ON academic_allocations.id = log_actions.academic_allocation_id
        WHERE log_actions.log_type = #{LogAction::TYPE[:access_webconference]}
@@ -209,7 +226,7 @@ module V1::GroupsH
       SQL
     @web_access = web_access.first.try(:count)
 
-    allocations = Allocation.find_by_sql <<-SQL 
+    allocations = Allocation.find_by_sql <<-SQL
         SELECT COUNT(DISTINCT allocations.user_id) AS count, allocations.allocation_tag_id AS at
         FROM allocations
         JOIN profiles ON allocations.profile_id = profiles.id
@@ -220,7 +237,7 @@ module V1::GroupsH
     SQL
     @allocations = allocations.first.try(:count)
 
-    deactivated_allocations = Allocation.find_by_sql <<-SQL 
+    deactivated_allocations = Allocation.find_by_sql <<-SQL
         SELECT COUNT(DISTINCT allocations.user_id) AS count, allocations.allocation_tag_id AS at
         FROM allocations
         JOIN profiles ON allocations.profile_id = profiles.id
@@ -260,8 +277,8 @@ module V1::GroupsH
             WHERE academic_allocation_user_id = academic_allocation_users.id
           )
           OR EXISTS (
-            SELECT id 
-            FROM assignment_files 
+            SELECT id
+            FROM assignment_files
             WHERE academic_allocation_user_id = academic_allocation_users.id AND attachment_file_name IS NOT NULL
           )
         )
@@ -316,7 +333,7 @@ module V1::GroupsH
       LEFT JOIN (
         SELECT COUNT(discussion_posts.id) AS count, COUNT(DISTINCT academic_allocations.academic_tool_id) AS count_discussions, discussion_posts.user_id AS user_id
         FROM discussion_posts
-        JOIN academic_allocations ON academic_allocations.id = discussion_posts.academic_allocation_id 
+        JOIN academic_allocations ON academic_allocations.id = discussion_posts.academic_allocation_id
         WHERE academic_allocations.allocation_tag_id IN (#{related_ats_ids})
         AND discussion_posts.draft = 'f'
         GROUP BY discussion_posts.user_id
@@ -345,7 +362,7 @@ module V1::GroupsH
         JOIN academic_allocations AS ac ON ac.id = academic_allocation_users.academic_allocation_id
         JOIN assignments                ON assignments.id = ac.academic_tool_id AND ac.academic_tool_type = 'Assignment'
         LEFT JOIN comments   ON comments.academic_allocation_user_id = academic_allocation_users.id
-	WHERE ac.allocation_tag_id IN (#{related_ats_ids}) 
+	WHERE ac.allocation_tag_id IN (#{related_ats_ids})
         GROUP BY comments.user_id
       ) comments ON comments.user_id = users.id
       LEFT JOIN (
@@ -353,11 +370,11 @@ module V1::GroupsH
         FROM academic_allocation_users
         JOIN academic_allocations AS ac ON ac.id = academic_allocation_users.academic_allocation_id
         JOIN assignments                ON assignments.id = ac.academic_tool_id AND ac.academic_tool_type = 'Assignment'
-        WHERE ac.allocation_tag_id IN (#{related_ats_ids}) 
+        WHERE ac.allocation_tag_id IN (#{related_ats_ids})
         AND academic_allocation_users.grade IS NOT NULL
         GROUP BY ac.allocation_tag_id
       ) grades ON grades.at IN (#{related_ats_ids})
-      WHERE 
+      WHERE
         allocations.allocation_tag_id = #{allocation_tag_id}
         AND cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)
         AND allocations.status = #{Allocation_Activated}

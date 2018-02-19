@@ -41,20 +41,26 @@ module V1::General
       raise user.errors.full_messages.join(', ') unless import || user.errors.empty?
     end
 
-    return user 
+    return user
   end
 
-  def get_destination(curriculum_unit_code, course_code, code, semester)
+  def get_destination(curriculum_unit_code, course_code, group_name, semester, group_code)
     case
-      when !code.blank?
-        get_group_by_codes(curriculum_unit_code, course_code, code, semester)
+      when !group_name.blank? && !group_code.blank?
+        get_group_by_code_and_name(curriculum_unit_code, course_code, group_name, semester, group_code)
+      when !group_name.blank?
+        get_group_by_names(curriculum_unit_code, course_code, group_name, semester)
+      when !group_code.blank?
+        get_groups_by_code(curriculum_unit_code, course_code, group_code, semester)
       when !semester.blank?
         get_offer(curriculum_unit_code, course_code, semester)
       when !curriculum_unit_code.blank?
         CurriculumUnit.find_by_code(curriculum_unit_code)
       when !course_code.blank?
         Course.find_by_code(course_code)
+      else
+        raise ActiveRecord::RecordNotFound
     end
-  end 
+  end
 
 end

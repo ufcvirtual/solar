@@ -25,8 +25,8 @@ module V1
           end
         end
         params do
-          optional :curriculum_unit_code, :course_code, :semester, :group_code
-          at_least_one_of :curriculum_unit_code, :course_code, :semester, :group_code
+          optional :curriculum_unit_code, :course_code, :semester, :group_name, :group_code
+          at_least_one_of :curriculum_unit_code, :course_code, :semester, :group_name, :group_code
         end
         post ":type" do
           begin
@@ -57,8 +57,8 @@ module V1
         end
 
         params do
-          optional :curriculum_unit_code, :course_code, :semester, :group_code
-          at_least_one_of :curriculum_unit_code, :course_code, :semester, :group_code
+          optional :curriculum_unit_code, :course_code, :semester, :group_name, :group_code
+          at_least_one_of :curriculum_unit_code, :course_code, :semester, :group_name, :group_code
         end
         delete ":type" do
           begin
@@ -76,12 +76,16 @@ module V1
       desc "Recupera usuários alocados em uma turma"
       params do
         optional :profile_id, :group_id, type: Integer
-        optional :curriculum_unit_code, :course_code, :semester, :group_code
-        at_least_one_of :group_id, :group_code
+        optional :curriculum_unit_code, :course_code, :semester, :group_code, :group_name
+        at_least_one_of :group_id, :group_code, :group_name
       end
       get :allocations, rabl: "users/list" do
         begin
-          @users = get_group(params).users_with_profile(params[:profile_id])
+          groups = (params[:group_id].blank? ? get_destination(params[:curriculum_unit_code], params[:course_code],params[:group_name], params[:semester], params[:group_code]) : Group.find(params[:group_id]))
+
+          raise ActiveRecord::RecordNotFound if groups.blank?
+
+          @users = [groups].flatten.map{|group| group.users_with_profile(params[:profile_id])}.flatten.uniq
         end
       end
 
