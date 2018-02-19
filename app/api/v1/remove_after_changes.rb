@@ -3,8 +3,6 @@ module V1
 
     before { verify_ip_access_and_guard! }
 
-    # codTurma e codigo dizem respeito ao nome da turma
-
     namespace :load do
 
         namespace :groups do
@@ -35,6 +33,7 @@ module V1
             begin
               destination = get_destination(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:nome], (group_info[:periodo].blank? ? group_info[:ano] : "#{group_info[:ano]}.#{group_info[:periodo]}"))
 
+              destination.cancel_allocations(user.id, profile_id) if destination
               {ok: :ok}
             end
           end # block_profile
@@ -207,7 +206,6 @@ module V1
                 offer = get_offer(params[:CodigoDisciplina], params[:CodigoCurso], params[:Periodo])
                 params[:Turmas].each do |group_name|
                   group = get_offer_group(offer, group_name)
-                  Rails.logger.info "\n\n AAA #{group.as_json}"
                   group_events << create_event1(get_offer_group(offer, group_name), params[:DataInserida])
                 end
               end
