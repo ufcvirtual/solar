@@ -4,7 +4,7 @@
       %h2{:'data-shortcut'=> t("shortcut.comments.code.title"), :'data-shortcut-name'=> t("shortcut.comments.name.title"), :'data-shortcut-focus' => 'true'}
         %i.icon-comment
         = t('comments.list.title')
-      - if (can? :create, Comment, on: [@allocation_tag_id])
+      - if (can?(:create, Comment, on: [@allocation_tag_id]) && @allocation_tag_id.class != Array)
         %span.right_buttons
           = button_tag content_tag(:i, nil, class: 'icon-plus'), class: "btn btn_main #{tool.offer_opened? ? '' : 'disabled'}", id: 'new_comment', disabled: !tool.offer_opened?, :"data-tooltip" => t('.new'), :'aria-label' => t(".new"), :'data-shortcut'=> t("shortcut.assignment.code.new_comment"), :'data-shortcut-name'=> t("shortcut.assignment.name.new_comment")
     .comment_wrapper
