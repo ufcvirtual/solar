@@ -112,7 +112,15 @@ class UsersController < ApplicationController
       end
     end
   end
- 
+
+  def remove_photo
+    current_user.photo = nil
+    current_user.save
+    respond_to do |format|
+      format.html { redirect_to :back, notice: t(:remove_photo_msg) }
+    end
+  end
+
   # synchronize user data with ma
   def synchronize_ma
     user = params.include?(:id) ? User.find(params[:id]) : current_user
@@ -148,7 +156,7 @@ class UsersController < ApplicationController
       notifify_email.save!
     else
       notifify_email = @user.notification_mail
-    end  
+    end
     @configure = notifify_email
 
     respond_to do |format|

@@ -763,6 +763,8 @@ en_US:
   access: Access Information
   legislation: Legislation
   channel: Channel
+  remove_photo: Remove Photo
+  remove_photo_msg: User profile photo has been removed
 
   enrollments:
     all: All
