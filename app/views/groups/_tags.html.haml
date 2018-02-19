@@ -1,8 +1,8 @@
 - groups.each do |group|
   %span.collection_check_boxes{id: (group.status ? '' : 'disabled'), :"data-tooltip" => (group.status ? '' : t('.disabled_group'))}
-    = group.code
-    - unless paths.nil? || groups.size == 1 
-      - if tool.kind_of? Integer 
+    = group.get_code_name
+    - unless paths.nil? || groups.size == 1
+      - if tool.kind_of? Integer
         - tool_id = tool
       - else
         - tool_id = tool.id

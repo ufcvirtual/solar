@@ -4,7 +4,7 @@
       %h2
         %i.icon-suitcase
         = t(:group)
-        = @group.code
+        = @group.get_code_name
         - unless @wh.blank?
           = t('.curriculum_unit_working_hours', wh: @wh)
 

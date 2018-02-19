@@ -19,7 +19,7 @@ module V1
             # if editing all groups of event (when size is not one)
             if event.academic_allocations.size == params[:groups].size && params[:groups].size > 1
               start_hour, end_hour = params[:start].split(":"), params[:end].split(":")
-              
+
               event.schedule.update_attributes! start_date: params[:date], end_date: params[:date]
               event.api = true
               # just update event
@@ -35,7 +35,7 @@ module V1
 
               # if event found is not the same of the request
               if group_events.first[:id] != event.id && all_groups
-                # remove event if last group or remove group ac 
+                # remove event if last group or remove group ac
                 event.api = true
                 event.destroy
               end
@@ -49,7 +49,7 @@ module V1
     end # event
 
     namespace :events do
-      
+
       desc "Criação de um ou mais eventos"
       params do
         requires :groups, type: Array
@@ -62,7 +62,7 @@ module V1
       end
       post "/" do
         group_events = []
-        
+
         begin
           ActiveRecord::Base.transaction do
             offer = get_offer(params[:curriculum_unit_code], params[:course_code], params[:semester])
@@ -84,8 +84,8 @@ module V1
           ScheduleEvent.transaction do
             offer = get_offer(params[:curriculum_unit_code], params[:course_code], params[:semester])
             events = ScheduleEvent.where(id: params[:ids].split(","))
-            params[:groups].each do |code|
-              group = get_offer_group(offer, code)
+            params[:groups].each do |group_name|
+              group = get_offer_group(offer, group_name)
               group_at = group.allocation_tag.id
 
               events.each do |event|

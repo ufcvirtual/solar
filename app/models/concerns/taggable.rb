@@ -8,7 +8,7 @@ module Taggable
 
     after_create :allocation_tag_association
     after_create :allocate_profiles
-    
+
     has_one :allocation_tag, dependent: :destroy
 
     has_many :allocations, through: :allocation_tag
@@ -155,7 +155,7 @@ module Taggable
 
   def users_with_profile(profile_id = nil, related = true)
     query = {}
-    query.merge!({profile_id: profile_id}) unless profile_id.nil?
+    query.merge!(allocations: {profile_id: profile_id}) unless profile_id.nil?
 
     User.joins(:allocations).where("allocations.allocation_tag_id IN (?)", (related ? self.allocation_tag.related({upper:true}) : self.allocation_tag.id) )
       .where(query).uniq

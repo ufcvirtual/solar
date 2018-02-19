@@ -54,16 +54,16 @@ module V1::AllocationsH
   ## remover
 
   def allocate(params, cancel = false)
-    object = ( params[:id].nil? ?  get_destination(params[:curriculum_unit_code], params[:course_code], params[:group_code], params[:semester]) : params[:type].capitalize.constantize.find(params[:id]) )
+    objects = ( params[:id].nil? ?  get_destination(params[:curriculum_unit_code], params[:course_code], params[:group_name], params[:semester], params[:group_code]) : params[:type].capitalize.constantize.find(params[:id]) )
     users  = get_users(params)
 
     raise ActiveRecord::RecordNotFound if users.empty?
 
-    object.cancel_allocations(nil, params[:profile_id]) if params[:remove_previous_allocations]
+    [objects].flatten.map{|object| object.cancel_allocations(nil, params[:profile_id])} if params[:remove_previous_allocations]
 
     users.each do |user|
       user.cancel_allocations(params[:profile_id]) if params[:remove_user_previous_allocations]
-      object.send(cancel ? :cancel_allocations : :allocate_user, user.id, params[:profile_id])
+      [objects].flatten.map{|object| object.send(cancel ? :cancel_allocations : :allocate_user, user.id, params[:profile_id])}
     end
   end
 

@@ -24,8 +24,8 @@ module V1::EventsH
       event.save!
     end
 
-    params[:groups].each do |code|
-      group = get_offer_group(offer, code)
+    params[:groups].each do |group_name|
+      group = get_offer_group(offer, group_name)
 
       old_ac = old_event.academic_allocations.where(allocation_tag_id: group.allocation_tag.id).first unless old_event.blank?
       ac_attributes = old_ac.blank? ? {} : old_ac.attributes.except('id', 'academic_tool_id', 'allocation_tag_id')
@@ -38,9 +38,9 @@ module V1::EventsH
         AcademicTool.send_email(event, old_ac, true)
       end
 
-      group_events << {code: group.code, id: event.id}
+      group_events << {name: group.name, id: event.id}
     end
-    
+
     group_events
   end
 
@@ -57,6 +57,6 @@ module V1::EventsH
     schedule = Schedule.create! start_date: params[:Data], end_date: params[:Data]
     event    = ScheduleEvent.create! def_attributes1(params, schedule)
     event.academic_allocations.create! allocation_tag_id: group.allocation_tag.id
-    {Codigo: group.code, id: event.id}
+    {Codigo: group.name, id: event.id}
   end
 end
