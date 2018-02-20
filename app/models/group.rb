@@ -1,7 +1,7 @@
 class Group < ActiveRecord::Base
   include Taggable
 
-  default_scope order: 'groups.status, groups.code'
+  #default_scope order: 'groups.status, groups.code'
 
   belongs_to :offer
 
@@ -28,6 +28,10 @@ class Group < ActiveRecord::Base
   validates :digital_class_directory_id, uniqueness: true, on: :update, unless: 'digital_class_directory_id.blank?'
 
   after_save :update_digital_class, if: "code_changed?"
+
+  def order
+   'groups.status, groups.code'
+  end 
 
   def code_semester
     "#{code} - #{offer.semester.name}"

@@ -11,7 +11,7 @@ class Offer < ActiveRecord::Base
   has_one :curriculum_unit_type, through: :curriculum_unit
 
   has_many :groups
-  has_many :active_groups, conditions: 'status=true', class_name: 'Group', foreign_key: "offer_id"
+  has_many :active_groups, -> { where('status=true')}, class_name: 'Group', foreign_key: "offer_id"
   has_many :academic_allocations, through: :allocation_tag
   has_many :lesson_modules,       through: :academic_allocations, source: :academic_tool, source_type: "LessonModule"
   has_many :assignments,          through: :academic_allocations, source: :academic_tool, source_type: "Assignment"

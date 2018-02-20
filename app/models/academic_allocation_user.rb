@@ -5,11 +5,11 @@ class AcademicAllocationUser < ActiveRecord::Base
   belongs_to :group_assignment
 
   has_one :allocation_tag, through: :academic_allocation
-  has_one :exam,           through: :academic_allocation, conditions: { academic_allocations: { academic_tool_type: 'Exam' }}
-  has_one :assignment,     through: :academic_allocation, conditions: { academic_allocations: { academic_tool_type: 'Assignment' }}
-  has_one :chat_room,      through: :academic_allocation, conditions: { academic_allocations: { academic_tool_type: 'ChatRoom' }}
-  has_one :schedule_event, through: :academic_allocation, conditions: { academic_allocations: { academic_tool_type: 'ScheduleEvent' }}
-  has_one :discussion,     through: :academic_allocation, conditions: { academic_allocations: { academic_tool_type: 'Discussion' }}
+  has_one :exam,            -> { where academic_allocations: { academic_tool_type: 'Exam' }}, through: :academic_allocation
+  has_one :assignment,      -> { where academic_allocations: { academic_tool_type: 'Assignment' }}, through: :academic_allocation
+  has_one :chat_room,       -> { where academic_allocations: { academic_tool_type: 'ChatRoom' }}, through: :academic_allocation
+  has_one :schedule_event,  -> { where academic_allocations: { academic_tool_type: 'ScheduleEvent' }}, through: :academic_allocation
+  has_one :discussion,      -> { where academic_allocations: { academic_tool_type: 'Discussion' }}, through: :academic_allocation
 
   has_many :exam_user_attempts, dependent: :destroy
   has_many :exam_responses, through: :exam_user_attempts
@@ -118,7 +118,7 @@ class AcademicAllocationUser < ActiveRecord::Base
   # call after every acu grade change
   def recalculate_final_grade(allocation_tag_id)
     get_user.compact.each do |user|
-      allocations = Allocation.includes(:profile).where(user_id: user, status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).lower_related).where('cast(profiles.types & ? as boolean)', Profile_Type_Student)
+      allocations = Allocation.includes(:profile).references(:profile).where(user_id: user, status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).lower_related).where('cast(profiles.types & ? as boolean)', Profile_Type_Student)
       allocation = allocations.where('final_grade IS NOT NULL OR working_hours IS NOT NULL').first || allocations.first
 
       allocation.calculate_working_hours

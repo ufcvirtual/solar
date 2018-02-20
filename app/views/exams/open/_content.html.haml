@@ -55,8 +55,8 @@
                 .audio
                   %audio{ src: q_audio.audio, autoplay: false, controls: true, name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' => (q_audio.description.blank? ? '' : t('exams.open.audio', alt: q_audio.description))}
                     %p= t("errors.messages.audio")
-                  = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), 'down_speed()'
-                  = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), 'up_speed()'
+                  = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), "#", onclick: 'down_speed()'
+                  = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), "#", onclick: 'up_speed()'
                 .legend{class: class_.blank? ? '' : 'legend-description'}
                   - unless q_audio.description.blank?
                     %p{:'aria-hidden' => 'true'}= q_audio.description
@@ -80,7 +80,7 @@
   - if @pdf != 1
     = will_paginate @exam_questions
 - if @disabled && @exam.attempts_correction == Exam::AVERAGE && @pdf!=1
-  = link_to t(:back), link, { class: 'btn link_open_exam open-exam-result'}
+  = link_to t(:back), link, class: 'btn link_open_exam open-exam-result'
 
 = javascript_include_tag 'tooltip', 'audios', 'zoom/jquery.zoom'
 

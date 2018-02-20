@@ -9,6 +9,7 @@ module EvaluativeTool
   def self.find_tools(ats)
     ats << AllocationTag.find(ats.first).lower_related if ats.size == 1
     ats = ats.uniq.join(',')
+
     AcademicAllocation.find_by_sql <<-SQL
       SELECT DISTINCT
         array_agg(academic_allocations.id) AS ids,
@@ -29,7 +30,8 @@ module EvaluativeTool
         schedules.start_date AS start_date,
         schedules.end_date AS end_date,
         start_hour AS start_hour,
-        end_hour AS end_hour
+        end_hour AS end_hour,
+        '' AS acs
       FROM academic_allocations
       LEFT JOIN assignments ON assignments.id = academic_tool_id AND academic_tool_type = 'Assignment'
       LEFT JOIN schedules ON schedules.id = schedule_id
@@ -57,7 +59,8 @@ module EvaluativeTool
           schedules.start_date AS start_date,
           schedules.end_date AS end_date,
           '' AS start_hour,
-          '' AS end_hour
+          '' AS end_hour,
+          '' AS acs
         FROM academic_allocations
         LEFT JOIN discussions ON discussions.id = academic_tool_id AND academic_tool_type = 'Discussion'
         LEFT JOIN schedules ON schedules.id = schedule_id
@@ -86,7 +89,8 @@ module EvaluativeTool
           schedules.start_date AS start_date,
           schedules.end_date AS end_date,
           start_hour AS start_hour,
-          end_hour AS end_hour
+          end_hour AS end_hour,
+          '' AS acs
         FROM academic_allocations
         LEFT JOIN chat_rooms ON chat_rooms.id = academic_tool_id AND academic_tool_type = 'ChatRoom'
         LEFT JOIN schedules ON schedules.id = schedule_id
@@ -115,7 +119,8 @@ module EvaluativeTool
           schedules.start_date AS start_date,
           schedules.end_date AS end_date,
           start_hour AS start_hour,
-          end_hour AS end_hour
+          end_hour AS end_hour,
+          '' AS acs
         FROM academic_allocations
         LEFT JOIN exams ON exams.id = academic_tool_id AND academic_tool_type = 'Exam'
         LEFT JOIN schedules ON schedules.id = schedule_id
@@ -145,7 +150,8 @@ module EvaluativeTool
           schedules.start_date AS start_date,
           schedules.end_date AS end_date,
           start_hour AS start_hour,
-          end_hour AS end_hour
+          end_hour AS end_hour,
+          '' AS acs
         FROM academic_allocations
         LEFT JOIN schedule_events ON schedule_events.id = academic_tool_id AND academic_tool_type = 'ScheduleEvent'
         LEFT JOIN schedules ON schedules.id = schedule_id
@@ -175,7 +181,8 @@ module EvaluativeTool
           webconferences.initial_time AS start_date,
           (webconferences.initial_time + duration* interval '1 min') AS end_date,
           initial_time::time::text AS start_hour,
-          (initial_time + duration* interval '1 min')::time::text AS end_hour
+          (initial_time + duration* interval '1 min')::time::text AS end_hour,
+          '' AS acs
         FROM academic_allocations
         LEFT JOIN webconferences ON webconferences.id = academic_tool_id AND academic_tool_type = 'Webconference'
         WHERE academic_tool_type = 'Webconference'

@@ -2,7 +2,7 @@ class GroupAssignment < ActiveRecord::Base
 
   before_destroy :can_destroy? # deve ficar antes das associacoes
 
-  belongs_to :academic_allocation, conditions: { academic_tool_type: 'Assignment' }
+  belongs_to :academic_allocation, -> { where academic_tool_type: 'Assignment' }
 
   has_one :academic_allocation_user, dependent: :destroy
 

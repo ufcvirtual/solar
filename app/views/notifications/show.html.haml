@@ -3,15 +3,15 @@
     %h1= @notification.title
     - if @all_notification.count > 1
       - unless @all_notification.last.id == @notification.id
-        = link_to_function content_tag(:i, nil, class: 'icon-arrow-right-thin', :'aria-hidden'=>'true'), 'next_notification()', class: 'next', onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('.next')
+        = link_to content_tag(:i, nil, class: 'icon-arrow-right-thin', :'aria-hidden'=>'true'), "#", onclick: 'next_notification()', class: 'next', onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('.next')
       - unless @all_notification.first.id == @notification.id
-        = link_to_function content_tag(:i, nil, class: 'icon-arrow-left-thin', :'aria-hidden'=>'true'), 'prev_notification()', class: 'prev', onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('.prev')
+        = link_to content_tag(:i, nil, class: 'icon-arrow-left-thin', :'aria-hidden'=>'true'), "#", onclick: 'prev_notification()', class: 'prev', onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('.prev')
 
   = render partial: 'notification_content', locals: {notification: @notification}
 
   .block_buttons
     .right
-      = button_to_function t(:close), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+      = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox'
 
 
 :javascript

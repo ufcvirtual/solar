@@ -11,10 +11,10 @@
     .block_buttons
       - unless f.object.new_record?
         .left
-          = button_to_function t(".delete"), "profile_delete(#{@profile.id})", class: "btn btn_default btn_caution", type: "button"
+          = button_tag t(".delete"), :type => 'button', :onclick => "profile_delete(#{@profile.id})", class: "btn btn_default btn_caution"
 
       .right
-        = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
-        = button_to_function t(:save), "profile_save()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
+        = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(:cancel)
+        = button_tag t(:save), :type => 'button', :onclick => "profile_save()", class: 'btn btn_main btn_lightbox', alt: t(:save)
 
 = javascript_include_tag "profiles"

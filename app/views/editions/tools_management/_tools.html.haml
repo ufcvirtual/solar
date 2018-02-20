@@ -3,9 +3,9 @@
   .block_title_exam.block_exam
     %h2
       .icons
-        = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show(this)'
-        = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), 'hide_or_show(this)'
-      = link_to_function t(tool_name.tableize.singularize, scope: [:activerecord, :models]), 'hide_or_show(this)'
+        = link_to content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), "#", onclick: 'hide_or_show(this)'
+        = link_to content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), "#", onclick: 'hide_or_show(this)'
+      = link_to t(tool_name.tableize.singularize, scope: [:activerecord, :models]), "#", onclick: 'hide_or_show(this)'
   .tools_by_tool_type{class: (@tool_name == tool_name ? '' : 'invisible')}
     - if tools.any?
       %table.tb_list
@@ -32,7 +32,7 @@
 
             - final_weight = (final_weight.to_i == final_weight ? final_weight.to_i : final_weight)
 
-            - ats_ids = ac.ats.delete('{}').split(',')
+            - ats_ids = ac.ats.to_s.delete('[]').split(',')
             - array_group_code = Array.new
             - groups = Group.joins(:allocation_tag).where(allocation_tags: {id: ats_ids.map(&:to_i)}).compact
             //oferta
@@ -48,9 +48,15 @@
                 = hidden_field_tag 'groups', array_group_code, class: 'groups_analyzer'
                 %td.desc
                   %div
-                    .title
-                      = ac.name
-                      = link_to content_tag(:i, nil, class: 'icon-eye', :'aria-hidden'=>'true'), details_ac_editions_path(ats: ats_ids, description: ac.description, name: ac.name), class: 'show_ac', :'data-tooltip' => t('editions.evaluative_tools.details'), :'aria-label'=> t('editions.evaluative_tools.details_about', name: ac.name) + t('fancybox.open')
+                    .title= ac.name
+                    .description
+                      .minimun
+                        = raw ac.description.to_s.truncate(200)
+                        - if ac.description.try(:size).to_i > 200
+                          = link_to content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('editions.evaluative_tools.expand_description')), "#", onclick: 'expand_or_compress(this)'
+                      .complete.invisible
+                        = raw ac.description
+                        = link_to content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('editions.evaluative_tools.compress_description')), "#", onclick: 'expand_or_compress(this)'
                     - if groups.blank?
                       = t('editions.tools.offer')
                     - else

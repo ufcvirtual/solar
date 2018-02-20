@@ -109,7 +109,7 @@ class Report
         #quantidade de alunos alocados no ambiente
         t_users = Profile.joins("LEFT JOIN allocations ON allocations.profile_id = profiles.id")
         .where("cast( profiles.types & '#{Profile_Type_Student}' as boolean ) AND allocations.status= 1")
-        .select(" COUNT(DISTINCT user_id) as t").first
+        .select(" COUNT(DISTINCT user_id) as t").reorder('t').first
         models_info[4] = t_users.t
 
         list = []
@@ -271,13 +271,13 @@ class Report
         #quantidade de alunos alocados
         t_users = Profile.joins("LEFT JOIN allocations ON allocations.profile_id = profiles.id")
         .where("cast( profiles.types & '#{Profile_Type_Student}' as boolean ) AND allocations.status= 1 AND allocations.allocation_tag_id IN (#{allocation_tags_ids})")
-        .select(" COUNT(DISTINCT user_id) as t").first
+        .select(" COUNT(DISTINCT user_id) as t").reorder('t').first
         models_info[0] = t_users.t
 
         #quantidade de responsáveis alocados
         t_users_r = Profile.joins("LEFT JOIN allocations ON allocations.profile_id = profiles.id")
         .where("cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean ) AND allocations.status= 1 AND allocations.allocation_tag_id IN (#{allocation_tags_ids})")
-        .select(" COUNT(DISTINCT user_id) as t").first
+        .select(" COUNT(DISTINCT user_id) as t").reorder('t').first
         models_info[1] = t_users_r.t
 
         list = []

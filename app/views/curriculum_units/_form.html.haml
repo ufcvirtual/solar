@@ -32,7 +32,7 @@
         = f.input :final_exam_passing_grade, as: :numeric, input_html: { value: @course.try(:final_exam_passing_grade) }
 
       .form-actions.button-align
-        = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+        = button_tag t(".cancel"), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox'
         = button_tag t(".save"), class: "btn btn_main btn_lightbox", alt: t(".save"), type: "button", id: "save"
 
 :javascript

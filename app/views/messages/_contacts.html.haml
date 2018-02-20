@@ -19,28 +19,28 @@
         - if @content_student
           %ul.users_at_students#users
             %li.button_add_students_list
-              = link_to_function raw(t("messages.users.add_students")), "del_all_students(this)", id: "del_stu", :'aria-label' => t('messages.users.del_stu_alt'), onkeydown: 'click_on_keypress(event, this);'
+              = link_to raw(t("messages.users.add_students")), "#", onclick: "del_all_students(this)", id: "del_stu", :'aria-label' => t('messages.users.del_stu_alt'), onkeydown: 'click_on_keypress(event, this);'
               %ul.add_students
                 - [@reply_to].flatten.compact.each do |contact|
                   - user = @contacts.find(contact[:id])
                   - if user.types.to_i==Profile_Type_Student
-                    - profiles = user.profile_name.delete! '{}' '"'
-                    %li.contact.li_contacts{ class: contact[:id].nil? ? 'help' : '' }= link_to_function contact[:resume] + " (#{profiles})", "$(this).parents('li.contact').remove()", "data-user-id" => contact[:id], "data-user-type" => user.types, "data-selected" => true, :'aria-label' => t('messages.users.user_remove_alt', name: contact[:name], email: contact[:email])
+                    - profiles = user.profile_name.to_s.delete! '{}' '"'
+                    %li.contact.li_contacts{ class: contact[:id].nil? ? 'help' : '' }= link_to contact[:resume] + " (#{profiles})", "#", onclick: "$(this).parents('li.contact').remove()", "data-user-id" => contact[:id], "data-user-type" => user.types, "data-selected" => true, :'aria-label' => t('messages.users.user_remove_alt', name: contact[:name], email: contact[:email])
         - if @content_responsibles
           %ul.users_at_responsibles#users
             %li
-              = link_to_function raw(t("messages.users.add_responsibles")), "del_all_responsibles(this)", id: "del_res", :'aria-label' => t('messages.users.del_res_alt'), onkeydown: 'click_on_keypress(event, this);'
+              = link_to raw(t("messages.users.add_responsibles")), "#", onclick: "del_all_responsibles(this)", id: "del_res", :'aria-label' => t('messages.users.del_res_alt'), onkeydown: 'click_on_keypress(event, this);'
               %ul.add_responsibles
                 - [@reply_to].flatten.compact.each do |contact|
                   - user = @contacts.find(contact[:id])
                   - unless user.types.to_i==Profile_Type_Student
-                    - profiles = user.profile_name.delete! '{}' '"'
-                    %li.contact.li_contacts{ class: contact[:id].nil? ? 'help' : '' }= link_to_function contact[:resume] + " (#{profiles})", "$(this).parents('li.contact').remove()", "data-user-id" => contact[:id], "data-user-type" => user.types, "data-selected" => true, :'aria-label' => t('messages.users.user_remove_alt', name: contact[:name], email: contact[:email])
+                    - profiles = user.profile_name.to_s.delete! '{}' '"'
+                    %li.contact.li_contacts{ class: contact[:id].nil? ? 'help' : '' }= link_to contact[:resume] + " (#{profiles})", "#", onclick: "$(this).parents('li.contact').remove()", "data-user-id" => contact[:id], "data-user-type" => user.types, "data-selected" => true, :'aria-label' => t('messages.users.user_remove_alt', name: contact[:name], email: contact[:email])
 
     .block_buttons
       .right
-        = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: 'button', alt: t(:cancel)
-        = button_to_function t(:save), "msg_add_contacts()", class: "btn btn_main btn_lightbox", alt: t(:save), type: 'button'
+        = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(:cancel)
+        = button_tag t(:save), :type => 'button', :onclick => "msg_add_contacts()", class: 'btn btn_main btn_lightbox', alt: t(:save)
 
 :javascript
 

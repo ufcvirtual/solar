@@ -17,13 +17,13 @@
           .input.string.files
             = f.input :title, as: :string
             = file_field_tag 'files[]', type: :file, multiple: true
-            = button_to_function t(:select_files), 'add_files()', class: 'btn add_files'
+            = button_tag t(:select_files), :type => 'button', :onclick => "add_files()", class: 'btn add_files'
             .files_list
 
         = render "groups/codes"
 
         .new_support_material_buttons
-          = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+          = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox'
           = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", id: "save"
 
 = javascript_include_tag 'multiple_file_upload'

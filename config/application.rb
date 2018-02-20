@@ -58,6 +58,7 @@ module Solar
     config.filter_parameters += [:password, :access_token]
 
     config.active_record.whitelist_attributes = false
+    
 
     # Enable the asset pipeline
     config.assets.enabled = true

@@ -5,9 +5,9 @@
 .shortcut_groups
   .title-warning
     %div
-      = link_to_function t('group_assignments.index.shortcut'), 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
-      = link_to_function content_tag(:i, nil, class: 'icon-arrow-down-triangle'), 'hide_or_show_info(this)'
-      = link_to_function content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle'), 'hide_or_show_info(this)'
+      = link_to t('group_assignments.index.shortcut'),"#", onclick:  'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
+      = link_to content_tag(:i, nil, class: 'icon-arrow-down-triangle'),"#", onclick:  'hide_or_show_info(this)'
+      = link_to content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle'),"#", onclick:  'hide_or_show_info(this)'
     %div.invisible
       %p= t("shortcut.assignment.name.groups")
       %p= t("shortcut.assignment.name.participants")

@@ -23,8 +23,8 @@ class User < ActiveRecord::Base
   has_one :personal_configuration
 
   has_many :allocations
-  has_many :allocation_tags, through: :allocations, uniq: true
-  has_many :profiles, through: :allocations, uniq: true, conditions: { profiles: { status: true }, allocations: { status: 1 } } # allocation.status = Allocation_Activated
+  has_many :allocation_tags, -> { uniq }, through: :allocations
+  has_many :profiles, -> { where(profiles: { status: true }, allocations: { status: 1 }).uniq }, through: :allocations # allocation.status = Allocation_Activated
   has_many :log_access
   has_many :log_actions
   has_many :lessons
@@ -93,8 +93,11 @@ class User < ActiveRecord::Base
     content_type: ['image/jpeg', 'image/png', 'image/gif', 'image/pjpeg'],
     message: :invalid_type
 
-  default_scope order: 'users.name ASC'
+  #default_scope order: 'users.name ASC'
 
+  def order
+   'users.name ASC'
+  end
   ## Este metodo define os atributos na hora de criar um objeto. Logo, redefine os atributos ja existentes e define
   ## o valor de has_special_needs a partir do que eh passado da pagina na criacao de um usuario (create)
   def initialize(attributes = {})
@@ -187,7 +190,7 @@ class User < ActiveRecord::Base
     SQL
 
     researcher_profiles = profiles_with_access_on('cant_see_info', 'users', allocation_tags_ids, false, true)
-    (all.first['count'] != '0' && all.first['count'] == researcher_profiles.first['count'])
+    (all.first['count'].to_i != 0 && all.first['count'] == researcher_profiles.first['count'])
   end
 
   def is_student?(allocation_tags_ids)
@@ -208,8 +211,7 @@ class User < ActiveRecord::Base
         ) AS ids;
 
     SQL
-
-    (all.first['count'] != '0')
+    (all.first['count'].to_i != 0)
   end
 
   ## Na criação, o usuário recebe o perfil de usuario basico

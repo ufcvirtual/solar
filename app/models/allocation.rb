@@ -8,11 +8,11 @@ class Allocation < ActiveRecord::Base
   belongs_to :profile
   belongs_to :updated_by, class_name: "User", foreign_key: :updated_by_user_id
 
-  has_one :course,               through: :allocation_tag, conditions: ['course_id is not null']
-  has_one :curriculum_unit,      through: :allocation_tag, conditions: ['curriculum_unit_id is not null']
-  has_one :offer,                through: :allocation_tag, conditions: ['offer_id is not null']
-  has_one :group,                through: :allocation_tag, conditions: ['group_id is not null']
-  has_one :curriculum_unit_type, through: :allocation_tag, conditions: ['curriculum_unit_type_id is not null']
+  has_one :course,               -> { where('course_id is not null')}, through: :allocation_tag
+  has_one :curriculum_unit,      -> { where('curriculum_unit_id is not null')}, through: :allocation_tag
+  has_one :offer,                -> { where('offer_id is not null')}, through: :allocation_tag
+  has_one :group,                -> { where('group_id is not null')}, through: :allocation_tag
+  has_one :curriculum_unit_type, -> { where('curriculum_unit_type_id is not null')}, through: :allocation_tag
 
   has_many :chat_rooms
   has_many :chat_messages
@@ -44,9 +44,9 @@ class Allocation < ActiveRecord::Base
   def activate!
     self.status = Allocation_Activated
     self.save!
-
-    calculate_working_hours
-    calculate_final_grade
+    
+    calculate_working_hours unless allocation_tag.nil?
+    calculate_final_grade unless allocation_tag.nil?
 
     send_email_to_enrolled_user
   end
@@ -351,7 +351,7 @@ class Allocation < ActiveRecord::Base
   end
 
   def calculate_working_hours
-    update_attributes working_hours: Allocation.get_working_hours(user_id, allocation_tag)
+    update_attributes working_hours: Allocation.get_working_hours(user_id, allocation_tag) 
   end
 
   def self.get_working_hours(user_id, allocation_tag, tool=nil)

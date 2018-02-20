@@ -6,7 +6,7 @@ class Bibliography < ActiveRecord::Base
 
   TYPE_BOOK, TYPE_PERIODICAL, TYPE_ARTICLE, TYPE_ELECTRONIC_DOC, TYPE_FREE, TYPE_FILE = 1, 2, 3, 4, 5, 6
 
-  default_scope { order(:title, :type_bibliography) }
+  #default_scope { order(:title, :type_bibliography) }
 
   has_many :authors, dependent: :destroy
 
@@ -35,6 +35,10 @@ class Bibliography < ActiveRecord::Base
     copy_file(bibliography_to_copy, self, 'bibliography') if bibliography_to_copy.is_file?
   end
 
+  def order
+    "title, type_bibliography"
+  end
+  
   def type
     btype = case type_bibliography
             when TYPE_BOOK            then 'book'

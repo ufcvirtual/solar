@@ -53,8 +53,8 @@
             - else
               = link_to t(assignment.situation.to_sym), link, class: "assignment_#{assignment.situation}"
           %td.center{headers: "evaluative#{type}" }=raw assignment.final_exam == 't' ? t(assignment.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(assignment.evaluative, scope: [:scores, :info])
-          %td.center{headers: "frequency#{type}" }= raw t(assignment.frequency, scope: [:common_between_pages, :frequency], hours: assignment.max_working_hours, automatic: "")
-          %td.center{headers: "summary_#{type}"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_assignments_path(ac_id: assignment.id, tool_id: assignment.academic_tool_id, group_id: assignment.group_id), class: "btn #{assignment.has_info == 't' ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt', tool: assignment.name, count: assignment.count_comments), :'aria-label' => t('comments.summary.title_alt', tool: assignment.name, count: assignment.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+          %td.center{headers: "frequency#{type}" }= raw t(assignment.frequency, scope: [:common_between_pages, :frequency], hours: assignment.max_working_hours)
+          %td.center{headers: "summary_#{type}"}= link_to content_tag(:i, nil, class: 'icon-comment'), "#", onclick: "open_summary(this); return false", :'data-url' => summary_assignments_path(ac_id: assignment.id, tool_id: assignment.academic_tool_id, group_id: assignment.group_id), class: "btn #{assignment.has_info == 't' ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt', tool: assignment.name, count: assignment.count_comments), :'aria-label' => t('comments.summary.title_alt', tool: assignment.name, count: assignment.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
 
 - else
   .text_none.empty_message= t(:itens_not_found)

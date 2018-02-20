@@ -18,7 +18,7 @@ class UsersController < ApplicationController
 
   def verify_cpf
 
-    if (!(params[:cpf].present?) || !(Cpf.new(params[:cpf]).valido?))
+    if (!(params[:cpf].present?) || !(PersonCpf.valid_cpf?(params[:cpf])))
       redirect_to login_path(cpf: params[:cpf]), alert: t(:new_user_msg_cpf_error)
     else
 

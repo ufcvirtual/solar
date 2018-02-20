@@ -1,6 +1,6 @@
 class Comment < ActiveRecord::Base
 
-  default_scope order: 'updated_at DESC'
+  #default_scope order: 'updated_at DESC'
 
   before_save :can_save?, if: 'merge.nil?'
   before_destroy :can_save?, if: 'merge.nil?'
@@ -53,4 +53,7 @@ class Comment < ActiveRecord::Base
     self.delete
   end
 
+  def order
+   'updated_at DESC'
+  end
 end

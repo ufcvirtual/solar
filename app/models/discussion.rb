@@ -87,7 +87,7 @@ class Discussion < Event
 
   def posts_not_limit(opts = {}, allocation_tags_ids = nil, user_id=nil)
     opts = { 'type' => 'new', 'order' => 'desc', 'limit' => Rails.application.config.items_per_page.to_i,
-      'display_mode' => 'list', 'page' => 1 }.merge(opts)
+      'display_mode' => 'list', 'page' => 1, 'select' => 'DISTINCT discussion_posts.id, discussion_posts.*' }.merge(opts)
     type = (opts['type'] == 'history') ? '<' : '>'
 
     query = []
@@ -97,7 +97,7 @@ class Discussion < Event
     offset = (opts['page'].to_i * opts['limit'].to_i) - opts['limit'].to_i
 
     posts_by_allocation_tags_ids(allocation_tags_ids, user_id, nil, { grandparent: false, query: query.join(' AND '),
-                                                        order: "updated_at #{opts['order']}"})
+                                                        order: "updated_at #{opts['order']}", select: 'DISTINCT discussion_posts.id, discussion_posts.*'})
   end
 
   def count_posts_after_and_before_period(period, allocation_tags_ids = nil, user_id=nil)

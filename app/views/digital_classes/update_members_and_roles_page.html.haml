@@ -37,7 +37,7 @@
             = label_tag :option_group, t('.group')
           .groups
 
-        = link_to_function t('.update'), 'update(this)', { class: 'btn btn_main', id: 'digital_class_update', :"data-url" => update_members_and_roles_digital_classes_path }
+        = link_to t('.update'), "#", onclick: 'update(this)', { class: 'btn btn_main', id: 'digital_class_update', :"data-url" => update_members_and_roles_digital_classes_path }
 
 
 :javascript

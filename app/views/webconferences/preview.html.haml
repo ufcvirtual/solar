@@ -89,7 +89,7 @@
             - else
               %td.center{:'data-tooltip' => t('webconferences.list.watch')}= link_to content_tag(:i, nil, class: 'icon-play'), get_record_webconference_path(webconference, at_id: webconference.at_id), class: "record btn"
             - if @can_see_access
-              %td{ :'data-url' => list_access_webconference_path(webconference, at_id: webconference.at_id), :'data-tooltip' => t('webconferences.list.access') }= link_to_function content_tag(:i, nil, class: 'icon-users'), 'list_access(this)', class: 'btn'
+              %td{ :'data-url' => list_access_webconference_path(webconference, at_id: webconference.at_id), :'data-tooltip' => t('webconferences.list.access') }= link_to content_tag(:i, nil, class: 'icon-users'), "#", onclick: 'list_access(this)', class: 'btn'
 
     .message_div_navigation
       = will_paginate @webconferences

@@ -35,7 +35,7 @@
         %span.checkbox_label= label_tag :have_end_date, t('.enable_end_date')
 
     .form-actions.right_buttons
-      = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+      = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox'
       = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", alt: t(:save), id: "save"
 
 :javascript
@@ -58,9 +58,14 @@
         $.fancybox.close();
       },
       complement_success: function(data) {
+        if (typeof $("#course").combobox('value') === 'object'){
+          course_id = null;
+        }else{
+          course_id = $("#course").combobox('value');
+        }
 
         var semester_end = data.semester.end, semester_start = data.semester.start;
-        var url = "#{semesters_path(period: 'period_param', curriculum_unit_id: 'curriculum_unit_param', course_id: 'course_param', type_id: @type_id)}".replace('period_param', $("#period").combobox('value')).replace('curriculum_unit_param', $("#curriculum_unit").combobox('value')).replace('course_param', $("#course").combobox('value')).replace(/null/g, "");
+        var url = "#{semesters_path(period: 'period_param', curriculum_unit_id: 'curriculum_unit_param', course_id: 'course_param', type_id: @type_id)}".replace('period_param', $("#period").combobox('value')).replace('curriculum_unit_param', $("#curriculum_unit").combobox('value')).replace('course_param', course_id).replace(/null/g, "");
 
         $.get(url, function(data) {
           $('.semesters_list').html(data);

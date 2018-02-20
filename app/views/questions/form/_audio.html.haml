@@ -13,7 +13,7 @@
               %p= t("errors.messages.audio")
 
           = aud.input :audio, as: :file, label: false
-          = link_to_function t('.add_audio'), 'add_file(this)', class: 'btn btn_main add_file'
+          = link_to t('.add_audio'), "#", onclick: 'add_file(this)', class: 'btn btn_main add_file'
 
         .info
           = aud.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')

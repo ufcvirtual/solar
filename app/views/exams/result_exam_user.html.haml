@@ -14,7 +14,7 @@
       .block_content
         %ul
           - @attempts.each_with_index do |attempt, idx|
-            %li= link_to_function t('.attempt', attempt: idx+1), "show_attempt(#{attempt.id})", class: "#{idx == 0 ? 'active' : ''}", id: "a_#{attempt.id}", :'aria-label' => t('.view_attempt', attempt: t('.attempt', attempt: idx+1)) + (idx == 0 ? t('.current') : ''), onkeydown: 'click_on_keypress(event, this);'
+            %li= link_to t('.attempt', attempt: idx+1),"#", onclick: "show_attempt(#{attempt.id})", class: "#{idx == 0 ? 'active' : ''}", id: "a_#{attempt.id}", :'aria-label' => t('.view_attempt', attempt: t('.attempt', attempt: idx+1)) + (idx == 0 ? t('.current') : ''), onkeydown: 'click_on_keypress(event, this);'
     - else
       .block_title
         %h2= t('.grade_without_number')
@@ -110,7 +110,7 @@
         .form-inputs.block_content
           .inline
             = f.input :working_hours, required: true, as: :float, label: t(".wh"), input_html: { value: @acu.try(:working_hours), min:0, max: @ac.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@ac.max_working_hours.to_s ) } 
-            %span= link_to_function t(:save), 'finish_evaluation(this)', class: 'btn btn_main'
+            %span= link_to t(:save), "#", onclick: 'finish_evaluation(this)', class: 'btn btn_main'
 
 :javascript
   function show_attempt(id){

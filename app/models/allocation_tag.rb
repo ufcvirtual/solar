@@ -8,9 +8,9 @@ class AllocationTag < ActiveRecord::Base
 
   has_many :schedule_events
   has_many :allocations, dependent: :destroy
-  has_many :academic_allocations, dependent: :restrict # nao posso deletar uma ferramenta academica se tiver conteudo
+  has_many :academic_allocations, dependent: :restrict_with_error # nao posso deletar uma ferramenta academica se tiver conteudo
 
-  has_many :users, through: :allocations, uniq: true
+  has_many :users, -> { uniq }, through: :allocations
 
   has_many :savs, dependent: :destroy
 
@@ -332,20 +332,20 @@ class AllocationTag < ActiveRecord::Base
 
   def recalculate_students_grades
     ats = lower_related if group.nil?
-    alls = allocations.includes(:profile).where(status: Allocation_Activated, allocation_tag_id: (ats || id)).where('cast(profiles.types & ? as boolean) AND final_grade IS NOT NULL', Profile_Type_Student)
+    alls = allocations.includes(:profile).references(:profile).where(status: Allocation_Activated, allocation_tag_id: (ats || id)).where('cast(profiles.types & ? as boolean) AND final_grade IS NOT NULL', Profile_Type_Student).references(:profile)
     alls.map(&:calculate_final_grade)
     alls.map(&:calculate_working_hours)
   end
 
   def set_students_situations(manually = false)
     ats = lower_related if group.nil?
-    alls = Allocation.includes(:profile).where(status: Allocation_Activated, allocation_tag_id: (ats || id)).where('cast(profiles.types & ? as boolean) AND final_grade IS NOT NULL', Profile_Type_Student)
+    alls = Allocation.includes(:profile).references(:profile).where(status: Allocation_Activated, allocation_tag_id: (ats || id)).where('cast(profiles.types & ? as boolean) AND final_grade IS NOT NULL', Profile_Type_Student)
 
     if alls.empty?
       alls = [] 
-      alls << Allocation.includes(:profile).where(status: Allocation_Activated, allocation_tag_id: (ats || id)).where('cast(profiles.types & ? as boolean)', Profile_Type_Student)
+      alls << Allocation.includes(:profile).references(:profile).where(status: Allocation_Activated, allocation_tag_id: (ats || id)).where('cast(profiles.types & ? as boolean)', Profile_Type_Student)
     else
-      alls << Allocation.includes(:profile).where(status: Allocation_Activated, allocation_tag_id: (ats || id)).where('cast(profiles.types & ? as boolean) AND user_id NOT IN (?)', Profile_Type_Student, alls.map(&:user_id))
+      alls << Allocation.includes(:profile).references(:profile).where(status: Allocation_Activated, allocation_tag_id: (ats || id)).where('cast(profiles.types & ? as boolean) AND user_id NOT IN (?)', Profile_Type_Student, alls.map(&:user_id))
     end
 
     alls.flatten.each do |allocation|

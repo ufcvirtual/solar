@@ -20,20 +20,20 @@
             %th#e_calcule.small.no_sort
       %tbody
         - @exams.each do |exam|
-          - if exam.grade.blank? && exam.closed == 't' && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation)
-            - bt_correction = link_to_function (content_tag(:i, nil, class: 'icon-exam')), 'calculate_user_grade_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calculate_user_grade_exam_path(exam.academic_tool_id), :"aria-label" => t('exams.index.calculate'), class: 'ico-e'
+          - if exam.grade.blank? && exam.closed == true && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation)
+            - bt_correction = link_to (content_tag(:i, nil, class: 'icon-exam')), "#", onclick: 'calculate_user_grade_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calculate_user_grade_exam_path(exam.academic_tool_id), :"aria-label" => t('exams.index.calculate'), class: 'ico-e'
           %tr.lines{ id: "tr_#{exam.id}" }
             %td{headers: 'e_description'}
               %div
                 - if @can_open
                   - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
                     .title= link_to exam.name, '#', disabled: true, :'aria-label' => exam.name + t('fancybox.open') +  t(:disabled), class: 'disabled'
-                    - if (exam.closed == 't' || exam.situation == 'corrected')
+                    - if (exam.closed == true || exam.situation == 'corrected')
                       = link_to t('.result'), result_user_exam_path(exam.academic_tool_id), class: 'link_content', class: 'open-exam-result', :'aria-label' => t('.result', exam: exam.name) + t('fancybox.open')
                       - if exam.situation == 'corrected'
                         |
                         = link_to t('.mirror_results'), open_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), class: 'link_open_exam', :'aria-label' => t('.mirror_results_alt', exam: exam.name) + t('fancybox.open')
-                  - elsif exam.opened == 't' && exam.closed == 'f'
+                  - elsif exam.opened == true && exam.closed ==  false
                     = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', :'aria-label' => exam.name + t('fancybox.open')
                   - else
                     .title= link_to exam.name, '#', disabled: true, :'aria-label' => exam.name + t('fancybox.open') +  t(:disabled), class: 'disabled'
@@ -90,8 +90,8 @@
                   - status = 'not_started'
                 %div{class: "assignment_#{status}"}= I18n.t("scores.situation.#{status}")
               = render partial: 'result_release', locals: {exam: exam, id: ''}
-            %td.center{headers: 'e_evaluative'}=raw (exam.final_exam == 't') ? t(exam.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(exam.evaluative, scope: [:scores, :info])
-            %td.center{headers: 'e_frequency'}= raw t(exam.frequency, scope: [:common_between_pages, :frequency], hours: exam.max_working_hours, automatic: (!@is_student && exam.frequency_automatic == "t" ? t("common_between_pages.frequency.a") : ""))
+            %td.center{headers: 'e_evaluative'}=raw (exam.final_exam ==  true) ? t(exam.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(exam.evaluative, scope: [:scores, :info])
+            %td.center{headers: 'e_frequency'}= raw t(exam.frequency, scope: [:common_between_pages, :frequency], hours: exam.max_working_hours)
             - if @can_open
               %td.center.activity_grade{headers: 'e_grade', :'aria-label' => exam.grade || t('.not_evaluated')}
                 = exam.grade || bt_correction
@@ -99,8 +99,9 @@
                 = exam.working_hours
             - elsif @can_evaluate
               %td.center{headers: 'e_calcule'}
-                - if exam.closed == 't'
-                  = link_to_function content_tag(:i, nil, class: 'icon-exam'), 'calcule_grade_exam(this)', class: "ico-e", :'data-url' => calculate_grade_exam_path(exam.academic_tool_id), :"data-tooltip" => t('exams.index.calculate'), :"aria-label" => t('exams.index.calculate')
+                - if exam.closed == true
+                  = link_to content_tag(:i, nil, class: 'icon-exam'), "#", onclick: "calcule_grade_exam(this);", class: "ico-e", :'data-url' => calculate_grade_exam_path(exam.academic_tool_id), :"data-tooltip" => t('exams.index.calculate'), :"aria-label" => t('exams.index.calculate')
+
   - else
     .block_content_text.block_content_text_list.text_none= t(:none, scope: [:exams] )
 

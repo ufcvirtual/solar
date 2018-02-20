@@ -51,5 +51,5 @@
     .file
     %a.btn.forum_button_attachment{:href => "#", :onclick => "add_another_file(this);", :style => "float:none"}= t(".attach_another_file")
     .form-actions.right_buttons
-      = button_to_function t(:cancel), "jQuery.fancybox.close()", type: 'button', class: 'btn btn_caution', id: 'btn_cancel_post_2'
+      = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_caution', id: 'btn_cancel_post_2'
       = button_tag t('.attach_save'), class: "btn btn_main save_file", type: :button

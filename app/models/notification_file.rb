@@ -1,6 +1,6 @@
 class NotificationFile < ActiveRecord::Base
 
-  default_scope order: 'file_updated_at DESC'
+  #default_scope order: 'file_updated_at DESC'
 
   belongs_to :notification
 
@@ -29,4 +29,7 @@ class NotificationFile < ActiveRecord::Base
     end
   end
 
+  def order
+   'file_updated_at DESC'
+  end
 end

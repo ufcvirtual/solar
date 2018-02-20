@@ -4,14 +4,14 @@ class AcademicAllocation < ActiveRecord::Base
   belongs_to :allocation_tag
   has_many :academic_allocation_users
 
-  belongs_to :lesson_module,  foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'LessonModule'"]
-  belongs_to :chat_room,      foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'ChatRoom'"]
-  belongs_to :exam,           foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Exam'"]
-  belongs_to :assignment,     foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Assignment'"]
-  belongs_to :webconference,  foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Webconference'"]
-  belongs_to :discussion,     foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Discussion'"]
-  belongs_to :schedule_event, foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'ScheduleEvent'"]
-  belongs_to :notification,   foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Notification'"]
+  belongs_to :lesson_module,  -> { where("academic_tool_type = 'LessonModule'")}, foreign_key: 'academic_tool_id'
+  belongs_to :chat_room,      -> { where("academic_tool_type = 'ChatRoom'")}, foreign_key: 'academic_tool_id'
+  belongs_to :exam,           -> { where("academic_tool_type = 'Exam'")}, foreign_key: 'academic_tool_id'
+  belongs_to :assignment,     -> { where("academic_tool_type = 'Assignment'")}, foreign_key: 'academic_tool_id'
+  belongs_to :webconference,  -> { where("academic_tool_type = 'Webconference'")}, foreign_key: 'academic_tool_id'
+  belongs_to :discussion,     -> { where("academic_tool_type = 'Discussion'")}, foreign_key: 'academic_tool_id'
+  belongs_to :schedule_event, -> { where("academic_tool_type = 'ScheduleEvent'")}, foreign_key: 'academic_tool_id'
+  belongs_to :notification,   -> { where("academic_tool_type = 'Notification'")}, foreign_key: 'academic_tool_id'
 
   has_many :group_assignments, dependent: :destroy
 
