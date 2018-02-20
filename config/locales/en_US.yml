@@ -2115,6 +2115,9 @@ en_US:
       disabled: Disabled
       activation: Activation
       name: Name
+      location: Location
+      details: Details
+      details_about: Details about group %{name}
     groups_tags:
       groups: Groups
       add: Add
