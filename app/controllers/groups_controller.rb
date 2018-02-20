@@ -176,6 +176,11 @@ class GroupsController < ApplicationController
     end
   end
 
+  def show
+    @group = Group.find(params[:id])
+    authorize! :list, Group, on: [@group.offer.allocation_tag.id]
+  end
+
   private
 
     def group_params
