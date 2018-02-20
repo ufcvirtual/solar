@@ -2347,6 +2347,9 @@ pt_BR:
       disabled: Desativada
       activation: Ativação
       name: Nome
+      location: Localização
+      details: Detalhes
+      details_about: Detalhes sobre a turma %{name}
     groups_tags:
       groups: Turmas
       add: Adicionar
