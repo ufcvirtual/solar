@@ -17,9 +17,9 @@
           .label= i.label :description
           .desc
             = i.input :description, label: false, class: 'ckeditor'
-          .comment_area{ class: i.object.comment.blank? ? 'hide' : '' }
+          .comment_area{ class: i.object.comment.blank? ? 'hide' : '' , :style=>"display:none;"}
             = i.input :comment, as: :text, label: t('questions.form.items.comment')
-          .image.hide
+          .image.hide{:style=>"display:none;"}
             .upload-preview
               - if i.object.item_image_file_name.blank?
                 %img{ src: '' }
@@ -37,7 +37,7 @@
             .info
               = i.input :img_alt, label: t('questions.form.items.alt')
               = i.label t('questions.form.items.alt_desc'), class: 'alt'
-          .audio.hide
+          .audio.hide{:style=>"display:none;"}
             .upload-preview
               - if i.object.item_audio_file_name.blank?
                 %audio{ src: '' }
@@ -55,7 +55,6 @@
             .info
               = i.input :audio_description, as: :text, label: t('questions.form.items.audio_description')
               = i.label t('questions.form.audio.aud_desc'), class: 'alt'
-              
     -else
       - count += 1
 

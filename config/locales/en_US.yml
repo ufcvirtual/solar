@@ -4154,6 +4154,9 @@ en_US:
       media:
         add_images: Add Images
         add_audios: Add audio
+        add_more_images: Add more images
+        add_more_audios: Add more audios
+        associated_text: Associated text
     labels:
       labels: 'labels: '
     error:

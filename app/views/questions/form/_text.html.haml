@@ -10,8 +10,9 @@
       - f.object.questions_text(@exam_question.exam_id).each do |q|
         - checked = q.question_text_id == f.object.question_text_id && q.id == f.object.id ? true : false
         - @qt = QuestionText.find q.question_text_id if checked
-        = label_tag 'question_texts_id_'+q.question_text_id.to_s, truncate(sanitize(q.enunciation, tags: [] ), length: 20)
-        = radio_button_tag 'question_texts_id', q.question_text_id, checked, class: "question_texts_id"
+        .list_question_item
+          = label_tag 'question_texts_id_'+q.question_text_id.to_s, truncate(sanitize(q.enunciation, tags: [] ), length: 20)
+          = radio_button_tag 'question_texts_id', q.question_text_id, checked, class: "question_texts_id"
 
     #text_question
       = render partial: 'questions/form/import_text', locals: { f: @qt, eq: nil } unless @qt.blank?
