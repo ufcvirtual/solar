@@ -29,8 +29,9 @@
       .form-inputs.block_content
         .inline
           = f.input :grade, required: true, as: :float, step: 0.01, label: t(".grade"), input_html: { value: @acu.try(:grade), min:0, max:10 } if @ac.evaluative
-          - if @ac.frequency  
-            = f.input :working_hours, required: true, as: :float, label: t(".frequency"), input_html: { value: @acu.try(:working_hours), min:0, max: @ac.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@ac.max_working_hours.to_s ) } 
+          - if @ac.frequency
+            - automatic = "\n(" + (@ac.frequency_automatic && !@acu.try(:evaluated_by_responsible) ? strip_tags(t("common_between_pages.frequency.a")) : t("common_between_pages.frequency.d")) + ")"
+            = f.input :working_hours, required: true, as: :float, label: t(".frequency") + automatic, input_html: { value: @acu.try(:working_hours), min:0, max: @ac.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@ac.max_working_hours.to_s ) } 
           %span= link_to t(:save), "#", onclick: 'finish_evaluation(this)', class: 'btn btn_main'
 
 :javascript
@@ -44,4 +45,3 @@
         flash_message(data.alert, 'alert', 'fancybox-outer');
     });
   }
- 

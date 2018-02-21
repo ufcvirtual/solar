@@ -160,7 +160,7 @@ Solar::Application.routes.draw do
       get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: "Discussion", as: :group_tags_from
       get :summary , to: 'academic_allocation_users#summary', tool: 'Discussion'
     end
-    put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Discussion', as: :evaluate, on: :member
+    put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Discussion', as: :evaluate, on: :member
     resources :posts, except: [:new, :edit] do
       collection do
         get "user/:user_id", to: :user_posts, as: :user
@@ -455,7 +455,7 @@ Solar::Application.routes.draw do
 
     member do
       get :user_messages
-      put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'ChatRoom', as: :evaluate
+      put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'ChatRoom', as: :evaluate
       get :messages
       get :access
       get :participants
@@ -492,7 +492,7 @@ Solar::Application.routes.draw do
   resources :schedule_events, except: [:index] do
     member do
       get :evaluate_user
-      put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'ScheduleEvent', as: :evaluate
+      put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'ScheduleEvent', as: :evaluate
     end
     get :summary , to: 'academic_allocation_users#summary', tool: 'ScheduleEvent', on: :collection
   end
@@ -602,7 +602,7 @@ Solar::Application.routes.draw do
       get :list_access
       get :user_access
       get :get_record
-      put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Webconference', as: :evaluate
+      put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Webconference', as: :evaluate
     end
   end
 
