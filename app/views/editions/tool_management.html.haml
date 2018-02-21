@@ -57,6 +57,9 @@
             - if !@working_hours.blank? && @groups.size == 1
               = link_to content_tag(:i, nil, class: 'icon-clock', :"data-tooltip" => t('.share_wh')), "#", onclick: "equal_frequencies(#{@working_hours})"
               .frequency_link= link_to t('.share_wh'), "#", onclick: "equal_frequencies(#{@working_hours})"
+          .frequency_automatic
+            = link_to content_tag(:i, nil, class: 'icon-clock', :"data-tooltip" => t('.automatic_wh_tooltip')), "#", onclick: "automatic_frequencies()"
+            .frequency_link= link_to t('.automatic_wh'), "#", onclick: "automatic_frequencies()"
           .set_weight
             = link_to content_tag(:i, nil, class: 'icon-clipboard', :"data-tooltip" => t('.default_weight')), "#", onclick: 'set_weight()'
             .weight_link= link_to t('.default_weight'), "#", onclick: 'set_weight()'
@@ -64,10 +67,10 @@
 
             = link_to content_tag(:i, nil, class: 'icon-clipboard', :"data-tooltip" => t('.default_final_weight')), "#", onclick: 'set_final_weight()'
             .weight_link= link_to t('.default_final_weight'), "#", onclick: 'set_final_weight()'
-          .analyzer  
+          .analyzer
             = link_to content_tag(:i, nil, class: 'icon-popup', :"data-tooltip" => t('.window_analyzer_home')), "#", onclick: 'slideDraggable()'
             = link_to t('.analyzer'), "#", onclick: 'slideDraggable()'
-         
+
 
           - tools_ids = []
           - @tools.collect{|key, value| value}.flatten.each do |tool|
