@@ -307,7 +307,10 @@
     var parent = $(ckb).parents('tr');
     var value  = $(ckb).prop('checked');
 
-    parent.find("input[id$='max_working_hours']").prop('disabled', !value);
+
+    if(parent.find("select[id$='equivalent_academic_allocation_id']").val() == '')
+      parent.find("input[id$='max_working_hours']").prop('disabled', !value);
+
     parent.find("input[id$='frequency_automatic']").prop('disabled', parent.hasClass("ScheduleEvent") ? true : !value);
 
     if(!$("#"+$(ckb).prop('id').replace('frequency', 'evaluative')).prop('checked')){

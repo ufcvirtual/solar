@@ -74,7 +74,7 @@
                 %td.ckb.f{onclick: 'check_checkbox(event, this)'}= acf.check_box :frequency, label: false, disabled: (wh || ac.final_exam), :'data-change' => !wh  && !ac.final_exam
                 %td.ckb.af{onclick: 'check_checkbox(event, this)'}= acf.check_box :frequency_automatic, label: false, disabled: !ac.frequency
                 %td.working_hours
-                  = acf.text_field :max_working_hours, label: false, disabled: !ac.frequency || ac.final_exam, oninput: 'initializer_analizer()', value: (ac.try(:max_working_hours).try(:to_i) == ac.try(:max_working_hours) ? ac.max_working_hours.to_i : ac.max_working_hours)
+                  = acf.text_field :max_working_hours, label: false, disabled: (!ac.frequency || ac.final_exam || !ac.equivalent_academic_allocation_id.blank?), oninput: 'initializer_analizer()', value: (ac.try(:max_working_hours).try(:to_i) == ac.try(:max_working_hours) ? ac.max_working_hours.to_i : ac.max_working_hours)
                   = t('editions.tools.wh')
                 - select_tools = AcademicAllocation.where(id: (tools_ids - ac.acs), allocation_tag_id: ats_ids.map(&:to_i)).select('DISTINCT ON(academic_tool_id, academic_tool_type) id, academic_tool_id, academic_tool_type')
                 %td= select_tools.blank? ? '-' : acf.collection_select(:equivalent_academic_allocation_id, select_tools, :id, :tool_type_name,  {include_blank: true}, {disabled: (!ac.evaluative && !ac.frequency),  oninput: 'selected_equiv()'})
@@ -101,7 +101,7 @@
 
       if(!parent.find("input[id$='final_exam']").prop('checked')){
         parent.find("input[id$='weight']").prop('disabled', !value);
-        parent.find("input[id$='frequency']").prop('disabled', !value);
+        // parent.find("input[id$='frequency']").prop('disabled', !value);
 
         if(value && parent.find("input[id$='weight']").prop('checked'))
           parent.find("input[id$='final_weight']").prop('disabled', !value);
