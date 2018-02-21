@@ -2382,6 +2382,7 @@ pt_BR:
       cant_add_group: Não é possível adicionar turmas a esta ferramenta.
       cant_unbind: Não é possível desvincular turmas desta ferramenta.
       not_student: Deve ser estudante.
+      blocked: não pode ser alterado em turmas integradas ao Sigaa
     groups_checkboxes:
       select_all: Selecionar todas
       no_groups: "Não há turmas"
