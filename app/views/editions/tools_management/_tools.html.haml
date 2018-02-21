@@ -243,11 +243,11 @@
           groups_wh = groups_wh.split(',');
           //percorre todos os grupos da linha
           for(igwh = 0; igwh < groups_wh.length-1; igwh++) {
-            var t_wh =false;
+            var t_wh = false;
 
             for(wh = 0; wh < groups_wh_list.length; wh++) {
               // verifica se o grupo já existe no array de grupos: groups_wh_list
-              if( groups_wh_list[wh][0] == groups_wh[igwh] ){
+              if( groups_wh_list[wh][0].trim() == groups_wh[igwh].trim() ){
                 t_wh = true;
                 groups_wh_list[wh][1] = Number(groups_wh_list[wh][1]) + Number($(this).val());
               }
@@ -259,7 +259,7 @@
             }
             // adiciona um novo grupo na lista de grupos da carga horária: groups_wh_list[grupo, valor]
             if(t_wh == false){
-              groups_wh_list.push([groups_wh[igwh], Number($(this).val())]);
+              groups_wh_list.push([groups_wh[igwh].trim(), Number($(this).val())]);
             }
           }
         }
