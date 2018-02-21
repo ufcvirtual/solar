@@ -29,7 +29,7 @@
 
             - if i.object.item_image?  
               - image = if @pdf !=1 
-                - image_tag(i.object.item_image, class: 'item_image', alt: i.object.img_alt, :'aria-label' => t('exams.open.image_item', alt: i.object.img_alt, item: arr_alf[num_question])) 
+                - image_tag(i.object.question_item.item_image.url(:medium), class: 'item_image', alt: i.object.img_alt, :'aria-label' => t('exams.open.image_item', alt: i.object.img_alt, item: arr_alf[num_question]), :"data-zoom-url" => i.object.question_item.item_image.url(:original))
               - else
                 - t('exams.open.image_item', alt: i.object.img_alt, item: arr_alf[num_question])
 
@@ -39,7 +39,10 @@
             = i.label :value, {for: "radio_exam_response_exam_responses_question_items_attributes_#{num_question}_value_value"}, class: class_label do
               %span= arr_alf[num_question]+') '
               = i.object.description.html_safe
-              = raw image
+              - if i.object.item_image?
+                .zoom
+                  %p= t('exams.open.image_zoom')
+                  = raw image
               - unless @pdf == 1
                 - if i.object.item_audio?  
                   .audio.legend
@@ -87,7 +90,7 @@
 
             - if b.object.item_image?     
               - image =  if @pdf !=1 
-                - image_tag(b.object.item_image, class: 'item_image', alt: b.object.img_alt, :'aria-label' => t('exams.open.image_item', alt: b.object.img_alt, item: arr_alf[num_question]))
+                - image_tag(b.object.question_item.item_image.url(:medium), class: 'item_image', alt: b.object.img_alt, :'aria-label' => t('exams.open.image_item', alt: b.object.img_alt, item: arr_alf[num_question]), :"data-zoom-url" => b.object.question_item.item_image.url(:original))
               - else
                 - t('exams.open.image_item', alt: b.object.img_alt, item: arr_alf[num_question])
 
@@ -95,7 +98,10 @@
             = b.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
               = b.object.description.html_safe
-              = raw image
+              - if b.object.item_image?
+                .zoom
+                  %p= t('exams.open.image_zoom')
+                  = raw image
               - unless @pdf == 1
                 - if b.object.item_audio?  
                   .audio.legend
@@ -132,7 +138,7 @@
             - selected = b.object.value
             - if b.object.item_image?
               - image = if @pdf !=1 
-                - image_tag(b.object.item_image, class: 'item_image', alt: b.object.img_alt, :'aria-label' => t('exams.open.image_item', alt: b.object.img_alt, item: arr_alf[num_question])) 
+                - image_tag(b.object.question_item.item_image.url(:medium), class: 'item_image', alt: b.object.img_alt, :'aria-label' => t('exams.open.image_item', alt: b.object.img_alt, item: arr_alf[num_question]), :"data-zoom-url" => b.object.question_item.item_image.url(:original))
               - else
                 - t('exams.open.image_item', alt: b.object.img_alt, item: arr_alf[num_question]) 
      
@@ -158,7 +164,10 @@
             = b.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
               = b.object.description.html_safe
-              = raw image
+              - if b.object.item_image?
+                .zoom
+                  %p= t('exams.open.image_zoom')
+                  = raw image
               - unless @pdf == 1
                 - if b.object.item_audio?  
                   .audio.legend

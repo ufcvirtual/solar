@@ -49,6 +49,7 @@ class DiscussionsController < ApplicationController
 
     @discussion = Discussion.new
     @discussion.build_schedule(start_date: Date.current, end_date: Date.current)
+    @discussion.enunciation_files.build
   end
 
   def create
@@ -111,7 +112,9 @@ class DiscussionsController < ApplicationController
   private
 
     def discussion_params
-      params.require(:discussion).permit(:name, :description, schedule_attributes: [:id, :start_date, :end_date])
+      params.require(:discussion).permit(:name, :description,
+       schedule_attributes: [:id, :start_date, :end_date],
+       enunciation_files_attributes: [:id, :attachment, :_destroy])
     end
 
     def render_discussion_success_json(method)

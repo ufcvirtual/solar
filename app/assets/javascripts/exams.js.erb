@@ -72,6 +72,18 @@ function load_components(page){
   if ($(".next_page.disabled").length > 0) {
     $("#finish_button").show();
   }
+
+  $('.item_image').each(function(){
+    var original_img_url = $(this).attr('data-zoom-url');
+    $(this)
+    .parent()
+    .zoom({url: original_img_url, on: 'click'});
+  });
+
+  setTimeout(function() {
+    $.fancybox.update();
+  }, 150);
+
 }
 
 function validation_error(resp){

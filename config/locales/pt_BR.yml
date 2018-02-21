@@ -395,7 +395,11 @@ pt_BR:
         grade: Nota
       exam_question:
         score: Pontuação
+        privacy: Privacidade
+        question:
+          privacy: Privacidade
       question:
+        privacy: Privacidade
         name: 'Título'
         enunciation: Enunciado
         question: Uma Questão
@@ -931,6 +935,8 @@ pt_BR:
   external_link: "De um link externo"
   url: "Digite aqui a URL da imagem no campo de texto acima."
   send: "Enviar"
+  remove_photo: "Remover Foto"
+  remove_photo_msg: "A foto do usuário foi removida com sucesso."
 
   # página de matrícula"
   enrollments:
@@ -1400,6 +1406,7 @@ pt_BR:
       new: Novo Fórum
       edit: Editar Fórum
       groups: Turmas
+      files: Arquivos
     list:
       new: Novo Fórum
       edit: Editar Fórum
@@ -4131,13 +4138,14 @@ pt_BR:
       anull: " (Questão Anulada)"
       scores: '( %{score} pontos )'
       number_question: 'Prova com %{no_question} questões'
-      image: "Imagem %{alt}."
+      image: "Imagem %{alt}. Clique para ampliar"
       legend: " Legenda: %{legend}"
       image_item: "Imagem do item %{item}: %{alt}."
       audio: "Legenda do áudio: %{alt}."
       audio_item: "Áudio do item %{item}."
       audio2: "Áudio %{desc}."
       audio_text: "Versão textual do áudio: %{desc}."
+      image_zoom: "Clique para ampliar"
     finish:
       confirm: Tem certeza que deseja finalizar a prova?
     summary:
@@ -4253,6 +4261,7 @@ pt_BR:
   question:
     question: 'Questão '
     enunciation: 'Enunciado '
+    privacy: 'Privacidade '
     question_images:
       image: Imagem
       legend: Legenda

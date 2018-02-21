@@ -44,7 +44,7 @@
               - array_group_code.push(g.code+',')
 
             = fields_for 'academic_allocations[]', ac do |acf|
-              %tr.lines{ class: [ats_ids.map{|at| 'at_'+at}, ac.acs.map{|ac| 'ac_'+ac}].join(' ') }
+              %tr.lines{ class: [ats_ids.map{|at| 'at_'+at}, ac.acs.map{|ac| 'ac_'+ac}, tool_name].join(' ') }
                 = hidden_field_tag 'groups', array_group_code, class: 'groups_analyzer'
                 %td.desc
                   %div
@@ -169,6 +169,7 @@
           groups = groups.split(',');
           //laco das turmas da linha
           for(i = 0; i < groups.length-1; i++) {
+            groups[i] = groups[i].trim();
             //pega o valor do input e converte para um float com duas casas decimais
             var valor = parseFloat(Number($(this).val()).toFixed(2));
             //verifica se a linha é de turmas ou oferta
@@ -242,11 +243,11 @@
           groups_wh = groups_wh.split(',');
           //percorre todos os grupos da linha
           for(igwh = 0; igwh < groups_wh.length-1; igwh++) {
-            var t_wh =false;
+            var t_wh = false;
 
             for(wh = 0; wh < groups_wh_list.length; wh++) {
               // verifica se o grupo já existe no array de grupos: groups_wh_list
-              if( groups_wh_list[wh][0] == groups_wh[igwh] ){
+              if( groups_wh_list[wh][0].trim() == groups_wh[igwh].trim() ){
                 t_wh = true;
                 groups_wh_list[wh][1] = Number(groups_wh_list[wh][1]) + Number($(this).val());
               }
@@ -258,7 +259,7 @@
             }
             // adiciona um novo grupo na lista de grupos da carga horária: groups_wh_list[grupo, valor]
             if(t_wh == false){
-              groups_wh_list.push([groups_wh[igwh], Number($(this).val())]);
+              groups_wh_list.push([groups_wh[igwh].trim(), Number($(this).val())]);
             }
           }
         }
@@ -295,9 +296,9 @@
 
     for(gltw = 0; gltw < groups_wh_list.length; gltw++) {
       var class_ch = "analise_errors_li correct_t";
-      if(parseInt(groups_wh_list[gltw][1]) != _wh)
+      if(groups_wh_list[gltw][1].toFixed(2) != parseFloat(_wh).toFixed(2))
         class_ch = "analise_errors_li error_t";
-      group = "#{I18n.t('editions.tools.total_wh')}"+ groups_wh_list[gltw][0] + ': '+ parseFloat(groups_wh_list[gltw][1].toFixed(2));
+      group = "#{I18n.t('editions.tools.total_wh')}"+ groups_wh_list[gltw][0] + ': '+ groups_wh_list[gltw][1].toFixed(2);
       ul.append("<li class='" + class_ch + "' >"+group+"</li>");
     }
 

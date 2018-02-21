@@ -22,6 +22,11 @@
   text-align: left;
 }
 
+.discussion_form .input.files #file {
+  padding: 10px;
+  margin-left: -150px;
+}
+
 .forum_post_content{
   .forum_post_wrapper{
     .forum_post_inner_content{
@@ -71,4 +76,8 @@
   text-align: left;
   width: 242px;
   padding-left: 21px;
+}
+
+.new_discussion .form-inputs .discussion_description {
+  margin: 20px;
 }

@@ -16,6 +16,7 @@ class ExamsController < ApplicationController
 
     @can_open = can? :open, Exam, {on: @allocation_tag_id}
     @can_evaluate = can? :evaluate, Exam, { on: @allocation_tag_id }
+    @is_student = current_user.is_student?([@allocation_tag_id])
   rescue => error
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   end

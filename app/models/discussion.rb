@@ -8,6 +8,7 @@ class Discussion < Event
 
   has_many :discussion_posts, class_name: 'Post', through: :academic_allocations
   has_many :allocations, through: :allocation_tag
+  has_many :enunciation_files, class_name: 'DiscussionEnunciationFile', dependent: :destroy
 
   before_destroy :can_remove_groups_with_raise
   after_destroy :delete_schedule
@@ -19,6 +20,7 @@ class Discussion < Event
   validate :check_final_date_presence
 
   accepts_nested_attributes_for :schedule
+  accepts_nested_attributes_for :enunciation_files, allow_destroy: true, reject_if: proc { |attributes| !attributes.include?(:attachment) || attributes[:attachment] == '0' || attributes[:attachment].blank? }
 
   def delete_schedule
     self.schedule.destroy
