@@ -34,9 +34,11 @@ module V1::GroupsH
   def verify_or_create_group(params)
     group = Group.where(offer_id: params[:offer_id], name: params[:name]).first_or_initialize
 
-    groups.location = [params[:location_name], params[:location_office]].join(' - ') unless params[:location_name].blank? && params[:location_office].blank?
+    group.location = [params[:location_name], params[:location_office]].join(' - ') unless params[:location_name].blank? && params[:location_office].blank?
     group.code = params[:code]
     group.status = true
+    group.integrated = true
+    group.api = true
     group.save!
     group
   end
