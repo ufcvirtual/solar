@@ -35,9 +35,13 @@ class Group < ActiveRecord::Base
 
   after_save :update_digital_class, if: "code_changed?"
 
+  validate :block_fields_if_integrated, if: 'integrated && api.blank?'
+
   def order
    'groups.status, groups.code'
-  end 
+  end
+
+  attr_accessor :api
 
   def code_semester
     "#{code} - #{offer.semester.name}"
@@ -174,6 +178,12 @@ class Group < ActiveRecord::Base
 
     def name_mandatory_if_distant
       errors.add(:name, I18n.t(:blank, scope: [:activerecord, :errors, :messages])) if offer.try(:curriculum_unit).try(:curriculum_unit_type_id) == 2
+    end
+
+    def block_fields_if_integrated
+      errors.add(:name, I18n.t('groups.error.blocked')) if name_changed? && !(name_was.blank? && name.blank?)
+      errors.add(:code, I18n.t('groups.error.blocked')) if code_changed? && !(code_was.blank? && code.blank?)
+      errors.add(:location, I18n.t('groups.error.blocked')) if location_changed? && !(location_was.blank? && location.blank?)
     end
 
 end

@@ -200,9 +200,11 @@ module V1
             begin
               group = Group.where(offer_id: params[:offer_id], name: params[:name]).first_or_initialize
 
-              groups.location = [params[:location_name], params[:location_office]].join(' - ') unless params[:location_name].blank? && params[:location_office].blank?
+              group.location = [params[:location_name], params[:location_office]].join(' - ') unless params[:location_name].blank? && params[:location_office].blank?
               group.code = params[:code]
               group.status = true if params[:activate]
+              group.integrated = true
+              group.api = true
 
               group.save!
 
@@ -236,6 +238,7 @@ module V1
               end
 
               unless group.blank?
+                group.api = true
                 begin
                   group.destroy
                 rescue
@@ -263,7 +266,10 @@ module V1
             group = Group.find(params[:id])
             params[:location] = [params[:location_name], params[:location_office]].join(' - ') unless params[:location_name].blank? && params[:location_office].blank?
 
-            group.update_attributes! group_params(params)
+            group.attributes = group_params(params)
+            group.api = true
+            group.save!
+
             group.offer.notify_editors_of_disabled_groups([group]) if params[:status].present? && !(params[:status])
 
             {ok: :ok}

@@ -2158,6 +2158,7 @@ en_US:
       cant_add_group: Can't add groups to this tool.
       cant_unbind: Can't unbind groups from this tool.
       not_student: Must be student.
+      blocked: can't be changed for groups integrated to Sigaa
     groups_checkboxes:
       select_all: Select all
       no_groups: "There are no groups"
