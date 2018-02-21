@@ -6,7 +6,7 @@
       - @count += 1
       .duplicatable_nested_form
         .upload-preview
-          - if aud.object.audio.nil?
+          - if aud.object.audio.blank?
             %audio{ src: '' }
           - else
             %audio{ src: aud.object.audio, autoplay: false, controls: true, name: 'audioQuestion'}   

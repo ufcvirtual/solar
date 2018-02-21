@@ -4400,6 +4400,9 @@ pt_BR:
       media:
         add_images: Adicionar imagens
         add_audios: Adicionar áudios
+        add_more_images: Adicionar mais imagens
+        add_more_audios: Adicionar mais áudios
+        associated_text: Texto associado
     labels:
       labels: 'palavras-chave: '
     error:

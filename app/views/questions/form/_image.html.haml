@@ -6,7 +6,7 @@
       - @count += 1
       .duplicatable_nested_form
         .upload-preview
-          - if img.object.image.nil?
+          - if img.object.image.blank?
             %img{ src: '' }
           - else
             %img{ src: img.object.image.as_json }
