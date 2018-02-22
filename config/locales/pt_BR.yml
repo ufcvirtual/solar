@@ -990,6 +990,8 @@ pt_BR:
       semester: Semestre
       group: Turma
     not_defined: Não definido
+    requests:
+      info: Informações sobre %{about}
 
   enrollm_request_cancel_message: "Pedido de matrícula cancelado"
   enrollm_cancelled_message: "Matrícula cancelada"

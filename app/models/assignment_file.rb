@@ -14,15 +14,16 @@ class AssignmentFile < ActiveRecord::Base
   after_save :update_acu
   after_destroy :update_acu
 
-  validates :attachment_file_name, presence: true
-  validates :academic_allocation_user_id, presence: true
-
   has_attached_file :attachment,
     path: ":rails_root/media/assignment/sent_assignment_files/:id_:basename.:extension",
     url: "/media/assignment/sent_assignment_files/:id_:basename.:extension"
+  
+  validates :attachment_file_name, presence: true
+  validates :academic_allocation_user_id, presence: true
 
   validates_attachment_size :attachment, less_than: 26.megabyte, message: ' '
   validates_attachment_content_type_in_black_list :attachment
+  do_not_validate_attachment_file_type :attachment
 
   #default_scope order: 'attachment_updated_at DESC'
 

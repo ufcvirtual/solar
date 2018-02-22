@@ -3,30 +3,30 @@ source "http://rubygems.org"
 ruby "2.1.0"
 
 #gem "rails", "~> 3.2.16"
-gem 'rails', '4.0.0'
+gem 'rails', '4.1.8'
 gem "rack", "~> 1.5.2"
 gem "rake", "~> 10.1.1"
-gem "pg", "~> 0.15.0"
+gem "pg", "~> 0.18.0"
 gem "foreigner", "~> 1.4.0"
 
 gem "koala", "1.2.0" # facebook
 
 gem "devise", "~> 3.4.1"
 gem "devise-i18n", "~> 0.11.3"
-gem "cancan", "~> 1.6.10"
+gem "cancancan", "~> 1.8.0"
 gem "devise-encryptable", "~> 0.2.0"
 
 gem "chronic", "0.6.1"
 #gem "brazilian-rails", "~> 3.3.0"
-gem 'simple_form', "~> 3.1.0"
+gem 'simple_form', "~> 3.2.1"
 
-gem "paperclip", "~> 3.4.2"
+gem "paperclip", "~> 4.2.1"
 gem "will_paginate", "~> 3.0.7"
 gem "jquery-rails", "~> 2.2.2"
 gem "fancybox2-rails", "~> 0.2.5"
 
 gem "haml", "~> 4.0.5"
-gem "haml-rails", "~> 0.4.0", group: :development
+gem "haml-rails", "~> 0.5.3", group: :development
 # gem "ckeditor", "~> 4.0.11"
 gem "ckeditor", ">= 4.2.4"
 
@@ -79,7 +79,7 @@ gem 'activerecord-session_store'
 # add these gems to help with the transition:
 gem 'protected_attributes'
 #gem 'rails-observers'
-gem "actionpack", "4.0.0"
+gem "actionpack", "4.1.8"
 gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'
 
@@ -129,7 +129,7 @@ end
 
 group :assets do
   gem "uglifier", "~> 1.3.0"
-  gem "sass-rails", "~> 4.0.0"
+  gem "sass-rails", "~> 4.0.3"
   gem "compass-rails", "~> 1.1.7"
 end
 
