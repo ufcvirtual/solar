@@ -913,7 +913,7 @@ pt_BR:
   pwd_recovery_subtitle: "Esqueceu a sua senha?"
   change_your_password: "Alterar sua senha"
 
-  pwd_recovery_text: "Para recuperar seu acesso, digite o endereço de e-mail que você usa para acessar a conta do Solar."
+  pwd_recovery_text: "Para recuperar seu acesso, digite seu cpf."
   pwd_recovery_text2: "Nós enviaremos, em instantes, algumas instruções para criação de uma nova senha."
 
   pwd_recovery_email: "Digite seu e-mail"
@@ -1861,10 +1861,13 @@ pt_BR:
       confirm_new_password: Confirmar nova senha
       change_my_password: Alterar
       send_instructions: 'Você receberá um email com instruções sobre como resetar sua senha em alguns minutos.'
+      send_instructions_email: 'Um email com instruções sobre como resetar sua senha será enviado para o email %{email}.'
       updated: 'Sua senha foi modificada com sucesso. Você agora está logado.'
       updated_not_active: 'Sua senha foi modificada com sucesso. Você agora está logado.'
       send_paranoid_instructions: "Um link de recuperação de senha será enviado para seu email, caso ele exista em nossa base de dados."
       ma_request: "Para recuperar seus dados de acesso, vá ao endereço: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
+      not_found: Nenhum usuário foi encontrado para o CPF informado. Faça seu cadastro na aba 'Cadastrar'.
+      no_email: Não há nenhum email cadastrado para o CPF informado. Entre em contato com atendimento@virtual.ufc.br informando seu CPF, nome completo e data de nascimento.
     password:
       change_my_password: Alterar
     passwords:
@@ -3086,6 +3089,7 @@ pt_BR:
     no_subject: "(sem assunto)"
     support: "Atendimento <atendimento@virtual.ufc.br>"
     support_html: "Atendimento &lt;atendimento@virtual.ufc.br&gt;"
+    no_mail: sem email
     contacts:
       title: "Seleção de contatos"
       contacts: "Contatos"
