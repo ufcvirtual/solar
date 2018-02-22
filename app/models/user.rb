@@ -926,6 +926,7 @@ class User < ActiveRecord::Base
       self.synchronizing = true
       save(validate: false)
     end
+
   end
 
   def update_users_with_same_column(column)
@@ -942,6 +943,14 @@ class User < ActiveRecord::Base
 
   def update_users_with_same_column(column)
     verify_column(self, column)
+  end
+
+  def get_email
+    email || I18n.t('messages.no_mail')
+  end
+
+  def get_reset_password_token
+    return (email.blank? ? set_reset_password_token : send_reset_password_instructions) unless integrated && !on_blacklist?
   end
 
   private
