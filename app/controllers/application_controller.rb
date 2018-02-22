@@ -25,6 +25,9 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user!, except: [:verify_cpf, :api_download, :lesson_media, :tutorials, :privacy_policy, :comment_media] # devise
   before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im, :get_theme
   after_filter :log_navigation
+  before_action do |controller|
+    controller.session['flash'].try(:stringify_keys!)
+  end
 
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|

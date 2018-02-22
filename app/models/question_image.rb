@@ -1,6 +1,11 @@
 class QuestionImage < ActiveRecord::Base
   belongs_to :question
 
+  has_attached_file :image,
+          styles: { small: '150x150', medium: '220x220', large: '300x300' },
+          path: ':rails_root/media/questions/images/:id_:basename.:extension',
+          url: '/media/questions/images/:id_:basename.:extension'
+
   validates :image, presence: true
 
   validates :img_alt, presence: true, if: 'img_alt.blank?'
@@ -10,12 +15,9 @@ class QuestionImage < ActiveRecord::Base
   validates_attachment_content_type :image, content_type: /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/ , message: I18n.t('questions.error.wrong_type')
   validates_attachment_content_type_in_black_list :image
 
-  has_attached_file :image,
-          styles: { small: '150x150', medium: '220x220', large: '300x300' },
-          path: ':rails_root/media/questions/images/:id_:basename.:extension',
-          url: '/media/questions/images/:id_:basename.:extension'
-
   before_save :replace_image_name
+
+
 
   def self.list(question_id)
     QuestionImage.where(question_id: question_id)

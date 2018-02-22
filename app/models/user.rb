@@ -59,6 +59,13 @@ class User < ActiveRecord::Base
 
   email_format = %r{\A((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?\z}i
 
+  # paperclip uses: file_name, content_type, file_size e updated_at
+  has_attached_file :photo,
+    styles: { medium: '120x120#', small: '30x30#', forum: '40x40#' },
+    path: ':rails_root/media/:class/:id/photos/:style.:extension',
+    url: '/media/:class/:id/photos/:style.:extension',
+    default_url: '/assets/no_image_:style.png'
+
   validates :name, presence: true, length: { within: 6..90 }
   validates :nick, presence: true, length: { within: 3..34 }
   validates :birthdate, presence: true
@@ -80,13 +87,6 @@ class User < ActiveRecord::Base
   validate :unique_cpf, if: "cpf_changed?"
   validate :login_differ_from_cpf
   validate :only_admin, if: '!new_record? && (cpf_changed? || active_changed?)'
-
-  # paperclip uses: file_name, content_type, file_size e updated_at
-  has_attached_file :photo,
-    styles: { medium: '120x120#', small: '30x30#', forum: '40x40#' },
-    path: ':rails_root/media/:class/:id/photos/:style.:extension',
-    url: '/media/:class/:id/photos/:style.:extension',
-    default_url: '/assets/no_image_:style.png'
 
   validates_attachment_size :photo, less_than: 700.kilobyte, message: '' # Esse message vazio deve permanecer dessa forma enquanto nao descobrirmos como passar a mensagem de forma correta. Se o message for vazio a validacao nao eh feita.
   validates_attachment_content_type :photo,
