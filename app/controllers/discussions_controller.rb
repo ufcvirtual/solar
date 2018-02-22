@@ -16,13 +16,13 @@ class DiscussionsController < ApplicationController
       @allocation_tag_id = (active_tab[:url].include?(:allocation_tag_id)) ? active_tab[:url][:allocation_tag_id] : AllocationTag.find_by_group_id(params[:group_id] || []).id
       @user = current_user
       @discussions = Score.list_tool(@user.id, @allocation_tag_id, 'discussions', false, false, true)
-  
+
     rescue
       @discussions = []
     end
-  
+
     authorize! :index, Discussion, on: [@allocation_tag_id]
-    
+
     @is_student = @user.is_student?([@allocation_tag_id])
     @can_evaluate = can? :evaluate, Discussion, { on: @allocation_tag_id }
 
@@ -70,6 +70,7 @@ class DiscussionsController < ApplicationController
 
   def edit
     authorize! :edit, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    @discussion.enunciation_files.build
   end
 
   def update
