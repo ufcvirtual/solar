@@ -46,9 +46,10 @@ class User < ActiveRecord::Base
 
   after_create :basic_profile_allocation
 
-  devise :database_authenticatable, :registerable, :validatable, :recoverable, :encryptable#, :timeoutable
+  devise :database_authenticatable, :registerable, :recoverable, :encryptable#, :timeoutable, :validatable
 
-  before_save :ensure_authentication_token!, :downcase_username, :downcase_email
+  before_save :ensure_authentication_token!, :downcase_username
+  before_save :downcase_email, unless: 'email.blank?'
   after_save :log_update_user
   after_save :update_digital_class_user, if: '(!new_record? && (name_changed? || email_changed? || cpf_changed?) && !digital_class_user_id.nil?)', on: :update
 
@@ -67,9 +68,17 @@ class User < ActiveRecord::Base
   validates :birthdate, presence: true
   validates :username, presence: true, length: { maximum: 20 }, uniqueness: {case_sensitive: false}
   validates :username, length: { minimum: 3 }, unless: Proc.new{ |a| !a.on_blacklist? && a.integrated? && (a.synchronizing.nil? || a.synchronizing) }
-  validates :password, presence: true, confirmation: true, unless: Proc.new { |a| !a.encrypted_password.blank? || a.integrated? }
+
+  validates :password, presence: true, confirmation: true, length: { minimum: 6, maximum: 120 }, unless: Proc.new { |a| !a.encrypted_password.blank? || (a.integrated? && !a.on_blacklist?) }
   # validates :alternate_email, format: { with: email_format }, uniqueness: {case_sensitive: false}, unless: 'alternate_email.blank?'
-  validates :email, presence: true, confirmation: true, uniqueness: {case_sensitive: false}, format: { with: email_format }, unless: Proc.new { |a| a.already_email_error_or_email_not_changed? }
+  validates :email, presence: true, unless: Proc.new { |a| (a.integrated && !a.on_blacklist?)}
+
+  validates :email, uniqueness: {case_sensitive: false}, unless: Proc.new { |a| (a.integrated && !a.on_blacklist?) || a.email.blank?}
+
+  validates :email, confirmation: true, if: "(email_changed? || new_record?) && !(integrated && !on_blacklist?)"
+
+  validates :email, format: { with: email_format }, unless: Proc.new { |a| a.email.blank?}
+
   validates :special_needs, presence: true, if: :has_special_needs?
 
   validates_length_of :address_neighborhood, maximum: 49
@@ -87,6 +96,8 @@ class User < ActiveRecord::Base
   validate :unique_cpf, if: "cpf_changed?"
   validate :login_differ_from_cpf
   validate :only_admin, if: '!new_record? && (cpf_changed? || active_changed?)'
+
+  before_save :set_empty_email, if: 'email.blank?'
 
   # paperclip uses: file_name, content_type, file_size e updated_at
   has_attached_file :photo,
@@ -149,12 +160,6 @@ class User < ActiveRecord::Base
   def has_special_needs?
     self.special_needs = '' unless @has_special_needs || integrated
     @has_special_needs
-  end
-
-  ## Verifica se ja existe um erro no campo de email ou, caso esteja na edicao de usuario, verifica se o email foi alterado.
-  ## Caso o email nao tenha sido alterado, nao ha necessidade de verificar sua confirmacao
-  def already_email_error_or_email_not_changed?
-    (errors[:email].any? || !email_changed?)
   end
 
   def unique_cpf
@@ -263,7 +268,7 @@ class User < ActiveRecord::Base
       id: id,
       name: name,
       email: email,
-      resume: "#{name} <#{email}>"
+      resume: "#{name} <#{email || I18n.t('messages.no_mail')}>"
     }
   end
 
@@ -445,7 +450,6 @@ class User < ActiveRecord::Base
   ################################
 
   def self.import(file, ats=nil)
-
     raise I18n.t(:invalid_file, scope: [:administrations, :import_users]) if (File.extname(file.original_filename) == '.csv')
 
     imported = []
@@ -494,7 +498,15 @@ class User < ActiveRecord::Base
         params.merge!({ institution: row['Instituição'] })          if row.include?('Instituição') && !row['Instituição'].blank?
         params.merge!({ cpf: cpf })                                 if row.include?('CPF') || row.include?('Cpf')
         params.merge!({ gender: (row['Gênero'].downcase == 'masculino' || row['Gênero'].downcase == 'male' || row['Gênero'].downcase == 'm') }) if row.include?('Gênero') && !row['Gênero'].blank?
-        params.merge!({ username:  row['Email'].downcase.split('@')[0][0..19] || cpf || params['Cpf'] }) if user.username.nil?
+
+        if user.username.nil?
+          unless row['Email'].blank?
+            params.merge!({ username:  row['Email'].downcase.split('@')[0][0..19] || cpf || params['Cpf'] })
+          else
+            params.merge!({ username: cpf })
+          end
+        end
+
         params.merge!({ birthdate: '1970-01-01' })                  if user.birthdate.nil?
         params.merge!({ nick: user.username || params[:username] }) if user.nick.nil?
 
@@ -603,14 +615,13 @@ class User < ActiveRecord::Base
     errors.add(:username, I18n.t('users.errors.ma.cant_connect')) if username_changed?
     errors.add(:cpf, I18n.t('users.errors.ma.cant_connect'))      if cpf_changed?
     errors.add(:email, I18n.t('users.errors.ma.cant_connect'))    if email_changed?
-  rescue
+  rescue => error
     errors.add(:base, I18n.t('users.errors.ma.problem_accessing'))
   ensure
     errors_messages = errors.full_messages
     # if is new user and happened some problem connecting with MA
     if new_record? && (errors_messages.include?(I18n.t('users.errors.ma.cant_connect')) || errors_messages.include?(I18n.t('users.errors.ma.problem_accessing')))
-      tmp_email       = [user_cpf, MODULO_ACADEMICO['tmp_email_provider']].join('@')
-      self.attributes = { username: user_cpf, email: tmp_email, email_confirmation: tmp_email } # set username and invalid email
+      self.attributes = { username: user_cpf } # set username and invalid email
       user_errors     = errors.messages.to_a.collect{ |a| a[1] }.flatten.uniq # all errors
       ma_errors       = I18n.t('users.errors.ma').to_a.collect{ |a| a[1] }  # ma errors
       if (user_errors - ma_errors).empty? # form doesn't have other errors
@@ -697,7 +708,7 @@ class User < ActiveRecord::Base
   end
 
   def self.ma_errors(result, user)
-    return nil if result.empty? || result == ['6']
+    return nil if result.blank? || result == ['6']
     return nil if user.nil? # if user don't exist yet
     user.errors.add(:username, I18n.t('users.errors.ma.already_exists')) if result.include?('1')  # unavailable login/username, thus already in use by MA
     user.errors.add(:username, I18n.t('users.errors.invalid'))           if result.include?('2')  # invalid login/username
@@ -710,7 +721,7 @@ class User < ActiveRecord::Base
   end
 
   def self.user_ma_attributes(user_data)
-    data = { name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == 'M'), cell_phone: user_data[17], nick: (user_data[7].nil? ? ([user_data[2].split(' ')[0], user_data[2].split(' ')[1]].join(' ')) : user_data[7]), telephone: user_data[18], special_needs: ((user_data[19].blank? || user_data[19].downcase == 'nenhuma') ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13], address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]), email: (user_data[8].blank? ? [user_data[0], MODULO_ACADEMICO['tmp_email_provider']].join('@') : user_data[8]), integrated: true }
+    data = { name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == 'M'), cell_phone: user_data[17], nick: (user_data[7].nil? ? ([user_data[2].split(' ')[0], user_data[2].split(' ')[1]].join(' ')) : user_data[7]), telephone: user_data[18], special_needs: ((user_data[19].blank? || user_data[19].downcase == 'nenhuma') ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13], address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]), email: user_data[8], integrated: true }
 
     if !user_data[6].blank?
       data.merge!({password: user_data[6]})
@@ -908,14 +919,24 @@ class User < ActiveRecord::Base
   end
 
   def change_email
-    self.previous_email = email
-    self.email = [cpf, MODULO_ACADEMICO['tmp_email_provider']].join('@')
-    self.synchronizing = true
-    save(validate: false)
+    unless integrated && !on_blacklist?
+      self.previous_email = email
+      self.email = nil
+      self.synchronizing = true
+      save(validate: false)
+    end
   end
 
   def update_users_with_same_column(column)
     verify_column(self, column)
+  end
+
+  def get_email
+    email || I18n.t('messages.no_mail')
+  end
+
+  def get_reset_password_token
+    return (email.blank? ? set_reset_password_token : send_reset_password_instructions) unless integrated && !on_blacklist?
   end
 
   private
@@ -926,7 +947,7 @@ class User < ActiveRecord::Base
     end
 
     def verify_column(user, column)
-      same_column = User.where("lower(#{column}) = '#{user.send(column.to_sym).downcase}' AND users.cpf != '#{user.cpf}'")
+      same_column = User.where("lower(#{column}) = '#{user.send(column.to_sym).try(:downcase)}' AND users.cpf != '#{user.cpf}'")
       # ver se tem mais de um usuario com esse login
       if same_column.any?
         # se sim, é integrado e não tá na blacklist?
@@ -944,13 +965,18 @@ class User < ActiveRecord::Base
           integrated.map(&:synchronize)
 
           # verifica se ainda há usuários com mesmo username (integrados que vieram do sigaa com o mesmo login)
-          remaining_users = User.where("lower(#{column}) = '#{user.send(column.to_sym).downcase}' AND cpf != '#{user.cpf}'")
+          remaining_users = User.where("lower(#{column}) = '#{user.send(column.to_sym).try(:downcase)}' AND cpf != '#{user.cpf}'")
           # true ou false de acordo com o resultado
           return remaining_users.empty?
         end
       else
         return true
       end
+    end
+
+    # garantees that email will be nil when blank
+    def set_empty_email
+      self.email = nil
     end
 
 end
