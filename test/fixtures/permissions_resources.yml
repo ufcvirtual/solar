@@ -928,6 +928,11 @@ editorapproval1:
   resource_id: 168
   per_id: false
 
+allocation3:
+  profile_id: 5
+  resource_id: 232
+  per_id: false
+
 
 # Unidade Curricular - Editor
 

@@ -192,7 +192,7 @@ Solar::Application.routes.draw do
     collection do
 
       ## menu
-      get :manage_enrolls, to: redirect('/allocations/enrollments') #"allocations#index"
+      #get :manage_enrolls#, to: redirect(path: '/allocations/enrollments') #"allocations#index"
       get :enrollments, action: :index
 
       get :designates

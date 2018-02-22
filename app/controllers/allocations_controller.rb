@@ -49,6 +49,9 @@ class AllocationsController < ApplicationController
   def edit
   end
 
+  def enrollments
+  end  
+
   ## matricular varios de uma vez /  mudar aluno de turma aceitando matricula
 
   # PUT manage_enrolls

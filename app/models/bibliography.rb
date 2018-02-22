@@ -12,6 +12,10 @@ class Bibliography < ActiveRecord::Base
 
   accepts_nested_attributes_for :authors, allow_destroy: true
 
+  has_attached_file :attachment,
+    path: ":rails_root/media/bibliography/:id_:basename.:extension",
+    url: "/media/bibliography/:id_:basename.:extension"
+
   validates :issn, length: { is: 9 },  if: 'issn.present?' # com formatacao
   validates :isbn, length: { is: 17 }, if: 'isbn.present?' # com formatacao
 
@@ -22,14 +26,13 @@ class Bibliography < ActiveRecord::Base
   validates :url, :accessed_in                                                , presence: true, if: 'type_bibliography == TYPE_ELECTRONIC_DOC'
   validates :attachment_file_name                                             , presence: true, if: 'type_bibliography == TYPE_FILE'
 
-  has_attached_file :attachment,
-    path: ":rails_root/media/bibliography/:id_:basename.:extension",
-    url: "/media/bibliography/:id_:basename.:extension"
-
   validates_attachment_size :attachment, less_than: 5.megabyte, message: ' '
   validates_attachment_content_type_in_black_list :attachment
+  do_not_validate_attachment_file_type :attachment
 
   before_validation proc { |record| record.errors.add(:base, I18n.t(:author_required, scope: [:bibliographies])) }, if: '[TYPE_BOOK, TYPE_ARTICLE, TYPE_ELECTRONIC_DOC].include?(type_bibliography) && authors.empty?'
+
+  
 
   def copy_dependencies_from(bibliography_to_copy)
     copy_file(bibliography_to_copy, self, 'bibliography') if bibliography_to_copy.is_file?
