@@ -53,9 +53,9 @@
             - if @is_student
               %td.center{class: "assignment_#{discussion.situation}", headers: 'situation'}= t("scores.situation.#{discussion.situation}")
             - else
-              - if discussion.closed==true
+              - if discussion.closed == true
                 %td.center{class: "assignment_closed", headers: 'situation'}= t("scores.situation.closed")
-              - elsif discussion.opened=='t'
+              - elsif discussion.opened == true
                 %td.center{class: "assignment_opened", headers: 'situation'}= t("scores.situation.opened")
               -else
                 %td.center{class: "assignment_not_started", headers: 'situation'}= t("scores.situation.not_started")
