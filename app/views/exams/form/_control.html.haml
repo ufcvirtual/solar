@@ -4,7 +4,7 @@
 
 .form-actions.right_buttons
   = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox cancel', onkeypress: 'exit(event)'
-  = button_tag t('.previous'), :type => 'button', :onclick => "sback_to_config(event)", class: 'btn btn_default btn_main btn_lightbox', onkeypress: 'back_to_config(event)'
+  = button_tag t('.previous'), :type => 'button', :onclick => "back_to_config(event)", class: 'btn btn_default btn_main btn_lightbox', onkeypress: 'back_to_config(event)'
   = button_tag t(:save), :type => 'button', :onclick => "save_exam(event)", class: 'btn btn_main btn_lightbox', alt: t(:save), onkeypress: 'save_exam(event)'
 
 :javascript
