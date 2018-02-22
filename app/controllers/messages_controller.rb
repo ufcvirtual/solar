@@ -182,8 +182,8 @@ class MessagesController < ApplicationController
       @list = @contacts.find_all_by_id(params[:reply_to].split(','))
       @content_student = @list.any? { |u| u.types.to_i==Profile_Type_Student }
       @content_responsibles = @list.any? { |u| u.types.to_i==Profile_Type_Class_Responsible }
-
     end
+
     render partial: 'contacts'
   end
 

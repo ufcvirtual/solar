@@ -741,7 +741,7 @@ en_US:
   pwd_recovery_security: "Security"
   pwd_recovery_subtitle: "Forgot your password?"
   change_your_password: "Change your password"
-  pwd_recovery_text: "To regain access, type your e-mail address that you use to access your Solar account."
+  pwd_recovery_text: "To regain access, type your cpf."
   pwd_recovery_text2: "We will shortly send you some directions to create a new password."
   pwd_recovery_email: "Enter your E-mail"
   pwd_recovery_cpf: "Enter your CPF"
@@ -1645,10 +1645,13 @@ en_US:
       confirm_new_password: Confirm new password
       change_my_password: Change
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
+      send_instructions_email: 'An email with instructions about how to set a new password will be send to the following email %{email}.'
       updated: 'Your password was changed successfully. You are now signed in.'
       updated_not_active: 'Your password was changed successfully.'
       send_paranoid_instructions: "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
       ma_request: "To recover your access data, go to the address: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
+      not_found: No user was found with informed CPF. Register yourself at 'Sign Up' tab.
+      no_email: There is no email registered to the informed CPF. Contact atendimento@virtual.ufc.br informing your CPF, complete name and birthdate.
     password:
       change_my_password: Change
     passwords:
@@ -2849,6 +2852,7 @@ en_US:
     no_subject: "(no subject)"
     support: "Support <atendimento@virtual.ufc.br>"
     support_html: "Support &lt;atendimento@virtual.ufc.br&gt;"
+    no_mail: no email
     contacts:
       title: "Selection of contacts"
       contacts: "Contacts"
