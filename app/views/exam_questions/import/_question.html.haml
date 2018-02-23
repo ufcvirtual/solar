@@ -7,7 +7,8 @@
         .lesson_arrow_up= link_to image_tag('lesson/up_arrow.png'), "#", onclick: 'up(this)'
         .lesson_arrow_down= link_to image_tag('lesson/down_arrow.png'), "#", onclick: 'down(this)'
     %td= exam.name
-    %td= raw question.enunciation
+    %td
+      = strip_tags(question.enunciation.truncate(100)).html_safe
     %td= question.type
     %td= exam.allocation_tag_info
     %td= number_field_tag "score_#{question.id}", (question.respond_to?(:score) ? question.score : 0.00), { min: 0, max: 10 }

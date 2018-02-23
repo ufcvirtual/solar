@@ -23,7 +23,7 @@ module V1::AllocationsH
   def cancel_allocations(groups, user, profile_id)
     ActiveRecord::Base.transaction do
       groups.each do |group|
-        group.change_allocation_status(user.id, 2, profile_id: profile_id) # cancel all users previous allocations as profile_id
+        group.change_allocation_status(user.id, 2, nil, {profile_id: profile_id}) # cancel all users previous allocations as profile_id
       end
     end
   end
@@ -68,14 +68,14 @@ module V1::AllocationsH
   end
 
   def get_users(params, users=[])
-    users << case 
+    users << case
     when params[:user_id].present?
       User.find(params[:user_id])
     when params[:users_ids].present?
       User.where(id: params[:users_ids])
     when params[:cpf].present?
       User.where(cpf: params[:cpf].delete('.').delete('-')).first
-    else 
+    else
       User.where(cpf: params[:cpfs])
     end
 

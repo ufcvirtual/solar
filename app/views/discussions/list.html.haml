@@ -33,7 +33,7 @@
                   - if has_file
                     %i.icon-paperclip
                 .description
-                  - description_text = sanitize discussion.description
+                  - description_text = strip_tags discussion.description
                   .minimun= raw(truncate description_text, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
                   .complete.invisible
                     = description_text

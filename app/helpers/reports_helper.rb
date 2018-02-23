@@ -137,10 +137,10 @@ module ReportsHelper
       responses.each do |item|
         number_question_response += 1
 
-        arra_marked << arr_alf[number_question_response] if item.marked_value == "t"
-        arra_marked2 << arr_alf[number_question_response] if item.marked_value == "f"
-        arra_correted << arr_alf[number_question_response] if item.correct_value == "t"
-        arra_correted2 << arr_alf[number_question_response] if item.correct_value == "f"
+        arra_marked << arr_alf[number_question_response] if item.marked_value
+        arra_marked2 << arr_alf[number_question_response] unless item.marked_value
+        arra_correted << arr_alf[number_question_response] if item.correct_value
+        arra_correted2 << arr_alf[number_question_response] unless item.correct_value
         image_name = "#{item.id}_#{item.image_name}" unless item.image_name.blank?
 
         if item.marked_value == item.correct_value
@@ -214,7 +214,7 @@ module ReportsHelper
     return pdf
   end
 
-  def self.accompaniment_general ats, wh, users, allocation_tag_id, tools, type
+  def self.scores_general ats, wh, users, allocation_tag_id, tools, type
     pdf = inicializa_pdf(:landscape)
 
     # Título do pdf
@@ -244,7 +244,7 @@ module ReportsHelper
     return pdf
   end
 
-  def self.accompaniment_evaluatives_frequency ats, score_type, users, scores, acs, examidx, assignmentidx, scheduleEventidx, discussionidx, chatRoomidx, webconferenceidx
+  def self.scores_evaluatives_frequency ats, score_type, users, scores, acs, examidx, assignmentidx, scheduleEventidx, discussionidx, chatRoomidx, webconferenceidx
     pdf = inicializa_pdf(:landscape)
 
     # Título do pdf
