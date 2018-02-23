@@ -2,7 +2,12 @@
 %td{headers: "name_#{lesson.lesson_module_id}"}
   - closed = " (#{t(:lesson_closed_short)})"
   - if lesson.closed?
-    = (@not_offer_area ? (link_to lesson.name + closed, "#", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, onkeydown: 'click_on_keypress(event, this);') : link_to(lesson.name + closed, '#', disabled: true, class: 'disabled', :'aria-label' => lesson.name + closed + t(:disabled)))
+    
+    - if !@not_only_student_profile
+      = (@not_offer_area ? (link_to lesson.name + closed, "#", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, onkeydown: 'click_on_keypress(event, this);') : link_to(lesson.name + closed, '#', disabled: true, class: 'disabled', :'aria-label' => lesson.name + closed + t(:disabled)))
+    -else
+      = (link_to lesson.name + closed, "#", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, onkeydown: 'click_on_keypress(event, this);')
+      
   - else
     - unless lesson.address.blank?
       - text = []
