@@ -34,14 +34,14 @@ module Solar
     #config.middleware.use "PDFKit::Middleware", :print_media_type => true
     config.middleware.use WickedPdf::Middleware
     #Tags e atributos permitidos pelo método auxiliador "sanitize"
-    config.action_view.sanitized_allowed_tags = %w(h1 h2 h3 h4 hr b i p u a pre div span br ul ol li em strong strike img sup sub abbr big small code iframe)
+    config.action_view.sanitized_allowed_tags = %w(h1 h2 h3 h4 hr b i p u a s pre div span br ul ol li em strong strike img sup sub abbr big small code iframe)
     config.action_view.sanitized_allowed_attributes = %w(name style class href cite title src height datetime alt abbr width target)
 
     # config.active_record.observers = :user_observer
     config.active_record.default_timezone = :local
 
     #Itens por página para a paginação.
-    config.items_per_page = 20 
+    config.items_per_page = 20
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
@@ -58,7 +58,7 @@ module Solar
     config.filter_parameters += [:password, :access_token]
 
     config.active_record.whitelist_attributes = false
-    
+
 
     # Enable the asset pipeline
     config.assets.enabled = true

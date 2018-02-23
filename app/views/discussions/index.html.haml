@@ -27,8 +27,9 @@
               - else
                 .title= discussion.name
               .description
-                .enunciation_slice= discussion.description.slice(0..180) << '...'
-                .enunciation_complete= discussion.description
+                - discussion_text = strip_tags discussion.description
+                .enunciation_slice= discussion_text.slice(0..180) << '...'
+                .enunciation_complete= discussion_text
                 .more_or_less
                   %a.enunciation_more.link_content{ href: '#', :'aria-label' => t("discussions.list.more", forum: discussion.name), onkeydown: 'click_on_keypress(event, this);' }= t('assignments.list.more')
                   %a.enunciation_less.link_content{ href: '#', :'aria-label' => t("discussions.list.less", forum: discussion.name), onkeydown: 'click_on_keypress(event, this);' }= t('assignments.list.less')
