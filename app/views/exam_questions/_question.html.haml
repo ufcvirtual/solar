@@ -1,13 +1,12 @@
 - has_items   = (question.respond_to?(:count_items)  ? !question.count_items.to_i.zero? : question.question_items.any?)
-- has_images  = (question.respond_to?(:has_images)   ? (question.has_images == 't') : question.question_images.any?)
-- has_audios  = (question.respond_to?(:has_audios)   ? (question.has_audios == 't') : question.question_audios.any?)
+- has_images  = (question.respond_to?(:has_images)   ? question.has_images : question.question_images.any?)
+- has_audios  = (question.respond_to?(:has_audios)   ? question.has_audios : question.question_audios.any?)
 - items       = (question.respond_to?(:count_items)  ? question.count_items : question.question_items.size)
 - labels      = (question.respond_to?(:labels)       ? question.labels.delete('NULL').split(',') : question.question_labels.map(&:name))
 - author_name = (question.respond_to?(:author_name)) ? question.author_name : question.user.name
 - updated_by_name = (question.respond_to?(:updated_by_name)) ? question.updated_by_name : question.updated_by_user.try(:name)
 - exam_question   = ExamQuestion.find(question.exam_question_id) if exam_question.nil?
 - annulled    = question.respond_to?(:annulled) ? question.annulled : exam_question.annulled
-- annulled    = (annulled == 't' || annulled == true)
 %tr.lines{ id: "tr_#{question.id}", order: (question.respond_to?(:order) ? question.order : exam_question.order), exam_question_id: exam_question.id, :'data-id' => question.id }
   %td{ style: 'text-align:center;', class: hide_columns ? 'invisible' : '' }
     = check_box_tag("ckb_#{exam.id}", exam_question.id, false, { class: 'ckb_question', :'data-question-id' => exam_question.question_id })
