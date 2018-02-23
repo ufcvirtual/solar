@@ -32,7 +32,7 @@ $(function(){
 
 function save_question(exam_id, type_question){
   type_question = (typeof type_question === "undefined" ? false : type_question);
-  if(save_values_ckeditor("<%=I18n.t('ckeditor.confirms.question')%>")){
+  if(save_values_ckeditor("<%=I18n.t('ckeditor.confirms.question')%>") == false){
     return false;
   }
   check_inputs(type_question);
@@ -54,9 +54,10 @@ function save_question(exam_id, type_question){
     prepend_to = $('.list_questions_exam_'+exam_id);
 
   if($("#question_texts_media_question").prop('checked')==false){
-    $('#audios').find('.remove_nested_fields_link').click(); 
-    $('#images').find('.remove_nested_fields_link').click();    
+    $('#audios').find('.remove_nested_fields_link').click();
+    $('#images').find('.remove_nested_fields_link').click();
   }
+
   if(!$('form#question_form').data('disabled'))
     $('form#question_form').serialize_and_submit({
       files: true,
@@ -66,6 +67,7 @@ function save_question(exam_id, type_question){
         if (typeof(data.alert) != "undefined")
           $('form span.error').html(data.alert);
         else {
+          clear_ckeditor();
           $('form span.error').html('');
           flash_message("<%= I18n.t('questions.success.add') %>", "notice");
         }
@@ -86,7 +88,7 @@ function go_to_items(){
   $('li.items').addClass('active');
   $('#dot-items').addClass('active');
   $.fancybox.update();
-  $('.block_content').css('width', '600');
+  $('.block_content').css('width', 'auto');
 }
 
 function go_to_medias(){
@@ -200,14 +202,11 @@ function edit_question(icon, replace_list){
       $(icon).call_fancybox({
           href : url_edit,
           open: true,
-          width: '100%',
-          maxHeight: '70%',
-          beforeClose: function() {
-            for(name in CKEDITOR.instances){
-              CKEDITOR.instances[name].setData("");
-              CKEDITOR.remove(CKEDITOR.instances[name]);
-            } 
-          }
+          'autoDimensions': false,
+          'autoSize': false,
+          width: '700',
+          //maxHeight: '70%',
+          beforeClose: function() { clear_ckeditor(); }
       });
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
@@ -551,12 +550,7 @@ function new_question(link){
     'autoSize': false,
     open: true,
     href: $(link).data('url'),
-    beforeClose: function() {
-      for(name in CKEDITOR.instances){
-        CKEDITOR.instances[name].setData("");
-        CKEDITOR.remove(CKEDITOR.instances[name]);
-      }
-    }
+    beforeClose: function() { clear_ckeditor(); }
   });
 
 }

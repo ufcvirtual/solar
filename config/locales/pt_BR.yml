@@ -4398,8 +4398,8 @@ pt_BR:
         new: Novo texto
         import: Importar de questões desta prova
       media:
-        add_images: Adicionar imagens
-        add_audios: Adicionar áudios
+        add_images: Imagens
+        add_audios: Áudios
         add_more_images: Adicionar mais imagens
         add_more_audios: Adicionar mais áudios
         associated_text: Texto associado
@@ -4761,7 +4761,7 @@ pt_BR:
 
   ckeditor:
     confirms:
-      question: "O item count está em branco. Deseja excluí-lo?"
+      question: "Deseja excluir os itens em branco?"
 
 # reports_add
   reports:
