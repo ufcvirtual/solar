@@ -29,6 +29,11 @@ class LessonsController < ApplicationController
       index_interacting_permissions
     end
 
+    allocations = Allocation.where(allocation_tag_id: active_tab[:url][:allocation_tag_id])
+    all = allocations.select{|a| a.user_id == current_user.id}
+    current_user_profiles = Profile.find(all.map{|a| a.profile_id})
+    @not_only_student_profile = current_user_profiles.any?{ |p| p.types != Profile_Type_Student}
+
     @lessons_modules = LessonModule.to_select(@allocation_tags_ids.split(' ').flatten, current_user, true)
     @allocation_tags_ids = @allocation_tags_ids.join(' ') if @allocation_tags_ids.is_a?(Array)
 
