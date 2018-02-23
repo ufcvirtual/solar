@@ -97,7 +97,7 @@
             - if @can_see_access
               %td{headers: 'web_access',:'data-url' => list_access_webconference_path(webconference, at_id: webconference.at_id), :'data-tooltip' => t('webconferences.list.access') }= link_to content_tag(:i, nil, class: 'icon-users'), "#", onclick: 'list_access(this)', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('webconferences.list.access') + t('fancybox.open'), class: 'btn'
             - if @is_student
-              %td.center{headers: "summary"}= link_to content_tag(:i, nil, class: 'icon-comment'), "#", onclick: 'open_summary(this)', :'data-url' => summary_webconferences_path(ac_id: webconference.ac_id, tool_id: webconference.id), class: "btn #{webconference.has_info == 't' ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt2', tool: webconference.title), :'aria-label' => t('comments.summary.title_alt2', tool: webconference.title) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+              %td.center{headers: "summary"}= link_to content_tag(:i, nil, class: 'icon-comment'), "#", onclick: 'open_summary(this)', :'data-url' => summary_webconferences_path(ac_id: webconference.ac_id, tool_id: webconference.id), class: "btn #{webconference.has_info ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt2', tool: webconference.title), :'aria-label' => t('comments.summary.title_alt2', tool: webconference.title) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
   - else
     .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])
 
