@@ -4,25 +4,25 @@
   %a{ onkeydown: 'click_on_keypress(event, this);', :'data-shortcut' => t("shortcut.editions.code.analyzer_position"), :'data-shortcut-name' => t("shortcut.editions.name.analyzer_position"), :'data-shortcut-shift' => 'true', class: 'hidden analyzer_position'}
 
   .ui-widget-content{ id: 'draggable', :'data-tooltip' => t(".draggable_info")}
-    %a{ href: '#', :'aria-label' => t('.window_analyzer_home'), :title => t('.window_analyzer_home'),class: 'close_draggable', id: 'draggable_open_window'}
+    %a{ href: '#void', :'aria-label' => t('.window_analyzer_home'), :title => t('.window_analyzer_home'), class: 'close_draggable', id: 'draggable_open_window'}
     .ui-widget-content_title
       %h2= t('.draggable_title')
 
-      = link_to content_tag(:i, nil, class: "icon-cancel-circle"), "#", class: 'close_draggable', :'data-tooltip' => t("draggable.close"), :'aria-label' => t("draggable.close")
+      = link_to content_tag(:i, nil, class: "icon-cancel-circle"), "#void", class: 'close_draggable', :'data-tooltip' => t("draggable.close"), :'aria-label' => t("draggable.close")
     #content_draggable
       %ul{id: 'analise_errors'}
-    %a{ href: '#', :'aria-label' => t('.window_analyzer_end'), :title => t('.window_analyzer_end'),class: 'close_draggable'}
+    %a{ href: '#void', :'aria-label' => t('.window_analyzer_end'), :title => t('.window_analyzer_end'), class: 'close_draggable'}
   .title-warning
-    %div.how_it_works_title
-      = link_to raw(t('.how_it_works_title')), "#", onclick: 'hide_or_show_info(this)'
-      = link_to content_tag(:i, nil, class: 'invisible icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), "#", onclick: 'hide_or_show_info(this)'
-      = link_to content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), "#", onclick: 'hide_or_show_info(this)'
+    %div#how_it_works.how_it_works_title
+      = link_to raw(t('.how_it_works_title')), "#how_it_works", onclick: 'hide_or_show_info(this)'
+      = link_to content_tag(:i, nil, class: 'invisible icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), "#how_it_works", onclick: 'hide_or_show_info(this)'
+      = link_to content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), "#how_it_works", onclick: 'hide_or_show_info(this)'
     %div.how_it_works= raw t('.how_it_works')
   .title-warning
-    %div.rules_and_info_title
-      = link_to raw(t('.rules_title')), "#", onclick: 'hide_or_show_info(this)'
-      = link_to content_tag(:i, nil, class: 'invisible icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), "#", onclick: 'hide_or_show_info(this)'
-      = link_to content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), "#", onclick: 'hide_or_show_info(this)'
+    %div#rules_and_info.rules_and_info_title
+      = link_to raw(t('.rules_title')), "#rules_and_info", onclick: 'hide_or_show_info(this)'
+      = link_to content_tag(:i, nil, class: 'invisible icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), "#rules_and_info", onclick: 'hide_or_show_info(this)'
+      = link_to content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), "#rules_and_info", onclick: 'hide_or_show_info(this)'
     %div.rules_and_info=raw t('.rules')
     %br
     - if @working_hours.blank?
@@ -48,28 +48,28 @@
       - if @tools.any?
         %div
           .expand_hide
-            = link_to content_tag(:i, nil, class: 'icon-resize-enlarge', :"data-tooltip" => t('.expand')), "#", onclick: 'show_all()'
-            .expand_link= link_to t('.expand'), "#", onclick: 'show_all()'
-            = link_to content_tag(:i, nil, class: 'icon-resize-shrink', :"data-tooltip" => t('.compress')), "#", onclick: 'hide_all()'
-            .compress_link= link_to t('.compress'), "#", onclick: 'hide_all()'
+            = link_to content_tag(:i, nil, class: 'icon-resize-enlarge', :"data-tooltip" => t('.expand')), "#void", onclick: 'show_all()'
+            .expand_link= link_to t('.expand'), "#void", onclick: 'show_all()'
+            = link_to content_tag(:i, nil, class: 'icon-resize-shrink', :"data-tooltip" => t('.compress')), "#void", onclick: 'hide_all()'
+            .compress_link= link_to t('.compress'), "#void", onclick: 'hide_all()'
         %div
           .frequency_equally
             - if !@working_hours.blank? && @groups.size == 1
-              = link_to content_tag(:i, nil, class: 'icon-clock', :"data-tooltip" => t('.share_wh')), "#", onclick: "equal_frequencies(#{@working_hours})"
-              .frequency_link= link_to t('.share_wh'), "#", onclick: "equal_frequencies(#{@working_hours})"
+              = link_to content_tag(:i, nil, class: 'icon-clock', :"data-tooltip" => t('.share_wh')), "#void", onclick: "equal_frequencies(#{@working_hours})"
+              .frequency_link= link_to t('.share_wh'), "#void", onclick: "equal_frequencies(#{@working_hours})"
           .frequency_automatic
-            = link_to content_tag(:i, nil, class: 'icon-clock', :"data-tooltip" => t('.automatic_wh_tooltip')), "#", onclick: "automatic_frequencies()"
-            .frequency_link= link_to t('.automatic_wh'), "#", onclick: "automatic_frequencies()"
+            = link_to content_tag(:i, nil, class: 'icon-clock', :"data-tooltip" => t('.automatic_wh_tooltip')), "#void", onclick: "automatic_frequencies()"
+            .frequency_link= link_to t('.automatic_wh'), "#void", onclick: "automatic_frequencies()"
           .set_weight
-            = link_to content_tag(:i, nil, class: 'icon-clipboard', :"data-tooltip" => t('.default_weight')), "#", onclick: 'set_weight()'
-            .weight_link= link_to t('.default_weight'), "#", onclick: 'set_weight()'
+            = link_to content_tag(:i, nil, class: 'icon-clipboard', :"data-tooltip" => t('.default_weight')), "#void", onclick: 'set_weight()'
+            .weight_link= link_to t('.default_weight'), "#void", onclick: 'set_weight()'
           .set_final_weight
 
-            = link_to content_tag(:i, nil, class: 'icon-clipboard', :"data-tooltip" => t('.default_final_weight')), "#", onclick: 'set_final_weight()'
-            .weight_link= link_to t('.default_final_weight'), "#", onclick: 'set_final_weight()'
+            = link_to content_tag(:i, nil, class: 'icon-clipboard', :"data-tooltip" => t('.default_final_weight')), "#void", onclick: 'set_final_weight()'
+            .weight_link= link_to t('.default_final_weight'), "#void", onclick: 'set_final_weight()'
           .analyzer
-            = link_to content_tag(:i, nil, class: 'icon-popup', :"data-tooltip" => t('.window_analyzer_home')), "#", onclick: 'slideDraggable()'
-            = link_to t('.analyzer'), "#", onclick: 'slideDraggable()'
+            = link_to content_tag(:i, nil, class: 'icon-popup', :"data-tooltip" => t('.window_analyzer_home')), "#void", onclick: 'slideDraggable()'
+            = link_to t('.analyzer'), "#void", onclick: 'slideDraggable()'
 
 
           - tools_ids = []

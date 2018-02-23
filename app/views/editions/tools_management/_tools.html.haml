@@ -1,11 +1,11 @@
 .block_wrapper.module.tools
   - distant_course = (@curriculum_unit.try(:curriculum_unit_type_id).try(:to_i) == 2 || false)
   .block_title_exam.block_exam
-    %h2
+    %h2{id: tool_name }
       .icons
-        = link_to content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), "#", onclick: 'hide_or_show(this)'
-        = link_to content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), "#", onclick: 'hide_or_show(this)'
-      = link_to t(tool_name.tableize.singularize, scope: [:activerecord, :models]), "#", onclick: 'hide_or_show(this)'
+        = link_to content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), "##{tool_name}", onclick: 'hide_or_show(this)'
+        = link_to content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), "##{tool_name}", onclick: 'hide_or_show(this)'
+      = link_to t(tool_name.tableize.singularize, scope: [:activerecord, :models]), "##{tool_name}", onclick: 'hide_or_show(this)'
   .tools_by_tool_type{class: (@tool_name == tool_name ? '' : 'invisible')}
     - if tools.any?
       %table.tb_list
@@ -53,10 +53,10 @@
                       .minimun
                         = raw ac.description.to_s.truncate(200)
                         - if ac.description.try(:size).to_i > 200
-                          = link_to content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('editions.evaluative_tools.expand_description')), "#", onclick: 'expand_or_compress(this)'
+                          = link_to content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('editions.evaluative_tools.expand_description')), "#void", onclick: 'expand_or_compress(this)'
                       .complete.invisible
                         = raw ac.description
-                        = link_to content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('editions.evaluative_tools.compress_description')), "#", onclick: 'expand_or_compress(this)'
+                        = link_to content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('editions.evaluative_tools.compress_description')), "#void", onclick: 'expand_or_compress(this)'
                     - if groups.blank?
                       = t('editions.tools.offer')
                     - else
@@ -281,7 +281,7 @@
         // texto de exibicao
         group = "#{I18n.t('editions.tools.total_final_weight')}"+ groups_list[glt][0] +': '+ parseFloat(groups_list[glt][1].toFixed(2));
         //forma a lista principal
-        ul.append("<li class='" + class_g + "'><a href='#' onclick='hide_or_show_ul(this); return false;' class='" + class_g + "' aria-label='"+texto+"''>"+group+" <i class='icon-arrow-down-triangle'></i><i class='icon-arrow-up-triangle invisible'></i><a/><ul id='"+id+"' ></ul> </li>");
+        ul.append("<li class='" + class_g + "'><a href='#void' onclick='hide_or_show_ul(this); return false;' class='" + class_g + "' aria-label='"+texto+"''>"+group+" <i class='icon-arrow-down-triangle'></i><i class='icon-arrow-up-triangle invisible'></i><a/><ul id='"+id+"' ></ul> </li>");
         //gera a sub-lista
         for(i = 0; i < weight.length; i++) {
           if(weight[i][0]==groups_list[glt][0]){
