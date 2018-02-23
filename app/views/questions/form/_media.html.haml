@@ -1,6 +1,6 @@
-.question_images
-  #question_images_label
-    = f.label t('.add_images'), class: 'label_images'
+%fieldset.question_images
+  %legend#question_images_label
+    = f.label t('.add_images')
   .visuallyhidden= label_tag :img_alt, '', id: 'exam_question_question_question_images_img_alt', onfocus: 'sendFocusAudioError("exam_question_question_attributes_question_images_attributes_", "_img_alt", 6)', tabindex: '0'
   .visuallyhidden= label_tag :img_alt, '', id: 'exam_question_question_question_images_image_content_type'
   .visuallyhidden= label_tag :img_alt, '', id: 'question_question_images_img_alt', onfocus: 'sendFocusAudioError("question_question_images_attributes_", "_img_alt", 6)', tabindex: '0'
@@ -9,9 +9,9 @@
   = render partial: 'questions/form/image', locals: { f: f, eq: nil }
   .input.string
     = f.add_nested_fields_link :question_images, t('.add_more_images'), class: 'btn'
-.question_audios
-  #question_audios_label
-    = f.label t('.add_audios'), class: 'label_audios'
+%fieldset.question_audios
+  %legend#question_audios_label
+    = f.label t('.add_audios')
   .visuallyhidden= label_tag :audio_description, '', id: 'exam_question_question_question_audios_description', onfocus: 'sendFocusAudioError("exam_question_question_attributes_question_audios_attributes_", "_audio_description", 6)', tabindex: '0'
   .visuallyhidden= label_tag :audio_description, '', id: 'exam_question_question_question_audios_audio_content_type'
   .visuallyhidden= label_tag :audio_description, '', id: 'question_question_audios_description', onfocus: 'sendFocusAudioError("question_question_audios_attributes_", "_audio_description", 6)', tabindex: '0'
@@ -22,17 +22,15 @@
   = render partial: 'questions/form/audio', locals: { f: f, eq: nil }
   .input.string
     = f.add_nested_fields_link :question_audios, t('.add_more_audios'), class: 'btn'
-.labels
+%fieldset.labels
+  %legend#associated_text_label
+    = f.label t('.associated_text')
   #question_text
-    #associated_text_label
-      = f.label t('.associated_text'), class: 'label_text'
+    - checked = @exam_question.blank? == true ? false : true
 
-      - checked = @exam_question.blank? == true ? false : true
-
-      - unless @exam_question.blank?
-
-        - disabled = f.object.disabled_option(@exam_question.exam_id) ? true : nil
-        - checked = f.object.checked_option(@exam_question.exam_id) ? false : true
+    - unless @exam_question.blank?
+      - disabled = f.object.disabled_option(@exam_question.exam_id) ? true : nil
+      - checked = f.object.checked_option(@exam_question.exam_id) ? false : true
 
     #associated_radio
       = f.collection_radio_buttons :question_text_id, [[true, t('questions.form.text.import')], [false, t('questions.form.text.new')]], :first, :last, checked: checked, disabled: disabled, boolean_style: :inline, item_wrapper_tag: false

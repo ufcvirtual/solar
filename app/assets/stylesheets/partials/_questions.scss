@@ -84,20 +84,17 @@
     margin-bottom: 20px;
   }
 
-  .step-medias{
-    .duplicatable_nested_form{
-      border-bottom: solid;
-      border-color: #e8e8e8;
-      margin-bottom: 20px;
-      padding-bottom: 20px;
-    }
 
+  .step-medias{
     .input.string{
       text-align: center;
-
-      a {padding: 15px;}
     }
   }
+
+  .question_form.block_content{
+    width: auto;
+  }
+
 
   .question_type{
     margin-left: -3px;
@@ -302,6 +299,24 @@
     }
   }
   #images{
+    .duplicatable_nested_form {
+      border-style: solid;
+      border-color: #e8e8e8;
+      border-radius: 20px;
+      padding: 10px 0px 20px 0px;
+      margin-bottom: 10px;
+      text-align: center;
+
+      .remove_nested_fields_link{
+        margin-right: 10px;
+      }
+
+      .input.text.optional{
+        margin-top: 10px;
+
+        textarea { width: 300px; }
+      }
+    }
     textarea{
       height: 60px;
     }
@@ -341,6 +356,22 @@
     }
   }
   #audios{
+    .duplicatable_nested_form {
+      border-style: solid;
+      border-color: #e8e8e8;
+      border-radius: 20px;
+      padding: 10px 0px 20px 0px;
+      margin-bottom: 10px;
+      text-align: center;
+
+      .remove_nested_fields_link{
+        margin-right: 10px;
+      }
+
+      .input.text.optional{
+        margin-top: 10px;
+      }
+    }
     textarea{
       width: 300px;
       height: 30px;
@@ -492,6 +523,10 @@
 
   select, input{
     vertical-align: top !important;
+  }
+
+  .input.string{
+    text-align: center;
   }
 }
 
@@ -645,15 +680,9 @@
   }
 }
 
-#question_audios_label, #question_images_label, #associated_text_label{
-  font-size: 12pt;
-  text-align: center;
 
-  background: #e8e8e8;
-  border-radius: 5px;
-  padding: 2px 0px 2px 0px;
-  margin-bottom: 20px;
-  margin-top: 20px;
+#question_audios_label, #question_images_label, #associated_text_label{
+  font-size: 14pt;
 
   label {
     text-align: center;

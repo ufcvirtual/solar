@@ -4152,8 +4152,8 @@ en_US:
         new: New Text
         import: Import from issues
       media:
-        add_images: Add Images
-        add_audios: Add audio
+        add_images: Images
+        add_audios: Audio
         add_more_images: Add more images
         add_more_audios: Add more audios
         associated_text: Associated text
@@ -4517,7 +4517,7 @@ en_US:
 
   ckeditor:
     confirms:
-      question: "Item count is blank. Do you want to remove it?"
+      question: "Do you want to remove the blank items?"
 
 # reports_add
   reports:
