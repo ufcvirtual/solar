@@ -163,8 +163,8 @@ class Post < ActiveRecord::Base
   def send_mail(at)
     post = Post.find(self.parent_id)
     user = User.find(post.user_id)
-    notification_mail_post = NotificationMail.where(:user_id => post.user_id).pluck(:post).first
-    if notification_mail_post.nil? || notification_mail_post
+    configure_mail_post = PersonalConfiguration.where(:user_id => post.user_id).pluck(:post).first
+    if configure_mail_post.nil? || configure_mail_post
 
       subject = "#{I18n.t('posts.mail.subject')}"
       msg = self.template_mail(user, at.info, post)

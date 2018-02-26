@@ -150,12 +150,12 @@ class UsersController < ApplicationController
 
   def configure
     @user   = current_user
-    if @user.notification_mail.nil?
-      notifify_email = NotificationMail.new
+    if @user.personal_configuration.nil?
+      notifify_email = PersonalConfiguration.new
       notifify_email.user_id = @user.id
       notifify_email.save!
     else
-      notifify_email = @user.notification_mail
+      notifify_email = @user.personal_configuration
     end
     @configure = notifify_email
 

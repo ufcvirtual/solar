@@ -40,12 +40,9 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :notification_mails do
-    put :notification_mails, on: :member
-  end
-
   resources :personal_configurations do
       put :update_theme, on: :collection
+      put :configures, on: :member
   end
 
   resources :social_networks, only: [] do

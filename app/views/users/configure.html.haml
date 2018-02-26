@@ -1,19 +1,46 @@
 = simple_form_for @configure, :method => :put, html: {id: "configure_form"} do |f|
-  %h1#lightBoxDialogTitle= t(".notification_mail")
 
   .form-inputs.block_content
-    = f.input :name, :input_html => { :value => @user.name, :disabled => 'true' }
-    = f.input :message, as: :boolean, checked_value: true, unchecked_value: false, :input_html => { onchange: 'change();' }
-    = f.input :post, as: :boolean, checked_value: true, unchecked_value: false, :input_html => { onchange: 'change();' }
-    = f.input :exam, as: :boolean, checked_value: true, unchecked_value: false, :input_html => { onchange: 'change();' }
+    %fieldset.radio_theme
+      %legend= t(".theme")
+      = f.collection_radio_buttons :theme, [['blue', t(".theme_blue")] ,['high_contrast', t(".theme_high_contrast")]], :first, :last
+    %fieldset
+      %legend= t(".notification_mail")
+      = f.input :message, as: :boolean, checked_value: true, unchecked_value: false, :input_html => { onchange: 'change(this)' }
+      = f.input :post, as: :boolean, checked_value: true, unchecked_value: false, :input_html => { onchange: 'change(this);' }
+      = f.input :exam, as: :boolean, checked_value: true, unchecked_value: false, :input_html => { onchange: 'change(this);' }
 
 
 :javascript
 
+  $('#main_content_accesskey').html("#{t(".configure")}");
 
-  function change() { 
-    if ( !confirm("#{I18n.t(:message_confirm_user)}"))
+  function change(elem) { 
+    if ( !confirm("#{I18n.t(:message_confirm_user)}")){
+      if ($(elem).is(':checked')){
+        $(elem).prop('checked', false);
+      }else{
+        $(elem).prop('checked', true);
+      }  
       return false;
+    }  
     
     $('form#configure_form').serialize_and_submit({});
   }
+
+  $('input[type=radio]').on('change', function(event) {
+
+    if (!confirm("#{I18n.t(:message_confirm_user)}")){
+      var elem_checked;
+      radios_theme = $('.radio_theme').find('input');
+      radios_theme.each(function(){
+        if(!$(this).is(':checked')){
+          elem_checked = this;
+        }
+      });
+      $(elem_checked).prop('checked', true);
+      return false;
+    }  
+    $('form#configure_form').serialize_and_submit({});
+    location.reload();
+  });

@@ -93,7 +93,7 @@ class MessagesController < ApplicationController
         @message.allocation_tag_id = @allocation_tag_id
 
         raise "error" if params[:message][:contacts].empty?
-        emails = User.joins('LEFT JOIN notification_mails AS nmail ON users.id = nmail.user_id')
+        emails = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
                       .where("(nmail.message IS NULL OR nmail.message=TRUE)")
                       .where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
 
