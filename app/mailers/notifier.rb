@@ -4,7 +4,6 @@ class Notifier < ActionMailer::Base
   default YAML::load(File.open('config/mailer.yml'))['default_sender']
 
   def send_mail(recipients, subject, message, files, from = nil)
-  
     files.each do |file|
       attachments[file.attachment_file_name] = File.read(file.attachment.path)
     end
@@ -46,6 +45,16 @@ class Notifier < ActionMailer::Base
     @lesson = lessson
     mail(to: @lesson.user.email,
          subject: t('notifier.imported_from_private.subject'))
+  end
+
+  def post(recipients, subject, post_id, info, discussion_name)
+    @post = Post.find(post_id)
+    @old_post = Post.find(@post.parent_id)
+    @user = User.find(@post.user_id)
+    @info = info
+    @discussion_name = discussion_name
+
+    mail(to: recipients, subject: "[SOLAR] #{subject}")
   end
 
 end

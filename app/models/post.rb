@@ -162,34 +162,18 @@ class Post < ActiveRecord::Base
 
   def send_mail(at)
     post = Post.find(self.parent_id)
-    user = User.find(post.user_id)
-    configure_mail_post = PersonalConfiguration.where(:user_id => post.user_id).pluck(:post).first
-    if configure_mail_post.nil? || configure_mail_post
+    
+    unless post.user_id == self.user_id
+      configure_mail_post = PersonalConfiguration.where(:user_id => post.user_id).pluck(:post).first
+      if configure_mail_post.nil? || configure_mail_post
+        subject = "#{I18n.t('posts.mail.subject')}"
+        Thread.new do
+          Job.send_mass_email_post([user.email], subject, self.id, at.info, discussion.name)
+        end
 
-      subject = "#{I18n.t('posts.mail.subject')}"
-      msg = self.template_mail(user, at.info, post)
-      Thread.new do
-        Job.send_mass_email([user.email], subject, msg)
-      end
-
-    end  
-
-  end 
-
-  def template_mail(user, info, post)
-    %{
-      <b>#{info} </b><br/>
-      <br/>
-      #{discussion.name}
-      <br/>
-      ________________________________________________________________________<br/>
-      #{I18n.t('posts.mail.text')}
-      <br/>
-      #{user.name}: #{self.content}   
-      ________________________________________________________________________<br/>
-      #{I18n.t('posts.mail.text_resp')} #{post.content}
-    }
-  end 
+      end  
+    end
+  end  
 
   private
 
