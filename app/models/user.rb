@@ -55,8 +55,6 @@ class User < ActiveRecord::Base
 
   before_save :set_previous, if: '(!new_record? && ((username_changed? && !previous_username.blank?) || email_changed? && !previous_email.blank?)) && (!synchronizing)'
 
-  before_validation :verify_if_login_has_invalid_character
-
   @has_special_needs
 
   attr_accessor :login, :has_special_needs, :synchronizing
@@ -67,17 +65,15 @@ class User < ActiveRecord::Base
   validates :nick, presence: true, length: { within: 3..34 }
   validates :birthdate, presence: true
   validates :username, presence: true, length: { maximum: 20 }, uniqueness: {case_sensitive: false}
-  validates :username, length: { minimum: 3 }, unless: Proc.new{ |a| !a.on_blacklist? && a.integrated? && (a.synchronizing.nil? || a.synchronizing) }
+  validates :username, length: { minimum: 3 }, format: { with: /\A[_.a-zA-Z0-9\-]+\Z/ }, unless: Proc.new{ |a| !a.on_blacklist? && a.integrated? && (a.synchronizing.nil? || a.synchronizing) }
 
   validates :password, presence: true, confirmation: true, length: { minimum: 6, maximum: 120 }, unless: Proc.new { |a| !a.encrypted_password.blank? || (a.integrated? && !a.on_blacklist?) }
   # validates :alternate_email, format: { with: email_format }, uniqueness: {case_sensitive: false}, unless: 'alternate_email.blank?'
-  validates :email, presence: true, unless: Proc.new { |a| (a.integrated && !a.on_blacklist?)}
+  validates :email, presence: true, format: { with: email_format }, unless: Proc.new { |a| (a.integrated && !a.on_blacklist?)}
 
   validates :email, uniqueness: {case_sensitive: false}, unless: Proc.new { |a| (a.integrated && !a.on_blacklist?) || a.email.blank?}
 
   validates :email, confirmation: true, if: "(email_changed? || new_record?) && !(integrated && !on_blacklist?)"
-
-  validates :email, format: { with: email_format }, unless: Proc.new { |a| a.email.blank?}
 
   validates :special_needs, presence: true, if: :has_special_needs?
 
@@ -169,11 +165,6 @@ class User < ActiveRecord::Base
     users = User.where(cpf: cpf_to_check) if new_record? || cpf_to_check != cpf_of_user
 
     errors.add(:cpf, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) unless users.nil? || users.empty?
-  end
-
-  def verify_if_login_has_invalid_character
-    pattern = /[^a-zA-Z0-9]/
-    errors.add(:username, I18n.t(:form_login_notice)) if pattern.match(username)
   end
 
   def inactive_message
@@ -649,8 +640,12 @@ class User < ActiveRecord::Base
       self.synchronizing = true
       ma_attributes.merge!({encrypted_password: encrypted_password}) if ma_attributes[:encrypted_password].blank? && ma_attributes[:password].blank?
       self.attributes = attributes.merge!(ma_attributes)
+
       raise "username in use #{ma_attributes}, can't replace" unless verify_column(self, 'username')
-      raise "email in use #{ma_attributes}, can't replace" unless verify_column(self, 'email')
+      unless email.blank?
+        raise "email in use #{ma_attributes}, can't replace" unless verify_column(self, 'email')
+      end
+
       set_previous
       save
       self.synchronizing = false
