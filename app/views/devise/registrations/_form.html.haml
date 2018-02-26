@@ -139,14 +139,6 @@
       } else {
         $("#warning_login").addClass("invisible");
       }
-
-      // var that = this;
-      // $(this).val(
-      //   $(that).val().replace(/[^a-zA-Z0-9@_]/g, function(){
-      //     $("#warning_login").removeClass("invisible");
-      //     return '';
-      //   })
-      // );
     });
 
     var options = $.extend($.datepicker.regional["#{I18n.locale.to_s.gsub('_', '-')}"]);
