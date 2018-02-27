@@ -40,10 +40,10 @@
                   = f.input :working_hours, required: true, as: :float, label: false, input_html: { style: 'width: 90px', value: @acu.try(:working_hours), min:0, max: @ac.max_working_hours, :'aria-label' => t(".working_hours"), placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@ac.max_working_hours.to_s ) }
         - if @can_evaluate && @in_time
           %td.center{headers: "evaluate" }
-            .edit_button= link_to content_tag(:i, nil, class: 'icon-write'), "#", onclick: 'edit_button(this)', class: "btn edit", :"data-tooltip" => t('.edit'), :'aria-label' => t(".edit")
+            .edit_button= link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: 'edit_button(this)', class: "btn edit", :"data-tooltip" => t('.edit'), :'aria-label' => t(".edit")
             .evaluation_buttons.invisible
-              = link_to content_tag(:i, nil, class: 'icon-checkmark'), "#", onclick: 'finish_evaluation(this)', class: 'btn btn_main', :"data-tooltip" => t('.save'), :'aria-label' => t(".save")
-              = link_to content_tag(:i, nil, class: 'icon-cross'), "#", onclick: 'cancel_button(this)', class: "btn btn_caution cancel_evaluation", :"data-tooltip" => t('.cancel'), :'aria-label' => t(".cancel")
+              = link_to content_tag(:i, nil, class: 'icon-checkmark'), "#void", onclick: 'finish_evaluation(this)', class: 'btn btn_main', :"data-tooltip" => t('.save'), :'aria-label' => t(".save")
+              = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: 'cancel_button(this)', class: "btn btn_caution cancel_evaluation", :"data-tooltip" => t('.cancel'), :'aria-label' => t(".cancel")
 
 = javascript_include_tag "tooltip"
 

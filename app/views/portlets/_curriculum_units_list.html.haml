@@ -25,7 +25,7 @@
 
         %td.center.course{headers: 'tb_course' }= [offer.c_code, offer.c_name].join(' - ') rescue ' - '
         %td.center.semester{headers: 'tb_semester' }= offer.s_name
-        %td.center.link{headers: 'tb_link' }= link_to content_tag(:i, nil, class: 'icon-arrow-right'), "#", onclick: link, class: 'nodecoration',:'data-tooltip'=> c_un, :'aria-label'=> c_un, onkeydown: 'click_on_keypress(event, this);'
+        %td.center.link{headers: 'tb_link' }= link_to content_tag(:i, nil, class: 'icon-arrow-right'), "#void", onclick: link, class: 'nodecoration',:'data-tooltip'=> c_un, :'aria-label'=> c_un, onkeydown: 'click_on_keypress(event, this);'
         %td.center.profiles{style: "display: none", headers: 'tb_search' }= offer.profiles
 
     .block_content_text_list.text_none.empty_message.hide_message

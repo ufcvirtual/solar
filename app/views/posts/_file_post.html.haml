@@ -18,9 +18,9 @@
 							%span.hide=t(:audio_suggestions)
 							%audio{ src: download_post_post_file_url(post, file), autoplay: false, controls: 'true', name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"} 
 								%track{ kind: "captions"}  
-							=  link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :"aria-label" => t('questions.questions.up_down')), "#", onclick: "down_speed(); return false"
+							=  link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :"aria-label" => t('questions.questions.up_down')), "#void", onclick: "down_speed(); return false"
 
-							=  link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :"aria-label" => t('questions.questions.up_speed')), "#", onclick: "up_speed(); return false"
+							=  link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :"aria-label" => t('questions.questions.up_speed')), "#void", onclick: "up_speed(); return false"
 							  
 				- elsif file.attachment_file_name.last(4).eql?('.aac') || file.attachment_file_name.last(4).eql?('.m4a') || file.attachment_content_type.index('video') || file.attachment_file_name.last(4).eql?('.mp4') || file.attachment_file_name.last(4).eql?('.m4v')	 
 					%span.hide=t(:audio_suggestions)

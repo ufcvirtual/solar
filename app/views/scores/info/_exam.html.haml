@@ -22,7 +22,7 @@
                 %td{align: "left", headers: "ex_eva_exa_evaluative"}
                   - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
                     - if is_user
-                      .title= link_to exam.name, '#', disabled: true, :'aria-label' => exam.name +  t(:disabled), class: 'disabled'
+                      .title= link_to exam.name, '#void', disabled: true, :'aria-label' => exam.name +  t(:disabled), class: 'disabled'
                     - elsif !@can_open
                       = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam', :'aria-label' => exam.name + t('fancybox.open')
                       %br
@@ -70,7 +70,7 @@
                 %td.center.grade{headers: "ex_eva_gra_evaluative"}= exam.grade
                 %td{headers: "ex_eva_btn_evaluative"}
                   - disabled = !(exam.grade.blank? && exam.closed == true && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation))
-                  %span.activity_grade= link_to (content_tag(:i, nil, class: 'icon-write')), "#", onclick: 'calculate_user_grade_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calculate_user_grade_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate') + t(:of) + exam.name
+                  %span.activity_grade= link_to (content_tag(:i, nil, class: 'icon-write')), "#void", onclick: 'calculate_user_grade_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calculate_user_grade_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate') + t(:of) + exam.name
                 %td.center{headers: 'ex_eva_af' }=raw t(exam.final_exam, scope: [:common_between_pages, :final_exam])
                 / %td.center=(exam.new_after_evaluation ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
@@ -96,7 +96,7 @@
                 %td{align: "left", headers: "ex_eva_exa_frequency"}
                   - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
                     - if is_user
-                      .title= link_to exam.name, '#', disabled: true, :'aria-label' => exam.name +  t(:disabled), class: 'disabled'
+                      .title= link_to exam.name, '#void', disabled: true, :'aria-label' => exam.name +  t(:disabled), class: 'disabled'
                     - elsif !@can_open
                       = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam', :'aria-label' => exam.name + t('fancybox.open')
                       %br
@@ -144,7 +144,7 @@
                 %td.center.wh{headers: "ex_eva_wh_frequency"}= exam.working_hours
                 %td.center{headers: "ex_eva_btn_frequency"}
                   - disabled = !(exam.grade.blank? && exam.closed == true && !['to_answer', 'not_finished', 'retake'].include?(exam.situation))
-                  %span.activity_grade= link_to (content_tag(:i, nil, class: 'icon-write', :'aria-hidden' => 'true')), "#", onclick: 'calculate_user_grade_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calculate_user_grade_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate') + t(:of) + exam.name
+                  %span.activity_grade= link_to (content_tag(:i, nil, class: 'icon-write', :'aria-hidden' => 'true')), "#void", onclick: 'calculate_user_grade_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calculate_user_grade_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate') + t(:of) + exam.name
                 %td.center{headers:'ex_freq_hours'}=raw t('common_between_pages.hours', hours: exam.max_working_hours)
                 %td.center{headers: "ex_eva_aft_frequency"}=(exam.new_after_evaluation == true ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
@@ -168,7 +168,7 @@
                 %td{align: "left", headers: "ex_not_exa"}
                   - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
                     - if is_user
-                      .title= link_to exam.name, '#', disabled: true, :'aria-label' => exam.name +  t(:disabled), class: 'disabled'
+                      .title= link_to exam.name, '#void', disabled: true, :'aria-label' => exam.name +  t(:disabled), class: 'disabled'
                     - elsif !@can_open
                       = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam', :'aria-label' => exam.name + t('fancybox.open')
                       %br
@@ -215,7 +215,7 @@
                 %td.center{headers: "ex_not_gra"}=exam.grade
                 %td.center.grade{headers: "ex_not_bla"}
                   - disabled = !(exam.grade.blank? && exam.closed == true && !['to_answer', 'not_finished', 'retake', 'not_answered'].include?(exam.situation))
-                  %span.activity_grade= link_to (content_tag(:i, nil, class: 'icon-write', :'aria-hidden' => 'true')), "#", onclick: 'calculate_user_grade_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calculate_user_grade_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate') + t(:of) + exam.name
+                  %span.activity_grade= link_to (content_tag(:i, nil, class: 'icon-write', :'aria-hidden' => 'true')), "#void", onclick: 'calculate_user_grade_exam(this)', :"data-tooltip" => t('exams.index.calculate'), :'data-url' => calculate_user_grade_exam_path(exam.academic_tool_id, user_id: @user.id), class: "btn #{disabled ? 'disabled' : ''}", disabled: disabled, onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('exams.index.calculate') + t(:of) + exam.name
                 %td.center{headers: "ex_not_aft"}=(exam.new_after_evaluation == true ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
         .block_content.block_content_text= t(:itens_not_found)

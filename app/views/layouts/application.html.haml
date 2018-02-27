@@ -39,7 +39,7 @@
             = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
           %ul#mysolar_top_options
             %li#mysolar_top_submenu_label.mysolar_top_submenu_label_regular.nav_menu
-              = link_to '#', {onclick: "mysolarTopSubmenuToggle();return false;", class: 'mysolar_top_link nav_item', id: 'mysolar_top_user_nick'} do
+              = link_to '#void', {onclick: "mysolarTopSubmenuToggle();return false;", class: 'mysolar_top_link nav_item', id: 'mysolar_top_user_nick'} do
                 = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", :'aria-hidden' => 'true'
                 = current_user.nick
             %li#server_clock_wrapper.nav_menu
@@ -132,9 +132,9 @@
               #flash_message{ class: name }
                 = content_tag(:span, msg, id: "flash_message_span")
                 - if @attribute.blank?
-                  = link_to content_tag(:i, nil, class: 'icon-cross'), "#", onclick: "erase_flash_messages(true)", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
+                  = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: "erase_flash_messages(true)", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
                 - else
-                  = link_to content_tag(:i, nil, class: 'icon-cross'), "#", onclick: "erase_flash_messages(true, "+@attribute.to_s+")", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
+                  = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: "erase_flash_messages(true, "+@attribute.to_s+")", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
           - name = active_tab[:breadcrumb].last[:name].gsub(".", "-") unless active_tab[:breadcrumb].last[:name].nil?
           #breadcrumb= raw show_breadcrumb
           - if is_curriculum_unit_selected?

@@ -7,17 +7,17 @@
 .ckb
   = f.label :raffle_order
   = f.input :raffle_order, as: :boolean, label: false
-  = link_to (image_tag "#{f.object.raffle_order ? 'released' : 'rejected'}.png"), "#", onclick: 'change(this)', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => (f.object.raffle_order ? t('.raffle') : t('.not_raffle')), :'data-id' => 'exam_raffle_order', :'data-active' => t('.raffle'), :'data-not-active' => t('.not_raffle')
+  = link_to (image_tag "#{f.object.raffle_order ? 'released' : 'rejected'}.png"), "#void", onclick: 'change(this)', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => (f.object.raffle_order ? t('.raffle') : t('.not_raffle')), :'data-id' => 'exam_raffle_order', :'data-active' => t('.raffle'), :'data-not-active' => t('.not_raffle')
   - if @exam.errors[:raffle_order].any?
     %span.field_with_errors.error= @exam.errors[:raffle_order].first
 / .ckb
 /   = f.label :auto_correction
 /   = f.input :auto_correction, as: :boolean, label: false
-/   = link_to (image_tag "#{f.object.auto_correction ? 'released' : 'rejected'}.png"), "#", onclick: 'change(this)', :'data-tooltip' => (f.object.auto_correction ? t('lessons.index.released') : t('lessons.index.draft')), :'data-id' => 'exam_auto_correction'
+/   = link_to (image_tag "#{f.object.auto_correction ? 'released' : 'rejected'}.png"), "#void", onclick: 'change(this)', :'data-tooltip' => (f.object.auto_correction ? t('lessons.index.released') : t('lessons.index.draft')), :'data-id' => 'exam_auto_correction'
 .ckb
   = f.label :block_content
   = f.input :block_content, as: :boolean, label: false
-  = link_to (image_tag "#{f.object.block_content ? 'released' : 'rejected'}.png"), "#", onclick: 'change(this)', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => (f.object.block_content ? t('.block') : t('.dont_block')), :'data-id' => 'exam_block_content', :'data-active' => t('.block'), :'data-not-active' => t('.dont_block')
+  = link_to (image_tag "#{f.object.block_content ? 'released' : 'rejected'}.png"), "#void", onclick: 'change(this)', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => (f.object.block_content ? t('.block') : t('.dont_block')), :'data-id' => 'exam_block_content', :'data-active' => t('.block'), :'data-not-active' => t('.dont_block')
   - if @exam.errors[:block_content].any?
     %span.field_with_errors.error= @exam.errors[:block_content].first
 .ckb
@@ -29,19 +29,19 @@
 .ckb
   = f.label :result_email
   = f.input :result_email, as: :boolean, label: false
-  = link_to (image_tag "#{f.object.result_email ? 'released' : 'rejected'}.png"), "#", onclick: 'change(this)', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => (f.object.result_email ? t('.send_mail') : t('.dont_send_mail')), :'data-id' => 'exam_result_email', :'data-active' => t('.send_mail'), :'data-not-active' => t('.dont_send_mail')
+  = link_to (image_tag "#{f.object.result_email ? 'released' : 'rejected'}.png"), "#void", onclick: 'change(this)', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => (f.object.result_email ? t('.send_mail') : t('.dont_send_mail')), :'data-id' => 'exam_result_email', :'data-active' => t('.send_mail'), :'data-not-active' => t('.dont_send_mail')
   - if @exam.errors[:result_email].any?
     %span.field_with_errors.error= @exam.errors[:result_email].first
 .ckb
   = f.label :uninterrupted
   = f.input :uninterrupted, as: :boolean, label: false
-  = link_to (image_tag "#{f.object.uninterrupted ? 'released' : 'rejected'}.png"), "#", onclick: 'change(this)', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => (f.object.uninterrupted ? t('.cant_interrupt') : t('.can_interrupt')), :'data-id' => 'uninterrupted', :'data-active' => t('.cant_interrupt'), :'data-not-active' => t('.can_interrupt')
+  = link_to (image_tag "#{f.object.uninterrupted ? 'released' : 'rejected'}.png"), "#void", onclick: 'change(this)', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => (f.object.uninterrupted ? t('.cant_interrupt') : t('.can_interrupt')), :'data-id' => 'uninterrupted', :'data-active' => t('.cant_interrupt'), :'data-not-active' => t('.can_interrupt')
   - if @exam.errors[:uninterrupted].any?
     %span.field_with_errors.error= @exam.errors[:uninterrupted].first
 .ckb
   = f.label :controlled
   = f.input :controlled, as: :boolean, label: false
-  = link_to (image_tag "#{f.object.controlled ? 'released' : 'rejected'}.png"), "#", onclick: 'change(this, ["#without_control", "#with_control", "#controlled_step"])', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => (f.object.controlled ? t('.environment_controlled') : t('.environment_not_controlled')), :'data-id' => 'controlled', :'data-active' => t('.environment_controlled'), :'data-not-active' => t('.environment_not_controlled')
+  = link_to (image_tag "#{f.object.controlled ? 'released' : 'rejected'}.png"), "#void", onclick: 'change(this, ["#without_control", "#with_control", "#controlled_step"])', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => (f.object.controlled ? t('.environment_controlled') : t('.environment_not_controlled')), :'data-id' => 'controlled', :'data-active' => t('.environment_controlled'), :'data-not-active' => t('.environment_not_controlled')
   - if @exam.errors[:controlled].any?
     %span.field_with_errors.error= @exam.errors[:controlled].first
 

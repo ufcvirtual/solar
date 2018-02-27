@@ -20,8 +20,8 @@
         %td.text_none{ colspan: 10 }= t('.no_question')
 
 .right_buttons
-  = link_to t('.back'), "#", onclick: 'back_to_list()', class: 'btn', alt: t('.back')
-  = link_to t('.import'), "#", onclick: 'import_selected_questions()', class: 'btn btn_main', alt: t('.import')
+  = link_to t('.back'), "#void", onclick: 'back_to_list()', class: 'btn', alt: t('.back')
+  = link_to t('.import'), "#void", onclick: 'import_selected_questions()', class: 'btn btn_main', alt: t('.import')
 
 :javascript
   function down(icon){

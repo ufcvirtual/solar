@@ -22,7 +22,7 @@
             - if lesson.address.blank?
               = lesson.name
             - else
-              = link_to lesson.name, "#", onclick: 'open_lesson(this)', :'data-url' => edition_lesson_url(lesson, allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id]), class: 'link_content lesson', :'data-fancybox-type' => 'iframe'
+              = link_to lesson.name, "#void", onclick: 'open_lesson(this)', :'data-url' => edition_lesson_url(lesson, allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id]), class: 'link_content lesson', :'data-fancybox-type' => 'iframe'
             - if lesson.description
               .description
                 .minimun
@@ -42,4 +42,4 @@
 
         %td.center{ style: 'width: 70px' }
           - new_status, l_img, l_t = lesson.is_draft? ? [Lesson_Approved, 'rejected.png', t('lessons.list.draft')] : [Lesson_Test, 'released.png', t('lessons.list.released')]
-          = link_to image_tag(l_img), '#', class: 'change_lesson_status', :"data-link-update" => change_status_lesson_path(id: lesson.id, status: new_status, allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => l_t, :"data-module-id" => lesson_module.id
+          = link_to image_tag(l_img), '#void', class: 'change_lesson_status', :"data-link-update" => change_status_lesson_path(id: lesson.id, status: new_status, allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => l_t, :"data-module-id" => lesson_module.id

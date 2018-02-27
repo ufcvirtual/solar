@@ -33,7 +33,7 @@
                   %td= l(a.updated_at)
                   - if @can_change
                     %td.right_buttons.manage
-                      = link_to content_tag(:i, nil, class: 'icon-edit'), "#", onclick: 'manage(this)', :"show-link" => admin_allocation_path(a), :"edit-link" => edit_admin_allocation_path(a), class:  'btn btn_manage_allocation'
+                      = link_to content_tag(:i, nil, class: 'icon-edit'), "#void", onclick: 'manage(this)', :"show-link" => admin_allocation_path(a), :"edit-link" => edit_admin_allocation_path(a), class:  'btn btn_manage_allocation'
   - else
     .block_content_text.block_content_text_list.text_none= t('.no_data')
 

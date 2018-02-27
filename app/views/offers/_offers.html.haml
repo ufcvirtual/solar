@@ -15,4 +15,4 @@
       - else
         %td= [l(offer.period_schedule.start_date, format: :normal), l(offer.period_schedule.end_date, format: :normal)].join(" - ")
 
-      %td= link_to (content_tag(:i, nil, class: 'icon-edit')), "#", onclick: "edit_offer(this); return false", class: "btn link_edit_offer", :'data-tooltip' => t("offers.list.offer_edit"), :"data-semester-name" => offer.semester.name, :"data-link-edit" => edit_offer_path(offer, type_id: @type_id)
+      %td= link_to (content_tag(:i, nil, class: 'icon-edit')), "#void", onclick: "edit_offer(this); return false", class: "btn link_edit_offer", :'data-tooltip' => t("offers.list.offer_edit"), :"data-semester-name" => offer.semester.name, :"data-link-edit" => edit_offer_path(offer, type_id: @type_id)
