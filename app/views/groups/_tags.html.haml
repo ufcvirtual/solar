@@ -10,6 +10,6 @@
       %div{id: "dropdown", class: "dropdown dropdown-tip change_tool_dropdown_#{group.id}_#{tool_id}"}
         %ul.dropdown-menu
           - if paths[:unbind]
-            %li= link_to t('.unbind'), '#', class: 'unbind', :"data-link" => paths[:unbind].gsub('param_id', group.id.to_s)
+            %li= link_to t('.unbind'), '#void', class: 'unbind', :"data-link" => paths[:unbind].gsub('param_id', group.id.to_s)
           - if (!tool.respond_to?(:can_remove_groups?) || tool.can_remove_groups?([group]))
-            %li= link_to t('.remove'), '#', class: 'remove', :"data-link" => paths[:remove].gsub('param_id', group.id.to_s)
+            %li= link_to t('.remove'), '#void', class: 'remove', :"data-link" => paths[:remove].gsub('param_id', group.id.to_s)
