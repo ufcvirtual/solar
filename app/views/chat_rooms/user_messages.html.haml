@@ -31,7 +31,7 @@
           = f.input :grade, required: true, as: :float, :step => 0.01, label: t(".grade"), input_html: { value: @acu.try(:grade), min:0, max:10 } if @academic_allocation.evaluative
           = f.input :working_hours, required: true, as: :float, label: t(".frequency") + automatic, input_html: { value: @acu.try(:working_hours), min:0, max: @academic_allocation.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@academic_allocation.max_working_hours.to_s ) } if @academic_allocation.frequency
           
-          = link_to t(:save), "#", onclick: 'finish_evaluation(this)', class: 'btn btn_main'
+          = link_to t(:save), "#void", onclick: 'finish_evaluation(this)', class: 'btn btn_main'
 
   - if @back
     = link_to t(:back), messages_chat_room_path(@chat_room), class: 'btn back_chat_history'

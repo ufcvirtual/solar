@@ -5,7 +5,7 @@
   .block_title
     %h2= t(".chats")
     - if can? :tool_management, Edition, {on: @allocation_tags_ids}
-      .tool_managmenet_link= link_to t('editions.evaluative_tools.chats_call'), "#", onclick: 'call_tool_management(this)', :'data-link' => chat_tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids)
+      .tool_managmenet_link= link_to t('editions.evaluative_tools.chats_call'), "#void", onclick: 'call_tool_management(this)', :'data-link' => chat_tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids)
 
   .block_content_toolbar
     .block_toolbar_left.btn-group

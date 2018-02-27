@@ -16,7 +16,7 @@
             = label_tag :message_to, t('.message_to')
           .input.align-right
             = text_field_tag :message_to, [@reply_to].flatten.compact.map { |c| c[:resume] }.join(', '), disabled: true
-            = link_to t('.add_contacts'), '#', :'aria-label' => (t('.add_contacts') + t('fancybox.open')), onkeydown: 'click_on_keypress(event, this);', class: 'message_new_textbox', :'data-url' => contacts_messages_path(allocation_tag_id: @allocation_tag_id, reply_to: 'reply_params'), onclick: 'open_contacts_selection(this);', id: '_add_contacts'
+            = link_to t('.add_contacts'), '#void', :'aria-label' => (t('.add_contacts') + t('fancybox.open')), onkeydown: 'click_on_keypress(event, this);', class: 'message_new_textbox', :'data-url' => contacts_messages_path(allocation_tag_id: @allocation_tag_id, reply_to: 'reply_params'), onclick: 'open_contacts_selection(this);', id: '_add_contacts'
 
         .message_new_text_to
           .label.align-left= label_tag :subject, t('.subject'), for: 'message_subject', id: 'subject'
@@ -55,7 +55,7 @@
 
     #div_new_message
       .visuallyhidden= label_tag :content, t('.content'), id: 'content'
-      .visuallyhidden= link_to t('.go_to_ckeditor'), '#', onclick: "CKEDITOR.instances['message_content'].focus();", onkeydown: "CKEDITOR.instances['message_content'].focus();"
+      .visuallyhidden= link_to t('.go_to_ckeditor'), '#void', onclick: "CKEDITOR.instances['message_content'].focus();", onkeydown: "CKEDITOR.instances['message_content'].focus();"
       = f.input :content, as: :ckeditor, label: false
 
     = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'message_content', number: '2', field: t('.content_speech')}

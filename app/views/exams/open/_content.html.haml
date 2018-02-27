@@ -16,10 +16,10 @@
         %ul.question_texts  
           %li#question_text    
             .legend 
-              = link_to('#', onclick: 'show_text(this)', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
+              = link_to('#void', onclick: 'show_text(this)', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
                 =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
                 =t('questions.questions.associated_text')
-              = link_to('#', onclick: 'show_text(this)', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
+              = link_to('#void', onclick: 'show_text(this)', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
                 =content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.hide_alt'), :'aria-hidden' => 'true')
                 =t('questions.questions.associated_text')
               .q_text
@@ -55,16 +55,16 @@
                 .audio
                   %audio{ src: q_audio.audio, autoplay: false, controls: true, name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' => (q_audio.description.blank? ? '' : t('exams.open.audio', alt: q_audio.description))}
                     %p= t("errors.messages.audio")
-                  = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), "#", onclick: 'down_speed()'
-                  = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), "#", onclick: 'up_speed()'
+                  = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
+                  = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'
                 .legend{class: class_.blank? ? '' : 'legend-description'}
                   - unless q_audio.description.blank?
                     %p{:'aria-hidden' => 'true'}= q_audio.description
                   - unless q_audio.audio_description.blank?  
-                    = link_to('#', onclick: 'show_audio_description(this)', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
+                    = link_to('#void', onclick: 'show_audio_description(this)', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
                       =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
                       =t('questions.questions.show')
-                    = link_to('#', onclick: 'show_audio_description(this)', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
+                    = link_to('#void', onclick: 'show_audio_description(this)', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
                       =content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.hide_alt'), :'aria-hidden' => 'true')
                       =t('questions.questions.show')
 

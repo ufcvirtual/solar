@@ -4,9 +4,9 @@
   - if lesson.closed?
     
     - if !@not_only_student_profile
-      = (@not_offer_area ? (link_to lesson.name + closed, "#", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, onkeydown: 'click_on_keypress(event, this);') : link_to(lesson.name + closed, '#', disabled: true, class: 'disabled', :'aria-label' => lesson.name + closed + t(:disabled)))
+      = (@not_offer_area ? (link_to lesson.name + closed, "#void", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, onkeydown: 'click_on_keypress(event, this);') : link_to(lesson.name + closed, '#', disabled: true, class: 'disabled', :'aria-label' => lesson.name + closed + t(:disabled)))
     -else
-      = (link_to lesson.name + closed, "#", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, onkeydown: 'click_on_keypress(event, this);')
+      = (link_to lesson.name + closed, "#void", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, onkeydown: 'click_on_keypress(event, this);')
       
   - else
     - unless lesson.address.blank?
@@ -22,9 +22,9 @@
       - text << lesson.name
       - text << t('fancybox.open')
 
-      = link_to lesson.name, "#", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, :'aria-label' => text.join(' '), onkeydown: 'click_on_keypress(event, this);'
+      = link_to lesson.name, "#void", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, :'aria-label' => text.join(' '), onkeydown: 'click_on_keypress(event, this);'
     - else
-      = link_to(lesson.name, '#', disabled: true)
+      = link_to(lesson.name, '#void', disabled: true)
       .test_lesson= "(#{ (lesson.is_file? ? t(:lesson_without_initial_file) : t(:lesson_without_url)) })"
 
 %td{ width: '30%', headers: "period_#{lesson.lesson_module_id}" }
@@ -36,7 +36,7 @@
 - notes_txt = no_notes ? t('.no_note') : t('.notes', count: notes.count)
 - notes_alt = no_notes ? t('.no_note_alt', lesson: lesson.name) : t('.notes_alt', count: notes.count, lesson: lesson.name)
 %td{ style: 'width: 10%; text-align: center', headers: "notes_#{lesson.lesson_module_id}" }
-  = link_to('#', class: "notes fancybox.ajax",:'data-link' => lesson_notes_path(lesson.id), :'data-tooltip' => notes_txt, onclick: 'open_lesson_notes(this)', :'aria-label' => notes_alt + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);') do |l|
+  = link_to('#void', class: "notes fancybox.ajax",:'data-link' => lesson_notes_path(lesson.id), :'data-tooltip' => notes_txt, onclick: 'open_lesson_notes(this)', :'aria-label' => notes_alt + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);') do |l|
     %i.icon-book2{:'aria-hidden' => 'true'}
     - unless no_notes
       %span.count_icon{:'aria-hidden' => 'true'}= notes.count

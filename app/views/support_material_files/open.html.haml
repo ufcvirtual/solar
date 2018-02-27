@@ -6,8 +6,8 @@
           %span.hide=t(:audio_suggestions)
           %audio{ src: @file.path, autoplay: false, controls: 'true', name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"} 
             %track{ kind: "captions"}
-          = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :"aria-label" => t('questions.questions.up_down')), "#", onclick: 'down_speed()'
-          = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :"aria-label" => t('questions.questions.up_speed')), "#", onclick: 'up_speed()'     
+          = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :"aria-label" => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
+          = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :"aria-label" => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'     
       
     - elsif @file.is_file? && SupportMaterialFile.verify_file_type(@file.attachment_file_name)
       %span.hide=t(:audio_suggestions)

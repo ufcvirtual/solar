@@ -23,14 +23,14 @@
                 %td= check_box_tag("c_#{lmodule.id}_#{lesson.id}", lesson.id, false, { class: 'cbx_value' })
                 %td= lesson.name
                 %td= lesson.type_lesson.zero? ? t('lessons.new.archive') : t('lessons.new.link')
-                %td= link_to content_tag(:i, nil, class: 'icon-eye'), "#", onclick: 'open_lesson(this)', :'data-tooltip' => t('.preview_tooltip')
+                %td= link_to content_tag(:i, nil, class: 'icon-eye'), "#void", onclick: 'open_lesson(this)', :'data-tooltip' => t('.preview_tooltip')
       - else
         .block_content_text_list.text_none= t('.no_lesson')
   - else
     .block_content.block_content_text= t(:lesson_message)
 
 %span.add_lesson
-  = link_to t('.add'), "#", onclick: 'add_lessons()', class: 'btn btn_main', alt: t('.add')
+  = link_to t('.add'), "#void", onclick: 'add_lessons()', class: 'btn btn_main', alt: t('.add')
 
 = javascript_include_tag 'tooltip'
 

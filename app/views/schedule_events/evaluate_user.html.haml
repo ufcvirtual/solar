@@ -32,7 +32,7 @@
           - if @ac.frequency
             - automatic = "\n(" + (@ac.frequency_automatic && !@acu.try(:evaluated_by_responsible) ? strip_tags(t("common_between_pages.frequency.a")) : t("common_between_pages.frequency.d")) + ")"
             = f.input :working_hours, required: true, as: :float, label: t(".frequency") + automatic, input_html: { value: @acu.try(:working_hours), min:0, max: @ac.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@ac.max_working_hours.to_s ) } 
-          %span= link_to t(:save), "#", onclick: 'finish_evaluation(this)', class: 'btn btn_main'
+          %span= link_to t(:save), "#void", onclick: 'finish_evaluation(this)', class: 'btn btn_main'
 
 :javascript
   function finish_evaluation(btn){

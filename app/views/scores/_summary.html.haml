@@ -1,9 +1,9 @@
 %div{ class: 'link_btns_scores' }
   = link_to t('scores.index.print_pdf'), summary_scores_path(report: true, format: :pdf), :target => "_blank", class: "btn", :'data-shortcut'=> t("shortcut.scores.code.pdf"), :'data-shortcut-name'=> t("shortcut.scores.name.pdf")
   - if can? :set_situation, Score, { on: @allocation_tag_id }
-    = link_to t('scores.index.set_situation'), '#', class: "btn", :'data-confirm' => (!@allocation_tag.situation_date.blank? && Date.today < @allocation_tag.situation_date && !@allocation_tag.setted_situation), onclick: 'set_situation(this);', :'data-url' => set_situation_scores_path, onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.scores.code.situation"), :'data-shortcut-name'=> t("shortcut.scores.name.situation")
+    = link_to t('scores.index.set_situation'), '#void', class: "btn", :'data-confirm' => (!@allocation_tag.situation_date.blank? && Date.today < @allocation_tag.situation_date && !@allocation_tag.setted_situation), onclick: 'set_situation(this);', :'data-url' => set_situation_scores_path, onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.scores.code.situation"), :'data-shortcut-name'=> t("shortcut.scores.name.situation")
     - if !@allocation_tag.situation_date.blank? && Date.today < @allocation_tag.situation_date
-      = link_to t('scores.index.remove_situation'), '#', class: "btn", onclick: 'remove_situation(this);', :'data-url' => remove_situation_scores_path,onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.scores.code.remove_situation"), :'data-shortcut-name'=> t("shortcut.scores.name.remove_situation")
+      = link_to t('scores.index.remove_situation'), '#void', class: "btn", onclick: 'remove_situation(this);', :'data-url' => remove_situation_scores_path,onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.scores.code.remove_situation"), :'data-shortcut-name'=> t("shortcut.scores.name.remove_situation")
 
 %br
 %ul.title-warning

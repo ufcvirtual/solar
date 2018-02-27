@@ -8,8 +8,8 @@
         .icons
           = link_to content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), "#", onclick: 'hide_or_show(this)'
           = link_to content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), "#", onclick: 'hide_or_show(this)'
-        = link_to t('editions.show_questions'), '#', class: 'participants show_questions', :'data-url' => exam_questions_path(exam_id: exam.id, allocation_tags_ids: @allocation_tags_ids), onclick: 'open_div(this, event); hide_or_show(this);', :'data-div' => '.questions_box', id: "list_questions_exam_#{exam.id}"
-        = link_to t('editions.hide_questions'), "#", onclick: 'hide_or_show(this)', class: 'invisible hide_questions'
+        = link_to t('editions.show_questions'), '#void', class: 'participants show_questions', :'data-url' => exam_questions_path(exam_id: exam.id, allocation_tags_ids: @allocation_tags_ids), onclick: 'open_div(this, event); hide_or_show(this);', :'data-div' => '.questions_box', id: "list_questions_exam_#{exam.id}"
+        = link_to t('editions.hide_questions'), "#void", onclick: 'hide_or_show(this)', class: 'invisible hide_questions'
       .block_content{class: 'invisible'}
         .block_content_toolbar
           .block_toolbar_left.btn-group
@@ -18,14 +18,14 @@
               %i.icon-arrow-down-triangle
             %div{ id: "dropdown_#{exam.id}", class: "dropdown dropdown-tip" }
               %ul.dropdown-menu
-                %li= link_to t('exams.list.new'), "#", onclick: 'new_question(this)', :'data-url' => new_exam_question_path(exam_id: exam.id, allocation_tags_ids: @allocation_tags_ids), class: "link_new_question", :'data-can' => !exam.status
-                %li= link_to t('exams.list.import'), "#", onclick: 'import_questions(this)', :'data-url' => import_steps_exam_questions_path(allocation_tags_ids: @allocation_tags_ids, exam_id: exam.id), :'data-tooltip' => t('exams.list.import'), class: "link_import_question", :'data-can' => !exam.status
+                %li= link_to t('exams.list.new'), "#void", onclick: 'new_question(this)', :'data-url' => new_exam_question_path(exam_id: exam.id, allocation_tags_ids: @allocation_tags_ids), class: "link_new_question", :'data-can' => !exam.status
+                %li= link_to t('exams.list.import'), "#void", onclick: 'import_questions(this)', :'data-url' => import_steps_exam_questions_path(allocation_tags_ids: @allocation_tags_ids, exam_id: exam.id), :'data-tooltip' => t('exams.list.import'), class: "link_import_question", :'data-can' => !exam.status
           .block_toolbar_right
             .btn-group{ class: "exam-#{exam.id}" }
-              = link_to (content_tag(:i, nil, class: 'icon-checkmark')), "#", onclick: 'change_status(this, ".list_exams")', class: 'btn change_status_ckb', :'data-url' => publish_exam_question_path(':id'), disabled: true, :"data-tooltip" => t('exam_questions.list.publish')
-              = link_to (content_tag(:i, nil, class: 'icon-popup')), "#", onclick: 'copy_question(this, ".list_exams")', class: 'btn btn_copy', :'data-link-to-copy' => copy_exam_question_path(':id'), disabled: true, :"data-tooltip" => t('questions.index.copy')
-              = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", onclick: 'edit_question(this)', class: 'btn btn_edit', :'data-link-to-edit' => edit_exam_question_path(':id'), :'data-edit-title' => t('exam_questions.list.edit'), disabled: true, :"data-tooltip" => t('exam_questions.list.edit')
-              = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", onclick: "delete_exam_questions(this, #{exam.id})", class: 'btn btn_del', :'data-link-delete' => exam_question_path(':id'), disabled: true, :'data-tooltip' => t('exam_questions.list.delete')
+              = link_to (content_tag(:i, nil, class: 'icon-checkmark')), "#void", onclick: 'change_status(this, ".list_exams")', class: 'btn change_status_ckb', :'data-url' => publish_exam_question_path(':id'), disabled: true, :"data-tooltip" => t('exam_questions.list.publish')
+              = link_to (content_tag(:i, nil, class: 'icon-popup')), "#void", onclick: 'copy_question(this, ".list_exams")', class: 'btn btn_copy', :'data-link-to-copy' => copy_exam_question_path(':id'), disabled: true, :"data-tooltip" => t('questions.index.copy')
+              = link_to (content_tag(:i, nil, class: 'icon-edit')), "#void", onclick: 'edit_question(this)', class: 'btn btn_edit', :'data-link-to-edit' => edit_exam_question_path(':id'), :'data-edit-title' => t('exam_questions.list.edit'), disabled: true, :"data-tooltip" => t('exam_questions.list.edit')
+              = link_to (content_tag(:i, nil, class: 'icon-trash')), "#void", onclick: "delete_exam_questions(this, #{exam.id})", class: 'btn btn_del', :'data-link-delete' => exam_question_path(':id'), disabled: true, :'data-tooltip' => t('exam_questions.list.delete')
         %div{ class: "questions_box list_questions_exam_#{exam.id} invisible" }
       %h2.show_hide
         .icons

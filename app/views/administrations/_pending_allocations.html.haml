@@ -21,7 +21,7 @@
         - else
           = t(".not_specified")
     %td
-      = link_to content_tag(:i, nil, class: 'icon-cross'), "#", onclick:  "accept_or_reject(this)", class: 'btn reject', :"data-link" => reject_allocation_path(allocation), :"data-tooltip" => t(".reject")
-      = link_to content_tag(:i, nil, class: 'icon-checkmark'), "#", onclick:  "accept_or_reject(this)", class: 'btn accept ', :"data-link" => accept_allocation_path(allocation), :"data-tooltip" => t(".accept")
+      = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick:  "accept_or_reject(this)", class: 'btn reject', :"data-link" => reject_allocation_path(allocation), :"data-tooltip" => t(".reject")
+      = link_to content_tag(:i, nil, class: 'icon-checkmark'), "#void", onclick:  "accept_or_reject(this)", class: 'btn accept ', :"data-link" => accept_allocation_path(allocation), :"data-tooltip" => t(".accept")
 
 = javascript_include_tag "tooltip"

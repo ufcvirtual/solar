@@ -11,8 +11,8 @@
     %td.start= text_field_tag "start_date_#{lesson.id}"
     %td.end= text_field_tag "end_date_#{lesson.id}"
     %td= check_box_tag "receive_updates_#{lesson.id}", true, false
-    %td= link_to content_tag(:i, nil, class: 'icon-eye'), "#", onclick: 'open_lesson(this);', :'data-tooltip' => t('lessons.import.list.preview_tooltip')
-    %td.icon= link_to content_tag(:i, nil, class: 'icon-trash'), "#", onclick: 'remove_lesson(this);', :'data-tooltip' => t('lessons.import.conclude.delete')
+    %td= link_to content_tag(:i, nil, class: 'icon-eye'), "#void", onclick: 'open_lesson(this);', :'data-tooltip' => t('lessons.import.list.preview_tooltip')
+    %td.icon= link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: 'remove_lesson(this);', :'data-tooltip' => t('lessons.import.conclude.delete')
 
 = javascript_include_tag 'tooltip'
 

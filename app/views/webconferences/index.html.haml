@@ -2,13 +2,13 @@
   - unless @webconferences.blank?
     %div.title-warning
       %div.information_title
-        = link_to raw(t('.information_title')), "#", onclick:'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
+        = link_to raw(t('.information_title')), "#void", onclick:'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
         %i.icon-arrow-down-triangle
         %i.icon-arrow-up-triangle.invisible
       %div.information.invisible{tabindex: 0}= raw t('.information')
     %div.title-warning
       %div.accessibility_title
-        = link_to raw(t('.accessibility_title')), "#", onclick: 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
+        = link_to raw(t('.accessibility_title')), "#void", onclick: 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
         %i.icon-arrow-down-triangle
         %i.icon-arrow-up-triangle.invisible
       %div.accessibility.invisible{tabindex: 0}= raw t('.accessibility')
@@ -37,9 +37,9 @@
           %tr.lines
             %td.webconference_access{ :'data-url' => access_webconference_path(webconference, at_id: webconference.at_id), headers: 'web_name' }
               - if webconference.on_going?
-                = link_to webconference.title, "#", onclick: 'access_webconference(this)', class: 'link_content', :'aria-label' => t('.access_web', web: webconference.title), onkeydown: 'click_on_keypress(event, this);'
+                = link_to webconference.title, "#void", onclick: 'access_webconference(this)', class: 'link_content', :'aria-label' => t('.access_web', web: webconference.title), onkeydown: 'click_on_keypress(event, this);'
               - else
-                .title= link_to webconference.title, '#', {disabled: true, class: 'disabled', :'aria-label' => t('.access_web', web: webconference.title) + t(:disabled)}
+                .title= link_to webconference.title, '#void', {disabled: true, class: 'disabled', :'aria-label' => t('.access_web', web: webconference.title) + t(:disabled)}
               .description
                 .enunciation_slice= webconference.description.truncate(180)
                 .enunciation_complete= webconference.description
@@ -88,16 +88,16 @@
             %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}"), headers: 'web_status'}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t(webconference.situation, scope: [:scores, :situation])
             %td.center{headers: 'web_users'}= webconference.meeting_info(current_user, webconference.at_id)
             - if disabled
-              %td.center{:'data-tooltip' => t('.recordings_disabled', web: webconference.title), headers: 'web_recording'}= link_to content_tag(:i, nil, class: 'icon-play disabled'), '#', disabled: true, onclick: 'return false', :'aria-label' => t('.recordings_disabled', web: webconference.title), class: 'btn'
+              %td.center{:'data-tooltip' => t('.recordings_disabled', web: webconference.title), headers: 'web_recording'}= link_to content_tag(:i, nil, class: 'icon-play disabled'), '#void', disabled: true, onclick: 'return false', :'aria-label' => t('.recordings_disabled', web: webconference.title), class: 'btn'
             - else
               %td.center{:'data-tooltip' => t('.recordings', web: webconference.title), headers: 'web_recording'}= link_to content_tag(:i, nil, class: 'icon-play'), get_record_webconference_path(webconference, at_id: webconference.at_id), class: "record btn", onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('.recordings', web: webconference.title) + t('fancybox.open')
 
             %td.center{headers:'web_evaluative'}=raw (webconference.final_exam == true) ? t(webconference.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(webconference.evaluative, scope: [:scores, :info])
             %td.center{headers:'web_frequency'}= raw t(webconference.frequency, scope: [:common_between_pages, :frequency], hours: webconference.max_working_hours, automatic: (!@is_student && webconference.frequency_automatic == true ? t("common_between_pages.frequency.a") : ""))
             - if @can_see_access
-              %td{headers: 'web_access',:'data-url' => list_access_webconference_path(webconference, at_id: webconference.at_id), :'data-tooltip' => t('webconferences.list.access') }= link_to content_tag(:i, nil, class: 'icon-users'), "#", onclick: 'list_access(this)', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('webconferences.list.access') + t('fancybox.open'), class: 'btn'
+              %td{headers: 'web_access',:'data-url' => list_access_webconference_path(webconference, at_id: webconference.at_id), :'data-tooltip' => t('webconferences.list.access') }= link_to content_tag(:i, nil, class: 'icon-users'), "#void", onclick: 'list_access(this)', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('webconferences.list.access') + t('fancybox.open'), class: 'btn'
             - if @is_student
-              %td.center{headers: "summary"}= link_to content_tag(:i, nil, class: 'icon-comment'), "#", onclick: 'open_summary(this)', :'data-url' => summary_webconferences_path(ac_id: webconference.ac_id, tool_id: webconference.id), class: "btn #{webconference.has_info ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt2', tool: webconference.title), :'aria-label' => t('comments.summary.title_alt2', tool: webconference.title) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+              %td.center{headers: "summary"}= link_to content_tag(:i, nil, class: 'icon-comment'), "#void", onclick: 'open_summary(this)', :'data-url' => summary_webconferences_path(ac_id: webconference.ac_id, tool_id: webconference.id), class: "btn #{webconference.has_info ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt2', tool: webconference.title), :'aria-label' => t('comments.summary.title_alt2', tool: webconference.title) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
   - else
     .block_content.block_content_text= t(:no_data, scope: [:webconferences, :list])
 

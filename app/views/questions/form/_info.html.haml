@@ -180,7 +180,7 @@
 
 .ckb
   = f.label t('questions.form.add_media'), id: 'add_media'
-  = link_to (image_tag "#{f.object.have_media? ? 'released' : 'rejected'}.png"), "#", onclick: 'change(this)', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => t('questions.form.add_media'), id: 'add_media_link'
+  = link_to (image_tag "#{f.object.have_media? ? 'released' : 'rejected'}.png"), "#void", onclick: 'change(this)', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => t('questions.form.add_media'), id: 'add_media_link'
 
 .form-actions.right_buttons
   = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(:cancel)
