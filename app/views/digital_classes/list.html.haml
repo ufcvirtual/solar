@@ -15,8 +15,8 @@
 
     .block_toolbar_right
       .btn-group
-        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit edit_digital_class', :"data-link-to-edit" => edit_digital_class_path(':id', allocation_tags_ids: @allocation_tags_ids), "data-edit-title" => t(".edit"), disabled: true, :"data-tooltip" => t(".edit")
-        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_digital_class', :"data-link-delete" => digital_class_path(':id', allocation_tags_ids: @allocation_tags_ids), :"data-link-to-list" => list_digital_classes_path(allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".delete")
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#void", class: 'btn btn_edit edit_digital_class', :"data-link-to-edit" => edit_digital_class_path(':id', allocation_tags_ids: @allocation_tags_ids), "data-edit-title" => t(".edit"), disabled: true, :"data-tooltip" => t(".edit")
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#void", class: 'btn btn_del delete_digital_class', :"data-link-delete" => digital_class_path(':id', allocation_tags_ids: @allocation_tags_ids), :"data-link-to-list" => list_digital_classes_path(allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".delete")
   - unless  @digital_class_lessons.blank?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
     %table.tb_list
