@@ -107,8 +107,10 @@ class GroupsController < ApplicationController
     @tool      = tool_model.find(params[:tool_id])
     @groups    = @tool.groups
 
-    @paths = { remove: remove_group_from_assignments_path(id: 'param_id', tool_id: @tool.id),
-              unbind: unbind_group_from_assignments_path(id: 'param_id', tool_id: @tool.id) }
+    #@paths = { remove: remove_group_from_assignments_path(id: 'param_id', tool_id: @tool.id),
+    #          unbind: unbind_group_from_assignments_path(id: 'param_id', tool_id: @tool.id) }
+    @paths = { remove: polymorphic_path([tool_model], id: 'param_id', tool_id: @tool.id, action: :remove_group_from),
+               unbind: polymorphic_path([tool_model], id: 'param_id', tool_id: @tool.id, action: :unbind_group_from)} 
   end
 
   # desvincular/remover/adicionar turmas para determinada ferramenta
@@ -139,13 +141,21 @@ class GroupsController < ApplicationController
               raise 'must_have_group' if tool.academic_allocations.size == academic_allocations.size
               raise 'cant_unbind' unless (!tool.respond_to?(:can_unbind?) || tool.can_unbind?(groups))
 
-              new_tool = tool_model.new(tool.attributes)
+              new_tool = tool.dup
+              new_tool.created_at = tool.attributes["created_at"]
+              new_tool.updated_at = tool.attributes["updated_at"]
+              #new_tool = tool_model.new(tool.attribute)
               new_tool.merge = true
               new_tool.save
               academic_allocations.update_all(academic_tool_id: new_tool.id)
 
               # se a ferramenta possuir um schedule, cria um igual para a nova
-              new_tool.update_attributes(schedule_id: Schedule.create(tool.schedule.attributes).id) if tool.respond_to?(:schedule)
+              if tool.respond_to?(:schedule)
+                schedule = tool.schedule.dup
+                schedule.save
+                new_tool.update_attributes(schedule_id: schedule.id)
+                #new_tool.update_attributes(schedule_id: Schedule.create(tool.schedule.attributes).id) if tool.respond_to?(:schedule)
+              end  
               # copia as dependencias pro novo objeto caso existam
               new_tool.copy_dependencies_from(tool) if new_tool.respond_to?(:copy_dependencies_from)
             when 'remove' # remover uma turma
