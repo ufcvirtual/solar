@@ -63,4 +63,13 @@ module V1::General
     end
   end
 
+  def get_group_code(code, name)
+    # groups created at MA before integration with SI3 have a name with
+    # a pattern, but after integration, all groups created at SI3 have
+    # another pattern.
+    # code must have to be equal from name if created by MA
+
+    return (name.include?(code.delete('_')) ? name : code)
+  end
+
 end
