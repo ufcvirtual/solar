@@ -7,6 +7,11 @@ module V1::AllocationsH
     cpfs = cpfs.reject { |c| c.empty? }
     cpfs.each do |cpf|
       professor = verify_or_create_user(cpf)
+
+      if professor.try(:id).blank?
+        Rails.logger.info "[API] [WARNING] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [404] message: Não foi possível cadastrar o professor de cpf #{cpf} - SI3 não enviou os dados"
+      end
+
       group.allocate_user(professor.id, 17)
     end
   end
@@ -62,6 +67,9 @@ module V1::AllocationsH
     [objects].flatten.map{|object| object.cancel_allocations(nil, params[:profile_id])} if params[:remove_previous_allocations]
 
     users.each do |user|
+      if(user.try(:id).blank? && params[:profile_id] != 4)
+        Rails.logger.info "[API] [WARNING] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [404] message: Não foi possível cadastrar o usuário de cpf #{user.try(:cpf)} - SI3 não enviou os dados"
+      end
       user.cancel_allocations(params[:profile_id]) if params[:remove_user_previous_allocations]
       if cancel
         object.cancel_allocations(user.id, params[:profile_id], nil, {}, raise_error)
@@ -82,7 +90,6 @@ module V1::AllocationsH
     else
       User.where(cpf: params[:cpfs])
     end
-
 
     users << import_users(params) if (params[:cpf].present? || params[:cpfs].present?) && params[:ma]
     users.compact.flatten
