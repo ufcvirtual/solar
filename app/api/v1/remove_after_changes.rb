@@ -52,13 +52,16 @@ module V1
             uc            = CurriculumUnit.find_by_code! load_group[:codDisciplina]
 
             begin
+              group = nil
               ActiveRecord::Base.transaction do
                 semester = verify_or_create_semester(semester_name, offer_period)
                 offer    = verify_or_create_offer(semester, {curriculum_unit_id: uc.id, course_id: course.id}, offer_period)
-                group    = verify_or_create_group({offer_id: offer.id, code: load_group[:code], name: load_group[:name], location_name: load_group[:location_name], location_office: load_group[:location_office]})
+                load_group[:code] = get_group_code(load_group[:code], load_group[:name]) unless load_group[:code].blank? || load_group[:name].blank?
 
-                allocate_professors(group, cpfs || [])
+                group    = verify_or_create_group({offer_id: offer.id, code: load_group[:code], name: load_group[:name], location_name: load_group[:location_name], location_office: load_group[:location_office]})
               end
+
+              allocate_professors(group, cpfs || [])
 
               { ok: :ok }
             end
