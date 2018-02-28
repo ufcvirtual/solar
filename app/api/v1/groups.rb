@@ -230,6 +230,9 @@ module V1
               unless params[:id].blank?
                 group = Group.find(params[:id])
               else
+
+                params[:code] = get_group_code(params[:code], params[:name]) unless params[:code].blank? || params[:name].blank?
+
                 group = Group.where(offer_id: params[:offer_id]).where("lower(name) = ?", params[:name].downcase) unless params[:name].blank?
                 group = Group.where(offer_id: params[:offer_id]).where("lower(code) = ?", params[:code].downcase) if group.blank? && !params[:code].blank?
                 raise "more than one group with code #{params[:code]} and name #{params[:name]}" if group.size > 1
@@ -240,6 +243,7 @@ module V1
               unless group.blank?
                 group.api = true
                 begin
+                  raise 'error' unless group.can_destroy?
                   group.destroy
                 rescue
                   group.status = false
