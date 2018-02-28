@@ -64,7 +64,7 @@ module V1
         delete ":type" do
           begin
             params[:group_code] = get_group_code(params[:group_code], params[:group_name]) unless params[:group_code].blank? || params[:group_name].blank?
-            allocate(params, cancel: true)
+            allocate(params,  true, params[:raise_error])
             { ok: :ok }
           end
         end
