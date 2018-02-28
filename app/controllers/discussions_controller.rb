@@ -1,6 +1,7 @@
 class DiscussionsController < ApplicationController
 
   include SysLog::Actions
+  include FilesHelper
 
   layout false, except: :index
 
@@ -108,6 +109,11 @@ class DiscussionsController < ApplicationController
 
   def show
     authorize! :show, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids]
+  end
+
+  def download
+    file = DiscussionEnunciationFile.find(params[:id])
+    download_file(:back, file.attachment.path, file.attachment_file_name)
   end
 
   private

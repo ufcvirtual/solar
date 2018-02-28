@@ -161,6 +161,7 @@ Solar::Application.routes.draw do
       get :summary , to: 'academic_allocation_users#summary', tool: 'Discussion'
     end
     put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Discussion', as: :evaluate, on: :member
+    get :download
     resources :posts, except: [:new, :edit] do
       collection do
         get "user/:user_id", to: :user_posts, as: :user
