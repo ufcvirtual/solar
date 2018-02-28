@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
 
   email_format = %r{\A((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?\z}i
 
-  validates :name, presence: true, length: { within: 6..90 }
+  validates :name, presence: true, length: { within: 6..200 }
   validates :nick, presence: true, length: { within: 3..34 }
   validates :birthdate, presence: true
   validates :username, presence: true, length: { maximum: 20 }, uniqueness: {case_sensitive: false}
@@ -633,7 +633,7 @@ class User < ActiveRecord::Base
     return nil if on_blacklist?
     return nil unless (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO['integrated'])
     user_data = User.connect_and_import_user(cpf) if user_data.nil?
-    unless user_data.nil? # if user exists
+    unless user_data.blank? # if user exists
       ma_attributes = User.user_ma_attributes(user_data)
       errors.clear # clear all errors, so the system can import and save user's data
 
@@ -657,6 +657,7 @@ class User < ActiveRecord::Base
 
       return true
     else
+      Rails.logger.info "\n[WARNING] [SYNCHRONIZE USER] [#{Time.now}] [USER CPF #{cpf}] message: not returned by si3"
       return nil
     end
   rescue => error
