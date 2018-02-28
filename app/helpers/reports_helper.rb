@@ -149,12 +149,12 @@ module ReportsHelper
           elsif question.type_question.to_i == Question::MULTIPLE
             checkbox(pdf, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_correctly')}) #{item.description}", item.marked_value, "0B610B")
           else
-            selected_correctly = I18n.t('exams.result_exam_user.true_item') if item.marked_value == "t"
-            selected_correctly = I18n.t('exams.result_exam_user.false_item') if item.marked_value == "f"
+            selected_correctly = I18n.t('exams.result_exam_user.true_item') if item.marked_value == true
+            selected_correctly = I18n.t('exams.result_exam_user.false_item') if item.marked_value == false
             dropdown(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_correctly')}) (#{selected_correctly}) #{item.description}", "0B610B")
           end
         else
-          if (item.correct_value == "f" && item.marked_value == "t")
+          if (item.correct_value == false && item.marked_value == true)
             if question.type_question.to_i == Question::UNIQUE
               bullet(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) #{item.description}", "E03838")
             elsif question.type_question.to_i == Question::MULTIPLE
@@ -162,7 +162,7 @@ module ReportsHelper
             else
               dropdown(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) (#{I18n.t('exams.result_exam_user.false_item')}) #{item.description}", "E03838")
             end
-          elsif item.correct_value == "t" && item.marked_value != "t"
+          elsif item.correct_value == true && item.marked_value != true
             if question.type_question.to_i == Question::UNIQUE
               bullet(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.correct_item')}) #{item.description}", "E03838")
             elsif question.type_question.to_i == Question::MULTIPLE
@@ -176,8 +176,8 @@ module ReportsHelper
             elsif question.type_question.to_i == Question::MULTIPLE
               checkbox(pdf, image_name, "#{arr_alf[number_question_response]}) #{item.description}", item.marked_value, "2900C2")
             else
-              selected_correctly = I18n.t('exams.result_exam_user.true_item') if item.correct_value == "t"
-              selected_correctly = I18n.t('exams.result_exam_user.false_item') if item.correct_value == "f"
+              selected_correctly = I18n.t('exams.result_exam_user.true_item') if item.correct_value == true
+              selected_correctly = I18n.t('exams.result_exam_user.false_item') if item.correct_value == false
               dropdown(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) (#{selected_correctly}) #{item.description}", "E03838")
             end
           end
@@ -510,7 +510,7 @@ module ReportsHelper
         if marked_value == nil
           value = ""
         else
-          value = marked_value == "t" ? I18n.t('questions.form.t_option') : I18n.t('questions.form.f_option')
+          value = marked_value == true ? I18n.t('questions.form.t_option') : I18n.t('questions.form.f_option')
         end
         pdf.text(value, align: :center, valign: :center)
       end
