@@ -5,9 +5,9 @@ class QuestionItem < ActiveRecord::Base
                     url: '/media/questions/items/:id_:normalized_item_audio_file_name'
 
   has_attached_file :item_image,
-                    styles: { small: '120x120'},
-                    path: ':rails_root/media/questions/items/:id_:basename.:extension',
-                    url: '/media/questions/items/:id_:basename.:extension'
+                    styles: { medium: '250x250>' },
+                    path: ':rails_root/media/questions/items/:id_:basename_:style.:extension',
+                    url: '/media/questions/items/:id_:basename_:style.:extension'
   belongs_to :question
 
   has_many :exam_responses_question_items

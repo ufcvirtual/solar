@@ -47,18 +47,18 @@ class BibliographiesController < ApplicationController
     (params[:bibliography][:type_bibliography].to_i == Bibliography::TYPE_FILE) ? create_many : create_one
 
     render json: { success: true, notice: t(:created, scope: [:bibliographies, :success]) }
-  rescue ActiveRecord::AssociationTypeMismatch
-    render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
-  rescue CanCan::AccessDenied
-    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
-  rescue
-    @allocation_tags_ids = @allocation_tags_ids.join(' ')
-    params[:success] = false
-    if @bibliography.nil? || @bibliography.is_file?
-      render json: { success: false, alert: t('bibliographies.error.file') }, status: :unprocessable_entity
-    else
-      render :new
-    end
+  # rescue ActiveRecord::AssociationTypeMismatch
+  #   render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
+  # rescue CanCan::AccessDenied
+  #   render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
+  # rescue
+  #   @allocation_tags_ids = @allocation_tags_ids.join(' ')
+  #   params[:success] = false
+  #   if @bibliography.nil? || @bibliography.is_file?
+  #     render json: { success: false, alert: t('bibliographies.error.file') }, status: :unprocessable_entity
+  #   else
+  #     render :new
+  #   end
   end
 
   # PUT /bibliographies/1

@@ -316,6 +316,7 @@ en_US:
         name: Title
         enunciation: Enunciation
         question: One Question
+        privacy: Privacy
       question_labels:
         name: Labels
       question_items:
@@ -762,6 +763,8 @@ en_US:
   access: Access Information
   legislation: Legislation
   channel: Channel
+  remove_photo: Remove Photo
+  remove_photo_msg: User profile photo has been removed
 
   enrollments:
     all: All
@@ -1219,6 +1222,7 @@ en_US:
       new: New discussion
       edit: Edit discussion
       groups: Groups
+      files: Files
     list:
       new: New Discussion
       edit: Edit Discussion
@@ -3888,13 +3892,14 @@ en_US:
       anull: " (Annulled question)"
       scores: '( %{score} scores )'
       number_question: 'Exam with %{no_question} questions'
-      image: "Image %{alt}."
+      image: "Image %{alt}. Click to enlarge."
       legend: " Legend: %{legend}"
       image_item: "Item %{item} image: %{alt}."
       audio: "Audio's legend: %{alt}."
       audio_item: "Item %{item} audio's."
       audio2: "Audio %{desc}."
       audio_text: "Text version of audio: %{desc}."
+      image_zoom: "Click to enlarge"
     finish:
       confirm: Are you sure you want to finish the exam?
     summary:
@@ -4009,6 +4014,7 @@ en_US:
   question:
     question: 'Question '
     enunciation: 'Enunciation '
+    privacy: 'Privacy '
     question_images:
       image: Image
       legend: Enunciation
@@ -4147,6 +4153,9 @@ en_US:
       media:
         add_images: Add Images
         add_audios: Add audio
+        add_more_images: Add more images
+        add_more_audios: Add more audios
+        associated_text: Associated text
     labels:
       labels: 'labels: '
     error:

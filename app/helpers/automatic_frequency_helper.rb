@@ -11,8 +11,16 @@ module AutomaticFrequencyHelper
   private
 
     def automatic_frequency(type, activity)
-      unless activity.nil?
-        academic_allocation_user = activity.class.to_s == "AcademicAllocationUser" ? activity : AcademicAllocationUser.find(activity.academic_allocation_user_id)
+      if !activity.nil?
+
+        if activity.class.to_s == "AcademicAllocationUser"
+          academic_allocation_user = activity
+        elsif !activity.academic_allocation_user_id.nil?
+          academic_allocation_user = AcademicAllocationUser.find(activity.academic_allocation_user_id)
+        else
+          return
+        end
+
         academic_allocation = AcademicAllocation.find(academic_allocation_user.academic_allocation_id)
 
         if academic_allocation.frequency_automatic && !academic_allocation_user.evaluated_by_responsible

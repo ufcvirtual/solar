@@ -83,10 +83,27 @@
     width: 390px;
     margin-bottom: 20px;
   }
+
+  .step-medias{
+    .duplicatable_nested_form{
+      border-bottom: solid;
+      border-color: #e8e8e8;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+    }
+
+    .input.string{
+      text-align: center;
+
+      a {padding: 15px;}
+    }
+  }
+
   .question_type{
     margin-left: -3px;
     margin-bottom: 10px;
   }
+
   #question_enunciation, #exam_question_question_enunciation{
     width: 510px;
   }
@@ -145,6 +162,11 @@
     }
 
     .duplicatable_nested_form {
+      width: 515px;
+      border-style: solid;
+      border-color: #e8e8e8;
+      border-radius: 20px;
+      padding: 10px 10px 20px 30px;
 
       a.remove_nested_fields_link{
         float: right;
@@ -155,9 +177,10 @@
       width: 316px;
       margin-left: 8px;
     }
-    .duplicatable_nested_form{
+/* .duplicatable_nested_form{
       padding-bottom: 20px;
     }
+*/
     .label, .edit{
       display: none;
     }
@@ -176,9 +199,10 @@
       width: 270px;
       height: 80px;
     }
-    .duplicatable_nested_form{
+/* .duplicatable_nested_form{
       width: 515px;
     }
+*/
     .image{
       margin-top: 10px;
       input[type='file'], .input.file{
@@ -618,5 +642,20 @@
     .question_media_button{
       margin-bottom: 0px;
     }
+  }
+}
+
+#question_audios_label, #question_images_label, #associated_text_label{
+  font-size: 12pt;
+  text-align: center;
+
+  background: #e8e8e8;
+  border-radius: 5px;
+  padding: 2px 0px 2px 0px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+
+  label {
+    text-align: center;
   }
 }

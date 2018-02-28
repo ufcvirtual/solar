@@ -4,7 +4,7 @@
 .visuallyhidden= label_tag :img_alt, '', id: 'exam_question_question_question_items_img_alt', onfocus: 'sendFocusAudioError("exam_question_question_attributes_question_items_attributes_", "_img_alt", 20)', tabindex: '0'
 
 .question_items
-  = f.label t('.answer'), class: 'label_answer'
+  / = f.label t('.answer'), class: 'label_answer'
   = render partial: 'questions/form/item', locals: { f: f }
   .input.string
     = f.add_nested_fields_link :question_items, t('.add'), class: 'btn add_options'
