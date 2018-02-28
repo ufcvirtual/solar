@@ -93,7 +93,7 @@ module V1
         tools = ( @ats.empty? ? [] : EvaluativeTool.count_tools(@ats.join(',')) )
 
         {
-          students: users,
+          students: users.sort,
           count_tools: tools,
           responsibles: (current_user.profiles_with_access_on("responsibles", "scores", @ats).any? ? AllocationTag.get_participants(@at.id, { responsibles: true, profiles: Profile.with_access_on("create", "posts").join(",") }, true) : [])
         }
