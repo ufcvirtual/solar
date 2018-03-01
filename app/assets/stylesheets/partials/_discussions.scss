@@ -22,9 +22,14 @@
   text-align: left;
 }
 
-.discussion_form .input.files #file {
-  padding: 10px;
-  margin-left: -150px;
+.discussion_form .input.files {
+  #file {
+    padding: 10px;
+    margin-left: -150px;
+  }
+  .new_file, .remove_file {
+    cursor: pointer;
+  }
 }
 
 .forum_post_content{
