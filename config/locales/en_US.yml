@@ -1221,6 +1221,8 @@ en_US:
       edit: Edit discussion
       groups: Groups
       files: Files
+      new_file: New file
+      remove_file: Remove file
     list:
       new: New Discussion
       edit: Edit Discussion
@@ -2179,7 +2181,7 @@ en_US:
       name: Name
       email: Email
       username: Username
-      cpf: CPF  
+      cpf: CPF
     informations:
       detailed: "Detailed Information"
       personal_data: "Personal Data"

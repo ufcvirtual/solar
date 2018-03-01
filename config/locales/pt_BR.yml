@@ -1407,6 +1407,8 @@ pt_BR:
       edit: Editar Fórum
       groups: Turmas
       files: Arquivos
+      new_file: "Novo Arquivo"
+      remove_file: "Remover Arquivo"
     list:
       new: Novo Fórum
       edit: Editar Fórum

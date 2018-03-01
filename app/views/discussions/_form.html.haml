@@ -16,13 +16,14 @@
 
       .input.files
         = f.label t(".files")
-        %i.icon-paperclip.new_file
-      
+        %a.new_file{href: "#void", :'aria-label' => t('.new_file')}
+          %i.icon-paperclip
+
       = f.simple_fields_for :enunciation_files do |files|
         .file_input
           = files.input :_destroy, as: :hidden, input_html: {value: 0, class: "destroy_input_file", :"data-file-id" => files.object.id}
           = files.input :attachment, label: false, input_html: {id: "fileupload"}
-      
+
       .input.list_files_to_send
         - @discussion.enunciation_files.each do |ef|
           - if ef.persisted?
@@ -30,7 +31,8 @@
               %label
               %span#file{:"data-file-id" => ef.id}
                 = ef.attachment_file_name
-                %i.icon-cross-square.warning.remove_file
+                %a.remove_file{:href => "#void", :'aril-label' => "#{t('.remove_file')} #{ef.attachment_file_name}"}
+                  %i.icon-cross-square.warning
         - if @files_errors
           %span.field_with_errors.error= @files_errors
 
@@ -39,7 +41,7 @@
 
       .form-actions.right_buttons
         = button_tag t(".cancel"), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(".cancel")
-        = button_tag t(".save"), :type => 'button', :onclick => "save_discussion()", class: 'btn btn_main btn_lightbox', alt: t(".save")  
+        = button_tag t(".save"), :type => 'button', :onclick => "save_discussion()", class: 'btn btn_main btn_lightbox', alt: t(".save")
 
 = javascript_include_tag "edition_discussions", 'ckeditor/init'
 
@@ -94,7 +96,7 @@
     });
 
 
-    $(".new_file").click(function(e){
+    $(".new_file").on("click keypress", function(e){
       e.preventDefault();
       add_new_file();
     });
@@ -114,5 +116,5 @@
         config.resize_enabled = false;
         config.autoParagraph = false;
     };
-    
+
   });
