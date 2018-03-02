@@ -137,7 +137,6 @@ class UsersController < ApplicationController
     elsif synchronizing_result # user synchronized
 
       if user.integrated && !user.on_blacklist? && !user.selfregistration
-        user.synchronize
         if user.id == current_user.id
           render json: { success: true, message: t("users.errors.ma.selfregistration").html_safe, type_message: 'alert' }
         else
