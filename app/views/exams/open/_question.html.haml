@@ -39,31 +39,31 @@
             = i.label :value, {for: "radio_exam_response_exam_responses_question_items_attributes_#{num_question}_value_value"}, class: class_label do
               %span= arr_alf[num_question]+') '
               = i.object.description.html_safe
-              - if i.object.item_image?
-                .zoom
-                  %p= t('exams.open.image_zoom')
-                  = raw image
-              - unless @pdf == 1
-                - if i.object.item_audio?  
-                  .audio.legend
-                    .audio
-                      %audio{ src: i.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
-                        %p= t("errors.messages.audio")
-                      = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
-                      = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'
-                      - audio_is = 1
-                    - if i.object.audio_description?
-                      .audio_description
-                        = link_to('#void', onclick: 'show_audio_description(this)', onkeydown: 'click_on_keypress(event, this);', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
-                          =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
-                          =t('questions.questions.show')
-                        = link_to('#void', onclick: 'show_audio_description(this)', onkeydown: 'click_on_keypress(event, this);', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
-                          =content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.hide_alt'), :'aria-hidden' => 'true')
-                          =t('questions.questions.show')
-                        .text= raw i.object.audio_description.html_safe
-              - else
-                %p=t('exams.open.audio_item', item: arr_alf[num_question]) + (i.object.audio_description.blank? ? '' : t('exams.open.audio_text', desc: i.object.audio_description))
-              = raw(coment)
+            - if i.object.item_image?
+              .zoom
+                %p= t('exams.open.image_zoom')
+                = raw image
+            - unless @pdf == 1
+              - if i.object.item_audio?
+                .audio.legend
+                  .audio
+                    %audio{ src: i.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
+                      %p= t("errors.messages.audio")
+                    = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
+                    = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'
+                    - audio_is = 1
+                  - if i.object.audio_description?
+                    .audio_description
+                      = link_to('#void', onclick: 'show_audio_description(this)', onkeydown: 'click_on_keypress(event, this);', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
+                        =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
+                        =t('questions.questions.show')
+                      = link_to('#void', onclick: 'show_audio_description(this)', onkeydown: 'click_on_keypress(event, this);', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
+                        =content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.hide_alt'), :'aria-hidden' => 'true')
+                        =t('questions.questions.show')
+                      .text= raw i.object.audio_description.html_safe
+            - else
+              %p=t('exams.open.audio_item', item: arr_alf[num_question]) + (i.object.audio_description.blank? ? '' : t('exams.open.audio_text', desc: i.object.audio_description))
+            = raw(coment)
 
         - if @disabled
           = t('exams.result_exam_user.itens_corrected') + arra_correted.join(", ")        
@@ -98,31 +98,31 @@
             = b.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
               = b.object.description.html_safe
-              - if b.object.item_image?
-                .zoom
-                  %p= t('exams.open.image_zoom')
-                  = raw image
-              - unless @pdf == 1
-                - if b.object.item_audio?  
-                  .audio.legend
-                    .audio
-                      %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
-                        %p= t("errors.messages.audio")
-                      = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
-                      = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'
-                      - audio_is = 1
-                    - if b.object.audio_description?
-                      .audio_description
-                        = link_to('#void', onclick: 'show_audio_description(this)', onkeydown: 'click_on_keypress(event, this);', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
-                          =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
-                          =t('questions.questions.show')
-                        = link_to('#void', onclick: 'show_audio_description(this)', onkeydown: 'click_on_keypress(event, this);', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
-                          =content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.hide_alt'), :'aria-hidden' => 'true')
-                          =t('questions.questions.show')
-                        .text=raw b.object.audio_description.html_safe
-              - else
-                %p=t('exams.open.audio_item', item: arr_alf[num_question]) + (b.object.audio_description.blank? ? '' : t('exams.open.audio_text', desc: b.object.audio_description))
-              = raw(coment)
+            - if b.object.item_image?
+              .zoom
+                %p= t('exams.open.image_zoom')
+                = raw image
+            - unless @pdf == 1
+              - if b.object.item_audio?
+                .audio.legend
+                  .audio
+                    %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
+                      %p= t("errors.messages.audio")
+                    = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
+                    = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'
+                    - audio_is = 1
+                  - if b.object.audio_description?
+                    .audio_description
+                      = link_to('#void', onclick: 'show_audio_description(this)', onkeydown: 'click_on_keypress(event, this);', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
+                        =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
+                        =t('questions.questions.show')
+                      = link_to('#void', onclick: 'show_audio_description(this)', onkeydown: 'click_on_keypress(event, this);', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
+                        =content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.hide_alt'), :'aria-hidden' => 'true')
+                        =t('questions.questions.show')
+                      .text=raw b.object.audio_description.html_safe
+            - else
+              %p=t('exams.open.audio_item', item: arr_alf[num_question]) + (b.object.audio_description.blank? ? '' : t('exams.open.audio_text', desc: b.object.audio_description))
+            = raw(coment)
 
         - if @disabled
           = t('exams.result_exam_user.itens_corrected') + arra_correted.join(", ")
@@ -164,31 +164,31 @@
             = b.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
               = b.object.description.html_safe
-              - if b.object.item_image?
-                .zoom
-                  %p= t('exams.open.image_zoom')
-                  = raw image
-              - unless @pdf == 1
-                - if b.object.item_audio?  
-                  .audio.legend
-                    .audio
-                      %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
-                        %p= t("errors.messages.audio")
-                      = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
-                      = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'
-                      - audio_is = 1 
-                    - if b.object.audio_description?
-                      .audio_description
-                        = link_to('#void', onclick: 'show_audio_description(this)', onkeydown: 'click_on_keypress(event, this);', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
-                          =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
-                          =t('questions.questions.show')
-                        = link_to('#void', onclick: 'show_audio_description(this)', onkeydown: 'click_on_keypress(event, this);', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
-                          =content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.hide_alt'), :'aria-hidden' => 'true')
-                          =t('questions.questions.show')
-                        .text= raw b.object.audio_description.html_safe
-              - else
-                %p=t('exams.open.audio_item', item: arr_alf[num_question]) + (b.object.audio_description.blank? ? '' : t('exams.open.audio_text', desc: b.object.audio_description))
-              = raw(coment)
+            - if b.object.item_image?
+              .zoom
+                %p= t('exams.open.image_zoom')
+                = raw image
+            - unless @pdf == 1
+              - if b.object.item_audio?
+                .audio.legend
+                  .audio
+                    %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
+                      %p= t("errors.messages.audio")
+                    = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
+                    = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'
+                    - audio_is = 1
+                  - if b.object.audio_description?
+                    .audio_description
+                      = link_to('#void', onclick: 'show_audio_description(this)', onkeydown: 'click_on_keypress(event, this);', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
+                        =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
+                        =t('questions.questions.show')
+                      = link_to('#void', onclick: 'show_audio_description(this)', onkeydown: 'click_on_keypress(event, this);', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
+                        =content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.hide_alt'), :'aria-hidden' => 'true')
+                        =t('questions.questions.show')
+                      .text= raw b.object.audio_description.html_safe
+            - else
+              %p=t('exams.open.audio_item', item: arr_alf[num_question]) + (b.object.audio_description.blank? ? '' : t('exams.open.audio_text', desc: b.object.audio_description))
+            = raw(coment)
          
         - if @disabled
           = t('exams.result_exam_user.true_items') + arra_correted.join(", ")

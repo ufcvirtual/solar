@@ -19,6 +19,7 @@
         config.height = '80px';
         config.width = '500px';
         config.autoParagraph = false;
+        config.pasteFromWord_inlineImages = false;
     };
 
     change_inputs(true, "#{f.object.nil? ? false : f.object.type_question}");
@@ -40,10 +41,12 @@
         var ckeditor = CKEDITOR.instances[name];
         append_rich_text(name);
         $.getScript("/assets/tooltip.js");
+        rename_items();
       }
     });
 
     $(document).on("fields_removed.nested_form_fields", function(event, param) {
+      rename_items();
       if($('.nested_fields.nested_question_question_images:visible').length < 4){
         $('.question_images .add_nested_fields_link').show();
         $('.question_audios .add_nested_fields_link').show();
@@ -63,7 +66,6 @@
       $("#_back").attr("onclick","back_medias()");
       $("#question_texts_media_question").attr("checked","true");
     }
-
   });
 
   function change(elem){

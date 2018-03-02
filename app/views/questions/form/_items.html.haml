@@ -11,4 +11,4 @@
 
 .form-actions.right_buttons
   = button_tag t(:back), :type => 'button', :onclick => "back()", class: 'btn btn_default', id: '_back'
-  = button_tag t(:save), :type => 'button', :onclick => "save_question(#{eq.nil? ? 0 : eq.object.exam_id}, #{f.object.type_question.nil? ? false : f.object.type_question})", class: 'btn btn_main'
+  = button_tag t(:save), :type => 'button', :onclick => "save_new_question(#{eq.nil? ? 0 : eq.object.exam_id}, #{f.object.type_question.nil? ? false : f.object.type_question})", class: 'btn btn_main'

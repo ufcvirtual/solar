@@ -30,7 +30,7 @@ $(function(){
   update_nice_checkbox();
 });
 
-function save_question(exam_id, type_question){
+function save_new_question(exam_id, type_question){
   type_question = (typeof type_question === "undefined" ? false : type_question);
   if(save_values_ckeditor("<%=I18n.t('ckeditor.confirms.question')%>") == false){
     return false;
@@ -67,10 +67,10 @@ function save_question(exam_id, type_question){
         if (typeof(data.alert) != "undefined")
           $('form span.error').html(data.alert);
         else {
-          clear_ckeditor();
           $('form span.error').html('');
           flash_message("<%= I18n.t('questions.success.add') %>", "notice");
         }
+        if (window.location.pathname == '/questions') { location.reload(); }
         update_tables_with_no_data();
       },
       call_function: 'update_nice_checkbox'
@@ -89,6 +89,8 @@ function go_to_items(){
   $('#dot-items').addClass('active');
   $.fancybox.update();
   $('.block_content').css('width', 'auto');
+  $('.block_content').css('height', 'auto');
+  rename_items();
 }
 
 function go_to_medias(){
@@ -205,6 +207,7 @@ function edit_question(icon, replace_list){
           'autoDimensions': false,
           'autoSize': false,
           width: '700',
+          height: 'auto',
           //maxHeight: '70%',
           beforeClose: function() { clear_ckeditor(); }
       });
@@ -235,7 +238,7 @@ function copy_question(icon, replace_list){
   if (!(!ids.length || ids.length > 1)) {
     $.get("<%=Rails.application.routes.url_helpers.copy_verify_owners_question_path(':id')%>".replace(':id', questions_ids), function(data){
       var url_copy = $(icon).data('link-to-copy').replace(':id', ids);
-      $(icon).call_fancybox({ href : url_copy, open: true, width: '20%', maxHeight: '70%' });
+      $(icon).call_fancybox({ href : url_copy, open: true, maxHeight: '70%', 'autoDimensions': false, 'autoSize': false, width: '700', height: 'auto', });
       if(replace_list != ''){
         $.get($(replace_list).data("link-list"), function(data2){
           $(replace_list).replaceWith(data2);
@@ -506,7 +509,7 @@ function preview_question(icon){
 
   if(!$('.import_something').length)
     $.get("<%=Rails.application.routes.url_helpers.show_verify_owners_question_path(':id')%>".replace(':id', $(icon).parents('tr').data('id')), function(data){
-      $(icon).call_fancybox({ href: $(icon).data('url'), open: true, width: '100px;' });
+      $(icon).call_fancybox({ href: $(icon).data('url'), open: true, 'autoDimensions': false, 'autoSize': false, width: '700', height: 'auto', });
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
@@ -546,11 +549,12 @@ function new_question(link){
 
   $(link).call_fancybox({
     width: 700,
+    height: 'auto',
     'autoDimensions': false,
     'autoSize': false,
     open: true,
     href: $(link).data('url'),
-    beforeClose: function() { clear_ckeditor(); }
+    afterClose: function() { clear_ckeditor(); }
   });
 
 }

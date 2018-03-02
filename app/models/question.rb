@@ -71,14 +71,16 @@ class Question < ActiveRecord::Base
   def copy_dependencies_from(question_to_copy, user_id = nil)
     if question_to_copy.question_images.any?
       question_to_copy.question_images.each do |file|
-        new_file = QuestionImage.create! file.attributes.merge({ question_id: id })
-        copy_file(file, new_file, File.join('questions', 'images'), 'image')
+        dup_file(file, :question_image)
+        # new_file = QuestionImage.create! file.attributes.merge({ question_id: id })
+        # copy_file(file, new_file, File.join('questions', 'images'), 'image')
       end
     end
     if question_to_copy.question_items.any?
       question_to_copy.question_items.each do |item|
-        new_item = QuestionItem.create! item.attributes.merge({ question_id: id })
-        copy_file(item, new_item, File.join('questions', 'items'), 'item_image') unless new_item.item_image_file_name.nil?
+        dup_file(item, :question_item)
+        # new_item = QuestionItem.create! item.attributes.merge({ question_id: id })
+        # copy_file(item, new_item, File.join('questions', 'items'), 'item_image') unless new_item.item_image_file_name.nil?
       end
     end
     if question_to_copy.question_labels.any?
@@ -88,10 +90,26 @@ class Question < ActiveRecord::Base
     end
     if question_to_copy.question_audios.any?
       question_to_copy.question_audios.each do |file|
-        new_file = QuestionAudio.create! file.attributes.merge({ question_id: id })
-        copy_file(file, new_file, File.join('questions', 'audios'), 'audio')
+        dup_file(file, :question_audio)
+        # new_file = QuestionAudio.create! file.attributes.merge({ question_id: id })
+        # copy_file(file, new_file, File.join('questions', 'audios'), 'audio')
       end
     end
+  end
+
+  def dup_file(file, type)
+    new_file = file.dup
+    new_file.question_id = id
+    case type
+    when :question_image
+      new_file.image = file.image
+    when :question_item
+      new_file.item_image = file.item_image
+      new_file.item_audio = file.item_audio
+    else
+      new_file.audio = file.audio
+    end
+    new_file.save
   end
 
   def self.copy(question_to_copy, user_id = nil)

@@ -202,6 +202,7 @@
 */
     .image{
       margin-top: 10px;
+      margin-bottom: 10px;
       input[type='file'], .input.file{
         display: none;
       }
@@ -489,7 +490,8 @@
     display: inline-block;
   }
   audio{
-    margin-top: -8px;
+    /*margin-top: -8px; */
+    margin: 0px 0px 15px -20px;
     display: inline-block;
     vertical-align: middle;
   }
@@ -527,6 +529,15 @@
 
   .input.string{
     text-align: center;
+  }
+
+  .zoom {
+    width: fit-content;
+    width: -moz-fit-content;
+
+    p {
+      font:bold 11px/1 sans-serif;
+    }
   }
 }
 
@@ -686,5 +697,28 @@
 
   label {
     text-align: center;
+  }
+}
+
+.questions{
+  .zoom {
+      p {
+        position:absolute;
+        top:3px;
+        right:28px;
+        color:#555;
+        font:bold 13px/1 sans-serif;
+      }
+    }
+
+  .zoom:after {
+    content:'';
+    display:block;
+    width:33px;
+    height:33px;
+    position:absolute;
+    top:0;
+    right:0;
+    background:url("/assets/zoom/icon.png");
   }
 }
