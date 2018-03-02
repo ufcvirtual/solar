@@ -66,5 +66,22 @@
     }
 
     load_components(#{@exam_questions.current_page});
+
+    $(".zoom").hover(function(){
+      if($(this).hasClass("zoomed")){
+        $(this).css('cursor','zoom-out');
+      }else{
+        $(this).css('cursor','zoom-in');
+      }
+    });
+    $(".zoom").click(function(){
+      if($(this).hasClass("zoomed")){
+        $(this).removeClass("zoomed");
+        $(this).css('cursor','zoom-in');
+      }else{
+          $(this).addClass("zoomed");
+          $(this).css('cursor','zoom-out');
+      }
+    });
     
   });

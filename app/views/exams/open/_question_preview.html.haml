@@ -12,24 +12,25 @@
         = radio_button_tag 'item', :value, qi.value, disabled: true
         = label_tag 'item', class: '' do
           %span= arr_alf[num_question]+') '
-          %span= qi.description.html_safe
-          %br
-          - if qi.item_image?     
-            = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
-          - if qi.item_audio?
-            .audio.legend
-              .audio 
-                %audio{ src: qi.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
-                  %p= t("errors.messages.audio")  
-                = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
-                = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'
-                - audio_is = 1 
-              - if qi.audio_description?
-                .audio_description
-                  = link_to content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), "#void", onclick: 'show_audio_description(this)', class: 'show_questions_description_ico'
-                  = link_to content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), "#void", onclick: 'show_audio_description(this)', class: 'invisible hide_questions_description_ico'
-                  =link_to t('questions.questions.show'), "#", onclick: "show_audio_description(this)"
-                  .text= raw qi.audio_description.html_safe
+          = qi.description.html_safe
+        - if qi.item_image?
+          .zoom
+            %p= t('exams.open.image_zoom')
+            = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt, class: 'item_image', :'aria-label' => t('exams.open.image_item', alt: qi.img_alt, item: arr_alf[num_question]), :"data-zoom-url" => qi.item_image.url(:original)) rescue ''
+        - if qi.item_audio?
+          .audio.legend
+            .audio
+              %audio{ src: qi.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
+                %p= t("errors.messages.audio")
+              = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
+              = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'
+              - audio_is = 1
+            - if qi.audio_description?
+              .audio_description
+                = link_to content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), "#void", onclick: 'show_audio_description(this)', class: 'show_questions_description_ico'
+                = link_to content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), "#void", onclick: 'show_audio_description(this)', class: 'invisible hide_questions_description_ico'
+                =link_to t('questions.questions.show'), "#", onclick: "show_audio_description(this)"
+                .text= raw qi.audio_description.html_safe
 
   - elsif question.type_question.to_i == Question::MULTIPLE
     - question_items.each do |qi|
@@ -39,25 +40,26 @@
         = check_box_tag "item#{qi.id}", true, qi.value, {disabled: true}
         = label_tag "item#{qi.id}", class: '' do
           %span= arr_alf[num_question]+') '
-          %span= qi.description.html_safe
-          %br
-          - if qi.item_image?     
-            = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
-          - if qi.item_audio?
-            .visuallyhidden=t(:audio_suggestions_item)
-            .audio.legend
-              .audio    
-                %audio{ src: qi.item_audio, autoplay: false, controls: true, name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
-                  %p= t("errors.messages.audio") 
-                = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
-                = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()' 
-                - audio_is = 1 
-              - if qi.audio_description?
-                .audio_description
-                  = link_to content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), "#void", onclick: 'show_audio_description(this)', class: 'show_questions_description_ico'
-                  = link_to content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), "#void", onclick: 'show_audio_description(this)', class: 'invisible hide_questions_description_ico'
-                  =link_to t('questions.questions.show'), "#", onclick: "show_audio_description(this)"
-                  .text= raw qi.audio_description.html_safe 
+          = qi.description.html_safe
+        - if qi.item_image?
+          .zoom
+            %p= t('exams.open.image_zoom')
+            = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt, class: 'item_image', :'aria-label' => t('exams.open.image_item', alt: qi.img_alt, item: arr_alf[num_question]), :"data-zoom-url" => qi.item_image.url(:original)) rescue ''
+        - if qi.item_audio?
+          .visuallyhidden=t(:audio_suggestions_item)
+          .audio.legend
+            .audio
+              %audio{ src: qi.item_audio, autoplay: false, controls: true, name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
+                %p= t("errors.messages.audio")
+              = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
+              = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'
+              - audio_is = 1
+            - if qi.audio_description?
+              .audio_description
+                = link_to content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), "#void", onclick: 'show_audio_description(this)', class: 'show_questions_description_ico'
+                = link_to content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), "#void", onclick: 'show_audio_description(this)', class: 'invisible hide_questions_description_ico'
+                =link_to t('questions.questions.show'), "#", onclick: "show_audio_description(this)"
+                .text= raw qi.audio_description.html_safe
           
   - else
     - question_items.each do |qi|
@@ -67,26 +69,26 @@
         = select_tag "item#{qi.id}", options_for_select(['', [t('questions.form.f_option'), false], [t('questions.form.t_option'), true]], selected: qi.value) , {disabled: true}
         = label_tag "item#{qi.id}", class: '' do
           %span= arr_alf[num_question]+') '
-          %span= qi.description.html_safe
-          %br
-          - if qi.item_image?     
-            = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt) rescue ''
-          - if qi.item_audio?
-            .visuallyhidden=t(:audio_suggestions_item)
-            .audio.legend
-              .audio   
-                %audio{ src: qi.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
-                  %p= t("errors.messages.audio") 
-                = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
-                = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'
-                - audio_is = 1    
-              - if qi.audio_description?
-                .audio_description
-                  = link_to content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), "#void", onclick: 'show_audio_description(this)', class: 'show_questions_description_ico'
-                  = link_to content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), "#void", onclick: 'show_audio_description(this)', class: 'invisible hide_questions_description_ico'
-                  =link_to t('questions.questions.show'), "#", onclick: "show_audio_description(this)", class: 'link_text_audio'
-                  .text= raw qi.audio_description.html_safe
-          
+          = qi.description.html_safe
+        - if qi.item_image?
+          .zoom
+            %p= t('exams.open.image_zoom')
+            = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt, class: 'item_image', :'aria-label' => t('exams.open.image_item', alt: qi.img_alt, item: arr_alf[num_question]), :"data-zoom-url" => qi.item_image.url(:original)) rescue ''
+        - if qi.item_audio?
+          .visuallyhidden=t(:audio_suggestions_item)
+          .audio.legend
+            .audio
+              %audio{ src: qi.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
+                %p= t("errors.messages.audio")
+              = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
+              = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'
+              - audio_is = 1
+            - if qi.audio_description?
+              .audio_description
+                = link_to content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), "#void", onclick: 'show_audio_description(this)', class: 'show_questions_description_ico'
+                = link_to content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), "#void", onclick: 'show_audio_description(this)', class: 'invisible hide_questions_description_ico'
+                =link_to t('questions.questions.show'), "#", onclick: "show_audio_description(this)", class: 'link_text_audio'
+                .text= raw qi.audio_description.html_safe       
 
 - if @question_audios || audio_is==1
   .question_audios

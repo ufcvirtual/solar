@@ -4381,6 +4381,7 @@ pt_BR:
         confirm_image_removal: 'Você tem certeza? Mesmo que este formulário seja cancelado, a imagem será removida e não poderá ser recuperada.'
         confirm_audio_removal: 'Você tem certeza? Mesmo que este formulário seja cancelado, o audio será removido e não poderá ser recuperada.'
         empty: "O item %{count} está em branco, deseja excluí-lo?"
+        item: "Item"
       t_option: V
       f_option: F
       info:

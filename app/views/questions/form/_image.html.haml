@@ -16,7 +16,7 @@
 
         .info
           = img.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
-          = img.input :legend, as: :text
+          = img.input :legend
           = img.input :img_alt
           = img.label t('.alt_desc'), class: 'alt'
     -else

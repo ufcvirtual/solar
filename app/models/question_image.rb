@@ -4,14 +4,14 @@ class QuestionImage < ActiveRecord::Base
   validates :image, presence: true
 
   validates :img_alt, presence: true, if: 'img_alt.blank?'
-  validates :legend, length: { maximum: 100 }
+  validates :legend, length: { maximum: 30 }
 
   validates_attachment_size :image, less_than: 2.megabyte
   validates_attachment_content_type :image, content_type: /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/ , message: I18n.t('questions.error.wrong_type')
   validates_attachment_content_type_in_black_list :image
 
   has_attached_file :image,
-          styles: { small: '150x150>', medium: '250x250>', large: '350x350>' },
+          styles: { medium: '350x350>', large: '450x450>' },
           path: ':rails_root/media/questions/images/:id_:basename_:style.:extension',
           url: '/media/questions/images/:id_:basename_:style.:extension'
 

@@ -15,7 +15,7 @@ class QuestionItem < ActiveRecord::Base
   validates :audio_description, presence: true, if: '(!item_audio_file_name.blank?)'
 
   has_attached_file :item_image,
-                    styles: { medium: '250x250>' },
+                    styles: { medium: '350x350>' },
                     path: ':rails_root/media/questions/items/:id_:basename_:style.:extension',
                     url: '/media/questions/items/:id_:basename_:style.:extension'
 

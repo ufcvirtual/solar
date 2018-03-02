@@ -4132,6 +4132,7 @@ en_US:
         confirm_image_removal: 'Are you sure? Even if you cancel this form, this image will be deleted and will not be recovered.'
         confirm_audio_removal: 'Are you sure? Even if you cancel this form, this audio will be deleted and will not be recovered.'
         empty: "The item %{count} is blank, you want to delete?"
+        item: "Item"
       t_option: T
       f_option: F
       info:
