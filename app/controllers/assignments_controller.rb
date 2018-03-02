@@ -88,6 +88,7 @@ class AssignmentsController < ApplicationController
 
   def update
     authorize! :update, Assignment, on: @assignment.academic_allocations.pluck(:allocation_tag_id)
+    @assignment.allocation_tag_ids_associations = @allocation_tags_ids.split(" ").flatten
     if @assignment.update_attributes(assignment_params)
       render_assignment_success_json('updated')
     else
