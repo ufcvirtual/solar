@@ -1851,6 +1851,7 @@ pt_BR:
       timeout: 'Sua sessão expirou, por favor faça login novamente para continuar.'
       inactive: 'Sua conta ainda não foi ativada.'
       invalid_login: Login inválido.
+      invalid_login_si3: Login inválido. Clique em 'Cadastrar' e verifique seu CPF para saber se possui cadastro ou não e, caso cadastrado no SI3, para atualizarmos seus dados cadastrais.
       user:
         not_found_in_database: 'Usuário ou senha inválidos.'
     login:
@@ -3376,7 +3377,8 @@ pt_BR:
         login_email: 'ma_login_email_msg'
         synchronize: Erro ao sincronizar dados com o Sigaa. Favor tentar novamente.
         error_synchronize: "Não foi possível sincronizar dados com o Sigaa pelo(s) seguinte(s) motivo(s): %{errors}. Favor corrigir o(s) problemas(s) relatado(s) em <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>"
-        selfregistration: "Faça seu autocadastro no sigaa (<a href='https://si3.ufc.br/sigaa/public/cadastro/discente.jsf' target='_blank'>https://si3.ufc.br/sigaa/public/cadastro/discente.jsf</a>). Caso já o tenha feito, verifique seu cpf em 'Cadastrar' ou solicite ao atendimento@virtual.ufc.br para importar seus dados."
+        selfregistration: "Faça seu autocadastro no Sigaa (<a href='https://si3.ufc.br/sigaa/public/cadastro/discente.jsf' target='_blank'>https://si3.ufc.br/sigaa/public/cadastro/discente.jsf</a>). Caso já o tenha feito, verifique seu cpf em 'Cadastrar' ou solicite ao atendimento@virtual.ufc.br para importar seus dados."
+        selfregistration_others: "O usuário precisa fazer seu autocadastro no Sigaa (<a href='https://si3.ufc.br/sigaa/public/cadastro/discente.jsf' target='_blank'>https://si3.ufc.br/sigaa/public/cadastro/discente.jsf</a>). Caso já o tenha feito, verifique se o usuário é passível de ser desvinculado."
       cpf_admin: 'Apenas administradores podem alterar CPF. Para fazer a mudança, entre em contato com o atendimento@virtual.ufc.br informando nome, CPF atual, novo CPF e o motivo para a mudança.'
       cpf_as_username: 'não pode ser o CPF de outro usuário'
       multiple_sessions: "Não é possível ficar logado em múltiplos dispositivos ao mesmo tempo."

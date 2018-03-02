@@ -6,7 +6,11 @@ class Devise::LoginController < Devise::SessionsController
     user = User.find_by_username(params[:user][:login])
 
     if user.nil?
-      redirect_to login_path, alert: t('devise.failure.invalid_login')
+      if !User::MODULO_ACADEMICO.nil?
+        redirect_to login_path, alert: t('devise.failure.invalid_login_si3')
+      else
+        redirect_to login_path, alert: t('devise.failure.invalid_login')
+      end
     else
       if user.integrated && !user.on_blacklist? && !user.selfregistration
         user.synchronize
