@@ -30,8 +30,8 @@ class Bibliography < ActiveRecord::Base
   validates_attachment_size :attachment, less_than: 5.megabyte, message: ' '
   validates_attachment_content_type_in_black_list :attachment
   do_not_validate_attachment_file_type :attachment
-  before_validation proc { |record| record.errors.add(:base, I18n.t(:author_required, scope: [:bibliographies])) }, if: "[Bibliography::TYPE_BOOK, Bibliography::TYPE_ARTICLE, Bibliography::TYPE_ELECTRONIC_DOC].include?(type_bibliography) && authors.empty?"
 
+  before_validation proc { |record| record.errors.add(:base, I18n.t(:author_required, scope: [:bibliographies])) }, if: "[Bibliography::TYPE_BOOK, Bibliography::TYPE_ARTICLE, Bibliography::TYPE_ELECTRONIC_DOC].include?(type_bibliography) && authors.empty?"
   
 
   def copy_dependencies_from(bibliography_to_copy)

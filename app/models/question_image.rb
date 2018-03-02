@@ -1,7 +1,7 @@
 class QuestionImage < ActiveRecord::Base
   belongs_to :question
 
-  has_attached_file :image,
+ has_attached_file :image,
           styles: { small: '150x150>', medium: '250x250>', large: '350x350>' },
           path: ':rails_root/media/questions/images/:id_:basename_:style.:extension',
           url: '/media/questions/images/:id_:basename_:style.:extension'
