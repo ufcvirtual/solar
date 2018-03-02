@@ -75,6 +75,7 @@ class WebconferencesController < ApplicationController
   def update
     authorize! :update, Webconference, on: @webconference.academic_allocations.pluck(:allocation_tag_id)
 
+    @webconference.allocation_tag_ids_associations = @allocation_tags_ids.split(' ').flatten
     @webconference.update_attributes!(webconference_params)
 
     render json: { success: true, notice: t(:updated, scope: [:webconferences, :success]) }
