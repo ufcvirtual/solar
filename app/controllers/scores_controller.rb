@@ -80,7 +80,7 @@ class ScoresController < ApplicationController
       #        layout: false,
       #        disposition: 'attachment'
 
-      send_data ReportsHelper.accompaniment_evaluatives_frequency(@ats, @score_type, @users, @scores, @acs, @examidx, @assignmentidx, @scheduleEventidx, @discussionidx, @chatRoomidx, @webconferenceidx).render, :filename => "#{t("scores.reports.general_#{@score_type}")}.pdf", :type => "application/pdf", disposition: 'inline'
+      send_data ReportsHelper.scores_evaluatives_frequency(@ats, @score_type, @users, @scores, @acs, @examidx, @assignmentidx, @scheduleEventidx, @discussionidx, @chatRoomidx, @webconferenceidx).render, :filename => "#{t("scores.reports.general_#{@score_type}")}.pdf", :type => "application/pdf", disposition: 'inline'
 
     else
       @users = Score.get_users(ats).paginate(page: params[:page], per_page: 20)
@@ -115,7 +115,7 @@ class ScoresController < ApplicationController
       #        layout: false,
       #        disposition: 'attachment'
 
-      send_data ReportsHelper.accompaniment_general(@ats, @wh, @users, @allocation_tag_id, @tools, params[:type]).render, :filename => "#{t("scores.reports.#{params[:type]}")}.pdf", :type => "application/pdf", disposition: 'inline'
+      send_data ReportsHelper.scores_general(@ats, @wh, @users, @allocation_tag_id, @tools, params[:type]).render, :filename => "#{t("scores.reports.#{params[:type]}")}.pdf", :type => "application/pdf", disposition: 'inline'
 
     else
       @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true).paginate(:page => params[:page], :per_page => 20)
