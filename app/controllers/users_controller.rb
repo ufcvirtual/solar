@@ -135,8 +135,18 @@ class UsersController < ApplicationController
     if synchronizing_result.nil? # user don't exists at MA
       render json: {success: false, message: t("users.warnings.ma.cpf_not_found"), type_message: "warning"}
     elsif synchronizing_result # user synchronized
-      render json: {success: true, message: t("users.notices.ma.synchronize"), type_message: "notice",
+
+      if user.integrated && !user.on_blacklist? && !user.selfregistration
+        user.synchronize
+        if user.id == current_user.id
+          render json: { success: true, message: t("users.errors.ma.selfregistration").html_safe, type_message: 'alert' }
+        else
+          render json: { success: true, message: t("users.errors.ma.selfregistration_others").html_safe, type_message: 'alert' }
+        end
+      else
+        render json: {success: true, message: t("users.notices.ma.synchronize"), type_message: "notice",
         name: user.name, email: user.email, nick: user.nick, username: user.username}
+      end
     else # error
       render json: {success: false, alert: (user.errors.any? ? user.errors.full_messages.join(', ') : t("users.errors.ma.synchronize"))}, status: :unprocessable_entity
     end
