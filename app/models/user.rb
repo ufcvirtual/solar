@@ -954,7 +954,7 @@ class User < ActiveRecord::Base
         else
           # há algum usuário integrado com mesmo login?
           integrated = same_column.joins('LEFT JOIN user_blacklist ub ON ub.cpf = users.cpf').where(integrated: true).where('ub.id IS NULL')
-          change_username if integrated.any?
+          send("change_#{column}".to_sym) if integrated.any?
           # muda dos outros
           (same_column - integrated).map{|u| u.send("change_#{column}".to_sym)}
           # sincroniza os integrados para atualizar dados
