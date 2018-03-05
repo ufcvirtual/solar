@@ -17,7 +17,13 @@ module ReportsHelper
     pdf.move_down 10
     pdf.text  I18n.t(:report, scope: [:scores, :info]) + I18n.t(type, scope: [:scores, :info]), size: 12, align: :center
 
-    pdf.image "#{Rails.root}/app/assets/images/#{user.user_photo(:medium)}", width: 120, height: 110, alt: I18n.t(:mysolar_alt_img_user)
+    file_path = user.photo.path(:medium)
+
+    if !file_path.nil? && File.exist?(file_path)
+      pdf.image "#{file_path}", width: 120, height: 110, alt: I18n.t(:mysolar_alt_img_user)
+    else
+      pdf.image "#{Rails.root}/app/assets/images/no_image_medium.png", width: 120, height: 110, alt: I18n.t(:mysolar_alt_img_user)
+    end
 
     pdf.bounding_box([125, pdf.cursor + 100], width: 520, height: 110) do
       pdf.move_down 5
