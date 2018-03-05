@@ -27,7 +27,7 @@
               %li.image
                 .zoom
                   %p= t('exams.open.image_zoom')
-                  = image_tag q_image.image.url(get_image_size(question_images.count)), :class => 'item_image', alt: q_image.img_alt, :'aria-label' => t('exams.open.image', alt: q_image.img_alt) + (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend)), :"data-zoom-url" => q_image.image.url(:original)
+                  = image_tag q_image.image.url(get_image_size(question_images.count(:id))), :class => 'item_image', alt: q_image.img_alt, :'aria-label' => t('exams.open.image', alt: q_image.img_alt) + (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend)), :"data-zoom-url" => q_image.image.url(:original)
                 - unless q_image.legend.blank?
                   .legend{:'aria-hidden' => 'true'}= q_image.legend
         - unless @question_audios.blank?

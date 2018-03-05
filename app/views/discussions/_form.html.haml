@@ -43,7 +43,7 @@
         = button_tag t(".cancel"), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(".cancel")
         = button_tag t(".save"), :type => 'button', :onclick => "save_discussion()", class: 'btn btn_main btn_lightbox', alt: t(".save")
 
-= javascript_include_tag "edition_discussions", 'ckeditor/init'
+= javascript_include_tag 'ckeditor/init', "edition_discussions"
 
 :javascript
 
