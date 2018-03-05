@@ -80,7 +80,7 @@ class User < ActiveRecord::Base
   validates_length_of :address_neighborhood, maximum: 49
   validates_length_of :zipcode, maximum: 9
   validates_length_of :country, :city, maximum: 90
-  validates_length_of :country, :city, :address ,maximum: 150
+  validates_length_of :address ,maximum: 150
   validates_length_of :institution, maximum: 120
   validates_length_of :cell_phone, maximum: 100
   validates_length_of :telephone, maximum: 50
