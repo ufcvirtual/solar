@@ -17,6 +17,8 @@ class QuestionImage < ActiveRecord::Base
 
   before_save :replace_image_name
 
+
+
   def self.list(question_id)
     QuestionImage.where(question_id: question_id)
       .select('DISTINCT question_images.id, question_images.legend, question_images.image_file_name, question_images.image_content_type, question_images.image_file_size, question_images.image_updated_at, question_images.img_alt')

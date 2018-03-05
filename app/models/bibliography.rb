@@ -33,6 +33,7 @@ class Bibliography < ActiveRecord::Base
 
   before_validation proc { |record| record.errors.add(:base, I18n.t(:author_required, scope: [:bibliographies])) }, if: "[Bibliography::TYPE_BOOK, Bibliography::TYPE_ARTICLE, Bibliography::TYPE_ELECTRONIC_DOC].include?(type_bibliography) && authors.empty?"
 
+
   def copy_dependencies_from(bibliography_to_copy)
     copy_file(bibliography_to_copy, self, 'bibliography') if bibliography_to_copy.is_file?
   end

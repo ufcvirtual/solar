@@ -117,7 +117,7 @@ module ApplicationHelper
   end
 
 end
-<<<<<<< HEAD
+
 module ApplicationHelper
 
   def message

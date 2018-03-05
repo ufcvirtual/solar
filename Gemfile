@@ -6,7 +6,7 @@ ruby "2.1.0"
 gem 'rails', '4.1.8'
 gem "rack", "~> 1.5.2"
 gem "rake", "~> 10.1.1"
-gem "pg", "~> 0.18.0"
+gem "pg", "~> 0.17.1"
 gem "foreigner", "~> 1.4.0"
 
 gem "koala", "1.2.0" # facebook
@@ -119,7 +119,7 @@ group :test do
   gem "webrat", "0.7.3"
   gem "capybara"
   gem "database_cleaner", "0.7.2"
-  gem "cucumber-rails", "~> 1.4.3", require: false
+  gem "cucumber-rails", "~> 1.4.5", require: false
   gem "selenium-webdriver", "~> 2.42.0"
   gem "launchy", "2.1.0"
   gem "nokogiri", "1.5.5" # html, css parser (search)
