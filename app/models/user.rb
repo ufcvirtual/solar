@@ -80,7 +80,7 @@ class User < ActiveRecord::Base
   validates_length_of :address_neighborhood, maximum: 49
   validates_length_of :zipcode, maximum: 9
   validates_length_of :country, :city, maximum: 90
-  validates_length_of :country, :city, :address ,maximum: 150
+  validates_length_of :address ,maximum: 150
   validates_length_of :institution, maximum: 120
   validates_length_of :cell_phone, maximum: 100
   validates_length_of :telephone, maximum: 50
@@ -909,9 +909,7 @@ class User < ActiveRecord::Base
     self.username = cpf
     self.synchronizing = true
     save(validate: false)
-    Thread.new do
-      Notifier.change_user(self).deliver
-    end
+    notify_by_email
   end
 
   def change_email

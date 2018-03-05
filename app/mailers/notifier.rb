@@ -31,6 +31,7 @@ class Notifier < ActionMailer::Base
 
   def change_user(user, token=nil, password=nil)
     @user, @token, @password = user, token, password
+
     mail(to: @user.email,
          subject: "[SOLAR] Mudança de dados de acesso")
   end

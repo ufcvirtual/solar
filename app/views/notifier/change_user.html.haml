@@ -14,7 +14,7 @@
     - else
       - if @user.integrated && !@user.on_blacklist?
         %p= link_to('Não lembra sua senha?', "https://si3.ufc.br/admin/public/recuperar_senha.jsf")
-      - else
+      - elsif !@token.blank?
         %p= link_to('Não lembra sua senha?', edit_password_url(@user, reset_password_token: @token))
     %br
     %p= link_to('Acesso ao Solar', home_url(only_path: false))
