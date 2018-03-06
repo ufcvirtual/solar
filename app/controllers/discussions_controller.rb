@@ -62,6 +62,7 @@ class DiscussionsController < ApplicationController
     if @discussion.save
       render_discussion_success_json('created')
     else
+      @files_errors = @discussion.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       render :new
     end
   rescue => error
@@ -81,6 +82,7 @@ class DiscussionsController < ApplicationController
     if @discussion.update_attributes(discussion_params)
       render_discussion_success_json('updated')
     else
+      @files_errors = @discussion.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       @allocation_tags_ids = params[:allocation_tags_ids]
       render :edit
     end

@@ -490,6 +490,9 @@ en_US:
         message: Receive email messages
         post: Receive email news from Posts (Forums)
         exam: Receive emails with test scores
+      discussion_enunciation_file:
+        attachment_file_size: "File too large. The maximum size should be up to 5MB."
+        attachment_file_name: File
 
     errors:
       uniqueness: "Record already exists in the system"

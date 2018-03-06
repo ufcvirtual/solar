@@ -554,7 +554,11 @@ pt_BR:
         message: Receber emails de Mensagens
         post: Receber emails de Postagens(Fóruns)
         exam: Receber emails com notas de provas
-        
+      discussion_enunciation_file:
+        attachment_content_type: ""
+        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
+        attachment_file_name: Arquivo
+
     errors:
       uniqueness: "Registro já existe no sistema"
       template:
@@ -1326,7 +1330,7 @@ pt_BR:
       save_draft: Salvar Rascunho
       publish: Publicar
       files:
-        discussion_file_title: Arquivos  
+        discussion_file_title: Arquivos
         name: Nome
         size: Tamanho
     post:
