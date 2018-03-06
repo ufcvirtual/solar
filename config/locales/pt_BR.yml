@@ -1325,6 +1325,10 @@ pt_BR:
       primary: " primárias"
       save_draft: Salvar Rascunho
       publish: Publicar
+      files:
+        discussion_file_title: Arquivos  
+        name: Nome
+        size: Tamanho
     post:
       remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
       new: Nova postagem
