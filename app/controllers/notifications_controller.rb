@@ -9,12 +9,12 @@ class NotificationsController < ApplicationController
 
   before_filter only: [:edit, :update] do |controller|
     get_groups_by_tool(@notification = Notification.find(params[:id]))
-    authorize! :update, Notification, {on: @notification.academic_allocations.pluck(:allocation_tag_id), accepts_general_profile: true} 
+    authorize! :update, Notification, {on: @notification.academic_allocations.pluck(:allocation_tag_id), accepts_general_profile: true}
   end
 
   before_filter only: [:new, :create] do |controller|
     get_groups_by_allocation_tags
-    authorize! :create, Notification, {on: @allocation_tags_ids, accepts_general_profile: true} 
+    authorize! :create, Notification, {on: @allocation_tags_ids, accepts_general_profile: true}
   end
 
 
@@ -45,8 +45,10 @@ class NotificationsController < ApplicationController
   # GET /notifications/1
   def show
     @all_notification = Notification.of_user(current_user)
-    raise CanCan::AccessDenied unless @all_notification.map(&:id).include?(params[:id].to_i)
     @notification = Notification.find(params[:id])
+
+    raise CanCan::AccessDenied unless @all_notification.map(&:id).include?(params[:id].to_i) || can?(:update, Notification, {on: @notification.academic_allocations.pluck(:allocation_tag_id), accepts_general_profile: true})
+
     notification_show(@notification)
   rescue CanCan::AccessDenied
     render text: t(:no_permission)
@@ -71,7 +73,7 @@ class NotificationsController < ApplicationController
   # POST /notifications
   def create
     @notification = Notification.new notification_params
-    @notification.allocation_tag_ids_associations = @allocation_tags_ids.split(" ").flatten 
+    @notification.allocation_tag_ids_associations = @allocation_tags_ids.split(" ").flatten
 
     raise CanCan::AccessDenied if @notification.mandatory_reading && !@can_mark_as_mandatory
 
@@ -112,7 +114,7 @@ class NotificationsController < ApplicationController
   rescue => error
     if error.to_s=='ended'
       @files_errors = @notification.notification_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
-      @notification.notification_files.delete_if {|file| file.errors.full_messages.any? } 
+      @notification.notification_files.delete_if {|file| file.errors.full_messages.any? }
       render :edit
     elsif !@profiles_errors.blank?
       render :edit
@@ -123,10 +125,10 @@ class NotificationsController < ApplicationController
 
   # DELETE /notifications/1
   def destroy
-    @notifications = Notification.where(id: params[:id].split(",")) 
+    @notifications = Notification.where(id: params[:id].split(","))
 
     authorize! :destroy, Notification, {on: @notifications.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true} if params[:allocation_tags_ids].blank?
-    
+
     @notifications.destroy_all
     render_notification_success_json('deleted')
   rescue => error
@@ -165,12 +167,12 @@ class NotificationsController < ApplicationController
 
     def notification_show(notification)
       notification.mark_as_read(current_user)
-    
+
       unless notification.allocation_tags.blank?
         allocation_tags = notification.allocation_tags
         @groups = Group.joins(:allocation_tag).where(allocation_tags: {id: allocation_tags.pluck(:id)}).pluck(:code) if allocation_tags.size > 1
         @allocation_tag = allocation_tags.first
-      end  
+      end
     end
 
 end

@@ -28,7 +28,7 @@ class Lesson < ActiveRecord::Base #< Event
   after_save :create_or_update_folder
   after_save :lesson_privacy,       if: 'privacy_changed?'
   after_save :remove_dir_files,     if: :must_receive_changes?
-  
+
   before_destroy :can_destroy?, :verify_files_before_destroy
 
   after_destroy :delete_schedule, :delete_files
@@ -41,7 +41,7 @@ class Lesson < ActiveRecord::Base #< Event
   validate :address_is_ok?
   validate :can_change_privacy?, if: '!new_record? && privacy_changed?'
   validate :can_change_status?, if: '!new_record? && status_changed? && !is_draft?'
- 
+
   # Na expressao regular os protocolos http, https e ftp podem aparecer somente uma vez ou nao aparecer
   validates_format_of :address, with: /\A((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?\z/ix,
   allow_nil: true, allow_blank: true, if: :is_link?
@@ -148,7 +148,7 @@ class Lesson < ActiveRecord::Base #< Event
     return true if imported_from_id.nil? || is_link?
 
     create_or_update_folder unless Dir.exists?(directory)
-    FileUtils.copy_entry imported_from.file_path(true, false), directory 
+    FileUtils.copy_entry imported_from.file_path(true, false), directory
   end
 
   def verify_files_before_change
@@ -238,7 +238,7 @@ class Lesson < ActiveRecord::Base #< Event
 
     def set_order
       if order.nil?
-        self.order = lesson_module.next_lesson_order 
+        self.order = lesson_module.next_lesson_order
       else
         self.order += 1 while lesson_module.lessons.where(order: self.order).any?
       end
@@ -254,7 +254,7 @@ class Lesson < ActiveRecord::Base #< Event
     end
 
     def create_or_update_folder
-      case 
+      case
       when is_link? && Dir.exist?(directory) then FileUtils.remove_dir(directory)
       when is_file? then FileUtils.mkdir_p(directory)
       end
@@ -264,7 +264,7 @@ class Lesson < ActiveRecord::Base #< Event
       ActiveRecord::Base.transaction do
         attributes_to_send = { name: name, description: description, address: address, type_lesson: type_lesson }
         receive_updates_lessons.each do |lesson|
-          lesson.update_attributes attributes_to_send.merge!(status: lesson.has_files? ? lesson.status : status) 
+          lesson.update_attributes attributes_to_send.merge!(status: lesson.has_files? ? lesson.status : status)
         end
       end
     end

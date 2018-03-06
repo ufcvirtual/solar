@@ -256,6 +256,14 @@ module Bbb
     raise 'acu'                      if academic_allocation_users.any?
   end
 
+  def can_destroy_boolean?
+    can_destroy?
+
+    return true
+  rescue
+    return false
+  end
+
   def can_remove_records?
     raise raise CanCan::AccessDenied if respond_to?(:is_onwer?) && !is_onwer?
     raise 'date_range'               if respond_to?(:in_time?)  && !in_time?

@@ -35,10 +35,14 @@ class Bibliography < ActiveRecord::Base
     copy_file(bibliography_to_copy, self, 'bibliography') if bibliography_to_copy.is_file?
   end
 
+  def copy_associations(bibliography_to_copy)
+    self.authors << bibliography_to_copy.authors.collect { |author| author.dup }
+  end
+
   def order
     "title, type_bibliography"
   end
-  
+
   def type
     btype = case type_bibliography
             when TYPE_BOOK            then 'book'

@@ -58,7 +58,7 @@ class LessonModule < ActiveRecord::Base
 
     user_is_admin_or_editor    = user.nil? ? false : (user.admin? || user.editor?)
     user_responsible = user.nil? ? false : user.profiles_with_access_on('see_drafts', 'lessons', allocation_tags_ids, true).any?
-       
+
     joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }).order("id").delete_if { |lmodule|
       lessons               = lmodule.lessons.eager_load(:schedule)
       has_open_lesson       = lessons.map(&:closed?).include?(false)
@@ -70,8 +70,8 @@ class LessonModule < ActiveRecord::Base
         !list && lessons.size == lessons.map{ |l| true if l.address.blank? }.compact.size
       ) || !(list || has_open_lesson)
     }.compact.uniq
-    
-  end 
+
+  end
 
   def self.by_ats(allocation_tags_ids)
     joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }).order('id').uniq
