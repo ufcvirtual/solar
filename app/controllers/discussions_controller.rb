@@ -116,6 +116,10 @@ class DiscussionsController < ApplicationController
 
   def download
     file = DiscussionEnunciationFile.find(params[:id])
+    discussion = file.discussion
+
+    authorize! :index, Discussion, { on: discussion.allocation_tags.pluck(:id), read: true }
+
     download_file(:back, file.attachment.path, file.attachment_file_name)
   end
 
