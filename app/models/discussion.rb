@@ -1,6 +1,7 @@
 class Discussion < Event
   include AcademicTool
   include EvaluativeTool
+  include FilesHelper
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 
@@ -30,6 +31,15 @@ class Discussion < Event
     if schedule.end_date.nil?
       errors.add(:final_date_presence, I18n.t('discussions.error.mandatory_final_date'))
       return false
+    end
+  end
+
+  def copy_dependencies_from(discussion_to_copy)
+    unless discussion_to_copy.enunciation_files.empty?
+      discussion_to_copy.enunciation_files.each do |file|
+        new_file = DiscussionEnunciationFile.create! file.attributes.merge({ discussion_id: self.id })
+        copy_file(file, new_file, File.join(['discussion', 'enunciation']))
+      end
     end
   end
 

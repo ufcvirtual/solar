@@ -1,5 +1,6 @@
 class Notification < ActiveRecord::Base
   include AcademicTool
+  include FilesHelper
 
   GROUP_PERMISSION = OFFER_PERMISSION = CURRICULUM_UNIT_PERMISSION = COURSE_PERMISSION = CURRICULUM_UNIT_TYPE_PERMISSION = true
 
@@ -21,7 +22,6 @@ class Notification < ActiveRecord::Base
   validates :title, :description, :schedule, presence: true
   validates :title, length: { maximum: 255 }
 
-
   after_save :remove_readings, on: :update, if: 'title_changed? || description_changed? || (mandatory_reading_changed? && mandatory_reading)'
 
   def reject_files(file)
@@ -30,6 +30,15 @@ class Notification < ActiveRecord::Base
 
   def remove_readings
     read_notifications.where(notification_id: id).delete_all if started? && !ended?
+  end
+
+  def copy_dependencies_from(notification_to_copy)
+    unless notification_to_copy.notification_files.empty?
+      notification_to_copy.notification_files.each do |file|
+        new_file = NotificationFile.create! file.attributes.merge({ notification_id: self.id })
+        copy_file(file, new_file, 'notifications', 'file')
+      end
+    end
   end
 
   def verify_end_date
@@ -95,17 +104,17 @@ class Notification < ActiveRecord::Base
       WHERE (
               (
                 -- if no profile was defined
-                p.id IS NULL AND 
+                p.id IS NULL AND
                 -- verify if user has permission to access notification
                 (ac.allocation_tag_id IN (select id FROM ats) OR ac.allocation_tag_id IS NULL)
-              ) OR ( 
+              ) OR (
                 -- if profiles were defined
-                p.id IS NOT NULL 
+                p.id IS NOT NULL
                 -- verify user allocations and profiles and notification ATs
-                AND ( 
+                AND (
                   -- if notification has no at, get all users with that profile
                   (
-                    ac.allocation_tag_id IS NULL AND 
+                    ac.allocation_tag_id IS NULL AND
                     EXISTS(SELECT al.profile_id AS id
                       FROM allocations al
                       WHERE al.user_id = #{user.id}
@@ -113,15 +122,15 @@ class Notification < ActiveRecord::Base
                       AND al.profile_id = p.id)
                   ) OR (
                     -- or if notification has at
-                    ac.allocation_tag_id IS NOT NULL AND 
+                    ac.allocation_tag_id IS NOT NULL AND
                     -- gets all user with that profile and related at or general allocation
                     EXISTS(SELECT at.id, al.profile_id
-                      FROM allocations al 
+                      FROM allocations al
                       LEFT JOIN related_taggables rt ON al.allocation_tag_id = group_at_id OR al.allocation_tag_id = offer_at_id OR al.allocation_tag_id = course_at_id OR al.allocation_tag_id = curriculum_unit_at_id OR al.allocation_tag_id = curriculum_unit_type_at_id
                       LEFT JOIN allocation_tags at ON at.id = rt.group_at_id OR at.id = rt.offer_at_id OR at.id = rt.course_at_id OR at.id = rt.curriculum_unit_at_id OR at.id = rt.curriculum_unit_type_at_id
                       WHERE al.user_id = #{user.id}
                       AND al.status = #{Allocation_Activated}
-                      AND (at.id = ac.allocation_tag_id OR at.id IS NULL) 
+                      AND (at.id = ac.allocation_tag_id OR at.id IS NULL)
                       AND (rt.group_status = 't' OR rt.id IS NULL)
                       AND al.profile_id = p.id)
                   )
