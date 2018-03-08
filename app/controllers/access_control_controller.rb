@@ -4,7 +4,7 @@ class AccessControlController < ApplicationController
   before_filter :set_current_user
 
   ## Verificação de acesso ao realizar download de um arquivo relacionado à atividades ou um arquivo público
-  def assignment  
+  def assignment
     unless Exam.verify_blocking_content(current_user.id)
       file_id            = params[:file].split('_')[0]
       current_path_split = request.env['PATH_INFO'].split('/') #ex: /media/assignment/public_area/20_crimescene.png => ["", "media", "assignment", "public_area", "20_crimescene.png"]
@@ -26,7 +26,7 @@ class AccessControlController < ApplicationController
 
       if can_access.nil?
         is_observer_or_responsible = AllocationTag.find(active_tab[:url][:allocation_tag_id] || allocation_tags).is_observer_or_responsible?(current_user.id)
-        can_access = (( acu.user_id.to_i == current_user.id || (!(acu.group_assignment.nil?) && acu.group_assignment.user_in_group?(current_user.id)) ) || is_observer_or_responsible) 
+        can_access = (( acu.user_id.to_i == current_user.id || (!(acu.group_assignment.nil?) && acu.group_assignment.user_in_group?(current_user.id)) ) || is_observer_or_responsible)
       end
 
       if can_access
@@ -34,7 +34,7 @@ class AccessControlController < ApplicationController
       else
         raise CanCan::AccessDenied
       end
-    else  
+    else
       raise CanCan::AccessDenied
     end
   end
@@ -53,7 +53,7 @@ class AccessControlController < ApplicationController
     end
 
     send_file(file.attachment.path, { disposition: 'inline', type: return_type(params[:extension] || file.attachment.path.split('.').last)})
-  rescue 
+  rescue
     raise CanCan::AccessDenied
   end
 
@@ -70,22 +70,22 @@ class AccessControlController < ApplicationController
       file = SupportMaterialFile.find(params[:path].split('_')[0])
       if file.is_file?
         file_path = File.join(SupportMaterialFile::FILES_PATH, [params[:path], '.', file.name.split('.').last ].join)
-        File.exist?(file_path) ? send_file(file_path, disposition: 'inline') : render(nothing: true) 
+        File.exist?(file_path) ? send_file(file_path, disposition: 'inline') : render(nothing: true)
       else
         path = file.path(true)
         params[:extension] = path.split('.').last if params[:extension].nil?
         send_file(path, { disposition: 'inline', type: return_type(params[:extension]) })
       end
-    end  
+    end
   end
 
-  def question_image 
+  def question_image
     question = QuestionImage.find(params[:file].split('_')[0]).question
     question.can_see?
     download_file(File.join('questions', 'images'))
   end
 
-  def question_audio 
+  def question_audio
     question = QuestionAudio.find(params[:file].split('_')[0]).question
     question.can_see?
     download_file(File.join('questions', 'audios'))
@@ -185,42 +185,8 @@ class AccessControlController < ApplicationController
     end
 
     def download_file(path)
-      file_path = File.join("#{Rails.root}", 'media', path, "#{params[:file]}.#{params[:extension]}")  
-      File.exist?(file_path) ? send_file(file_path, disposition: 'inline') : render(nothing: true) 
-    end
-
-    def guard_with_access_token_or_authenticate
-      unless get_access_token.blank? || !user_session.blank?
-        access_token = Doorkeeper::AccessToken.authenticate(get_access_token)
-        case Oauth2::AccessTokenValidationService.validate(access_token, scopes: [])
-        when Oauth2::AccessTokenValidationService::INSUFFICIENT_SCOPE
-          Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for access_token permission - INSUFFICIENT_SCOPE"
-          raise InsufficientScopeError.new(scopes)
-
-        when Oauth2::AccessTokenValidationService::EXPIRED
-          Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for access_token permission - EXPIRED"
-          raise ExpiredError
-
-        when Oauth2::AccessTokenValidationService::REVOKED
-          Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for access_token permission - REVOKED"
-          raise RevokedError
-
-        when Oauth2::AccessTokenValidationService::VALID
-          sign_in(:user, User.find(access_token.resource_owner_id))
-          user_session[:lessons] = []
-
-          if current_user.blank?
-            current_user = User.find(access_token.resource_owner_id) rescue nil 
-          end
-
-          User.current = current_user
-          @user_session_exam = Exam.verify_blocking_content(current_user.id) || false
-        end
-      else
-        @user_session_exam = false
-        authenticate_user!
-        user_session[:blocking_content] = Exam.verify_blocking_content(current_user.try(:id) || User.current.try(:id)) if user_session[:blocking_content].blank?
-      end
+      file_path = File.join("#{Rails.root}", 'media', path, "#{params[:file]}.#{params[:extension]}")
+      File.exist?(file_path) ? send_file(file_path, disposition: 'inline') : render(nothing: true)
     end
 
 end

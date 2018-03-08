@@ -159,6 +159,7 @@ Solar::Application.routes.draw do
       put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: "add"   , tool_type: "Discussion", as: :add_group_to
       get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: "Discussion", as: :group_tags_from
       get :summary , to: 'academic_allocation_users#summary', tool: 'Discussion'
+      get :api_download
     end
     put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Discussion', as: :evaluate, on: :member
     get :download

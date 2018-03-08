@@ -55,7 +55,7 @@ class PostFilesController < ApplicationController
           if params.include?('auth_token')
             render :json => {:result => 0}, :status => :unprocessable_entity
           else
-            render_json_error(error_msg, 'posts.error', nil, error_msg) 
+            render_json_error(error_msg, 'posts.error', nil, error_msg)
           end
         end
       }
@@ -65,7 +65,7 @@ class PostFilesController < ApplicationController
   def destroy
     @post_file.can_change?
     @post_file.verify_children_with_raise
-    
+
     File.delete(@post_file.attachment.path) if File.exist?(@post_file.attachment.path)
     LogAction.create(log_type: LogAction::TYPE[:destroy], user_id: current_user.id, ip: get_remote_ip, description: "post_file: #{@post_file.id} - #{@post_file.attachment_file_name}, post: #{@post_file.post.id}") rescue nil
     @post_file.delete
@@ -80,10 +80,22 @@ class PostFilesController < ApplicationController
   end
 
   def api_download
-    @post_file = PostFile.find(params[:id])
+    guard_with_access_token_or_authenticate(true)
+    post_file = PostFile.find(params[:id])
 
-    redirect_error = posts_path(discussion_id: @post_file.post.discussion.id)
-    download_file(redirect_error, @post_file.attachment.path, @post_file.attachment_file_name)
+    raise CanCan::AccessDenied unless User.current.allocation_tags_ids_with_access_on(:index, 'posts').include?(post_file.post.academic_allocation.allocation_tag.id)
+
+    begin
+      download_file(nil, post_file.attachment.path, post_file.attachment_file_name)
+    rescue
+      raise 'file not found'
+    end
+  rescue ActiveRecord::RecordNotFound => error
+    Rails.logger.info "[API] [ERROR] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [404] message: #{error}"
+    render json: {success: false, status: :not_found, error: error}
+  rescue => error
+    Rails.logger.info "[API] [ERROR] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [404] message: #{error}"
+    render json: {success: false, status: :unprocessable_entity, error: error}
   end
 
 end

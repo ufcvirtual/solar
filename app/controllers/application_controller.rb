@@ -41,10 +41,10 @@ class ApplicationController < ActionController::Base
       format.js { render js: "flash_message('#{t(:no_permission)}', 'alert');" }
     end
   end
-  
+
 
   if Rails.env != 'development'
-    rescue_from ActiveRecord::RecordNotFound do |exception| 
+    rescue_from ActiveRecord::RecordNotFound do |exception|
       #logar: exception.message
       respond_to do |format|
         format.html { redirect_to home_path, alert: t(:object_not_found) }
@@ -67,7 +67,7 @@ class ApplicationController < ActionController::Base
      end
   end
 
-  def start_user_session  
+  def start_user_session
     return unless user_signed_in?
     user_session[:tabs] = {
       opened: {
@@ -78,7 +78,7 @@ class ApplicationController < ActionController::Base
       }, active: 'Home'
     } unless user_session.include?(:tabs)
   end
-  
+
   def another_level_breadcrumb
     same_level_for_all = 1 # ultimo nivel, por enquanto o breadcrumb só comporta 3 níveis
     user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb][same_level_for_all] = { name: params[:bread], url: params } if params[:bread].present?
@@ -119,7 +119,7 @@ class ApplicationController < ActionController::Base
 
   def hold_pagination
     user_session[:current_page] = @current_page
-    
+
   end
 
   def prepare_for_group_selection
@@ -261,7 +261,7 @@ class ApplicationController < ActionController::Base
       end
 
       if menu
-        LogNavigation.create(user_id: current_user.id, menu_id: menu.id, context_id: context_id, allocation_tag_id: allocation_tag_id) 
+        LogNavigation.create(user_id: current_user.id, menu_id: menu.id, context_id: context_id, allocation_tag_id: allocation_tag_id)
       elsif !context_id.nil?
         LogNavigation.create(user_id: current_user.id, context_id: context_id, allocation_tag_id: allocation_tag_id) # entrando em um curso
       end
@@ -274,7 +274,7 @@ class ApplicationController < ActionController::Base
     end
   rescue => error
     Rails.logger.info "[ERROR] [Log Navigation] [#{Time.now}] #{error}"
-  end 
+  end
 
   # salva o log de acesso ao submenu
   def log_navigation_sub(menu_log, discussion_log_id, user_log_id, sub_log_id, student_log_id, group_assignment_log_id, lesson_notes_id, digital_class_log, zip_download)
@@ -297,20 +297,20 @@ class ApplicationController < ActionController::Base
       when 103
         digital_class_url = digital_class_log
       when 202
-        assignments_id = sub_log_id 
+        assignments_id = sub_log_id
       when 203
         exams_id = sub_log_id
-      when 204 
+      when 204
         session[:tool_type] = params[:tool_type] if params[:tool_type]
         assignments_id = sub_log_id if session[:tool_type] == 'Assignment'
         webconferences_id = sub_log_id if session[:tool_type] == 'Webconference'
         exams_id = sub_log_id if session[:tool_type] == 'Exam'
-        chat_rooms_id = sub_log_id if session[:tool_type] == 'ChatRoom' 
+        chat_rooms_id = sub_log_id if session[:tool_type] == 'ChatRoom'
       when 205
         chat_rooms_id = sub_log_id
         unless params[:academic_allocation_id] # para acesso ao chat
           hist_chat_rooms_id = sub_log_id      # para acesso ao historico do chat
-        end   
+        end
       when 206
         webconferences_id = sub_log_id
         webconference = params[:action] == 'access'
@@ -333,18 +333,18 @@ class ApplicationController < ActionController::Base
           public_file_name = 'zip'
         else
           if sub_log_id
-            public_file = PublicFile.find(sub_log_id) 
+            public_file = PublicFile.find(sub_log_id)
             public_file_name = public_file.attachment_file_name rescue nil
             user_log_id = public_file.user_id unless user_log_id
           end
         end
         public_area = true if user_log_id
     end
-  
+
     if (!support_material_file.blank? || assignments_id || exams_id || chat_rooms_id || webconferences_id || discussion_log_id || lesson_log_id || !bibliography.blank? || student_log_id || public_area || hist_chat_rooms_id || digital_class_url || (user_log_id && score_professor))
       # para o acompanhamento do professor
       #assignments_id = sub_log_id if student_log_id
-      ultimo_log_nav = LogNavigation.where('user_id = ? AND menu_id = ?', current_user.id, menu_log.id).last # pega o log de navegação para o sub log. 
+      ultimo_log_nav = LogNavigation.where('user_id = ? AND menu_id = ?', current_user.id, menu_log.id).last # pega o log de navegação para o sub log.
       LogNavigationSub.create(log_navigation_id: ultimo_log_nav.id, support_material_file: support_material_file, discussion_id: discussion_log_id, lesson_id: lesson_log_id, assignment_id: assignments_id, exam_id: exams_id, user_id: user_log_id, chat_room_id: chat_rooms_id, student_id: student_log_id, group_assignment_id: group_assignment_log_id, webconference_id: webconferences_id, bibliography: bibliography, public_area: public_area, lesson: lesson_name, public_file_name: public_file_name, hist_chat_room_id: hist_chat_rooms_id, webconference_record: webconference, lesson_notes: lesson_notes, digital_class_lesson: digital_class_url)
       #session.delete(:tool_type)
     end
@@ -352,5 +352,44 @@ class ApplicationController < ActionController::Base
     Rails.logger.info "[ERROR] [Log Navigation] [#{Time.now}] #{error}"
   end
 
-  
+  def guard_with_access_token_or_authenticate(only_by_token=false)
+    if only_by_token && !get_access_token.blank?
+      current_user = nil
+      user_session = []
+    end
+
+    unless get_access_token.blank? || !user_session.blank?
+      access_token = Doorkeeper::AccessToken.authenticate(get_access_token)
+      case Oauth2::AccessTokenValidationService.validate(access_token, scopes: [])
+      when Oauth2::AccessTokenValidationService::INSUFFICIENT_SCOPE
+        Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for access_token permission - INSUFFICIENT_SCOPE"
+        raise InsufficientScopeError.new(scopes)
+
+      when Oauth2::AccessTokenValidationService::EXPIRED
+        Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for access_token permission - EXPIRED"
+        raise ExpiredError
+
+      when Oauth2::AccessTokenValidationService::REVOKED
+        Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for access_token permission - REVOKED"
+        raise RevokedError
+
+      when Oauth2::AccessTokenValidationService::VALID
+        sign_in(:user, User.find(access_token.resource_owner_id))
+        user_session[:lessons] = [] unless only_by_token
+
+        if current_user.blank?
+          current_user = User.find(access_token.resource_owner_id) rescue nil
+        end
+
+        User.current = current_user
+        @user_session_exam = Exam.verify_blocking_content(current_user.id) || false
+      end
+    else
+      @user_session_exam = false
+      authenticate_user!
+      user_session[:blocking_content] = Exam.verify_blocking_content(current_user.try(:id) || User.current.try(:id)) if user_session[:blocking_content].blank?
+    end
+  end
+
+
 end
