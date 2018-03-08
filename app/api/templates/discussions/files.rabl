@@ -5,6 +5,5 @@ collection @files
 
   node :url do |f|
     api_download_discussions_url(file_id: f.id)
-    # api_download_post_post_file_url(post_id: f.discussion_post_id, id: f.id)
   end
 end
