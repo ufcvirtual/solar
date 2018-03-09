@@ -1,20 +1,20 @@
 - path = (@not_offer_area ? open_lesson_path(lesson.id, allocation_tags_ids: @allocation_tags_ids, offer_id: @offer.id) : open_lesson_path(lesson.id))
 %td{headers: "name_#{lesson.lesson_module_id}"}
   - closed = " (#{t(:lesson_closed_short)})"
+  - draft = lesson.is_draft? ? " (#{t(:lesson_test)})" : ''
   - if lesson.closed?
-
     - if @only_student
-      = (@not_offer_area ? (link_to lesson.name + closed, "#void", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, onkeydown: 'click_on_keypress(event, this);') : link_to(lesson.name + closed, '#', disabled: true, class: 'disabled', :'aria-label' => lesson.name + closed + t(:disabled)))
+      = (@not_offer_area ? (link_to lesson.name + closed + draft, "#void", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, onkeydown: 'click_on_keypress(event, this);') : link_to(lesson.name + closed, '#', disabled: true, class: 'disabled', :'aria-label' => lesson.name + closed + t(:disabled)))
     -else
-      = (link_to lesson.name + closed, "#void", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, onkeydown: 'click_on_keypress(event, this);')
+      = (link_to lesson.name + closed + draft, "#void", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, onkeydown: 'click_on_keypress(event, this);')
 
   - else
     - unless lesson.address.blank?
       - text = []
 
       - if lesson.is_draft?
-        .test_lesson= "(#{t(:lesson_test)})"
-        - text << "(#{t(:lesson_test)})"
+        .test_lesson= draft
+        - text << draft
       - if lesson.will_open?
         .test_lesson= "(#{t(:lesson_will_open)})"
         - text << "(#{t(:lesson_will_open)})"
