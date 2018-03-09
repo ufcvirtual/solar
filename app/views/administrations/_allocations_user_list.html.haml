@@ -1,0 +1,34 @@
+- unless profiles.empty?
+  - profiles.each do |p|
+    .block_content
+      .block_title
+        %h2= p.name
+      %div
+        %table.tb_list.tablesorter{'data-sortlist' => '[[0,0]]'}
+          %thead
+            %tr.lines
+              %th{style: 'width:120px'}= t(:type, scope: [:administrations, :allocations_user])
+              %th= t(:allocation, scope: [:administrations, :allocations])
+              %th{style: 'width:80px'}= t(:status, scope: [:administrations, :allocations])
+              %th= t('allocations.designates.designated_by')
+              %th= t('allocations.designates.designated_on')
+              - if @can_change
+                %th.no_sort{style: 'width:80px'}= ''
+          %tbody
+            - allocations.where('profile_id='+p.id.to_s).each do |a|
+              - allocation = []
+              - allocation << a.course_name unless a.course_name.blank? 
+              - allocation << a.curric_name unless a.curric_name.blank?
+              - allocation << a.semester    unless a.semester.blank?
+              - allocation << a.group_code  unless a.group_code.blank?  
+              %tr.lines.allocations
+                %td= a.description
+                %td{style: 'width: 63%;'}= allocation.join(' - ')
+                %td= name_allocation_status(a.status)
+                %td= a.updated_by.try(:username)
+                %td= l(a.updated_at)
+                - if @can_change
+                  %td.right_buttons.manage
+                    = link_to content_tag(:i, nil, class: 'icon-edit'), "#void", onclick: 'manage(this)', :"show-link" => admin_allocation_path(a), :"edit-link" => edit_admin_allocation_path(a), class:  'btn btn_manage_allocation'
+- else
+  .block_content_text.block_content_text_list.text_none= t(:no_data, scope: [:administrations, :allocations_user])

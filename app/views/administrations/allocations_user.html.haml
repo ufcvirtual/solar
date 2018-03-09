@@ -5,37 +5,11 @@
       %h2= t(:title, scope: [:administrations, :allocations])
     .block_left
       = t(:period, scope: [:administrations, :allocations])
-      = select_tag 'period', options_for_select(@periods, @periods.first)
+      = select_tag 'period', options_for_select(@periods.collect { |s| [ s.name, s.id] }), {prompt: t(:active)}
+      = hidden_field_tag :id, @user_id
 
-  - unless @profiles.empty?
-    - @profiles.each do |p|
-      .block_content
-        .block_title
-          %h2= p.name
-        %div
-          %table.tb_list.tablesorter{'data-sortlist' => '[[0,0]]'}
-            %thead
-              %tr.lines
-                %th{style: 'width:120px'}= t('.type')
-                %th= t(:allocation, scope: [:administrations, :allocations])
-                %th{style: 'width:80px'}= t(:status, scope: [:administrations, :allocations])
-                %th= t('allocations.designates.designated_by')
-                %th= t('allocations.designates.designated_on')
-                - if @can_change
-                  %th.no_sort{style: 'width:80px'}= ''
-            %tbody
-              - @allocations_user.where('profile_id='+p.id.to_s).each do |a|
-                %tr.lines.allocations{class: semester(a.allocation_tag)}
-                  %td= ( a.allocation_tag.nil? ? '' : type(a.allocation_tag) )
-                  %td{style: 'width: 63%;'}= a.allocation_tag.try(:info)
-                  %td= name_allocation_status(a.status)
-                  %td= a.updated_by.try(:username)
-                  %td= l(a.updated_at)
-                  - if @can_change
-                    %td.right_buttons.manage
-                      = link_to content_tag(:i, nil, class: 'icon-edit'), "#void", onclick: 'manage(this)', :"show-link" => admin_allocation_path(a), :"edit-link" => edit_admin_allocation_path(a), class:  'btn btn_manage_allocation'
-  - else
-    .block_content_text.block_content_text_list.text_none= t('.no_data')
+  #list_allocation
+    = render partial: 'allocations_user_list', locals: { profiles: @profiles, allocations: @allocations }
 
   .right_buttons
     = button_tag t(:close, scope: [:administrations]), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox'
@@ -45,41 +19,24 @@
 :javascript
 
   $(function(){
-    show_semester();
-
     $("#period")
       .change(function () {
         show_semester();
     })
-    .change();
   });
 
   function show_semester() {
     var semester = $('#period option:selected').val();
+    var user_id = $('#id').val();
 
-    $(".block_content").show();
-    $('.allocations').hide();
-    $('.right_buttons.manage').hide();
+    var url_for = "#{Rails.application.routes.url_helpers.allocations_admin_user_list_path(id: ':id')}";
+    var data = { id: user_id, semester_id: semester  };
 
-    if (semester=='')
-      $(".semester_active").show();
-    else{
-      semester = semester.replace(".", "\\\.");
-      $("."+semester).show();
-    }
-
-    $(".always_active").show();
-
-    $(".semester_active, .always_active").each ( function() {
-      if ( !$(this).is( ":hidden" ) ) {
-        $(this).children(".right_buttons.manage").show();
-      }
-    })
-
-    $(".tb_list tbody").each( function() {
-      if ( $(this).children(":visible").length == 0 ) {
-        $(this).parent(".block_content").hide();
-      }
+    $.get(url_for.replace(':id', user_id), data, function(data) { 
+      $('#list_allocation').html(data); 
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
     });
-
   };

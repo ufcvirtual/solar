@@ -79,6 +79,7 @@ Solar::Application.routes.draw do
     put "users/:id/password", to: "administrations#reset_password_user", as: :reset_password_admin_user
     get "users/:id/edit", to: "administrations#edit_user", as: :edit_admin_user
     get "users/:id/allocations", to: "administrations#allocations_user", as: :allocations_admin_user
+    get "users/:id/allocations_list", to: "administrations#allocations_user_list", as: :allocations_admin_user_list
     get "users", to: "administrations#users", as: :admin_users
 
     get "responsibles/filter", to: "administrations#responsibles", as: :admin_responsibles_filter
