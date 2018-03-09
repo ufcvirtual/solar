@@ -116,7 +116,9 @@ class UsersController < ApplicationController
   def remove_photo
     current_user.photo = nil
     current_user.save
+
     respond_to do |format|
+      format.json { render json: {succes: true, notice: t(:remove_photo_msg) } }
       format.html { redirect_to :back, notice: t(:remove_photo_msg) }
     end
   end

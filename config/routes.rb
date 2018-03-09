@@ -21,13 +21,13 @@ Solar::Application.routes.draw do
   get :faq, to: 'pages#faq', as: :faq
   get :tutorials_login, to: "pages#tutorials_login", as: :tutorials_login
   get :general_shortcuts, to: 'pages#general_shortcuts', as: :general_shortcuts
-  get :remove_photo, to: 'users#remove_photo', as: :remove_photo
 
   resources :users do
     member do
       get :photo
       put :update_photo
       get :reset_password_url
+      delete :remove_photo
     end
     collection do
       get :edit_photo
