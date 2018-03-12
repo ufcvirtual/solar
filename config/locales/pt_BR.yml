@@ -247,6 +247,7 @@ pt_BR:
       post_file: Arquivo
       comment_file: Arquivo
       email: Email
+      supportmaterialfile: Material de Apoio
     attributes:
       user:
         alternate_email: "E-mail alternativo"

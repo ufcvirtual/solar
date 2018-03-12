@@ -211,6 +211,7 @@ en_US:
       post_file: File
       comment_file: File
       email: Email
+      supportmaterialfile: Support Material
     attributes:
       user:
         password: "Password"

@@ -4,7 +4,7 @@
 
   .form-inputs.block_content
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
-    = f.input :name
+    = f.input :name, input_html: {size: 50}
 
     = render "groups/codes"
 
