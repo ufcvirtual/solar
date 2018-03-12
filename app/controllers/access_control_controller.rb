@@ -189,4 +189,38 @@ class AccessControlController < ApplicationController
       File.exist?(file_path) ? send_file(file_path, disposition: 'inline') : render(nothing: true)
     end
 
+    def guard_with_access_token_or_authenticate
+      unless get_access_token.blank? || !user_session.blank?
+        access_token = Doorkeeper::AccessToken.authenticate(get_access_token)
+        case Oauth2::AccessTokenValidationService.validate(access_token, scopes: [])
+        when Oauth2::AccessTokenValidationService::INSUFFICIENT_SCOPE
+          Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for access_token permission - INSUFFICIENT_SCOPE"
+          raise InsufficientScopeError.new(scopes)
+
+        when Oauth2::AccessTokenValidationService::EXPIRED
+          Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for access_token permission - EXPIRED"
+          raise ExpiredError
+
+        when Oauth2::AccessTokenValidationService::REVOKED
+          Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [#{code}] message: Error while checking for access_token permission - REVOKED"
+          raise RevokedError
+
+        when Oauth2::AccessTokenValidationService::VALID
+          sign_in(:user, User.find(access_token.resource_owner_id))
+          user_session[:lessons] = []
+
+          if current_user.blank?
+            current_user = User.find(access_token.resource_owner_id) rescue nil
+          end
+
+          User.current = current_user
+          @user_session_exam = Exam.verify_blocking_content(current_user.id) || false
+        end
+      else
+        @user_session_exam = false
+        authenticate_user!
+        user_session[:blocking_content] = Exam.verify_blocking_content(current_user.try(:id) || User.current.try(:id)) if user_session[:blocking_content].blank?
+      end
+    end
+
 end

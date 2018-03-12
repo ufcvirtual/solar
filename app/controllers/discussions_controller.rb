@@ -126,7 +126,7 @@ class DiscussionsController < ApplicationController
   end
 
   def api_download
-    guard_with_access_token_or_authenticate(true)
+    api_guard_with_access_token_or_authenticate
     file = DiscussionEnunciationFile.find(params[:file_id])
 
     raise CanCan::AccessDenied unless (file.discussion.allocation_tags.map(&:id) & User.current.allocation_tags_ids_with_access_on(:index, 'discussions')).any?

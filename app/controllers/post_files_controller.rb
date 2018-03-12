@@ -80,7 +80,7 @@ class PostFilesController < ApplicationController
   end
 
   def api_download
-    guard_with_access_token_or_authenticate(true)
+    api_guard_with_access_token_or_authenticate
     post_file = PostFile.find(params[:id])
 
     raise CanCan::AccessDenied unless User.current.allocation_tags_ids_with_access_on(:index, 'posts').include?(post_file.post.academic_allocation.allocation_tag.id)

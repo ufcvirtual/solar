@@ -352,11 +352,9 @@ class ApplicationController < ActionController::Base
     Rails.logger.info "[ERROR] [Log Navigation] [#{Time.now}] #{error}"
   end
 
-  def guard_with_access_token_or_authenticate(only_by_token=false)
-    if only_by_token && !get_access_token.blank?
-      current_user = nil
-      user_session = []
-    end
+  def api_guard_with_access_token_or_authenticate
+    current_user = nil
+    user_session = []
 
     unless get_access_token.blank? || !user_session.blank?
       access_token = Doorkeeper::AccessToken.authenticate(get_access_token)
@@ -375,7 +373,6 @@ class ApplicationController < ActionController::Base
 
       when Oauth2::AccessTokenValidationService::VALID
         sign_in(:user, User.find(access_token.resource_owner_id))
-        user_session[:lessons] = [] unless only_by_token
 
         if current_user.blank?
           current_user = User.find(access_token.resource_owner_id) rescue nil
@@ -390,6 +387,5 @@ class ApplicationController < ActionController::Base
       user_session[:blocking_content] = Exam.verify_blocking_content(current_user.try(:id) || User.current.try(:id)) if user_session[:blocking_content].blank?
     end
   end
-
 
 end
