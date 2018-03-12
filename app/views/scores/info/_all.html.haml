@@ -82,7 +82,7 @@
 
                 %td{headers: "al_eva_btn"}
                   - if @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate) || @can_comment
-                    = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: "open_evaluation(this);", :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), class: 'btn open_evaluation', onkeydown: 'click_on_keypress(event, this);'
+                    = link_to content_tag(:i, nil, class: (tool.situation == 'corrected' ? 'icon-eye' : 'icon-write')), "#void", onclick: "open_evaluation(this);", :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), class: 'btn open_evaluation', onkeydown: 'click_on_keypress(event, this);'
 
                 %td.center{headers: 'al_eva_af' }=raw t(tool.final_exam, scope: [:common_between_pages, :final_exam])
                 %td.center{headers: "al_eva_aft"}=(tool.new_after_evaluation ==  true ? t('scores.info.new_yes') : t('scores.info.new_no'))

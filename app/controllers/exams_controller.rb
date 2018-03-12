@@ -268,9 +268,24 @@ class ExamsController < ApplicationController
     raise 'not_finished' unless exam.ended?
     raise 'result_release_date' unless exam.allow_calculate_grade?
     exam.recalculate_grades(nil, ats, true)
-    render json: { success: true, notice: t('calculate_grade', scope: 'exams.list') }
+    render json: { success: true, notice: t('calculate_grade', scope: 'exams.list'), situation: t('scores.situation.corrected') }
   rescue => error
     render_json_error(error, 'exams.error')
+  end
+
+  def show_user_exam_answered
+    allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids] : active_tab[:url][:allocation_tag_id]
+    authorize! :evaluate, Exam, on: allocation_tags_ids
+
+    @exam = Exam.find(params[:id])
+    @acu = AcademicAllocationUser.find_one(params[:ac_id], params[:user_id])
+    @disabled = true
+    @last_attempt = @exam.responses_question_user(@acu.id, @exam.id)
+    @exam_questions = ExamQuestion.list_correction(@exam.id).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions)
+    @total_time = @last_attempt.try(:complete) ? 0 : @last_attempt.try(:get_total_time)
+    @exam_user_attempt = ExamUserAttempt.where(academic_allocation_user_id: @acu.id).first
+
+    render :open
   end
 
   def change_status

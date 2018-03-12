@@ -311,6 +311,8 @@ class ScoresController < ApplicationController
 
     if ['not_started', 'to_send'].include?(params[:situation])
       render json: { alert: t('scores.error.situation') }, status: :unprocessable_entity
+    elsif params[:tool_type] == 'Exam' && ['corrected', 'evaluated'].include?(params[:situation])
+      render json: { url: show_user_exam_answered_exam_path(tool_id, user_id: params[:user_id], ac_id: params[:ac_id]) }
     else
       case params[:tool_type]
       when 'Assignment'
