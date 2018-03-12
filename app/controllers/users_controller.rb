@@ -151,15 +151,7 @@ class UsersController < ApplicationController
   end
 
   def configure
-    @user   = current_user
-    if @user.personal_configuration.nil?
-      notifify_email = PersonalConfiguration.new
-      notifify_email.user_id = @user.id
-      notifify_email.save!
-    else
-      notifify_email = @user.personal_configuration
-    end
-    @configure = notifify_email
+    @configure = PersonalConfiguration.where(user_id: current_user.id).first_or_create
 
     respond_to do |format|
       format.html { render layout: false if params[:layout] }

@@ -488,8 +488,8 @@ en_US:
         attachment: File
         attachment_file_name: File
       personal_configuration:
-        message: Receive email messages
-        post: Receive email news from Posts (Forums)
+        message: Receive emails with message's content
+        post: Receive emails about discussion's posts (answer to my posts)
         exam: Receive emails with test scores
       discussion_enunciation_file:
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
@@ -1207,7 +1207,7 @@ en_US:
       draft: It's not possible to reply a draft post
       back_to_draft: It's not possible to set as draft a post with replies.
     mail:
-      subject: POST ANSWER
+      subject: Reply to your post sent at %{discussion} - %{at_info}
       text: You have received the following answer
       text_resp: 'For your post:'
 

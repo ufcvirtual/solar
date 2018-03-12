@@ -109,8 +109,6 @@ class PostsController < ApplicationController
 
     if new_post_under_discussion(Discussion.find(params[:discussion_id]))
       set_automatic_frequency(@post)
-      allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
-      @post.send_mail(allocation_tag) unless @post.parent_id.blank?
       render json: {result: 1, post_id: @post.id, parent_id: @post.parent_id}, status: :created
     else
       render json: { result: 0, alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity

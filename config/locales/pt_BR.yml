@@ -552,8 +552,8 @@ pt_BR:
         attachment: Arquivo
         attachment_file_name: Arquivo
       personal_configuration:
-        message: Receber emails de Mensagens
-        post: Receber emails de Postagens(Fóruns)
+        message: Receber emails com o conteúdo de mensagens
+        post: Receber emails de postagens em fórum (respostas às minhas postagens)
         exam: Receber emails com notas de provas
       discussion_enunciation_file:
         attachment_content_type: ""
@@ -1398,7 +1398,7 @@ pt_BR:
       draft: Não é possível responder um post de rascunho
       back_to_draft: Não é possível definir como rascunho um post com respostas.
     mail:
-      subject: POST RESPOSTA
+      subject: Resposta a seu post enviado em %{discussion} - %{at_info}
       text: Você recebeu a seguinte resposta
       text_resp: 'Para seu post:'
 
@@ -3419,7 +3419,7 @@ pt_BR:
       theme_blue: "Azul "
       theme_high_contrast: Auto contraste
       success:
-        updated: Configurações atualizada com sucesso
+        updated: Configurações atualizadas com sucesso
       error:
         updated: Falha ao atualizar as configurações
 

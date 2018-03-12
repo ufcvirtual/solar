@@ -7,17 +7,17 @@
     %title= "Solar"
     = yield(:head)
   %body
-    %p= @info
-    %br
-    %p= @discussion_name
-    ________________________________________________________________________
-    %br
-    %p= I18n.t('posts.mail.text')
     %p
-      = "#{@user.name}:"
+      %b= @info + "(#{I18n.t('activerecord.models.discussion', locale: @locale)}: #{@discussion_name})"
+    %br
+    %p= I18n.t('posts.mail.text', locale: @locale)
+    %p
+      = "#{@post.user.name}:"
+      = raw @post.content
+
+    %br
+    %br
+    %p
+      = I18n.t('posts.mail.text_resp', locale: @locale)
       = raw @old_post.content
-    ________________________________________________________________________
-    %p
-      = I18n.t('posts.mail.text_resp') 
-      = raw @post.content  
-    %p{style: "color: #7C7C7C; font-size: 8pt; padding-top: 10px;"}= I18n.t("notifier.dont_reply_message")     
+    %p{style: "color: #7C7C7C; font-size: 8pt; padding-top: 10px;"}= I18n.t("notifier.dont_reply_message", locale: @locale)
