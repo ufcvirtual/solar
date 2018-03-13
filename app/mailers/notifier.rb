@@ -57,4 +57,14 @@ class Notifier < ActionMailer::Base
     mail(to: recipients, subject: "[SOLAR] #{subject}")
   end
 
+  def exam(recipients, subject, exam, acu, grade)
+    @exam = exam
+    @user = acu.user
+    @allocation_tag = acu.allocation_tag
+    @locale = (@user.personal_configuration.default_locale rescue 'pt_BR')
+    @grade = grade
+
+    mail(to: recipients, subject: "[SOLAR] #{subject}")
+  end
+
 end

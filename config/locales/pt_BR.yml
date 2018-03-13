@@ -4242,14 +4242,13 @@ pt_BR:
       attempt: 'Tentativa %{attempt}'
       average: 'Média: %{grade}'
       result: Resultado
-      subject: ENVIO DE NOTA
+      subject: Nota da prova %{exam} - %{at_info}
       salutation: 'Prezado(a)'
       exam_name: A prova
       exam_grade: 'Seu resultado foi:'
       email_infor: "Para verificar mais informações sobre seu resultado ou sobre a correção, estes já estão disponíveis no menu de Provas no Solar."
       email_infor_compl: "teve seu período encerrado e sua nota foi calculada"
       email_of: do
-      email: "Por favor não responda esta mensagem. Este é um email automático do Solar 2.0."
       itens_corrected: "Iten(s) correto(s): "
       itens_marked: "Iten(s) marcado(s): "
       true_item: "Item verdadeiro"

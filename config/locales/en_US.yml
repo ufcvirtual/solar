@@ -3989,14 +3989,13 @@ en_US:
       view_attempt: View %{attempt}
       attempt: 'Attempt %{attempt}'
       result: Result
-      subject: NOTE DISPATCH
-      salutation: 'Dear (a)'
-      exam_name: Approves
-      exam_grade: 'His result was:'
-      email_infor: "To see more information about your result or the correction , these are available in the Testing menu at Solar ."
-      email_infor_compl: "It had ended its period and its score was calculated"
+      subject: Grade of %{exam} exam - %{at_info}
+      salutation: 'Dear '
+      exam_name: Exam
+      exam_grade: 'Your result was:'
+      email_infor: "To see more information about your result or correction, these are available at Tests menu on Solar ."
+      email_infor_compl: has ended it's period and your score was calculated
       email_of: of
-      email: "Please do not respond to this message. This is an automatic email from Solar 2.0"
       itens_corrected: "Corrected item(s): "
       itens_marked: "Marked item(s): "
       true_item: "True item"
