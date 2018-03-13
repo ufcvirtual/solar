@@ -4955,8 +4955,8 @@ pt_BR:
     frequency:
       'true': 'Sim <br/>(máx: %{hours}h%{automatic})'
       'false': Não
-      a: "<br/>automática"
-      d: "definida pelo responsável"
+      automatic: " (automática)"
+      defined: " (definida pelo responsável) "
     ev_final_exam:
       'true': 'Sim <br/>(AF)'
       'false': Não

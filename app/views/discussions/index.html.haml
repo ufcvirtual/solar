@@ -62,7 +62,7 @@
                 %td.center{class: "assignment_not_started", headers: 'situation'}= t("scores.situation.not_started")
 
             %td.center{headers: 'evaluative' }=raw (discussion.final_exam == true ? t(discussion.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(discussion.evaluative, scope: [:scores, :info]))
-            %td.center{headers: 'frequency' }= raw t(discussion.frequency, scope: [:common_between_pages, :frequency], hours: discussion.max_working_hours, automatic: (!@is_student && discussion.frequency_automatic == true ? t("common_between_pages.frequency.a") : ""))
+            %td.center{headers: 'frequency' }= raw t(discussion.frequency, scope: [:common_between_pages, :frequency], hours: discussion.max_working_hours, automatic: (!@is_student && discussion.frequency_automatic == true ? t("common_between_pages.frequency.automatic").delete('()') : ""))
             - if @is_student
               %td.center{headers: 'summary'}=  link_to content_tag(:i, nil, class: 'icon-comment'), "#void", onclick: "open_summary(this); return false", class: "btn #{discussion.has_info == true ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt', tool: discussion.name, count: discussion.count_comments), :'data-url' => summary_discussions_path(ac_id: discussion.id, tool_id: discussion.academic_tool_id), :'aria-label' => t('comments.summary.title_alt', tool: discussion.name, count: discussion.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
 
