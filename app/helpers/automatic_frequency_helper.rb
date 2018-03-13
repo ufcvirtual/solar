@@ -32,8 +32,8 @@ module AutomaticFrequencyHelper
           end
 
           if type == "set_frequency"
-            if activity.class.to_s == "Post" && !activity.draft
-              academic_allocation_user.working_hours = academic_allocation.max_working_hours
+            if activity.class.to_s == "Post"
+              academic_allocation_user.working_hours = academic_allocation.max_working_hours unless activity.draft
             else
               academic_allocation_user.working_hours = academic_allocation.max_working_hours
             end
