@@ -4,8 +4,9 @@ module SentActivity
   extend ActiveSupport::Concern
 
   included do
-    after_save :update_acu
-    after_destroy :update_acu
+    after_save :update_acu, if: '!respond_to?(:log_type) || log_type == LogAction::TYPE[:access_webconference]'
+    after_destroy :update_acu, if: '!respond_to?(:log_type) || log_type == LogAction::TYPE[:access_webconference]'
+
   end
 
   def update_acu
@@ -32,7 +33,7 @@ module SentActivity
       else
         academic_allocation_user.new_after_evaluation = true
       end
-      academic_allocation_user.merge = merge
+      academic_allocation_user.merge = merge if respond_to?(:merge)
       academic_allocation_user.save(validate: false)
     end
   end
