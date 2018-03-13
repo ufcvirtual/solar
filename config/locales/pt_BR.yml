@@ -1638,7 +1638,7 @@ pt_BR:
       access: Lista de acessos
       user_online: Usuários online
       recording: Gravação
-      frequency: Carga Horária
+      frequency: Frequência
       grade: Nota
       recordings: Acessar lista de gravações de %{web}
       recordings_disabled: Acessar lista de gravações de %{web} (desabilitado)
@@ -3261,7 +3261,7 @@ pt_BR:
       place: Local
       date: Data
       time: Horário
-      frequency: Carga horária
+      frequency: Frequência
       grade: Nota
       to: ' à '
     status:
@@ -5019,7 +5019,7 @@ pt_BR:
     summary:
       title: "Comentários e notas para %{user} em %{tool}"
       grade: 'Nota: '
-      working_hours: 'Carga Horária: '
+      working_hours: 'Frequência: '
       no_grade: "<i>sem nota</i>"
       no_wh: "<i>sem carga horária</i>"
       info: Nota e Frequência

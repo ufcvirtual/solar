@@ -57,7 +57,7 @@
           - if @evaluative
             = f.input :grade, as: :numeric, step: 0.01, label: t('webconferences.list_access.grade'), input_html: { value: @acu.try(:grade), min: 0, max: 10}
           - if @frequency
-            = f.input :working_hours, as: :numeric, label: t('webconferences.list_access.working_hours') + automatic, input_html: { value: @acu.try(:working_hours), min: 0, max: @maxwh, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@maxwh )}
+            = f.input :working_hours, as: :numeric, label: t('webconferences.list_access.frequency') + automatic, input_html: { value: @acu.try(:working_hours), min: 0, max: @maxwh, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@maxwh )}
 
           = link_to t('webconferences.list_access.finish_evaluation'), "#void", onclick: 'finish_evaluation(this)', class: 'btn btn_main', onkeydown: 'click_on_keypress(event, this);'
 

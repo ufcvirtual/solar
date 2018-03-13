@@ -4766,7 +4766,7 @@ en_US:
     summary:
       title: "Comments and grades to %{user} at %{tool}"
       grade: 'Grade: '
-      working_hours: 'Working Hours: '
+      working_hours: 'Frequency: '
       no_grade: "<i>no grade</i>"
       no_wh: "<i>no working hour</i>"
       info: Grade and Frequency

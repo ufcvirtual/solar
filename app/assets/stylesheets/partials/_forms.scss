@@ -307,3 +307,15 @@ form .schedule_dates input{
     width: 66%;
   }
 }
+
+#academic_allocation_user_grade_form, #academic_allocation_user_frequency_form{
+  .form-inputs.block_content{
+    .academic_allocation_user_grade, .academic_allocation_user_working_hours{
+      vertical-align: middle;
+      label{
+        vertical-align: middle;
+        width: 33%;
+      }
+    }
+  }
+}
