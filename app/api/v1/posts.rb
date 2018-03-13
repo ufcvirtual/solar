@@ -139,13 +139,18 @@ module V1
 
         raise MissingTokenError unless @discussion.user_can_interact?(current_user.id) # unauthorized
 
-        academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: RelatedTaggable.related({ group_id: @group.id })).first
+        ats = [AllocationTag.find_by_group_id(@group.id)] || RelatedTaggable.related({ group_id: @group.id })
+
+        academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: ats).first
+
+        acu = AcademicAllocationUser.find_or_create_one(academic_allocation.id, ats.first, current_user.id, nil, true, nil)
 
         @post = Post.new(post_params)
         @post.content = CGI::escapeHTML(@post.content)
         @post.user = current_user
         @post.profile_id = @profile_id
         @post.academic_allocation_id = academic_allocation.id
+        @post.academic_allocation_user_id = acu.try(:id)
         User.current = current_user
 
         if @post.save
