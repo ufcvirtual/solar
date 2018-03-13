@@ -1,7 +1,8 @@
 class AssignmentWebconference < ActiveRecord::Base
-  
+
   include Bbb
   include ControlledDependency
+  include SentActivity
 
   belongs_to :academic_allocation_user
 
@@ -25,11 +26,6 @@ class AssignmentWebconference < ActiveRecord::Base
 
   validates :academic_allocation_user_id, presence: true
 
-  #default_scope order: 'updated_at DESC'
-
-  after_save :update_acu
-  after_destroy :update_acu
-
   def can_change?
     raise CanCan::AccessDenied unless is_owner?
     raise 'date_range'         unless assignment.in_time?
@@ -38,7 +34,7 @@ class AssignmentWebconference < ActiveRecord::Base
   def order
    'updated_at DESC'
   end
-  
+
   def delete_with_dependents
     self.delete
   end
@@ -123,21 +119,4 @@ class AssignmentWebconference < ActiveRecord::Base
     errors.add(:initial_time,  I18n.t('assignments.error.invalid_datetime')) if !(initial_time.blank?) && (initial_time < Date.current)
   end
 
-  private
-
-    def update_acu
-      unless academic_allocation_user_id.blank?
-        if (academic_allocation_user.grade.blank? && academic_allocation_user.working_hours.blank?)
-          if (academic_allocation_user.assignment_files.empty? && academic_allocation_user.assignment_webconferences.empty?)
-            academic_allocation_user.status = AcademicAllocationUser::STATUS[:empty]
-          else
-            academic_allocation_user.status = AcademicAllocationUser::STATUS[:sent]
-          end
-        else
-          academic_allocation_user.new_after_evaluation = true
-        end
-        academic_allocation_user.merge = merge
-        academic_allocation_user.save(validate: false)
-      end
-    end
 end

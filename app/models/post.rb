@@ -1,4 +1,5 @@
 class Post < ActiveRecord::Base
+  include SentActivity
 
   self.table_name = 'discussion_posts'
 
@@ -22,8 +23,7 @@ class Post < ActiveRecord::Base
   before_destroy :remove_all_files
 
   after_create :increment_counter
-  after_destroy :decrement_counter, :update_acu, :remove_drafts_children, :decrement_counter_draft
-  after_save :update_acu
+  after_destroy :decrement_counter, :remove_drafts_children, :decrement_counter_draft
   after_save :change_counter_draft, if: '!parent_id.nil? && draft_changed?'
   after_save :send_email, unless: 'parent_id.blank? || draft || parent.user_id == user_id'
 
@@ -205,22 +205,5 @@ class Post < ActiveRecord::Base
         Post.decrement_counter('children_drafts_count', parent_id) unless parent.try(:children_drafts_count) == 0
       end
     end
-
-    def update_acu
-      unless academic_allocation_user_id.blank?
-        if (academic_allocation_user.grade.blank? && academic_allocation_user.working_hours.blank?)
-          if academic_allocation_user.discussion_posts.where(draft: false).empty?
-            academic_allocation_user.status = AcademicAllocationUser::STATUS[:empty]
-          else
-            academic_allocation_user.status = AcademicAllocationUser::STATUS[:sent]
-          end
-        else
-          academic_allocation_user.new_after_evaluation = true
-        end
-        academic_allocation_user.merge = merge
-        academic_allocation_user.save(validate: false)
-      end
-    end
-
 
 end
