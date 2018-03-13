@@ -268,7 +268,11 @@ class ExamsController < ApplicationController
     raise 'not_finished' unless exam.ended?
     raise 'result_release_date' unless exam.allow_calculate_grade?
     exam.recalculate_grades(nil, ats, true)
-    render json: { success: true, notice: t('calculate_grade', scope: 'exams.list'), situation: t('scores.situation.corrected') }
+    if acu = AcademicAllocationUser.find_one(params[:ac_id], params[:user_id])
+      render json: { success: true, notice: t('calculate_grade', scope: 'exams.list'), situation: t('scores.situation.corrected'), grade: acu.grade }
+    else
+      render json: { success: true, notice: t('calculate_grade', scope: 'exams.list'), situation: t('scores.situation.corrected') }
+    end
   rescue => error
     render_json_error(error, 'exams.error')
   end

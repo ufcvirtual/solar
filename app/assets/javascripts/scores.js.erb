@@ -124,6 +124,9 @@ function remove_situation(btn){
 function change_situation_exam(element, data) {
   $(element).closest(".lines").find("[headers=al_eva_sit]").find('div').first().addClass('assignment_corrected');
   $(element).closest(".lines").find("[headers=al_eva_sit]").find('div').first().text(data.situation);
+  $(element).closest(".lines").find(".grade").html(data.grade);
+  if (/sent/.test($(element).data('url')))
+    $(element).html(data.grade);
   var new_url = $(element).data('url').replace(/finished|sent/i, "corrected");
   $(element).data('url', new_url);
   $(element).closest(".lines").find("[headers=al_eva_btn]").find('i').removeClass('icon-write');
