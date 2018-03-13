@@ -102,7 +102,7 @@ class MessagesController < ApplicationController
           #Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files, current_user.email).deliver
         #end
         Thread.new do
-          Job.send_mass_email(emails, @message.subject, new_msg_template, @message.files, current_user.email)
+          Job.send_mass_email(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email)
         end
       end
 
