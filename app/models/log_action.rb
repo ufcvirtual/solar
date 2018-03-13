@@ -1,5 +1,7 @@
 class LogAction < ActiveRecord::Base
 
+  include SentActivity
+
   belongs_to :user
   belongs_to :allocation_tag
   belongs_to :academic_allocation
