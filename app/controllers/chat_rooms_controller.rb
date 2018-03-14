@@ -52,8 +52,8 @@ class ChatRoomsController < ApplicationController
     @chat_room = ChatRoom.new
     @chat_room.build_schedule(start_date: Date.today, end_date: Date.today)
 
-    # @academic_allocations = @chat_room.academic_allocations.build @allocation_tags_ids.map { |at| { allocation_tag_id: at } }
-    # @academic_allocations.first.chat_participants.build # escolha de participantes apenas para uma turma
+    @academic_allocations = @chat_room.academic_allocations.build @allocation_tags_ids.map { |at| { allocation_tag_id: at } }
+    @academic_allocations.first.chat_participants.build # escolha de participantes apenas para uma turma
   end
 
   def edit
@@ -64,7 +64,7 @@ class ChatRoomsController < ApplicationController
     authorize! :create, ChatRoom, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     @chat_room = ChatRoom.new chat_room_params
-    @chat_room.allocation_tag_ids_associations = @allocation_tags_ids.split(' ').flatten
+    # @chat_room.allocation_tag_ids_associations = @allocation_tags_ids.split(' ').flatten
 
     if @chat_room.save
       render_notification_success_json('created')
