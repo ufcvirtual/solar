@@ -52,8 +52,8 @@ class ChatRoomsController < ApplicationController
     @chat_room = ChatRoom.new
     @chat_room.build_schedule(start_date: Date.today, end_date: Date.today)
 
-    @academic_allocations = @chat_room.academic_allocations.build @allocation_tags_ids.map { |at| { allocation_tag_id: at } }
-    @academic_allocations.first.chat_participants.build # escolha de participantes apenas para uma turma
+    # @academic_allocations = @chat_room.academic_allocations.build @allocation_tags_ids.map { |at| { allocation_tag_id: at } }
+    # @academic_allocations.first.chat_participants.build # escolha de participantes apenas para uma turma
   end
 
   def edit
