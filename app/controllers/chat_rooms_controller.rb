@@ -1,7 +1,6 @@
 class ChatRoomsController < ApplicationController
 
   include SysLog::Actions
-  include AutomaticFrequencyHelper
 
   layout false, except: :list
 
@@ -150,7 +149,6 @@ class ChatRoomsController < ApplicationController
       @chat_room, allocation_tag_id = ChatRoom.find(params[:id]), active_tab[:url][:allocation_tag_id]
       @score_type = params[:score_type]
       authorize! :show, ChatRoom, on: [allocation_tag_id]
-     # @allocation_tags = AllocationTag.find(allocation_tag_id)
       @academic_allocation = AcademicAllocation.where(academic_tool_id: @chat_room.id, academic_tool_type: 'ChatRoom', allocation_tag_id: allocation_tag_id).first
       all_participants = @chat_room.participants.where(academic_allocations: { allocation_tag_id: allocation_tag_id })
       @researcher = current_user.is_researcher?(AllocationTag.find(allocation_tag_id).related)
@@ -178,10 +176,9 @@ class ChatRoomsController < ApplicationController
       academic_allocation_id = params[:academic_allocation_id]
       allocation_id = params[:allocation_id]
 
-      set_automatic_frequency(AcademicAllocationUser.find_or_create_one(params[:academic_allocation_id], active_tab[:url][:allocation_tag_id], current_user.id, nil, true))
+      AcademicAllocationUser.find_or_create_one(params[:academic_allocation_id], allocation_tag_id, current_user.id, nil, true)
 
-      chat_rooms = ChatRoom.find(params[:id])
-      url = chat_rooms.url(allocation_id, academic_allocation_id)
+      url = @chat_room.url(allocation_id, academic_allocation_id)
       URI.parse(url).path
       redirect_to url
     end

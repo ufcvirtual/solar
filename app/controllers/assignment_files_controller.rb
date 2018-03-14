@@ -4,7 +4,6 @@ class AssignmentFilesController < ApplicationController
   include FilesHelper
   include AssignmentsHelper
   include IpRealHelper
-  include AutomaticFrequencyHelper
 
   before_filter :set_current_user, only: [:destroy, :create]
   before_filter :get_ac, only: :new

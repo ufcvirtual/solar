@@ -4,7 +4,6 @@ class WebconferencesController < ApplicationController
 
   include SysLog::Actions
   include Bbb
-  include AutomaticFrequencyHelper
 
   layout false, except: [:index, :preview]
 

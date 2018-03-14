@@ -2,7 +2,6 @@ class ExamsController < ApplicationController
 
   include SysLog::Actions
   include IpRealHelper
-  include AutomaticFrequencyHelper
 
   before_filter :prepare_for_group_selection, only: :index
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
@@ -229,7 +228,6 @@ class ExamsController < ApplicationController
     exam = Exam.find(params[:id])
     acs = exam.academic_allocations
     acu = AcademicAllocationUser.find_one((acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: active_tab[:url][:allocation_tag_id]).first.id), current_user.id, nil, true)
-    set_automatic_frequency(acu)
     if acu.finish_attempt(get_remote_ip)
       if (params[:error])
         respond_to do |format|
