@@ -36,8 +36,7 @@
           - if @academic_allocation.evaluative
             = f.input :grade, required: true, as: :float, step: 0.01, label: t(".grade"), input_html: { value: @alluser.try(:grade), min:0, max:10 }
           -  if @academic_allocation.frequency
-            - automatic = "\n(" + (@academic_allocation.frequency_automatic && !@alluser.try(:evaluated_by_responsible) ? strip_tags(t("common_between_pages.frequency.a")) : t("common_between_pages.frequency.d")) + ")"
-            = f.input :working_hours, required: true, as: :float, label: t(".frequency") + automatic, input_html: { value: @alluser.try(:working_hours), min:0, max: @academic_allocation.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@academic_allocation.max_working_hours.to_s ) }
+            = f.input :working_hours, required: true, as: :float, label: t(".frequency") + (@academic_allocation.frequency_automatic && !@acu.try(:evaluated_by_responsible) ? t("common_between_pages.frequency.automatic") : t("common_between_pages.frequency.defined")), input_html: { value: @alluser.try(:working_hours), min:0, max: @academic_allocation.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@academic_allocation.max_working_hours.to_s ) }
           = link_to t(:save), "#void", onclick: 'finish_evaluation(this)', class: 'btn btn_main'
 
 

@@ -186,7 +186,7 @@ class Discussion < Event
   end
 
   def self.verify_previous(acu_id)
-    Post.where(academic_allocation_user_id: acu_id).any?
+    Post.where(academic_allocation_user_id: acu_id, draft: false).any?
   end
 
 end

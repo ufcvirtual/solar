@@ -627,6 +627,7 @@ Solar::Application.routes.draw do
       get :complete
       get :percentage
       put :calculate_grade
+      get :show_user_exam_answered
       put :calculate_user_grade
       put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Exam', as: :evaluate
     end

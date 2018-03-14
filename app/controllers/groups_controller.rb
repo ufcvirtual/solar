@@ -168,11 +168,11 @@ class GroupsController < ApplicationController
 
       message = evaluative ? ['warning', t('evaluative_tools.warnings.evaluative')] : ['notice', t("#{params[:type]}", scope: [:groups, :success])]
       render json: { success: true, type_message: message.first,  message: message.last }
-    # rescue ActiveRecord::RecordNotSaved
-    #   render json: { success: false, alert: t(:academic_allocation_already_exists, scope: [:groups, :error]) }, status: :unprocessable_entity
-    # rescue => error
-    #   error_message = I18n.translate!("#{error.message}", scope: [:groups, :error], :raise => true) rescue t('tool_change', scope: [:groups, :error])
-    #   render json: { success: false, alert: error_message }, status: :unprocessable_entity
+    rescue ActiveRecord::RecordNotSaved
+      render json: { success: false, alert: t(:academic_allocation_already_exists, scope: [:groups, :error]) }, status: :unprocessable_entity
+    rescue => error
+      error_message = I18n.translate!("#{error.message}", scope: [:groups, :error], :raise => true) rescue t('tool_change', scope: [:groups, :error])
+      render json: { success: false, alert: error_message }, status: :unprocessable_entity
     end
   end
 

@@ -54,7 +54,6 @@ class ChatRoomsController < ApplicationController
 
    # @academic_allocations = @chat_room.academic_allocations.build @allocation_tags_ids.map { |at| { allocation_tag_id: at } }
    # @academic_allocations.first.chat_participants.build # escolha de participantes apenas para uma turma
-
   end
 
   def edit

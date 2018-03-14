@@ -1,4 +1,5 @@
 class Post < ActiveRecord::Base
+  include SentActivity
 
   self.table_name = 'discussion_posts'
 
@@ -22,9 +23,9 @@ class Post < ActiveRecord::Base
   before_destroy :remove_all_files
 
   after_create :increment_counter
-  after_destroy :decrement_counter, :update_acu, :remove_drafts_children, :decrement_counter_draft
-  after_save :update_acu
+  after_destroy :decrement_counter, :remove_drafts_children, :decrement_counter_draft
   after_save :change_counter_draft, if: '!parent_id.nil? && draft_changed?'
+  after_save :send_email, unless: 'parent_id.blank? || draft || parent.user_id == user_id'
 
   validates :content, :profile_id, presence: true
 
@@ -95,7 +96,7 @@ class Post < ActiveRecord::Base
       raise 'date_range_expired'
     end
   end
-  
+
   def can_be_answered?
     (self.level < Discussion_Post_Max_Indent_Level) && !draft
   end
@@ -160,25 +161,22 @@ class Post < ActiveRecord::Base
     end
   end
 
-  def send_mail(at)
-    post = Post.find(self.parent_id)
-    
-    unless post.user_id == self.user_id
-      configure_mail_post = PersonalConfiguration.where(:user_id => post.user_id).pluck(:post).first
-      if configure_mail_post.nil? || configure_mail_post
-        subject = "#{I18n.t('posts.mail.subject')}"
-        Thread.new do
-          Job.send_mass_email_post([user.email], subject, self.id, at.info, discussion.name)
-        end
+  def send_email
+    configure_mail_post = parent.user.personal_configuration
+    if configure_mail_post.nil? || configure_mail_post.post
+      at = academic_allocation.allocation_tag
+      subject = "#{I18n.t('posts.mail.subject', discussion: discussion.name, at_info: at.info, locale: (configure_mail_post.try(:default_locale) || 'pt_BR'))}"
+      Thread.new do
+        Job.send_mass_email_post([parent.user.email], subject, id, at.info, discussion.name)
+      end
 
-      end  
     end
-  end  
+  end
 
   private
 
     def set_level
-      self.level = parent.level.to_i + 1 unless parent_id.nil?     
+      self.level = parent.level.to_i + 1 unless parent_id.nil?
     end
 
     def remove_all_files
@@ -208,21 +206,4 @@ class Post < ActiveRecord::Base
       end
     end
 
-    def update_acu
-      unless academic_allocation_user_id.blank?
-        if (academic_allocation_user.grade.blank? && academic_allocation_user.working_hours.blank?)
-          if academic_allocation_user.discussion_posts.where(draft: false).empty?
-            academic_allocation_user.status = AcademicAllocationUser::STATUS[:empty]
-          else
-            academic_allocation_user.status = AcademicAllocationUser::STATUS[:sent]
-          end
-        else
-          academic_allocation_user.new_after_evaluation = true
-        end
-        academic_allocation_user.merge = merge
-        academic_allocation_user.save(validate: false)
-      end
-    end
-
-    
 end

@@ -108,9 +108,6 @@ class PostsController < ApplicationController
     authorize! :create, Post
 
     if new_post_under_discussion(Discussion.find(params[:discussion_id]))
-      set_automatic_frequency(@post)
-      allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
-      @post.send_mail(allocation_tag) unless @post.parent_id.blank?
       render json: {result: 1, post_id: @post.id, parent_id: @post.parent_id}, status: :created
     else
       render json: { result: 0, alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
@@ -125,7 +122,6 @@ class PostsController < ApplicationController
 
   ## PUT /discussions/:id/posts/1
   def update
-    #if @post.update_attributes(content: params[:post][:content], draft: params[:post][:draft])
     @post = Post.find(params[:id])
     if @post.update_attributes post_params
       render json: {success: true, post_id: @post.id, parent_id: @post.parent_id}
@@ -143,7 +139,6 @@ class PostsController < ApplicationController
   def publish
     @post = Post.find(params[:id])
     @post.update_attributes draft: false
-    set_automatic_frequency(@post)
     render json: { success: true, post_id: @post.id, discussion_id: @post.discussion.id, content: @post.content, ac_id: @post.academic_allocation_id, parent_id: @post.parent_id }, status: :ok
   rescue => error
     render_json_error(error, 'discussions.error')
@@ -168,7 +163,6 @@ class PostsController < ApplicationController
   ## DELETE /posts/1
   def destroy
     if @post.destroy
-      remove_automatic_frequency(@post)
       render json: { result: :ok }
     else
       render json: { alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity

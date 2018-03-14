@@ -553,8 +553,8 @@ pt_BR:
         attachment: Arquivo
         attachment_file_name: Arquivo
       personal_configuration:
-        message: Receber emails de Mensagens
-        post: Receber emails de Postagens(Fóruns)
+        message: Receber emails com o conteúdo de mensagens
+        post: Receber emails de postagens em fórum (respostas às minhas postagens)
         exam: Receber emails com notas de provas
       discussion_enunciation_file:
         attachment_content_type: ""
@@ -1401,7 +1401,7 @@ pt_BR:
       draft: Não é possível responder um post de rascunho
       back_to_draft: Não é possível definir como rascunho um post com respostas.
     mail:
-      subject: POST RESPOSTA
+      subject: Resposta a seu post enviado em %{discussion} - %{at_info}
       text: Você recebeu a seguinte resposta
       text_resp: 'Para seu post:'
 
@@ -1641,7 +1641,7 @@ pt_BR:
       access: Lista de acessos
       user_online: Usuários online
       recording: Gravação
-      frequency: Carga Horária
+      frequency: Frequência
       grade: Nota
       recordings: Acessar lista de gravações de %{web}
       recordings_disabled: Acessar lista de gravações de %{web} (desabilitado)
@@ -3264,7 +3264,7 @@ pt_BR:
       place: Local
       date: Data
       time: Horário
-      frequency: Carga horária
+      frequency: Frequência
       grade: Nota
       to: ' à '
     status:
@@ -3422,7 +3422,7 @@ pt_BR:
       theme_blue: "Azul "
       theme_high_contrast: Auto contraste
       success:
-        updated: Configurações atualizada com sucesso
+        updated: Configurações atualizadas com sucesso
       error:
         updated: Falha ao atualizar as configurações
 
@@ -4245,14 +4245,13 @@ pt_BR:
       attempt: 'Tentativa %{attempt}'
       average: 'Média: %{grade}'
       result: Resultado
-      subject: ENVIO DE NOTA
+      subject: Nota da prova %{exam} - %{at_info}
       salutation: 'Prezado(a)'
       exam_name: A prova
       exam_grade: 'Seu resultado foi:'
       email_infor: "Para verificar mais informações sobre seu resultado ou sobre a correção, estes já estão disponíveis no menu de Provas no Solar."
       email_infor_compl: "teve seu período encerrado e sua nota foi calculada"
       email_of: do
-      email: "Por favor não responda esta mensagem. Este é um email automático do Solar 2.0."
       itens_corrected: "Iten(s) correto(s): "
       itens_marked: "Iten(s) marcado(s): "
       true_item: "Item verdadeiro"
@@ -4959,8 +4958,8 @@ pt_BR:
     frequency:
       'true': 'Sim <br/>(máx: %{hours}h%{automatic})'
       'false': Não
-      a: "<br/>automática"
-      d: "definida pelo responsável"
+      automatic: " (automática)"
+      defined: " (definida pelo responsável) "
     ev_final_exam:
       'true': 'Sim <br/>(AF)'
       'false': Não
@@ -5023,7 +5022,7 @@ pt_BR:
     summary:
       title: "Comentários e notas para %{user} em %{tool}"
       grade: 'Nota: '
-      working_hours: 'Carga Horária: '
+      working_hours: 'Frequência: '
       no_grade: "<i>sem nota</i>"
       no_wh: "<i>sem carga horária</i>"
       info: Nota e Frequência

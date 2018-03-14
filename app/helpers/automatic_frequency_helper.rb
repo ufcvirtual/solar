@@ -11,14 +11,14 @@ module AutomaticFrequencyHelper
   private
 
     def automatic_frequency(type, activity)
-      if !activity.nil?
+      unless activity.nil?
 
         if activity.class.to_s == "AcademicAllocationUser"
           academic_allocation_user = activity
         elsif !activity.academic_allocation_user_id.nil?
           academic_allocation_user = AcademicAllocationUser.find(activity.academic_allocation_user_id)
         else
-          return
+          return nil
         end
 
         academic_allocation = AcademicAllocation.find(academic_allocation_user.academic_allocation_id)
@@ -32,12 +32,12 @@ module AutomaticFrequencyHelper
           end
 
           if type == "set_frequency"
-            if activity.class.to_s == "Post" && !activity.draft
-              academic_allocation_user.working_hours = academic_allocation.max_working_hours
+            if activity.class.to_s == "Post"
+              academic_allocation_user.working_hours = academic_allocation.max_working_hours unless activity.draft
             else
               academic_allocation_user.working_hours = academic_allocation.max_working_hours
             end
-          elsif type == "remove_frequency" && activities.size < 1
+          elsif type == "remove_frequency" && !activities.nil? && activities.empty?
             academic_allocation_user.working_hours = nil
           end
 

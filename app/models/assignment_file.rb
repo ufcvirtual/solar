@@ -1,6 +1,7 @@
 class AssignmentFile < ActiveRecord::Base
 
   include ControlledDependency
+  include SentActivity
 
   belongs_to :user
   belongs_to :academic_allocation_user
@@ -11,8 +12,6 @@ class AssignmentFile < ActiveRecord::Base
 
   before_save :can_change?, if: 'merge.nil?'
   before_destroy :can_destroy?
-  after_save :update_acu
-  after_destroy :update_acu
 
   has_attached_file :attachment,
     path: ":rails_root/media/assignment/sent_assignment_files/:id_:basename.:extension",
@@ -25,12 +24,10 @@ class AssignmentFile < ActiveRecord::Base
   validates_attachment_content_type_in_black_list :attachment
   do_not_validate_attachment_file_type :attachment
 
-  #default_scope order: 'attachment_updated_at DESC'
-
   def order
    'attachment_updated_at DESC'
   end
-  
+
   def can_change?
     raise 'date_range_expired' unless assignment.in_time?
   end
@@ -43,23 +40,5 @@ class AssignmentFile < ActiveRecord::Base
   def delete_with_dependents
     self.delete
   end
-
-  private
-
-    def update_acu
-      unless academic_allocation_user_id.blank?
-        if (academic_allocation_user.grade.blank? && academic_allocation_user.working_hours.blank?)
-          if (academic_allocation_user.assignment_files.empty? && academic_allocation_user.assignment_webconferences.empty?)
-            academic_allocation_user.status = AcademicAllocationUser::STATUS[:empty] 
-          else
-            academic_allocation_user.status = AcademicAllocationUser::STATUS[:sent] 
-          end
-        else
-          academic_allocation_user.new_after_evaluation = true
-        end
-        academic_allocation_user.merge = merge
-        academic_allocation_user.save(validate: false)
-      end
-    end
 
 end

@@ -54,48 +54,32 @@ class Exam < Event
       wh = 0
       # chamar metodo de correção dos itens respondidos para todos os que existem
       list_exam_correction(user_id, ats, all).each do |acu|
-        configure_mail_exam = PersonalConfiguration.where(:user_id => acu.user_id).pluck(:exam).first
-
         correct_exam(acu.id)
         grade = get_grade(acu.id)
         grade = grade ? grade : 0.00
         working_hours = (acu.academic_allocation.frequency ? ({working_hours: (wh = acu.academic_allocation.max_working_hours)}) : {})
         acu.update_attributes({grade: (grade > 10 ? 10 : grade.round(2)), status: AcademicAllocationUser::STATUS[:evaluated]}.merge!(working_hours))
         acu.recalculate_final_grade(acu.allocation_tag_id)
-        send_result_emails(acu, grade) if result_email && (configure_mail_exam.nil? || configure_mail_exam)
+        send_result_emails(acu, grade.round(2))
       end
       [grade.round(2), wh]
     else
-      errors.add(:base, I18n.t('exams.errors.not_finished'))
+      errors.add(:base, I18n.t('exams.error.not_finished'))
     end
   end
 
   def send_result_emails(acu, grade)
-    # send email with grades if period have already ended
-    user = User.find(acu.user_id)
+    user = acu.user
+    configure_mail_exam = user.personal_configuration.try(:exam)
 
-    subject = I18n.t('exams.result_exam_user.subject')
-    recipients = "#{user.name} <#{user.email}>"
-    files = Array.new
-    msg = self.grade_msg_template(user, grade, acu.allocation_tag)
-    Thread.new do
-      Notifier.send_mail(recipients, subject, msg, files, nil).deliver
+    if result_email && (configure_mail_exam.nil? || configure_mail_exam)
+      # send email with grades if period have already ended
+      subject = I18n.t('exams.result_exam_user.subject', exam: name, at_info: acu.allocation_tag.info, locale: (user.personal_configuration.try(:default_locale) || 'pt_BR'))
+      recipients = "#{user.name} <#{user.email}>"
+      Thread.new do
+        Notifier.exam(recipients, subject, self, acu, grade).deliver
+      end
     end
-  end
-
-  def grade_msg_template(user, grade, at)
-   label_cur  = at.curriculum_unit_types
-   label_info = at.info
-    %{
-      <b> #{I18n.t('exams.result_exam_user.salutation')} #{user.name},</b><br/>
-      #{I18n.t('exams.result_exam_user.exam_name')} #{self.name} #{I18n.t('exams.result_exam_user.email_of')} #{label_cur} - #{label_info} #{I18n.t('exams.result_exam_user.email_infor_compl')}<br/>
-      __________________________________________________________________________________________________________________________<br/><br/>
-      #{I18n.t('exams.result_exam_user.exam_grade')} #{grade.round(2)} <br/>
-
-      #{I18n.t('exams.result_exam_user.email_infor')}<br/><br/>
-
-      #{I18n.t('exams.result_exam_user.email')}
-    }
   end
 
   def list_exam_correction(user_id=nil, ats=nil, all=nil)

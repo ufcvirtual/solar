@@ -77,7 +77,6 @@ class MessagesController < ApplicationController
   end
 
   def create
-
     @allocation_tag_id = params[:allocation_tag_id].blank? ? active_tab[:url][:allocation_tag_id] : params[:allocation_tag_id]
 
     # is an answer

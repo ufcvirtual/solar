@@ -489,8 +489,8 @@ en_US:
         attachment: File
         attachment_file_name: File
       personal_configuration:
-        message: Receive email messages
-        post: Receive email news from Posts (Forums)
+        message: Receive emails with message's content
+        post: Receive emails about discussion's posts (answer to my posts)
         exam: Receive emails with test scores
       discussion_enunciation_file:
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
@@ -1210,7 +1210,7 @@ en_US:
       draft: It's not possible to reply a draft post
       back_to_draft: It's not possible to set as draft a post with replies.
     mail:
-      subject: POST ANSWER
+      subject: Reply to your post sent at %{discussion} - %{at_info}
       text: You have received the following answer
       text_resp: 'For your post:'
 
@@ -3992,14 +3992,13 @@ en_US:
       view_attempt: View %{attempt}
       attempt: 'Attempt %{attempt}'
       result: Result
-      subject: NOTE DISPATCH
-      salutation: 'Dear (a)'
-      exam_name: Approves
-      exam_grade: 'His result was:'
-      email_infor: "To see more information about your result or the correction , these are available in the Testing menu at Solar ."
-      email_infor_compl: "It had ended its period and its score was calculated"
+      subject: Grade of %{exam} exam - %{at_info}
+      salutation: 'Dear '
+      exam_name: Exam
+      exam_grade: 'Your result was:'
+      email_infor: "To see more information about your result or correction, these are available at Tests menu on Solar ."
+      email_infor_compl: has ended it's period and your score was calculated
       email_of: of
-      email: "Please do not respond to this message. This is an automatic email from Solar 2.0"
       itens_corrected: "Corrected item(s): "
       itens_marked: "Marked item(s): "
       true_item: "True item"
@@ -4770,7 +4769,7 @@ en_US:
     summary:
       title: "Comments and grades to %{user} at %{tool}"
       grade: 'Grade: '
-      working_hours: 'Working Hours: '
+      working_hours: 'Frequency: '
       no_grade: "<i>no grade</i>"
       no_wh: "<i>no working hour</i>"
       info: Grade and Frequency

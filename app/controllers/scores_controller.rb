@@ -311,6 +311,8 @@ class ScoresController < ApplicationController
 
     if ['not_started', 'to_send'].include?(params[:situation])
       render json: { alert: t('scores.error.situation') }, status: :unprocessable_entity
+    elsif params[:tool_type] == 'Exam' && ['corrected', 'evaluated'].include?(params[:situation])
+      render json: { url: show_user_exam_answered_exam_path(tool_id, user_id: params[:user_id], ac_id: params[:ac_id]) }
     else
       case params[:tool_type]
       when 'Assignment'
@@ -328,7 +330,7 @@ class ScoresController < ApplicationController
       when 'ScheduleEvent'
         render json: { url: evaluate_user_schedule_event_path(tool_id, user_id: params[:user_id], score_type: params[:score_type], situation: params[:situation]) }
       when 'Exam'
-        render json: { url: calculate_grade_exam_path(tool_id), method: :put }
+        render json: { url: calculate_grade_exam_path(tool_id, ac_id: params[:ac_id], user_id: params[:user_id]), method: :put }
       end
     end
   end
