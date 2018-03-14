@@ -1,6 +1,7 @@
 class Discussion < Event
   include AcademicTool
   include EvaluativeTool
+  include FilesHelper
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 
@@ -30,6 +31,18 @@ class Discussion < Event
     if schedule.end_date.nil?
       errors.add(:final_date_presence, I18n.t('discussions.error.mandatory_final_date'))
       return false
+    end
+  end
+
+  def copy_dependencies_from(discussion_to_copy)
+    unless discussion_to_copy.enunciation_files.empty?
+      discussion_to_copy.enunciation_files.each do |file|
+        new_file = file.dup #DiscussionEnunciationFile.create! file.attributes.merge({ discussion_id: self.id })
+        new_file.attachment = file.attachment
+        new_file.discussion_id = self.id
+        new_file.save!
+        #copy_file(file, new_file, File.join(['discussion', 'enunciation']))
+      end
     end
   end
 
@@ -126,7 +139,7 @@ class Discussion < Event
     posts_list = posts_list.joins(academic_allocation: :allocation_tag).where(query_hash ) unless allocation_tags_ids.blank?
     posts_list = posts_list.where("(draft = ? ) OR (draft = ? AND user_id= ?)", false, true, user_id) if my_list.blank?
 
-    (opt[:grandparent] ? posts_list.map(&:grandparent).uniq.compact : posts_list.compact.uniq)
+    (opt[:grandparent] ? posts_list.map(&:grandparent).uniq.to_a.compact : posts_list.to_a.compact.uniq)
   end
 
   def resume(allocation_tags_ids = nil)

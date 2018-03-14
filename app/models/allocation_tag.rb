@@ -51,7 +51,7 @@ class AllocationTag < ActiveRecord::Base
       when 'offer'
         offer.curriculum_unit
       when 'curriculum_unit'
-        self
+        self.curriculum_unit
     end
   end
 
@@ -62,7 +62,7 @@ class AllocationTag < ActiveRecord::Base
       when 'offer'
         offer.course
       when 'course'
-        self
+        self.course
     end
   end
 

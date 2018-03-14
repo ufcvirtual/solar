@@ -15,7 +15,7 @@
 
   %h3
     = t('.description')
-    =sanitize simple_format(truncate((@event.respond_to?(:enunciation) ? @event.enunciation : @event.description) || '', length: 200, omission: "..."))
+    =sanitize simple_format((@event.respond_to?(:enunciation) ? @event.enunciation : @event.description) || '', length: 200, omission: "...")
 
   .edition_groups.invisible
     - if (can? :edit, @model_name)

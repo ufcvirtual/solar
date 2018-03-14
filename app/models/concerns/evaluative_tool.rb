@@ -233,7 +233,7 @@ module EvaluativeTool
           user_messages.empty?
         end
       when 'Webconference'
-        return false unless can_destroy?
+        return false unless can_destroy_boolean?
         if groups.any?
           academic_allocation_users.joins(:academic_allocation).where(academic_allocations: { academic_tool_id: id, academic_tool_type: 'Webconference', allocation_tag_id: groups.map(&:allocation_tag).map(&:id) }).empty?
         else

@@ -41,7 +41,6 @@ class User < ActiveRecord::Base
   has_many :questions
   has_many :up_questions, class_name: 'Question', foreign_key: 'updated_by_user_id'
   has_many :log_navigations
-  has_one :notification_mail
 
   has_and_belongs_to_many :notifications, join_table: 'read_notifications'
 
@@ -364,9 +363,12 @@ class User < ActiveRecord::Base
   # Returns all allocation_tags_ids with activated access on informed actions of controller
   # if all is true         => recover all related
   # if include_nil is true => include nil if some allocation is not rellated to any allocation_tag
-  def allocation_tags_ids_with_access_on(actions, controller, all=false, include_nil=false)
+  def allocation_tags_ids_with_access_on(actions, controller, all=false, include_nil=false, no_groups=false, no_offers=false)
+    query = "group_id IS NULL" if no_groups
+    query = "group_id IS NULL AND offer_id IS NULL" if no_groups && no_offers
+
     allocations     = Allocation.joins(profile: :resources).where(resources: { action: actions, controller: controller }, allocations: { status: Allocation_Activated, user_id: id }).select('DISTINCT allocation_tag_id, allocations.id')
-    allocation_tags = AllocationTag.joins(:allocations).where(allocations: { id: allocations.pluck(:id) }).pluck(:id)
+    allocation_tags = AllocationTag.joins(:allocations).where(allocations: {id: allocations.pluck(:id) }).where(query).pluck(:id) 
 
     has_nil = (include_nil && allocations.where(allocation_tag_id: nil).any?)
 

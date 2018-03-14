@@ -7,16 +7,23 @@
       %span.label_info= @discussion.name
     .input
       = label_tag t(".description"), nil, class: "form_label"
-      %span.label_info= @discussion.description
+      %span.label_info=raw @discussion.description
     .input
       = label_tag t(".start_date"), nil, class: "form_label"
       %span.label_info= l(@discussion.schedule.start_date.to_date, format: :datepicker)
     .input
       = label_tag t(".end_date"), nil, class: "form_label"
       %span.label_info= l(@discussion.schedule.end_date.to_date, format: :datepicker)
+    .input
+      = label_tag t("assignments.show.files"), nil, class: "form_label"
+      - files = @discussion.enunciation_files.map(&:attachment_file_name)
+      - unless files.empty?
+        %span.label_info.files=files.join(", ")
+      - else
+        %span.label_info= t(".empty_files")
 
     = render "groups/codes"
-    
+
     .schedule_dates
       .right_buttons
         = button_tag t("agendas.close"), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox'

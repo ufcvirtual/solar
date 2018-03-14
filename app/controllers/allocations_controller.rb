@@ -142,10 +142,10 @@ class AllocationsController < ApplicationController
       render json: { success: false, msg: t(params[:type], scope: 'allocations.request.error') }, status: :unprocessable_entity
     end
 
-  rescue CanCan::AccessDenied
-    render json: { msg: t(:no_permission), alert: t(:no_permission) }, status: :unauthorized
-  rescue => error
-    render_json_error(error, 'enrollments.index')
+  # rescue CanCan::AccessDenied
+  #   render json: { msg: t(:no_permission), alert: t(:no_permission) }, status: :unauthorized
+  # rescue => error
+  #   render_json_error(error, 'enrollments.index')
   end
 
   def show_profile

@@ -107,10 +107,8 @@ class GroupsController < ApplicationController
     @tool      = tool_model.find(params[:tool_id])
     @groups    = @tool.groups
 
-    #@paths = { remove: remove_group_from_assignments_path(id: 'param_id', tool_id: @tool.id),
-    #          unbind: unbind_group_from_assignments_path(id: 'param_id', tool_id: @tool.id) }
     @paths = { remove: polymorphic_path([tool_model], id: 'param_id', tool_id: @tool.id, action: :remove_group_from),
-               unbind: polymorphic_path([tool_model], id: 'param_id', tool_id: @tool.id, action: :unbind_group_from)} 
+               unbind: polymorphic_path([tool_model], id: 'param_id', tool_id: @tool.id, action: :unbind_group_from)}
   end
 
   # desvincular/remover/adicionar turmas para determinada ferramenta
@@ -142,11 +140,11 @@ class GroupsController < ApplicationController
               raise 'cant_unbind' unless (!tool.respond_to?(:can_unbind?) || tool.can_unbind?(groups))
 
               new_tool = tool.dup
-              new_tool.created_at = tool.attributes["created_at"]
-              new_tool.updated_at = tool.attributes["updated_at"]
-              #new_tool = tool_model.new(tool.attribute)
+              new_tool.created_at = tool.attributes["created_at"] if new_tool.respond_to?(:created_at)
+              new_tool.updated_at = tool.attributes["updated_at"] if new_tool.respond_to?(:updated_at)
               new_tool.merge = true
-              new_tool.save
+              new_tool.copy_associations(tool) if new_tool.respond_to?(:copy_associations)
+              new_tool.save!
               academic_allocations.update_all(academic_tool_id: new_tool.id)
 
               # se a ferramenta possuir um schedule, cria um igual para a nova
@@ -154,8 +152,7 @@ class GroupsController < ApplicationController
                 schedule = tool.schedule.dup
                 schedule.save
                 new_tool.update_attributes(schedule_id: schedule.id)
-                #new_tool.update_attributes(schedule_id: Schedule.create(tool.schedule.attributes).id) if tool.respond_to?(:schedule)
-              end  
+              end
               # copia as dependencias pro novo objeto caso existam
               new_tool.copy_dependencies_from(tool) if new_tool.respond_to?(:copy_dependencies_from)
             when 'remove' # remover uma turma
@@ -171,11 +168,11 @@ class GroupsController < ApplicationController
 
       message = evaluative ? ['warning', t('evaluative_tools.warnings.evaluative')] : ['notice', t("#{params[:type]}", scope: [:groups, :success])]
       render json: { success: true, type_message: message.first,  message: message.last }
-    rescue ActiveRecord::RecordNotSaved
-      render json: { success: false, alert: t(:academic_allocation_already_exists, scope: [:groups, :error]) }, status: :unprocessable_entity
-    rescue => error
-      error_message = I18n.translate!("#{error.message}", scope: [:groups, :error], :raise => true) rescue t('tool_change', scope: [:groups, :error])
-      render json: { success: false, alert: error_message }, status: :unprocessable_entity
+    # rescue ActiveRecord::RecordNotSaved
+    #   render json: { success: false, alert: t(:academic_allocation_already_exists, scope: [:groups, :error]) }, status: :unprocessable_entity
+    # rescue => error
+    #   error_message = I18n.translate!("#{error.message}", scope: [:groups, :error], :raise => true) rescue t('tool_change', scope: [:groups, :error])
+    #   render json: { success: false, alert: error_message }, status: :unprocessable_entity
     end
   end
 

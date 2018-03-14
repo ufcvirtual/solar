@@ -11,7 +11,7 @@ module V1
       get ":group_id/lessons", rabl: "lessons/list" do
         guard!
         raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
-        @lessons_modules = LessonModule.to_select(@ats, current_user, list = true)
+        @lessons_modules = LessonModule.to_select(@ats, current_user)
       end
     end # namespace groups
 

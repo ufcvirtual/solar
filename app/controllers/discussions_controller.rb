@@ -3,6 +3,8 @@ class DiscussionsController < ApplicationController
   include SysLog::Actions
   include FilesHelper
 
+  doorkeeper_for :api_download
+
   layout false, except: :index
 
   before_filter :prepare_for_group_selection, only: :index
@@ -62,11 +64,12 @@ class DiscussionsController < ApplicationController
     if @discussion.save
       render_discussion_success_json('created')
     else
+      @files_errors = @discussion.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       render :new
     end
-  rescue => error
-    request.format = :json
-    raise error.class
+  # rescue => error
+  #   request.format = :json
+  #   raise error.class
   end
 
   def edit
@@ -81,6 +84,7 @@ class DiscussionsController < ApplicationController
     if @discussion.update_attributes(discussion_params)
       render_discussion_success_json('updated')
     else
+      @files_errors = @discussion.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       @allocation_tags_ids = params[:allocation_tags_ids]
       render :edit
     end
@@ -114,7 +118,30 @@ class DiscussionsController < ApplicationController
 
   def download
     file = DiscussionEnunciationFile.find(params[:id])
+    discussion = file.discussion
+
+    authorize! :index, Discussion, { on: discussion.allocation_tags.pluck(:id), read: true }
+
     download_file(:back, file.attachment.path, file.attachment_file_name)
+  end
+
+  def api_download
+    api_guard_with_access_token_or_authenticate
+    file = DiscussionEnunciationFile.find(params[:file_id])
+
+    raise CanCan::AccessDenied unless (file.discussion.allocation_tags.map(&:id) & User.current.allocation_tags_ids_with_access_on(:index, 'discussions')).any?
+
+    begin
+      download_file(nil, file.attachment.path, file.attachment_file_name)
+    rescue
+      raise 'file not found'
+    end
+  rescue ActiveRecord::RecordNotFound => error
+    Rails.logger.info "[API] [ERROR] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [404] message: #{error}"
+    render json: {success: false, status: :not_found, error: error}
+  rescue => error
+    Rails.logger.info "[API] [ERROR] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [404] message: #{error}"
+    render json: {success: false, status: :unprocessable_entity, error: error}
   end
 
   private

@@ -44,6 +44,19 @@ class Job
       Job.job_send_mail 
     end
   end
+  def self.send_mass_email_post(emails, subject, post_id, info, discussion_name)
+    unless AMOUNT.nil?
+      emails_in_jobs = emails.in_groups_of(AMOUNT, false).to_a rescue []
+
+      emails_in_jobs.each do |e|
+        job = Notifier.delay.post(e, subject, post_id, info, discussion_name)
+        job.amount = e.count
+        job.save!
+
+      end
+      Job.job_send_mail 
+    end
+  end
 
   # send email and save a clone at database
   # clone exists during SCHEDULEDTIME minutes and then "delete_jobs" remove it

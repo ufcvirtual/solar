@@ -609,8 +609,10 @@ function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
     $('a.open_evaluation', element.parent()).data('url', data.url);
   }
 
-  flash_message(data.notice, 'notice');
-  flash_message(data.warning, 'warning');
+  if(data.notice != undefined)
+    flash_message(data.notice, 'notice');
+  if(data.warning != undefined)
+    flash_message(data.warning, 'warning');
 
   if(!!$('.info_summary').length){
     $.get($('.info_summary').data('url'), function(data){

@@ -211,6 +211,8 @@ en_US:
       post_file: File
       comment_file: File
       email: Email
+      supportmaterialfile: Support Material
+      lessonmodule: Lesson Module
     attributes:
       user:
         password: "Password"
@@ -486,11 +488,13 @@ en_US:
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
         attachment: File
         attachment_file_name: File
-      notification_mail:
+      personal_configuration:
         message: Receive email messages
         post: Receive email news from Posts (Forums)
         exam: Receive emails with test scores
-        name: 'Name:'
+      discussion_enunciation_file:
+        attachment_file_size: "File too large. The maximum size should be up to 5MB."
+        attachment_file_name: File
 
     errors:
       uniqueness: "Record already exists in the system"
@@ -3162,6 +3166,10 @@ en_US:
       reset_password_not_required: It wasn't requested any password recovery.
     configure:
       notification_mail: Manage Email Notifications
+      configure: Settings
+      theme: Themes
+      theme_blue: Blue
+      theme_high_contrast: High contrast
       success:
         updated: Settings updated successfully
       error:
@@ -3171,7 +3179,7 @@ en_US:
     synchronize: Synchronize with Módulo Acadêmico
     profiles: Profiles
     closed_uc: (closed subject)
-    configure: Configurations of emails
+    configure: Settings
   portlets:
     curricular_unit:
       type: Type

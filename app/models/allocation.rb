@@ -44,10 +44,15 @@ class Allocation < ActiveRecord::Base
   def activate!
     self.status = Allocation_Activated
     self.save!
-    
-    calculate_working_hours unless allocation_tag.nil?
-    calculate_final_grade unless allocation_tag.nil?
 
+    unless self.allocation_tag.nil?
+      course = allocation_tag.get_course
+      uc = allocation_tag.get_curriculum_unit
+      if((!course.blank? && !course.min_hours.blank?) || (!uc.blank? && !uc.min_hours.blank?))
+        calculate_working_hours unless allocation_tag.nil?
+        calculate_final_grade unless allocation_tag.nil?
+      end 
+    end   
     send_email_to_enrolled_user
   end
 

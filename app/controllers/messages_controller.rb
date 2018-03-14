@@ -93,17 +93,18 @@ class MessagesController < ApplicationController
         @message.allocation_tag_id = @allocation_tag_id
 
         raise "error" if params[:message][:contacts].empty?
-        emails = User.joins('LEFT JOIN notification_mails AS nmail ON users.id = nmail.user_id')
+        emails = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
                       .where("(nmail.message IS NULL OR nmail.message=TRUE)")
                       .where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
 
         @message.files << original_files if original_files and not original_files.empty?
         @message.save!
-        #Thread.new do
-          #Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files, current_user.email).deliver
-        #end
+        # Thread.new do
+        #   Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files, current_user.email).deliver
+        # end
+
         Thread.new do
-          Job.send_mass_email(emails, @message.subject, new_msg_template, @message.files, current_user.email)
+          Job.send_mass_email(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email) 
         end
       end
 
@@ -192,10 +193,11 @@ class MessagesController < ApplicationController
 
     def new_msg_template
       system_label = not(@allocation_tag_id.nil?)
+      info = @message.labels(current_user.id, system_label).to_s.delete('[]"') if system_label
 
       %{
         <b>#{t(:mail_header, scope: :messages)} #{current_user.to_msg[:resume]}</b><br/>
-        #{@message.labels(current_user.id, system_label) if system_label}<br/>
+        #{info}<br/>
         ________________________________________________________________________<br/><br/>
         #{@message.content}
       }

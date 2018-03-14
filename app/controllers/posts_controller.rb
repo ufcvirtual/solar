@@ -37,6 +37,8 @@ class PostsController < ApplicationController
       @post = Post.new
       @post.files.build
 
+      @files = @discussion.enunciation_files
+
       if (p['display_mode'] == "list" || params[:format] == "json")
         # se for em forma de lista ou para o mobilis, pesquisa pelo método posts
         p['page'] ||= @current_page

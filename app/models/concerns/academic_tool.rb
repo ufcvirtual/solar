@@ -263,8 +263,12 @@ module AcademicTool
 
    
     def define_academic_associations
+
       unless allocation_tag_ids_associations.blank?
-        academic_allocations.create allocation_tag_ids_associations.map {|at| { allocation_tag_id: at }}
+        puts 'unless'
+        p allocation_tag_ids_associations.map {|at| { allocation_tag_id: at }}
+        puts 'TESTE AQUI!'
+        p academic_allocations.create allocation_tag_ids_associations.map {|at| { allocation_tag_id: at }}
       else
         academic_allocations.create
       end

@@ -115,8 +115,10 @@ class UsersController < ApplicationController
 
   def remove_photo
     current_user.photo = nil
-    current_user.save
+    current_user.save!
+
     respond_to do |format|
+      format.json { render json: {succes: true, notice: t(:remove_photo_msg) } }
       format.html { redirect_to :back, notice: t(:remove_photo_msg) }
     end
   end
@@ -150,12 +152,12 @@ class UsersController < ApplicationController
 
   def configure
     @user   = current_user
-    if @user.notification_mail.nil?
-      notifify_email = NotificationMail.new
+    if @user.personal_configuration.nil?
+      notifify_email = PersonalConfiguration.new
       notifify_email.user_id = @user.id
       notifify_email.save!
     else
-      notifify_email = @user.notification_mail
+      notifify_email = @user.personal_configuration
     end
     @configure = notifify_email
 

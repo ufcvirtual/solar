@@ -21,13 +21,13 @@ Solar::Application.routes.draw do
   get :faq, to: 'pages#faq', as: :faq
   get :tutorials_login, to: "pages#tutorials_login", as: :tutorials_login
   get :general_shortcuts, to: 'pages#general_shortcuts', as: :general_shortcuts
-  get :remove_photo, to: 'users#remove_photo', as: :remove_photo
 
   resources :users do
     member do
       get :photo
       put :update_photo
       get :reset_password_url
+      delete :remove_photo
     end
     collection do
       get :edit_photo
@@ -40,12 +40,9 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :notification_mails do
-    put :notification_mails, on: :member
-  end
-
   resources :personal_configurations do
       put :update_theme, on: :collection
+      put :configures, on: :member
   end
 
   resources :social_networks, only: [] do
@@ -82,6 +79,7 @@ Solar::Application.routes.draw do
     put "users/:id/password", to: "administrations#reset_password_user", as: :reset_password_admin_user
     get "users/:id/edit", to: "administrations#edit_user", as: :edit_admin_user
     get "users/:id/allocations", to: "administrations#allocations_user", as: :allocations_admin_user
+    get "users/:id/allocations_list", to: "administrations#allocations_user_list", as: :allocations_admin_user_list
     get "users", to: "administrations#users", as: :admin_users
 
     get "responsibles/filter", to: "administrations#responsibles", as: :admin_responsibles_filter
@@ -162,6 +160,7 @@ Solar::Application.routes.draw do
       put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: "add"   , tool_type: "Discussion", as: :add_group_to
       get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: "Discussion", as: :group_tags_from
       get :summary , to: 'academic_allocation_users#summary', tool: 'Discussion'
+      get :api_download
     end
     put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Discussion', as: :evaluate, on: :member
     get :download

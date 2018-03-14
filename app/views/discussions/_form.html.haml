@@ -31,7 +31,7 @@
               %label
               %span#file{:"data-file-id" => ef.id}
                 = ef.attachment_file_name
-                %a.remove_file{:href => "#void", :'aril-label' => "#{t('.remove_file')} #{ef.attachment_file_name}"}
+                %a.remove_file{href: "#void", :'aril-label' => "#{t('.remove_file')} #{ef.attachment_file_name}"}
                   %i.icon-cross-square.warning
         - if @files_errors
           %span.field_with_errors.error= @files_errors
@@ -40,8 +40,8 @@
       = render "groups/codes"
 
       .form-actions.right_buttons
-        = button_tag t(".cancel"), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(".cancel")
-        = button_tag t(".save"), :type => 'button', :onclick => "save_discussion()", class: 'btn btn_main btn_lightbox', alt: t(".save")
+        = button_tag t(".cancel"), type: 'button', onclick: "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(".cancel")
+        = button_tag t(".save"), type: 'button', onclick: "save_discussion()", class: 'btn btn_main btn_lightbox', alt: t(".save")
 
 = javascript_include_tag 'ckeditor/init', "edition_discussions"
 

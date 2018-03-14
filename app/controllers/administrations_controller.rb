@@ -3,6 +3,7 @@ class AdministrationsController < ApplicationController
   include FilesHelper
   include SysLog::Devise
   include SysLog::Actions
+  include AdministrationsHelper
 
   layout false, except: [:users, :indication_users, :indication_users_specific, :indication_users_global, :allocation_approval, :lessons, :logs, :import_users, :responsibles, :list_notifications]
 
@@ -85,17 +86,25 @@ class AdministrationsController < ApplicationController
   def allocations_user
     authorize! :allocations_user, Administration
 
-    allocation_tags_ids = current_user.allocation_tags_ids_with_access_on(['allocations_user'], 'administrations', false, true) # if has nil, exists an allocation with allocation_tag_id nil
-    query = allocation_tags_ids.include?(nil) ? '' : ['allocation_tag_id IN (?)', allocation_tags_ids]
+    @user_id = params[:id]
 
-    @allocations_user = User.find(params[:id]).allocations.joins(:profile).where('NOT cast(profiles.types & ? as boolean)', Profile_Type_Basic).where(query)
-    @profiles = @allocations_user.map(&:profile).flatten.uniq
-    @periods  = [ [t(:active), ''] ]
-    @periods += Semester.all.map{|s| s.name}.flatten.uniq.sort! {|x,y| y <=> x}
+    @allocations = list_allocations_user(@user_id, params[:semester_id])               
+
+    @profiles = @allocations.map(&:profile).flatten.uniq
+    @periods = Semester.all.select('id, name').order('name DESC')#flatten.uniq.sort! {|x,y| y <=> x}
     @can_change = !(current_user.profiles_with_access_on('update_allocation', 'administrations').empty?)
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
+
+  def allocations_user_list
+    authorize! :allocations_user, Administration
+
+    allocations = list_allocations_user(params[:id], params[:semester_id])
+    profiles = allocations.map(&:profile).flatten.uniq
+
+    render partial: 'allocations_user_list',  locals: { profiles: profiles, allocations: allocations }
+  end  
 
   def show_allocation
     authorize! :update_allocation, Administration

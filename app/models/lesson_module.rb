@@ -38,7 +38,8 @@ class LessonModule < ActiveRecord::Base
     lessons.eager_load(:schedule).order('lessons.order').collect{ |lesson|
       lesson_with_address = (list || !lesson.address.blank?)
       # if (lesson can open to show or list is true) or (is draft or will_open and is responsible) or user is admin
-      lesson if ( user_is_admin_or_editor || (user_responsible && (lesson.is_draft? || lesson.will_open?) ) || (!lesson.is_draft? && ((list && !lesson.will_open?) || lesson.open_to_show?)) ) && lesson_with_address
+
+      lesson if ( user_is_admin_or_editor || (user_responsible && (lesson.is_draft? || lesson.will_open? || lesson.closed?) ) || (!lesson.is_draft? && ((list && (!lesson.will_open? || lesson.closed?)) || lesson.open_to_show?)) ) && lesson_with_address
     }.compact.uniq
   end
 
@@ -55,23 +56,22 @@ class LessonModule < ActiveRecord::Base
   end
 
   def self.to_select(allocation_tags_ids, user = nil, list = false)
-
     user_is_admin_or_editor    = user.nil? ? false : (user.admin? || user.editor?)
     user_responsible = user.nil? ? false : user.profiles_with_access_on('see_drafts', 'lessons', allocation_tags_ids, true).any?
        
     joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }).order("id").to_a.delete_if { |lmodule|
       lessons               = lmodule.lessons.eager_load(:schedule)
       has_open_lesson       = lessons.map(&:closed?).include?(false)
-      only_responsible_sees = (lessons.collect{ |l| l if (l.will_open? || l.is_draft? || !(l.open_to_show? || list)) }.compact).size
+      only_responsible_sees = (lessons.collect{ |l| l if (l.will_open? || l.is_draft? || !(l.open_to_show? || list) || (!list && l.closed?)) }.compact).size
+
       lessons.empty? || (
         # nao eh admin nem responsavel
-        !user_is_admin_or_editor && (!user_responsible && (only_responsible_sees == lessons.size))
+        !user_is_admin_or_editor && (!user_responsible && (only_responsible_sees == lessons.size) )
       ) || (
         !list && lessons.size == lessons.map{ |l| true if l.address.blank? }.compact.size
-      ) || !(list || has_open_lesson)
+      ) || (!user_responsible && !(list || has_open_lesson))
     }.compact.uniq
-    
-  end 
+  end
 
   def self.by_ats(allocation_tags_ids)
     joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }).order('id').uniq

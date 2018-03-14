@@ -31,8 +31,12 @@ class Assignment < Event
   def copy_dependencies_from(assignment_to_copy)
     unless assignment_to_copy.enunciation_files.empty?
       assignment_to_copy.enunciation_files.each do |file|
-        new_file = AssignmentEnunciationFile.create! file.attributes.merge({ assignment_id: self.id })
-        copy_file(file, new_file, File.join('assignment', 'enunciation'))
+        #new_file = AssignmentEnunciationFile.create! file.attributes.merge({ assignment_id: self.id })
+        #copy_file(file, new_file, File.join('assignment', 'enunciation'))
+        new_file = file.dup
+        new_file.attachment = file.attachment
+        new_file.assignment_id = self.id
+        new_file.save!
       end
     end
     unless assignment_to_copy.ip_reals.empty?

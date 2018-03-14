@@ -54,7 +54,7 @@ class Exam < Event
       wh = 0
       # chamar metodo de correção dos itens respondidos para todos os que existem
       list_exam_correction(user_id, ats, all).each do |acu|
-        notification_mail_exam = NotificationMail.where(:user_id => acu.user_id).pluck(:exam).first
+        configure_mail_exam = PersonalConfiguration.where(:user_id => acu.user_id).pluck(:exam).first
 
         correct_exam(acu.id)
         grade = get_grade(acu.id)
@@ -62,7 +62,7 @@ class Exam < Event
         working_hours = (acu.academic_allocation.frequency ? ({working_hours: (wh = acu.academic_allocation.max_working_hours)}) : {})
         acu.update_attributes({grade: (grade > 10 ? 10 : grade.round(2)), status: AcademicAllocationUser::STATUS[:evaluated]}.merge!(working_hours))
         acu.recalculate_final_grade(acu.allocation_tag_id)
-        send_result_emails(acu, grade) if result_email && (notification_mail_exam.nil? || notification_mail_exam)
+        send_result_emails(acu, grade) if result_email && (configure_mail_exam.nil? || configure_mail_exam)
       end
       [grade.round(2), wh]
     else
