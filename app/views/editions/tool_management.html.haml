@@ -111,8 +111,6 @@
       $('#draggable_open_window').focus();
     });
 
-    $("tr.ScheduleEvent").find("input[id$='frequency_automatic']").prop('disabled', true);
-
     setTimeout(function() {
       initializer_analizer();
     }, 800);
@@ -314,7 +312,7 @@
     if(parent.find("select[id$='equivalent_academic_allocation_id']").val() == '')
       parent.find("input[id$='max_working_hours']").prop('disabled', !value);
 
-    parent.find("input[id$='frequency_automatic']").prop('disabled', parent.hasClass("ScheduleEvent") ? true : !value);
+    parent.find("input[id$='frequency_automatic']").prop('disabled', (parent.hasClass("ScheduleEvent") || parent.hasClass("Exam")) ? true : !value);
 
     if(!$("#"+$(ckb).prop('id').replace('frequency', 'evaluative')).prop('checked')){
       parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !value);
@@ -332,7 +330,6 @@
     parent.find("input[id$='final_exam']").prop('disabled', !value);
     parent.find("input[id$='weight']").prop('disabled', !value);
     parent.find("input[id$='final_weight']").prop('disabled', !value);
-
 
     if(!$("#"+$(ckb).prop('id').replace('evaluative', 'frequency')).prop('checked')){
       parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !value);
