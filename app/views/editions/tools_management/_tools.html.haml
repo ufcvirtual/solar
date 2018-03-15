@@ -72,7 +72,7 @@
                   %td.final_weight
                     = acf.text_field :final_weight, label: false, disabled: !ac.evaluative  || ac.final_exam, oninput: 'initializer_analizer()', value: final_weight
                 %td.ckb.f{onclick: 'check_checkbox(event, this)'}= acf.check_box :frequency, label: false, disabled: (wh || ac.final_exam), :'data-change' => !wh  && !ac.final_exam
-                %td.ckb.af{onclick: 'check_checkbox(event, this)'}= acf.check_box :frequency_automatic, label: false, disabled: !ac.frequency
+                %td.ckb.af{onclick: 'check_checkbox(event, this)'}= acf.check_box :frequency_automatic, label: false, disabled: (!ac.frequency || ac.academic_tool_type == 'ScheduleEvent' || ac.academic_tool_type == 'Exam'), checked: (ac.academic_tool_type == 'Exam' ? true : ac.frequency_automatic)
                 %td.working_hours
                   = acf.text_field :max_working_hours, label: false, disabled: (!ac.frequency || ac.final_exam || !ac.equivalent_academic_allocation_id.blank?), oninput: 'initializer_analizer()', value: (ac.try(:max_working_hours).try(:to_i) == ac.try(:max_working_hours) ? ac.max_working_hours.to_i : ac.max_working_hours)
                   = t('editions.tools.wh')

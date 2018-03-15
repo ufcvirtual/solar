@@ -492,6 +492,7 @@ en_US:
         message: Receive emails with message's content
         post: Receive emails about discussion's posts (answer to my posts)
         exam: Receive emails with test scores
+        academic_tool: Receive emails with notifications about updates/creations/removals of on going activities
       discussion_enunciation_file:
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
         attachment_file_name: File

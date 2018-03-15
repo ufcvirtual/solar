@@ -556,6 +556,7 @@ pt_BR:
         message: Receber emails com o conteúdo de mensagens
         post: Receber emails de postagens em fórum (respostas às minhas postagens)
         exam: Receber emails com notas de provas
+        academic_tool: Receber email com avisos sobre alterações/criações/remoções de atividades em andamento
       discussion_enunciation_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."

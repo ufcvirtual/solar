@@ -2,7 +2,6 @@ class PostsController < ApplicationController
   require "em-websocket"
 
   include SysLog::Actions
-  include AutomaticFrequencyHelper
 
   # before_filter :authenticate_user!
   before_filter :prepare_for_pagination

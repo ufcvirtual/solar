@@ -38,7 +38,7 @@ class AcademicAllocation < ActiveRecord::Base
 
   before_save :set_evaluative_params, on: :update, unless: 'new_record?'
   before_save :change_dependencies, on: :update, unless: 'new_record?'
-  before_save :set_automatic_frequency_to_false, on: :update, if: "frequency && academic_tool_type == 'ScheduleEvent'"
+  before_save :set_automatic_frequency, on: :update, if: "frequency"
 
   before_destroy :set_situation_date
   after_destroy :verify_management
@@ -303,8 +303,9 @@ class AcademicAllocation < ActiveRecord::Base
       end
     end
 
-    def set_automatic_frequency_to_false
+    def set_automatic_frequency
       self.frequency_automatic = false if academic_tool_type == 'ScheduleEvent'
+      self.frequency_automatic = true if academic_tool_type == 'Exam'
       return nil
     end
 

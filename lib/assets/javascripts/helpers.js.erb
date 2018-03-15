@@ -616,7 +616,6 @@ function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
 
   if(!!$('.info_summary').length){
     $.get($('.info_summary').data('url'), function(data){
-      console.log(data);
       $('.info_summary').replaceWith(data);
     });
   }

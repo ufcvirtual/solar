@@ -316,13 +316,17 @@ class User < ActiveRecord::Base
     (only_id) ? profiles.map(&:id) : profiles
   end
 
-  def self.with_access_on(action,controller,allocation_tags_ids)
+  def self.with_access_on(action,controller,allocation_tags_ids, emails=false)
+    query1 = (emails ? 'LEFT JOIN personal_configurations ON users.id = personal_configurations.user_id' : '')
+    query2 = (emails ? ' AND (personal_configurations.academic_tool IS NULL OR personal_configurations.academic_tool=TRUE)' : '')
+
     User.find_by_sql <<-SQL
       SELECT users.id, email, cpf
       FROM users
       JOIN allocations ON allocations.user_id = users.id
       JOIN profiles ON allocations.profile_id = profiles.id
       JOIN permissions_resources ON permissions_resources.profile_id = profiles.id
+      #{query1}
       JOIN resources   ON resources.id = permissions_resources.resource_id
       WHERE
         resources.action = '#{action}'
@@ -332,6 +336,7 @@ class User < ActiveRecord::Base
         allocations.status = #{Allocation_Activated}
         AND
         (allocations.allocation_tag_id IN (#{allocation_tags_ids.join(',')}))
+        #{query2}
     SQL
   end
 

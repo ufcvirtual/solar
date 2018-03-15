@@ -280,8 +280,8 @@ class Lesson < ActiveRecord::Base #< Event
     def lesson_privacy
       return true if new_record?
       if privacy
-        imported_to.where(receive_updates: true).where('user_id != ?', user_id).each do |lesson|
-          Thread.new do
+        Thread.new do
+          imported_to.where(receive_updates: true).where('user_id != ?', user_id).each do |lesson|
             Notifier.imported_from_private(lesson).deliver
           end
         end
