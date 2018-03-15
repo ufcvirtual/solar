@@ -262,7 +262,7 @@ module AcademicTool
 
     def define_academic_associations
       unless allocation_tag_ids_associations.blank?
-        academic_allocations.create allocation_tag_ids_associations.map {|at| { allocation_tag_id: at }}
+        academic_allocations.create allocation_tag_ids_associations.map {|at| { allocation_tag_id: at }} unless self.class.to_s == 'ChatRoom'
       else
         academic_allocations.create
       end
