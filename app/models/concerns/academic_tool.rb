@@ -139,33 +139,36 @@ module AcademicTool
     rescue
       ats = [acs.allocation_tag]
     end
+    ActiveRecord::Base.connection_pool.release_connection 
+    t = Thread.new do
+      ActiveRecord::Base.connection_pool.with_connection do
+        ats.each do |at|
+          emails = User.with_access_on('receive_academic_tool_notification','emails',[at.id], true).map(&:email).compact.uniq
 
-    Thread.new do
-      ats.each do |at|
-        emails = User.with_access_on('receive_academic_tool_notification','emails',[at.id], true).map(&:email).compact.uniq
-
-        unless emails.empty?
-          if ((verify_type == 'delete') || (respond_to?(:status_changed?) && (status_changed? && !status)))
-            if (verify_can_destroy)
+          unless emails.empty?
+            if ((verify_type == 'delete') || (respond_to?(:status_changed?) && (status_changed? && !status)))
+              if (verify_can_destroy)
+                unless self.class.to_s == 'Notification'
+                  template_mail = delete_msg_template(at.info)
+                  subject = I18n.t('editions.mail.subject_delete')
+                end
+              end
+            elsif !verify_type || (respond_to?(:status_changed?) && status_changed? && status)
+              template_mail = new_msg_template(at.info)
+              subject = I18n.t('editions.mail.subject_new')
+            elsif verify_type
               unless self.class.to_s == 'Notification'
-                template_mail = delete_msg_template(at.info)
-                subject = I18n.t('editions.mail.subject_delete')
+                template_mail = update_msg_template(at.info)
+                subject =  I18n.t('editions.mail.subject_update')
               end
             end
-          elsif !verify_type || (respond_to?(:status_changed?) && status_changed? && status)
-            template_mail = new_msg_template(at.info)
-            subject = I18n.t('editions.mail.subject_new')
-          elsif verify_type
-            unless self.class.to_s == 'Notification'
-              template_mail = update_msg_template(at.info)
-              subject =  I18n.t('editions.mail.subject_update')
-            end
-          end
 
-          Job.send_mass_email(emails, subject, template_mail) unless subject.blank?
+            Job.send_mass_email(emails, subject, template_mail) unless subject.blank?
+          end
         end
-      end
+      end 
     end
+    t.join
   end
 
   def verify_can_destroy
