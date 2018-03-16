@@ -9,6 +9,8 @@ log/*
 .project
 .bundle/
 .idea/
+.vscode/
+bin/
 .dotest/
 .config
 .settings/
