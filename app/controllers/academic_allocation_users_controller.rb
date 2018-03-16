@@ -16,8 +16,6 @@ class AcademicAllocationUsersController < ApplicationController
     if errors.any?
       render json: { success: false, alert: errors.join("<br/>") }, status: :unprocessable_entity
     else
-      @academic_allocation_user.evaluated_by_responsible = true
-      @academic_allocation_user.save
       if !@academic_allocation_user.academic_allocation.try(:equivalent_academic_allocation_id).blank? && AcademicAllocationUser.where(academic_allocation_id: @academic_allocation_user.academic_allocation.equivalent_academic_allocation_id, user_id: @academic_allocation_user.user_id).any?
         render json: { success: true, warning: t('academic_allocation_users.warning.equivalency_evaluated'), situation: t("scores.index.#{score}"), class_td: score, situation_complete: t(score.to_sym) }
       else
