@@ -66,9 +66,10 @@ class OffersController < ApplicationController
   def update
     @type_id =  params[:offer][:type_id].to_i
     @offer   = Offer.find(params[:id])
-   
+    
     optional_authorize(:update)
-
+    update_offer_activities(@offer)
+    
     if @offer.update_attributes(offer_params)
       render json: { success: true, notice: t(:updated, scope: [:offers, :success]) }
     else
@@ -135,4 +136,154 @@ class OffersController < ApplicationController
         end
       end
     end
+
+    def update_offer_activities(offer)
+      
+      off_schedule = offer.offer_schedule_id.nil? ? nil : Schedule.find(offer.offer_schedule_id)
+    
+      #off_start_date = off_schedule.nil? ? offer.semester.offer_schedule.start_date : off_schedule.start_date
+      #off_end_date = off_schedule.nil? ? offer.semester.offer_schedule.end_date : off_schedule.end_date
+      
+      param_off_start_date = params[:offer][:period_schedule_attributes][:start_date].blank? ? nil : Date.parse(params[:offer][:period_schedule_attributes][:start_date])
+      param_off_end_date = params[:offer][:period_schedule_attributes][:end_date].blank? ? nil : Date.parse(params[:offer][:period_schedule_attributes][:end_date])
+      
+      if (param_off_end_date != nil && param_off_start_date != nil)
+        
+        group_id = Group.where(offer_id: offer.id).pluck(:id)
+        allocation_tag_id = AllocationTag.where(group_id: group_id).pluck(:id)
+        academic_allocation = AcademicAllocation.where(allocation_tag_id: allocation_tag_id)
+        related_users_emails = Allocation.where(allocation_tag_id: allocation_tag_id).map{|al| al.user.email}
+        activities_to_email = []#{}
+
+        academic_allocation.each do |al|
+          act = al.academic_tool
+
+          if ['Assignment', 'Discussion', 'ChatRoom', 'Notification', 'ScheduleEvent'].include? al.academic_tool_type
+
+            # se tentou mover o periodo total da oferta para antes do inicio ou depois do final da atividade
+            if (param_off_start_date < act.schedule.start_date && param_off_end_date < act.schedule.start_date) || (param_off_start_date > act.schedule.end_date && param_off_end_date > act.schedule.end_date )
+              raise "A atividade #{al.academic_tool_type} - #{act.name} não pode ser alterada para este período de oferta!"
+            end
+
+            if act.schedule.start_date < param_off_start_date
+              act.schedule.start_date = param_off_start_date
+            end
+
+            if act.schedule.end_date > param_off_end_date
+              act.schedule.end_date = param_off_end_date
+            end
+
+            if act.schedule.changed? && act.save
+                activities_to_email << Object.const_get(al.academic_tool_type).model_name.human
+                activities_to_email << act.name
+                activities_to_email << act.schedule.start_date.to_s
+                activities_to_email << act.schedule.end_date.to_s
+            end
+
+          end
+          
+          if ['Webconference'].include? al.academic_tool_type
+            
+            if act.initial_time < param_off_start_date
+              act.initial_time = Time.new(param_off_start_date.year, param_off_start_date.month, param_off_start_date.day, act.initial_time.hour, act.initial_time.min, act.initial_time.sec)
+            end
+
+            if act.initial_time > param_off_end_date
+              act.initial_time = Time.new(param_off_end_date.year, param_off_end_date.month, param_off_end_date.day, act.initial_time.hour, act.initial_time.min, act.initial_time.sec)
+            end
+
+            if act.changed? && act.save
+              activities_to_email << Object.const_get(al.academic_tool_type).model_name.human
+              activities_to_email << act.title
+              activities_to_email << act.initial_time.to_date.to_s
+              activities_to_email << act.initial_time.to_date.to_s
+            end
+
+          end
+
+          if ['LessonModule'].include? al.academic_tool_type
+            lessons = Lesson.where(lesson_module_id: act.id)
+
+            lessons.each do |lesson|
+
+              # se tentou mover o periodo total da oferta para antes do inicio ou depois do final da atividade
+              if (param_off_start_date < lesson.schedule.start_date && param_off_end_date < lesson.schedule.start_date) || (param_off_start_date > lesson.schedule.end_date && param_off_end_date > lesson.schedule.end_date )
+                raise "A atividade #{al.academic_tool_type} - #{act.name} não pode ser alterada para este período de oferta!"
+              end
+
+              if lesson.schedule.start_date < param_off_start_date
+                lesson.schedule.start_date = param_off_start_date
+              end
+  
+              if lesson.schedule.end_date != nil && lesson.schedule.end_date  > param_off_end_date
+                lesson.schedule.end_date = param_off_end_date
+              end
+
+              if lesson.schedule.changed? && lesson.save
+                activities_to_email << Object.const_get(al.academic_tool_type).model_name.human
+                activities_to_email << lesson.name
+                activities_to_email << lesson.schedule.start_date.to_s
+                activities_to_email << lesson.schedule.end_date.nil? ? "" : lesson.schedule.end_date.to_s
+              end
+
+            end
+
+          end
+
+          # if ['Exam'].include? al.academic_tool_type
+            
+          #   difference_in_days = (act.schedule.end_date - act.schedule.start_date).to_i
+
+          #   # se tentou mover o periodo total da oferta para antes do inicio da atividade
+          #   if (act.schedule.start_date < param_off_start_date && act.schedule.end_date < param_off_start_date) || (act.schedule.end_date > param_off_end_date && act.schedule.start_date > param_off_end_date)
+          #     raise "A atividade #{al.academic_tool_type} - #{act.name} não pode ser alterada para este período de oferta!"
+          #   end
+
+          #   if (act.schedule.start_date < param_off_start_date && difference_in_days == 0 )
+          #     act.schedule.start_date = param_off_start_date
+          #     act.schedule.end_date = param_off_start_date
+          #     activity_update = true
+          #   elsif act.schedule.start_date < param_off_start_date
+          #     act.schedule.start_date = param_off_start_date
+          #     activity_update = true
+          #   end
+
+          #   if (act.schedule.end_date > param_off_end_date && difference_in_days == 0)
+          #     act.schedule.end_date = param_off_end_date
+          #     act.schedule.start_date = param_off_end_date
+          #     activity_update = true
+          #   elsif act.schedule.end_date > param_off_end_date
+          #     act.schedule.end_date = param_off_end_date
+          #     activity_update = true
+          #   end
+
+          #   if activity_update && act.save
+          #     activities_to_email[al.academic_tool_type] ||= []
+          #     activities_to_email[al.academic_tool_type] << act
+          #   end
+           
+          # end
+          
+        end
+        
+        unless activities_to_email.blank?
+          Notifier.send_mail(related_users_emails, "Alteração de Atividades", email_template(activities_to_email), []).deliver
+        end
+
+      end
+    
+    end
+
+    def msg_template(activities)
+      html = ""
+      for i in 0..activities.length - 1
+        html << "<p>Atividade: #{activities[0]} - #{activities[1]} foi alterada para #{activities[2]} à #{activities[3]}</p>"
+      end
+      html
+    end
+
+    def email_template(activities)
+      %{#{msg_template(activities)}}    
+    end
+
 end

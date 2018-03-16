@@ -80,6 +80,22 @@ class SemestersController < ApplicationController
     end
 
     @semester = Semester.find(params[:id])
+
+    ###################################################
+    offers = Offer.where(semester_id: @semester.id)
+
+    offer.each do |off|
+
+      
+
+    end
+
+
+
+
+
+    #####################################################
+
     if @semester.update_attributes(semester_params)
       render_semester_success_json('updated')
     else
