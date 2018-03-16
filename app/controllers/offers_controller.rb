@@ -153,7 +153,9 @@ class OffersController < ApplicationController
         allocation_tag_id = AllocationTag.where(group_id: group_id).pluck(:id)
         academic_allocation = AcademicAllocation.where(allocation_tag_id: allocation_tag_id)
         related_users_emails = Allocation.where(allocation_tag_id: allocation_tag_id).map{|al| al.user.email}
-        activities_to_email = []#{}
+        activities_to_email = {}
+        Struct.new('Activity_Object',:name, :start_date, :end_date)
+
 
         academic_allocation.each do |al|
           act = al.academic_tool
@@ -174,10 +176,9 @@ class OffersController < ApplicationController
             end
 
             if act.schedule.changed? && act.save
-                activities_to_email << Object.const_get(al.academic_tool_type).model_name.human
-                activities_to_email << act.name
-                activities_to_email << act.schedule.start_date.to_s
-                activities_to_email << act.schedule.end_date.to_s
+                struct = Struct::Activity_Object.new(act.name, act.schedule.start_date.to_s, act.schedule.end_date.to_s)
+                activities_to_email[Object.const_get(al.academic_tool_type).model_name.human] ||= []
+                activities_to_email[Object.const_get(al.academic_tool_type).model_name.human] << struct
             end
 
           end
@@ -193,10 +194,9 @@ class OffersController < ApplicationController
             end
 
             if act.changed? && act.save
-              activities_to_email << Object.const_get(al.academic_tool_type).model_name.human
-              activities_to_email << act.title
-              activities_to_email << act.initial_time.to_date.to_s
-              activities_to_email << act.initial_time.to_date.to_s
+              struct = Struct::Activity_Object.new(act.title, act.initial_time.to_date.to_s, act.initial_time.to_date.to_s)
+              activities_to_email[Object.const_get(al.academic_tool_type).model_name.human] ||= []
+              activities_to_email[Object.const_get(al.academic_tool_type).model_name.human] << struct
             end
 
           end
@@ -220,10 +220,9 @@ class OffersController < ApplicationController
               end
 
               if lesson.schedule.changed? && lesson.save
-                activities_to_email << Object.const_get(al.academic_tool_type).model_name.human
-                activities_to_email << lesson.name
-                activities_to_email << lesson.schedule.start_date.to_s
-                activities_to_email << lesson.schedule.end_date.nil? ? "" : lesson.schedule.end_date.to_s
+                struct = Struct::Activity_Object.new(lesson.name, lesson.schedule.start_date.to_s, lesson.schedule.end_date.to_s)
+                activities_to_email[Object.const_get(al.academic_tool_type).model_name.human] ||= []
+                activities_to_email[Object.const_get(al.academic_tool_type).model_name.human] << struct
               end
 
             end
@@ -276,8 +275,10 @@ class OffersController < ApplicationController
 
     def msg_template(activities)
       html = ""
-      for i in 0..activities.length - 1
-        html << "<p>Atividade: #{activities[0]} - #{activities[1]} foi alterada para #{activities[2]} à #{activities[3]}</p>"
+      activities.each do |key, value|
+        value.each do |object|
+          html << "<p>Atividade: #{key} - #{object.name} foi alterada para #{object.start_date} à #{object.end_date}</p>"
+        end
       end
       html
     end
