@@ -66,10 +66,17 @@ class OffersController < ApplicationController
   def update
     @type_id =  params[:offer][:type_id].to_i
     @offer   = Offer.find(params[:id])
+<<<<<<< d2861e4175f7f96deb42ef646837d26b30dd942d
 
     optional_authorize(:update)
     update_offer_activities(@offer)
 
+=======
+
+    optional_authorize(:update)
+    update_offer_activities(@offer)
+
+>>>>>>> teste inicial editando datas de atividades da oferta
     if @offer.update_attributes(offer_params)
       render json: { success: true, notice: t(:updated, scope: [:offers, :success]) }
     else
@@ -212,7 +219,6 @@ class OffersController < ApplicationController
               if lesson.schedule.start_date < param_off_start_date
                 lesson.schedule.start_date = param_off_start_date
               end
-
               if lesson.schedule.end_date != nil && lesson.schedule.end_date  > param_off_end_date
                 lesson.schedule.end_date = param_off_end_date
               end
@@ -222,6 +228,7 @@ class OffersController < ApplicationController
                 activities_to_email[Object.const_get(al.academic_tool_type).model_name.human] ||= []
                 activities_to_email[Object.const_get(al.academic_tool_type).model_name.human] << struct
                 activities_to_save << lesson
+
               end
 
             end
