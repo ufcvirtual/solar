@@ -231,10 +231,10 @@ class WebconferencesController < ApplicationController
     @back = params.include?(:back)
 
     render partial: 'user_access'
-  rescue CanCan::AccessDenied
-    render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
-  rescue => error
-    render json: { success: false, alert: t('webconferences.error.access') }, status: :unprocessable_entity
+  # rescue CanCan::AccessDenied
+  #   render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
+  # rescue => error
+  #   render json: { success: false, alert: t('webconferences.error.access') }, status: :unprocessable_entity
   end
 
   def get_record

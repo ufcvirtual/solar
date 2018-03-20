@@ -6,7 +6,7 @@ class CreateModule < ActiveRecord::Migration
       t.string  :description, :limit => 255
     end
 
-    add_foreign_key(:lesson_modules, :allocation_tags)
+    add_foreign_key :lesson_modules, :allocation_tags
   end
 
   def self.down

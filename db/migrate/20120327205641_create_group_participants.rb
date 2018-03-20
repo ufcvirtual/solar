@@ -6,8 +6,8 @@ class CreateGroupParticipants < ActiveRecord::Migration
       t.datetime :participant_updated_at
     end
 
-    add_foreign_key(:group_participants, :group_assignments)
-    add_foreign_key(:group_participants, :users)
+    add_foreign_key :group_participants, :group_assignments
+    add_foreign_key :group_participants, :users
   end
 
   def self.down

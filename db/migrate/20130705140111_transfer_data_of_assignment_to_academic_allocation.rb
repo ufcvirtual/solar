@@ -11,8 +11,8 @@ class TransferDataOfAssignmentToAcademicAllocation < ActiveRecord::Migration
 
     change_table :sent_assignments do |t|
       t.references :academic_allocation
-      t.foreign_key :academic_allocations
     end
+    add_foreign_key :sent_assignments, :academic_allocations
 
     assignments = Assignment.all
    

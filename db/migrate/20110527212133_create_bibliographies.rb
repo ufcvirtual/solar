@@ -13,7 +13,7 @@ class CreateBibliographies < ActiveRecord::Migration
       t.string :isbn_issn, :limit => 13
     end
 
-    add_foreign_key(:bibliographies, :allocation_tags)
+    add_foreign_key :bibliographies, :allocation_tags
   end
 
   def self.down

@@ -5,8 +5,7 @@ class CreatePersonalConfigurations < ActiveRecord::Migration
       t.string   "theme"
       t.string   "default_locale"
     end
-
-    add_foreign_key(:personal_configurations, :users)
+    add_foreign_key :personal_configurations, :users
   end
 
   def self.down

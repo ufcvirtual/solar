@@ -6,7 +6,7 @@ class CreateEnrollments < ActiveRecord::Migration
       t.date     "end",        :null => false
     end
 
-    add_foreign_key(:enrollments, :offers)
+    add_foreign_key :enrollments, :offers
   end
 
   def self.down

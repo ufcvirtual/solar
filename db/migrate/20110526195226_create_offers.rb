@@ -8,8 +8,8 @@ class CreateOffers < ActiveRecord::Migration
       t.date     "end",   :null => false
     end
 
-    add_foreign_key(:offers, :curriculum_units)
-    add_foreign_key(:offers, :courses)
+    add_foreign_key :offers, :curriculum_units
+    add_foreign_key :offers, :courses
   end
 
   def self.down

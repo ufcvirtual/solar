@@ -6,11 +6,10 @@ class ChangeMessagesAndLabels < ActiveRecord::Migration
       t.change :content, :text, null: false
 
       t.references :allocation_tag
-      t.foreign_key :allocation_tags
 
       t.timestamps
     end
-
+    add_foreign_key :messages, :allocation_tags
     # recuperando dados
     ml.each do |l|
       messages = l.messages

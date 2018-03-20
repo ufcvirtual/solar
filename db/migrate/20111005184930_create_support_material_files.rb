@@ -9,7 +9,7 @@ class CreateSupportMaterialFiles < ActiveRecord::Migration
       t.string :folder,                     :limit => 255
     end
 
-    add_foreign_key(:support_material_files, :allocation_tags)
+    add_foreign_key :support_material_files, :allocation_tags
   end
 
   def self.down

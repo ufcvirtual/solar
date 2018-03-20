@@ -7,8 +7,8 @@ class CreateScheduleEvents < ActiveRecord::Migration
       t.integer :schedule_id
     end
 
-    add_foreign_key(:schedule_events, :allocation_tags)
-    add_foreign_key(:schedule_events, :schedules)
+    add_foreign_key :schedule_events, :allocation_tags
+    add_foreign_key :schedule_events, :schedules
   end
 
   def self.down

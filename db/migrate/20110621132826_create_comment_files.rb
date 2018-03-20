@@ -8,7 +8,7 @@ class CreateCommentFiles < ActiveRecord::Migration
       t.datetime :attachment_updated_at
     end
 
-    add_foreign_key(:comment_files, :assignment_comments)
+    add_foreign_key :comment_files, :assignment_comments
   end
 
   def self.down

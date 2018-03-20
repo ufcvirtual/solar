@@ -10,11 +10,16 @@ class ChangeOfferRemoveSemester < ActiveRecord::Migration
       t.rename :start_date, :old_start_date
       t.rename :end_date, :old_end_date
 
-      t.remove_foreign_key :schedules
-      t.foreign_key :schedules, column: "enrollment_schedule_id"
-      t.foreign_key :schedules, column: "offer_schedule_id"
-      t.foreign_key :semesters
+      #t.remove_foreign_key :offers, column: "offer_schedule_id"
+      #t.foreign_key :schedules, column: "enrollment_schedule_id"
+      #t.foreign_key :schedules, column: "offer_schedule_id"
+      #t.foreign_key :semesters
     end
+    #remove_foreign_key :offers, column: "offer_schedule_id"
+    add_foreign_key :offers, :schedules, column: "enrollment_schedule_id"
+    add_foreign_key :offers, :schedules, column: "offer_schedule_id"
+    add_foreign_key :offers, :semesters
+
 
     offers = Offer.order("semester_name")
 
