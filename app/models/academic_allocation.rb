@@ -320,8 +320,6 @@ class AcademicAllocation < ActiveRecord::Base
         academic_allocation_users.where(evaluated_by_responsible: false, working_hours: nil).where("status = #{AcademicAllocationUser::STATUS[:sent]} OR ( (grade > 0) AND (status = #{AcademicAllocationUser::STATUS[:evaluated]}))").update_all working_hours: max_working_hours, status: AcademicAllocationUser::STATUS[:evaluated]
       end
 
-      Rails.logger.info "\n\n UPDATE ACUS #{max_working_hours_changed?}"
-
       if max_working_hours_changed?
         # update max_working_hours
         academic_allocation_users.where(evaluated_by_responsible: false).where("status = #{AcademicAllocationUser::STATUS[:evaluated]} AND working_hours IS NOT NULL").update_all working_hours: max_working_hours
