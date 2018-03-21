@@ -6,15 +6,6 @@
       = @discussion.name
   .block_content
     .block_content_text= sanitize @discussion.description
-<<<<<<< da25d58e64de1ec28931078e8b7fbdf715f17eae
-=======
-
-  %h2
-    .block_title
-      %i.icon-forum
-      = t('.files.discussion_file_title')
-  .block_content
->>>>>>> [#155902890] Permitindo Comprimir e Expandir todos os Posts não primários
     .block_content_text
       = sanitize @discussion.description
       %p
@@ -35,12 +26,6 @@
       .expand_link= link_to t('.expand'), "#void", onclick: 'show_all()'
       = link_to content_tag(:i, nil, class: 'icon-resize-shrink', :"data-tooltip" => t('.compress')), "#void", onclick: 'hide_all()'
       .compress_link= link_to t('.compress'), "#void", onclick: 'hide_all()'
-
-  .expand_hide
-    = link_to content_tag(:i, nil, class: 'icon-resize-enlarge', :"data-tooltip" => t('.expand')), "#void", onclick: 'show_all()'
-    .expand_link= link_to t('.expand'), "#void", onclick: 'show_all()'
-    = link_to content_tag(:i, nil, class: 'icon-resize-shrink', :"data-tooltip" => t('.compress')), "#void", onclick: 'hide_all()'
-    .compress_link= link_to t('.compress'), "#void", onclick: 'hide_all()'
 
   .posts
     = content_tag(:i, nil, class: 'icon-pluscircle.png')
