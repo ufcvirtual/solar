@@ -1150,6 +1150,8 @@ en_US:
       primary: " primary"
       save_draft: Save draft
       publish: Publish
+      expand: Expand all
+      compress: Compress all
     post:
       remove_file_confirm: "Your file will be deleted permanently. Proceed?"
       answer: "Reply"
