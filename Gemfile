@@ -14,7 +14,7 @@ gem "koala", "1.2.0" # facebook
 
 gem "devise", "~> 3.4.1"
 gem "devise-i18n", "~> 0.11.3"
-gem "cancancan", "~> 1.8.0"
+gem 'cancancan', '~> 2.0'
 gem "devise-encryptable", "~> 0.2.0"
 
 gem "chronic", "0.6.1"
