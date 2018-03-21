@@ -33,12 +33,6 @@
       = link_to content_tag(:i, nil, class: 'icon-resize-shrink', :"data-tooltip" => t('.compress')), "#void", onclick: 'hide_all()'
       .compress_link= link_to t('.compress'), "#void", onclick: 'hide_all()'
 
-  .expand_hide
-    = link_to content_tag(:i, nil, class: 'icon-resize-enlarge', :"data-tooltip" => t('.expand')), "#void", onclick: 'show_all()'
-    .expand_link= link_to t('.expand'), "#void", onclick: 'show_all()'
-    = link_to content_tag(:i, nil, class: 'icon-resize-shrink', :"data-tooltip" => t('.compress')), "#void", onclick: 'hide_all()'
-    .compress_link= link_to t('.compress'), "#void", onclick: 'hide_all()'
-
   .posts
     = content_tag(:i, nil, class: 'icon-pluscircle.png')
     .block_title.forum_navigation
