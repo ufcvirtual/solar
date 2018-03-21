@@ -14,7 +14,7 @@
     ._cell.forum_post_head{class: new_post_class + post_draft}
       .forum_post_author
         .forum_participant_nick{ alt: "#{user.info(:nick, @researcher)}" }
-          = user.info(:nick, @researcher) 
+          = user.info(:nick, @researcher)
           - unless @class_participants.include? user.id
             %span{ :"data-tooltip" => t('.moved_allocation') }= content_tag :i, nil, class: 'icon-warning moved_allocation',  :'aria-label'=> t('.moved_allocation')
           - if evaluate || frequency
@@ -23,7 +23,7 @@
               = t(:grade, scope: [:posts, :post], grade: info[:grade])
             - if frequency && !info[:wh].blank?
               = t(:frequency, scope: [:posts, :post], wh: info[:wh])
-   
+
         .forum_participant_profile
           = (profile = post.profile).nil? ? '' : profile.name
       .forum_post_date
@@ -31,6 +31,13 @@
         = l(post.updated_at, format: :discussion_post_hour)
         - if post.draft
           %p= raw t('.draft', aria: t('.draft2') + t('fancybox.open'))
+      - if post.children_count > 0 && display_mode != 'list'
+        .links_to_hide_and_show
+          = link_to t(".hide_posts"), "#void", onclick: 'hide(this)', class: 'link-hide'
+          = link_to t(".show_posts"), "#"+"#{post.id}", onclick: 'show(this)', class: 'link-show invisible'
+          .icons.links_to_hide_and_show
+            = link_to content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t(".hide_posts")), "#void", onclick: 'hide(this)'
+            = link_to content_tag(:i, nil, class: 'invisible icon-arrow-down-triangle', :"data-tooltip" => t(".show_posts")), "#"+"#{post.id}", onclick: 'show(this)'
   ._line
     ._cell.forum_post_icon
     ._cell.forum_post_content{class: post_draft}
@@ -38,7 +45,7 @@
         %span.hide.number_post=post.parent_id
         .forum_post_inner_content
           = sanitize post.content
-          
+
         .forum_post_attachment{id: "ul_#{post.id}"}
           - if files.any?
             = render partial: 'file_post', locals: { post: post, files: files, editable: editable, can_interact: can_interact}
@@ -46,7 +53,7 @@
         .forum_post_buttons
           .btn-group
             %ul
-              - if post.draft  
+              - if post.draft
                 %li= button_tag t('posts.index.publish'), class: "btn btn_main publish_post", :'data-url' => publish_post_path(post), type: :button, onclick: 'publish_post(this)'
               - if (@can_evaluate || @can_comment) && (post.profile.types & Profile_Type_Student) > 0
                 %li= link_to content_tag(:i, nil, class: 'icon-write'), user_discussion_posts_path(post.discussion.id, post.user_id), class: 'btn to_evaluate_post', :'data-tooltip'=> t('.to_evaluate'), :'aria-label' => t('.to_evaluate') + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
@@ -63,11 +70,17 @@
                 - if post.can_be_answered? && can_post
                   %li= button_tag content_tag(:i, nil, class: 'icon-reply'), class: 'btn btn_disabled', disabled: true, :'data-tooltip'=> t('.answer'), :'aria-label'=> t('.answer')
         .forum_post_reply
+      - if post.children_count > 0 && display_mode != 'list'
+        %section.display_replies_posts_summary.invisible
+          .icons
+            = link_to content_tag(:i, nil, class: 'invisible icon-arrow-down-triangle', :"data-tooltip" => t(".show_posts")), "#"+"#{post.id}", onclick: 'show(this)'
+          = link_to t(".amount_answers"), "#"+"#{post.id}", onclick: 'show(this)', class: 'link-show amount-answers invisible'
       - unless display_mode == 'list'
         - children.each do |child|
           = render partial: 'post', locals: { post: child, display_mode: display_mode, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: new_post }
+
   ._line
- 
+
 :javascript
 
   $(function(){
@@ -82,9 +95,9 @@
       $($(this).closest("table")).find(".forum_post_wrapper, .forum_post_head, .forum_post_icon").each(function(){$($(this)[0]).removeClass("new")});
       add_post_count_warning();
     });
-      
+
   });
-  
+
   $(".to_evaluate_post").call_fancybox({
     minWidth: '50%',
     minHeight: '50%',
@@ -103,6 +116,54 @@
           label = label +"#{t('.answer_post')}"+ parent_id+"#{t('.res_post')}";
         }
         $(this).attr("aria-label", label);
-      }); 
-    }, 200);  
-  });  
+      });
+    }, 200);
+  });
+
+  function hide(element){
+    var lines = $(element).closest('article').find('._line').slice(2);
+    var link_show = $(element).closest('article').find('.link-show');
+    var link_hide = $(element).closest('article').find('.link-hide');
+    var icon_up = $(element).closest('article').find('.icon-arrow-up-triangle');
+    var icon_down = $(element).closest('article').find('.icon-arrow-down-triangle');
+
+    $(lines).hide('slow');
+    link_hide.addClass('invisible');
+    link_show.removeClass('invisible');
+    icon_up.addClass('invisible');
+    icon_down.removeClass('invisible');
+
+    $(element).closest('article').find('.display_replies_posts_summary').removeClass('invisible');
+    show_summary(element);
+  }
+
+  function show(element){
+    var lines = $(element).closest('article').find('._line').slice(2);
+    var link_show = $(element).closest('article').find('.link-show');
+    var link_hide = $(element).closest('article').find('.link-hide');
+    var icon_up = $(element).closest('article').find('.icon-arrow-up-triangle');
+    var icon_down = $(element).closest('article').find('.icon-arrow-down-triangle');
+
+    $(lines).show('slow');
+    link_hide.removeClass('invisible');
+    link_show.addClass('invisible');
+    icon_up.removeClass('invisible');
+    icon_down.addClass('invisible');
+
+    $(element).closest('article').find('.display_replies_posts_summary').addClass('invisible');
+    $(element).closest('article').find('.forum_post').removeClass('clip_area_around_summary');
+    $(element).closest('article').find('.display_replies_posts_summary').css('margin', '0');
+  }
+
+  function show_summary(element) {
+    var summary_div = $(element).closest('article').find('.display_replies_posts_summary');
+    summary_div.css('margin', '20px 0');
+    summary_div.find('li').css('display', 'inline-block').css('padding', '7px 10px');
+
+    var amount_of_children_posts = $(element).closest('article').find('article').length;
+
+    var link_text_answers = summary_div.find('.amount-answers').first().text().replace(/\d+/g, '');
+    summary_div.find('.amount-answers').html(amount_of_children_posts + link_text_answers);
+
+    $(element).closest('article').find('.forum_post').addClass('clip_area_around_summary');
+  }

@@ -1173,6 +1173,9 @@ en_US:
       new_posts: " new(s) post(s) at discussion"
       new_posts_page: "1 new post at discussion (page "
       moved_allocation: "Allocation moved to other class"
+      show_posts: "Show Answers"
+      hide_posts: "Hide Answers"
+      amount_answers: " hidden posts. To view them, click "
       to_evaluate: Evaluate/Comment
       grade: '(Grade: %{grade})'
       frequency: '(Frequency: %{wh})'
