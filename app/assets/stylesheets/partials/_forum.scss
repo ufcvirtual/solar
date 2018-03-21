@@ -303,17 +303,21 @@ div.forum_navigation {
   float: right;
 }
 
+.display_replies_posts_summary, .expand_hide {
+  display: flex;
+  justify-content: center;
+  line-height: 2em;
+}
+
 .display_replies_posts_summary {
   background-color: $steps_background;
-  // border-top: 1px solid $btn_border_light_gray;
-
-  display: flex;
   flex-direction: row-reverse;
-  justify-content: center;
-
-  line-height: 2em;
 }
 
 .clip_area_around_summary {
   min-height: 0px;
+}
+
+.expand_hide {
+  flex-direction: row;
 }
