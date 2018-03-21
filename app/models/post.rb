@@ -166,6 +166,7 @@ class Post < ActiveRecord::Base
     if configure_mail_post.nil? || configure_mail_post.post
       at = academic_allocation.allocation_tag
       locale = configure_mail_post.try(:default_locale) rescue 'pt_BR'
+      locale = 'pt_BR' if locale.blank?
       subject = "#{I18n.t('posts.mail.subject', discussion: discussion.name, at_info: at.info, locale: locale)}"
       Thread.new do
         Job.send_mass_email_post([parent.user.email], subject, id, at.info, discussion.name)
