@@ -6,12 +6,15 @@
       = @discussion.name
   .block_content
     .block_content_text= sanitize @discussion.description
+<<<<<<< cc755a6c2a62cfa0d66a2087cdcd49c7f92ec120
 
   %h2
     .block_title
       %i.icon-forum
       = t('.files.discussion_file_title')
   .block_content
+=======
+>>>>>>> [#155902890] Permitindo Comprimir e Expandir todos os Posts não primários
     .block_content_text
       = sanitize @discussion.description
       %p
@@ -26,12 +29,20 @@
                 = link_to file.attachment_file_name.truncate(30), link, {class: "link_content", :'aria-label'=> t('posts.post.download', file: file.attachment_file_name, size: size)}
                 = size
 
+<<<<<<< cc755a6c2a62cfa0d66a2087cdcd49c7f92ec120
   - unless @display_mode == 'list'
     .expand_hide
       = link_to content_tag(:i, nil, class: 'icon-resize-enlarge', :"data-tooltip" => t('.expand')), "#void", onclick: 'show_all()'
       .expand_link= link_to t('.expand'), "#void", onclick: 'show_all()'
       = link_to content_tag(:i, nil, class: 'icon-resize-shrink', :"data-tooltip" => t('.compress')), "#void", onclick: 'hide_all()'
       .compress_link= link_to t('.compress'), "#void", onclick: 'hide_all()'
+=======
+  .expand_hide
+    = link_to content_tag(:i, nil, class: 'icon-resize-enlarge', :"data-tooltip" => t('.expand')), "#void", onclick: 'show_all()'
+    .expand_link= link_to t('.expand'), "#void", onclick: 'show_all()'
+    = link_to content_tag(:i, nil, class: 'icon-resize-shrink', :"data-tooltip" => t('.compress')), "#void", onclick: 'hide_all()'
+    .compress_link= link_to t('.compress'), "#void", onclick: 'hide_all()'
+>>>>>>> [#155902890] Permitindo Comprimir e Expandir todos os Posts não primários
 
   .posts
     = content_tag(:i, nil, class: 'icon-pluscircle.png')
