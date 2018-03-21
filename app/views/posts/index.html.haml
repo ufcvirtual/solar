@@ -1,3 +1,4 @@
+- posts_to_hide_all = @posts.map { |post| post.id }
 .block_wrapper#forum_description
   %h2
     .block_title
@@ -371,10 +372,44 @@
 <<<<<<< 029ebfb12f85adaa15470e8aa30562bc8478b07f
 =======
   function show_all(){
-    $('.forum_posts_wrapper').find('.link-show').click();
+    var lines = $('.forum_posts_wrapper').find('article').find('._line');
+    var link_show = $('.forum_posts_wrapper').find('article').find('.link-show');
+    var link_hide = $('.forum_posts_wrapper').find('article').find('.link-hide');
+    var icon_up = $('.forum_posts_wrapper').find('article').find('.icon-arrow-up-triangle');
+    var icon_down = $('.forum_posts_wrapper').find('article').find('.icon-arrow-down-triangle');
+
+    lines.show('slow');
+    link_hide.removeClass('invisible');
+    link_show.addClass('invisible');
+    icon_up.removeClass('invisible');
+    icon_down.addClass('invisible');
+
+    $('.forum_posts_wrapper').find('article').find('.display_replies_posts_summary').addClass('invisible');
+    $('.forum_posts_wrapper').find('article').find('.forum_post').removeClass('clip_area_around_summary');
+    $('.forum_posts_wrapper').find('article').find('.display_replies_posts_summary').css('margin', '0');
   }
 
   function hide_all(){
-    $('.forum_posts_wrapper').find('.link-hide').click();
+    var posts_ids = "#{posts_to_hide_all}";
+    posts_ids = posts_ids.replace(/,|\[|]/g, '').split(" ");
+    $(posts_ids).each(function(index, post_id){
+      $("#"+post_id).find('article').find('._line').hide('slow');
+      $("#"+post_id).find('.link-show').removeClass('invisible');
+      $("#"+post_id).find('.link-hide').addClass('invisible');
+      $("#"+post_id).find('.icon-arrow-up-triangle').addClass('invisible');
+      $("#"+post_id).find('.icon-arrow-down-triangle').removeClass('invisible');
+
+      var summary_div = $("#"+post_id).find('.display_replies_posts_summary');
+
+      summary_div.removeClass('invisible');
+      summary_div.css('margin', '20px 0');
+      summary_div.find('li').css('display', 'inline-block').css('padding', '7px 10px');
+
+      var amount_of_children_posts = $("#"+post_id).find('article').length;
+      var link_text_answers = summary_div.find('.amount-answers').first().text().replace(/\d+/g, '');
+
+      summary_div.find('.amount-answers').html(amount_of_children_posts + link_text_answers);
+      $("#"+post_id).find('.forum_post').addClass('clip_area_around_summary');
+    });
   }
 >>>>>>> [#155902890] Permitindo Comprimir e Expandir todos os Posts não primários
