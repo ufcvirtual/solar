@@ -1150,6 +1150,8 @@ en_US:
       primary: " primary"
       save_draft: Save draft
       publish: Publish
+      expand: Expand all
+      compress: Compress all
     post:
       remove_file_confirm: "Your file will be deleted permanently. Proceed?"
       answer: "Reply"
@@ -1161,6 +1163,9 @@ en_US:
       new_posts: " new(s) post(s) at discussion"
       new_posts_page: "1 new post at discussion (page "
       moved_allocation: "Allocation moved to other class"
+      show_posts: "Show Answers"
+      hide_posts: "Hide Answers"
+      amount_answers: " hidden posts. To view them, click "
       to_evaluate: Evaluate/Comment
       grade: '(Grade: %{grade})'
       frequency: '(Frequency: %{wh})'

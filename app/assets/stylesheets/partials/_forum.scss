@@ -291,3 +291,26 @@ div.forum_navigation {
     display: block;
   }
 }
+
+.links_to_hide_and_show {
+  float: right;
+}
+
+.display_replies_posts_summary, .expand_hide {
+  display: flex;
+  justify-content: center;
+  line-height: 2em;
+}
+
+.display_replies_posts_summary {
+  background-color: $steps_background;
+  flex-direction: row-reverse;
+}
+
+.clip_area_around_summary {
+  min-height: 0px;
+}
+
+.expand_hide {
+  flex-direction: row;
+}
