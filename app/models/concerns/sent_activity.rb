@@ -10,6 +10,8 @@ module SentActivity
   end
 
   def update_acu
+    return true if academic_allocation_user.blank?
+
     table_name = self.class.to_s.tableize
     empty_associations = case table_name
     when 'assignment_files'; (academic_allocation_user.assignment_files.empty? && academic_allocation_user.assignment_webconferences.empty?)
