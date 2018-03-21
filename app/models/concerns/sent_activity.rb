@@ -27,8 +27,12 @@ module SentActivity
           academic_allocation_user.status = AcademicAllocationUser::STATUS[:empty]
           academic_allocation_user.working_hours = nil if automatic
         else
-          academic_allocation_user.status = AcademicAllocationUser::STATUS[:sent]
-          academic_allocation_user.working_hours = academic_allocation.max_working_hours if automatic
+          if automatic
+            academic_allocation_user.status = AcademicAllocationUser::STATUS[:evaluated]
+            academic_allocation_user.working_hours = academic_allocation.max_working_hours
+          else
+            academic_allocation_user.status = AcademicAllocationUser::STATUS[:sent]
+          end
         end
       else
         academic_allocation_user.new_after_evaluation = true
