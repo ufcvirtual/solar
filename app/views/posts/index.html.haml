@@ -18,6 +18,12 @@
                 = link_to file.attachment_file_name.truncate(30), link, {class: "link_content", :'aria-label'=> t('posts.post.download', file: file.attachment_file_name, size: size)}
                 = size
 
+  .expand_hide
+    = link_to content_tag(:i, nil, class: 'icon-resize-enlarge', :"data-tooltip" => t('.expand')), "#void", onclick: 'show_all()'
+    .expand_link= link_to t('.expand'), "#void", onclick: 'show_all()'
+    = link_to content_tag(:i, nil, class: 'icon-resize-shrink', :"data-tooltip" => t('.compress')), "#void", onclick: 'hide_all()'
+    .compress_link= link_to t('.compress'), "#void", onclick: 'hide_all()'
+
   .posts
     = content_tag(:i, nil, class: 'icon-pluscircle.png')
     .block_title.forum_navigation
@@ -359,3 +365,13 @@
     });
   }
 
+<<<<<<< 029ebfb12f85adaa15470e8aa30562bc8478b07f
+=======
+  function show_all(){
+    $('.forum_posts_wrapper').find('.link-show').click();
+  }
+
+  function hide_all(){
+    $('.forum_posts_wrapper').find('.link-hide').click();
+  }
+>>>>>>> [#155902890] Permitindo Comprimir e Expandir todos os Posts não primários

@@ -1346,6 +1346,8 @@ pt_BR:
       primary: " primárias"
       save_draft: Salvar Rascunho
       publish: Publicar
+      expand: "Expandir todos"
+      compress: "Comprimir todos"
       files:
         discussion_file_title: Arquivos
         name: Nome
