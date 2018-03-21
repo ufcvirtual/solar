@@ -25,7 +25,7 @@ class Post < ActiveRecord::Base
   after_create :increment_counter
   after_destroy :decrement_counter, :remove_drafts_children, :decrement_counter_draft
   after_save :change_counter_draft, if: '!parent_id.nil? && draft_changed?'
-  after_save :send_email, unless: 'parent_id.blank? || draft || parent.user_id == user_id'
+  after_save :send_email, unless: 'parent_id.blank? || draft || parent.user_id == user_id || !merge.nil?'
 
   validates :content, :profile_id, presence: true
 
@@ -165,7 +165,8 @@ class Post < ActiveRecord::Base
     configure_mail_post = parent.user.personal_configuration
     if configure_mail_post.nil? || configure_mail_post.post
       at = academic_allocation.allocation_tag
-      subject = "#{I18n.t('posts.mail.subject', discussion: discussion.name, at_info: at.info, locale: (configure_mail_post.try(:default_locale) || 'pt_BR'))}"
+      locale = configure_mail_post.try(:default_locale) rescue 'pt_BR'
+      subject = "#{I18n.t('posts.mail.subject', discussion: discussion.name, at_info: at.info, locale: locale)}"
       Thread.new do
         Job.send_mass_email_post([parent.user.email], subject, id, at.info, discussion.name)
       end
