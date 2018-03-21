@@ -1350,6 +1350,9 @@ pt_BR:
       new_posts: " nova(s) postagem(ns) no fórum"
       new_posts_page: "1 nova postagem no fórum (página "
       moved_allocation: "Alocação transferida para outra turma"
+      show_posts: "Mostrar Respostas"
+      hide_posts: "Esconder Respostas"
+      amount_answers: " posts ocultados. Para visualizá-los, clique em "
       to_evaluate: Avaliar/Comentar
       grade: '(Nota: %{grade})'
       frequency: '(Frequência: %{wh}hs)'
