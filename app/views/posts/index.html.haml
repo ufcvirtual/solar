@@ -33,6 +33,12 @@
       = link_to content_tag(:i, nil, class: 'icon-resize-shrink', :"data-tooltip" => t('.compress')), "#void", onclick: 'hide_all()'
       .compress_link= link_to t('.compress'), "#void", onclick: 'hide_all()'
 
+  .expand_hide
+    = link_to content_tag(:i, nil, class: 'icon-resize-enlarge', :"data-tooltip" => t('.expand')), "#void", onclick: 'show_all()'
+    .expand_link= link_to t('.expand'), "#void", onclick: 'show_all()'
+    = link_to content_tag(:i, nil, class: 'icon-resize-shrink', :"data-tooltip" => t('.compress')), "#void", onclick: 'hide_all()'
+    .compress_link= link_to t('.compress'), "#void", onclick: 'hide_all()'
+
   .posts
     = content_tag(:i, nil, class: 'icon-pluscircle.png')
     .block_title.forum_navigation
@@ -374,8 +380,6 @@
     });
   }
 
-<<<<<<< d98352d1404a2540cd6815f3f3cae4622e0120aa
-=======
   function show_all(){
     var lines = $('.forum_posts_wrapper').find('article').find('._line');
     var link_show = $('.forum_posts_wrapper').find('article').find('.link-show');
@@ -417,4 +421,3 @@
       $("#"+post_id).find('.forum_post').addClass('clip_area_around_summary');
     });
   }
->>>>>>> [#155902890] Permitindo Comprimir e Expandir todos os Posts não primários
