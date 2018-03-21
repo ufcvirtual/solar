@@ -298,3 +298,22 @@ div.forum_navigation {
     display: block;
   }
 }
+
+.links_to_hide_and_show {
+  float: right;
+}
+
+.display_replies_posts_summary {
+  background-color: $steps_background;
+  // border-top: 1px solid $btn_border_light_gray;
+
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+
+  line-height: 2em;
+}
+
+.clip_area_around_summary {
+  min-height: 0px;
+}
