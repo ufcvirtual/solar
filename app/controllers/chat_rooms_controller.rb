@@ -177,7 +177,7 @@ class ChatRoomsController < ApplicationController
       academic_allocation_id = params[:academic_allocation_id]
       allocation_id = params[:allocation_id]
 
-      AcademicAllocationUser.find_or_create_one(params[:academic_allocation_id], allocation_tag_id, current_user.id, nil, true)
+      AcademicAllocationUser.find_or_create_one(params[:academic_allocation_id], allocation_tag_id, current_user.id, nil, false, nil)
 
       url = @chat_room.url(allocation_id, academic_allocation_id)
       URI.parse(url).path

@@ -1,19 +1,13 @@
-class ChatMessage < ActiveRecord::Base
-  include SentActivity
+# This migration was auto-generated via `rake db:generate_trigger_migration'.
+# While you can edit this file, any changes you make to the definitions here
+# will be undone by the next auto-generated trigger migration.
 
-  belongs_to :academic_allocation, -> { where academic_tool_type: 'ChatRoom' }
-  belongs_to :allocation
-  belongs_to :academic_allocation_user
-
-  has_one :user, through: :allocation
-  has_one :chat_room, through: :academic_allocation
-
-  ### triggers
-  # chats are not yet created by activerecord, so this trigger must relate the chatMessage to an ACU.
-  # must see if exists acu; if dont, create; if does, change status
-  # must see if ac must have automatic frequency; if does, add frequency and status
-  trigger.after(:insert) do
-    <<-SQL
+class CreateTriggerChatMessagesInsert < ActiveRecord::Migration
+  def up
+    create_trigger("chat_messages_after_insert_row_tr", :generated => true, :compatibility => 1).
+        on("chat_messages").
+        after(:insert) do
+      <<-SQL_ACTIONS
       DECLARE
         ac Decimal;
        acu integer;
@@ -43,6 +37,11 @@ class ChatMessage < ActiveRecord::Base
           UPDATE chat_messages SET academic_allocation_user_id = (SELECT id FROM academic_allocation_users WHERE user_id = NEW.user_id AND  academic_allocation_id = NEW.academic_allocation_id) WHERE id = NEW.id;
         END IF;
       END;
-    SQL
+      SQL_ACTIONS
+    end
+  end
+
+  def down
+    drop_trigger("chat_messages_after_insert_row_tr", "chat_messages", :generated => true)
   end
 end

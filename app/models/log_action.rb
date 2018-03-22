@@ -20,6 +20,8 @@ class LogAction < ActiveRecord::Base
 
   before_save :set_acu, if: '!academic_allocation_user_id.nil? && log_type != 7'
 
+  attr_accessor :merge
+
   def set_acu
     self.academic_allocation_user_id = nil
   end
