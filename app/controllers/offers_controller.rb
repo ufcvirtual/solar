@@ -158,6 +158,8 @@ class OffersController < ApplicationController
 
             # se tentou mover o periodo total da oferta para antes do inicio ou depois do final da atividade
             if (param_off_start_date < act.schedule.start_date && param_off_end_date < act.schedule.start_date) || (param_off_start_date > act.schedule.end_date && param_off_end_date > act.schedule.end_date )
+              activities_to_save = []
+              activities_to_email = {}
               raise "A atividade #{al.academic_tool_type} - #{act.name} não pode ser alterada para este período de oferta!"
             end
 
@@ -255,7 +257,6 @@ class OffersController < ApplicationController
               activities_to_email[al.academic_tool_type] << act
               activities_to_save << act
             end
-
           end
 
         end
