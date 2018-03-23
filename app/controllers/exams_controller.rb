@@ -62,7 +62,6 @@ class ExamsController < ApplicationController
   end
 
   def edit
-    @allocation_tags_ids = params[:allocation_tags_ids]
     @exam = Exam.find(params[:id])
     @exam.ip_reals.build if @exam.ip_reals.empty?
   end
@@ -70,7 +69,6 @@ class ExamsController < ApplicationController
   def update
     @exam = Exam.find(params[:id])
     authorize! :update, Exam, { on: @exam.academic_allocations.pluck(:allocation_tag_id) }
-    @exam.allocation_tag_ids_associations = params[:allocation_tags_ids].split(' ').flatten
     @exam.schedule.verify_today = true
     if @exam.update_attributes(exam_params)
       render_exam_success_json('updated')
@@ -374,12 +372,15 @@ class ExamsController < ApplicationController
       @disabled = false
     end
 
-    raise 'not_corrected' if @acu.blank? || @acu.grade.blank?
-    raise 'no_attempt' if @last_attempt.blank?
-    raise 'result_release_date' unless @exam.allow_calculate_grade?
-    exam.recalculate_grades(@user, @allocation_tag_id, true) if @acu.exam_user_attempts.where(grade: nil).any?
+    if ['corrected', 'evaluated'].include?(@situation)
+      raise 'not_corrected' if @acu.blank? || @acu.grade.blank?
+      raise 'no_attempt' if @last_attempt.blank?
+      raise 'result_release_date' unless @exam.allow_calculate_grade?
+      exam.recalculate_grades(@user, @allocation_tag_id, true) if @acu.exam_user_attempts.where(grade: nil).any?
+    elsif  @user != current_user.id
+      raise CanCan::AccessDenied
+    end
 
-    raise CanCan::AccessDenied if !['corrected', 'evaluated'].include?(@situation) && @user != current_user.id
   rescue => error
     render text: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
   end
