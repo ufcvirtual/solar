@@ -34,7 +34,6 @@ class PersonalConfigurationsController < ApplicationController
       render json: {success: false, notice: t('users.configure.error.updated')}
     end
   rescue => error
-    raise "#{error}"
     request.format = :json
     raise error.class
   end
