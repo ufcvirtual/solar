@@ -154,6 +154,7 @@ class OffersController < ApplicationController
         academic_allocation = AcademicAllocation.where(allocation_tag_id: allocation_tag_id)
         related_users_emails = Allocation.where(allocation_tag_id: allocation_tag_id).map{|al| al.user.email}
         activities_to_email = {}
+        activities_to_save = []
         Struct.new('Activity_Object',:name, :start_date, :end_date)
 
 
@@ -164,6 +165,8 @@ class OffersController < ApplicationController
 
             # se tentou mover o periodo total da oferta para antes do inicio ou depois do final da atividade
             if (param_off_start_date < act.schedule.start_date && param_off_end_date < act.schedule.start_date) || (param_off_start_date > act.schedule.end_date && param_off_end_date > act.schedule.end_date )
+              activities_to_save = []
+              activities_to_email = {}
               raise "A atividade #{al.academic_tool_type} - #{act.name} não pode ser alterada para este período de oferta!"
             end
 
@@ -175,10 +178,11 @@ class OffersController < ApplicationController
               act.schedule.end_date = param_off_end_date
             end
 
-            if act.schedule.changed? && act.save
+            if act.schedule.changed?
                 struct = Struct::Activity_Object.new(act.name, act.schedule.start_date.to_s, act.schedule.end_date.to_s)
                 activities_to_email[Object.const_get(al.academic_tool_type).model_name.human] ||= []
                 activities_to_email[Object.const_get(al.academic_tool_type).model_name.human] << struct
+                activities_to_save << act
             end
 
           end
@@ -193,10 +197,11 @@ class OffersController < ApplicationController
               act.initial_time = Time.new(param_off_end_date.year, param_off_end_date.month, param_off_end_date.day, act.initial_time.hour, act.initial_time.min, act.initial_time.sec)
             end
 
-            if act.changed? && act.save
+            if act.changed?
               struct = Struct::Activity_Object.new(act.title, act.initial_time.to_date.to_s, act.initial_time.to_date.to_s)
               activities_to_email[Object.const_get(al.academic_tool_type).model_name.human] ||= []
               activities_to_email[Object.const_get(al.academic_tool_type).model_name.human] << struct
+              activities_to_save << act
             end
 
           end
@@ -208,6 +213,8 @@ class OffersController < ApplicationController
 
               # se tentou mover o periodo total da oferta para antes do inicio ou depois do final da atividade
               if (param_off_start_date < lesson.schedule.start_date && param_off_end_date < lesson.schedule.start_date) || (param_off_start_date > lesson.schedule.end_date && param_off_end_date > lesson.schedule.end_date )
+                activities_to_save = []
+                activities_to_email = {}
                 raise "A atividade #{al.academic_tool_type} - #{act.name} não pode ser alterada para este período de oferta!"
               end
 
@@ -219,50 +226,56 @@ class OffersController < ApplicationController
                 lesson.schedule.end_date = param_off_end_date
               end
 
-              if lesson.schedule.changed? && lesson.save
+              if lesson.schedule.changed?
                 struct = Struct::Activity_Object.new(lesson.name, lesson.schedule.start_date.to_s, lesson.schedule.end_date.to_s)
                 activities_to_email[Object.const_get(al.academic_tool_type).model_name.human] ||= []
                 activities_to_email[Object.const_get(al.academic_tool_type).model_name.human] << struct
+                activities_to_save << lesson
               end
 
             end
 
           end
 
-          # if ['Exam'].include? al.academic_tool_type
+          if ['Exam'].include? al.academic_tool_type
             
-          #   difference_in_days = (act.schedule.end_date - act.schedule.start_date).to_i
+            difference_in_days = (act.schedule.end_date - act.schedule.start_date).to_i
 
-          #   # se tentou mover o periodo total da oferta para antes do inicio da atividade
-          #   if (act.schedule.start_date < param_off_start_date && act.schedule.end_date < param_off_start_date) || (act.schedule.end_date > param_off_end_date && act.schedule.start_date > param_off_end_date)
-          #     raise "A atividade #{al.academic_tool_type} - #{act.name} não pode ser alterada para este período de oferta!"
-          #   end
+            # se tentou mover o periodo total da oferta para antes do inicio da atividade
+            if (act.schedule.start_date < param_off_start_date && act.schedule.end_date < param_off_start_date) || (act.schedule.end_date > param_off_end_date && act.schedule.start_date > param_off_end_date)
+              raise "A atividade #{al.academic_tool_type} - #{act.name} não pode ser alterada para este período de oferta!"
+            end
 
-          #   if (act.schedule.start_date < param_off_start_date && difference_in_days == 0 )
-          #     act.schedule.start_date = param_off_start_date
-          #     act.schedule.end_date = param_off_start_date
-          #     activity_update = true
-          #   elsif act.schedule.start_date < param_off_start_date
-          #     act.schedule.start_date = param_off_start_date
-          #     activity_update = true
-          #   end
+            if (act.schedule.start_date < param_off_start_date && difference_in_days == 0 )
+              act.schedule.start_date = param_off_start_date
+              act.schedule.end_date = param_off_start_date
+            elsif act.schedule.start_date < param_off_start_date
+              act.schedule.start_date = param_off_start_date
+            end
 
-          #   if (act.schedule.end_date > param_off_end_date && difference_in_days == 0)
-          #     act.schedule.end_date = param_off_end_date
-          #     act.schedule.start_date = param_off_end_date
-          #     activity_update = true
-          #   elsif act.schedule.end_date > param_off_end_date
-          #     act.schedule.end_date = param_off_end_date
-          #     activity_update = true
-          #   end
+            if (act.schedule.end_date > param_off_end_date && difference_in_days == 0)
+              act.schedule.end_date = param_off_end_date
+              act.schedule.start_date = param_off_end_date
+            elsif act.schedule.end_date > param_off_end_date
+              act.schedule.end_date = param_off_end_date
+            end
 
-          #   if activity_update && act.save
-          #     activities_to_email[al.academic_tool_type] ||= []
-          #     activities_to_email[al.academic_tool_type] << act
-          #   end
+            if act.changed?
+              activities_to_email[al.academic_tool_type] ||= []
+              activities_to_email[al.academic_tool_type] << act
+              activities_to_save << act
+            end
            
-          # end
+          end
           
+        end
+
+        unless activities_to_save.blank?
+          ActiveRecord::Base.transaction do
+            activities_to_save.each do |activity|
+              activity.save
+            end
+          end
         end
         
         unless activities_to_email.blank?
@@ -277,7 +290,11 @@ class OffersController < ApplicationController
       html = ""
       activities.each do |key, value|
         value.each do |object|
-          html << "<p>Atividade: #{key} - #{object.name} foi alterada para #{object.start_date} à #{object.end_date}</p>"
+          if key == "Webconference"
+            html << "<p>Atividade: #{key} - #{object.name} foi alterada para #{object.start_date}</p>"
+          else
+            html << "<p>Atividade: #{key} - #{object.name} foi alterada para #{object.start_date} à #{object.end_date}</p>"
+          end
         end
       end
       html
