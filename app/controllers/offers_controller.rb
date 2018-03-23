@@ -259,6 +259,7 @@ class OffersController < ApplicationController
             end
 
             if act.changed?
+              struct = Struct::Activity_Object.new(act.name, act.schedule.start_date.to_s, act.schedule.end_date.to_s)
               activities_to_email[al.academic_tool_type] ||= []
               activities_to_email[al.academic_tool_type] << act
               activities_to_save << act
