@@ -86,8 +86,9 @@ module ReportsHelper
     return pdf
   end
 
-  def self.result_exam ats, exam, user, grade_pdf, exam_questions, preview, last_attempt, disabled
-    pdf = inicializa_pdf(:portrait)
+  def self.result_exam ats, exam, user_id, grade_pdf, exam_questions, preview, last_attempt, disabled
+    user = User.find(user_id)
+    pdf  = inicializa_pdf(:portrait)
 
     # Título do pdf
     pdf.text ats.info, size: 14, style: :bold, align: :center

@@ -143,13 +143,14 @@ module AcademicTool
       ActiveRecord::Base.connection
         ats.each do |at|
           emails = User.with_access_on('receive_academic_tool_notification','emails',ats, true).map(&:email).compact.uniq
+
           info = AllocationTag.find(ats.first).no_group_info
           groups = (ats.size > 1 ? ' - ' + Group.joins(:allocation_tag).where(allocation_tags: {id: ats}).map(&:code).join(', ') : '')
           unless emails.empty?
             if ((verify_type == 'delete') || (respond_to?(:status_changed?) && (status_changed? && !status)))
               if (verify_can_destroy)
                 unless self.class.to_s == 'Notification'
-                 template_mail = delete_msg_template(info + groups) 
+                 template_mail = delete_msg_template(info + groups)
 -                subject = I18n.t('editions.mail.subject_delete')
                 end
               end
@@ -272,7 +273,11 @@ module AcademicTool
 
     def set_schedule
       self.schedule.check_end_date = true # mandatory final date
-      self.schedule.verify_offer_ats = allocation_tag_ids_associations
+      if new_record?
+        self.schedule.verify_offer_ats = allocation_tag_ids_associations
+      else
+        self.schedule.verify_offer_ats = allocation_tags.map(&:id).flatten
+      end
     end
 
     def set_situation_date

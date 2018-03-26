@@ -578,8 +578,12 @@ function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
   real_grade = $('#academic_allocation_user_grade').val();
   real_hours = $('#academic_allocation_user_working_hours').val();
 
-  if(!$('#academic_allocation_user_grade').length && !$('#academic_allocation_user_working_hours').length)
-    grade = data.grade;
+  if(!$('#academic_allocation_user_grade').length && !$('#academic_allocation_user_working_hours').length){
+    if(score_type=='evaluative' || score_type=='not_evaluative')
+      grade = data.grade;
+    else
+      grade = data.working_hours;
+  }
 
   if(!!$('a.'+class_elem).length){
     grade_or_status = $.isNumeric(grade) ? grade : data.situation;

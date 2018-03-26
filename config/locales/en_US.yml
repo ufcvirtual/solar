@@ -3963,6 +3963,8 @@ en_US:
       result_release_date: It'll only be possible to calculate grade after date and time registered to it's release
       cant_change_release_result: result already released
       equivalent: Equivalent exam, status can't be updated
+      not_corrected: This exam was not evaluated yet.
+      no_attempt: This exam has none attempts.
     show:
       groups: Groups
       empty_group: Empty group

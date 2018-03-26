@@ -4217,6 +4217,8 @@ pt_BR:
       result_release_date: Só será possível calcular a nota a partir da data e horário cadastrados para sua liberação
       cant_change_release_result: resultados já foram liberados
       equivalent: Prova com equivalência, status não pode ser alterado.
+      not_corrected: Essa prova ainda não foi corrigida
+      no_attempt: Esta prova não possui nenhuma tentativa
     show:
       groups: Turmas
       empty_group: Turma vazia

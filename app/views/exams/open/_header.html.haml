@@ -4,7 +4,8 @@
     - if @disabled
       - unless @exam_user_attempt.complete
         = '('+t('exams.result_exam_user.incomplete')+')'
-      = link_to content_tag(:i, nil, class: 'icon-printer', :'aria-hidden' => 'true'), open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, situation: @situation, pdf: 1, format: "pdf", exam_user_attempt_id: @exam_user_attempt.id), target: "_blank", class: 'ico-e', :'data-tooltip' => t('exams.print'), :'aria-label' => t('exams.print')
+      = link_to content_tag(:i, nil, class: 'icon-printer', :'aria-hidden' => 'true'), open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, situation: @situation, pdf: 1, format: "pdf", exam_user_attempt_id: @exam_user_attempt.id, user_id: @user), target: "_blank", class: 'ico-e', :'data-tooltip' => t('exams.print'), :'aria-label' => t('exams.print')
+      = '(' + t('exams.index.grade') + ' ' + @exam_user_attempt.grade.to_s + ')'
   %h3#exam_status
     #question_count{:'data-shortcut'=> t("shortcut.exam.code.questions"), :'data-shortcut-name'=> t("shortcut.exam.name.questions"), :'data-shortcut-focus' => 'true'}
       %i.icon-list

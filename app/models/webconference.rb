@@ -24,7 +24,6 @@ class Webconference < ActiveRecord::Base
 
   validate :verify_quantity, if: '!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed? || new_record?) && merge.nil?'
 
-  # validate :verify_offer, if: '!(duration.nil? || initial_time.nil?) && (new_record? || initial_time_changed? || duration_changed?) && !allocation_tag_ids_associations.blank?'
   validate :verify_offer, unless: 'allocation_tag_ids_associations.blank?'
 
   def link_to_join(user, at_id = nil, url = false)
