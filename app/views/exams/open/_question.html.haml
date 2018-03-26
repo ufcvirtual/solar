@@ -19,20 +19,13 @@
               - if right_answer==i.object.question_item_id
                 - arra_correted.push(arr_alf[num_question])
               - if (i.object.value && right_answer==i.object.question_item_id)
-                - class_label = "hit" 
+                - class_label = "hit"
                 - class_comment = 'comment-green'
               - elsif (!i.object.value && right_answer==i.object.question_item_id) || (i.object.value && right_answer!=i.object.question_item_id)
-                - class_label = "incorrect" 
+                - class_label = "incorrect"
                 - class_comment = 'comment-red'
               - unless i.object.comment.blank?
-                - coment = "<div class='#{class_comment}'> #{i.object.comment} </div>"  
-
-            - if i.object.item_image?  
-              - image = if @pdf !=1 
-                - image_tag(i.object.question_item.item_image.url(:medium), class: 'item_image', alt: i.object.img_alt, :'aria-label' => t('exams.open.image_item', alt: i.object.img_alt, item: arr_alf[num_question]), :"data-zoom-url" => i.object.question_item.item_image.url(:original))
-              - else
-                - t('exams.open.image_item', alt: i.object.img_alt, item: arr_alf[num_question])
-
+                - coment = "<div class='#{class_comment}'> #{i.object.comment} </div>"
             = i.check_box :value, {disabled: disabled, onchange: 'change();', class: 'invisible', role: 'radio', :'aria-checked' => i.object.value}, true, ''
             = radio_button_tag "radio_exam_response_exam_responses_question_items_attributes_#{num_question}_value", :value, nil, {checked: i.object.value, class: "radio_exam_response_exam_responses_question_items_attributes_#{num_question}_value", disabled: disabled, name: "radio_exam_response_exam_responses_question_items_attributes", onchange: 'update_radio(this);'}
 
@@ -40,9 +33,7 @@
               %span= arr_alf[num_question]+') '
               = i.object.description.html_safe
             - if i.object.item_image?
-              .zoom
-                %p= t('exams.open.image_zoom')
-                = raw image
+              = render partial: 'exams/open/items_images', locals: {item: i, num_question: num_question, arr_alf: arr_alf}
             - unless @pdf == 1
               - if i.object.item_audio?
                 .audio.legend
@@ -66,8 +57,8 @@
             = raw(coment)
 
         - if @disabled
-          = t('exams.result_exam_user.itens_corrected') + arra_correted.join(", ")        
-        
+          = t('exams.result_exam_user.itens_corrected') + arra_correted.join(", ")
+
       - elsif question.type_question.to_i == Question::MULTIPLE
         - num_question = -1
         - right_items = question.question_items.where(value: true).pluck(:id)
@@ -76,32 +67,23 @@
           - unless b.object.id.nil?
             - num_question =  num_question + 1
             - if @disabled
-              - coment = b.object.comment  
+              - coment = b.object.comment
               - if right_items.include?(b.object.question_item_id)
                 - arra_correted.push(arr_alf[num_question])
               - if (b.object.value && right_items.include?(b.object.question_item_id))
-                - class_label = "hit" 
+                - class_label = "hit"
                 - class_comment = 'comment-green'
               - elsif (b.object.value && !right_items.include?(b.object.question_item_id)) || (!b.object.value && right_items.include?(b.object.question_item_id))
-                - class_label = "incorrect" 
+                - class_label = "incorrect"
                 - class_comment = 'comment-red'
               - unless b.object.comment.blank?
                 - coment = "<div class='#{class_comment}'> #{b.object.comment} </div>"
-
-            - if b.object.item_image?     
-              - image =  if @pdf !=1 
-                - image_tag(b.object.question_item.item_image.url(:medium), class: 'item_image', alt: b.object.img_alt, :'aria-label' => t('exams.open.image_item', alt: b.object.img_alt, item: arr_alf[num_question]), :"data-zoom-url" => b.object.question_item.item_image.url(:original))
-              - else
-                - t('exams.open.image_item', alt: b.object.img_alt, item: arr_alf[num_question])
-
             = b.check_box :value, {disabled: disabled, onchange: 'change();', role: 'checkbox', :'aria-checked' => b.object.value}, true, ''
             = b.label :value, class: class_label do
               %span= arr_alf[num_question]+') '
               = b.object.description.html_safe
             - if b.object.item_image?
-              .zoom
-                %p= t('exams.open.image_zoom')
-                = raw image
+              = render partial: 'exams/open/items_images', locals: {item: b, num_question: num_question, arr_alf: arr_alf}
             - unless @pdf == 1
               - if b.object.item_audio?
                 .audio.legend
@@ -136,26 +118,20 @@
           - unless b.object.id.nil?
             - num_question =  num_question + 1
             - selected = b.object.value
-            - if b.object.item_image?
-              - image = if @pdf !=1 
-                - image_tag(b.object.question_item.item_image.url(:medium), class: 'item_image', alt: b.object.img_alt, :'aria-label' => t('exams.open.image_item', alt: b.object.img_alt, item: arr_alf[num_question]), :"data-zoom-url" => b.object.question_item.item_image.url(:original))
-              - else
-                - t('exams.open.image_item', alt: b.object.img_alt, item: arr_alf[num_question]) 
-     
             - if @disabled
-              - coment = b.object.comment  
+              - coment = b.object.comment
               - if true_items.include?(b.object.question_item_id)
                 - arra_correted.push(arr_alf[num_question])
               - elsif false_items.include?(b.object.question_item_id)
                 - arra_correted2.push(arr_alf[num_question])
               - if b.object.value.nil?
-                - class_label = "incorrect" 
+                - class_label = "incorrect"
                 - class_comment = 'comment-red'
               - elsif ((b.object.value && true_items.include?(b.object.question_item_id)) || (!b.object.value && false_items.include?(b.object.question_item_id)))
-                - class_label = "hit" 
+                - class_label = "hit"
                 - class_comment = 'comment-green'
               - else
-                - class_label = "incorrect" 
+                - class_label = "incorrect"
                 - class_comment = 'comment-red'
               - unless b.object.comment.blank?
                 - coment = "<div class='#{class_comment}'> #{b.object.comment} </div>"
@@ -165,9 +141,7 @@
               %span= arr_alf[num_question]+') '
               = b.object.description.html_safe
             - if b.object.item_image?
-              .zoom
-                %p= t('exams.open.image_zoom')
-                = raw image
+              = render partial: 'exams/open/items_images', locals: {item: b, num_question: num_question, arr_alf: arr_alf}
             - unless @pdf == 1
               - if b.object.item_audio?
                 .audio.legend
@@ -189,7 +163,7 @@
             - else
               %p=t('exams.open.audio_item', item: arr_alf[num_question]) + (b.object.audio_description.blank? ? '' : t('exams.open.audio_text', desc: b.object.audio_description))
             = raw(coment)
-         
+
         - if @disabled
           = t('exams.result_exam_user.true_items') + arra_correted.join(", ")
           = t('exams.result_exam_user.false_items') + arra_correted2.join(", ")
@@ -203,14 +177,16 @@
         %input.aPbr{id: 'aPbr', type: 'range', value: 1, min: 0, max: 5, step: 0.1 }
           %p
             = t(:control_audio, scope: [:questions, :questions])
-            %span#aCurrentPbr= 1        
+            %span#aCurrentPbr= 1
 
 
 = javascript_include_tag 'pagination'
 
 :javascript
-  
+
   $(function(){
+
+    $.fancybox.update();
 
     $(document.body).on('change','select, input',function(){
       change();
