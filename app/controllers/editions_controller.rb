@@ -159,7 +159,7 @@ class EditionsController < ApplicationController
   def manage_tools
     params[:academic_allocations] = params[:academic_allocations].collect{|key,value| value}
     params[:academic_allocations] = params[:academic_allocations].delete_if{|a| a.nil? || a['acs'].blank?}
-    allocation_tags_ids = params[:academic_allocations].collect{|data| data['allocation_tags_ids'].delete('[]').split(',')}.flatten.map(&:to_i).uniq
+    allocation_tags_ids = params[:academic_allocations].collect{|data| data['allocation_tags_ids'].delete('[]').split(' ')}.flatten.map(&:to_i).uniq
 
     allocation_tags = AllocationTag.where(id: allocation_tags_ids)
     authorize! :tool_management, Edition, { on: allocation_tags_ids }
@@ -184,8 +184,8 @@ class EditionsController < ApplicationController
 
     ActiveRecord::Base.transaction do
       params[:academic_allocations].each do |data|
-        acs = AcademicAllocation.where(id: data['acs'].delete('[]').split(',')).each do |ac|
 
+        acs = AcademicAllocation.where(id: data['acs'].delete('[]').split(' ')).each do |ac|
 
           attributes = {'evaluative' => false, 'weight' => 1, 'final_weight' => 100, 'equivalent_academic_allocation_id' => nil, 'final_exam' => false, 'frequency' => false, 'frequency_automatic' => false, 'max_working_hours' => 0 }
 
@@ -210,7 +210,6 @@ class EditionsController < ApplicationController
           attributes.merge!(data.slice('evaluative', 'weight', 'equivalent_academic_allocation_id', 'final_exam', 'frequency', 'frequency_automatic', 'max_working_hours', 'final_weight'))
 
           changes << {previous: ac.as_json, after: attributes}
-
           unless ac.update_attributes(attributes)
             errors << {ac: ac, messages: ac.errors.full_messages}
             acs_errors << ac.id
