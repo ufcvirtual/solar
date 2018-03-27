@@ -49,3 +49,9 @@
       validate_file_size(that, 26000000, "#{t('assignment_files.new.attachment_file_size_too_big')}");
     });
   });
+
+  function hide_element(event) {
+    event.preventDefault();
+    $('#file_size').hide();
+    $('#focu').focus();
+  }
