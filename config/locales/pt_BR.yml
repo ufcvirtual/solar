@@ -2240,6 +2240,7 @@ pt_BR:
     new:
       title: Enviar novo arquivo
       send_file_obs: Aguarde o envio completo do arquivo. O tamanho não deve exceder 26MB.
+      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 26MB.
     error:
       download: Não foi possível realizar o download
       date_range_expired: Não foi possível realizar ação. Período encerrado.
