@@ -19,6 +19,9 @@
 #flash_message {
   position: fixed;
   z-index: 1;
+}
+
+#flash_message, #file_size {
   border-color: $border_color;
   font-weight: bold;
   border-width: 1px;

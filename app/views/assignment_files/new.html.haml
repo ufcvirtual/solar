@@ -1,3 +1,8 @@
+#file_size.alert.invisible
+  %span.message_file_size{ tabindex: 0 }
+  %span.close
+    %a{href: "#void", onclick: "hide_element(event)", onkeydown: "hide_element(event)", :'aria-label' => t('flash_message.close')}
+      %i.icon-cross{ :'aria-hidden' => "true" }
 %h1#lightBoxDialogTitle= t(".title")
 .block_content{style: "padding: 5px;"}
   = form_for @assignment_file do |f|
@@ -32,7 +37,7 @@
           flash_message("#{t('assignment_files.success.uploaded')}", "notice");
           $(".assignment_to_be_sent").html("#{t(:sent)}").css("color","#2900C2");
           update_tables_with_no_data();
-          focus_element_time('#flash_message_span'); 
+          focus_element_time('#flash_message_span');
         }
       });
     });
@@ -41,21 +46,39 @@
       var file_name_path = $(this).val();
       var file_name = file_name_path.substr( (file_name_path.lastIndexOf('\\')+1) );
 
-      var file_size = this.files[0].size;
-      var file_size_extension = new Array('Bytes', 'KB', 'MB', 'GB');
+      if(this.files[0] != undefined ) {
+        var file_size = this.files[0].size;
 
-      i = 0;
-      while(file_size >= 1024) {
-        file_size /= 1024;
-        i++;
+        if(file_size > 26000000) { // Verifica se o arquivo tem tamanho maior 26 MB
+          $('#file_size').removeClass('invisible');
+          $('#file_size').show();
+          $('.message_file_size').text("#{t('assignment_files.new.attachment_file_size_too_big')}");
+          $('.save_file').attr('disabled', true);
+          focus_element('.message_file_size');
+        } else {
+          $('#file_size').addClass('invisible');
+          $('.save_file').attr('disabled', false);
+          $('#file_size').hide();
+          focus_element_time('.file');
+        }
+
+        var file_size_extension = new Array('Bytes', 'KB', 'MB', 'GB');
+
+        i = 0;
+        while(file_size >= 1000) {
+          file_size /= 1000;
+          i++;
+        }
+
+        var file_size_human_readable = (Math.round(file_size*100)/100) + " " + file_size_extension[i];
+
+        $(".file").html( "#{I18n.t(:send_file_name)}: " + file_name + "<br>" + "#{I18n.t(:send_file_size)}: " + file_size_human_readable );
       }
-
-      var file_size_human_readable = (Math.round(file_size*100)/100) + " " + file_size_extension[i];
-
-      $(".file").html( "#{I18n.t(:send_file_name)}: " + file_name + "<br>" + "#{I18n.t(:send_file_size)}: " + file_size_human_readable );
-
-      setTimeout(function() {
-        $(".file").click();
-      }, 100);
     });
   });
+
+  function hide_element(event) {
+    event.preventDefault();
+    $('#file_size').hide();
+    $('#focu').focus();
+  }
