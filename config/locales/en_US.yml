@@ -2090,6 +2090,7 @@ en_US:
       summary: "This table contains the following public file."
     new:
       title: Send new public file
+      attachment_file_size_too_big: File too large. The maximum size should be up to 5MB.
     success:
       new: File sent successfully
       removed: File removed successfully
