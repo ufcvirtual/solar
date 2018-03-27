@@ -29,14 +29,14 @@ module Bbb
             cast( profiles.types & #{Profile_Type_Student} as boolean )
           AND
             allocations.allocation_tag_id = #{at}
-          AND 
+          AND
             allocations.status = 1;
         SQL
       students += allocations.first['count'].to_i
       end
 
       students += assignment_webconferences.map(&:academic_allocation_user).flatten.map(&:users_count).flatten.sum unless assignment_webconferences.empty?
-      
+
       if students > YAML::load(File.open('config/webconference.yml'))['max_simultaneous_users']
         errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.limit"))
         raise false
@@ -92,7 +92,7 @@ module Bbb
   def verify_time(allocation_tags_ids = [])
     query    = "(initial_time BETWEEN ? AND ?) OR ((initial_time + (interval '1 minutes')*duration) BETWEEN ? AND ?) OR (? BETWEEN initial_time AND ((initial_time + (interval '1 minutes')*duration))) OR (? BETWEEN initial_time AND ((initial_time + (interval '1 minutes')*duration)))"
     end_time = initial_time + duration.minutes
-    
+
     objs = if respond_to?(:academic_allocation_user_id)
       AssignmentWebconference.where(academic_allocation_user_id: academic_allocation_user_id).where(query, initial_time, end_time, initial_time, end_time, initial_time, end_time)
     else
@@ -237,7 +237,7 @@ module Bbb
   def on_going?
     Time.now.between?(initial_time, initial_time+duration.minutes)
   rescue
-    (opened == 't' && closed == 'f')
+    (opened && !closed)
   end
 
   def is_over?
@@ -253,7 +253,15 @@ module Bbb
     raise 'date_range'               if respond_to?(:in_time?)  && !in_time?
     raise 'unavailable'              unless server.blank? || bbb_online?
     raise 'not_ended'                unless !started? || is_over?
-    raise 'acu'                      if academic_allocation_users.any?
+    raise 'acu'                      if (respond_to?(:academic_allocation_users) && academic_allocation_users.any?) || (!respond_to?(:academic_allocation_users) && academic_allocation_user.blank?)
+  end
+
+  def can_destroy_boolean?
+    can_destroy?
+
+    return true
+  rescue
+    return false
   end
 
   def can_remove_records?

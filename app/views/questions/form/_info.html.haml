@@ -18,6 +18,8 @@
         config.resize_enabled = false;
         config.height = '80px';
         config.width = '500px';
+        config.autoParagraph = false;
+        config.pasteFromWord_inlineImages = false;
     };
 
     change_inputs(true, "#{f.object.nil? ? false : f.object.type_question}");
@@ -39,10 +41,12 @@
         var ckeditor = CKEDITOR.instances[name];
         append_rich_text(name);
         $.getScript("/assets/tooltip.js");
+        rename_items();
       }
     });
 
     $(document).on("fields_removed.nested_form_fields", function(event, param) {
+      rename_items();
       if($('.nested_fields.nested_question_question_images:visible').length < 4){
         $('.question_images .add_nested_fields_link').show();
         $('.question_audios .add_nested_fields_link').show();
@@ -62,7 +66,6 @@
       $("#_back").attr("onclick","back_medias()");
       $("#question_texts_media_question").attr("checked","true");
     }
-    
   });
 
   function change(elem){
@@ -71,7 +74,7 @@
 
     var src = $(elem).find('img').attr('src');
     if (src=='/assets/released.png'){
-      var newsrc = '/assets/rejected.png'; 
+      var newsrc = '/assets/rejected.png';
       $("#go_to").attr("onclick","go_to_items()");
       $("#_back").attr("onclick","back()");
 
@@ -82,7 +85,7 @@
 
     }
     $(elem).find('img').attr('src', newsrc );
-   
+
   }
 
   function set_image_input(){
@@ -135,12 +138,12 @@
     while(i<total){
       var id = initialID+i+endID;
       var id_desc = initialID+i+"_description";
-      
+
       if($("#"+id).is(":visible") && $("#"+id_desc).is(":visible")) {
         if($("#"+id).val()=='' && $("#"+id_desc).val()==''){
           $("#"+id).focus();
           return true;
-        }  
+        }
       }else{
         if($("#"+id).is(":visible") && $("#"+id).val()==''){
           $("#"+id).focus();
@@ -148,14 +151,14 @@
         }
       }
       i++;
-    }    
+    }
   }
 
- 
+
 
 .question_type
   = f.label t('questions.new.privacy')
-  = f.select :privacy, ([ [t('questions.new.public'), 0], [t('questions.new.private'), 1] ]), include_blank: false
+  = f.select :privacy, ([ [t('questions.new.public'), false], [t('questions.new.private'), true] ]), include_blank: false
 
 .question_type
   = f.label t('questions.new.type_question')
@@ -179,8 +182,8 @@
 
 .ckb
   = f.label t('questions.form.add_media'), id: 'add_media'
-  = link_to_function (image_tag "#{f.object.have_media? ? 'released' : 'rejected'}.png"), 'change(this)', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => t('questions.form.add_media'), id: 'add_media_link'
+  = link_to (image_tag "#{f.object.have_media? ? 'released' : 'rejected'}.png"), "#void", onclick: 'change(this)', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => t('questions.form.add_media'), id: 'add_media_link'
 
 .form-actions.right_buttons
-  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button'
-  = button_to_function t('.continue'), 'go_to_medias()', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button', id: 'go_to'
+  = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(:cancel)
+  = button_tag t('.continue'), :type => 'button', :onclick => "go_to_medias()", class: 'btn btn_main btn_lightbox', alt: t(:save), id: 'go_to'

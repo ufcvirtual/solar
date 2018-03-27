@@ -20,12 +20,12 @@
             %th#wh= t('.wh')
       %tbody
         - @messages.each do |message|
-          - user = message.user
+          - user = User.find(message.u_id.to_i)#message.user
           - name, nick = user.nil? ? ["", t(".all")] : [user.info(:name, @researcher), user.info(:nick, @researcher)]
-          %tr.lines 
+          %tr.lines
             - if @can_evaluate
               %td{headers: "to_evaluate" }
-                - if message.is_student == 't' && message.message_type == 1
+                - if message.is_student == true && message.message_type == 1
                   = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(@chat_room, user_id: message.u_id, back:true, score_type: @score_type), class: 'btn to_evaluate_chat', :'data-tooltip'=> t('.to_evaluate'), :'aria-label' => t('.to_evaluate')+t('fancybox.open')
             %td.profile{headers: "from_profile" }= "(" + message.profile_name + ")"
             %td.user{:'data-tooltip' => (@researcher ? t(:hidden_info) : message.user_name), headers: "from_name"}= (@researcher ? t(:hidden_info) : message.user_nick)
@@ -35,11 +35,11 @@
             %td{headers: "time_msg" }= l(message.created_at.to_datetime, format: :clock_time)
             - if @academic_allocation.evaluative
               %td{headers: "grade" }
-                - if @evaluative || (message.u_id.to_i == current_user.id)
+                - if @can_evaluate || (message.u_id.to_i == current_user.id)
                   = message.grade
             - if @academic_allocation.frequency
               %td{headers: "wh" }
-                - if @frequency || (message.u_id.to_i == current_user.id)
+                - if @can_evaluate || (message.u_id.to_i == current_user.id)
                   = message.wh
 
   - else

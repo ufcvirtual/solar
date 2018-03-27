@@ -6,17 +6,17 @@
       - @count += 1
       .duplicatable_nested_form
         .upload-preview
-          - if img.object.image.nil?
+          - if img.object.image.blank?
             %img{ src: '' }
           - else
             %img{ src: img.object.image.as_json }
 
           = img.input :image, as: :file, label: false
-          = link_to_function t('.add_image'), 'add_file(this)', class: 'btn btn_main add_file'
+          = link_to t('.add_image'), "#void", onclick: 'add_file(this)', class: 'btn btn_main add_file'
 
         .info
           = img.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
-          = img.input :legend, as: :text
+          = img.input :legend
           = img.input :img_alt
           = img.label t('.alt_desc'), class: 'alt'
     -else

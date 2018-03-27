@@ -74,16 +74,11 @@ class ScoresController < ApplicationController
       @chatRoomidx      = params[:ChatRoomidx]      unless params[:ChatRoomidx].blank?
       @webconferenceidx = params[:Webconferenceidx] unless params[:Webconferenceidx].blank?
 
-      render pdf:         t("scores.reports.general_#{@score_type}"),
-             orientation: 'Landscape',
-             template: 'scores/evaluatives_frequency.html.haml',
-             layout: false,
-             disposition: 'attachment'
+      send_data ReportsHelper.scores_evaluatives_frequency(@ats, @score_type, @users, @scores, @acs, @examidx, @assignmentidx, @scheduleEventidx, @discussionidx, @chatRoomidx, @webconferenceidx).render, :filename => "#{t("scores.reports.general_#{@score_type}")}.pdf", :type => "application/pdf", disposition: 'inline'
 
     else
       @users = Score.get_users(ats).paginate(page: params[:page], per_page: 20)
       @scores = Score.evaluative_frequency(ats, params[:type])
-      #render partial: 'evaluative_frequency', locals: {score_type: params[:type]}
       respond_to do |format|
         format.html { render partial: 'evaluative_frequency', locals: {score_type: params[:type] }}
         format.json { render json: @users }
@@ -107,11 +102,7 @@ class ScoresController < ApplicationController
       @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true)
       @ats = AllocationTag.find(@allocation_tag_id)
 
-      render pdf:         t("scores.reports.#{params[:type]}"),
-             orientation: 'Landscape',
-             template: "scores/#{params[:type]}.html.haml",
-             layout: false,
-             disposition: 'attachment'
+      send_data ReportsHelper.scores_general(@ats, @wh, @users, @allocation_tag_id, @tools, params[:type]).render, :filename => "#{t("scores.reports.#{params[:type]}")}.pdf", :type => "application/pdf", disposition: 'inline'
 
     else
       @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true).paginate(:page => params[:page], :per_page => 20)
@@ -243,12 +234,6 @@ class ScoresController < ApplicationController
     @tool = Score.list_tool(@user.id, allocation_tag_id, 'all', evaluative, frequency, (@type == 'all'))
     @access, @public_files, @access_count = Score.informations(@user.id, allocation_tag_id)
 
-    # render pdf:         t("scores.reports.student_#{@type}", name: @user.name),
-    #        orientation: 'Landscape',
-    #        template: 'scores/reports_pdf.html.haml',
-    #        layout: false,
-    #        disposition: 'attachment'
-
     send_data ReportsHelper.generate_pdf(@type, @ats, @user, @curriculum_unit, @is_student, @g, @tool, @access, @access_count, @public_files).render, :filename => "#{t("scores.reports.student_#{@type}", name: @user.name)}.pdf", :type => "application/pdf", disposition: 'inline'
   end
 
@@ -324,7 +309,12 @@ class ScoresController < ApplicationController
       when 'ScheduleEvent'
         render json: { url: evaluate_user_schedule_event_path(tool_id, user_id: params[:user_id], score_type: params[:score_type], situation: params[:situation]) }
       when 'Exam'
-        render json: { url: calculate_grade_exam_path(tool_id), method: :put }
+        params[:score_type] = 'not_evaluative' if params[:score_type].blank?
+        if ['evaluated', 'corrected'].include?(params[:situation])
+          render json: { url: open_exam_path(tool_id, situation: params[:situation], user_id: params[:user_id]) }
+        else
+          render json: { url: calculate_grade_exam_path(tool_id, ac_id: params[:ac_id], user_id: params[:user_id], score_type: params[:score_type]), method: :put }
+        end
       end
     end
   end

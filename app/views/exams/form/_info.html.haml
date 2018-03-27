@@ -21,8 +21,8 @@
 = render 'groups/codes'
 
 .form-actions.right_buttons
-  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox cancel', type: 'button', onkeypress: 'click_on_keypress(event, this)'
-  = button_to_function t('.continue'), 'go_to_config(event)', class: 'btn btn_main btn_lightbox', alt: 'continuar', type: 'button', id: '_continue', onkeypress: 'go_to_config(event)'
+  = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox cancel', onkeypress: 'click_on_keypress(event, this)'
+  = button_tag t('.continue'), :type => 'button', :onclick => "go_to_config(event)", class: 'btn btn_main btn_lightbox', id: '_continue', onkeypress: 'go_to_config(event)'
 
 = javascript_include_tag 'ckeditor/init', 'jquery-ui-timepicker-addon'
 
@@ -41,6 +41,7 @@
 
         config.extraPlugins = 'eqneditor,oembed';
         config.resize_enabled = false;
+        config.autoParagraph = false;
     };
 
     set_datetime_masked('exam_result_release');

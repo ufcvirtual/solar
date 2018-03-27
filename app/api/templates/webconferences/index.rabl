@@ -1,4 +1,5 @@
-object @webconferences
+collection @webconferences
 
-attributes :id, :name, :start, :duration, :situation, :grade, :hours, :evaluative, :frequency, :access_url, :recordings, :comments
-
+@webconferences.each do |webconference|
+  extends 'webconferences/show', locals: {webconference: webconference}
+end

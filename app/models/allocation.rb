@@ -8,11 +8,11 @@ class Allocation < ActiveRecord::Base
   belongs_to :profile
   belongs_to :updated_by, class_name: "User", foreign_key: :updated_by_user_id
 
-  has_one :course,               through: :allocation_tag, conditions: ['course_id is not null']
-  has_one :curriculum_unit,      through: :allocation_tag, conditions: ['curriculum_unit_id is not null']
-  has_one :offer,                through: :allocation_tag, conditions: ['offer_id is not null']
-  has_one :group,                through: :allocation_tag, conditions: ['group_id is not null']
-  has_one :curriculum_unit_type, through: :allocation_tag, conditions: ['curriculum_unit_type_id is not null']
+  has_one :course,               -> { where('course_id is not null')}, through: :allocation_tag
+  has_one :curriculum_unit,      -> { where('curriculum_unit_id is not null')}, through: :allocation_tag
+  has_one :offer,                -> { where('offer_id is not null')}, through: :allocation_tag
+  has_one :group,                -> { where('group_id is not null')}, through: :allocation_tag
+  has_one :curriculum_unit_type, -> { where('curriculum_unit_type_id is not null')}, through: :allocation_tag
 
   has_many :chat_rooms
   has_many :chat_messages
@@ -45,8 +45,8 @@ class Allocation < ActiveRecord::Base
     self.status = Allocation_Activated
     self.save!
 
-    calculate_working_hours
-    calculate_final_grade
+    calculate_working_hours unless allocation_tag.nil?
+    calculate_final_grade unless allocation_tag.nil?
 
     send_email_to_enrolled_user
   end
@@ -196,9 +196,9 @@ class Allocation < ActiveRecord::Base
 
   def parcial_grade_calculation(ats)
     AcademicAllocation.find_by_sql <<-SQL
-      WITH groups AS ( 
-        SELECT group_participants.group_assignment_id AS group_id 
-        FROM group_participants 
+      WITH groups AS (
+        SELECT group_participants.group_assignment_id AS group_id
+        FROM group_participants
         WHERE user_id = #{user_id}
       )
       SELECT SUM(ac.grade) as grade
@@ -208,9 +208,9 @@ class Allocation < ActiveRecord::Base
         LEFT JOIN academic_allocation_users acu    ON acu.academic_allocation_id = academic_allocations.id AND (acu.user_id = #{user_id} OR acu.group_assignment_id IN (select group_id from groups))
         LEFT JOIN (
           SELECT max(grade) AS max_grade, equivalent.equivalent_academic_allocation_id
-          FROM academic_allocation_users acu2 
+          FROM academic_allocation_users acu2
           LEFT JOIN academic_allocations equivalent ON acu2.academic_allocation_id = equivalent.id
-          WHERE (acu2.user_id = #{user_id} OR acu2.group_assignment_id IN (select group_id from groups)) 
+          WHERE (acu2.user_id = #{user_id} OR acu2.group_assignment_id IN (select group_id from groups))
           AND equivalent.equivalent_academic_allocation_id IS NOT NULL
           GROUP BY equivalent_academic_allocation_id
         ) acu_eq ON academic_allocations.id = acu_eq.equivalent_academic_allocation_id
@@ -236,19 +236,19 @@ class Allocation < ActiveRecord::Base
     # if final_exam rules not defined or (have enough hours and everything is ok)
     if (course.passing_grade.blank? || ((parcial_grade < course.passing_grade && (course.min_grade_to_final_exam.blank? || course.min_grade_to_final_exam <= parcial_grade)) && (course.min_hours.blank? || uc.working_hours.blank? || (min_hours*0.01)*uc.working_hours <= working_hours)))
        afs = AcademicAllocation.find_by_sql <<-SQL
-        WITH groups AS ( 
-          SELECT group_participants.group_assignment_id AS group_id 
-          FROM group_participants 
+        WITH groups AS (
+          SELECT group_participants.group_assignment_id AS group_id
+          FROM group_participants
           WHERE user_id = #{user_id}
         )
-        SELECT SUM(COALESCE(acu.grade, acu_eq.max_grade, 0))/COUNT(acu.id) AS grade
+        SELECT SUM(COALESCE(acu.grade, acu_eq.max_grade, 0))/COUNT(academic_allocations.id) AS grade
         FROM academic_allocations
         LEFT JOIN academic_allocation_users acu  ON acu.academic_allocation_id = academic_allocations.id AND (acu.user_id = #{user_id} OR acu.group_assignment_id IN (select group_id from groups))
         LEFT JOIN (
             SELECT max(grade) AS max_grade, equivalent.equivalent_academic_allocation_id
-            FROM academic_allocation_users acu2 
+            FROM academic_allocation_users acu2
             LEFT JOIN academic_allocations equivalent ON acu2.academic_allocation_id = equivalent.id
-            WHERE (acu2.user_id = #{user_id} OR acu2.group_assignment_id IN (select group_id from groups)) 
+            WHERE (acu2.user_id = #{user_id} OR acu2.group_assignment_id IN (select group_id from groups))
             AND equivalent.equivalent_academic_allocation_id IS NOT NULL
             GROUP BY equivalent_academic_allocation_id
           ) acu_eq ON academic_allocations.id = acu_eq.equivalent_academic_allocation_id
@@ -261,7 +261,7 @@ class Allocation < ActiveRecord::Base
           AND
           academic_allocations.equivalent_academic_allocation_id IS NULL
           AND
-          acu.grade IS NOT NULL;
+          (acu.grade IS NOT NULL OR acu_eq.max_grade IS NOT NULL);
       SQL
       update_attributes final_exam_grade: ((afs.empty? || afs.first[:grade].blank?) ? nil : afs.first[:grade].to_f.round(2))
     elsif !final_exam_grade.blank?
@@ -275,6 +275,7 @@ class Allocation < ActiveRecord::Base
   end
 
   def set_situation(manually = false)
+
     course = allocation_tag.get_course
     uc = allocation_tag.get_curriculum_unit
     date = allocation_tag.situation_date
@@ -293,7 +294,6 @@ class Allocation < ActiveRecord::Base
 
     # if today should update situation or mannually update and has passing grade or hours defined
     if ((!date.nil? && Date.today >= date) || manually || allocation_tag.setted_situation) && (has_passing_grade || hours_defined)
-
       # if hours defined and doesnt have enough hours
       if (hours_defined && (working_hours.blank? || ((min_hours*0.01)*uc.working_hours > working_hours)))
         update_attributes grade_situation: FailedFrequency
@@ -310,18 +310,22 @@ class Allocation < ActiveRecord::Base
           else
             # if doesnt have a final exam grade
             if final_exam_grade.blank?
-              update_attributes grade_situation: FinalExamPending
-            # has a final exam grade 
+              if allocation_tag.academic_allocations.where(final_exam: true).any?
+                update_attributes grade_situation: FinalExamPending
+              else
+                update_attributes grade_situation: Failed
+              end
+            # has a final exam grade
             else
               # if there is a minimum grade to final exam and it is not enough
               if !course.min_final_exam_grade.blank? && course.min_final_exam_grade > final_exam_grade
                 update_attributes grade_situation: Failed
               # if there is no minimum grade to final exam OR there is and it is enough
-              else 
+              else
                 # if there is a minimum passing grade after final exam and final grade is not enough
                 if !course.final_exam_passing_grade.blank? && course.final_exam_passing_grade > final_grade
                   update_attributes grade_situation: Failed
-                # final grade is enough 
+                # final grade is enough
                 elsif !course.final_exam_passing_grade.blank?
                   update_attributes grade_situation: FinalExamApproved
                 # if there isnt a minimum passing grade after final exam and final grade is not enoguh
@@ -356,9 +360,9 @@ class Allocation < ActiveRecord::Base
     query = tool.blank? ? '' : " AND academic_allocations.academic_tool_type=#{tool}"
     ats = allocation_tag.related.join(',')
     hours = AcademicAllocation.find_by_sql <<-SQL
-      WITH groups AS ( 
-        SELECT group_participants.group_assignment_id AS group_id 
-        FROM group_participants 
+      WITH groups AS (
+        SELECT group_participants.group_assignment_id AS group_id
+        FROM group_participants
         WHERE user_id = #{user_id}
       )
       SELECT SUM(COALESCE(acu.working_hours, acu_eq.max_working_hours, 0)) as working_hours
@@ -366,9 +370,9 @@ class Allocation < ActiveRecord::Base
       LEFT JOIN academic_allocation_users acu    ON acu.academic_allocation_id = academic_allocations.id AND (acu.user_id = #{user_id} OR acu.group_assignment_id IN (select group_id from groups))
       LEFT JOIN (
         SELECT max(working_hours) AS max_working_hours, equivalent.equivalent_academic_allocation_id
-        FROM academic_allocation_users acu2 
+        FROM academic_allocation_users acu2
         LEFT JOIN academic_allocations equivalent ON acu2.academic_allocation_id = equivalent.id
-        WHERE (acu2.user_id = #{user_id} OR acu2.group_assignment_id IN (select group_id from groups)) 
+        WHERE (acu2.user_id = #{user_id} OR acu2.group_assignment_id IN (select group_id from groups))
         AND equivalent.equivalent_academic_allocation_id IS NOT NULL
         GROUP BY equivalent_academic_allocation_id
       ) acu_eq ON academic_allocations.id = acu_eq.equivalent_academic_allocation_id
@@ -382,7 +386,7 @@ class Allocation < ActiveRecord::Base
         academic_allocations.final_exam = false;
     SQL
 
-    hours.first['working_hours'].to_i rescue 0
+    hours.first['working_hours'].round(2) rescue 0
   end
 
   def self.status_name(status)

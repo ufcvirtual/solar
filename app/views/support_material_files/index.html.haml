@@ -61,7 +61,7 @@
               - if file['url'] == nil
                 = link_to (content_tag(:i, nil, class: 'icon-download')), download_support_material_file_path(id: file['id']), class: 'btn', :'aria-label'=> t('posts.post.download', file: file["attachment_file_name"], size: size), :'data-tooltip' => t('posts.post.download', file: file["attachment_file_name"], size: size)
               -else
-                = link_to (content_tag(:i, nil, class: 'icon-forward')), file['url'], class: 'btn', :'aria-label'=> t('posts.post.open_site_new_tab'), :'data-tooltip' => t('posts.post.open_site_new_tab', file: file["url"]), target: '_blank'
+                = link_to (content_tag(:i, nil, class: 'icon-forward')), file["url"], class: 'btn', :'aria-label'=> t('posts.post.open_site_new_tab', file: file["url"]), :'data-tooltip' => t('posts.post.open_site_new_tab', file: file["url"]), target: '_blank'
 
               
 - if @folders_list.blank?

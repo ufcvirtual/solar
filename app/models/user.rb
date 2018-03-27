@@ -23,8 +23,8 @@ class User < ActiveRecord::Base
   has_one :personal_configuration
 
   has_many :allocations
-  has_many :allocation_tags, through: :allocations, uniq: true
-  has_many :profiles, through: :allocations, uniq: true, conditions: { profiles: { status: true }, allocations: { status: 1 } } # allocation.status = Allocation_Activated
+  has_many :allocation_tags, -> { uniq }, through: :allocations
+  has_many :profiles, -> { where(profiles: { status: true }, allocations: { status: 1 }).uniq }, through: :allocations # allocation.status = Allocation_Activated
   has_many :log_access
   has_many :log_actions
   has_many :lessons
@@ -92,8 +92,11 @@ class User < ActiveRecord::Base
     content_type: ['image/jpeg', 'image/png', 'image/gif', 'image/pjpeg'],
     message: :invalid_type
 
-  default_scope order: 'users.name ASC'
+  #default_scope order: 'users.name ASC'
 
+  def order
+   'users.name ASC'
+  end
   ## Este metodo define os atributos na hora de criar um objeto. Logo, redefine os atributos ja existentes e define
   ## o valor de has_special_needs a partir do que eh passado da pagina na criacao de um usuario (create)
   def initialize(attributes = {})
@@ -175,18 +178,18 @@ class User < ActiveRecord::Base
           SELECT DISTINCT profiles.id
           FROM profiles
           JOIN allocations ON allocations.profile_id = profiles.id
-          WHERE 
-            allocations.allocation_tag_id IN (#{allocation_tags_ids.join(',')}) 
+          WHERE
+            allocations.allocation_tag_id IN (#{allocation_tags_ids.join(',')})
             AND
             user_id = #{id}
-            AND 
+            AND
             allocations.status = #{Allocation_Activated}
         ) AS ids;
 
     SQL
 
     researcher_profiles = profiles_with_access_on('cant_see_info', 'users', allocation_tags_ids, false, true)
-    (all.first['count'] != '0' && all.first['count'] == researcher_profiles.first['count'])
+    (all.first['count'].to_i != 0 && all.first['count'] == researcher_profiles.first['count'])
   end
 
   def is_student?(allocation_tags_ids)
@@ -196,19 +199,18 @@ class User < ActiveRecord::Base
           SELECT DISTINCT profiles.id
           FROM profiles
           JOIN allocations ON allocations.profile_id = profiles.id
-          WHERE 
-            allocations.allocation_tag_id IN (#{allocation_tags_ids.join(',')}) 
+          WHERE
+            allocations.allocation_tag_id IN (#{allocation_tags_ids.join(',')})
             AND
             user_id = #{id}
-            AND 
+            AND
             allocations.status = #{Allocation_Activated}
             AND
             cast( profiles.types & '#{Profile_Type_Student}' as boolean )
         ) AS ids;
 
     SQL
-
-    (all.first['count'] != '0')
+    (all.first['count'].to_i != 0)
   end
 
   ## Na criação, o usuário recebe o perfil de usuario basico
@@ -278,7 +280,7 @@ class User < ActiveRecord::Base
 
     Menu.joins(:menus_contexts).includes(:resource, :parent).where(resource_id: resources_id, status: true)
       .where(query_contexts, contexts: args[:contexts]).order('parents_menus.order, menus.order')
-  
+
   end
 
   def profiles_with_access_on(action, controller, allocation_tag_id = nil, only_id = false, count = false, verify_global_profile=false)
@@ -290,7 +292,7 @@ class User < ActiveRecord::Base
           JOIN allocations ON allocations.profile_id = profiles.id
           JOIN permissions_resources ON permissions_resources.profile_id = profiles.id
           JOIN resources   ON resources.id = permissions_resources.resource_id
-          WHERE 
+          WHERE
             allocations.user_id = #{id}
             AND
             resources.action = ?
@@ -314,15 +316,19 @@ class User < ActiveRecord::Base
     (only_id) ? profiles.map(&:id) : profiles
   end
 
-  def self.with_access_on(action,controller,allocation_tags_ids)
+  def self.with_access_on(action,controller,allocation_tags_ids, emails=false)
+    query1 = (emails ? 'LEFT JOIN personal_configurations ON users.id = personal_configurations.user_id' : '')
+    query2 = (emails ? ' AND (personal_configurations.academic_tool IS NULL OR personal_configurations.academic_tool=TRUE)' : '')
+
     User.find_by_sql <<-SQL
-      SELECT users.id, email, cpf 
+      SELECT users.id, email, cpf
       FROM users
       JOIN allocations ON allocations.user_id = users.id
       JOIN profiles ON allocations.profile_id = profiles.id
       JOIN permissions_resources ON permissions_resources.profile_id = profiles.id
+      #{query1}
       JOIN resources   ON resources.id = permissions_resources.resource_id
-      WHERE 
+      WHERE
         resources.action = '#{action}'
         AND
         resources.controller = '#{controller}'
@@ -330,6 +336,7 @@ class User < ActiveRecord::Base
         allocations.status = #{Allocation_Activated}
         AND
         (allocations.allocation_tag_id IN (#{allocation_tags_ids.join(',')}))
+        #{query2}
     SQL
   end
 
@@ -367,7 +374,7 @@ class User < ActiveRecord::Base
 
     has_nil = (include_nil && allocations.where(allocation_tag_id: nil).any?)
 
-    allocation_tags = RelatedTaggable.related_from_array_ats(allocation_tags.compact, (all ? {} : { lower: true })) 
+    allocation_tags = RelatedTaggable.related_from_array_ats(allocation_tags.compact, (all ? {} : { lower: true }))
     allocation_tags << nil if has_nil
     allocation_tags
   end
@@ -386,9 +393,13 @@ class User < ActiveRecord::Base
   end
 
   def self.all_at_allocation_tags(allocation_tags_ids, status = Allocation_Activated, interacts = false)
-    query = interacts ? "cast(profiles.types & #{Profile_Type_Student} as boolean) OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)" : ''
-    joins(allocations: :profile).where(active: true, allocations: { status: status, allocation_tag_id: allocation_tags_ids }).where(query)
+    query = []
+    query <<  "(cast(profiles.types & #{Profile_Type_Student} as boolean) OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean))" if interacts
+    query << "allocations.allocation_tag_id IN (#{allocation_tags_ids.join(',')})" unless allocation_tags_ids.blank?
+
+    joins(allocations: :profile).where(active: true, allocations: { status: status }).where(query.join(' AND '))
       .select('DISTINCT users.id').select('users.name, users.email')
+      .select('array_agg(DISTINCT profiles.name) profile_name, profiles.types').group('users.id, users.name, users.email, profiles.types')
   end
 
   # Searches all users which "type" column includes "text"
@@ -419,18 +430,18 @@ class User < ActiveRecord::Base
 
     spreadsheet = open_spreadsheet(file, ';')
     header      = spreadsheet.row(1)
-    
+
     raise I18n.t(:invalid_file, scope: [:administrations, :import_users]) unless (['.xlsx', '.xls', '.odt'].include?(File.extname(file.original_filename)) && (header & (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['import_users']['header'].split(';'))).size == header.size)
 
     (2..spreadsheet.last_row).each do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose]
-      row = row.collect{ |k,v| 
+      row = row.collect{ |k,v|
         if k == 'CPF' || k == 'Cpf'
           { k.try(:strip) => v }
         else
           { k.try(:strip) => (v.to_s.try(:strip) rescue '') }
         end
-       }.reduce Hash.new, :merge 
+       }.reduce Hash.new, :merge
 
       cpf = (row['CPF'] || row['Cpf']).is_a?(String) ? (row['CPF'] || row['Cpf']).strip.delete('.').delete('-').rjust(11, '0') : (row['CPF'] || row['Cpf']).to_i.to_s.strip.rjust(11, '0')
 
@@ -440,7 +451,7 @@ class User < ActiveRecord::Base
         user_data = User.connect_and_import_user(cpf) # try to import
         user.synchronize(user_data) # synchronize user with new MA data
       end
-      
+
       blacklist = UserBlacklist.where(cpf: user.cpf).first_or_initialize
       blacklist.name = (user.try(:name) || row['Nome']) if blacklist.new_record?
       can_add_to_blacklist = blacklist.valid? || !blacklist.new_record?
@@ -607,10 +618,10 @@ class User < ActiveRecord::Base
       self.synchronizing = false
 
       if errors.any?
-        Rails.logger.info "\n[ERROR] [SYNCHRONIZE USER] [#{Time.now}] [USER CPF #{cpf}] message: #{errors.full_messages}" 
+        Rails.logger.info "\n[ERROR] [SYNCHRONIZE USER] [#{Time.now}] [USER CPF #{cpf}] message: #{errors.full_messages}"
         return false
       end
-      
+
       return true
     else
       return nil
@@ -767,13 +778,13 @@ class User < ActiveRecord::Base
   def groups_to_enroll
     Offer.find_by_sql <<-SQL
       -- offers which user already is enrolled or pending at some group
-      WITH offers_collection AS ( 
+      WITH offers_collection AS (
         SELECT DISTINCT g.offer_id AS id
         FROM groups g
         LEFT JOIN allocation_tags at ON at.group_id = g.id
         LEFT JOIN allocations al ON al.allocation_tag_id = at.id
         LEFT JOIN profiles p ON al.profile_id = p.id
-        WHERE al.user_id = #{id} 
+        WHERE al.user_id = #{id}
           AND cast( p.types & '#{Profile_Type_Student}' as boolean )
       )
       SELECT o.*, COALESCE(os_e.start_date, ss_e.start_date)::date AS enroll_start_date, groups.code, groups.id AS g_id,

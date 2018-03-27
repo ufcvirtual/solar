@@ -18,7 +18,7 @@
               %th.no_sort{id: "accept_#{lmodule.id}"}= t('.acceptance')
         %tbody
           - lmodule.lessons_to_open(current_user, true).each do |lesson|
-            %tr.lines{ class: lesson.closed? ? 'period_ended' : '', id: "lesson_#{lesson.id}" }= render(lesson)
+            %tr.lines{ class: (lesson.closed? && !@only_student) ? 'period_ended' : '', id: "lesson_#{lesson.id}" }= render(lesson)
   - else
     .block_content.block_content_text= t(:lesson_message)
 

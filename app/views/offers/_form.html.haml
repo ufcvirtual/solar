@@ -27,7 +27,7 @@
     // Datas da oferta
     %div
       // do semestre (informação)
-      = f.label t(".semester_offer")
+      = f.label :start_date, t(".semester_offer")
       .offer_schedule_dates.info=l @offer.semester.offer_schedule.start_date.to_date, format: :datepicker
       .offer_schedule_dates.label.info= t(:to, scope: [:schedules])
       .offer_schedule_dates.info=l @offer.semester.offer_schedule.end_date.to_date, format: :datepicker
@@ -36,7 +36,7 @@
       %span.checkbox_label= label_tag :have_period_schedule, t(".define_different_dates")
     // da oferta, caso usuário escolha seu preenchimento
     #period_schedule{class: (doesnt_have_period ? 'invisible' : '')}
-      = f.label :offer, required: true
+      = f.label :offer, t(:offer), required: true
       = f.simple_fields_for :period_schedule, defaults: {label: false, as: :string, input_html: {size: 10}} do |s|
 
         = s.input :_destroy, as: :hidden, input_html: {value: 0}
@@ -50,7 +50,7 @@
     // Datas da matrícula
     %div
       // do semestre (informação)
-      = f.label t(".semester_enrollment")
+      = f.label :start_date, t(".semester_enrollment")
       .enrollment_schedule_dates.info=l @offer.semester.enrollment_schedule.start_date.to_date, format: :datepicker
       .enrollment_schedule_dates.info= (@offer.semester.enrollment_schedule.end_date.nil? ? (t(:no_end_date, scope: [:offers]).downcase) : (t(:to, scope: [:schedules]) + l(@offer.semester.enrollment_schedule.end_date.to_date, format: :datepicker)))
     .enrollment_schedule_check_box.period_date
@@ -58,7 +58,7 @@
       %span.checkbox_label= label_tag :have_enrollment_schedule, t(".define_different_dates")
     // da oferta, caso usuário escolha o preenchimento
     #enrollment_schedule{class: (doesnt_have_enrollment ? 'invisible' : '')}
-      = f.label :enrollment, required: true
+      = f.label :enrollment, t(:enrollment), required: true
       = f.simple_fields_for :enrollment_schedule, defaults: {label: false, as: :string, input_html: {size: 10}} do |s|
 
         = s.input :_destroy, as: :hidden, input_html: {value: 0}
@@ -75,7 +75,7 @@
         %span.checkbox_label= label_tag :have_end_date, t('.enable_end_date')
 
     .form-actions.right_buttons
-      = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+      = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox"
       = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", alt: t(:save), id: "save"
 
 :javascript

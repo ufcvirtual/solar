@@ -12,19 +12,18 @@ module ReportsHelper
   def self.generate_pdf type, ats, user, curriculum_unit, is_student, grade, tool, access, access_count, public_files
     pdf = inicializa_pdf(:landscape)
 
-    # Logo da UFC e data de geração do pdf
-    pdf.text I18n.t('scores.pdf.time', time: I18n.l(Time.now, format: :long)), size: 7, align: :right
-    pdf.move_down 3
-    cursor = pdf.cursor
-    pdf.image "#{Rails.root}/app/assets/images/ufc.png", width: 150, height: 50, position: :left
-    pdf.image "#{Rails.root}/app/assets/images/ufcVirtual.png", width: 70, height: 50, at: [700, cursor]
-
     # Título do pdf
     pdf.text ats.info, size: 14, style: :bold, align: :center
     pdf.move_down 10
     pdf.text  I18n.t(:report, scope: [:scores, :info]) + I18n.t(type, scope: [:scores, :info]), size: 12, align: :center
 
-    pdf.image "#{Rails.root}/app/assets/images/#{user.user_photo(:medium)}", width: 120, height: 110, alt: I18n.t(:mysolar_alt_img_user)
+    file_path = user.photo.path(:medium)
+
+    if !file_path.nil? && File.exist?(file_path)
+      pdf.image "#{file_path}", width: 120, height: 110, alt: I18n.t(:mysolar_alt_img_user)
+    else
+      pdf.image "#{Rails.root}/app/assets/images/no_image_medium.png", width: 120, height: 110, alt: I18n.t(:mysolar_alt_img_user)
+    end
 
     pdf.bounding_box([125, pdf.cursor + 100], width: 520, height: 110) do
       pdf.move_down 5
@@ -87,16 +86,9 @@ module ReportsHelper
     return pdf
   end
 
-  def self.result_exam(ats, exam, user, grade_pdf, exam_questions, preview, last_attempt, disabled)
-    pdf = inicializa_pdf(:portrait)
-
-    # Logo da UFC e data de geração do pdf
-    pdf.text I18n.t('scores.pdf.time', time: I18n.l(Time.now, format: :long)), size: 7, align: :right
-    pdf.move_down 3
-    cursor = pdf.cursor
-    pdf.image "#{Rails.root}/app/assets/images/ufc.png", width: 120, height: 50, position: :left
-    pdf.image "#{Rails.root}/app/assets/images/ufcVirtual.png", width: 70, height: 50, at: [460, cursor]
-    pdf.move_down 10
+  def self.result_exam ats, exam, user_id, grade_pdf, exam_questions, preview, last_attempt, disabled
+    user = User.find(user_id)
+    pdf  = inicializa_pdf(:portrait)
 
     # Título do pdf
     pdf.text ats.info, size: 14, style: :bold, align: :center
@@ -147,53 +139,53 @@ module ReportsHelper
       arr_alf = ('A'..'Z').to_a
       arra_correted, arra_correted2, arra_marked, arra_marked2 = [], [], [], []
 
-      responses = question.question_items.joins(:exam_responses_question_items).where(exam_responses_question_items: {:'exam_response_id' => exam_responses.id}).select("question_items.id, question_items.description, question_items.item_image_file_name AS image_name, question_items.value AS correct_value, exam_responses_question_items.value AS marked_value, question_items.comment")
+      responses = question.question_items.joins(:exam_responses_question_items).where(exam_responses_question_items: { exam_response_id: exam_responses.id}).select("question_items.id, question_items.description, question_items.item_image_file_name AS image_name, question_items.value AS correct_value, exam_responses_question_items.value AS marked_value, question_items.comment")
 
       responses.each do |item|
         number_question_response += 1
 
-        arra_marked << arr_alf[number_question_response] if item.marked_value == "t"
-        arra_marked2 << arr_alf[number_question_response] if item.marked_value == "f"
-        arra_correted << arr_alf[number_question_response] if item.correct_value == "t"
-        arra_correted2 << arr_alf[number_question_response] if item.correct_value == "f"
-        image_name = "#{item.id}_#{item.image_name}" unless item.image_name.blank?
+        arra_marked << arr_alf[number_question_response] if item.marked_value
+        arra_marked2 << arr_alf[number_question_response] unless item.marked_value
+        arra_correted << arr_alf[number_question_response] if item.correct_value
+        arra_correted2 << arr_alf[number_question_response] unless item.correct_value
+        image_path = get_path_image(item.id, item.image_name, 'items') unless item.image_name.blank?
 
         if item.marked_value == item.correct_value
           if question.type_question.to_i == Question::UNIQUE
-            bullet(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_correctly')}) #{item.description}", "0B610B")
+            bullet(pdf, item.marked_value, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_correctly')}) #{item.description}", "0B610B")
           elsif question.type_question.to_i == Question::MULTIPLE
-            checkbox(pdf, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_correctly')}) #{item.description}", item.marked_value, "0B610B")
+            checkbox(pdf, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_correctly')}) #{item.description}", item.marked_value, "0B610B")
           else
-            selected_correctly = I18n.t('exams.result_exam_user.true_item') if item.marked_value == "t"
-            selected_correctly = I18n.t('exams.result_exam_user.false_item') if item.marked_value == "f"
-            dropdown(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_correctly')}) (#{selected_correctly}) #{item.description}", "0B610B")
+            selected_correctly = I18n.t('exams.result_exam_user.true_item') if item.marked_value == true
+            selected_correctly = I18n.t('exams.result_exam_user.false_item') if item.marked_value == false
+            dropdown(pdf, item.marked_value, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_correctly')}) (#{selected_correctly}) #{item.description}", "0B610B")
           end
         else
-          if (item.correct_value == "f" && item.marked_value == "t")
+          if (item.correct_value == false && item.marked_value == true)
             if question.type_question.to_i == Question::UNIQUE
-              bullet(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) #{item.description}", "E03838")
+              bullet(pdf, item.marked_value, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) #{item.description}", "E03838")
             elsif question.type_question.to_i == Question::MULTIPLE
-              checkbox(pdf, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) #{item.description}", item.marked_value, "E03838")
+              checkbox(pdf, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) #{item.description}", item.marked_value, "E03838")
             else
-              dropdown(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) (#{I18n.t('exams.result_exam_user.false_item')}) #{item.description}", "E03838")
+              dropdown(pdf, item.marked_value, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) (#{I18n.t('exams.result_exam_user.false_item')}) #{item.description}", "E03838")
             end
-          elsif item.correct_value == "t" && item.marked_value != "t"
+          elsif item.correct_value == true && item.marked_value != true
             if question.type_question.to_i == Question::UNIQUE
-              bullet(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.correct_item')}) #{item.description}", "E03838")
+              bullet(pdf, item.marked_value, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.correct_item')}) #{item.description}", "E03838")
             elsif question.type_question.to_i == Question::MULTIPLE
-              checkbox(pdf, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.correct_item')}) #{item.description}", item.marked_value, "E03838")
+              checkbox(pdf, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.correct_item')}) #{item.description}", item.marked_value, "E03838")
             else
-              dropdown(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) (#{I18n.t('exams.result_exam_user.true_item')}) #{item.description}", "E03838")
+              dropdown(pdf, item.marked_value, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) (#{I18n.t('exams.result_exam_user.true_item')}) #{item.description}", "E03838")
             end
           else
             if question.type_question.to_i == Question::UNIQUE
-              bullet(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) #{item.description}", "2900C2")
+              bullet(pdf, item.marked_value, image_path, "#{arr_alf[number_question_response]}) #{item.description}", "2900C2")
             elsif question.type_question.to_i == Question::MULTIPLE
-              checkbox(pdf, image_name, "#{arr_alf[number_question_response]}) #{item.description}", item.marked_value, "2900C2")
+              checkbox(pdf, image_path, "#{arr_alf[number_question_response]}) #{item.description}", item.marked_value, "2900C2")
             else
-              selected_correctly = I18n.t('exams.result_exam_user.true_item') if item.correct_value == "t"
-              selected_correctly = I18n.t('exams.result_exam_user.false_item') if item.correct_value == "f"
-              dropdown(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) (#{selected_correctly}) #{item.description}", "E03838")
+              selected_correctly = I18n.t('exams.result_exam_user.true_item') if item.correct_value == true
+              selected_correctly = I18n.t('exams.result_exam_user.false_item') if item.correct_value == false
+              dropdown(pdf, item.marked_value, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) (#{selected_correctly}) #{item.description}", "E03838")
             end
           end
         end
@@ -229,6 +221,73 @@ module ReportsHelper
     return pdf
   end
 
+  def self.scores_general ats, wh, users, allocation_tag_id, tools, type
+    pdf = inicializa_pdf(:landscape)
+
+    # Título do pdf
+    pdf.text ats.info, size: 14, style: :bold, align: :center
+    pdf.move_down 10
+    pdf.text I18n.t(:menu_score_student), size: 12, align: :center
+
+    # Primeiro cabeçalho da tabela
+    pdf.bounding_box([0, pdf.cursor - 10], width: 770, height: 30) do
+      pdf.move_down 10
+      pdf.text I18n.t('scores.index.general'), size: 12, style: :bold, align: :center
+      # pdf.transparent(0.5) { pdf.stroke_bounds }
+    end
+
+    # Criação da tabela
+    if type == "summary"
+      table = line_itens_summary pdf, wh, users
+    else
+      table = line_itens_general pdf, users, tools
+    end
+
+    style(pdf, table)
+
+    # Enumerando paginas
+    page_enumeration(pdf)
+
+    return pdf
+  end
+
+  def self.scores_evaluatives_frequency ats, score_type, users, scores, acs, examidx, assignmentidx, scheduleEventidx, discussionidx, chatRoomidx, webconferenceidx
+    pdf = inicializa_pdf(:landscape)
+
+    # Título do pdf
+    pdf.text ats.info, size: 14, style: :bold, align: :center
+    pdf.move_down 10
+    pdf.text  I18n.t(:menu_score_student), size: 12, align: :center
+
+    # Primeiro cabeçalho da tabela
+    pdf.bounding_box([0, pdf.cursor - 10], width: 770, height: 30) do
+      pdf.move_down 10
+      table_title = if(score_type == 'evaluative')
+                      I18n.t('scores.index.evaluative')
+                    elsif (score_type == 'frequency')
+                      I18n.t('scores.index.frequency')
+                    else
+                      I18n.t('scores.index.not_evaluative')
+                    end
+      pdf.text table_title, size: 12, style: :bold, align: :center
+      # pdf.transparent(0.5) { pdf.stroke_bounds }
+    end
+
+    # Criação da tabela
+    table = line_itens_evaluatives_frequency pdf, score_type, users, scores, acs, examidx, assignmentidx, scheduleEventidx, discussionidx, chatRoomidx, webconferenceidx
+
+    # Corta a tabela em 8 colunas
+    slice_table(table, 7).each { |small_table| style(pdf, small_table, true) }
+
+    pdf.move_down 15
+    legends(pdf)
+
+    # Enumerando paginas
+    page_enumeration(pdf)
+
+    return pdf
+  end
+
   private
     def self.inicializa_pdf(orientation)
       info = {
@@ -256,6 +315,21 @@ module ReportsHelper
           })
 
         pdf.font "PT Sans", :style => :normal
+
+        pdf.text I18n.t('scores.pdf.time', time: I18n.l(Time.now, format: :long)), size: 7, align: :right
+        pdf.move_down 3
+
+        cursor = pdf.cursor
+
+        # Logo da UFC e data de geração do pdf
+        if orientation == :landscape
+          pdf.image "#{Rails.root}/app/assets/images/ufc.png", width: 150, height: 50, position: :left
+          pdf.image "#{Rails.root}/app/assets/images/ufcVirtual.png", width: 70, height: 50, at: [700, cursor]
+        else
+          pdf.image "#{Rails.root}/app/assets/images/ufc.png", width: 120, height: 50, position: :left
+          pdf.image "#{Rails.root}/app/assets/images/ufcVirtual.png", width: 70, height: 50, at: [460, cursor]
+          pdf.move_down 10
+        end
       end
     end
 
@@ -268,6 +342,7 @@ module ReportsHelper
       options = { :at => [pdf.bounds.right - 150, 0],
                   :width => 150,
                   :align => :right,
+                  :color => '000000',
                   :start_count_at => 1 }
 
       pdf.number_pages string, options
@@ -340,13 +415,51 @@ module ReportsHelper
       return [thead] + tbody
     end
 
-    def self.style(pdf, table)
+    def self.slice_table(table, size_of_slice)
+      return_tables = []
+      table_width = table.first.length
+
+      if size_of_slice < table_width
+        start_column = 1
+
+        while start_column < table_width
+          count_line = 0
+          small_table = []
+
+          while count_line < table.length
+            small_table << [table[count_line].first] + table[count_line].slice(start_column, size_of_slice)
+            count_line += 1
+          end
+
+          return_tables += [small_table]
+          start_column += size_of_slice
+        end
+      else
+        return_tables = [table]
+      end
+
+      return return_tables
+    end
+
+    def self.style(pdf, table, light_numbers = false)
       pdf.table table, position: :center, width: 770 do |t|
         t.header = true
         t.row(0).font_style = :bold
         t.row(0).background_color = 'FFEFDB'
         t.row_colors = ['D3D3D3', 'FFFFFF']
-        t.columns(0..7).align = :center
+        t.columns(0..8).align = :center
+
+        t.cells.style do |cell|
+          cell.border_width = 0
+          cell.text_color = '666666' if cell.content == I18n.t("scores.index.not_started")
+          cell.text_color = '0B610B' if cell.content == I18n.t('scores.index.evaluated')
+          cell.text_color = '0B610B' if light_numbers && Float(cell.content) != nil rescue false
+          cell.text_color = '2900C2' if cell.content == I18n.t("scores.index.sent")
+          cell.text_color = 'E12227' if cell.content == I18n.t("scores.index.not_sent")
+          cell.text_color = '003E7A' if cell.content == I18n.t("scores.index.to_send")
+          cell.text_color = 'B15759' if cell.content == I18n.t("scores.index.without_group")
+        end
+
         t.column(3).style do |cell|
           # As cores usadas abaixo foram tiradas do arquivo pdf.css.scss
           cell.text_color = '666666' if cell.content == I18n.t('scores.situation.not_started')
@@ -368,9 +481,10 @@ module ReportsHelper
           cell.text_color = '006666' if cell.content == I18n.t('scores.situation.opened')
         end
       end
+      pdf.move_down 10
     end
 
-    def self.bullet(pdf, marked_value, image, text, color = "000000")
+    def self.bullet(pdf, marked_value, image_path, text, color = "000000")
       pdf.image "#{Rails.root}/app/assets/images/bullet.png", width: 12, height: 12, at: [0, pdf.cursor]
       pdf.bounding_box([0, pdf.cursor], width: 10, height: 12) do
         value = marked_value ? "•" : " "
@@ -381,7 +495,7 @@ module ReportsHelper
         pdf.text strip_htlm_tags(text), align: :justify, color: color
       end
       pdf.move_down 5
-      pdf.image "#{Rails.root}/media/questions/items/#{image}" unless image.blank?
+      pdf.image image_path, width: 250, height: 250 unless image_path.blank?
     end
 
     EMPTY_CHECKBOX   = "\u2610" # "☐"
@@ -389,21 +503,21 @@ module ReportsHelper
     EXED_CHECKBOX    = "\u2612" # "☒"
     CHECKBOX_FONT    = "#{Rails.root}/app/assets/stylesheets/fonts/DejaVuSans.ttf"
 
-    def self.checkbox(pdf, image, label, checked, color = "000000")
+    def self.checkbox(pdf, image_path, label, checked, color = "000000")
       pdf.font "#{CHECKBOX_FONT}" do
         pdf.text strip_htlm_tags((checked ? "#{CHECKED_CHECKBOX} #{label}" : "#{EMPTY_CHECKBOX} #{label}")), color: color
       end
       pdf.move_down 5
-      pdf.image "#{Rails.root}/media/questions/items/#{image}" unless image.blank?
+      pdf.image image_path, width: 250, height: 250 unless image_path.blank?
     end
 
-    def self.dropdown(pdf, marked_value, image, text, color = "000000")
+    def self.dropdown(pdf, marked_value, image_path, text, color = "000000")
       pdf.image "#{Rails.root}/app/assets/images/box.png", width: 20, height: 12, at: [0, pdf.cursor]
       pdf.bounding_box([0, pdf.cursor], width: 10, height: 12) do
         if marked_value == nil
           value = ""
         else
-          value = marked_value == "t" ? I18n.t('questions.form.t_option') : I18n.t('questions.form.f_option')
+          value = marked_value == true ? I18n.t('questions.form.t_option') : I18n.t('questions.form.f_option')
         end
         pdf.text(value, align: :center, valign: :center)
       end
@@ -412,13 +526,13 @@ module ReportsHelper
         pdf.text strip_htlm_tags(text), align: :justify, color: color
       end
       pdf.move_down 5
-      pdf.image "#{Rails.root}/media/questions/items/#{image}" unless image.blank?
+      pdf.image image_path, width: 250, height: 250 unless image_path.blank?
     end
 
     def self.render_images(pdf, images)
       Timeout::timeout(10) do
         images.each do |q_image|
-          pdf.image "#{Rails.root}/media/questions/images/#{q_image.id}_#{q_image.image_file_name}", alt: q_image.img_alt unless q_image.image_file_name.blank?
+          pdf.image get_path_image(q_image.id, q_image.image_file_name, 'images'), alt: q_image.img_alt, width: 250, height: 250 unless q_image.image_file_name.blank?
           pdf.move_down 10
           pdf.text q_image.legend, align: :center unless q_image.legend.blank?
           pdf.move_down 10
@@ -428,4 +542,128 @@ module ReportsHelper
       false
     end
 
+    def self.legends(pdf)
+      pdf.text I18n.t("scores.index.subtitle")
+      pdf.move_down 5
+      pdf.fill_color = '0B610B'
+      pdf.text "#{I18n.t("scores.index.evaluated")} #{I18n.t("scores.index.evaluated_complete")}"
+      pdf.move_down 5
+      pdf.fill_color = 'E12227'
+      pdf.text "#{I18n.t("scores.index.not_sent")} #{I18n.t("scores.index.not_sent_complete")}"
+      pdf.move_down 5
+      pdf.fill_color = 'B15759'
+      pdf.text "#{I18n.t("scores.index.without_group")} #{I18n.t("scores.index.without_group_complete")}"
+      pdf.move_down 5
+      pdf.fill_color = '2900C2'
+      pdf.text "#{I18n.t("scores.index.sent")} #{I18n.t("scores.index.sent_complete")}"
+      pdf.move_down 5
+      pdf.fill_color = '003E7A'
+      pdf.text "#{I18n.t("scores.index.to_send")} #{I18n.t("scores.index.to_send_complete")}"
+      pdf.move_down 5
+      pdf.fill_color = '666666'
+      pdf.text "#{I18n.t("scores.index.not_started")} #{I18n.t("scores.index.not_started_complete")}"
+      pdf.move_down 5
+      pdf.fill_color = '000000'
+      pdf.text I18n.t("scores.index.new_after_evaluation")
+    end
+
+    def self.line_itens_summary(pdf, wh, users)
+      title_frequency = I18n.t('scores.index.frequency') unless wh.blank?
+      title_faults = I18n.t('scores.index.faults') unless wh.blank?
+
+      # Cabeçalho da tabela
+      thead = [I18n.t('scores.index.student'), I18n.t('scores.index.access_to_the_course'), title_frequency, title_faults, I18n.t('scores.index.af_grade'), I18n.t('scores.index.final_grade'), I18n.t('scores.index.situation')]
+
+      # Corpo da tabela
+      if users.blank?
+        tbody = [I18n.t('scores.index.no_data')]
+      else
+        tbody = users.each.map do |student, idx|
+          status = Allocation.status_name(student.grade_situation)
+
+          frequency = student.working_hours unless wh.blank?
+          faults = wh.to_i - student.working_hours.to_i unless wh.blank?
+
+          [student.name, student.u_logs, frequency, faults, student.af_grade, student.u_grade, I18n.t("scores.index.#{status}")]
+        end
+      end
+
+      return [thead] + tbody
+    end
+
+    def self.line_itens_general(pdf, users, tools)
+      # Cabeçalho da tabela
+      thead = [I18n.t('scores.index.student'), I18n.t('scores.index.public_files'), I18n.t("activerecord.models.assignment"), I18n.t("activerecord.models.exam"), I18n.t("activerecord.models.discussion"), I18n.t("activerecord.models.chat_room"), I18n.t("activerecord.models.webconference"), I18n.t("activerecord.models.schedule_event")]
+
+      # Corpo da tabela
+      if users.blank?
+        tbody = [I18n.t('scores.index.no_data')]
+      else
+        of = I18n.t("of")
+
+        tbody = users.each.map do |student, idx|
+          [student.name, student.u_public_files, "#{student.assignments} #{of} #{tools.assignments_count}", "#{student.exams} #{of} #{tools.exams_count}", "#{student.discussions} #{of} #{tools.discussions_count}", "#{student.chat_rooms} #{of} #{tools.chat_rooms_count}", "#{student.webconferences} #{of} #{tools.webconferences_count}", "#{student.schedule_events} #{of} #{tools.events_count}"]
+        end
+      end
+
+      return [thead] + tbody
+    end
+
+    def self.line_itens_evaluatives_frequency(pdf, score_type, users, scores, acs, examidx, assignmentidx, scheduleEventidx, discussionidx, chatRoomidx, webconferenceidx)
+      # Cabeçalho da tabela
+      thead = [I18n.t('scores.index.student')]
+      acs.group_by {|t| t['tool_type']}.each do |ac|
+        ac[1].each_with_index do |tool, idx|
+          if ac[0] == examidx || ac[0] == assignmentidx || ac[0] == scheduleEventidx || ac[0] == discussionidx || ac[0] == chatRoomidx || ac[0] == webconferenceidx
+            thead += [tool.name]
+          end
+        end
+      end
+
+      # Corpo da tabela
+      if users.empty? || acs.empty?
+        tbody = [I18n.t('scores.index.no_data')]
+      else
+        tbody = users.each.map do |student|
+          user_scores = scores.select { |attachment| attachment.user_id.to_i == student.id }
+
+          body = [student.name]
+          acs.each do |ac|
+            if  ac.tool_type == examidx || ac.tool_type == assignmentidx || ac.tool_type == scheduleEventidx ||  ac.tool_type == discussionidx || ac.tool_type == chatRoomidx || ac.tool_type == webconferenceidx
+              score = user_scores.select { |attachment| attachment.id.to_i == ac.id.to_i }
+              if score.blank?
+                body += [I18n.t("scores.index.not_sent")]
+              else
+                body += [(score_type == 'frequency' ? score.first.wh : score.first.grade) || I18n.t("scores.index.#{score.first.situation}")]
+              end
+            end
+          end
+          body.flatten
+        end
+      end
+
+      return [thead] + tbody
+    end
+
+    def self.get_path_image item_id, image_name, image_type
+      tmp_name = image_name.split(".")
+      tmp_name = [tmp_name[0], '_medium.', tmp_name[1]].join('')
+      path = "#{Rails.root}/media/questions/#{image_type}/#{item_id}_#{tmp_name}"
+      if File.exists? path
+        path
+      else
+        tmp_name = tmp_name.gsub('_medium.', '_original.')
+        path = "#{Rails.root}/media/questions/#{image_type}/#{item_id}_#{tmp_name}"
+        if File.exists? path
+          path
+        else
+          path = "#{Rails.root}/media/questions/#{image_type}/#{item_id}_#{image_name}"
+          if File.exists? path
+            path
+          else
+            nil
+          end
+         end
+      end
+    end
 end

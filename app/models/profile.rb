@@ -1,7 +1,7 @@
 class Profile < ActiveRecord::Base
 
   has_many :users, through: :allocations
-  has_many :allocations, dependent: :restrict
+  has_many :allocations, dependent: :restrict_with_error
 
   has_and_belongs_to_many :resources, join_table: "permissions_resources"
 
@@ -34,6 +34,14 @@ class Profile < ActiveRecord::Base
 
   def self.all_except_basic_and_admin
     Profile.where("types <> ? AND types <> ?", Profile_Type_Basic, Profile_Type_Admin).order("name")
+  end
+
+  def self.all_except_basic_and_admin_and_student
+    Profile.where("types <> ? AND types <> ? AND types <> ?", Profile_Type_Basic, Profile_Type_Admin, Profile_Type_Student).order("name")
+  end
+
+  def self.all_except_basic_and_student
+    Profile.where("types <> ? AND types <> ?", Profile_Type_Basic, Profile_Type_Student).order("name")
   end
 
   def self.student_profile

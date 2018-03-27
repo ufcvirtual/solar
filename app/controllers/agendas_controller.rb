@@ -40,6 +40,7 @@ class AgendasController < ApplicationController
 
   def events
     authorize! :calendar, Agenda, on: @allocation_tags_ids, read: true
+
     render json: [Event.all_descendants(@allocation_tags_ids, current_user, params.include?('list'), params)].flatten.map(&:schedule_json).uniq
   end
 

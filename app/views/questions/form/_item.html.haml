@@ -4,11 +4,13 @@
   = f.nested_fields_for :question_items, wrapper_tag: :div do |i|
     - if (f.object.new_record? || i.object.persisted? || count == count_items + 1)
       - count += 1
-      .duplicatable_nested_form
+      %fieldset.duplicatable_nested_form
+        %legend#question_images_label
+          = f.label t('questions.form.items.item'), id: 'fs_legend_item'
         = i.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash', :'data-tooltip' => t('questions.form.items.remove'))
-        = link_to_function content_tag(:i, nil, class: 'icon-comment'), 'add_comment(this)', class: 'comment', :'data-tooltip' => t('questions.form.items.comments')
-        = link_to_function content_tag(:i, nil, class: 'icon-pictures'), 'add_image(this)', class: 'image_icon', :'data-tooltip' => t('questions.form.items.images')
-        = link_to_function content_tag(:i, nil, class: 'icon-music'), 'add_audio(this)', class: 'audio_icon', :'data-tooltip' => t('questions.form.items.audios')
+        = link_to content_tag(:i, nil, class: 'icon-comment'), "#void", onclick: 'add_comment(this)', class: 'comment', :'data-tooltip' => t('questions.form.items.comments')
+        = link_to content_tag(:i, nil, class: 'icon-pictures'), "#void", onclick: 'add_image(this)', class: 'image_icon', :'data-tooltip' => t('questions.form.items.images')
+        = link_to content_tag(:i, nil, class: 'icon-music'), "#void", onclick: 'add_audio(this)', class: 'audio_icon', :'data-tooltip' => t('questions.form.items.audios')
         .inline
           .inputs
             = i.check_box :value
@@ -17,45 +19,45 @@
           .label= i.label :description
           .desc
             = i.input :description, label: false, class: 'ckeditor'
-          .comment_area{ class: i.object.comment.blank? ? 'hide' : '' }
+          .comment_area{ class: i.object.comment.blank? ? 'hide' : 'comment_item' , :style=>"display:none;"}
             = i.input :comment, as: :text, label: t('questions.form.items.comment')
-          .image.hide
+          .image.hide{:style=>"display:none;"}
             .upload-preview
               - if i.object.item_image_file_name.blank?
                 %img{ src: '' }
               - else
                 %img{ src: i.object.item_image.as_json, id: 'image_item' }
+
               = i.input :item_image, as: :file, label: false
               - if i.object.item_image_file_name
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), "remove_file_item(this, 'img')", :'data-url' => remove_image_item_exam_question_path(i.object, question_id: i.object.question.id)
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_file_item_tmp(this, "img")', class: 'trash-tmp', style: 'display: none'
+                = link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: "remove_file_item(this, 'img')", :'data-url' => remove_image_item_exam_question_path(i.object, question_id: i.object.question.id)
+                = link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: 'remove_file_item_tmp(this, "img")', class: 'trash-tmp', style: 'display: none'
               - else
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_file_item_tmp(this, "img")'
+                = link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: 'remove_file_item_tmp(this, "img")'
 
-              = link_to_function t('questions.form.items.add_image'), 'add_file(this)', class: 'btn btn_main add_file'
+              = link_to t('questions.form.items.add_image'), "#void", onclick: 'add_file(this)', class: 'btn btn_main add_file'
 
             .info
               = i.input :img_alt, label: t('questions.form.items.alt')
               = i.label t('questions.form.items.alt_desc'), class: 'alt'
-          .audio.hide
+          .audio.hide{:style=>"display:none;"}
             .upload-preview
               - if i.object.item_audio_file_name.blank?
                 %audio{ src: '' }
               - else
-                %audio{ src: i.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion'}   
+                %audio{ src: i.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', id: 'audio_item'}
                   %p= t("errors.messages.audio")
               = i.input :item_audio, as: :file, label: false
               - if i.object.item_audio_file_name
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), 'remove_file_item(this, "audio")', :'data-url' => remove_audio_item_exam_question_path(i.object, question_id: i.object.question.id)
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), "remove_file_item_tmp(this, 'audio')", class: 'trash-tmp', style: 'display: none'
+                = link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: 'remove_file_item(this, "audio")', :'data-url' => remove_audio_item_exam_question_path(i.object, question_id: i.object.question.id)
+                = link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: "remove_file_item_tmp(this, 'audio')", class: 'trash-tmp', style: 'display: none'
               - else
-                = link_to_function content_tag(:i, nil, class: 'icon-trash'), "remove_file_item_tmp(this, 'audio')"
+                = link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: "remove_file_item_tmp(this, 'audio')"
 
-              = link_to_function t('questions.form.items.add_audio'), 'add_file(this)', class: 'btn btn_main add_file'
+              = link_to t('questions.form.items.add_audio'), "#void", onclick: 'add_file(this)', class: 'btn btn_main add_file'
             .info
               = i.input :audio_description, as: :text, label: t('questions.form.items.audio_description')
               = i.label t('questions.form.audio.aud_desc'), class: 'alt'
-              
     -else
       - count += 1
 
@@ -78,6 +80,8 @@
         config.resize_enabled = false;
         config.height = '80px';
         config.width = '500px';
+        config.autoParagraph = false;
+        config.pasteFromWord_inlineImages = false;
     };
 
     $("#items").on("fields_added.nested_form_fields", function(event) {
@@ -103,6 +107,8 @@
       var ckb = $(this).parent().find('input[type="checkbox"]');
       ckb.prop('checked', !ckb.prop('checked'));
     });
+
+    expand_existing_options();
   });
 
   function add_comment(btn){
@@ -163,4 +169,24 @@
     });
   }
 
-  
+  function expand_existing_options(){
+    $(".duplicatable_nested_form #image_item").map(function(){
+      $(this).parents(".duplicatable_nested_form").find('.image_icon').click();
+    });
+    $(".duplicatable_nested_form #audio_item").map(function(){
+      $(this).parents(".duplicatable_nested_form").find('.audio_icon').click();
+    });
+    $(".duplicatable_nested_form .comment_item").map(function(){
+      $(this).parents(".duplicatable_nested_form").find('.comment').click();
+    });
+  }
+
+  function rename_items(){
+    var count = 1;
+    var visible = $(".duplicatable_nested_form #fs_legend_item").map(function(){
+      if ($(this).parents(".nested_fields:visible").length != 0){
+        $(this).text("Item " + count);
+        count++;
+      }
+    });
+  }

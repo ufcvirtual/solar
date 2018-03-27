@@ -22,12 +22,12 @@ Solar::Application.routes.draw do
   get :tutorials_login, to: "pages#tutorials_login", as: :tutorials_login
   get :general_shortcuts, to: 'pages#general_shortcuts', as: :general_shortcuts
 
-
   resources :users do
     member do
       get :photo
       put :update_photo
       get :reset_password_url
+      delete :remove_photo
     end
     collection do
       get :edit_photo
@@ -36,13 +36,14 @@ Solar::Application.routes.draw do
       get :profiles
       get :request_profile
       get :get_history_offers
+      get :configure
     end
   end
 
-  resources :personal_configurations do 
+  resources :personal_configurations do
       put :update_theme, on: :collection
+      put :configures, on: :member
   end
-
 
   resources :social_networks, only: [] do
     collection do
@@ -78,6 +79,7 @@ Solar::Application.routes.draw do
     put "users/:id/password", to: "administrations#reset_password_user", as: :reset_password_admin_user
     get "users/:id/edit", to: "administrations#edit_user", as: :edit_admin_user
     get "users/:id/allocations", to: "administrations#allocations_user", as: :allocations_admin_user
+    get "users/:id/allocations_list", to: "administrations#allocations_user_list", as: :allocations_admin_user_list
     get "users", to: "administrations#users", as: :admin_users
 
     get "responsibles/filter", to: "administrations#responsibles", as: :admin_responsibles_filter
@@ -158,8 +160,10 @@ Solar::Application.routes.draw do
       put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: "add"   , tool_type: "Discussion", as: :add_group_to
       get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: "Discussion", as: :group_tags_from
       get :summary , to: 'academic_allocation_users#summary', tool: 'Discussion'
+      get :api_download
     end
-    put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Discussion', as: :evaluate, on: :member
+    put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Discussion', as: :evaluate, on: :member
+    get :download
     resources :posts, except: [:new, :edit] do
       collection do
         get "user/:user_id", to: :user_posts, as: :user
@@ -294,6 +298,7 @@ Solar::Application.routes.draw do
       get "academic/:curriculum_unit_type_id/semesters", to: "editions#semesters", as: :academic_semesters
       get "academic/:curriculum_unit_type_id/groups", to: "editions#groups", as: :academic_groups
       get "academic/:curriculum_unit_type_id/edx_courses", to: "editions#edx_courses", as: :academic_edx_courses
+      get :details_ac
     end
   end
 
@@ -386,7 +391,7 @@ Solar::Application.routes.draw do
       get :student
       get :summarized
       get :participants
-      put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Assignment', as: :evaluate
+      put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Assignment', as: :evaluate
     end
 
     collection do
@@ -453,7 +458,7 @@ Solar::Application.routes.draw do
 
     member do
       get :user_messages
-      put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'ChatRoom', as: :evaluate
+      put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'ChatRoom', as: :evaluate
       get :messages
       get :access
       get :participants
@@ -490,7 +495,7 @@ Solar::Application.routes.draw do
   resources :schedule_events, except: [:index] do
     member do
       get :evaluate_user
-      put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'ScheduleEvent', as: :evaluate
+      put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'ScheduleEvent', as: :evaluate
     end
     get :summary , to: 'academic_allocation_users#summary', tool: 'ScheduleEvent', on: :collection
   end
@@ -533,8 +538,8 @@ Solar::Application.routes.draw do
       get :open
       get "at/:allocation_tag_id/download", to: :download, type: :all, as: :download_all
       get "at/:allocation_tag_id/folder/:folder/download", to: :download, type: :folder, as: :download_folder
-      get "at/download", to: :download, type: :all, as: :download_all
-      get "at/folder/:folder/download", to: :download, type: :folder, as: :download_folder
+      get "at/download", to: :download, type: :all, as: :download_all_1
+      get "at/folder/:folder/download", to: :download, type: :folder, as: :download_folder_1
       put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: 'unbind', tool_type: 'SupportMaterialFile', as: :unbind_group_from
       put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: 'remove', tool_type: 'SupportMaterialFile', as: :remove_group_from
       put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: 'add'   , tool_type: 'SupportMaterialFile', as: :add_group_to
@@ -600,7 +605,7 @@ Solar::Application.routes.draw do
       get :list_access
       get :user_access
       get :get_record
-      put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Webconference', as: :evaluate
+      put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Webconference', as: :evaluate
     end
   end
 
@@ -622,6 +627,7 @@ Solar::Application.routes.draw do
       get :complete
       get :percentage
       put :calculate_grade
+      get :show_user_exam_answered
       put :calculate_user_grade
       put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Exam', as: :evaluate
     end
@@ -696,7 +702,7 @@ Solar::Application.routes.draw do
 
   resources :savs, only: :index, defaults: { format: 'json' }
 
-  match '/select_group', to: 'application#select_group', as: :select_group
+  match '/select_group', to: 'application#select_group', as: :select_group, :via => [:get, :post]
 
   get '/media/lessons/:id/:file(.:extension)', to: 'access_control#lesson_media', index: true
   get '/media/lessons/:id/:folder/*path',    to: 'access_control#lesson_media', index: false

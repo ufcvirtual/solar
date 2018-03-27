@@ -35,6 +35,10 @@ class QuestionsController < ApplicationController
     @question.user_id = current_user.id
     @can_see_preview = true
 
+    if !params['question_texts']['text'].blank?
+      @question.build_question_text(text: params['question_texts']['text'])
+    end
+
     if @question.save
       render partial: 'question', locals: { question: @question }
     else
@@ -75,11 +79,18 @@ class QuestionsController < ApplicationController
     @question.question_labels.build
     @question.question_items.build
     @question.question_audios.build
+    @question_text = @question.question_text
   end
 
   def update
     authorize! :update, Question
     @question         = Question.find params[:id]
+
+    if !params['question_texts']['text'].blank?
+      @question.question_text.text = params['question_texts']['text']
+      @question_text = @question.question_text
+      @question_text.save
+    end
 
     if @question.update_attributes question_params
       render partial: 'question', locals: { question: @question }

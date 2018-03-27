@@ -23,9 +23,9 @@
     .footer
       .left_buttons
         %span.add_lesson
-          = link_to_function t('.add'), 'add_exams()', class: 'btn btn_main', alt: t('.add')
+          = link_to t('.add'), "#void", onclick: 'add_exams()', class: 'btn btn_main', alt: t('.add')
       .right_buttons
-        = link_to_function t('.conclude'), 'go_to_conclude()', class: 'btn btn_main conclude', alt: t('.conclude')
+        = link_to t('.conclude'), "#void", onclick: 'go_to_conclude()', class: 'btn btn_main conclude', alt: t('.conclude')
     .step-conclude
       = render partial: 'exam_questions/export/conclude', locals: { questions: @questions }
 

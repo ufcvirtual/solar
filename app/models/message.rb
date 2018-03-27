@@ -4,10 +4,10 @@ class Message < ActiveRecord::Base
   has_one :group, through: :allocation_tag
 
   has_many :files, class_name: 'MessageFile'
-  has_many :users, through: :user_messages, uniq: true
+  has_many :users, -> { uniq }, through: :user_messages
   has_many :user_messages
-  has_many :user_message_labels, through: :user_messages, uniq: true
-  has_many :message_labels, through: :user_message_labels, uniq: true
+  has_many :user_message_labels, -> { uniq }, through: :user_messages
+  has_many :message_labels, -> { uniq }, through: :user_message_labels
 
   before_save proc { |record| record.subject = I18n.t(:no_subject, scope: :messages) if record.subject == '' }
   before_save :set_sender_and_recipients, if: 'sender'

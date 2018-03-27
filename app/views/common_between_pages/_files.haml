@@ -22,8 +22,14 @@
       last_file.change(function(){
         // when it changes, add choosen file to list as a name and with a remove button
         var last_form_input = $('#'+"#{form_id}"+' #files .duplicatable_nested_form:last .input');
-        last_form_input.prepend("<div id='file'>"+this.files[0].name+" ( "+(this.files[0].size/1048576).toFixed(2)+"MB ) </div>");
-        last_form_input.next('.info').removeClass('invisible');
+        var file_size = (this.files[0].size/1048576).toFixed(2);
+        var file_name = this.files[0].name;
+
+        last_form_input.prepend("<div id='file' class='file_list_added' aria-label='#{t('common_between_pages.file_added')}'>"+file_name+" ( "+file_size+"MB ) </div>");
+
+        last_form_input.next('.info').removeClass('invisible').find('a').attr('aria-label', '#{t("common_between_pages.remove_file", size: ":size", name: ":name")}'.replace(':name', file_name).replace(':size', file_size));
+
+        focus_element($(".file_list_added").last());
       });
     });
     $(document).on("fields_removed.nested_form_fields", function(event) {

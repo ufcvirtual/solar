@@ -81,7 +81,7 @@
       .text_none.empty_message{class: (no_files ? "" : "hide_message")}= t(:itens_not_found)
 
   .block_wrapper{style: "float:left"}
-    = link_to t(:back), :back, {class: "btn"}
+    = link_to t(:back), :back, class: "btn"
 
 = javascript_include_tag 'tooltip', 'tablesorter', 'scores', 'academic_allocation_user'
 
@@ -172,15 +172,23 @@
       return false;
     }
 
-    $.put($(link).data('url'), function(data){
-      flash_message(data.notice, 'notice');
-      var tr = $(link).parents('tr:first');
-      $(tr).find('.situation:first').html(data.status);
-      $(tr).find('.grade:first').html(data.grade);
-      $(tr).find('.wh:first').html(data.wh);
-    }).error(function(data){
-      var response = $.parseJSON(data.responseText);
-      if (typeof(response.alert) != "undefined")
-       flash_message(response.alert, 'alert');
+    $.ajax({
+      type: 'put',
+      url: $(link).data('url'),
+      success: function(data){
+        flash_message(data.notice, 'notice');
+
+        if(data.tool != 'undefined')
+          after_evaluate(data.tool, data.score_type, data.ac_id, data.user_id, data, data.group_id);
+
+        if(data.show_element != 'undefined')
+          $(link).parents('tr').find(data.show_element).parent().removeClass('invisible');
+      },
+      error: function(data){
+        console.log(data);
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+      }
     });
   }

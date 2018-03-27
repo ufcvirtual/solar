@@ -7,20 +7,43 @@
       = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
       = f.input :name
-      = f.input :description
+      = f.input :description, as: :ckeditor
 
       = f.fields_for :schedule, defaults: {required: true} do |s|
         .schedule_dates
           .left= s.input :start_date, as: :string, input_html: {id: 'from-date', value: l(@discussion.schedule.start_date.try(:to_date) || Date.today, format: :datepicker)}
           .right_form= s.input :end_date, as: :string, input_html: {id: 'until-date', value: l(@discussion.schedule.end_date.try(:to_date) || Date.today, format: :datepicker)}
 
+      .input.files
+        = f.label t(".files")
+        %a.new_file{href: "#void", :'aria-label' => t('.new_file')}
+          %i.icon-paperclip
+
+      = f.simple_fields_for :enunciation_files do |files|
+        .file_input
+          = files.input :_destroy, as: :hidden, input_html: {value: 0, class: "destroy_input_file", :"data-file-id" => files.object.id}
+          = files.input :attachment, label: false, input_html: {id: "fileupload"}
+
+      .input.list_files_to_send
+        - @discussion.enunciation_files.each do |ef|
+          - if ef.persisted?
+            .input.files
+              %label
+              %span#file{:"data-file-id" => ef.id}
+                = ef.attachment_file_name
+                %a.remove_file{href: "#void", :'aril-label' => "#{t('.remove_file')} #{ef.attachment_file_name}"}
+                  %i.icon-cross-square.warning
+        - if @files_errors
+          %span.field_with_errors.error= @files_errors
+
+
       = render "groups/codes"
 
       .form-actions.right_buttons
-        = button_to_function t(".cancel"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(".cancel")
-        = button_to_function t(".save"), "save_discussion()" , class: "btn btn_main btn_lightbox", alt: t(".save"), type: "button"
+        = button_tag t(".cancel"), type: 'button', onclick: "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(".cancel")
+        = button_tag t(".save"), type: 'button', onclick: "save_discussion()", class: 'btn btn_main btn_lightbox', alt: t(".save")
 
-= javascript_include_tag "edition_discussions"
+= javascript_include_tag "edition_discussions", 'ckeditor/init'
 
 :javascript
 
@@ -29,3 +52,69 @@
   var start_date = "#{escape_once(@discussion.schedule.start_date)}";
   var end_date = "#{escape_once(@discussion.schedule.end_date)}";
   var div_to_replace = ("#{escape_once(params[:calendar])}" == "" ? $(".list_discussions") : $(".calendar_schedules"));
+
+  jQuery(function($){
+
+    if ($(".file_input:last").length)
+      var nested_form = $(".file_input:first");
+
+    function add_new_file() {
+      var new_form = nested_form.clone();
+      var forms_on_page = $(".file_input").length;
+      var input_name = $("input[type='file']", new_form).attr("name");
+      input_name = input_name.replace(new RegExp(/\[[0-9]+\]/), "[" + forms_on_page + "]");
+      $("input", new_form).attr("name", input_name);
+
+      $(new_form).insertAfter( nested_form.last() );
+      $("input[type='file']", new_form).click();
+
+      $("input[type='file']", new_form).change(function(){
+        var new_file_name = "<div class='input files'> <label></label> <span id='file' data-input-file-name=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-square warning remove_file'></i> </span> </div>";
+
+        if ($(".list_files_to_send .files:last").lenght)
+          $(".list_files_to_send .files:last").after(new_file_name);
+        else
+          $(".list_files_to_send").append(new_file_name);
+
+        $(".remove_file").click(function(){
+          var span_file = $(this).parents('span#file');
+
+          $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove();
+          $(span_file).parents('div.input.files').remove();
+        });
+      });
+    }
+
+    //// edicao
+
+    $(".remove_file").click(function(){
+      var span_file = $(this).parents('span#file');
+
+      $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove(); // pra edicao nao serve
+      $("input[data-file-id=" + span_file.data("file-id") + "]").val(1); // edicao: colocar o _destroy com valor 1
+      $(span_file).parents('div.input.files').remove();
+    });
+
+
+    $(".new_file").on("click keypress", function(e){
+      e.preventDefault();
+      add_new_file();
+    });
+
+    CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
+
+    CKEDITOR.editorConfig = function (config) {
+      config.toolbar =
+        [
+          { name: 'clipboard', items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+          { name: 'insert', items : ['EqnEditor'] },
+          { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
+          { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }
+        ];
+
+        config.extraPlugins = 'eqneditor,oembed';
+        config.resize_enabled = false;
+        config.autoParagraph = false;
+    };
+
+  });

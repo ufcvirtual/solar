@@ -50,8 +50,8 @@
     = render "groups/codes"
 
     .form-actions.right_buttons
-      = button_to_function t(:cancel), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button", alt: t(:cancel)
-      = button_to_function t(:save), "save_notification()", class: "btn btn_main btn_lightbox", alt: t(:save), type: "button"
+      = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(:cancel)
+      = button_tag t(:save), :type => 'button', :onclick => "save_notification()", class: 'btn btn_main btn_lightbox', alt: t(:save)
 
 
 :javascript
@@ -59,10 +59,12 @@
     config.toolbar =
       [
         { name: 'styles', items : [ 'Styles', 'Format', 'Font', 'FontSize' ] },
-        { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] },
+        { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Strike', 'Underline', '-', 'RemoveFormat' ] },
         { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
         { name: 'links', items : [ 'Link', 'Unlink' ] },
       ];
+
+      config.autoParagraph = false;
   };
 
 

@@ -11,6 +11,7 @@ class Offer < ActiveRecord::Base
   has_one :curriculum_unit_type, through: :curriculum_unit
 
   has_many :groups
+  has_many :active_groups, -> { where('status=true')}, class_name: 'Group', foreign_key: "offer_id"
   has_many :academic_allocations, through: :allocation_tag
   has_many :lesson_modules,       through: :academic_allocations, source: :academic_tool, source_type: "LessonModule"
   has_many :assignments,          through: :academic_allocations, source: :academic_tool, source_type: "Assignment"
@@ -35,7 +36,7 @@ class Offer < ActiveRecord::Base
 
   after_save :update_digital_class, if: "curriculum_unit_id_changed? || course_id_changed? || semester_id_changed?"
 
-  attr_accessor :type_id, :verify_current_date, :status
+  attr_accessor :type_id, :verify_current_date
 
   def must_be_unique
     equal_offers = Offer.find_all_by_course_id_and_curriculum_unit_id_and_semester_id(course_id, curriculum_unit_id, semester_id)
@@ -107,8 +108,8 @@ class Offer < ActiveRecord::Base
     rts        = RelatedTaggable.joins(:schedule).where(query, options.slice(:date, :start_of_year, :end_of_year))
 
     query = (opt[:profiles] ? "allocations.profile_id IN (?)" : "")
-    rts   = rts.joins("JOIN allocations ON (related_taggables.group_at_id = allocations.allocation_tag_id OR related_taggables.offer_at_id = allocations.allocation_tag_id 
-      OR related_taggables.course_at_id = allocations.allocation_tag_id OR related_taggables.curriculum_unit_at_id = allocations.allocation_tag_id 
+    rts   = rts.joins("JOIN allocations ON (related_taggables.group_at_id = allocations.allocation_tag_id OR related_taggables.offer_at_id = allocations.allocation_tag_id
+      OR related_taggables.course_at_id = allocations.allocation_tag_id OR related_taggables.curriculum_unit_at_id = allocations.allocation_tag_id
       OR related_taggables.curriculum_unit_type_at_id = allocations.allocation_tag_id)").where(allocations: {user_id: opt[:user_id], status: Allocation_Activated}).where(query, opt[:profiles]) if opt[:user_id]
 
     query = []
@@ -116,11 +117,11 @@ class Offer < ActiveRecord::Base
     query << "related_taggables.course_id = :course_id"                    if opt[:course_id].present?
     query << "related_taggables.curriculum_unit_type_id = :curriculum_unit_type_id" if opt[:curriculum_unit_type_id].present?
     rts = rts.where(query.join(" AND "), opt.slice(:curriculum_unit_id, :course_id, :curriculum_unit_type_id)) if query.any?
-      
+
 
     ids = rts.pluck(:offer_id).uniq
     opt[:object] ? where(id: ids) : ids
-  end 
+  end
 
   def has_any_lower_association?
     self.groups.count > 0
@@ -140,10 +141,6 @@ class Offer < ActiveRecord::Base
     Date.today <= end_date
   end
 
-  def get_groups
-    groups = self.status.nil? ? Group.where(offer_id: self.id) : Group.where("offer_id = ? AND status = ?", self.id, 'true')
-  end  
-
   def parent_name
     curriculum_unit.nil? ? course.name : curriculum_unit.name
   end
@@ -158,21 +155,21 @@ class Offer < ActiveRecord::Base
       WITH profiles AS (
         SELECT profile_id
         FROM resources
-        JOIN permissions_resources ON resources.id = permissions_resources.resource_id 
+        JOIN permissions_resources ON resources.id = permissions_resources.resource_id
         WHERE resources.action = 'show' AND resources.controller = 'curriculum_units'
       ), logs AS (
         SELECT DISTINCT id
         FROM log_accesses
-        WHERE log_accesses.user_id = #{user.id} 
+        WHERE log_accesses.user_id = #{user.id}
         AND log_type = #{LogAccess::TYPE[:group_access]}
         AND log_accesses.created_at >= (current_date - interval '3 weeks')
       )
       SELECT DISTINCT rt.offer_at_id  AS at_id,
              rt.offer_id              AS offer_id,
-             semesters.name           AS s_name, 
-             courses.code             AS c_code, 
-             courses.name             AS c_name, 
-             curriculum_units.code    AS uc_code, 
+             semesters.name           AS s_name,
+             courses.code             AS c_code,
+             courses.name             AS c_name,
+             curriculum_units.code    AS uc_code,
              curriculum_units.name    AS uc_name,
              curriculum_unit_types.id AS uc_type_id,
              COUNT(DISTINCT log_accesses.id) AS accesses,
@@ -197,6 +194,7 @@ class Offer < ActiveRecord::Base
   end
 
   def notify_editors_of_disabled_groups(groups)
+    groups = groups.flatten
     emails = users_with_profile_type(Profile_Type_Editor).map(&:email)
     emails << groups.map { |group| group.users_with_profile_type(Profile_Type_Editor).map(&:email) }
 

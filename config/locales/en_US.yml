@@ -211,6 +211,7 @@ en_US:
       post_file: File
       comment_file: File
       email: Email
+      supportmaterialfile: Support Material
     attributes:
       user:
         password: "Password"
@@ -316,6 +317,7 @@ en_US:
         name: Title
         enunciation: Enunciation
         question: One Question
+        privacy: Privacy
       question_labels:
         name: Labels
       question_items:
@@ -484,6 +486,14 @@ en_US:
       comment_file:
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
         attachment: File
+        attachment_file_name: File
+      personal_configuration:
+        message: Receive emails with message's content
+        post: Receive emails about discussion's posts (answer to my posts)
+        exam: Receive emails with test scores
+        academic_tool: Receive emails with notifications about updates/creations/removals of on going activities
+      discussion_enunciation_file:
+        attachment_file_size: "File too large. The maximum size should be up to 5MB."
         attachment_file_name: File
 
     errors:
@@ -757,6 +767,8 @@ en_US:
   access: Access Information
   legislation: Legislation
   channel: Channel
+  remove_photo: Remove Photo
+  remove_photo_msg: User profile photo has been removed
 
   enrollments:
     all: All
@@ -1107,7 +1119,7 @@ en_US:
       title: Title
     form:
       groups: Groups
-    index: 
+    index:
       external_link: Open on a new tab
     error:
       file: One or more files until 30MB must be selected.
@@ -1195,6 +1207,10 @@ en_US:
       not_published: It was not possible to publish post
       draft: It's not possible to reply a draft post
       back_to_draft: It's not possible to set as draft a post with replies.
+    mail:
+      subject: Reply to your post sent at %{discussion} - %{at_info}
+      text: You have received the following answer
+      text_resp: 'For your post:'
 
   post_files:
     new:
@@ -1208,6 +1224,9 @@ en_US:
       new: New discussion
       edit: Edit discussion
       groups: Groups
+      files: Files
+      new_file: New file
+      remove_file: Remove file
     list:
       new: New Discussion
       edit: Edit Discussion
@@ -2107,6 +2126,8 @@ en_US:
       add: Group(s) successfully added.
       unbind: Group successfully unbinded.
       remove: Group successfully removed.
+      activated: Group(s) succesfully activated.
+      activated: Group(s) succesfully deactivated.
     error:
       created: Group wasn't created.
       updated: Group wasn't updated.
@@ -2161,6 +2182,10 @@ en_US:
       message_not_found: No user found
       synchronize: Synchronize with Módulo Acadêmico
       import: Import data from Módulo Acadêmico
+      name: Name
+      email: Email
+      username: Username
+      cpf: CPF
     informations:
       detailed: "Detailed Information"
       personal_data: "Personal Data"
@@ -2411,6 +2436,9 @@ en_US:
       assignments_call: 'Manage evaluative / frequency assignments'
       webconferences_call: 'Manage evaluative / frequency webconferences'
       offer_period: Offer already ended
+      same_type_af: must have same value at 'Final Exam'
+      details: See description
+      details_about: Access description about %{name}
     tools:
       expand: Expand
       compress: Compress
@@ -2423,6 +2451,7 @@ en_US:
       equivalent: Equivalent to
       frequency: Frequency
       max_wh: Maximum Working Hour
+      frequency_automatic: Automatic Frequency
       offer: Activity saved to offer
       wh: 'w/h'
       total_final_weight: 'TOTAL(Final Weight): '
@@ -2431,7 +2460,7 @@ en_US:
       detail_weight: 'Detail of final weight '
     tool_management:
       how_it_works_title: "<b>How it works</b>"
-      how_it_works: "<div> This activity management allows to define which activities are evaluative or not and which ones will have some working hours to attend to by the student.</div><br/><div>To indicates that an <b>activity is evaluative</b>, just check 'Evaluative' field and inform it's weight and final weight.</div><br/><div>The <b>weight</b> corresponds to the activity's weight in comparison to the other ones at the time of the student final grade automatic calculation. If it is a default weight (activities with same weight), just sets 1.</div><div><i>Weight example: Chat weight 2, Discussion weight 3. Automatic calculation: (2*chatGrade + 3*discussionGrade)/(2+3)</i></div><br/><div>The <b>final weight</b> corresponds to how many % some group of activities (grouped by a common final weight) will count at the student final grade automatic calculation.</div><div><i>Final weight example: Chat 40%, Discussion 40%, Exam 60%. Automatic calculation: 0,4*(chatGrade + discussionGrade) + 0,6*(examGrade)</i></div><div><i>Weight and final weight example: Chat weight 2 40%, Discussion weight 3 40%, Exam weight 1 60%. Calcule: [0,4*(2*chatGrade + 3*discussionGrade) + 0,6*(examGrade)]/(2+3+1)</i></div><br/><div>The <b>Final Evaluation</b> indicates if this activity will be a part of the final grade automatic calculation as a final exam. That is, <i>(studentFinalGrade + gradeFE)/2</i></div><div>If an activity is defined as Final Exam, it won't have working hours, weight and final weight. If those values are informed, they will be ignored.</div><br/><div>An activity <b>equivalent</b> to another means that if a student don't have the first, his grade will be from the second one.</div><div>If this values are incorrect or incomplete, will be used main activity values.</div><div><i>Example: Discussion 2 is equivalent to Discussion 1. The grade will be the one from discussion 1. If the student don't have a grade to this activity, it will be from discussion 2.</i></div>"
+      how_it_works: "<div> This activity management allows to define which activities are evaluative or not and which ones will have some working hours to attend to by the student.</div><br/><div>To indicates that an <b>activity is evaluative</b>, just check 'Evaluative' field and inform it's weight and final weight.</div><br/><div>The <b>weight</b> (available at non distance curriculum units) corresponds to the activity's weight in comparison to the other ones at the time of the student final grade automatic calculation. If it is a default weight (activities with same weight), just sets 1.</div><div><i>Weight example: Chat weight 2, Discussion weight 3. Automatic calculation: (2*chatGrade + 3*discussionGrade)/(2+3)</i></div><br/><div>The <b>final weight</b> (available at distance curriculum units) corresponds to how many % some group of activities (grouped by a common final weight) will count at the student final grade automatic calculation.</div><div><i>Final weight example: Chat 40%, Discussion 40%, Exam 60%. Automatic calculation: 0,4*(chatGrade + discussionGrade) + 0,6*(examGrade)</i></div><div><i>Weight and final weight example: Chat weight 2 40%, Discussion weight 3 40%, Exam weight 1 60%. Calcule: [0,4*(2*chatGrade + 3*discussionGrade) + 0,6*(examGrade)]/(2+3+1)</i></div><br/><div>The <b>Final Evaluation</b> indicates if this activity will be a part of the final grade automatic calculation as a final exam. That is, <i>(studentFinalGrade + gradeFE)/2</i></div><div>If an activity is defined as Final Exam, it won't have working hours, weight and final weight. If those values are informed, they will be ignored.</div><br/><div>An activity <b>equivalent</b> to another means that if a student don't have the first, his grade will be from the second one.</div><div>If this values are incorrect or incomplete, will be used main activity values.</div><div><i>Example: Discussion 2 is equivalent to Discussion 1. The grade will be the one from discussion 1. If the student don't have a grade to this activity, it will be from discussion 2.</i></div>"
       rules_title: "<b>Rules and informations</b>"
       rules: "<div>1) If it is a frequency activity, the maximum working hours sum must be equal to the curriculum unit working hours.<br/><br/><div>2) If it is evaluative, distinct final weigh sum must be 100.</div> <br/> <i>Example: Discussion 1 with final weight 40, Chat 2 with final weight 40, Exam with final weight 60. 40 (all activities with final weight 40) + 60 (all activities with final weight 60) = 100.</i> (CORRECT) <br/> <i>Exemple: Discussion 1 with final weight 40, Chat 2 with final weight 45, Exam with final weight 60. 40 (all activities with final weight 40) + 45 (all activities with final weight 45) + 60 (all activities with final weight 60) = 145.</i> (INCORRECT)</div><br/><div>If an activity is defined as equivalent to another, it should have the same working hours, weight and final weight than main activity. If those values are missing or incorrect, it will be defined as the same value as main activity.</div><br/><div>3) After change something here and finish it, all students final grade will be automatically recalculated.</div><br/><div>4) By defining an activity as evaluative, student's final grade will be automatically calculated considering that all grades have a range from 0 to 10.</div>"
       rule_wh1: "<div>5) You can't define an activity as frquency while curriculum unit doesn't have working hours.</div>"
@@ -2445,6 +2474,8 @@ en_US:
       expand: Expand all
       compress: Compress all
       share_wh: Share working/hours
+      automatic_wh: Automatic Frequencies
+      automatic_wh_tooltip: "When selecting the automatic frequency, the participants in activity (students) will automatically receive the maximum work hours registered for it. This work hours may be changed by those responsible for the activity"
       default_weight: Sets all weights as 1
       default_final_weight: Sets all final weights as 100
       finish: Finish
@@ -2455,11 +2486,12 @@ en_US:
       window_analyzer_home: Home analyzer (click to close)
       window_analyzer_end: End analyzer (click to close)
       analyzer: Analyzer
+      not_defined: Not defined
     mail:
       subject_new: 'Warning: New activity'
       subject_update: 'Warning: Active change'
       subject_delete: 'Warning: Deletion of activity'
-      
+
   curriculum_units:
     success:
       created: Subject was successfully created.
@@ -2808,10 +2840,17 @@ en_US:
       help_message: Send message to support?
     users:
       add_all: Add all
+      add_responsibles: "<b>Responsibles</b>"
+      add_students: "<b>Students</b>"
       no_user_found: No user found
       add_all_alt: Click to add all users to receiver's list
       user_alt: "%{name} (Click to add user %{name} with email %{email} to receiver's list)"
       user_remove_alt: "%{name} (Click to remove user %{name} with email %{email} to receiver's list)"
+      add_stu_alt: Click to add all students to receiver's list
+      add_res_alt: Click to add all responsibles to receiver's list
+      del_stu_alt: Click to remove all students from the recipient list
+      del_res_alt: Click to remove all responsibilities from the recipient list
+      responsibles: Responsibles
     errors:
       recipients: "A message must have at least 1 recipient."
       permission: You don't have access to informed data.
@@ -3123,10 +3162,22 @@ en_US:
       title: "Password recovery to %{name}"
       url: "Recovery password url"
       reset_password_not_required: It wasn't requested any password recovery.
+    configure:
+      notification_mail: Manage Email Notifications
+      configure: Settings
+      theme: Themes
+      theme_blue: Blue
+      theme_high_contrast: High contrast
+      success:
+        updated: Settings updated successfully
+      error:
+        updated: Failed to update settings
+
   mysolar:
     synchronize: Synchronize with Módulo Acadêmico
     profiles: Profiles
     closed_uc: (closed subject)
+    configure: Settings
   portlets:
     curricular_unit:
       type: Type
@@ -3153,6 +3204,9 @@ en_US:
       type: Type
       profile: Profile
       result_search: "Access table with search's result"
+
+  draggable:
+    close: Close analyzer
 
   shortcut:
     shortcut_link: "General shortcuts [Shift + ?]"
@@ -3378,10 +3432,10 @@ en_US:
     editions:
       name:
         window: "Analyzer [A]"
-        analyzer_position: "Analyzer Start Position [Shift + A]"
+        analyzer_position: "Analyzer Start Position [Shift + L]"
       code:
         window: 65
-        analyzer_position: 65
+        analyzer_position: 83
 
   scores:
     index:
@@ -3491,8 +3545,8 @@ en_US:
       new_no: No
       new_after_evaluation: Changed after evaluation
       last_five: "Here are listed only the last five accesses"
-      f: 'No'
-      t: 'Yes'
+      'false': 'No'
+      'true': 'Yes'
       equivalency: (Is a equivalency)
       equivalent: "<b>This activty is equivalent to the following main activity:</b><br/> %{name}"
       equalities: '(See equalities)'
@@ -3680,8 +3734,9 @@ en_US:
       final2: Explanation about final version
       fv_explain: "&nbsp;&nbsp; The tutor or professor responsible by evaluation has, as role, evaluate the student or group based on it's sent files and created webconferences. To evaluate a webconference, responsibles must analyse the existing recordings to, then, evaluate the student. However, during the execution of the assignment, the student or group of students may schedule and record one or more webconferences. These webconferences may be used, for example, to meetings between group members, to tests, to practice etc. That is, not all webconferences scheduled and recorded need, necessarily, be used to evaluation. <br/><br/> &nbsp;&nbsp;To inform the responsible wich ones of the webconferences must be used to evaluation, the student can define one or more as Final Version.  That way, the responsible will be able to evaluate only the webconferences defined as final version within all the ones scheduled and/or recorded. If necessary, responsibles may evaluate all recordings available."
       back: 'Back to webconferences list'
-      name: "Webconference's recordings:"
+      reccording_title: "Webconference's recordings:"
       final_tr: Final Version
+      start_recordding: Iniciar com gravação
     webconference:
       edit: Edit
       record: Remove record
@@ -3845,13 +3900,14 @@ en_US:
       anull: " (Annulled question)"
       scores: '( %{score} scores )'
       number_question: 'Exam with %{no_question} questions'
-      image: "Image %{alt}."
+      image: "Image %{alt}. Click to enlarge."
       legend: " Legend: %{legend}"
       image_item: "Item %{item} image: %{alt}."
       audio: "Audio's legend: %{alt}."
       audio_item: "Item %{item} audio's."
       audio2: "Audio %{desc}."
       audio_text: "Text version of audio: %{desc}."
+      image_zoom: "Click to enlarge"
     finish:
       confirm: Are you sure you want to finish the exam?
     summary:
@@ -3898,6 +3954,9 @@ en_US:
       controlled_date: "It's not possible to remove IPs of ended or started exams"
       result_release_date: It'll only be possible to calculate grade after date and time registered to it's release
       cant_change_release_result: result already released
+      equivalent: Equivalent exam, status can't be updated
+      not_corrected: This exam was not evaluated yet.
+      no_attempt: This exam has none attempts.
     show:
       groups: Groups
       empty_group: Empty group
@@ -3933,14 +3992,13 @@ en_US:
       view_attempt: View %{attempt}
       attempt: 'Attempt %{attempt}'
       result: Result
-      subject: NOTE DISPATCH
-      salutation: 'Dear (a)'
-      exam_name: Approves
-      exam_grade: 'His result was:'
-      email_infor: "To see more information about your result or the correction , these are available in the Testing menu at Solar ."
-      email_infor_compl: "It had ended its period and its score was calculated"
+      subject: Grade of %{exam} exam - %{at_info}
+      salutation: 'Dear '
+      exam_name: Exam
+      exam_grade: 'Your result was:'
+      email_infor: "To see more information about your result or correction, these are available at Tests menu on Solar ."
+      email_infor_compl: has ended it's period and your score was calculated
       email_of: of
-      email: "Please do not respond to this message. This is an automatic email from Solar 2.0"
       itens_corrected: "Corrected item(s): "
       itens_marked: "Marked item(s): "
       true_item: "True item"
@@ -3965,6 +4023,7 @@ en_US:
   question:
     question: 'Question '
     enunciation: 'Enunciation '
+    privacy: 'Privacy '
     question_images:
       image: Image
       legend: Enunciation
@@ -4082,6 +4141,7 @@ en_US:
         confirm_image_removal: 'Are you sure? Even if you cancel this form, this image will be deleted and will not be recovered.'
         confirm_audio_removal: 'Are you sure? Even if you cancel this form, this audio will be deleted and will not be recovered.'
         empty: "The item %{count} is blank, you want to delete?"
+        item: "Item"
       t_option: T
       f_option: F
       info:
@@ -4101,8 +4161,11 @@ en_US:
         new: New Text
         import: Import from issues
       media:
-        add_images: Add Images
-        add_audios: Add audio
+        add_images: Images
+        add_audios: Audio
+        add_more_images: Add more images
+        add_more_audios: Add more audios
+        associated_text: Associated text
     labels:
       labels: 'labels: '
     error:
@@ -4343,6 +4406,7 @@ en_US:
       event_evaluative: "can't be defined, Reccess or Holiday events can't be evaluative."
       event_frequency: "can't be defined, Reccess or Holiday events can't be frequency."
       same_type: 'Must have same type of equivalency'
+      same_type_af: must have same value at 'Final Exam'
     success:
       manage: Activities managed successfully.
     warnings:
@@ -4455,14 +4519,14 @@ en_US:
       course_document: "Get in touch with responsibles or secretary of your course."
       photo: "To update or upload a picture, you just need to be logged in, click on your name available at the top of the page besides the clock and click on 'Change picture'. A popup will be opened so you can upload your file."
       nick_login: "Your username will be the information used so you can access Solar with the password. Nick will be the one seen at some areas of Solar like, for example, at discussion, which show only the nick of the author of the posts.<br/> We suggest to choose nicks that references you, thefore we don't suggest the use of 'student' or 'tutor', for example."
-      finished_ucs: "Presently, Solar 2.0 still don't have the function of accessing closed subjects."
+      finished_ucs: "Clicking on '(view closed)' at curriculum units area at home"
       idea: "Solar 2.0 have a button for 'Suggestions to Solar 2.0'. So you can access it, you just have to be logged in. The button will be available at the top right corner of the screen.<br/> By clicking it, you can send suggestions, complaints and similar."
       error: "Solar 2.0 doesn't make changes at previously files sent by it's users without informing them or without authorization. Therefore, if student's assignment is blank, we suggest that you get in touch with him and ask him to send again the right file."
       cant_find_faq: "Get in touch with atendimento@virtual.ufc.br explaining your situation. Remember of inform: <br/> ‣ Name <br/> ‣ Cpf <br/> ‣ Email<br/> ‣ The most information you can get about what have happened. If possible, images (print screens) too."
 
   ckeditor:
     confirms:
-      question: "Item count is blank. Do you want to remove it?"
+      question: "Do you want to remove the blank items?"
 
 # reports_add
   reports:
@@ -4639,20 +4703,23 @@ en_US:
     more_alt: See complete description of %{tool}
     less_alt: See compressed description of %{tool}
     frequency:
-      t: 'Yes <br/>(max: %{hours}h)'
-      f: 'No'
+      'true': 'Yes <br/>(max: %{hours}h)%{automatic})'
+      'false': 'No'
+      a: "<br/>automactic"
+      d: defined by responsible
     ev_final_exam:
-      t: 'Yes <br/>(Final Exam)'
-      f: 'No'
+      'true': 'Yes <br/>(Final Exam)'
+      'false': 'No'
     final_exam:
-      t: 'Yes'
-      f:  'No'
+      'true': 'Yes'
+      'false':  'No'
     hours: '%{hours}h'
     error:
       general_message: It was not possible to execute action
     all: All
     attached_files: Attachments
-    remove_file: Remove attachment %{name}
+    remove_file: Remove attachment %{name} (%{size}MB)
+    file_added: File added
 
   ip_control:
     info:
@@ -4702,7 +4769,7 @@ en_US:
     summary:
       title: "Comments and grades to %{user} at %{tool}"
       grade: 'Grade: '
-      working_hours: 'Working Hours: '
+      working_hours: 'Frequency: '
       no_grade: "<i>no grade</i>"
       no_wh: "<i>no working hour</i>"
       info: Grade and Frequency

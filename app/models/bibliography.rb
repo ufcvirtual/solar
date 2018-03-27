@@ -6,7 +6,7 @@ class Bibliography < ActiveRecord::Base
 
   TYPE_BOOK, TYPE_PERIODICAL, TYPE_ARTICLE, TYPE_ELECTRONIC_DOC, TYPE_FREE, TYPE_FILE = 1, 2, 3, 4, 5, 6
 
-  default_scope { order(:title, :type_bibliography) }
+  #default_scope { order(:title, :type_bibliography) }
 
   has_many :authors, dependent: :destroy
 
@@ -33,6 +33,14 @@ class Bibliography < ActiveRecord::Base
 
   def copy_dependencies_from(bibliography_to_copy)
     copy_file(bibliography_to_copy, self, 'bibliography') if bibliography_to_copy.is_file?
+  end
+
+  def copy_associations(bibliography_to_copy)
+    self.authors << bibliography_to_copy.authors.collect { |author| author.dup }
+  end
+
+  def order
+    "title, type_bibliography"
   end
 
   def type

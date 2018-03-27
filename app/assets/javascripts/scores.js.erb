@@ -13,13 +13,20 @@ function open_evaluation(link){
             url: data.url,
             success: function(data){
               flash_message(data.notice, 'notice');
+
+              if(data.tool != 'undefined')
+                after_evaluate(data.tool, data.score_type, data.ac_id, data.user_id, data, data.group_id);
+
+              if(data.show_element != 'undefined')
+                $(link).parents('tr').find(data.show_element).parent().removeClass('invisible');
+
             },
             error: function(data){
               var data = $.parseJSON(data.responseText);
               if (typeof(data.alert) != "undefined")
                 flash_message(data.alert, 'alert');
             }
-          })
+          });
         }else{
           window.location.href = data.url;
         }
@@ -72,6 +79,7 @@ function change_tab(tab){
     if (typeof(data.alert) != "undefined")
       flash_message(data.alert, 'alert');
   });
+  focus_element_time(".parent");
 }
 
 function change_tab_tool(tab){
@@ -158,8 +166,12 @@ $(function(){
     return false;
   });
 
-  $(".dropdown-menu").on("focus", function (e) {
-    $(".nav_item_dropdown")[0].focus();
-  });
+  $(".link_pre_exam, .open_exam, .link_preview_exam").call_fancybox({
+      minWidth: '50%',
+      minheigth: '50%',
+      closeBtn : true,
+      height: 'auto',
+      maxHeight: '70%'
+    });
 
 });

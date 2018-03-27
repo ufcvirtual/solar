@@ -29,7 +29,7 @@
   
   .correction_info
     .expand_correction
-      =link_to('#', onclick: 'toggle_text(this);' , onkeydown: 'click_on_keypress(event, this); ') do 
+      =link_to('#void', onclick: 'toggle_text(this);' , onkeydown: 'click_on_keypress(event, this); ') do 
         = t('exams.pre.correction_title')
         %i.icon-arrow-down-triangle{:'aria-hidden'=>'true'}
     .correction_text.invisible
@@ -37,7 +37,7 @@
 
   .shortcuts_info
     .expand_shortcut
-      =link_to('#', onclick: 'toggle_text(this);' , onkeydown: 'click_on_keypress(event, this); ') do 
+      =link_to('#void', onclick: 'toggle_text(this);' , onkeydown: 'click_on_keypress(event, this); ') do 
         = t('exams.pre.shortcuts_title')
         %i.icon-arrow-down-triangle{:'aria-hidden'=>'true'}
     %ul.shortcut_text.invisible
@@ -72,6 +72,7 @@
       modal: !!#{@exam.uninterrupted},
       height: 'auto',
       maxHeight: '70%',
+      maxWidth: '60%',
       dont_focus_back: true,
       element_selector: 'h3.question',
       complementary_after_show: function() {

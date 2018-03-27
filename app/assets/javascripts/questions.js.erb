@@ -30,9 +30,9 @@ $(function(){
   update_nice_checkbox();
 });
 
-function save_question(exam_id, type_question){
+function save_new_question(exam_id, type_question){
   type_question = (typeof type_question === "undefined" ? false : type_question);
-  if(save_values_ckeditor("<%=I18n.t('ckeditor.confirms.question')%>")){
+  if(save_values_ckeditor("<%=I18n.t('ckeditor.confirms.question')%>") == false){
     return false;
   }
   check_inputs(type_question);
@@ -54,9 +54,10 @@ function save_question(exam_id, type_question){
     prepend_to = $('.list_questions_exam_'+exam_id);
 
   if($("#question_texts_media_question").prop('checked')==false){
-    $('#audios').find('.remove_nested_fields_link').click(); 
-    $('#images').find('.remove_nested_fields_link').click();    
+    $('#audios').find('.remove_nested_fields_link').click();
+    $('#images').find('.remove_nested_fields_link').click();
   }
+
   if(!$('form#question_form').data('disabled'))
     $('form#question_form').serialize_and_submit({
       files: true,
@@ -69,6 +70,7 @@ function save_question(exam_id, type_question){
           $('form span.error').html('');
           flash_message("<%= I18n.t('questions.success.add') %>", "notice");
         }
+        if (window.location.pathname == '/questions') { location.reload(); }
         update_tables_with_no_data();
       },
       call_function: 'update_nice_checkbox'
@@ -85,6 +87,10 @@ function go_to_items(){
   $('#dot-medias').removeClass('active');
   $('li.items').addClass('active');
   $('#dot-items').addClass('active');
+  $.fancybox.update();
+  $('.block_content').css('width', 'auto');
+  $('.block_content').css('height', 'auto');
+  rename_items();
 }
 
 function go_to_medias(){
@@ -97,6 +103,8 @@ function go_to_medias(){
   $('#dot-items').removeClass('active');
   $('li.medias').addClass('active');
   $('#dot-medias').addClass('active');
+  $.fancybox.update();
+  $('.block_content').css('width', 'auto');
 }
 
 function back(){
@@ -109,7 +117,8 @@ function back(){
   $('li.medias').removeClass('active');
   $('#dot-items').removeClass('active');
   $('#dot-medias').removeClass('active');
-
+  $.fancybox.update();
+  $('.block_content').css('width', 'auto');
 }
 function back_medias(){
   go_to_medias();
@@ -195,14 +204,12 @@ function edit_question(icon, replace_list){
       $(icon).call_fancybox({
           href : url_edit,
           open: true,
-          width: '100%',
-          maxHeight: '70%',
-          beforeClose: function() {
-            for(name in CKEDITOR.instances){
-              CKEDITOR.instances[name].setData("");
-              CKEDITOR.remove(CKEDITOR.instances[name]);
-            }
-          }
+          'autoDimensions': false,
+          'autoSize': false,
+          width: '700',
+          height: 'auto',
+          //maxHeight: '70%',
+          beforeClose: function() { clear_ckeditor(); }
       });
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
@@ -231,7 +238,7 @@ function copy_question(icon, replace_list){
   if (!(!ids.length || ids.length > 1)) {
     $.get("<%=Rails.application.routes.url_helpers.copy_verify_owners_question_path(':id')%>".replace(':id', questions_ids), function(data){
       var url_copy = $(icon).data('link-to-copy').replace(':id', ids);
-      $(icon).call_fancybox({ href : url_copy, open: true, width: '20%', maxHeight: '70%' });
+      $(icon).call_fancybox({ href : url_copy, open: true, maxHeight: '70%', 'autoDimensions': false, 'autoSize': false, width: '700', height: 'auto', });
       if(replace_list != ''){
         $.get($(replace_list).data("link-list"), function(data2){
           $(replace_list).replaceWith(data2);
@@ -411,22 +418,27 @@ function change_status_exam(link){
 
   $.put($(link).data('url'), function(data){
     var success = data.success;
-    flash_message(data.notice, 'notice');
-    var block_wrapper = $(link).parents(".block_wrapper");
+    
+    if(success){
+      flash_message(data.notice, 'notice');
+      var block_wrapper = $(link).parents(".block_wrapper");
 
-    if($(link).hasClass('published')){
-      $(link).html("<%=I18n.t('exams.list.unpublished')%>");
-      $(link).removeClass('published').addClass('unpublished');
-      $(link).siblings('.draft').removeClass('invisible');
-      block_wrapper.find('.dropdown-menu .link_new_question').first().data().can = true;
-      block_wrapper.find('.dropdown-menu .link_import_question').first().data().can = true;
+      if($(link).hasClass('published')){
+        $(link).html("<%=I18n.t('exams.list.unpublished')%>");
+        $(link).removeClass('published').addClass('unpublished');
+        $(link).siblings('.draft').removeClass('invisible');
+        block_wrapper.find('.dropdown-menu .link_new_question').first().data().can = true;
+        block_wrapper.find('.dropdown-menu .link_import_question').first().data().can = true;
+      }else{
+        $(link).html("<%=I18n.t('exams.list.published')%>");
+        $(link).addClass('published').removeClass('unpublished');
+        $(link).siblings('.draft').addClass('invisible');
+        block_wrapper.find('.dropdown-menu .link_new_question').first().data().can = false;
+        block_wrapper.find('.dropdown-menu .link_import_question').first().data().can = false;
+      }
     }else{
-      $(link).html("<%=I18n.t('exams.list.published')%>");
-      $(link).addClass('published').removeClass('unpublished');
-      $(link).siblings('.draft').addClass('invisible');
-      block_wrapper.find('.dropdown-menu .link_new_question').first().data().can = false;
-      block_wrapper.find('.dropdown-menu .link_import_question').first().data().can = false;
-    }
+      flash_message(data.alert, 'alert');
+    }  
   }).error(function(data){
     var response = $.parseJSON(data.responseText);
     if (typeof(response.alert) != "undefined")
@@ -497,7 +509,7 @@ function preview_question(icon){
 
   if(!$('.import_something').length)
     $.get("<%=Rails.application.routes.url_helpers.show_verify_owners_question_path(':id')%>".replace(':id', $(icon).parents('tr').data('id')), function(data){
-      $(icon).call_fancybox({ href: $(icon).data('url'), open: true, width: '100px;' });
+      $(icon).call_fancybox({ href: $(icon).data('url'), open: true, 'autoDimensions': false, 'autoSize': false, width: '700', height: 'auto', });
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
@@ -537,16 +549,12 @@ function new_question(link){
 
   $(link).call_fancybox({
     width: 700,
+    height: 'auto',
     'autoDimensions': false,
     'autoSize': false,
     open: true,
     href: $(link).data('url'),
-    beforeClose: function() {
-      for(name in CKEDITOR.instances){
-        CKEDITOR.instances[name].setData("");
-        CKEDITOR.remove(CKEDITOR.instances[name]);
-      }
-    }
+    afterClose: function() { clear_ckeditor(); }
   });
 
 }

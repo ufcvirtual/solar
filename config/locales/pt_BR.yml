@@ -247,6 +247,7 @@ pt_BR:
       post_file: Arquivo
       comment_file: Arquivo
       email: Email
+      supportmaterialfile: Material de Apoio
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -395,7 +396,11 @@ pt_BR:
         grade: Nota
       exam_question:
         score: Pontuação
+        privacy: Privacidade
+        question:
+          privacy: Privacidade
       question:
+        privacy: Privacidade
         name: 'Título'
         enunciation: Enunciado
         question: Uma Questão
@@ -546,6 +551,16 @@ pt_BR:
         attachment_file_size: Tamanho
         attachment: Arquivo
         attachment_file_name: Arquivo
+      personal_configuration:
+        message: Receber emails com o conteúdo de mensagens
+        post: Receber emails de postagens em fórum (respostas às minhas postagens)
+        exam: Receber emails com notas de provas
+        academic_tool: Receber email com avisos sobre alterações/criações/remoções de atividades em andamento
+      discussion_enunciation_file:
+        attachment_content_type: ""
+        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
+        attachment_file_name: Arquivo
+
     errors:
       uniqueness: "Registro já existe no sistema"
       template:
@@ -926,6 +941,8 @@ pt_BR:
   external_link: "De um link externo"
   url: "Digite aqui a URL da imagem no campo de texto acima."
   send: "Enviar"
+  remove_photo: "Remover Foto"
+  remove_photo_msg: "A foto do usuário foi removida com sucesso."
 
   # página de matrícula"
   enrollments:
@@ -1283,7 +1300,7 @@ pt_BR:
       title: Título
     form:
       groups: Turmas
-    index: 
+    index:
       external_link: Abrir em nova aba
     error:
       file: Um ou mais arquivos de até 30MB devem ser selecionados.
@@ -1314,6 +1331,10 @@ pt_BR:
       primary: " primárias"
       save_draft: Salvar Rascunho
       publish: Publicar
+      files:
+        discussion_file_title: Arquivos
+        name: Nome
+        size: Tamanho
     post:
       remove_file_confirm: "Seu arquivo será deletado permanentemente. Prosseguir?"
       new: Nova postagem
@@ -1329,7 +1350,7 @@ pt_BR:
       to_evaluate: Avaliar/Comentar
       grade: '(Nota: %{grade})'
       frequency: '(Frequência: %{wh}hs)'
-      download: "Baixar aqrquivo %{file}, tamanho: %{size}"
+      download: "Baixar arquivo %{file}, tamanho: %{size}"
       open: "Abrir arquivo %{file}, tamanho: %{size}"
       open_site: "Abrir site %{file}"
       open_site_new_tab: "Abrir o site em uma nova aba (%{file})"
@@ -1377,6 +1398,10 @@ pt_BR:
       not_published: Não foi possível publicar o post
       draft: Não é possível responder um post de rascunho
       back_to_draft: Não é possível definir como rascunho um post com respostas.
+    mail:
+      subject: Resposta a seu post enviado em %{discussion} - %{at_info}
+      text: Você recebeu a seguinte resposta
+      text_resp: 'Para seu post:'
 
   post_files:
     new:
@@ -1391,6 +1416,9 @@ pt_BR:
       new: Novo Fórum
       edit: Editar Fórum
       groups: Turmas
+      files: Arquivos
+      new_file: "Novo Arquivo"
+      remove_file: "Remover Arquivo"
     list:
       new: Novo Fórum
       edit: Editar Fórum
@@ -1611,7 +1639,7 @@ pt_BR:
       access: Lista de acessos
       user_online: Usuários online
       recording: Gravação
-      frequency: Carga Horária
+      frequency: Frequência
       grade: Nota
       recordings: Acessar lista de gravações de %{web}
       recordings_disabled: Acessar lista de gravações de %{web} (desabilitado)
@@ -2181,7 +2209,7 @@ pt_BR:
       download: Baixar zip
       name: Nome
       size: Tamanho
-    notification:
+    notifications:
       final_date_smaller_than_offer: Data final não pode ser maior do que o período oferta.
     summarized:
       title: Informações do trabalho %{assignment_name} do aluno/grupo %{name}
@@ -2325,6 +2353,8 @@ pt_BR:
       add: Turma(s) adicionada(s) com sucesso.
       unbind: Turma desvinculada com sucesso.
       remove: Turma removida com sucesso.
+      activated: Turma(s) ativada(s) com sucesso.
+      deactivated: Turma(s) desativada(s) com sucesso.
     error:
       created: Não foi possível criar turma.
       updated: Não foi possível atualizar turma.
@@ -2381,6 +2411,10 @@ pt_BR:
       message_not_found: Nenhum usuário encontrado
       synchronize: Sincronizar com Módulo Acadêmico
       import: Importar dados do Módulo Acadêmico
+      name: Nome
+      email: Email
+      username: Login
+      cpf: CPF
     informations:
       detailed: "Informações Detalhadas"
       personal_data: "Dados Pessoais"
@@ -2635,6 +2669,9 @@ pt_BR:
       assignments_call: 'Gerenciar trabalhos avaliativos / de frequência'
       webconferences_call: 'Gerenciar webconferências avaliativas / de frequência'
       offer_period: Oferta já encerrou
+      same_type_af: deve ter o mesmo valor no campo 'Avaliação Final'
+      details: Ver descrição
+      details_about: Acessar descrição de %{name}
     tools:
       expand: Expandir
       compress: Comprimir
@@ -2647,6 +2684,7 @@ pt_BR:
       equivalent: Equivalente à
       frequency: Frequência
       max_wh: Carga Horária Máxima
+      frequency_automatic: "Frequência Automática"
       offer: Atividade cadastrada na Oferta
       wh: 'h/a'
       total_final_weight: 'TOTAL(Peso Final): '
@@ -2655,7 +2693,7 @@ pt_BR:
       detail_weight: 'Detalhar peso final '
     tool_management:
       how_it_works_title: "<b>Como funciona</b>"
-      how_it_works: "<div> Esta gerência permite definir quais atividades serão avaliativas ou não e quais terão carga horária a ser computada ou não como frequência pelo aluno.</div><br/><div>Para indicar que uma <b>atividade é avaliativa</b>, basta marcar o campo 'Avaliativa' e indicar o peso desta atividade e o peso final.</div><br/><div>O <b>peso</b> é correspondente ao peso que a atividade terá em relação as demais para o cálculo da média do aluno. Se for um peso padrão (atividades com mesmo peso), basta informar 1 no espaço 'peso' de cada atividade.</div><div><i>Exemplo de média das atividades com peso: Chat peso 2, Fórum peso 3. Cálculo automático da nota: (2*notaChat + 3*notaForum)/(2+3)</i></div><div><i>Exemplo de média das atividades com peso padrão: Chat peso 1, Fórum peso 1. Cálculo automático da nota: (notaChat + notaForum)/(2)</i></div><br/><div>O <b>peso final</b> é correspondente a quantos por centos (%) determinado grupo de atividades (agrupadas por um peso final em comum) valerá no cálculo da média do aluno. Se for um peso padrão (atividades com mesmo peso final), basta informar 100 no espaço 'peso final' de cada atividade.</div><div><i>Exemplo de média das atividades com peso final: Chat 40%, Fórum 40%, Prova 60%. Cálculo automático da nota: 0,4*(notaChat + notaForum) + 0,6*(notaProva)</i></div><div><i>Exemplo de média das atividades com peso e peso final: Chat peso 2 40%, Fórum peso 3 40%, Prova peso 1 60%. Cálculo automático da nota: [0,4*(2*notaChat + 3*notaForum) + 0,6*(notaProva)]/(2+3+1)</i></div><br/><div>A <b>Avaliação Final</b> serve para indicar se esta atividade entrará para o cálculo automático da média como Avaliação Final. Ou seja, <i>(médiaAluno + notaAF)/2</i></div><div>Se houver opção pela Avaliação Final, esta não terá carga horária, peso e peso final. Se estes valores forem informados, serão ignorados.</div><br/><div>Uma atividade <b>equivalente</b> a outra significa que se o aluno não realizar a primeira, a nota usada será a da segunda.</div><div>Se uma atividade é definida como equivalente de outra, ela deverá ter a mesma carga horária e os mesmos peso e peso final da principal. Se estes valores forem informados de modo incorreto ou não forem informados, serão utilizados os valores da atividade principal.</div><div><i>Exemplo: Fórum 2 é equivalente a Fórum 1. A nota que será utilizada para a média do aluno é a do Fórum 1. Caso o Fórum 1 não possua nota, a nota a ser utilizada será a do Fórum 2.</i></div>"
+      how_it_works: "<div> Esta gerência permite definir quais atividades serão avaliativas ou não e quais terão carga horária a ser computada ou não como frequência pelo aluno.</div><br/><div>Para indicar que uma <b>atividade é avaliativa</b>, basta marcar o campo 'Avaliativa' e indicar o peso desta atividade e o peso final.</div><br/><div>O <b>peso</b> (disponível em disciplinas que não à distância) é correspondente ao peso que a atividade terá em relação as demais para o cálculo da média do aluno. Se for um peso padrão (atividades com mesmo peso), basta informar 1 no espaço 'peso' de cada atividade.</div><div><i>Exemplo de média das atividades com peso: Chat peso 2, Fórum peso 3. Cálculo automático da nota: (2*notaChat + 3*notaForum)/(2+3)</i></div><div><i>Exemplo de média das atividades com peso padrão: Chat peso 1, Fórum peso 1. Cálculo automático da nota: (notaChat + notaForum)/(2)</i></div><br/><div>O <b>peso final</b> (disponível em disciplinas à distância) é correspondente a quantos por centos (%) determinado grupo de atividades (agrupadas por um peso final em comum) valerá no cálculo da média do aluno. Se for um peso padrão (atividades com mesmo peso final), basta informar 100 no espaço 'peso final' de cada atividade.</div><div><i>Exemplo de média das atividades com peso final: Chat 40%, Fórum 40%, Prova 60%. Cálculo automático da nota: 0,4*(notaChat + notaForum) + 0,6*(notaProva)</i></div><div><i>Exemplo de média das atividades com peso e peso final: Chat peso 2 40%, Fórum peso 3 40%, Prova peso 1 60%. Cálculo automático da nota: [0,4*(2*notaChat + 3*notaForum) + 0,6*(notaProva)]/(2+3+1)</i></div><br/><div>A <b>Avaliação Final</b> serve para indicar se esta atividade entrará para o cálculo automático da média como Avaliação Final. Ou seja, <i>(médiaAluno + notaAF)/2</i></div><div>Se houver opção pela Avaliação Final, esta não terá carga horária, peso e peso final. Se estes valores forem informados, serão ignorados.</div><br/><div>Uma atividade <b>equivalente</b> a outra significa que se o aluno não realizar a primeira, a nota usada será a da segunda.</div><div>Se uma atividade é definida como equivalente de outra, ela deverá ter a mesma carga horária e os mesmos peso e peso final da principal. Se estes valores forem informados de modo incorreto ou não forem informados, serão utilizados os valores da atividade principal.</div><div><i>Exemplo: Fórum 2 é equivalente a Fórum 1. A nota que será utilizada para a média do aluno é a do Fórum 1. Caso o Fórum 1 não possua nota, a nota a ser utilizada será a do Fórum 2.</i></div>"
       rules_title: "<b>Regras e informações</b>"
       rules: "<div>1) Se a atividade for de frequência, o somatório das cargas horárias máximas de cada turma deve ser igual à carga horária da disciplina</div><br/><div>2) Se a atividade for avaliativa, o somatório dos pesos finais distintos deve ser de 100. <br/> <i>Exemplo: Fórum 1 com peso final 40, Chat 2 com peso final 40, Prova com peso final 60. Cálculo automático: 40 (todas as atividades com peso final 40) + 60 (todas as atividades com peso final 60) = 100.</i> (CORRETO) <br/> <i>Exemplo: Fórum 1 com peso final 40, Chat 2 com peso final 45, Prova com peso final 60. 40 (todas as atividades com peso final 40) + 45 (todas as atividades com peso final 45) + 60 (todas as atividades com peso final 60) = 145.</i> (INCORRETO)</div><br/><div>3) Ao realizar uma alteração nesta tela e clicar em finalizar, a média final de cada aluno será recalculada automaticamente de acordo com as novas definições.</div><br/><div>4) Ao definir uma atividade como avaliativa, a média final dos alunos será calculada automaticamente considerando que todas as notas tenham valor de 0 a 10.</div>"
       rule_wh1: "<div>5) Não é possível definir uma atividade como de frequência enquanto a disciplina não possuir carga horária.</div>"
@@ -2669,6 +2707,8 @@ pt_BR:
       expand: Expandir todos
       compress: Comprimir todos
       share_wh: Dividir carga horária
+      automatic_wh: "Frequências Automáticas"
+      automatic_wh_tooltip: "Ao selecionar frequência automática, os participantes de uma atividade (alunos) automaticamente irão receber a carga horária máxima cadastrada para respectiva atividade. Essa carga horária poderá ser alterada pelos responsáveis"
       default_weight: Definir todos os pesos como 1
       default_final_weight: Definir todos os pesos finais como 100
       finish: Finalizar
@@ -2679,6 +2719,7 @@ pt_BR:
       window_analyzer_home: Início analisador (clique para fechar)
       window_analyzer_end: Fim analisador (clique para fechar)
       analyzer: Analisador
+      not_defined: Não definido
     mail:
       subject_new: 'Aviso: Nova atividade'
       subject_update: 'Aviso: Alteração em atividade'
@@ -3039,10 +3080,17 @@ pt_BR:
       help_message: Enviar mensagem para o atendimento?
     users:
       add_all: Adicionar todos
+      add_responsibles: "<b>Responsáveis</b>"
+      add_students: "<b>Alunos</b>"
       no_user_found: Nenhum usuário encontrado
       add_all_alt: Clique para adicionar todos os usuários à lista de destinatários
       user_alt: "%{name} (Clique para adicionar o usuário %{name} de email %{email} à lista de destinatários)"
       user_remove_alt: "%{name} (Clique para remover o usuário %{name} de email %{email} da lista de destinatários)"
+      add_stu_alt: Clique para adicionar todos os alunos à lista de destinatários
+      add_res_alt: Clique para adicionar todos os responsáveis à lista de destinatários
+      del_stu_alt: Clique para remover todos os alunos da lista de destinatários
+      del_res_alt: Clique para remover todos os responsáveis da lista de destinatários
+      responsibles: Responsáveis
     errors:
       recipients: "Uma mensagem deve possuir, no mínimo, 1 destinatário."
       permission: Você não tem acesso aos dados informados.
@@ -3214,7 +3262,7 @@ pt_BR:
       place: Local
       date: Data
       time: Horário
-      frequency: Carga horária
+      frequency: Frequência
       grade: Nota
       to: ' à '
     status:
@@ -3365,12 +3413,22 @@ pt_BR:
       title: "Recuperação de senha para %{name}"
       url: "Url de recuperação de senha"
       reset_password_not_required: Não foi solicitada recuperação de senha.
+    configure:
+      notification_mail: Notificações por email
+      configure: Configurações
+      theme: Temas
+      theme_blue: "Azul "
+      theme_high_contrast: Auto contraste
+      success:
+        updated: Configurações atualizadas com sucesso
+      error:
+        updated: Falha ao atualizar as configurações
 
   mysolar:
     synchronize: Sincronizar com Módulo Acadêmico
     profiles: Perfis
     closed_uc: (disciplina encerrada)
-
+    configure: Configurações
   portlets:
     curricular_unit:
       type: Tipo
@@ -3397,6 +3455,9 @@ pt_BR:
       profile: Perfil
       all: Todos
       result_search: "Ir para tabela com o resultado da busca"
+
+  draggable:
+    close: Fechar analisador
 
   shortcut:
     shortcut_link: "Atalhos gerais [Shift + ?]"
@@ -3621,10 +3682,10 @@ pt_BR:
     editions:
       name:
         window: "Analizador [A]"
-        analyzer_position: "Posição inicial Analizador [Shift + A]"
+        analyzer_position: "Posição inicial Analizador [Shift + L]"
       code:
         window: 65
-        analyzer_position: 65
+        analyzer_position: 83
 
   scores:
     index:
@@ -3734,8 +3795,8 @@ pt_BR:
       new_no: Não
       new_after_evaluation: Alterado após avaliação
       last_five: "Aqui estão listados apenas os 5 últimos acessos"
-      f: Não
-      t: Sim
+      'false': Não
+      'true': Sim
       equivalency: (É equivalência)
       equivalent: "<b>Esta atividade é equivalente à seguinte atividade principal:</b><br/> %{name}"
       equalities: '(Ver equivalências)'
@@ -3924,8 +3985,9 @@ pt_BR:
       final: "Versão Final <a id='final_version_explain' href='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'>(?)</a>"
       final2: Explicação sobre a versão final
       fv_explain: "&nbsp;&nbsp;&nbsp;&nbsp;O tutor ou professor responsável pela avaliação tem, como papel, avaliar o aluno/grupo com base em seus arquivos enviados e webconferências criadas. Para avaliar uma webconferência, os responsáveis devem analisar as gravações existentes para, então, avaliar o desempenho do aluno. Entretanto, durante a execução do trabalho, o aluno ou o grupo de alunos pode agendar e gravar uma ou mais webconferências. Estas webconferências podem ser feitas, por exemplo, para reuniões entre os membros de uma equipe, para testes, para praticar uma apresentação etc. Ou seja, nem todas as webconferências cadastradas e gravadas precisam, necessariamente, servir para avaliação. <br/><br/> &nbsp;&nbsp;&nbsp;&nbsp;A fim de informar ao responsável qual ou quais das webconferências devem ser consideradas para avaliação, o aluno pode marcar uma ou mais webconferências como Versão Final. Desse modo, o responsável poderá avaliar apenas as webconferências marcadas dentre todas as agendadas e/ou gravadas. Se achar necessário, o responsável poderá analisar e avaliar todas as gravações disponíveis."
+      start_recordding: Iniciar com gravação
       back: 'Voltar à lista de webconferências'
-      name: 'Gravações de '
+      reccording_title: 'Gravações de '
       final_tr: Versão Final
     webconference:
       edit: Editar
@@ -4092,13 +4154,14 @@ pt_BR:
       anull: " (Questão Anulada)"
       scores: '( %{score} pontos )'
       number_question: 'Prova com %{no_question} questões'
-      image: "Imagem %{alt}."
+      image: "Imagem %{alt}. Clique para ampliar"
       legend: " Legenda: %{legend}"
       image_item: "Imagem do item %{item}: %{alt}."
       audio: "Legenda do áudio: %{alt}."
       audio_item: "Áudio do item %{item}."
       audio2: "Áudio %{desc}."
       audio_text: "Versão textual do áudio: %{desc}."
+      image_zoom: "Clique para ampliar"
     finish:
       confirm: Tem certeza que deseja finalizar a prova?
     summary:
@@ -4145,6 +4208,9 @@ pt_BR:
       controlled_date: Não é possível remover IPs de provas já iniciadas ou encerradas
       result_release_date: Só será possível calcular a nota a partir da data e horário cadastrados para sua liberação
       cant_change_release_result: resultados já foram liberados
+      equivalent: Prova com equivalência, status não pode ser alterado.
+      not_corrected: Essa prova ainda não foi corrigida
+      no_attempt: Esta prova não possui nenhuma tentativa
     show:
       groups: Turmas
       empty_group: Turma vazia
@@ -4179,14 +4245,13 @@ pt_BR:
       attempt: 'Tentativa %{attempt}'
       average: 'Média: %{grade}'
       result: Resultado
-      subject: ENVIO DE NOTA
+      subject: Nota da prova %{exam} - %{at_info}
       salutation: 'Prezado(a)'
       exam_name: A prova
       exam_grade: 'Seu resultado foi:'
       email_infor: "Para verificar mais informações sobre seu resultado ou sobre a correção, estes já estão disponíveis no menu de Provas no Solar."
       email_infor_compl: "teve seu período encerrado e sua nota foi calculada"
       email_of: do
-      email: "Por favor não responda esta mensagem. Este é um email automático do Solar 2.0."
       itens_corrected: "Iten(s) correto(s): "
       itens_marked: "Iten(s) marcado(s): "
       true_item: "Item verdadeiro"
@@ -4213,6 +4278,7 @@ pt_BR:
   question:
     question: 'Questão '
     enunciation: 'Enunciado '
+    privacy: 'Privacidade '
     question_images:
       image: Imagem
       legend: Legenda
@@ -4330,6 +4396,7 @@ pt_BR:
         confirm_image_removal: 'Você tem certeza? Mesmo que este formulário seja cancelado, a imagem será removida e não poderá ser recuperada.'
         confirm_audio_removal: 'Você tem certeza? Mesmo que este formulário seja cancelado, o audio será removido e não poderá ser recuperada.'
         empty: "O item %{count} está em branco, deseja excluí-lo?"
+        item: "Item"
       t_option: V
       f_option: F
       info:
@@ -4349,8 +4416,11 @@ pt_BR:
         new: Novo texto
         import: Importar de questões desta prova
       media:
-        add_images: Adicionar imagens
-        add_audios: Adicionar áudios
+        add_images: Imagens
+        add_audios: Áudios
+        add_more_images: Adicionar mais imagens
+        add_more_audios: Adicionar mais áudios
+        associated_text: Texto associado
     labels:
       labels: 'palavras-chave: '
     error:
@@ -4589,6 +4659,7 @@ pt_BR:
       itself: não pode ser ela mesma.
       event_evaluative: não pode ser definido, pois eventos do tipo Recesso ou Feriado não podem ser avaliativos.
       event_frequency: não pode ser definido, pois eventos do tipo Recesso ou Feriado não podem ser de frequência.
+      same_type_af: deve ter o mesmo valor no campo 'Avaliação Final'
     success:
       manage: Atividades gerenciadas com sucesso.
     warnings:
@@ -4701,14 +4772,14 @@ pt_BR:
       course_document: "Entre em contato com os responsáveis ou a secretaria responsável pelo seu curso."
       photo: "Para alterar ou inserir sua foto, basta efetuar o login no Solar, clicar no seu nome disponível na barra azul superior (ao lado do relógio) e clicar na opção 'Alterar foto'. Um popup será aberto para que você faça o upload da foto que desejar atendendo os requisitos lá especificados."
       nick_login: "Seu login será a informação utilizada para que você acesse o ambiente juntamente com sua senha. Já o apelido será como você será visto em determinadas áreas do ambiente como, por exemplo, nos Fóruns em que as postagens indicam os usuários pelos seus apelidos e não pelos nomes.<br/> Sugerimos escolher apelidos que te identifiquem, não indicamos apelidos como 'Aluno' ou 'Tutor', por exemplo."
-      finished_ucs: "Atualmente, o Solar 2.0 ainda não possui a funcionalidade para acessar cursos já encerrados."
+      finished_ucs: "Clicando em '(visualizar encerradas)' na área de disciplinas da tela inicial (home)"
       idea: "O Solar 2.0 dispõe de um botão de 'Sugestões para o Solar 2.0'. Para acessá-lo, basta realizar o login, que o botão ficará disponível no canto superior direito da tela logo abaixo do relógio. <br/>Lá você poderá enviar sugestões, reclamações e similares."
       error: "O Solar 2.0 não altera dados nem arquivos previamente enviados pelos usuários sem comunicá-los ou sem prévia autorização. Portanto, se o portfolio do aluno está em branco, sugerimos que entre em contato com ele para solicitar um re-envio do arquivo correto."
       cant_find_faq: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação. Lembre-se de informar: <br/> ‣ Nome <br/> ‣ Cpf <br/> ‣ Email<br/> ‣ O maior número de informações sobre o ocorrido. Se possível, imagens (prints de tela) também."
 
   ckeditor:
     confirms:
-      question: "O item count está em branco. Deseja excluí-lo?"
+      question: "Deseja excluir os itens em branco?"
 
 # reports_add
   reports:
@@ -4885,20 +4956,23 @@ pt_BR:
     more_alt: Ver descrição completa de %{tool}
     less_alt: Ver descrição resumida de %{tool}
     frequency:
-      t: 'Sim <br/>(máx: %{hours}h)'
-      f: Não
+      'true': 'Sim <br/>(máx: %{hours}h%{automatic})'
+      'false': Não
+      automatic: " (automática)"
+      defined: " (definida pelo responsável) "
     ev_final_exam:
-      t: 'Sim <br/>(AF)'
-      f: Não
+      'true': 'Sim <br/>(AF)'
+      'false': Não
     final_exam:
-      t: 'Sim'
-      f: Não
+      'true': 'Sim'
+      'false': Não
     hours: '%{hours}h'
     error:
       general_message: Não foi possível realizar a ação desejada
     all: Todos
     attached_files: Anexos
-    remove_file: Remover anexo %{name}
+    remove_file: "Remover anexo %{name} (%{size}MB)"
+    file_added: Arquivo adicionado
 
   ip_control:
     info:
@@ -4948,7 +5022,7 @@ pt_BR:
     summary:
       title: "Comentários e notas para %{user} em %{tool}"
       grade: 'Nota: '
-      working_hours: 'Carga Horária: '
+      working_hours: 'Frequência: '
       no_grade: "<i>sem nota</i>"
       no_wh: "<i>sem carga horária</i>"
       info: Nota e Frequência

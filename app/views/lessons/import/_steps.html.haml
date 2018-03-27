@@ -20,12 +20,12 @@
     .step-list
       = render partial: 'lessons/import/filter', locals: { types: @types }
       .right_buttons
-        = link_to_function t('.conclude'), 'go_to_conclude()', class: 'btn btn_main conclude', alt: t('.conclude')
+        = link_to t('.conclude'), "#void", onclick: 'go_to_conclude()', class: 'btn btn_main conclude', alt: t('.conclude')
 
     .step-preview
       .content-preview
       .right_buttons
-        = link_to_function t('.back'), 'slideBack()', class: 'btn', alt: t('.back')
+        = link_to t('.back'), "#void", onclick: 'slideBack()', class: 'btn', alt: t('.back')
 
     .step-conclude
       = render partial: 'lessons/import/conclude', locals: { allocation_tags_ids: @ats, lesson_module_id: @lesson_module_id }

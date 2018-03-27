@@ -15,7 +15,7 @@ class LessonsController < ApplicationController
     authorize! crud_action, Lesson, { on: @allocation_tags_ids = params[:allocation_tags_ids] }
   end
 
-  after_filter only: :update do 
+  after_filter only: :update do
     log(@lesson, "lesson: #{@lesson.id}, [copy original data] receive_updates_lessons: #{@lesson.receive_updates_lessons.pluck(:id)}") rescue nil
   end
 
@@ -46,6 +46,7 @@ class LessonsController < ApplicationController
     authorize! :list, Lesson, { on: @allocation_tags_ids }
 
     @all_groups = Group.where(offer_id: params[:offer_id])
+
     @academic_allocations = LessonModule.academic_allocations_by_ats(@allocation_tags_ids.split(' '), page: params[:page])
   rescue
     render nothing: true, status: 500
@@ -58,7 +59,7 @@ class LessonsController < ApplicationController
       at_ids = (active_tab[:url][:allocation_tag_id].blank? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
       authorize! :show, Lesson, { on: [(@offer.allocation_tag.id rescue at_ids)].flatten, read: true, accepts_general_profile: true }
       user_session[:lessons] << params[:id].to_i
-    
+
       @lessons = LessonModule.find(params[:lesson_module_id]).lessons_to_open(current_user)
       @modules = LessonModule.to_select(at_ids, current_user)
       @lesson  = @lessons.first
@@ -76,7 +77,7 @@ class LessonsController < ApplicationController
     else
      authorize! :show, Lesson, { on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true }
       user_session[:lessons] << params[:id].to_i
-    
+
       at_ids = (params[:allocation_tags_ids].present? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
       @modules = LessonModule.to_select(at_ids, current_user)
       @lesson  = Lesson.find(params[:id])
@@ -290,7 +291,7 @@ class LessonsController < ApplicationController
       verify_owner(ids)
       authorize! :import, Lesson, { on: lessons_to_import.map(&:allocation_tags).flatten.map(&:id).flatten, any: true }
       authorize! :import, Lesson, { on: params[:allocation_tags_ids].split(' ').flatten }
-      
+
       params[:lessons].split(';').each do |lesson_hash|
         lesson_hash = lesson_hash.split(',')
         lesson      = Lesson.find(lesson_hash[0])
@@ -321,7 +322,7 @@ class LessonsController < ApplicationController
         log(LessonModule.find(lesson_module_id), "lesson: #{imported_lesson.id} [import], #{attributes.merge!(created_module: created_module, start_date: lesson_hash[2], end_date: lesson_hash[3])}", LogAction::TYPE[:create]) rescue nil
       end
     end
-    
+
     render json: { success: true, msg: t('lessons.success.imported') }
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
@@ -348,11 +349,15 @@ class LessonsController < ApplicationController
     end
 
     def index_interacting_permissions
-      authorize! :index, Lesson, on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]]
+      @allocation_tags_ids = params[:allocation_tags_ids].present? ? params[:allocation_tags_ids] : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
 
-      allocation_tag = AllocationTag.find(allocation_tag_id)
-      @responsible   = allocation_tag.is_responsible?(current_user.id)
-      @allocation_tags_ids = params[:allocation_tags_ids].present? ? params[:allocation_tags_ids] : allocation_tag.related
+      profiles_ids = current_user.profiles_with_access_on(:index, :lessons, @allocation_tags_ids, true)
+
+      raise CanCan::AccessDenied if profiles_ids.blank?
+
+      @responsible = Profile.where("cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean) OR cast(profiles.types & #{Profile_Type_Coord} as boolean)").where(id: profiles_ids).any?
+
+      @only_student = Profile.where("cast(profiles.types & #{Profile_Type_Student} as boolean)").where(id: profiles_ids).count == profiles_ids.count
     end
 
     def index_admin_permissions
@@ -373,7 +378,7 @@ class LessonsController < ApplicationController
     end
 
     def offer_data
-      @offer = Offer.find(params[:offer_id] || active_tab[:url][:id]) 
+      @offer = Offer.find(params[:offer_id] || active_tab[:url][:id])
     rescue
       @offer = AllocationTag.where(id: params[:allocation_tags_ids]).first.offers.first
     end

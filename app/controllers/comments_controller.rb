@@ -14,7 +14,7 @@ class CommentsController < ApplicationController
   layout false
 
   def new
-    academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], params[:student_id], params[:group_id], false)
+    academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], params[:student_id], params[:group_id], false, nil)
     raise 'no_acu' if academic_allocation_user.nil?
     @comment = Comment.new academic_allocation_user_id: academic_allocation_user.id
     @comment.files.build
@@ -85,7 +85,7 @@ class CommentsController < ApplicationController
 
     def get_ac_tool
       # if tool allow creation at offer, recover all related ats
-      ats = params[:tool].constantize.const_defined?("OFFER_PERMISSION") ? AllocationTag.find(active_tab[:url][:allocation_tag_id]).related : active_tab[:url][:allocation_tag_id] 
+      ats = params[:tool].constantize.const_defined?("OFFER_PERMISSION") ? AllocationTag.find(active_tab[:url][:allocation_tag_id]).related : active_tab[:url][:allocation_tag_id]
 
       @ac = AcademicAllocation.where(academic_tool_type: params[:tool], academic_tool_id: (params[:tool_id] || params[:id]), allocation_tag_id: ats).first
     end

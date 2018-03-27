@@ -59,11 +59,15 @@ table.webconferences{
       }
     }
   }
-  
+
   a.disabled{
     pointer-events: none;
     text-decoration: none;
     color: $score_tbody_link;
+  }
+
+  td[headers="web_frequency"] {
+    padding: 6px 5px 4px;
   }
 }
 

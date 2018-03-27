@@ -1,4 +1,6 @@
-.question_images
+%fieldset.question_images
+  %legend#question_images_label
+    = f.label t('.add_images')
   .visuallyhidden= label_tag :img_alt, '', id: 'exam_question_question_question_images_img_alt', onfocus: 'sendFocusAudioError("exam_question_question_attributes_question_images_attributes_", "_img_alt", 6)', tabindex: '0'
   .visuallyhidden= label_tag :img_alt, '', id: 'exam_question_question_question_images_image_content_type'
   .visuallyhidden= label_tag :img_alt, '', id: 'question_question_images_img_alt', onfocus: 'sendFocusAudioError("question_question_images_attributes_", "_img_alt", 6)', tabindex: '0'
@@ -6,9 +8,10 @@
   
   = render partial: 'questions/form/image', locals: { f: f, eq: nil }
   .input.string
-    = f.add_nested_fields_link :question_images, t('.add_images'), class: 'btn'
-
-.question_audios
+    = f.add_nested_fields_link :question_images, t('.add_more_images'), class: 'btn'
+%fieldset.question_audios
+  %legend#question_audios_label
+    = f.label t('.add_audios')
   .visuallyhidden= label_tag :audio_description, '', id: 'exam_question_question_question_audios_description', onfocus: 'sendFocusAudioError("exam_question_question_attributes_question_audios_attributes_", "_audio_description", 6)', tabindex: '0'
   .visuallyhidden= label_tag :audio_description, '', id: 'exam_question_question_question_audios_audio_content_type'
   .visuallyhidden= label_tag :audio_description, '', id: 'question_question_audios_description', onfocus: 'sendFocusAudioError("question_question_audios_attributes_", "_audio_description", 6)', tabindex: '0'
@@ -18,24 +21,25 @@
 
   = render partial: 'questions/form/audio', locals: { f: f, eq: nil }
   .input.string
-    = f.add_nested_fields_link :question_audios, t('.add_audios'), class: 'btn'
-- unless @exam_question.blank?
+    = f.add_nested_fields_link :question_audios, t('.add_more_audios'), class: 'btn'
+%fieldset.labels
+  %legend#associated_text_label
+    = f.label t('.associated_text')
+  #question_text
+    - checked = @exam_question.blank? == true ? false : true
 
-  - disabled = f.object.disabled_option(@exam_question.exam_id) ? true : nil
-  - checked = f.object.checked_option(@exam_question.exam_id) ? false : true
+    - unless @exam_question.blank?
+      - disabled = f.object.disabled_option(@exam_question.exam_id) ? true : nil
+      - checked = f.object.checked_option(@exam_question.exam_id) ? false : true
 
-  .labels
-    #question_text
-      #associated_text
-        = f.label t('questions.form.text.associated_text'), id: 'form_associated_text'
-      #associated_radio  
-        = f.collection_radio_buttons :question_text_id, [[true, t('questions.form.text.import')], [false, t('questions.form.text.new')]], :first, :last, default: false, checked: checked, disabled: disabled
+    #associated_radio
+      = f.collection_radio_buttons :question_text_id, [[true, t('questions.form.text.import')], [false, t('questions.form.text.new')]], :first, :last, checked: checked, disabled: disabled, boolean_style: :inline, item_wrapper_tag: false
 
-    = render partial: 'questions/form/text', locals: { f: f, eq: nil } 
+    = render partial: 'questions/form/text', locals: { f: f, eq: nil }
 
 .form-actions.right_buttons
-  = button_to_function t(:back), 'back()', class: 'btn btn_default', type: 'button', id: '_back_media'
-  = button_to_function t('questions.form.info.continue'), 'go_to_items()', class: 'btn btn_main btn_lightbox question_media_button', alt: t(:save), type: 'button'
+  = button_tag t(:back), :type => 'button', :onclick => "back()", class: 'btn btn_default', id: '_back_media'
+  = button_tag t('questions.form.info.continue'), :type => 'button', :onclick => "go_to_items()", class: 'btn btn_main btn_lightbox question_media_button', alt: t(:save)
 
 
 :javascript

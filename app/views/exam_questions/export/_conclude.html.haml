@@ -19,8 +19,8 @@
         %td.text_none{ colspan: 10 }= t('.no_question')
 
 .right_buttons
-  = link_to_function t('.back'), 'back_to_list()', class: 'btn', alt: t('.back')
-  = link_to_function t('.export'), 'export_to_selected_exams()', class: 'btn btn_main', alt: t('.export')
+  = link_to t('.back'), "#void", onclick: 'back_to_list()', class: 'btn', alt: t('.back')
+  = link_to t('.export'), "#void", onclick: 'export_to_selected_exams()', class: 'btn btn_main', alt: t('.export')
 
 :javascript
 

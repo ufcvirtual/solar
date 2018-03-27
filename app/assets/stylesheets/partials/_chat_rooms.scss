@@ -124,3 +124,9 @@ a.chat_list {
 .description_chat_rooms {
   table-layout: fixed;
 }
+
+.tb_list{
+  td[headers="frequency_my_chats"]{
+    padding: 6px 5px 4px;
+  }
+}

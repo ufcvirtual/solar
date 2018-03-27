@@ -15,9 +15,9 @@ class QuestionItem < ActiveRecord::Base
   validates :audio_description, presence: true, if: '(!item_audio_file_name.blank?)'
 
   has_attached_file :item_image,
-                    styles: { small: '120x120'},
-                    path: ':rails_root/media/questions/items/:id_:basename.:extension',
-                    url: '/media/questions/items/:id_:basename.:extension'
+                    styles: { medium: '350x350>' },
+                    path: ':rails_root/media/questions/items/:id_:basename_:style.:extension',
+                    url: '/media/questions/items/:id_:basename_:style.:extension'
 
   validates_attachment_size :item_audio, less_than: 10.megabyte, message: ''
   validates_attachment_content_type :item_audio, content_type: /^audio\/(mpeg|x-mpeg|mp3|x-mp3|mpeg3|x-mpeg3|mpg|x-mpg|x-mpegaudio)$/, message: I18n.t('questions.error.wrong_type_audio')
@@ -28,8 +28,8 @@ class QuestionItem < ActiveRecord::Base
 
   before_destroy :can_destroy?
 
-  after_create :replace_audio, if: '(!item_audio_file_name.blank?)'
-  after_create :replace_image, if: '(!item_image_file_name.blank?)'
+  before_save :replace_audio, if: '(!item_audio_file_name.blank? && (new_record? || item_audio_file_name_changed?))'
+  before_save :replace_image, if: '(!item_image_file_name.blank? && (new_record? || item_image_file_name_changed?))'
 
   def can_destroy?
     raise 'in_use' if exam_responses.any?
@@ -61,11 +61,11 @@ class QuestionItem < ActiveRecord::Base
 
   private
     def replace_audio
-      self.update_attributes(:item_audio_file_name => normalized_item_audio_file_name)
+      self.item_audio_file_name = normalized_item_audio_file_name
     end
 
     def replace_image
-      self.update_attributes(:item_image_file_name => normalized_item_image_file_name)
+      self.item_image_file_name = normalized_item_image_file_name
     end
 
 end

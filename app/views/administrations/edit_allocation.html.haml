@@ -4,5 +4,5 @@
 %td= @allocation.updated_by.try(:username)
 %td= l(@allocation.updated_at)
 %td.right_buttons
-  = link_to_function content_tag(:i, nil, class: 'icon-checkmark'), 'update_allocation(this)', :"save-link" => admin_allocation_path(@allocation), :"show-link" => admin_allocation_path(@allocation.id), class:  'btn btn_manage_cancel'
-  = link_to_function content_tag(:i, nil, class: 'icon-cross'), 'cancel(this)', :"show-link" => admin_allocation_path(@allocation), class: 'btn btn_manage_cancel'
+  = link_to content_tag(:i, nil, class: 'icon-checkmark'), "#void", onclick: 'update_allocation(this)', :"save-link" => admin_allocation_path(@allocation), :"show-link" => admin_allocation_path(@allocation.id), class:  'btn btn_manage_cancel'
+  = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: 'cancel(this)', :"show-link" => admin_allocation_path(@allocation), class: 'btn btn_manage_cancel'

@@ -41,16 +41,16 @@
           %td.center{headers: "date_range#{type}" }
             %div= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(' - ')
             %div= [(assignment.start_hour), (assignment.end_hour)].join(' - ') unless assignment.start_hour.blank?
-          %td.center{headers: "evaluative#{type}" }=raw (assignment.final_exam == 't' ? t(assignment.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(assignment.evaluative, scope: [:scores, :info]))
-          %td.center{headers: "frequency#{type}" }=raw t(assignment.frequency, scope: [:common_between_pages, :frequency], hours: assignment.max_working_hours)
+          %td.center{headers: "evaluative#{type}" }=raw (assignment.final_exam == true ? t(assignment.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(assignment.evaluative, scope: [:scores, :info]))
+          %td.center{headers: "frequency#{type}" }=raw t(assignment.frequency, scope: [:common_between_pages, :frequency], hours: assignment.max_working_hours, automatic: (assignment.frequency_automatic == true ? t("common_between_pages.frequency.automatic").delete('()') : ""))
           %td.center{headers: "action#{type}" }
-            = link_to content_tag(:i, nil, class: 'icon-users'), '#', class: 'btn participants', :'data-url' => participants_assignment_path(assignment.academic_tool_id), :"data-tooltip" => (is_group_type ? t('.groups') : t('.participants')), onclick: 'open_div(this, event);', :'data-div' => '.participants_box', id: "assignment-#{assignment.academic_tool_id}", :'data-hide' => true, :'aria-label' => (is_group_type ? t('.groups') : t('.participants'))
+            = link_to content_tag(:i, nil, class: 'icon-users'), '#void', class: 'btn participants', :'data-url' => participants_assignment_path(assignment.academic_tool_id), :"data-tooltip" => (is_group_type ? t('.groups') : t('.participants')), onclick: 'open_div(this, event);', :'data-div' => '.participants_box', id: "assignment-#{assignment.academic_tool_id}", :'data-hide' => true, :'aria-label' => (is_group_type ? t('.groups') : t('.participants'))
             - if is_group_type
-              - closed = (assignment.closed == 't')
+              - closed = (assignment.closed == true)
               - if @can_manage
-                = link_to content_tag(:i, nil, class: 'icon-user-add'), '#', class: "btn manage_groups", :"data-tooltip" => t(".manage_groups"), :"data-url" => group_assignments_path(assignment_id: assignment.academic_tool_id), :'aria-label' => t(".manage_groups") + t('fancybox.open')
+                = link_to content_tag(:i, nil, class: 'icon-user-add'), '#void', class: "btn manage_groups", :"data-tooltip" => t(".manage_groups"), :"data-url" => group_assignments_path(assignment_id: assignment.academic_tool_id), :'aria-label' => t(".manage_groups") + t('fancybox.open')
               - if @can_import
-                = link_to content_tag(:i, nil, class: 'icon-import'), '#', class: "btn import_groups #{!closed ? '' : 'disabled'}", :"data-tooltip" => t(".import_groups"), disabled: closed, :"data-url" => import_list_group_assignments_path(assignment_id: assignment.academic_tool_id), :'aria-label' => t(".import_groups") + t('fancybox.open')
+                = link_to content_tag(:i, nil, class: 'icon-import'), '#void', class: "btn import_groups #{!closed ? '' : 'disabled'}", :"data-tooltip" => t(".import_groups"), disabled: closed, :"data-url" => import_list_group_assignments_path(assignment_id: assignment.academic_tool_id), :'aria-label' => t(".import_groups") + t('fancybox.open')
           %tr
             %td{ headers: "description#{type}", colspan: 5 }
               .participants_box.invisible{ class: "assignment-#{assignment.academic_tool_id}" }

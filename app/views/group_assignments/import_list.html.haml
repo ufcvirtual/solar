@@ -27,6 +27,6 @@
           %td.text_none{colspan: 2}= t(".select_a_group")
 
   .final_buttons
-    = link_to_function t(".import"), "import_group(this)", class: "btn btn_main", :"data-url" => import_group_assignment_path(@assignment.id, assignment_id: "aid")
+    = link_to t(".import"),"#void", onclick: "import_group(this)", class: "btn btn_main", :"data-url" => import_group_assignment_path(@assignment.id, assignment_id: "aid")
 
 = javascript_include_tag "group_assignments"

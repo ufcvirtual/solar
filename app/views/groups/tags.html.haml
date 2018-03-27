@@ -8,8 +8,8 @@
   .block_content_toolbar
     .block_toolbar_left.btn-group{style: 'margin-top: 28px;'}
     .block_toolbar_right
-      = link_to (content_tag(:i, nil, class: 'icon-cross')), '#', class: 'btn btn_unbind_groups_fancybox', :"data-link" => @paths[:unbind], :'data-tooltip' => t(".unbind")
-      = link_to (content_tag(:i, nil, class: 'icon-trash')), '#', class: 'btn btn_remove_groups_fancybox', :"data-link" => @paths[:remove], :"data-checkbox" => 'ckb_group', :'data-tooltip' => t('.remove')
+      = link_to (content_tag(:i, nil, class: 'icon-cross')), '#void', class: 'btn btn_unbind_groups_fancybox', :"data-link" => @paths[:unbind], :'data-tooltip' => t(".unbind")
+      = link_to (content_tag(:i, nil, class: 'icon-trash')), '#void', class: 'btn btn_remove_groups_fancybox', :"data-link" => @paths[:remove], :"data-checkbox" => 'ckb_group', :'data-tooltip' => t('.remove')
 
   - part1, part2 = @groups.in_groups(2, false)
 

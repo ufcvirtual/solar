@@ -1,32 +1,33 @@
 - question_images = get_question_images(@question.id)
 - @question_audios = get_question_audios(@question.id)
 %h1#lightBoxDialogTitle= t('.title')
-
 .exam_open
   .content_exam
     .block_content
       .questions
         - text = QuestionText.find(@question.question_text_id).text.html_safe unless @question.question_text_id.nil?
-        - unless @question.question_text_id.nil?  
+        - unless @question.question_text_id.nil? 
           %ul.question_texts  
             %li#question_text    
               .legend 
-                = link_to('#', onclick: 'show_text(this)', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
-                  =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
+                = link_to('#void', onclick: 'show_text(this)', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
+                  =content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
                   =t('questions.questions.associated_text')
-                = link_to('#', onclick: 'show_text(this)', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
-                  =content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.hide_alt'), :'aria-hidden' => 'true')
+                = link_to('#void', onclick: 'show_text(this)', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
+                  =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.hide_alt'), :'aria-hidden' => 'true')
                   =t('questions.questions.associated_text')
                 .q_text
                   = raw text
         %h3.question
-          .enunciation=raw @question.enunciation
-        - unless question_images.blank?
+          %span.enunciation=raw @question.enunciation
+        - unless question_images.nil?
           %ul.question_images
             - question_images.each do |q_image|
-              %li.image{class: (q_image.legend.blank? || @pdf == 1) ? '' : 'legend'}
-                .image
-                  = image_tag q_image.image(get_image_size(question_images.count)), alt: q_image.img_alt, :'aria-label' => t('exams.open.image', alt: q_image.img_alt) + (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend))
+              /%li.image{class: (q_image.legend.blank? || @pdf == 1) ? '' : 'legend'}
+              %li.image
+                .zoom
+                  %p= t('exams.open.image_zoom')
+                  = image_tag q_image.image.url(get_image_size(question_images.count)), :class => 'item_image', alt: q_image.img_alt, :'aria-label' => t('exams.open.image', alt: q_image.img_alt) + (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend)), :"data-zoom-url" => q_image.image.url(:original)
                 - unless q_image.legend.blank?
                   .legend{:'aria-hidden' => 'true'}= q_image.legend
         - unless @question_audios.blank?
@@ -40,16 +41,16 @@
                 .audio
                   %audio{ src: q_audio.audio, autoplay: false, controls: true, name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' => (q_audio.description.blank? ? '' : t('exams.open.audio', alt: q_audio.description))}
                     %p= t("errors.messages.audio")
-                  = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), 'down_speed()'
-                  = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), 'up_speed()'
+                  = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
+                  = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'
                 .legend{class: class_.blank? ? '' : 'legend-description'}
                   - unless q_audio.description.blank?
                     %p{:'aria-hidden' => 'true'}= q_audio.description
                   - unless q_audio.audio_description.blank?  
-                    = link_to('#', onclick: 'show_audio_description(this)', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
+                    = link_to('#void', onclick: 'show_audio_description(this)', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
                       =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
                       =t('questions.questions.show')
-                    = link_to('#', onclick: 'show_audio_description(this)', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
+                    = link_to('#void', onclick: 'show_audio_description(this)', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.hide_alt')) do |l|
                       =content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.hide_alt'), :'aria-hidden' => 'true')
                       =t('questions.questions.show')
 
@@ -58,3 +59,29 @@
         = render 'exams/open/question_preview', { question: @question}
 
 = javascript_include_tag 'tooltip', 'audios', 'exams'    
+
+:javascript
+
+  $(".zoom").hover(function(){
+    if($(this).hasClass("zoomed")){
+      $(this).css('cursor','zoom-out');
+    }else{
+      $(this).css('cursor','zoom-in');
+    }
+  });
+  $(".zoom").click(function(){
+    if($(this).hasClass("zoomed")){
+      $(this).removeClass("zoomed");
+      $(this).css('cursor','zoom-in');
+    }else{
+        $(this).addClass("zoomed");
+        $(this).css('cursor','zoom-out');
+    }
+  });
+
+  $('.item_image').each(function(){
+    var original_img_url = $(this).attr('data-zoom-url');
+    $(this)
+    .parent()
+    .zoom({url: original_img_url, on: 'click'});
+  });

@@ -9,12 +9,12 @@ module V1
         # return a @discussion object
         def verify_user_permission_on_discussion_and_set_obj(permission) # permission = [:index, :create, ...]
           raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
-          
+
           @discussion = Discussion.find(params[:id])
           @group      = Group.find(params[:group_id])
           @profile_id = current_user.profiles_with_access_on(permission, :posts, @group.allocation_tag.related, true).first
 
-          raise ActiveRecord::RecordNotFound if @profile_id.nil? || !(current_user.groups([@profile_id], Allocation_Activated).include?(@group))
+          raise CanCan::AccessDenied if @profile_id.nil? || !(current_user.groups([@profile_id], Allocation_Activated).include?(@group))
         end
 
         def post_params
@@ -139,13 +139,18 @@ module V1
 
         raise MissingTokenError unless @discussion.user_can_interact?(current_user.id) # unauthorized
 
-        academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: RelatedTaggable.related({ group_id: @group.id })).first
+        ats = [AllocationTag.find_by_group_id(@group.id)] || RelatedTaggable.related({ group_id: @group.id })
+
+        academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: ats).first
+
+        acu = AcademicAllocationUser.find_or_create_one(academic_allocation.id, ats.first, current_user.id, nil, true, nil)
 
         @post = Post.new(post_params)
         @post.content = CGI::escapeHTML(@post.content)
         @post.user = current_user
         @post.profile_id = @profile_id
         @post.academic_allocation_id = academic_allocation.id
+        @post.academic_allocation_user_id = acu.try(:id)
         User.current = current_user
 
         if @post.save
@@ -168,7 +173,7 @@ module V1
         put ':id' do
           User.current = current_user
           raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
-          
+
           post = Post.find(params[:id])
 
           raise ActiveRecord::RecordNotFound if post.blank?

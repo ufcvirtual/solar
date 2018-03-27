@@ -1,0 +1,9 @@
+.show_ac
+  %h1#lightBoxDialogTitle= @name
+
+  .form-inputs.block_content.show
+    %span.label_info= sanitize(@description)
+
+    .schedule_dates
+      .right_buttons
+        = button_tag t("agendas.close"), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox'

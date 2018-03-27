@@ -78,7 +78,11 @@ a, a.menor, a.link_content {
   color: $color_main_base_link;
 }
 
-a.link_content, .forum_post_attachment_list a {
+.show_notification a:not(.prev), .show_notification a:not(.next){
+  text-decoration: underline;
+}
+
+a.link_content, .forum_post_attachment_list a{
   text-decoration: underline;
   color: $color_contrast_text;
 }
@@ -218,7 +222,7 @@ textarea {
 }
 
 a.disabled{
-  text-decoration: none; 
+  text-decoration: none;
   color: $disabled_color;
 }
 .disabled {
@@ -347,7 +351,7 @@ i.noscript{
 
 .fancybox-opened{
   .fancybox-title{
-    word-break: break-all;
+    word-break: break-word;
     text-align: center;
   }
 }

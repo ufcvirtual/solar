@@ -5,7 +5,7 @@
   .block_title
     %h2= t(".chats")
     - if can? :tool_management, Edition, {on: @allocation_tags_ids}
-      .tool_managmenet_link= link_to_function t('editions.evaluative_tools.chats_call'), 'call_tool_management(this)', :'data-link' => chat_tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids)
+      .tool_managmenet_link= link_to t('editions.evaluative_tools.chats_call'), "#void", onclick: 'call_tool_management(this)', :'data-link' => chat_tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids)
 
   .block_content_toolbar
     .block_toolbar_left.btn-group
@@ -13,8 +13,8 @@
 
     .block_toolbar_right
       .btn-group
-        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit', "data-link-to-edit" => edit_chat_room_path(':id', allocation_tags_ids: @allocation_tags_ids), :"data-edit-title" => t(".edit_chat"), disabled: true, :"data-tooltip" => t(".edit_chat")
-        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_chat', :"data-link-delete" => chat_room_path(':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".delete_chats")
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#void", class: 'btn btn_edit', "data-link-to-edit" => edit_chat_room_path(':id', allocation_tags_ids: @allocation_tags_ids), :"data-edit-title" => t(".edit_chat"), disabled: true, :"data-tooltip" => t(".edit_chat")
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#void", class: 'btn btn_del delete_chat', :"data-link-delete" => chat_room_path(':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".delete_chats")
 
   - unless @chat_rooms.blank?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)

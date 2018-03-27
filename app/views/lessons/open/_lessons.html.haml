@@ -34,15 +34,18 @@
           $("#lesson-selected").trigger('click');
           setTimeout(function() {
             closeDropdown();
+            $(".course #lesson_name").focus();
           }, 250);
-          $("#lesson-selected").focus();
+          //$("#lesson-selected").focus();
           break;
       }
     });
 
-     $("#lesson-options-dropdown ul li a").on("click", function(event) {
-        $(this).parent().parent().find("a").removeClass("selected");
-        $(this).addClass("selected");
+     $("#lesson-options-dropdown ul li a").on("click keydow", function(event) {
+        if (event.which === 13 || event.type === 'click') {
+          $(this).parent().parent().find("a").removeClass("selected");
+          $(this).addClass("selected");
+        }
      });
 
   });

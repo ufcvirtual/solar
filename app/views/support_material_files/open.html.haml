@@ -6,8 +6,8 @@
           %span.hide=t(:audio_suggestions)
           %audio{ src: @file.path, autoplay: false, controls: 'true', name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"} 
             %track{ kind: "captions"}
-          = link_to_function content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :"aria-label" => t('questions.questions.up_down')), 'down_speed()'
-          = link_to_function content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :"aria-label" => t('questions.questions.up_speed')), 'up_speed()'     
+          = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :"aria-label" => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
+          = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :"aria-label" => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'     
       
     - elsif @file.is_file? && SupportMaterialFile.verify_file_type(@file.attachment_file_name)
       %span.hide=t(:audio_suggestions)
@@ -16,5 +16,14 @@
         %track{ kind: "descriptions"}
     - else 
       %object{ data: @file.path, width: '100%', height: '100%', id: @file.id, :'aria-label' => 'Por favor visite o site para acessar este conteudo:'+@file.path }
+
+- if @file.attachment_content_type.index('audio')
+  .question_audios{:'aria-hidden' => 'true'}
+    .audio
+      %form.hide
+        %input.aPbr{id: 'aPbr', type: 'range', value: 1, min: 0, max: 5, step: 0.1 }
+          %p
+            = t(:control_audio, scope: [:questions, :questions])
+            %span#aCurrentPbr= 1   
       
 = javascript_include_tag 'audios'     

@@ -18,7 +18,7 @@ class UsersController < ApplicationController
 
   def verify_cpf
 
-    if (!(params[:cpf].present?) || !(Cpf.new(params[:cpf]).valido?))
+    if (!(params[:cpf].present?) || !(PersonCpf.valid_cpf?(params[:cpf])))
       redirect_to login_path(cpf: params[:cpf]), alert: t(:new_user_msg_cpf_error)
     else
 
@@ -113,6 +113,16 @@ class UsersController < ApplicationController
     end
   end
 
+  def remove_photo
+    current_user.photo = nil
+    current_user.save
+
+    respond_to do |format|
+      format.json { render json: {succes: true, notice: t(:remove_photo_msg) } }
+      format.html { redirect_to :back, notice: t(:remove_photo_msg) }
+    end
+  end
+
   # synchronize user data with ma
   def synchronize_ma
     user = params.include?(:id) ? User.find(params[:id]) : current_user
@@ -134,6 +144,15 @@ class UsersController < ApplicationController
 
   def profiles
     @allocations = current_user.allocations.where("profile_id != 12").order("profile_id").paginate(page: params[:page])
+    respond_to do |format|
+      format.html { render layout: false if params[:layout] }
+      format.js
+    end
+  end
+
+  def configure
+    @configure = PersonalConfiguration.where(user_id: current_user.id).first_or_create
+
     respond_to do |format|
       format.html { render layout: false if params[:layout] }
       format.js

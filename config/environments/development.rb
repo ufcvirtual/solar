@@ -15,13 +15,14 @@ Solar::Application.configure do
   # "descendants" pode não retornar todas as classes esperadas. Com as linhas abaixo,
   # todas as classes são carregadas assim que a aplicação é iniciada e, em seguida,
   # as classes são "requeridas" pela aplicação em cada requisição
+  config.eager_load = false
   config.eager_load_paths += Dir['app/models/*.rb']
   ActionDispatch::Reloader.to_prepare do
     Dir['app/models/*.rb'].each {|file| require_dependency file}
   end
 
   # Log error messages when you accidentally call methods on nil.
-  config.whiny_nils = true
+  #config.whiny_nils = true
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
@@ -44,11 +45,12 @@ Solar::Application.configure do
   config.active_record.schema_format = :sql
 
   # Only use best-standards-support built into browsers
-  config.action_dispatch.best_standards_support = :builtin
+  #config.action_dispatch.best_standards_support = :builtin
 
   # Desabilitando compressão de assets
-  config.assets.enabled = true
-  config.assets.compress = false
+  config.assets.debug = true
+ # config.assets.enabled = true
+  #config.assets.compress = false
   config.assets.digest = false # fingerprinting or cache busting
 
   # Habilitando debug_info do SASS, permitindo uma análise mais fácil através do FireSASS

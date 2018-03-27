@@ -1,6 +1,6 @@
 class CommentFile < ActiveRecord::Base
 
-  default_scope order: 'attachment_updated_at DESC'
+  #default_scope order: 'attachment_updated_at DESC'
 
   belongs_to :comment
 
@@ -15,4 +15,7 @@ class CommentFile < ActiveRecord::Base
   validates_attachment_size :attachment, less_than: 5.megabyte, message: ''
   validates_attachment_content_type_in_black_list :attachment
 
+  def order
+   'attachment_updated_at DESC'
+  end
 end

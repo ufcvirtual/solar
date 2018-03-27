@@ -8,7 +8,7 @@
           = simple_form_for :batch, url: import_users_batch_path, html: {multipart: true, id: "import_users"} do |f|
             = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
             = f.input :file, as: :file, required: false, label: false
-            = button_to_function t(:import, scope: [:administrations, :import_users]), "import_users(); return false;", class: "btn btn_main btn_lightbox", type: "button"
+            = button_tag t(:import, scope: [:administrations, :import_users]), :type => 'button', :onclick => "import_users(); return false;", class: 'btn btn_main btn_lightbox'
 
   .wait.invisible
     = t(:wait, scope: [:administrations, :import_users])

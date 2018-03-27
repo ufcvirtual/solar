@@ -25,14 +25,15 @@
                   %td{align: "left", headers: "ev_eva_she"}
                     .title= schedule_event.name
                     .description
-                      - if schedule_event.description.size > 80
-                        .description_slice= raw schedule_event.description.slice(0..80) << "..."
-                        .description_complete= raw schedule_event.description
-                        .more_or_less
-                          %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: schedule_event.name) }= t('common_between_pages.more')
-                          %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: schedule_event.name)}= t('common_between_pages.less')
-                      - else
-                        = raw schedule_event.description
+                      - unless schedule_event.description.blank?
+                        - if schedule_event.description.size > 80
+                          .description_slice= raw schedule_event.description.slice(0..80) << "..."
+                          .description_complete= raw schedule_event.description
+                          .more_or_less
+                            %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: schedule_event.name) }= t('common_between_pages.more')
+                            %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: schedule_event.name)}= t('common_between_pages.less')
+                        - else
+                          = raw schedule_event.description
                     .equivalent
                       - unless schedule_event.eq_name.blank?
                         %a{ href: '#', :"data-dropdown" => "#dropdown_eq_1_#{schedule_event.id}", onkeydown: 'click_on_keypress(event, this);' }
@@ -56,7 +57,7 @@
                   %td.center{class: "assignment_#{schedule_event.situation} #{['scheduleevent','u', schedule_event.id.to_s, @user.id.to_s].join('_')} situation", headers: "ev_eva_sit"}= t("scores.situation.#{schedule_event.situation}")
                   %td.center{headers: "ev_eva_gra", class: "#{['scheduleevent','u', schedule_event.id.to_s, @user.id.to_s].join('_')} #{['g', schedule_event.id.to_s, schedule_event.group_id.to_s].join('_')}"}= schedule_event.grade
                   - if @current_user_is_student
-                    %td.center{headers: "ev_eva_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_assignments_path(ac_id: schedule_event.id, tool_id: schedule_event.academic_tool_id, group_id: schedule_event.group_id), class: "btn #{schedule_event.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: schedule_event.count_comments), :'aria-label' => t('comments.summary.count_alt', count: schedule_event.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+                    %td.center{headers: "ev_eva_comment"}= link_to content_tag(:i, nil, class: 'icon-comment'), "#void", onclick: 'open_summary(this)', :'data-url' => summary_assignments_path(ac_id: schedule_event.id, tool_id: schedule_event.academic_tool_id, group_id: schedule_event.group_id), class: "btn #{schedule_event.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: schedule_event.count_comments), :'aria-label' => t('comments.summary.count_alt', count: schedule_event.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
                   - if @can_evaluate || @can_comment
                     %td.center{headers: "ev_eva_eva"}
                       = link_to content_tag(:i, nil, class: 'icon-write'), evaluate_user_schedule_event_path(schedule_event.academic_tool_id, user_id: @user.id, score_type: 'evaluative'), class: 'btn to_evaluate_schedule_event', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
@@ -86,14 +87,15 @@
                   %td{align: "left", headers: "ev_fre_she"}
                     .title= schedule_event.name
                     .description
-                      - if schedule_event.description.size > 80
-                        .description_slice= raw schedule_event.description.slice(0..80) << "..."
-                        .description_complete= raw schedule_event.description
-                        .more_or_less
-                          %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: schedule_event.name) }= t('common_between_pages.more')
-                          %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: schedule_event.name)}= t('common_between_pages.less')
-                      - else
-                        = raw schedule_event.description
+                      - unless schedule_event.description.blank?
+                        - if schedule_event.description.size > 80
+                          .description_slice= raw schedule_event.description.slice(0..80) << "..."
+                          .description_complete= raw schedule_event.description
+                          .more_or_less
+                            %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: schedule_event.name) }= t('common_between_pages.more')
+                            %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: schedule_event.name)}= t('common_between_pages.less')
+                        - else
+                          = raw schedule_event.description
                     .equivalent
                       - unless schedule_event.eq_name.blank?
                         %a{ href: '#', :"data-dropdown" => "#dropdown_eq_2_#{schedule_event.id}", onkeydown: 'click_on_keypress(event, this);' }
@@ -117,7 +119,7 @@
                   %td.center{class: "assignment_#{schedule_event.situation} #{['scheduleevent','u', schedule_event.id.to_s, @user.id.to_s].join('_')} situation", headers: "ev_fre_sit"}= t("scores.situation.#{schedule_event.situation}")
                   %td.center{headers: "ev_fre_fre", class: "#{['scheduleevent','u', schedule_event.id.to_s, @user.id.to_s].join('_')} #{['g', schedule_event.id.to_s, schedule_event.group_id.to_s].join('_')}"}= schedule_event.working_hours
                   - if @current_user_is_student
-                    %td.center{headers: "ev_fre_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_assignments_path(ac_id: schedule_event.id, tool_id: schedule_event.academic_tool_id, group_id: schedule_event.group_id), class: "btn #{schedule_event.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: schedule_event.count_comments), :'aria-label' => t('comments.summary.count_alt', count: schedule_event.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+                    %td.center{headers: "ev_fre_comment"}= link_to content_tag(:i, nil, class: 'icon-comment'), "#void", onclick: 'open_summary(this)', :'data-url' => summary_assignments_path(ac_id: schedule_event.id, tool_id: schedule_event.academic_tool_id, group_id: schedule_event.group_id), class: "btn #{schedule_event.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: schedule_event.count_comments), :'aria-label' => t('comments.summary.count_alt', count: schedule_event.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
                   - if @can_evaluate || @can_comment
                     %td.center{headers: "ev_fre_eva"}
                       = link_to content_tag(:i, nil, class: 'icon-write'), evaluate_user_schedule_event_path(schedule_event.academic_tool_id, user_id: @user.id, score_type: 'frequency'), class: 'btn to_evaluate_schedule_event', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
@@ -146,14 +148,15 @@
                   %td{align: "left", headers: "ev_not_she"}
                     .title= schedule_event.name
                     .description
-                      - if schedule_event.description.size > 80
-                        .description_slice= raw schedule_event.description.slice(0..80) << "..."
-                        .description_complete= raw schedule_event.description
-                        .more_or_less
-                          %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: schedule_event.name) }= t('common_between_pages.more')
-                          %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: schedule_event.name)}= t('common_between_pages.less')
-                      - else
-                        = raw schedule_event.description
+                      - unless schedule_event.description.blank?
+                        - if schedule_event.description.size > 80
+                          .description_slice= raw schedule_event.description.slice(0..80) << "..."
+                          .description_complete= raw schedule_event.description
+                          .more_or_less
+                            %a.description_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.more_alt', tool: schedule_event.name) }= t('common_between_pages.more')
+                            %a.description_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('common_between_pages.less_alt', tool: schedule_event.name)}= t('common_between_pages.less')
+                        - else
+                          = raw schedule_event.description
                     .equivalent
                       - unless schedule_event.eq_name.blank?
                         %a{ href: '#', :"data-dropdown" => "#dropdown_eq_3_#{schedule_event.id}", onkeydown: 'click_on_keypress(event, this);' }
@@ -179,7 +182,7 @@
                     %td.center{headers: "ev_not_btn"}
                       = link_to content_tag(:i, nil, class: 'icon-write'), evaluate_user_schedule_event_path(schedule_event.academic_tool_id, user_id: @user.id, score_type: 'not_evaluative'), class: 'btn to_evaluate_schedule_event', :'data-tooltip'=> t(:to_evaluate, scope: [:posts, :post]), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:to_evaluate, scope: [:posts, :post])
                   - if @current_user_is_student
-                    %td.center{headers: "ev_not_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_assignments_path(ac_id: schedule_event.id, tool_id: schedule_event.academic_tool_id, group_id: schedule_event.group_id), class: "btn #{schedule_event.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: schedule_event.count_comments), :'aria-label' => t('comments.summary.count_alt', count: schedule_event.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+                    %td.center{headers: "ev_not_comment"}= link_to content_tag(:i, nil, class: 'icon-comment'), "#void", onclick: 'open_summary(this)', :'data-url' => summary_assignments_path(ac_id: schedule_event.id, tool_id: schedule_event.academic_tool_id, group_id: schedule_event.group_id), class: "btn #{schedule_event.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: schedule_event.count_comments), :'aria-label' => t('comments.summary.count_alt', count: schedule_event.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
         - else
           .block_content.block_content_text= t(:itens_not_found)
 

@@ -28,7 +28,7 @@
                     - if assignment.situation == 'without_group'
                       .title= assignment.name
                     - else
-                      = link_to assignment.name, student_assignment_path(assignment.academic_tool_id, student_id: @user.id, group_id: assignment.group_id), {class: 'link_content'}, onkeydown: 'click_on_keypress(event, this);'
+                      = link_to assignment.name, student_assignment_path(assignment.academic_tool_id, student_id: @user.id, group_id: assignment.group_id), class: 'link_content', onkeydown: 'click_on_keypress(event, this);'
                     .description
                       - if assignment.description.size > 80
                         .description_slice= raw assignment.description.slice(0..80) << "..."
@@ -59,15 +59,15 @@
                     %div= [(assignment.start_hour), (assignment.end_hour)].compact.join(' - ')
                   %td.center{class: "assignment_#{assignment.situation} #{['assignment', 'u', assignment.id.to_s, @user.id.to_s].join('_')} #{['assignment', 'g', assignment.id.to_s, assignment.group_id.to_s].join('_')} situation", headers: "as_eval_sit"}= t(assignment.situation.to_sym)
                   %td.center{headers: "as_eval_int"}
-                    = link_to_function assignment.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'evaluative'), onkeydown: 'click_on_keypress(event, this);', class: 'open_evaluation'
+                    = link_to assignment.count, "#void", onclick:'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'evaluative'), onkeydown: 'click_on_keypress(event, this);', class: 'open_evaluation'
                   %td.center{headers: "as_eval_gra", class: "#{['assignment','u', assignment.id.to_s, @user.id.to_s].join('_')} #{['assignment','g', assignment.id.to_s, assignment.group_id.to_s].join('_')}"}= assignment.grade
                   - if @current_user_is_student
-                    %td.center{headers: "as_eval_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_assignments_path(ac_id: assignment.id, tool_id: assignment.academic_tool_id, group_id: assignment.group_id), class: "btn #{assignment.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: assignment.count_comments), :'aria-label' => t('comments.summary.count_alt', count: assignment.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+                    %td.center{headers: "as_eval_comment"}= link_to content_tag(:i, nil, class: 'icon-comment'), "#void", onclick: 'open_summary(this)', :'data-url' => summary_assignments_path(ac_id: assignment.id, tool_id: assignment.academic_tool_id, group_id: assignment.group_id), class: "btn #{assignment.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: assignment.count_comments), :'aria-label' => t('comments.summary.count_alt', count: assignment.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
                   - if @can_evaluate_ass || @can_comment
                     %td.center{headers: "as_eval_ass"}
-                      = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'evaluative'), class: 'btn open_evaluation', onkeydown: 'click_on_keypress(event, this);'
+                      = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'evaluative'), class: 'btn open_evaluation', onkeydown: 'click_on_keypress(event, this);'
                   %td.center{headers: 'as_eva_af' }=raw t(assignment.final_exam, scope: [:common_between_pages, :final_exam])
-                  %td.center{headers: "as_eval_aft"}=(assignment.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
+                  %td.center{headers: "as_eval_aft"}=(assignment.new_after_evaluation == true ? t('scores.info.new_yes') : t('scores.info.new_no'))
         - else
           .block_content.block_content_text= t(:itens_not_found)
 
@@ -126,15 +126,15 @@
                     %div= [(assignment.start_hour), (assignment.end_hour)].compact.join(' - ')
                   %td.center{class: "assignment_#{assignment.situation} #{['assignment','u', assignment.id.to_s, @user.id.to_s].join('_')} #{['g', assignment.id.to_s, assignment.group_id.to_s].join('_')} situation", headers: "as_freq_sit"}= t(assignment.situation.to_sym)
                   %td.center{headers: "as_freq_int"}
-                    = link_to_function assignment.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'frequency'), onkeydown: 'click_on_keypress(event, this);', class: 'open_evaluation'
+                    = link_to assignment.count, "#void", onclick: 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'frequency'), onkeydown: 'click_on_keypress(event, this);', class: 'open_evaluation'
                   %td.center{headers: "as_freq_freq", class: "#{['assignment','u', assignment.id.to_s, @user.id.to_s].join('_')} #{['assignment','g', assignment.id.to_s, assignment.group_id.to_s].join('_')}"}= assignment.working_hours
                   - if @current_user_is_student
-                    %td.center{headers: "as_freq_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_assignments_path(ac_id: assignment.id, tool_id: assignment.academic_tool_id, group_id: assignment.group_id), class: "btn #{assignment.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: assignment.count_comments), :'aria-label' => t('comments.summary.count_alt', count: assignment.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+                    %td.center{headers: "as_freq_comment"}= link_to content_tag(:i, nil, class: 'icon-comment'), "#void", onclick: 'open_summary(this)', :'data-url' => summary_assignments_path(ac_id: assignment.id, tool_id: assignment.academic_tool_id, group_id: assignment.group_id), class: "btn #{assignment.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: assignment.count_comments), :'aria-label' => t('comments.summary.count_alt', count: assignment.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
                   - if @can_evaluate_ass || @can_comment
                     %td.center{headers: "as_freq_ass"}
-                      = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'frequency'), class: 'btn open_evaluation', onkeydown: 'click_on_keypress(event, this);'
+                      = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'frequency'), class: 'btn open_evaluation', onkeydown: 'click_on_keypress(event, this);'
                   %td.center{headers:'as_freq_hours'}=raw t('common_between_pages.hours', hours: assignment.max_working_hours)
-                  %td.center{headers: "as_freq_aft"}=(assignment.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
+                  %td.center{headers: "as_freq_aft"}=(assignment.new_after_evaluation == true ? t('scores.info.new_yes') : t('scores.info.new_no'))
         - else
           .block_content.block_content_text= t(:itens_not_found)
 
@@ -193,14 +193,14 @@
                     %div= [(assignment.start_hour), (assignment.end_hour)].compact.join(' - ')
                   %td.center{class: "assignment_#{assignment.situation} #{['assignment','u', assignment.id.to_s, @user.id.to_s].join('_')} #{['assignment','g', assignment.id.to_s, assignment.group_id.to_s].join('_')} situation", headers: "as_not_sit"}= t(assignment.situation.to_sym)
                   %td.center{headers: "as_not_int"}
-                    = link_to_function assignment.count, 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'not_evaluative'), onkeydown: 'click_on_keypress(event, this);', class: 'open_evaluation'
+                    = link_to assignment.count, "#void", onclick: 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'not_evaluative'), onkeydown: 'click_on_keypress(event, this);', class: 'open_evaluation'
                   %td.center{headers: "as_not_gra", class: "#{['assignment','u', assignment.id.to_s, @user.id.to_s].join('_')} #{['assignment','g', assignment.id.to_s, assignment.group_id.to_s].join('_')}"}= assignment.grade
                   - if @current_user_is_student
-                    %td.center{headers: "as_not_comment"}= link_to_function content_tag(:i, nil, class: 'icon-comment'), 'open_summary(this)', :'data-url' => summary_assignments_path(ac_id: assignment.id, tool_id: assignment.academic_tool_id, group_id: assignment.group_id), class: "btn #{assignment.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: assignment.count_comments), :'aria-label' => t('comments.summary.count_alt', count: assignment.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+                    %td.center{headers: "as_not_comment"}= link_to content_tag(:i, nil, class: 'icon-comment'), "#void", onclick: 'open_summary(this)', :'data-url' => summary_assignments_path(ac_id: assignment.id, tool_id: assignment.academic_tool_id, group_id: assignment.group_id), class: "btn #{assignment.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: assignment.count_comments), :'aria-label' => t('comments.summary.count_alt', count: assignment.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
                   - if @can_evaluate_ass || @can_comment
                     %td.center{headers: "as_not_ass"}
-                      = link_to_function content_tag(:i, nil, class: 'icon-write'), 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'not_evaluative'), class: 'btn open_evaluation'
-                  %td.center{headers: "as_not_aft"}=(assignment.new_after_evaluation == 't' ? t('scores.info.new_yes') : t('scores.info.new_no'))
+                      = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: assignment.academic_tool_type, ac_id: assignment.id, user_id: @user.id, group_id: assignment.group_id, situation: assignment.situation, score_type: 'not_evaluative'), class: 'btn open_evaluation'
+                  %td.center{headers: "as_not_aft"}=(assignment.new_after_evaluation == true ? t('scores.info.new_yes') : t('scores.info.new_no'))
 
         - else
           .block_content.block_content_text= t(:itens_not_found)

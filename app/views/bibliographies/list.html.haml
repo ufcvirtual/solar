@@ -21,8 +21,8 @@
 
     .block_toolbar_right
       .btn-group
-        = link_to (content_tag(:i, nil, class: 'icon-edit')), '#', class: 'btn btn_edit', :"data-link-edit" => edit_bibliography_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t('.edit')
-        = link_to (content_tag(:i, nil, class: 'icon-trash')), '#', class: 'btn btn_del delete_bibliography',  :"data-link-delete" => bibliography_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :'data-tooltip' => t('.delete')
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), '#void', class: 'btn btn_edit', :"data-link-edit" => edit_bibliography_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t('.edit')
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), '#void', class: 'btn btn_del delete_bibliography',  :"data-link-delete" => bibliography_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :'data-tooltip' => t('.delete')
 
   - unless @bibliographies.nil? or @bibliographies.empty?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)

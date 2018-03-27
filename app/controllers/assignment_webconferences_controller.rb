@@ -157,7 +157,7 @@ class AssignmentWebconferencesController < ApplicationController
 
     url = @assignment_webconference.get_bbb_url(current_user)
     URI.parse(url).path
-    
+
     render json: { success: true, url: url }
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity

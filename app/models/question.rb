@@ -6,7 +6,7 @@ class Question < ActiveRecord::Base
 
   belongs_to  :user
   belongs_to :updated_by_user, class_name: 'User'
-  belongs_to :question_text  
+  belongs_to :question_text
 
   has_many :exam_questions
   has_many :exam_responses
@@ -25,6 +25,8 @@ class Question < ActiveRecord::Base
 
   validates :enunciation, :type_question, presence: true
 
+  validate :enunciation_presence
+
   validate :verify_labels, :verify_files
 
   validate :verify_privacy, if: 'privacy_changed? && privacy && !new_record?'
@@ -33,6 +35,10 @@ class Question < ActiveRecord::Base
   before_destroy { question_labels.clear }
 
   before_save :get_labels
+
+  def enunciation_presence
+    errors.add :enunciation, :blank  if enunciation.blank? || enunciation == '<br>' || enunciation == '<p><br></p>'
+  end
 
   def reject_images(img)
     (img[:image].blank? && (new_record? || img[:id].blank?))
@@ -52,7 +58,7 @@ class Question < ActiveRecord::Base
 
   def get_labels
     self.question_labels = self.question_labels.collect do |label|
-      QuestionLabel.find_or_create_by_name(label.name)
+      QuestionLabel.find_or_create_by(name: label.name)
     end
   end
 
@@ -65,14 +71,16 @@ class Question < ActiveRecord::Base
   def copy_dependencies_from(question_to_copy, user_id = nil)
     if question_to_copy.question_images.any?
       question_to_copy.question_images.each do |file|
-        new_file = QuestionImage.create! file.attributes.merge({ question_id: id })
-        copy_file(file, new_file, File.join('questions', 'images'), 'image')
+        dup_file(file, :question_image)
+        # new_file = QuestionImage.create! file.attributes.merge({ question_id: id })
+        # copy_file(file, new_file, File.join('questions', 'images'), 'image')
       end
     end
     if question_to_copy.question_items.any?
       question_to_copy.question_items.each do |item|
-        new_item = QuestionItem.create! item.attributes.merge({ question_id: id })
-        copy_file(item, new_item, File.join('questions', 'items'), 'item_image') unless new_item.item_image_file_name.nil?
+        dup_file(item, :question_item)
+        # new_item = QuestionItem.create! item.attributes.merge({ question_id: id })
+        # copy_file(item, new_item, File.join('questions', 'items'), 'item_image') unless new_item.item_image_file_name.nil?
       end
     end
     if question_to_copy.question_labels.any?
@@ -82,10 +90,26 @@ class Question < ActiveRecord::Base
     end
     if question_to_copy.question_audios.any?
       question_to_copy.question_audios.each do |file|
-        new_file = QuestionAudio.create! file.attributes.merge({ question_id: id })
-        copy_file(file, new_file, File.join('questions', 'audios'), 'audio')
+        dup_file(file, :question_audio)
+        # new_file = QuestionAudio.create! file.attributes.merge({ question_id: id })
+        # copy_file(file, new_file, File.join('questions', 'audios'), 'audio')
       end
     end
+  end
+
+  def dup_file(file, type)
+    new_file = file.dup
+    new_file.question_id = id
+    case type
+    when :question_image
+      new_file.image = file.image
+    when :question_item
+      new_file.item_image = file.item_image
+      new_file.item_audio = file.item_audio
+    else
+      new_file.audio = file.audio
+    end
+    new_file.save
   end
 
   def self.copy(question_to_copy, user_id = nil)
@@ -108,19 +132,12 @@ class Question < ActiveRecord::Base
   def self.get_all(user_id, search={}, verify_privacy=false)
     query = []
 
-    # query << ((search[:only_owner] == 'false' || search[:only_owner].blank?) ? ((!verify_privacy.nil? && verify_privacy) ? "
-    #           (authors.id = #{user_id} OR updated_by.id = #{user_id}
-    #           OR ((
-    #            ((SELECT count FROM user_public_questions) = 0 AND (SELECT count FROM user_private_questions) = 0) 
-    #            OR ((SELECT count FROM user_public_questions) >= (SELECT count FROM user_private_questions)/10)
-    #           )) AND questions.status = 't')" : '') : "authors.id = #{user_id} OR updated_by.id = #{user_id}")
-
     query << ((search[:only_owner] == 'false' || search[:only_owner].blank?) ? "
               (authors.id = #{user_id} OR updated_by.id = #{user_id}
               OR ((
-               ((SELECT count FROM user_public_questions) = 0 AND (SELECT count FROM user_private_questions) = 0) 
+               ((SELECT count FROM user_public_questions) = 0 AND (SELECT count FROM user_private_questions) = 0)
                OR ((SELECT count FROM user_public_questions) >= (SELECT count FROM user_private_questions)/10)
-              ) AND questions.status = 't'))" : "authors.id = #{user_id} OR updated_by.id = #{user_id}")
+              ) AND questions.status = 't' AND privacy = 'f'))" : "authors.id = #{user_id} OR updated_by.id = #{user_id}")
 
     query << "lower(unaccent(questions.enunciation)) ~ lower(unaccent('#{search[:enun].to_s}'))" unless search[:enun].blank?
     query << "lower(unaccent(l1.name)) ~ lower(unaccent('#{search[:label].to_s}'))"              unless search[:label].blank?
@@ -146,9 +163,9 @@ class Question < ActiveRecord::Base
         WHERE  questions.privacy = 'f' AND questions.status = 't' AND questions.user_id = #{user_id}
       )
       SELECT  DISTINCT questions.id,
-              questions.enunciation, 
-              questions.type_question, 
-              questions.status, 
+              questions.enunciation,
+              questions.type_question,
+              questions.status,
               questions.updated_at,
               questions.privacy,
               authors.name                                        AS author_name,
@@ -160,13 +177,13 @@ class Question < ActiveRecord::Base
                 WHERE question_items.question_id = questions.id
               )                                    AS count_items,
               EXISTS(
-                SELECT question_images.id 
-                FROM question_images 
+                SELECT question_images.id
+                FROM question_images
                 WHERE questions.id = question_images.question_id
               )                                    AS has_images,
               EXISTS(
-                SELECT question_audios.id 
-                FROM question_audios 
+                SELECT question_audios.id
+                FROM question_audios
                 WHERE questions.id = question_audios.question_id
               )                                    AS has_audios,
               replace(replace(translate(array_agg(distinct l2.name)::text,'{}', ''),'\"', ''),',',', ') AS labels
@@ -254,14 +271,9 @@ class Question < ActiveRecord::Base
     user_questions    = current_user.questions
     user_up_questions = current_user.up_questions
     raise 'min_public_questions' if !owners?(true) && !user_questions.empty? && ((user_questions.where(privacy: true).count/user_questions.where(privacy: false).count > 10 rescue false) || (user_up_questions.where(privacy: true).count/user_up_questions.where(privacy: false).count > 10 rescue false))
-    raise 'draft' if !privacy && !owner?(true) && !status 
+    raise 'draft' if !privacy && !owner?(true) && !status
     raise 'already_exists' if !exam.nil? && exam.questions.where(id: id).any?
     raise 'published' if !exam.nil? && exam.status
-  end
-
-  def can_destroy?
-    raise 'permission' unless owner?
-    raise 'in_use'     if exams.any?
   end
 
   def can_copy?
@@ -283,39 +295,39 @@ class Question < ActiveRecord::Base
   def have_media?
     if new_record?
       return false
-    else  
+    else
       return !self.question_text_id.blank? || question_audios.exists? || question_images.exists? ? true : false
-    end  
-  end  
+    end
+  end
 
   def disabled_option(exam_id)
     return self.get_questions_text(exam_id).count == 0 ? true : false
-  end 
+  end
 
   def checked_option(exam_id)
     if new_record?
       return true
     elsif self.question_text_id.blank?
       return true
-    else  
+    else
       return Question.joins(:exam_questions).where("question_text_id = ? AND questions.id <> ?", self.question_text_id, self.id).where({:'exam_questions.exam_id' => exam_id}).count == 0 ? true : false
-    end  
+    end
   end
 
   def questions_text(exam_id)
     if new_record?
-      return Question.joins(:exam_questions).where("question_text_id IS NOT NULL").where({:'exam_questions.exam_id' => exam_id}) 
+      return Question.joins(:exam_questions).where("question_text_id IS NOT NULL").where({:'exam_questions.exam_id' => exam_id})
     else
-      return Question.joins(:exam_questions).where("question_text_id IS NOT NULL").where({:'exam_questions.exam_id' => exam_id}) 
-    end  
-  end  
+      return Question.joins(:exam_questions).where("question_text_id IS NOT NULL").where({:'exam_questions.exam_id' => exam_id})
+    end
+  end
 
   def get_questions_text(exam_id)
     if new_record?
-      return Question.joins(:exam_questions).where("question_text_id IS NOT NULL").where({:'exam_questions.exam_id' => exam_id}) 
+      return Question.joins(:exam_questions).where("question_text_id IS NOT NULL").where({:'exam_questions.exam_id' => exam_id})
     else
-      return Question.joins(:exam_questions).where("question_text_id IS NOT NULL AND questions.id <> ?", self.id).where({:'exam_questions.exam_id' => exam_id}) 
-    end  
-  end  
+      return Question.joins(:exam_questions).where("question_text_id IS NOT NULL AND questions.id <> ?", self.id).where({:'exam_questions.exam_id' => exam_id})
+    end
+  end
 
 end

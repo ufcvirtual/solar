@@ -1,6 +1,9 @@
 class DiscussionsController < ApplicationController
 
   include SysLog::Actions
+  include FilesHelper
+
+  doorkeeper_for :api_download
 
   layout false, except: :index
 
@@ -16,13 +19,13 @@ class DiscussionsController < ApplicationController
       @allocation_tag_id = (active_tab[:url].include?(:allocation_tag_id)) ? active_tab[:url][:allocation_tag_id] : AllocationTag.find_by_group_id(params[:group_id] || []).id
       @user = current_user
       @discussions = Score.list_tool(@user.id, @allocation_tag_id, 'discussions', false, false, true)
-  
+
     rescue
       @discussions = []
     end
-  
+
     authorize! :index, Discussion, on: [@allocation_tag_id]
-    
+
     @is_student = @user.is_student?([@allocation_tag_id])
     @can_evaluate = can? :evaluate, Discussion, { on: @allocation_tag_id }
 
@@ -49,6 +52,7 @@ class DiscussionsController < ApplicationController
 
     @discussion = Discussion.new
     @discussion.build_schedule(start_date: Date.current, end_date: Date.current)
+    @discussion.enunciation_files.build
   end
 
   def create
@@ -60,6 +64,7 @@ class DiscussionsController < ApplicationController
     if @discussion.save
       render_discussion_success_json('created')
     else
+      @files_errors = @discussion.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       render :new
     end
   rescue => error
@@ -69,6 +74,7 @@ class DiscussionsController < ApplicationController
 
   def edit
     authorize! :edit, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    @discussion.enunciation_files.build
   end
 
   def update
@@ -77,6 +83,7 @@ class DiscussionsController < ApplicationController
     if @discussion.update_attributes(discussion_params)
       render_discussion_success_json('updated')
     else
+      @files_errors = @discussion.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       @allocation_tags_ids = params[:allocation_tags_ids]
       render :edit
     end
@@ -108,10 +115,40 @@ class DiscussionsController < ApplicationController
     authorize! :show, Discussion, on: @allocation_tags_ids = params[:allocation_tags_ids]
   end
 
+  def download
+    file = DiscussionEnunciationFile.find(params[:id])
+    discussion = file.discussion
+
+    authorize! :index, Discussion, { on: discussion.allocation_tags.pluck(:id), read: true }
+
+    download_file(:back, file.attachment.path, file.attachment_file_name)
+  end
+
+  def api_download
+    api_guard_with_access_token_or_authenticate
+    file = DiscussionEnunciationFile.find(params[:file_id])
+
+    raise CanCan::AccessDenied unless (file.discussion.allocation_tags.map(&:id) & User.current.allocation_tags_ids_with_access_on(:index, 'discussions')).any?
+
+    begin
+      download_file(nil, file.attachment.path, file.attachment_file_name)
+    rescue
+      raise 'file not found'
+    end
+  rescue ActiveRecord::RecordNotFound => error
+    Rails.logger.info "[API] [ERROR] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [404] message: #{error}"
+    render json: {success: false, status: :not_found, error: error}
+  rescue => error
+    Rails.logger.info "[API] [ERROR] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [404] message: #{error}"
+    render json: {success: false, status: :unprocessable_entity, error: error}
+  end
+
   private
 
     def discussion_params
-      params.require(:discussion).permit(:name, :description, schedule_attributes: [:id, :start_date, :end_date])
+      params.require(:discussion).permit(:name, :description,
+       schedule_attributes: [:id, :start_date, :end_date],
+       enunciation_files_attributes: [:id, :attachment, :_destroy])
     end
 
     def render_discussion_success_json(method)

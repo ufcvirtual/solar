@@ -15,7 +15,7 @@ class MessagesController < ApplicationController
 
     @messages = Message.by_box(current_user.id, @box, allocation_tag_id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
     @unreads  = Message.unreads(current_user.id, allocation_tag_id)
-    render partial: 'list' unless params[:page].nil? 
+    render partial: 'list' unless params[:page].nil?
   end
 
   def search
@@ -77,7 +77,6 @@ class MessagesController < ApplicationController
   end
 
   def create
-
     @allocation_tag_id = params[:allocation_tag_id].blank? ? active_tab[:url][:allocation_tag_id] : params[:allocation_tag_id]
 
     # is an answer
@@ -93,16 +92,18 @@ class MessagesController < ApplicationController
         @message.allocation_tag_id = @allocation_tag_id
 
         raise "error" if params[:message][:contacts].empty?
-        emails = User.where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
+        emails = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
+                      .where("(nmail.message IS NULL OR nmail.message=TRUE)")
+                      .where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
 
         @message.files << original_files if original_files and not original_files.empty?
         @message.save!
-        #Thread.new do 
+        #Thread.new do
           #Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files, current_user.email).deliver
         #end
-        Thread.new do 
-          Job.send_mass_email(emails, @message.subject, new_msg_template, @message.files, current_user.email)
-        end  
+        Thread.new do
+          Job.send_mass_email(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email)
+        end
       end
 
       redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages)
@@ -165,15 +166,24 @@ class MessagesController < ApplicationController
   end
 
   def contacts
+    @content_student = false
+    @content_responsibles = false
     unless (@allocation_tag_id = params[:allocation_tag_id]).nil?
       allocation_tag = AllocationTag.find(@allocation_tag_id)
       @group         = allocation_tag.group
-      @contacts      = User.all_at_allocation_tags(allocation_tag.related, Allocation_Activated, true)
-    else
-      @contacts = current_user.user_contacts.map(&:user)
+    # else
+    #   @contacts = current_user.user_contacts.map(&:user)
     end
+    @contacts = User.all_at_allocation_tags(allocation_tag.try(:related), Allocation_Activated, true)
 
     @reply_to = (params[:reply_to].blank? ? [] : User.where(id: params[:reply_to].split(',')).map(&:to_msg))
+
+    unless params[:reply_to].blank? || @contacts.blank?
+      @list = @contacts.find_all_by_id(params[:reply_to].split(','))
+      @content_student = @list.any? { |u| u.types.to_i==Profile_Type_Student }
+      @content_responsibles = @list.any? { |u| u.types.to_i==Profile_Type_Class_Responsible }
+
+    end
     render partial: 'contacts'
   end
 

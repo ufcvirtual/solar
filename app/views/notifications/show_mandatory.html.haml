@@ -2,14 +2,14 @@
   #lightBoxDialogTitle
     %h1= @notification.first.title
     - if @notification.next_page
-      = link_to_function content_tag(:i, nil, class: 'icon-arrow-right-thin', :'aria-hidden'=>'true'), 'next_notification()', class: 'next', onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('notifications.show.next')
+      = link_to content_tag(:i, nil, class: 'icon-arrow-right-thin', :'aria-hidden'=>'true'), "#void", onclick: 'next_notification()', class: 'next', onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('notifications.show.next')
 
   = render partial: 'notification_content', locals: {notification: @notification.first}
 
   .block_buttons
     .right
-      = button_to_function t(:close), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
-      = button_to_function t('.read_later'), "read_later()", class: "btn btn_main", type: "button"
+      = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox'
+      = button_tag t('.read_later'), :type => 'button', :onclick => "read_later()", class: 'btn btn_main'
 
 
 :javascript

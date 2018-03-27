@@ -3,9 +3,9 @@
 = render partial: 'ip_control/ip_real_fields', locals: { f: f }
 
 .form-actions.right_buttons
-  = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox cancel', type: 'button', onkeypress: 'exit(event)'
-  = button_to_function t('.previous'), 'back_to_config(event)', class: 'btn btn_default btn_main btn_lightbox', type: 'button', onkeypress: 'back_to_config(event)'
-  = button_to_function t(:save), 'save_exam(event)', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button', onkeypress: 'save_exam(event)'
+  = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox cancel', onkeypress: 'exit(event)'
+  = button_tag t('.previous'), :type => 'button', :onclick => "back_to_config(event)", class: 'btn btn_default btn_main btn_lightbox', onkeypress: 'back_to_config(event)'
+  = button_tag t(:save), :type => 'button', :onclick => "save_exam(event)", class: 'btn btn_main btn_lightbox', alt: t(:save), onkeypress: 'save_exam(event)'
 
 :javascript
   function back_to_config(event){

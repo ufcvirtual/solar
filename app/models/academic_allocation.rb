@@ -4,14 +4,14 @@ class AcademicAllocation < ActiveRecord::Base
   belongs_to :allocation_tag
   has_many :academic_allocation_users
 
-  belongs_to :lesson_module,  foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'LessonModule'"]
-  belongs_to :chat_room,      foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'ChatRoom'"]
-  belongs_to :exam,           foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Exam'"]
-  belongs_to :assignment,     foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Assignment'"]
-  belongs_to :webconference,  foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Webconference'"]
-  belongs_to :discussion,     foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Discussion'"]
-  belongs_to :schedule_event, foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'ScheduleEvent'"]
-  belongs_to :notification,   foreign_key: 'academic_tool_id', conditions: ["academic_tool_type = 'Notification'"]
+  belongs_to :lesson_module,  -> { where("academic_tool_type = 'LessonModule'")}, foreign_key: 'academic_tool_id'
+  belongs_to :chat_room,      -> { where("academic_tool_type = 'ChatRoom'")}, foreign_key: 'academic_tool_id'
+  belongs_to :exam,           -> { where("academic_tool_type = 'Exam'")}, foreign_key: 'academic_tool_id'
+  belongs_to :assignment,     -> { where("academic_tool_type = 'Assignment'")}, foreign_key: 'academic_tool_id'
+  belongs_to :webconference,  -> { where("academic_tool_type = 'Webconference'")}, foreign_key: 'academic_tool_id'
+  belongs_to :discussion,     -> { where("academic_tool_type = 'Discussion'")}, foreign_key: 'academic_tool_id'
+  belongs_to :schedule_event, -> { where("academic_tool_type = 'ScheduleEvent'")}, foreign_key: 'academic_tool_id'
+  belongs_to :notification,   -> { where("academic_tool_type = 'Notification'")}, foreign_key: 'academic_tool_id'
 
   has_many :group_assignments, dependent: :destroy
 
@@ -33,11 +33,14 @@ class AcademicAllocation < ActiveRecord::Base
   validates :final_weight, presence: true, numericality: { greater_than: 0,  only_float: true, smaller_than: 100.1 }, if: 'evaluative? && !final_exam? && equivalent_academic_allocation_id.nil?'
   validates :max_working_hours, presence: true, numericality: { greater_than: 0,  only_float: true, allow_blank: true }, if: 'frequency? && !final_exam? && equivalent_academic_allocation_id.nil?'
 
-  validate :verify_equivalents, if: 'equivalent_academic_allocation_id_changed? && !equivalent_academic_allocation_id.nil?'
+  validate :verify_equivalents, if: '(equivalent_academic_allocation_id_changed? && !equivalent_academic_allocation_id.nil?) || (!equivalent_academic_allocation_id.nil? && (frequency_changed? || evaluative_changed?))'
   validate :verify_type, if: "(evaluative || frequency) && academic_tool_type == 'ScheduleEvent'"
 
   before_save :set_evaluative_params, on: :update, unless: 'new_record?'
   before_save :change_dependencies, on: :update, unless: 'new_record?'
+  before_save :set_automatic_frequency, on: :update, if: "frequency"
+
+  after_save :update_acus, on: :update, if: "frequency_automatic && !max_working_hours.blank?"
 
   before_destroy :set_situation_date
   after_destroy :verify_management
@@ -53,11 +56,12 @@ class AcademicAllocation < ActiveRecord::Base
   end
 
   def verify_tool
-    !allocation_tag_id.nil? && academic_tool.verify_start && merge.nil? && (!academic_tool.respond_to?(:status_changed?) || academic_tool.status)
+    !allocation_tag_id.nil? && academic_tool.verify_start && merge.nil? && (!academic_tool.respond_to?(:status_changed?) || academic_tool.status) && (allocation_tag.group_id.nil? || allocation_tag.group.status)
   end
 
   def set_evaluative_params
-    self.frequency = get_curriculum_unit.try(:working_hours).blank? ? false : frequency
+    uc = get_curriculum_unit
+    self.frequency = uc.try(:working_hours).blank? ? false : frequency
     self.max_working_hours = nil unless self.frequency
     if !evaluative
       self.weight = 1
@@ -68,6 +72,12 @@ class AcademicAllocation < ActiveRecord::Base
       self.final_weight = 0
       self.max_working_hours = 0
       self.frequency = false
+    else
+      if uc.try(:curriculum_unit_type_id).to_i == 2
+        self.weight = 1
+      else
+        self.final_weight = 100
+      end
     end
     unless equivalent_academic_allocation_id.nil?
       ac = AcademicAllocation.find(equivalent_academic_allocation_id)
@@ -135,9 +145,10 @@ class AcademicAllocation < ActiveRecord::Base
     errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.single_equivalent')) if AcademicAllocation.where(equivalent_academic_allocation_id: equivalent_academic_allocation_id).where('id != :id', { id: id }).any? && (academic_tool_type != 'ChatRoom' || ChatRoom.where(id: [academic_tool_id, eq_ac.academic_tool_id]).map(&:chat_type).include?(0))
 
     errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.nested')) if AcademicAllocation.where(equivalent_academic_allocation_id: id).any? && !equivalent_academic_allocation_id.nil?
-    # errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.same_type')) if academic_tool_type != eq_ac.academic_tool_type
+    errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.same_type_af')) if final_exam != eq_ac.final_exam #if academic_tool_type != eq_ac.academic_tool_type
 
     errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.eq_evaluative')) if evaluative != eq_ac.try(:evaluative)
+
     errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.eq_frequency')) if frequency != eq_ac.try(:frequency)
 
     errors.add(:equivalent_academic_allocation_id, I18n.t('evaluative_tools.errors.itself')) if id == equivalent_academic_allocation_id
@@ -291,6 +302,27 @@ class AcademicAllocation < ActiveRecord::Base
     def verify_management
       if evaluative || frequency
         allocation_tag.recalculate_students_grades
+      end
+    end
+
+    def set_automatic_frequency
+      self.frequency_automatic = false if academic_tool_type == 'ScheduleEvent'
+      self.frequency_automatic = true if academic_tool_type == 'Exam'
+      return nil
+    end
+
+    def update_acus
+      if frequency_automatic_changed?
+        # set all previously evaluated acus as evaluated_by_responsible
+        academic_allocation_users.where(evaluated_by_responsible: false).where("status = #{AcademicAllocationUser::STATUS[:evaluated]} AND working_hours IS NOT NULL").update_all evaluated_by_responsible: true
+
+        # set all not evaluated acus with automatic frequency
+        academic_allocation_users.where(evaluated_by_responsible: false, working_hours: nil).where("status = #{AcademicAllocationUser::STATUS[:sent]} OR ( (grade > 0) AND (status = #{AcademicAllocationUser::STATUS[:evaluated]}))").update_all working_hours: max_working_hours, status: AcademicAllocationUser::STATUS[:evaluated]
+      end
+
+      if max_working_hours_changed?
+        # update max_working_hours
+        academic_allocation_users.where(evaluated_by_responsible: false).where("status = #{AcademicAllocationUser::STATUS[:evaluated]} AND working_hours IS NOT NULL").update_all working_hours: max_working_hours
       end
     end
 

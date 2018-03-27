@@ -55,4 +55,4 @@
     %div= t(".site") + @user.site unless @user.site.nil?
 
   .right_buttons
-    = button_to_function t(:close, scope: [:administrations]), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"
+    = button_tag t(:close, scope: [:administrations]), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox'

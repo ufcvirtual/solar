@@ -4,4 +4,4 @@
     %td= curriculum_unit.code
     %td= curriculum_unit.name
     %td{:align => "left"}= @type.description
-    %td{:align => "right"}= link_to_function content_tag(:i, nil, class: 'icon-edit'), "edit_curriculum_unit(this)", class: 'btn', :'data-tooltip' => t(:edit, uc_or_module: @type.tool_name), :"data-link-edit" => edit_curriculum_unit_path(curriculum_unit)   
+    %td{:align => "right"}= link_to content_tag(:i, nil, class: 'icon-edit'), "#void", onclick: "edit_curriculum_unit(this)", class: 'btn', :'data-tooltip' => t(:edit, uc_or_module: @type.tool_name), :"data-link-edit" => edit_curriculum_unit_path(curriculum_unit)   

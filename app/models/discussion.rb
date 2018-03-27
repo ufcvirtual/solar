@@ -1,6 +1,7 @@
 class Discussion < Event
   include AcademicTool
   include EvaluativeTool
+  include FilesHelper
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 
@@ -8,6 +9,7 @@ class Discussion < Event
 
   has_many :discussion_posts, class_name: 'Post', through: :academic_allocations
   has_many :allocations, through: :allocation_tag
+  has_many :enunciation_files, class_name: 'DiscussionEnunciationFile', dependent: :destroy
 
   before_destroy :can_remove_groups_with_raise
   after_destroy :delete_schedule
@@ -19,6 +21,7 @@ class Discussion < Event
   validate :check_final_date_presence
 
   accepts_nested_attributes_for :schedule
+  accepts_nested_attributes_for :enunciation_files, allow_destroy: true, reject_if: proc { |attributes| !attributes.include?(:attachment) || attributes[:attachment] == '0' || attributes[:attachment].blank? }
 
   def delete_schedule
     self.schedule.destroy
@@ -28,6 +31,15 @@ class Discussion < Event
     if schedule.end_date.nil?
       errors.add(:final_date_presence, I18n.t('discussions.error.mandatory_final_date'))
       return false
+    end
+  end
+
+  def copy_dependencies_from(discussion_to_copy)
+    unless discussion_to_copy.enunciation_files.empty?
+      discussion_to_copy.enunciation_files.each do |file|
+        new_file = DiscussionEnunciationFile.create! file.attributes.merge({ discussion_id: self.id })
+        copy_file(file, new_file, File.join(['discussion', 'enunciation']))
+      end
     end
   end
 
@@ -85,7 +97,7 @@ class Discussion < Event
 
   def posts_not_limit(opts = {}, allocation_tags_ids = nil, user_id=nil)
     opts = { 'type' => 'new', 'order' => 'desc', 'limit' => Rails.application.config.items_per_page.to_i,
-      'display_mode' => 'list', 'page' => 1 }.merge(opts)
+      'display_mode' => 'list', 'page' => 1, 'select' => 'DISTINCT discussion_posts.id, discussion_posts.*' }.merge(opts)
     type = (opts['type'] == 'history') ? '<' : '>'
 
     query = []
@@ -95,7 +107,7 @@ class Discussion < Event
     offset = (opts['page'].to_i * opts['limit'].to_i) - opts['limit'].to_i
 
     posts_by_allocation_tags_ids(allocation_tags_ids, user_id, nil, { grandparent: false, query: query.join(' AND '),
-                                                        order: "updated_at #{opts['order']}"})
+                                                        order: "updated_at #{opts['order']}", select: 'DISTINCT discussion_posts.id, discussion_posts.*'})
   end
 
   def count_posts_after_and_before_period(period, allocation_tags_ids = nil, user_id=nil)
@@ -171,7 +183,7 @@ class Discussion < Event
   end
 
   def self.verify_previous(acu_id)
-    Post.where(academic_allocation_user_id: acu_id).any?
+    Post.where(academic_allocation_user_id: acu_id, draft: false).any?
   end
 
 end

@@ -3,6 +3,7 @@ class AdministrationsController < ApplicationController
   include FilesHelper
   include SysLog::Devise
   include SysLog::Actions
+  include AdministrationsHelper
 
   layout false, except: [:users, :indication_users, :indication_users_specific, :indication_users_global, :allocation_approval, :lessons, :logs, :import_users, :responsibles, :list_notifications]
 
@@ -17,7 +18,7 @@ class AdministrationsController < ApplicationController
 
     @type_search, @text_search = params[:type_search], [URI.unescape(params[:user]).split(' ').compact.join('%'), '%'].join unless params[:user].blank?
     allocation_tags_ids = current_user.allocation_tags_ids_with_access_on(['users'], 'administrations', true, true)
-    @users      = User.find_by_text_ignoring_characters(@text_search, @type_search, allocation_tags_ids).paginate(page: params[:page])
+    @users      = User.find_by_text_ignoring_characters(@text_search, @type_search, allocation_tags_ids).paginate(page: params[:page], per_page: Rails.application.config.items_per_page)
     @can_change = current_user.profiles_with_access_on('update_user', 'administrations').any?
 
     respond_to do |format|
@@ -76,7 +77,7 @@ class AdministrationsController < ApplicationController
     render json: {success: true, notice: t('administrations.success.email_sent'), token: token}
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
-  rescue 
+  rescue
     render json: {success: false, alert: t('administrations.success.email_not_sent')}
   end
 
@@ -85,17 +86,25 @@ class AdministrationsController < ApplicationController
   def allocations_user
     authorize! :allocations_user, Administration
 
-    allocation_tags_ids = current_user.allocation_tags_ids_with_access_on(['allocations_user'], 'administrations', false, true) # if has nil, exists an allocation with allocation_tag_id nil
-    query = allocation_tags_ids.include?(nil) ? '' : ['allocation_tag_id IN (?)', allocation_tags_ids]
+    @user_id = params[:id]
 
-    @allocations_user = User.find(params[:id]).allocations.joins(:profile).where('NOT cast(profiles.types & ? as boolean)', Profile_Type_Basic).where(query)
-    @profiles = @allocations_user.map(&:profile).flatten.uniq
-    @periods  = [ [t(:active), ''] ]
-    @periods += Semester.all.map{|s| s.name}.flatten.uniq.sort! {|x,y| y <=> x}
+    @allocations = list_allocations_user(@user_id, params[:semester_id])               
+
+    @profiles = @allocations.map(&:profile).flatten.uniq
+    @periods = Semester.all.select('id, name').order('name DESC')#flatten.uniq.sort! {|x,y| y <=> x}
     @can_change = !(current_user.profiles_with_access_on('update_allocation', 'administrations').empty?)
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
+
+  def allocations_user_list
+    authorize! :allocations_user, Administration
+
+    allocations = list_allocations_user(params[:id], params[:semester_id])
+    profiles = allocations.map(&:profile).flatten.uniq
+
+    render partial: 'allocations_user_list',  locals: { profiles: profiles, allocations: allocations }
+  end  
 
   def show_allocation
     authorize! :update_allocation, Administration
@@ -156,7 +165,8 @@ class AdministrationsController < ApplicationController
     authorize! :allocation_approval, Administration
     @allocations = Allocation.pending
 
-    if params.include?(:search)
+    if params.include?(:search) && !params[:value].nil? && !params[:type].nil?
+
       @text_search, @type_search = URI.unescape(params[:value]), params[:type]
       text = "%#{[@text_search.split(" ").compact.join("%"), "%"].join}" unless @text_search.blank?
 
@@ -184,7 +194,7 @@ class AdministrationsController < ApplicationController
     @allocations = Allocation.remove_unrelated_allocations(current_user, @allocations) unless current_user.admin?
 
     @allocations.compact!
-    @allocations = @allocations.paginate(page: params[:page], :per_page => 2)
+    @allocations = @allocations.paginate(page: params[:page], per_page: Rails.application.config.items_per_page)
     @types = [ [t('administrations.allocation_approval.name'), 'name'], [t('administrations.allocation_approval.profile'), 'profile'],
       [t('administrations.allocation_approval.type'), 'curriculum_unit_type'], [t('administrations.allocation_approval.course'), 'course'],
       [t('administrations.allocation_approval.curriculum_unit'), 'curriculum_unit'], [t('administrations.allocation_approval.semester'), 'semester'],
@@ -223,10 +233,10 @@ class AdministrationsController < ApplicationController
       text_search = ['%', URI.unescape(params[:user]).split(' ').compact.join('%'), '%'].join
       user_ids    = User.where("lower(unaccent(name)) LIKE lower(unaccent(?)) OR lower(unaccent(cpf)) LIKE lower(unaccent(?))" , "%#{text_search}", "%#{text_search}").map(&:id).join(',')
       if (params[:type] == 'actions' || params[:type] == 'access')
-        query << "(user_id IN (#{user_ids}))" unless user_ids.blank?   
+        query << "(user_id IN (#{user_ids}))" unless user_ids.blank?
       else
         query << "log_navigations.user_id IN (#{user_ids})" unless user_ids.blank?
-      end  
+      end
     end
 
     allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:logs], 'administrations', false, true)
@@ -238,11 +248,11 @@ class AdministrationsController < ApplicationController
       join_query = (allocation_tags_ids.include?(nil) ? '' : "LEFT JOIN allocation_tags ON allocation_tags.id = #{log.to_s.tableize}.allocation_tag_id")
       @logs = log.joins(join_query).where(query.join(' AND ')).order('created_at DESC').limit(100)
     else
-    if(date_end && date) 
-     query << "log_navigations.created_at::date >= '#{date.to_s(:db)}' AND log_navigations.created_at::date <= '#{date_end.to_s(:db)}'" 
+    if(date_end && date)
+     query << "log_navigations.created_at::date >= '#{date.to_s(:db)}' AND log_navigations.created_at::date <= '#{date_end.to_s(:db)}'"
     else
      query << "log_navigations.created_at::date <= '#{date_end.to_s(:db)}'"
-    end 
+    end
 
     @logs = LogNavigation.where(query.join(' AND '))
     @logs =  @logs.joins('LEFT JOIN log_navigation_subs lognsub ON log_navigations.id = log_navigation_id')
@@ -265,38 +275,38 @@ class AdministrationsController < ApplicationController
       .joins('LEFT JOIN curriculum_units ON offers.curriculum_unit_id = curriculum_units.id')
       .joins('LEFT JOIN users ON log_navigations.user_id = users.id')
       .select("
-        DISTINCT log_navigations.id, 
-        lognsub.id as id_sub, 
-        users.name as user, 
-        courses.name as course, 
-        courses.code as course_code, 
-        curriculum_units.name as uc, 
-        curriculum_units.code as uc_code, 
-        semesters.name as semester, 
-        groups.code as group, 
-        menus.name AS menu, 
-        to_char(log_navigations.created_at,'dd/mm/YYYY HH24:MI:SS') as created, 
-        support_material_file, 
+        DISTINCT log_navigations.id,
+        lognsub.id as id_sub,
+        users.name as user,
+        courses.name as course,
+        courses.code as course_code,
+        curriculum_units.name as uc,
+        curriculum_units.code as uc_code,
+        semesters.name as semester,
+        groups.code as group,
+        menus.name AS menu,
+        to_char(log_navigations.created_at,'dd/mm/YYYY HH24:MI:SS') as created,
+        support_material_file,
         discussions.name as discussion,
         CASE lessons.type_lesson
         WHEN 0 THEN COALESCE(lessons.name, lesson)
-        WHEN 1 THEN COALESCE(lessons.address, lesson)    
+        WHEN 1 THEN COALESCE(lessons.address, lesson)
         ELSE
           lesson
         END AS lesson,
-        assignments.name as assignment, 
-        exams.name as exam, 
-        chat_rooms.title as chat_room, 
-        chat_historico.title as chat_history, 
-        student.name as student, 
-        group_assignments.group_name as group_assignments, 
+        assignments.name as assignment,
+        exams.name as exam,
+        chat_rooms.title as chat_room,
+        chat_historico.title as chat_history,
+        student.name as student,
+        group_assignments.group_name as group_assignments,
         webconferences.title as webconferences,
         webconference_record,
         digital_class_lesson,
         lesson_notes,
         public_area,
-        public_file_name, 
-        participant.name as participant, 
+        public_file_name,
+        participant.name as participant,
         to_char(lognsub.created_at,'dd/mm/YYYY HH24:MI:SS') as created_submenu
       ")
       .order("log_navigations.id DESC, lognsub.id DESC")
@@ -304,11 +314,11 @@ class AdministrationsController < ApplicationController
       attributes_to_include = %w(user course course_code uc uc_code semester group menu created created_submenu support_material_file discussion lesson lesson_notes assignment student group_assignments chat_room chat_history exam webconferences webconference_record public_area public_file_name participant digital_class_lesson)
 
       respond_to do |format|
-        format.html        
+        format.html
         format.csv { send_data @logs.to_csv(attributes_to_include) }
-        format.xls { render :navigation }  
+        format.xls { render :navigation }
       end
-   end  
+   end
   end
 
   ## IMPORT USERS
@@ -386,7 +396,7 @@ class AdministrationsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: {msg: t(:no_permission), alert: t(:no_permission)}, status: :unauthorized
   end
-  
+
   private
 
     def user_params

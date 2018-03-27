@@ -4,11 +4,11 @@
 .visuallyhidden= label_tag :img_alt, '', id: 'exam_question_question_question_items_img_alt', onfocus: 'sendFocusAudioError("exam_question_question_attributes_question_items_attributes_", "_img_alt", 20)', tabindex: '0'
 
 .question_items
-  = f.label t('.answer'), class: 'label_answer'
+  / = f.label t('.answer'), class: 'label_answer'
   = render partial: 'questions/form/item', locals: { f: f }
   .input.string
     = f.add_nested_fields_link :question_items, t('.add'), class: 'btn add_options'
 
 .form-actions.right_buttons
-  = button_to_function t(:back), 'back()', class: 'btn btn_default', type: 'button', id: '_back'
-  = button_to_function t(:save), "save_question(#{eq.nil? ? 0 : eq.object.exam_id}, #{f.object.type_question.nil? ? false : f.object.type_question})", class: 'btn btn_main', type: 'button'
+  = button_tag t(:back), :type => 'button', :onclick => "back()", class: 'btn btn_default', id: '_back'
+  = button_tag t(:save), :type => 'button', :onclick => "save_new_question(#{eq.nil? ? 0 : eq.object.exam_id}, #{f.object.type_question.nil? ? false : f.object.type_question})", class: 'btn btn_main'

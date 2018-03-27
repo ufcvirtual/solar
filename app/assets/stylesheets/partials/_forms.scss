@@ -52,6 +52,13 @@
   width: 76px;
 }
 
+#academic_allocation_user_grade_form .form-inputs .form_label:first-child {
+  width: 80px;
+}
+
+#academic_allocation_user_frequency_form .form-inputs .form_label:first-child {
+  width: 80px;
+}
 
 .space .form_label:first-child{
   width: 80px;
@@ -298,5 +305,17 @@ form .schedule_dates input{
 
   .string.required input{
     width: 66%;
+  }
+}
+
+#academic_allocation_user_grade_form, #academic_allocation_user_frequency_form{
+  .form-inputs.block_content{
+    .academic_allocation_user_grade, .academic_allocation_user_working_hours{
+      vertical-align: middle;
+      label{
+        vertical-align: middle;
+        width: 33%;
+      }
+    }
   }
 }

@@ -148,11 +148,34 @@
   .questions{
     width: 100%;
 
+    .zoom {
+      p {
+        position:absolute;
+        top:3px;
+        right:28px;
+        color:#555;
+        font:bold 13px/1 sans-serif;
+      }
+    }
+
+    .zoom:after {
+      content:'';
+      display:block;
+      width:33px;
+      height:33px;
+      position:absolute;
+      top:0;
+      right:0;
+      background:url("/assets/zoom/icon.png");
+    }
+
     .question {
       padding-top: 10px;
       font-family: 'PT Sans', sans-serif;
       font-weight: normal;
       margin-bottom: 1%;
+      //witch: 600px;
+      display: inline-flex;
 
       .number {
         padding-right: 3px;
@@ -254,18 +277,21 @@
         }
       }
       .audio.legend{
-        padding: 0 0 0 10px;
-        display: block;
+        padding: 10px 0 0 10px;
+        //display: block
+        display: inline-grid;
         text-align: center;
-        width: 620px;
+        //width: 620px;
         margin-bottom: 10px;
-        background-color: $question_image_legend_background;
+        //background-color: $question_image_legend_background;
         .audio{
-          margin: 5px 0 5px -15px;
+          margin: 5px 0 5px 0;
           background: $questions_audios_background;
-          background: -moz-linear-gradient(left, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%);
+          background: -moz-linear-gradient(to bottom, black, black);
+          padding-bottom: 8px;
+          //background: -moz-linear-gradient(left, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%);
           height: 32px;
-          width: 56%;
+          //width: 56%;
           position: relative;
           top: 50%;
           left: 0.5%;
@@ -275,7 +301,7 @@
         }
         .legend{
           padding-top: 13px;
-          width: 44%;
+          //width: 44%;
           display: inline-block;
           text-align: center;
           vertical-align: top;
@@ -298,20 +324,18 @@
 
     }
     #question_text{
-      text-align: center;
-      width: 90%;
       .legend{
-          background-color:#FFF8CC;
+        background-color: $exam_yellow;
+        text-align: center;
         .q_text{
           background-color:$background_light_beige;
-          text-align: center;
-          overflow:auto; 
-          width: 99%;
+          overflow-y:auto;
           display: none;
-          padding: 0.5em;
-        }  
-
-      } 
+          padding: 1.0em;
+          max-height: 15em;
+          text-align: justify;
+        }
+      }
 
     }
 
@@ -338,12 +362,21 @@
       }
     }
 
+    .zoom {
+      width: fit-content;
+      width: -moz-fit-content;
+
+      p {
+        font:bold 11px/1 sans-serif;
+      }
+    }
+
     p.text, .hide{
       display: none;
     }
 
     #item_image, .item_checkbox img{
-      margin-right: 10px;
+      /*margin-right: 10px;*/
       vertical-align: top;
     }
 
@@ -371,20 +404,24 @@
 
     .audio.legend{
       margin-top: 1%;
-      padding: 0 0 6px 14px;
-      display: block;
+      padding: 0 0 6px 10px;
+      //display: block;
+      display: -webkit-box;
       text-align: center;
-      width: 600px;
+      //width: 600px;
       margin-bottom: 10px;
-      background-color: $question_image_legend_background_exams;
+      //background-color: $question_image_legend_background_exams;
 
       .audio{
         margin: 5px 0 5px -15px;
         padding-top: 5px;
+        padding-bottom: 8px;
         background-color: $questions_audios_background_exams;
-        background: -moz-linear-gradient(left, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%);
+        background: -moz-linear-gradient(to bottom, black, black);
+        //background: -moz-linear-gradient(left, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%);
         height: 31px;
-        width: 58%;
+        /*width: 58%;*/
+        width: max-content;
         position: relative;
         left: 0.5%;
         float: left;
@@ -417,7 +454,7 @@
       display: none;
     }
 
-    .audio.legend{
+/*    .audio.legend{
       padding: 0 0 6px 14px;
       display: block;
       text-align: center;
@@ -428,6 +465,7 @@
       .audio{
         margin: 5px 0 5px -15px;
         padding-top: 10px;
+        padding-bottom: 8px;
         background-color: $questions_audios_background;
         background: -moz-linear-gradient(left, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%);
         height: 27px;
@@ -446,7 +484,7 @@
         vertical-align: top;
       }
     }
-
+*/
     #text{
       color: $color_gray_text;
     }
@@ -619,6 +657,9 @@
         padding-right: 0;
       }
     }
+    td[headers="e_frequency"] {
+      padding: 6px 5px 4px;
+    }
   }
 
   .corrected {
@@ -654,7 +695,7 @@
       max-width: 150px;
       display: inline-block;
       vertical-align: middle;
-      word-break: break-all;
+      word-break: break-word;
     }
     .block_buttons{
       display: inline;

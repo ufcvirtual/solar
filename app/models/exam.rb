@@ -35,6 +35,19 @@ class Exam < Event
   after_save :set_random_questions, if: 'status_changed? || random_questions_changed? || number_questions_changed?'
   after_save :recalculate_grades,   if: 'attempts_correction_changed? || (result_email_changed? && result_email)'
 
+  after_save :redefine_management, if: 'status_changed? && !status'
+
+  def redefine_management
+    return true if academic_allocations.blank?
+    academic_allocations.each do |ac|
+      ac.evaluative = false
+      ac.frequency = false
+      ac.final_exam = false
+      ac.equivalent_academic_allocation_id = nil
+      ac.save!
+    end
+  end
+
   def recalculate_grades(user_id=nil, ats=nil, all=nil)
     if ended?
       grade = 0.00
@@ -47,39 +60,26 @@ class Exam < Event
         working_hours = (acu.academic_allocation.frequency ? ({working_hours: (wh = acu.academic_allocation.max_working_hours)}) : {})
         acu.update_attributes({grade: (grade > 10 ? 10 : grade.round(2)), status: AcademicAllocationUser::STATUS[:evaluated]}.merge!(working_hours))
         acu.recalculate_final_grade(acu.allocation_tag_id)
-        send_result_emails(acu, grade) if result_email
+        send_result_emails(acu, grade.round(2))
       end
       [grade.round(2), wh]
     else
-      errors.add(:base, I18n.t('exams.errors.not_finished'))
+      errors.add(:base, I18n.t('exams.error.not_finished'))
     end
   end
 
   def send_result_emails(acu, grade)
-    # send email with grades if period have already ended
-    user = User.find(acu.user_id)
-    subject = I18n.t('exams.result_exam_user.subject')
-    recipients = "#{user.name} <#{user.email}>"
-    files = Array.new
-    msg = self.grade_msg_template(user, grade, acu.allocation_tag)
-    Thread.new do
-      Notifier.send_mail(recipients, subject, msg, files, nil).deliver
+    user = acu.user
+    configure_mail_exam = user.personal_configuration.try(:exam)
+
+    if result_email && (configure_mail_exam.nil? || configure_mail_exam)
+      # send email with grades if period have already ended
+      subject = I18n.t('exams.result_exam_user.subject', exam: name, at_info: acu.allocation_tag.info, locale: (user.personal_configuration.try(:default_locale) || 'pt_BR'))
+      recipients = "#{user.name} <#{user.email}>"
+      Thread.new do
+        Notifier.exam(recipients, subject, self, acu, grade).deliver
+      end
     end
-  end
-
-  def grade_msg_template(user, grade, at)
-   label_cur  = at.curriculum_unit_types
-   label_info = at.info
-    %{
-      <b> #{I18n.t('exams.result_exam_user.salutation')} #{user.name},</b><br/>
-      #{I18n.t('exams.result_exam_user.exam_name')} #{self.name} #{I18n.t('exams.result_exam_user.email_of')} #{label_cur} - #{label_info} #{I18n.t('exams.result_exam_user.email_infor_compl')}<br/>
-      __________________________________________________________________________________________________________________________<br/><br/>
-      #{I18n.t('exams.result_exam_user.exam_grade')} #{grade.round(2)} <br/>
-
-      #{I18n.t('exams.result_exam_user.email_infor')}<br/><br/>
-
-      #{I18n.t('exams.result_exam_user.email')}
-    }
   end
 
   def list_exam_correction(user_id=nil, ats=nil, all=nil)
@@ -295,7 +295,7 @@ class Exam < Event
         authors.name AS author_name,
         updated_by.name AS updated_by_name,
         replace(replace(translate(array_agg(distinct labels.name)::text,'{}', ''),'\"', ''),',',', ') AS labels,
-        exam_questions.score
+        exam_questions.score, questions.user_id, questions.updated_by_user_id
       FROM questions
       JOIN exam_questions ON questions.id = exam_questions.question_id
       LEFT JOIN users AS authors ON questions.user_id = authors.id
@@ -320,6 +320,7 @@ class Exam < Event
     raise 'imported'          if !status && !can_publish
     raise 'change_period'     if !status && started?
     # raise 'autocorrect' if !status && questions.where(type: [0,1,2])
+    raise 'equivalent' if AcademicAllocation.where(equivalent_academic_allocation_id: academic_allocations.map(&:id)).count > 0
   end
 
   def can_import?(question = nil)
@@ -424,7 +425,7 @@ class Exam < Event
     # ExamUserAttempt only exists if ACU exists, no need to update previous
     return false
   end
-  
+
   def release_date
     result_release || ([schedule.end_date.to_s, (end_hour || '23:59')].join(' ').to_time + 1.minute)
   end

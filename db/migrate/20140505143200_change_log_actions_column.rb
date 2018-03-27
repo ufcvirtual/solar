@@ -4,6 +4,7 @@ class ChangeLogActionsColumn < ActiveRecord::Migration
     change_table :log_actions do |t|
       t.rename :tool_id, :academic_allocation_id
       t.integer :allocation_tag_id
+      rename_index :log_actions, 'index_log_actions_on_academic_allocation_id', 'index_log_action_aa_id'
       t.index :academic_allocation_id
       t.index :allocation_tag_id
     end

@@ -5,20 +5,20 @@
   .form-inputs.block_content.webconference
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
-    = f.input :title
-    = f.input :description
-    = f.input :initial_time, as: :string, label: t('assignment_webconferences.form.date_label'), placeholder: t('assignment_webconferences.form.date_placeholder'), :'aria-label' => t('assignment_webconferences.form.date_aria_label'), input_html: {value: (l(f.object.initial_time, format: :mask_with_time_form) rescue '')}
+    = f.input :title, input_html: {size: 50}
+    = f.input :description, input_html: {size: 50}
+    = f.input :initial_time, as: :string, label: t('assignment_webconferences.form.date_label'), placeholder: t('assignment_webconferences.form.date_placeholder'), :'aria-label' => t('assignment_webconferences.form.date_aria_label'), input_html: {value: (l(f.object.initial_time, format: :mask_with_time_form) rescue ''), size: 50}
     = f.input :duration, hint: t('.minutes')
     = f.input :is_recorded, as: :boolean, boolean_style: :inline
-    
+
     - unless @groups.blank?
       = f.input :shared_between_groups, as: :boolean, boolean_style: :inline
 
     = render 'groups/codes'
 
     .form-actions.right_buttons
-      = button_to_function t(:cancel), 'jQuery.fancybox.close()', class: 'btn btn_default btn_lightbox', type: 'button', alt: t(:cancel)
-      = button_to_function t(:save), 'save_webconference()', class: 'btn btn_main btn_lightbox', alt: t(:save), type: 'button'
+      = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(:cancel)
+      = button_tag t(:save), :type => 'button', :onclick => "save_webconference()", class: 'btn btn_main btn_lightbox', alt: t(:save)
 
 = javascript_include_tag 'jquery-ui-timepicker-addon'
 

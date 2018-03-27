@@ -115,7 +115,7 @@ class ChatRoomsController < ApplicationController
       @user = User.find(params[:user_id])
       @chat_room = ChatRoom.find(params[:id])
       @score_type = params[:score_type]
-     
+
       @allocation_tag_id = active_tab[:url][:allocation_tag_id]
 
       authorize! :show, ChatRoom, on: [@allocation_tag_id]
@@ -127,7 +127,7 @@ class ChatRoomsController < ApplicationController
       @frequency = can_evaluate && @academic_allocation.frequency
 
       @messages = @chat_room.get_messages(@allocation_tag_id, (params.include?(:user_id) ? {user_id: params[:user_id]} : {}))
-            
+
       @acu = AcademicAllocationUser.find_one(@academic_allocation.id, params[:user_id],nil, false, can_evaluate)
 
       @is_student = @user.is_student?([@allocation_tag_id])
@@ -138,8 +138,8 @@ class ChatRoomsController < ApplicationController
         format.html { render layout: false }
         format.json { render json: @messages }
       end
-    end  
-  end  
+    end
+  end
 
   def messages
     if Exam.verify_blocking_content(current_user.id)
@@ -156,8 +156,8 @@ class ChatRoomsController < ApplicationController
       raise CanCan::AccessDenied if (all_participants.any? && all_participants.joins(:user).where(users: { id: current_user }).empty?) && !responsible && !(@researcher)
 
       @can_evaluate = can? :evaluate, ChatRoom, {on: allocation_tag_id}
-      @can_comment = can? :create, Comment, {on: [@allocation_tags]}
-      
+      @can_comment = can? :create, Comment, {on: [allocation_tag_id]}
+
       @messages = @chat_room.get_messages(allocation_tag_id, (params.include?(:user_id) ? {user_id: params[:user_id]} : {}))
     end
   rescue => error
@@ -171,15 +171,16 @@ class ChatRoomsController < ApplicationController
     else
       @chat_room, allocation_tag_id = ChatRoom.find(params[:id]), active_tab[:url][:allocation_tag_id]
       authorize! :show, ChatRoom, on: [allocation_tag_id]
-      
+
       academic_allocation_id = params[:academic_allocation_id]
       allocation_id = params[:allocation_id]
 
-      chat_rooms = ChatRoom.find(params[:id])
-      url = chat_rooms.url(allocation_id, academic_allocation_id)
+      AcademicAllocationUser.find_or_create_one(params[:academic_allocation_id], allocation_tag_id, current_user.id, nil, false, nil)
+
+      url = @chat_room.url(allocation_id, academic_allocation_id)
       URI.parse(url).path
       redirect_to url
-    end  
+    end
   end
 
   def participants

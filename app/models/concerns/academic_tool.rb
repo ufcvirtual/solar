@@ -16,7 +16,7 @@ module AcademicTool
     before_save :set_situation_date, if: 'merge.nil?', on: :update
 
     after_update if: 'notify_change?' do
-      send_email(true) 
+      send_email(true)
     end
 
     attr_accessor :allocation_tag_ids_associations, :merge
@@ -33,7 +33,7 @@ module AcademicTool
           respond_to?(:start_hour) && (start_hour_changed? || end_hour_changed?)
         ) || (
           respond_to?(:status_changed?) && status_changed?
-        ) 
+        )
       ) && verify_start
     )
 
@@ -51,59 +51,59 @@ module AcademicTool
 
   def offer_opened?
     !allocation_tags.map(&:verify_offer_period).include?(false)
-  end 
+  end
 
   def self.last_date(at, ac_id=nil)
     where = ac_id.blank? ? '' : " AND ac.id != #{ac_id}"
 
     date = AcademicAllocation.find_by_sql <<-SQL
       SELECT MAX(ed) AS max_date, ac_id
-      FROM 
-        ( 
+      FROM
+        (
           SELECT MAX(schedules.end_date) AS ed, ac.id AS ac_id
-          FROM assignments 
-          JOIN schedules ON schedules.id = assignments.schedule_id 
+          FROM assignments
+          JOIN schedules ON schedules.id = assignments.schedule_id
           JOIN academic_allocations ac ON ac.academic_tool_id = assignments.id AND academic_tool_type = 'Assignment'
           WHERE ac.allocation_tag_id = #{at} AND (evaluative = 't' OR frequency = 't') AND final_exam = 'f' #{where}
           GROUP BY ac.id
 
-          UNION 
+          UNION
 
           SELECT MAX(schedules.end_date) AS ed, ac.id AS ac_id
-          FROM discussions 
-          JOIN schedules ON schedules.id=discussions.schedule_id 
+          FROM discussions
+          JOIN schedules ON schedules.id=discussions.schedule_id
           JOIN academic_allocations ac ON ac.academic_tool_id = discussions.id AND academic_tool_type = 'Discussion'
           WHERE ac.allocation_tag_id = #{at} AND (evaluative = 't' OR frequency = 't') AND final_exam = 'f' #{where}
           GROUP BY ac.id
 
-          UNION 
+          UNION
 
           SELECT MAX(schedules.end_date) AS ed, ac.id AS ac_id
-          FROM chat_rooms 
-          JOIN schedules on schedules.id = chat_rooms.schedule_id 
+          FROM chat_rooms
+          JOIN schedules on schedules.id = chat_rooms.schedule_id
           JOIN academic_allocations ac ON ac.academic_tool_id = chat_rooms.id AND academic_tool_type = 'ChatRoom'
           WHERE ac.allocation_tag_id = #{at} AND (evaluative = 't' OR frequency = 't') AND final_exam = 'f' #{where}
           GROUP BY ac.id
 
-          UNION 
+          UNION
 
           SELECT MAX(schedules.end_date) AS ed, ac.id AS ac_id
-          FROM exams 
-          JOIN schedules on schedules.id = exams.schedule_id 
+          FROM exams
+          JOIN schedules on schedules.id = exams.schedule_id
           JOIN academic_allocations ac ON ac.academic_tool_id = exams.id AND academic_tool_type = 'Exam'
           WHERE ac.allocation_tag_id = #{at} AND (evaluative = 't' OR frequency = 't') AND final_exam = 'f' #{where}
           GROUP BY ac.id
 
-          UNION 
+          UNION
 
           SELECT MAX(schedules.end_date) AS ed, ac.id AS ac_id
           FROM schedule_events
-          JOIN schedules on schedules.id = schedule_events.schedule_id 
+          JOIN schedules on schedules.id = schedule_events.schedule_id
           JOIN academic_allocations ac ON ac.academic_tool_id = schedule_events.id AND academic_tool_type = 'ScheduleEvent'
           WHERE ac.allocation_tag_id = #{at} AND (evaluative = 't' OR frequency = 't') AND final_exam = 'f' #{where}
           GROUP BY ac.id
 
-          UNION 
+          UNION
 
           SELECT MAX((initial_time + (interval '1 mins')*duration)::date) AS ed, ac.id AS ac_id
           FROM webconferences
@@ -132,39 +132,44 @@ module AcademicTool
     object.send_email(verify_type, acs)
   end
 
-    def send_email(verify_type='delete', acs=nil)
-      ats = (acs.nil? ? academic_allocations : acs).map(&:allocation_tag).flatten.uniq rescue [acs.allocation_tag]
+  def send_email(verify_type='delete', acs=nil)
+    begin
+      ats = (acs.nil? ? academic_allocations : acs).map(&:allocation_tag_id).flatten.uniq
+      ats = AllocationTag.where(id: ats).joins('LEFT JOIN groups ON groups.id = allocation_tags.group_id').where("group_id IS NULL OR groups.status = 't'").map(&:id).uniq
+    rescue
+      ats = [acs.allocation_tag]
+    end
+    Thread.new do
+      ActiveRecord::Base.connection
+        ats.each do |at|
+          emails = User.with_access_on('receive_academic_tool_notification','emails',ats, true).map(&:email).compact.uniq
 
-      ats.each do |at|
-        emails = User.with_access_on('receive_academic_tool_notification','emails',[at.id]).map(&:email).uniq
-
-        unless emails.empty?
-          if ((verify_type == 'delete') || (respond_to?(:status_changed?) && (status_changed? && !status)))
-            if (verify_can_destroy)
+          info = AllocationTag.find(ats.first).no_group_info
+          groups = (ats.size > 1 ? ' - ' + Group.joins(:allocation_tag).where(allocation_tags: {id: ats}).map(&:code).join(', ') : '')
+          unless emails.empty?
+            if ((verify_type == 'delete') || (respond_to?(:status_changed?) && (status_changed? && !status)))
+              if (verify_can_destroy)
+                unless self.class.to_s == 'Notification'
+                 template_mail = delete_msg_template(info + groups)
+-                subject = I18n.t('editions.mail.subject_delete')
+                end
+              end
+            elsif !verify_type || (respond_to?(:status_changed?) && status_changed? && status)
+              template_mail = new_msg_template(info + groups)
+              subject = I18n.t('editions.mail.subject_new')
+            elsif verify_type
               unless self.class.to_s == 'Notification'
-                template_mail = delete_msg_template(at.info)
-                subject = I18n.t('editions.mail.subject_delete')
+                template_mail = update_msg_template(info + groups)
+                subject =  I18n.t('editions.mail.subject_update')
               end
             end
-          elsif !verify_type || (respond_to?(:status_changed?) && status_changed? && status)
-            template_mail = new_msg_template(at.info)
-            subject = I18n.t('editions.mail.subject_new')
-          elsif verify_type
-            unless self.class.to_s == 'Notification'
-              template_mail = update_msg_template(at.info)
-              subject =  I18n.t('editions.mail.subject_update')
-            end
-          end
-
-          unless subject.blank?
-            Thread.new do
-              Job.send_mass_email(emails, subject, template_mail)
-            end
+            Job.send_mass_email(emails, subject, template_mail) unless subject.blank?
           end
         end
-      end
-    end 
-    
+      ActiveRecord::Base.connection.close
+    end
+  end
+
   def verify_can_destroy
     return true if !respond_to?(:can_destroy?)
     result = can_destroy?
@@ -218,7 +223,7 @@ module AcademicTool
       end
 
       if respond_to?(:start_hour)
-        changes1 = [start_hour_was, start_hour].compact.reject { |c| c.empty? } 
+        changes1 = [start_hour_was, start_hour].compact.reject { |c| c.empty? }
         start_hour = [changes1.first, changes1.last]
 
         changes2 = [end_hour_was, end_hour].compact.reject { |c| c.empty? }
@@ -256,10 +261,11 @@ module AcademicTool
       }
     end
 
-   
+
     def define_academic_associations
       unless allocation_tag_ids_associations.blank?
-        academic_allocations.create allocation_tag_ids_associations.map {|at| { allocation_tag_id: at }}
+        academic_allocations.create allocation_tag_ids_associations.map {|at| { allocation_tag_id: at }} unless self.class.to_s == 'ChatRoom'
+        # chat already creates academic_allocations on its model because of the line accepts_nested_attributes_for :academic_allocations
       else
         academic_allocations.create
       end
@@ -267,7 +273,11 @@ module AcademicTool
 
     def set_schedule
       self.schedule.check_end_date = true # mandatory final date
-      self.schedule.verify_offer_ats = allocation_tag_ids_associations
+      if new_record?
+        self.schedule.verify_offer_ats = allocation_tag_ids_associations
+      else
+        self.schedule.verify_offer_ats = allocation_tags.map(&:id).flatten
+      end
     end
 
     def set_situation_date

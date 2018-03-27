@@ -19,10 +19,10 @@ module ExamsHelper
     case count
       when 1
         :large
-      when 2
-        :medium
+      # when 2
+      #   :medium
       else
-        :small
+        :medium
     end
   end
 

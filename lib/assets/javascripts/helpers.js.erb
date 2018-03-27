@@ -258,7 +258,7 @@ $.fn.call_fancybox = function (options) {
             }
           }
         }
-
+        $('.block_content').css('width', 'auto');
         $("body").css({'overflow-y':'visible'});
       }
     }
@@ -378,24 +378,20 @@ function expand_or_compress(icon){
 
 /* Save values from ckeditor to related textarea */
 function save_values_ckeditor(blank_message){
-  var count = -1 ;
   for(name in CKEDITOR.instances){
     var ckf = $('#'+CKEDITOR.instances[name].id+'_contents iframe');
     var content = ckf.contents().find('body').html();
     var displayNone = (ckf.parents(".nested_fields[style*='display: none']").length > 0) ? true : false;
-
-    if(ckf.parent().parent().parent()[0].id == 'cke_question_texts_text'){
-      continue;
-    }
-
     if ((typeof content != 'undefined') && (!displayNone)) {
-      count++;
-      if ( (content == "<p><br></p>" || content == "") && (count > 0) ) {
-          if(typeof blank_message != 'undefined'){
-            if (confirm(blank_message.replace('count', count))) {
-                ckf.parents(".nested_fields").find("a").first().click();
-            }else{ return true; }
-          }else { $('#' + name).val(content); }
+      if ( (content == "<p><br></p>" || content == "" || content == "<br>") && (name != 'question_enunciation') && (name != 'exam_question_question_attributes_enunciation') ) {
+          if (name == 'question_texts_text') { $('#' + name).val(''); }
+          else{
+            if(typeof blank_message != 'undefined'){
+              if (confirm(blank_message)) {
+                  ckf.parents(".nested_fields").find("a").first().click();
+              }else{ return false; }
+            }else { $('#' + name).val(content); }
+          }
       }else { $('#' + name).val(content); }
     }
   }
@@ -582,8 +578,12 @@ function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
   real_grade = $('#academic_allocation_user_grade').val();
   real_hours = $('#academic_allocation_user_working_hours').val();
 
-  if(!$('#academic_allocation_user_grade').length && !$('#academic_allocation_user_working_hours').length)
-    grade = data.grade;
+  if(!$('#academic_allocation_user_grade').length && !$('#academic_allocation_user_working_hours').length){
+    if(score_type=='evaluative' || score_type=='not_evaluative')
+      grade = data.grade;
+    else
+      grade = data.working_hours;
+  }
 
   if(!!$('a.'+class_elem).length){
     grade_or_status = $.isNumeric(grade) ? grade : data.situation;
@@ -613,8 +613,10 @@ function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
     $('a.open_evaluation', element.parent()).data('url', data.url);
   }
 
-  flash_message(data.notice, 'notice');
-  flash_message(data.warning, 'warning');
+  if(data.notice != undefined)
+    flash_message(data.notice, 'notice');
+  if(data.warning != undefined)
+    flash_message(data.warning, 'warning');
 
   if(!!$('.info_summary').length){
     $.get($('.info_summary').data('url'), function(data){
@@ -679,4 +681,11 @@ function loadFocus(){
 
 function loading_page(element){
   $(element).call_fancybox({open: true, content: $('#loading')});
+}
+
+function clear_ckeditor(){
+  for(name in CKEDITOR.instances){
+    CKEDITOR.instances[name].setData("");
+    CKEDITOR.remove(CKEDITOR.instances[name]);
+  }
 }

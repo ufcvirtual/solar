@@ -3,15 +3,15 @@
   .block_title
     %h2= t(".discussions")
     - if (can? :tool_management, Edition, {on: @allocation_tags_ids}) && @selected == 'GROUP'
-      .tool_managmenet_link= link_to_function t('editions.evaluative_tools.discussions_call'), 'call_tool_management(this)', :'data-link' => discussion_tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids)
+      .tool_managmenet_link= link_to t('editions.evaluative_tools.discussions_call'), "#void", onclick: 'call_tool_management(this)', :'data-link' => discussion_tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids)
   .block_content_toolbar
     .block_toolbar_left.btn-group
       = link_to content_tag(:i, nil, class: 'icon-plus'), new_discussion_path(allocation_tags_ids: @allocation_tags_ids), class: " btn btn_main", id: "new-discussion", :"data-tooltip" => t(".new")
 
     .block_toolbar_right
       .btn-group
-        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#", class: 'btn btn_edit', :"data-link-edit" => edit_discussion_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".edit")
-        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#", class: 'btn btn_del delete_discussion',  :"data-link-delete" => discussion_path(id: ':id', :allocation_tags_ids => @allocation_tags_ids), disabled: true, :'data-tooltip' => t(".delete")
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#void", class: 'btn btn_edit', :"data-link-edit" => edit_discussion_path(id: ':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".edit")
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#void", class: 'btn btn_del delete_discussion',  :"data-link-delete" => discussion_path(id: ':id', :allocation_tags_ids => @allocation_tags_ids), disabled: true, :'data-tooltip' => t(".delete")
 
   - unless @discussions.blank?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
@@ -23,15 +23,20 @@
           %th.no_sort{align: "center", style: "width: 26%;"}=t :forum_table_date
       %tbody
         - @discussions.each do |discussion|
+          - has_file = (not discussion.enunciation_files.empty?)
           %tr.lines{id: "tr_#{discussion.id}"}
             %td{style: 'text-align:center;'}= check_box_tag :ckb_discussion, discussion.id, false, {class: "ckb_discussion"}
             %td
               %div
-                .title= discussion.name
+                .title
+                  = discussion.name
+                  - if has_file
+                    %i.icon-paperclip
                 .description
-                  .minimun= raw(truncate discussion.description, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
+                  - description_text = strip_tags discussion.description
+                  .minimun= raw(truncate description_text, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
                   .complete.invisible
-                    = discussion.description
+                    = description_text
                     = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
                 .group_label.invisible= render "groups/groups_tags", groups: discussion.groups, tool: discussion, all_groups: all_groups, paths: {add: add_group_to_discussions_path(id: "param_id", tool_id: discussion.id), remove: remove_group_from_discussions_path(id: "param_id", tool_id: discussion.id), unbind: unbind_group_from_discussions_path(id: "param_id", tool_id: discussion.id), tags: group_tags_from_discussions_path(tool_id: discussion.id)}
             %td{style: 'text-align:center;'}= [l(discussion.schedule.start_date, format: :normal), l(discussion.schedule.end_date, format: :normal)].join(" - ")
