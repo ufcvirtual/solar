@@ -2011,6 +2011,7 @@ en_US:
     new:
       title: Send new file
       send_file_obs: Wait for the complete submission of the file. The size should not exceed 26MB.
+      attachment_file_size_too_big: File too large. The maximum size should be up to 26MB.
     error:
       download: It was not possible to download
       date_range_expired: It was not possible to execute action. Date range expired.
@@ -3960,6 +3961,8 @@ en_US:
       result_release_date: It'll only be possible to calculate grade after date and time registered to it's release
       cant_change_release_result: result already released
       equivalent: Equivalent exam, status can't be updated
+      not_corrected: This exam was not evaluated yet.
+      no_attempt: This exam has none attempts.
     show:
       groups: Groups
       empty_group: Empty group

@@ -80,7 +80,6 @@ class DiscussionsController < ApplicationController
   def update
     authorize! :update, Discussion, on: @discussion.academic_allocations.pluck(:allocation_tag_id)
 
-    @discussion.allocation_tag_ids_associations = params[:allocation_tags_ids].split(" ").flatten
     if @discussion.update_attributes(discussion_params)
       render_discussion_success_json('updated')
     else

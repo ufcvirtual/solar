@@ -62,7 +62,6 @@ class ExamsController < ApplicationController
   end
 
   def edit
-    @allocation_tags_ids = params[:allocation_tags_ids]
     @exam = Exam.find(params[:id])
     @exam.ip_reals.build if @exam.ip_reals.empty?
   end
@@ -70,7 +69,6 @@ class ExamsController < ApplicationController
   def update
     @exam = Exam.find(params[:id])
     authorize! :update, Exam, { on: @exam.academic_allocations.pluck(:allocation_tag_id) }
-    @exam.allocation_tag_ids_associations = params[:allocation_tags_ids].split(' ').flatten
     @exam.schedule.verify_today = true
     if @exam.update_attributes(exam_params)
       render_exam_success_json('updated')
@@ -136,24 +134,16 @@ class ExamsController < ApplicationController
   end
 
   def open
-    @exam = Exam.find(params[:id])
-
-    @disabled = false
-    @situation = params[:situation]
-    @last_attempt = @acu.find_or_create_exam_user_attempt(get_remote_ip, !params[:page].blank?)
     @exam_questions = ExamQuestion.list(@exam, @last_attempt).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
     @total_time = (@last_attempt.try(:complete) ? 0 : @last_attempt.try(:get_total_time)) || 0
-    user_session[:blocking_content] = Exam.verify_blocking_content(current_user.id) if params[:page].blank?
 
-    if (@situation == 'finished' || @situation == 'corrected')
+    if (@situation == 'finished' || @situation == 'corrected' || @situation == 'evaluated')
       mod_correct_exam = @exam.attempts_correction
       @exam_user_attempt = ExamUserAttempt.where(id: params[:exam_user_attempt_id]).first
       @disabled = true
 
       @exam_questions = ExamQuestion.list_correction(@exam.id).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.blank?
-      if(mod_correct_exam != 1)
-        @exam_user_attempt = Exam.get_exam_user_attempt(mod_correct_exam, @acu.id)
-      end
+      @exam_user_attempt = Exam.get_exam_user_attempt(mod_correct_exam, @acu.id) if (mod_correct_exam != 1)
 
       @list_eua = ExamUserAttempt.where(academic_allocation_user_id: @acu.id)
       if mod_correct_exam == 1 && !params[:exam_user_attempt_id]  && params[:pdf].to_i != 1
@@ -166,13 +156,7 @@ class ExamsController < ApplicationController
           @exam_questions = ExamQuestion.list_correction(@exam.id, @exam.raffle_order) unless @exam.nil?
           @pdf = 1
 
-
-          # render pdf: t('exams.result_exam.title_pdf', name: @exam.name),
-          #    template: 'exams/result_exam.html.haml',
-          #    layout: false,
-          #    disposition: 'attachment'
-
-          send_data ReportsHelper.result_exam(@ats, @exam, current_user, @grade_pdf, @exam_questions, @preview, @last_attempt, @disabled).render, :filename => "#{t('exams.result_exam.title_pdf', name: @exam.name)}.pdf", :type => "application/pdf", disposition: 'inline'
+          send_data ReportsHelper.result_exam(@ats, @exam, @user, @grade_pdf, @exam_questions, @preview, @last_attempt, @disabled).render, :filename => "#{t('exams.result_exam.title_pdf', name: @exam.name)}.pdf", :type => "application/pdf", disposition: 'inline'
 
         else
          render :open
@@ -245,14 +229,23 @@ class ExamsController < ApplicationController
   def calculate_user_grade
     exam = Exam.find(params[:id])
     user_id = current_user.id
+    at_id = active_tab[:url][:allocation_tag_id]
     if params.include?(:user_id) && params[:user_id].to_i != current_user.id
-      authorize! :evaluate, Exam, { on: active_tab[:url][:allocation_tag_id] }
+      authorize! :evaluate, Exam, { on: at_id }
       user_id = params[:user_id]
     end
     raise 'not_finished' unless exam.ended?
     raise 'result_release_date' unless exam.allow_calculate_grade?
-    grade, wh = exam.recalculate_grades(user_id, active_tab[:url][:allocation_tag_id], true)
-    render json: { success: true, grade: grade, wh: wh, status: t('exams.situation.corrected'), notice: t('calculate_grade', scope: 'exams.list') }
+    grade, wh = exam.recalculate_grades(user_id, at_id, true)
+
+    ac = AcademicAllocation.where(allocation_tag_id: at_id, academic_tool_id: exam.id, academic_tool_type: 'Exam').first
+    acu = AcademicAllocationUser.find_one(ac.try(:id), user_id)
+    if params.include?(:score_type) && !acu.blank?
+      return_acu_result(acu, at_id, params[:score_type])
+    else
+      render json: { success: true, grade: grade, wh: wh, status: t('exams.situation.corrected'), notice: t('calculate_grade', scope: 'exams.list') }
+    end
+
   rescue => error
     render_json_error(error, 'exams.error')
   end
@@ -267,27 +260,16 @@ class ExamsController < ApplicationController
     raise 'result_release_date' unless exam.allow_calculate_grade?
     exam.recalculate_grades(nil, ats, true)
     if acu = AcademicAllocationUser.find_one(params[:ac_id], params[:user_id])
-      render json: { success: true, notice: t('calculate_grade', scope: 'exams.list'), situation: t('scores.situation.corrected'), grade: acu.grade }
+      if params.include?(:score_type)
+        return_acu_result(acu, allocation_tags_ids, params[:score_type])
+      else
+        render json: { success: true, notice: t('calculate_grade', scope: 'exams.list'), situation: t('scores.situation.corrected'), grade: acu.grade }
+      end
     else
       render json: { success: true, notice: t('calculate_grade', scope: 'exams.list'), situation: t('scores.situation.corrected') }
     end
   rescue => error
     render_json_error(error, 'exams.error')
-  end
-
-  def show_user_exam_answered
-    allocation_tags_ids = params.include?(:allocation_tags_ids) ? params[:allocation_tags_ids] : active_tab[:url][:allocation_tag_id]
-    authorize! :evaluate, Exam, on: allocation_tags_ids
-
-    @exam = Exam.find(params[:id])
-    @acu = AcademicAllocationUser.find_one(params[:ac_id], params[:user_id])
-    @disabled = true
-    @last_attempt = @exam.responses_question_user(@acu.id, @exam.id)
-    @exam_questions = ExamQuestion.list_correction(@exam.id).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions)
-    @total_time = @last_attempt.try(:complete) ? 0 : @last_attempt.try(:get_total_time)
-    @exam_user_attempt = ExamUserAttempt.where(academic_allocation_user_id: @acu.id).first
-
-    render :open
   end
 
   def change_status
@@ -365,16 +347,52 @@ class ExamsController < ApplicationController
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
     acs = @exam.academic_allocations
     ac_id = (acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: @allocation_tag_id).first.id)
-    unless user_session[:exams].include?(params[:id])
-      authorize! :open, Exam, { on: @allocation_tag_id }
-      verify_time
-      user_session[:exams] << params[:id]
+    @situation = params[:situation]
 
-      @acu = AcademicAllocationUser.find_or_create_one(ac_id, @allocation_tag_id, current_user.id, nil, true)
-      raise 'attempts' unless @acu.has_attempt(@exam) || ['corrected', 'finished', 'not_corrected'].include?(@acu.status_exam)
+    if params.include?(:user_id) && params[:user_id].to_i != current_user.id
+      @user = params[:user_id]
+      authorize! :evaluate, Exam, on: [@allocation_tag_id].flatten
+      @acu = AcademicAllocationUser.find_one(ac_id, @user, nil, true) if @acu.blank?
+      @last_attempt = @acu.exam_user_attempts.last
     else
-      @acu = AcademicAllocationUser.find_one(ac_id, current_user.id, nil, true)
+      unless user_session[:exams].include?(params[:id])
+        authorize! :open, Exam, { on: @allocation_tag_id }
+        verify_time
+        user_session[:exams] << params[:id]
+
+        @acu = AcademicAllocationUser.find_or_create_one(ac_id, @allocation_tag_id, current_user.id, nil, true)
+        raise 'attempts' unless @acu.has_attempt(@exam) || ['corrected', 'finished', 'not_corrected', 'evaluated'].include?(@acu.status_exam)
+      else
+        @acu = AcademicAllocationUser.find_one(ac_id, current_user.id, nil, true) if @acu.blank?
+      end
+
+      @user = current_user.id
+      user_session[:blocking_content] = Exam.verify_blocking_content(@user) if params[:page].blank?
+      @last_attempt = @acu.find_or_create_exam_user_attempt(get_remote_ip, !params[:page].blank?)
+      @disabled = false
     end
+
+    if ['corrected', 'evaluated'].include?(@situation)
+      raise 'not_corrected' if @acu.blank? || @acu.grade.blank?
+      raise 'no_attempt' if @last_attempt.blank?
+      raise 'result_release_date' unless @exam.allow_calculate_grade?
+      exam.recalculate_grades(@user, @allocation_tag_id, true) if @acu.exam_user_attempts.where(grade: nil).any?
+    elsif  @user != current_user.id
+      raise CanCan::AccessDenied
+    end
+
+  rescue => error
+    render text: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
+  end
+
+  def return_acu_result(acu, at_id, score_type)
+    ac = acu.academic_allocation
+
+    score = Score.evaluative_frequency_situation(at_id, acu.user_id, acu.group_assignment_id, ac.academic_tool_id, ac.academic_tool_type.downcase.delete('_'), (score_type.blank? ? 'not_evaluative' : score_type)).first.situation
+
+    render json: { success: true, situation: t("scores.index.#{score}"), class_td: score, situation_complete: t(score.to_sym), tool: ac.academic_tool_type, score_type: score_type || '', ac_id: ac.id, user_id: acu.user_id, group_id: acu.group_assignment_id, notice: t('exams.list.calculate_grade'), show_element: '.open_exam', grade: acu.grade, wh: acu.working_hours }
+  rescue => error
+    render json: { success: false,  alert: error }
   end
 
 end

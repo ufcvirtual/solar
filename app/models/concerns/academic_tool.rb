@@ -135,36 +135,38 @@ module AcademicTool
   def send_email(verify_type='delete', acs=nil)
     begin
       ats = (acs.nil? ? academic_allocations : acs).map(&:allocation_tag_id).flatten.uniq
-      ats = AllocationTag.where(id: ats).joins('LEFT JOIN groups ON groups.id = allocation_tags.group_id').where("group_id IS NULL OR groups.status = 't'")
+      ats = AllocationTag.where(id: ats).joins('LEFT JOIN groups ON groups.id = allocation_tags.group_id').where("group_id IS NULL OR groups.status = 't'").map(&:id).uniq
     rescue
       ats = [acs.allocation_tag]
     end
-
     Thread.new do
-      ats.each do |at|
-        emails = User.with_access_on('receive_academic_tool_notification','emails',[at.id], true).map(&:email).compact.uniq
+      ActiveRecord::Base.connection
+        ats.each do |at|
+          emails = User.with_access_on('receive_academic_tool_notification','emails',ats, true).map(&:email).compact.uniq
 
-        unless emails.empty?
-          if ((verify_type == 'delete') || (respond_to?(:status_changed?) && (status_changed? && !status)))
-            if (verify_can_destroy)
+          info = AllocationTag.find(ats.first).no_group_info
+          groups = (ats.size > 1 ? ' - ' + Group.joins(:allocation_tag).where(allocation_tags: {id: ats}).map(&:code).join(', ') : '')
+          unless emails.empty?
+            if ((verify_type == 'delete') || (respond_to?(:status_changed?) && (status_changed? && !status)))
+              if (verify_can_destroy)
+                unless self.class.to_s == 'Notification'
+                 template_mail = delete_msg_template(info + groups)
+-                subject = I18n.t('editions.mail.subject_delete')
+                end
+              end
+            elsif !verify_type || (respond_to?(:status_changed?) && status_changed? && status)
+              template_mail = new_msg_template(info + groups)
+              subject = I18n.t('editions.mail.subject_new')
+            elsif verify_type
               unless self.class.to_s == 'Notification'
-                template_mail = delete_msg_template(at.info)
-                subject = I18n.t('editions.mail.subject_delete')
+                template_mail = update_msg_template(info + groups)
+                subject =  I18n.t('editions.mail.subject_update')
               end
             end
-          elsif !verify_type || (respond_to?(:status_changed?) && status_changed? && status)
-            template_mail = new_msg_template(at.info)
-            subject = I18n.t('editions.mail.subject_new')
-          elsif verify_type
-            unless self.class.to_s == 'Notification'
-              template_mail = update_msg_template(at.info)
-              subject =  I18n.t('editions.mail.subject_update')
-            end
+            Job.send_mass_email(emails, subject, template_mail) unless subject.blank?
           end
-
-          Job.send_mass_email(emails, subject, template_mail) unless subject.blank?
         end
-      end
+      ActiveRecord::Base.connection.close
     end
   end
 
@@ -263,6 +265,7 @@ module AcademicTool
     def define_academic_associations
       unless allocation_tag_ids_associations.blank?
         academic_allocations.create allocation_tag_ids_associations.map {|at| { allocation_tag_id: at }} unless self.class.to_s == 'ChatRoom'
+        # chat already creates academic_allocations on its model because of the line accepts_nested_attributes_for :academic_allocations
       else
         academic_allocations.create
       end
@@ -270,7 +273,11 @@ module AcademicTool
 
     def set_schedule
       self.schedule.check_end_date = true # mandatory final date
-      self.schedule.verify_offer_ats = allocation_tag_ids_associations
+      if new_record?
+        self.schedule.verify_offer_ats = allocation_tag_ids_associations
+      else
+        self.schedule.verify_offer_ats = allocation_tags.map(&:id).flatten
+      end
     end
 
     def set_situation_date

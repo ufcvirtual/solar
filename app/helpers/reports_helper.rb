@@ -86,8 +86,9 @@ module ReportsHelper
     return pdf
   end
 
-  def self.result_exam ats, exam, user, grade_pdf, exam_questions, preview, last_attempt, disabled
-    pdf = inicializa_pdf(:portrait)
+  def self.result_exam ats, exam, user_id, grade_pdf, exam_questions, preview, last_attempt, disabled
+    user = User.find(user_id)
+    pdf  = inicializa_pdf(:portrait)
 
     # Título do pdf
     pdf.text ats.info, size: 14, style: :bold, align: :center
@@ -138,7 +139,7 @@ module ReportsHelper
       arr_alf = ('A'..'Z').to_a
       arra_correted, arra_correted2, arra_marked, arra_marked2 = [], [], [], []
 
-      responses = question.question_items.joins(:exam_responses_question_items).where(exam_responses_question_items: {:'exam_response_id' => exam_responses.id}).select("question_items.id, question_items.description, question_items.item_image_file_name AS image_name, question_items.value AS correct_value, exam_responses_question_items.value AS marked_value, question_items.comment")
+      responses = question.question_items.joins(:exam_responses_question_items).where(exam_responses_question_items: { exam_response_id: exam_responses.id}).select("question_items.id, question_items.description, question_items.item_image_file_name AS image_name, question_items.value AS correct_value, exam_responses_question_items.value AS marked_value, question_items.comment")
 
       responses.each do |item|
         number_question_response += 1
@@ -147,44 +148,44 @@ module ReportsHelper
         arra_marked2 << arr_alf[number_question_response] unless item.marked_value
         arra_correted << arr_alf[number_question_response] if item.correct_value
         arra_correted2 << arr_alf[number_question_response] unless item.correct_value
-        image_name = "#{item.id}_#{item.image_name}" unless item.image_name.blank?
+        image_path = get_path_image(item.id, item.image_name, 'items') unless item.image_name.blank?
 
         if item.marked_value == item.correct_value
           if question.type_question.to_i == Question::UNIQUE
-            bullet(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_correctly')}) #{item.description}", "0B610B")
+            bullet(pdf, item.marked_value, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_correctly')}) #{item.description}", "0B610B")
           elsif question.type_question.to_i == Question::MULTIPLE
-            checkbox(pdf, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_correctly')}) #{item.description}", item.marked_value, "0B610B")
+            checkbox(pdf, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_correctly')}) #{item.description}", item.marked_value, "0B610B")
           else
             selected_correctly = I18n.t('exams.result_exam_user.true_item') if item.marked_value == true
             selected_correctly = I18n.t('exams.result_exam_user.false_item') if item.marked_value == false
-            dropdown(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_correctly')}) (#{selected_correctly}) #{item.description}", "0B610B")
+            dropdown(pdf, item.marked_value, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_correctly')}) (#{selected_correctly}) #{item.description}", "0B610B")
           end
         else
           if (item.correct_value == false && item.marked_value == true)
             if question.type_question.to_i == Question::UNIQUE
-              bullet(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) #{item.description}", "E03838")
+              bullet(pdf, item.marked_value, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) #{item.description}", "E03838")
             elsif question.type_question.to_i == Question::MULTIPLE
-              checkbox(pdf, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) #{item.description}", item.marked_value, "E03838")
+              checkbox(pdf, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) #{item.description}", item.marked_value, "E03838")
             else
-              dropdown(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) (#{I18n.t('exams.result_exam_user.false_item')}) #{item.description}", "E03838")
+              dropdown(pdf, item.marked_value, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) (#{I18n.t('exams.result_exam_user.false_item')}) #{item.description}", "E03838")
             end
           elsif item.correct_value == true && item.marked_value != true
             if question.type_question.to_i == Question::UNIQUE
-              bullet(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.correct_item')}) #{item.description}", "E03838")
+              bullet(pdf, item.marked_value, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.correct_item')}) #{item.description}", "E03838")
             elsif question.type_question.to_i == Question::MULTIPLE
-              checkbox(pdf, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.correct_item')}) #{item.description}", item.marked_value, "E03838")
+              checkbox(pdf, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.correct_item')}) #{item.description}", item.marked_value, "E03838")
             else
-              dropdown(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) (#{I18n.t('exams.result_exam_user.true_item')}) #{item.description}", "E03838")
+              dropdown(pdf, item.marked_value, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) (#{I18n.t('exams.result_exam_user.true_item')}) #{item.description}", "E03838")
             end
           else
             if question.type_question.to_i == Question::UNIQUE
-              bullet(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) #{item.description}", "2900C2")
+              bullet(pdf, item.marked_value, image_path, "#{arr_alf[number_question_response]}) #{item.description}", "2900C2")
             elsif question.type_question.to_i == Question::MULTIPLE
-              checkbox(pdf, image_name, "#{arr_alf[number_question_response]}) #{item.description}", item.marked_value, "2900C2")
+              checkbox(pdf, image_path, "#{arr_alf[number_question_response]}) #{item.description}", item.marked_value, "2900C2")
             else
               selected_correctly = I18n.t('exams.result_exam_user.true_item') if item.correct_value == true
               selected_correctly = I18n.t('exams.result_exam_user.false_item') if item.correct_value == false
-              dropdown(pdf, item.marked_value, image_name, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) (#{selected_correctly}) #{item.description}", "E03838")
+              dropdown(pdf, item.marked_value, image_path, "#{arr_alf[number_question_response]}) (#{I18n.t('exams.selected_incorrectly')}) (#{selected_correctly}) #{item.description}", "E03838")
             end
           end
         end
@@ -483,7 +484,7 @@ module ReportsHelper
       pdf.move_down 10
     end
 
-    def self.bullet(pdf, marked_value, image, text, color = "000000")
+    def self.bullet(pdf, marked_value, image_path, text, color = "000000")
       pdf.image "#{Rails.root}/app/assets/images/bullet.png", width: 12, height: 12, at: [0, pdf.cursor]
       pdf.bounding_box([0, pdf.cursor], width: 10, height: 12) do
         value = marked_value ? "•" : " "
@@ -494,7 +495,7 @@ module ReportsHelper
         pdf.text strip_htlm_tags(text), align: :justify, color: color
       end
       pdf.move_down 5
-      pdf.image "#{Rails.root}/media/questions/items/#{image}" unless image.blank?
+      pdf.image image_path, width: 250, height: 250 unless image_path.blank?
     end
 
     EMPTY_CHECKBOX   = "\u2610" # "☐"
@@ -502,15 +503,15 @@ module ReportsHelper
     EXED_CHECKBOX    = "\u2612" # "☒"
     CHECKBOX_FONT    = "#{Rails.root}/app/assets/stylesheets/fonts/DejaVuSans.ttf"
 
-    def self.checkbox(pdf, image, label, checked, color = "000000")
+    def self.checkbox(pdf, image_path, label, checked, color = "000000")
       pdf.font "#{CHECKBOX_FONT}" do
         pdf.text strip_htlm_tags((checked ? "#{CHECKED_CHECKBOX} #{label}" : "#{EMPTY_CHECKBOX} #{label}")), color: color
       end
       pdf.move_down 5
-      pdf.image "#{Rails.root}/media/questions/items/#{image}" unless image.blank?
+      pdf.image image_path, width: 250, height: 250 unless image_path.blank?
     end
 
-    def self.dropdown(pdf, marked_value, image, text, color = "000000")
+    def self.dropdown(pdf, marked_value, image_path, text, color = "000000")
       pdf.image "#{Rails.root}/app/assets/images/box.png", width: 20, height: 12, at: [0, pdf.cursor]
       pdf.bounding_box([0, pdf.cursor], width: 10, height: 12) do
         if marked_value == nil
@@ -525,13 +526,13 @@ module ReportsHelper
         pdf.text strip_htlm_tags(text), align: :justify, color: color
       end
       pdf.move_down 5
-      pdf.image "#{Rails.root}/media/questions/items/#{image}" unless image.blank?
+      pdf.image image_path, width: 250, height: 250 unless image_path.blank?
     end
 
     def self.render_images(pdf, images)
       Timeout::timeout(10) do
         images.each do |q_image|
-          pdf.image "#{Rails.root}/media/questions/images/#{q_image.id}_#{q_image.image_file_name}", alt: q_image.img_alt unless q_image.image_file_name.blank?
+          pdf.image get_path_image(q_image.id, q_image.image_file_name, 'images'), alt: q_image.img_alt, width: 250, height: 250 unless q_image.image_file_name.blank?
           pdf.move_down 10
           pdf.text q_image.legend, align: :center unless q_image.legend.blank?
           pdf.move_down 10
@@ -642,5 +643,27 @@ module ReportsHelper
       end
 
       return [thead] + tbody
+    end
+
+    def self.get_path_image item_id, image_name, image_type
+      tmp_name = image_name.split(".")
+      tmp_name = [tmp_name[0], '_medium.', tmp_name[1]].join('')
+      path = "#{Rails.root}/media/questions/#{image_type}/#{item_id}_#{tmp_name}"
+      if File.exists? path
+        path
+      else
+        tmp_name = tmp_name.gsub('_medium.', '_original.')
+        path = "#{Rails.root}/media/questions/#{image_type}/#{item_id}_#{tmp_name}"
+        if File.exists? path
+          path
+        else
+          path = "#{Rails.root}/media/questions/#{image_type}/#{item_id}_#{image_name}"
+          if File.exists? path
+            path
+          else
+            nil
+          end
+         end
+      end
     end
 end

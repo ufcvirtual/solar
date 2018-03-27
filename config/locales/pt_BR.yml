@@ -2237,6 +2237,7 @@ pt_BR:
     new:
       title: Enviar novo arquivo
       send_file_obs: Aguarde o envio completo do arquivo. O tamanho não deve exceder 26MB.
+      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 26MB.
     error:
       download: Não foi possível realizar o download
       date_range_expired: Não foi possível realizar ação. Período encerrado.
@@ -4214,6 +4215,8 @@ pt_BR:
       result_release_date: Só será possível calcular a nota a partir da data e horário cadastrados para sua liberação
       cant_change_release_result: resultados já foram liberados
       equivalent: Prova com equivalência, status não pode ser alterado.
+      not_corrected: Essa prova ainda não foi corrigida
+      no_attempt: Esta prova não possui nenhuma tentativa
     show:
       groups: Turmas
       empty_group: Turma vazia

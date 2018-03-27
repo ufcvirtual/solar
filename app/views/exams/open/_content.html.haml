@@ -1,6 +1,6 @@
 .block_content
   - number_question = 0
-  - link = @preview ? preview_exam_path(@exam) : open_exam_path(@exam, situation: 'corrected')
+  - link = @preview ? preview_exam_path(@exam) : open_exam_path(@exam, situation: 'corrected', user_id: @user)
   - @exam_questions.each_with_index do |question, idx|
     - unless @preview
       - @exam_responses = find_exam_responses(@last_attempt, question.id)
@@ -12,10 +12,10 @@
       - anull = '<div class="annulled">'+t('exams.open.anull')+'</div>'
     .questions
       - text = QuestionText.find(question.question_text_id).text.html_safe unless question.question_text_id.nil?
-      - unless question.question_text_id.nil?  
-        %ul.question_texts  
-          %li#question_text    
-            .legend 
+      - unless question.question_text_id.nil?
+        %ul.question_texts
+          %li#question_text
+            .legend
               = link_to('#void', onclick: 'show_text(this)', class: 'invisible show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
                 =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
                 =t('questions.questions.associated_text')
@@ -29,16 +29,20 @@
         %span.enunciation{id: "radio_#{number_question}"}= raw [question.enunciation, anull, score].compact.join(' ')
       - question_images = get_question_images(question.id)
       - @question_audios = get_question_audios(question.id)
-      
+
       - unless question_images.nil?
         %ul.question_images
           - question_images.each do |q_image|
-            /%li.image{class: (q_image.legend.blank? || @pdf == 1) ? '' : 'legend'}
             %li.image
               - unless @pdf == 1
-                .zoom
-                  %p= t('exams.open.image_zoom')
-                  = image_tag q_image.image.url(get_image_size(question_images.count)), :class => 'item_image', alt: q_image.img_alt, :'aria-label' => t('exams.open.image', alt: q_image.img_alt) + (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend)), :"data-zoom-url" => q_image.image.url(:original)
+                - if q_image.image.exists?
+                  .zoom
+                    %p= t('exams.open.image_zoom')
+                    = image_tag q_image.image.url(get_image_size(question_images.count)), class: 'item_image', alt: q_image.img_alt, :'aria-label' => t('exams.open.image', alt: q_image.img_alt) + (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend)), :"data-zoom-url" => q_image.image.url(:original)
+                - else
+                  - img_url = q_image.image.url
+                  - img_url.gsub!('_original.', '.')
+                  = image_tag img_url,  alt: q_image.img_alt, :'aria-label' => t('exams.open.image', alt: q_image.img_alt) + (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend)), size: "350x350"
                 - unless q_image.legend.blank?
                   .legend{:'aria-hidden' => 'true'}= q_image.legend
               - else
@@ -60,7 +64,7 @@
                 .legend{class: class_.blank? ? '' : 'legend-description'}
                   - unless q_audio.description.blank?
                     %p{:'aria-hidden' => 'true'}= q_audio.description
-                  - unless q_audio.audio_description.blank?  
+                  - unless q_audio.audio_description.blank?
                     = link_to('#void', onclick: 'show_audio_description(this)', class: 'show_questions_description_ico', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('questions.questions.show_alt')) do |l|
                       =content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show_alt'), :'aria-hidden' => 'true')
                       =t('questions.questions.show')
@@ -85,9 +89,9 @@
 = javascript_include_tag 'tooltip', 'audios', 'zoom/jquery.zoom'
 
 :javascript
-  
+
   var time = parseInt(#{@total_time});
-  
+
   var time_h = Math.floor(time/3600);
   var time_min = Math.floor((time%3600)/60);
   var time_s = (time%3600)%60;
@@ -100,6 +104,8 @@
       new updateTime("clock", [time_h, time_min, time_s]);
       clock_switch = true;
     }
+
+    $.fancybox.update();
 
   });
 

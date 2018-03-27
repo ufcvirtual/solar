@@ -78,7 +78,6 @@ class ChatRoomsController < ApplicationController
   def update
     authorize! :update, ChatRoom, on: @chat_room.academic_allocations.pluck(:allocation_tag_id)
 
-    @chat_room.allocation_tag_ids_associations = params[:allocation_tags_ids].split(' ').flatten
     if @chat_room.update_attributes(chat_room_params)
       render_notification_success_json('updated')
     else
@@ -176,7 +175,7 @@ class ChatRoomsController < ApplicationController
       academic_allocation_id = params[:academic_allocation_id]
       allocation_id = params[:allocation_id]
 
-      AcademicAllocationUser.find_or_create_one(params[:academic_allocation_id], allocation_tag_id, current_user.id, nil, true)
+      AcademicAllocationUser.find_or_create_one(params[:academic_allocation_id], allocation_tag_id, current_user.id, nil, false, nil)
 
       url = @chat_room.url(allocation_id, academic_allocation_id)
       URI.parse(url).path

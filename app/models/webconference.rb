@@ -24,7 +24,6 @@ class Webconference < ActiveRecord::Base
 
   validate :verify_quantity, if: '!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed? || new_record?) && merge.nil?'
 
-  # validate :verify_offer, if: '!(duration.nil? || initial_time.nil?) && (new_record? || initial_time_changed? || duration_changed?) && !allocation_tag_ids_associations.blank?'
   validate :verify_offer, unless: 'allocation_tag_ids_associations.blank?'
 
   def link_to_join(user, at_id = nil, url = false)
@@ -216,6 +215,8 @@ class Webconference < ActiveRecord::Base
             new_acu.grade = from_acu.grade # updates grade with most recent copied group
             new_acu.working_hours = from_acu.working_hours
             new_acu.status = from_acu.status
+            new_acu.comments_count = from_acu.comments_count
+            new_acu.evaluated_by_responsible = from_acu.evaluated_by_responsible
             new_acu.new_after_evaluation = from_acu.new_after_evaluation
             new_acu.merge = true
             new_acu.save
@@ -223,6 +224,7 @@ class Webconference < ActiveRecord::Base
 
           log = LogAction.where(log.attributes.except('id', 'academic_allocation_id', 'academic_allocation_user_id').merge!(academic_allocation_id: new_ac.id)).first_or_initialize
 
+          log.merge = true
           log.academic_allocation_user_id = new_acu.try(:id)
           log.save
         end

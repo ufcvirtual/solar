@@ -40,6 +40,8 @@ class AcademicAllocation < ActiveRecord::Base
   before_save :change_dependencies, on: :update, unless: 'new_record?'
   before_save :set_automatic_frequency, on: :update, if: "frequency"
 
+  after_save :update_acus, on: :update, if: "frequency_automatic && !max_working_hours.blank?"
+
   before_destroy :set_situation_date
   after_destroy :verify_management
 
@@ -307,6 +309,21 @@ class AcademicAllocation < ActiveRecord::Base
       self.frequency_automatic = false if academic_tool_type == 'ScheduleEvent'
       self.frequency_automatic = true if academic_tool_type == 'Exam'
       return nil
+    end
+
+    def update_acus
+      if frequency_automatic_changed?
+        # set all previously evaluated acus as evaluated_by_responsible
+        academic_allocation_users.where(evaluated_by_responsible: false).where("status = #{AcademicAllocationUser::STATUS[:evaluated]} AND working_hours IS NOT NULL").update_all evaluated_by_responsible: true
+
+        # set all not evaluated acus with automatic frequency
+        academic_allocation_users.where(evaluated_by_responsible: false, working_hours: nil).where("status = #{AcademicAllocationUser::STATUS[:sent]} OR ( (grade > 0) AND (status = #{AcademicAllocationUser::STATUS[:evaluated]}))").update_all working_hours: max_working_hours, status: AcademicAllocationUser::STATUS[:evaluated]
+      end
+
+      if max_working_hours_changed?
+        # update max_working_hours
+        academic_allocation_users.where(evaluated_by_responsible: false).where("status = #{AcademicAllocationUser::STATUS[:evaluated]} AND working_hours IS NOT NULL").update_all working_hours: max_working_hours
+      end
     end
 
 end

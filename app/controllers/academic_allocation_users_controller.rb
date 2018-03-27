@@ -16,8 +16,6 @@ class AcademicAllocationUsersController < ApplicationController
     if errors.any?
       render json: { success: false, alert: errors.join("<br/>") }, status: :unprocessable_entity
     else
-      @academic_allocation_user.evaluated_by_responsible = true
-      @academic_allocation_user.save
       if !@academic_allocation_user.academic_allocation.try(:equivalent_academic_allocation_id).blank? && AcademicAllocationUser.where(academic_allocation_id: @academic_allocation_user.academic_allocation.equivalent_academic_allocation_id, user_id: @academic_allocation_user.user_id).any?
         render json: { success: true, warning: t('academic_allocation_users.warning.equivalency_evaluated'), situation: t("scores.index.#{score}"), class_td: score, situation_complete: t(score.to_sym) }
       else
@@ -33,7 +31,7 @@ class AcademicAllocationUsersController < ApplicationController
     at = active_tab[:url][:allocation_tag_id]
     ac_id = (params[:ac_id].blank? ? AcademicAllocation.where(academic_tool_type: params[:tool], academic_tool_id: (params[:tool_id]), allocation_tag_id: at).first.try(:id) : params[:ac_id])
 
-    @acu = AcademicAllocationUser.find_or_create_one(ac_id, at, current_user.id, params[:group_id], false)
+    @acu = AcademicAllocationUser.find_or_create_one(ac_id, at, current_user.id, params[:group_id], false, nil)
     @tool = params[:tool].constantize.find(params[:tool_id])
 
     @user = current_user

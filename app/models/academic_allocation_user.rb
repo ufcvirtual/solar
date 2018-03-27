@@ -142,6 +142,7 @@ class AcademicAllocationUser < ActiveRecord::Base
 
       acu.grade = evaluation[:grade].blank? ? nil : evaluation[:grade].to_f
       acu.working_hours = evaluation[:working_hours].blank? ? nil : evaluation[:working_hours]
+      acu.evaluated_by_responsible = true if evaluation[:working_hours] != acu.working_hours
 
       if !acu.grade.blank? || !acu.working_hours.blank? || acu.comments.any?
         acu.status = STATUS[:evaluated]

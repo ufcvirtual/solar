@@ -14,9 +14,7 @@
           %span= arr_alf[num_question]+') '
           = qi.description.html_safe
         - if qi.item_image?
-          .zoom
-            %p= t('exams.open.image_zoom')
-            = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt, class: 'item_image', :'aria-label' => t('exams.open.image_item', alt: qi.img_alt, item: arr_alf[num_question]), :"data-zoom-url" => qi.item_image.url(:original)) rescue ''
+          = render partial: 'exams/open/items_images', locals: {item: qi, num_question: num_question, arr_alf: arr_alf}
         - if qi.item_audio?
           .audio.legend
             .audio
@@ -42,9 +40,7 @@
           %span= arr_alf[num_question]+') '
           = qi.description.html_safe
         - if qi.item_image?
-          .zoom
-            %p= t('exams.open.image_zoom')
-            = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt, class: 'item_image', :'aria-label' => t('exams.open.image_item', alt: qi.img_alt, item: arr_alf[num_question]), :"data-zoom-url" => qi.item_image.url(:original)) rescue ''
+          = render partial: 'exams/open/items_images', locals: {item: qi, num_question: num_question, arr_alf: arr_alf}
         - if qi.item_audio?
           .visuallyhidden=t(:audio_suggestions_item)
           .audio.legend
@@ -60,7 +56,7 @@
                 = link_to content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), "#void", onclick: 'show_audio_description(this)', class: 'invisible hide_questions_description_ico'
                 =link_to t('questions.questions.show'), "#", onclick: "show_audio_description(this)"
                 .text= raw qi.audio_description.html_safe
-          
+
   - else
     - question_items.each do |qi|
       - num_question =  num_question + 1
@@ -71,9 +67,7 @@
           %span= arr_alf[num_question]+') '
           = qi.description.html_safe
         - if qi.item_image?
-          .zoom
-            %p= t('exams.open.image_zoom')
-            = image_tag(qi.item_image(:medium), id: 'item_image', alt: qi.img_alt, class: 'item_image', :'aria-label' => t('exams.open.image_item', alt: qi.img_alt, item: arr_alf[num_question]), :"data-zoom-url" => qi.item_image.url(:original)) rescue ''
+          = render partial: 'exams/open/items_images', locals: {item: qi, num_question: num_question, arr_alf: arr_alf}
         - if qi.item_audio?
           .visuallyhidden=t(:audio_suggestions_item)
           .audio.legend
@@ -88,7 +82,7 @@
                 = link_to content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('questions.questions.show')), "#void", onclick: 'show_audio_description(this)', class: 'show_questions_description_ico'
                 = link_to content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('questions.questions.show')), "#void", onclick: 'show_audio_description(this)', class: 'invisible hide_questions_description_ico'
                 =link_to t('questions.questions.show'), "#", onclick: "show_audio_description(this)", class: 'link_text_audio'
-                .text= raw qi.audio_description.html_safe       
+                .text= raw qi.audio_description.html_safe
 
 - if @question_audios || audio_is==1
   .question_audios
@@ -97,7 +91,7 @@
         %input.aPbr{id: "aPbr", type: "range", value: 1, min: 0, max: 5, step: 0.1 }
           %p
             = t(:control_audio, scope: [:questions, :questions])
-            %span#aCurrentPbr= 1                    
+            %span#aCurrentPbr= 1
 
 = javascript_include_tag 'pagination'
 
