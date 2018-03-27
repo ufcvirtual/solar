@@ -1215,6 +1215,7 @@ en_US:
       not_published: It was not possible to publish post
       draft: It's not possible to reply a draft post
       back_to_draft: It's not possible to set as draft a post with replies.
+      attachment_file_size_too_big: File too large. The maximum size should be up to 10MB.
     mail:
       subject: Reply to your post sent at %{discussion} - %{at_info}
       text: You have received the following answer

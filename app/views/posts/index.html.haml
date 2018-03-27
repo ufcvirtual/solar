@@ -304,29 +304,35 @@
       $(".attachment_title_").show();
 
       $("input[type='file']", new_form).change(function(){
+        if(this.files[0] != undefined) {
+          if(this.files[0].size > 10000000) {
+            $(this).remove();
+            flash_message("#{I18n.t('posts.error.attachment_file_size_too_big')}", "alert");
+          } else {
+            var text_aria_label = "#{I18n.t('posts.post.remove_file')}"+': ' + this.files[0].name + ' ' +humanFileSize(this.files[0].size);
 
-        var text_aria_label = "#{I18n.t('posts.post.remove_file')}"+': ' + this.files[0].name + ' ' +humanFileSize(this.files[0].size);
+            var new_file_name = "<div class='input files'> <label></label> <span id='file' data-input-file-name=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-square warning remove_file' tabindex= '0' aria-label= '"+text_aria_label+"' data-tooltip= '"+text_aria_label+"' ></i> </span> </div>";
 
-        var new_file_name = "<div class='input files'> <label></label> <span id='file' data-input-file-name=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-square warning remove_file' tabindex= '0' aria-label= '"+text_aria_label+"' data-tooltip= '"+text_aria_label+"' ></i> </span> </div>";
+            if ($(".list_files_to_send_ .files:last").lenght)
+              $(".list_files_to_send_ .files:last").after(new_file_name);
+            else
+              $(".list_files_to_send_").append(new_file_name);
 
-        if ($(".list_files_to_send_ .files:last").lenght)
-          $(".list_files_to_send_ .files:last").after(new_file_name);
-        else
-          $(".list_files_to_send_").append(new_file_name);
+            $(".remove_file", $('.posts')).on("click keypress", function(event){
+              var keynum = event.which || event.keyCode;
 
-        $(".remove_file", $('.posts')).on("click keypress", function(event){
-          var keynum = event.which || event.keyCode;
+              if( keynum == 13 || event.type == 'click'){
+                var span_file = $(this).parents('span#file');
 
-          if( keynum == 13 || event.type == 'click'){
-            var span_file = $(this).parents('span#file');
+                $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove();
+                $(span_file).parents('div.input.files').remove();
 
-            $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove();
-            $(span_file).parents('div.input.files').remove();
-
-            if (!$(".list_files_to_send_").children().length)
-              $(".attachment_title_").addClass("invisible");
+                if (!$(".list_files_to_send_").children().length)
+                  $(".attachment_title_").addClass("invisible");
+              }
+            });
           }
-        });
+        }
       });
     }
 
