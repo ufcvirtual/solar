@@ -1403,6 +1403,7 @@ pt_BR:
       not_published: Não foi possível publicar o post
       draft: Não é possível responder um post de rascunho
       back_to_draft: Não é possível definir como rascunho um post com respostas.
+      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 10MB.
     mail:
       subject: Resposta a seu post enviado em %{discussion} - %{at_info}
       text: Você recebeu a seguinte resposta
