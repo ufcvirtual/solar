@@ -138,7 +138,6 @@ class OffersController < ApplicationController
     end
 
     def update_offer_activities(offer)
-
       param_off_start_date = params[:offer][:period_schedule_attributes][:start_date].blank? ? nil : Date.parse(params[:offer][:period_schedule_attributes][:start_date])
       param_off_end_date = params[:offer][:period_schedule_attributes][:end_date].blank? ? nil : Date.parse(params[:offer][:period_schedule_attributes][:end_date])
 
