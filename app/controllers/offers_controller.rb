@@ -139,11 +139,6 @@ class OffersController < ApplicationController
 
     def update_offer_activities(offer)
       
-      off_schedule = offer.offer_schedule_id.nil? ? nil : Schedule.find(offer.offer_schedule_id)
-    
-      #off_start_date = off_schedule.nil? ? offer.semester.offer_schedule.start_date : off_schedule.start_date
-      #off_end_date = off_schedule.nil? ? offer.semester.offer_schedule.end_date : off_schedule.end_date
-      
       param_off_start_date = params[:offer][:period_schedule_attributes][:start_date].blank? ? nil : Date.parse(params[:offer][:period_schedule_attributes][:start_date])
       param_off_end_date = params[:offer][:period_schedule_attributes][:end_date].blank? ? nil : Date.parse(params[:offer][:period_schedule_attributes][:end_date])
       
@@ -278,7 +273,7 @@ class OffersController < ApplicationController
         end
         
         unless activities_to_email.blank?
-          Notifier.send_mail(related_users_emails, "Alteração de Atividades", email_template(activities_to_email), []).deliver
+          Notifier.send_mail(related_users_emails, "Alteração do Período da(s) Atividade(s)", email_template(activities_to_email), []).deliver
         end
 
       end
