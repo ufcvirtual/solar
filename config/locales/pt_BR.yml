@@ -668,6 +668,7 @@ pt_BR:
   login_footer5: "Código"
   login_footer6: "Equipe"
   login_app: "Baixe nosso App!"
+  login_app2: "Baixe o APP do Solar"
   login_faq: FAQ
   faq_title: "Dúvidas frequentes"
   login_language: "Idioma"
@@ -767,7 +768,9 @@ pt_BR:
   form_email_confirmation: "Confirmação do e-mail"
   form_email: "E-mail"
   form_google_play: 'Disponível no Google Play'
+  form_google_play2: 'Aplicativo do Solar disponível no Google Play'
   form_apple_store: 'Baixar na App Store'
+  form_apple_play2: 'Aplicativo do Solar disponível no App Store'
   back_home: "Voltar para Home"
 
   # pagina de cadastro de usuario
