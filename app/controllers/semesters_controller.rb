@@ -242,7 +242,9 @@ class SemestersController < ApplicationController
                 activities_to_email[al.academic_tool_type] << act
                 activities_to_save << act
               end
+
             end
+
           end
 
           unless activities_to_save.blank?
