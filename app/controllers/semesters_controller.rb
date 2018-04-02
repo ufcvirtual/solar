@@ -123,7 +123,6 @@ class SemestersController < ApplicationController
     end
 
     def update_offer_activities_from_semester(semester)
-
       param_off_start_date = params[:semester][:offer_schedule_attributes][:start_date].blank? ? nil : Date.parse(params[:semester][:offer_schedule_attributes][:start_date])
       param_off_end_date = params[:semester][:offer_schedule_attributes][:end_date].blank? ? nil : Date.parse(params[:semester][:offer_schedule_attributes][:end_date])
 
@@ -167,9 +166,7 @@ class SemestersController < ApplicationController
               end
 
             end
-
             if ['Webconference'].include? al.academic_tool_type
-
               if act.initial_time < param_off_start_date
                 act.initial_time = Time.new(param_off_start_date.year, param_off_start_date.month, param_off_start_date.day, act.initial_time.hour, act.initial_time.min, act.initial_time.sec)
               end
@@ -202,7 +199,6 @@ class SemestersController < ApplicationController
                 if lesson.schedule.start_date < param_off_start_date
                   lesson.schedule.start_date = param_off_start_date
                 end
-
                 if lesson.schedule.end_date != nil && lesson.schedule.end_date  > param_off_end_date
                   lesson.schedule.end_date = param_off_end_date
                 end
@@ -219,7 +215,6 @@ class SemestersController < ApplicationController
             end
 
             if ['Exam'].include? al.academic_tool_type
-
               difference_in_days = (act.schedule.end_date - act.schedule.start_date).to_i
 
               # se tentou mover o periodo total da oferta para antes do inicio da atividade
@@ -247,9 +242,7 @@ class SemestersController < ApplicationController
                 activities_to_email[al.academic_tool_type] << act
                 activities_to_save << act
               end
-
             end
-
           end
 
           unless activities_to_save.blank?
