@@ -31,7 +31,7 @@ module V1
 
             begin
               destination = get_destination(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:codigo], (group_info[:periodo].blank? ? group_info[:ano] : "#{group_info[:ano]}.#{group_info[:periodo]}"))
-              destination.cancel_allocations(user.id, profile_id) if destination
+              destination.cancel_allocations(user.id, profile_id, nil, {}, true) if destination
 
               {ok: :ok}
             end
@@ -56,7 +56,7 @@ module V1
           end
 
           # load/curriculum_units
-          params do 
+          params do
             requires :codigo, :nome, type: String
             requires :cargaHoraria, type: Integer
             requires :creditos, type: Float
@@ -64,7 +64,7 @@ module V1
           end
           post "/" do
             begin
-              ActiveRecord::Base.transaction do 
+              ActiveRecord::Base.transaction do
                 verify_or_create_curriculum_unit( {
                   code: params[:codigo].slice(0..39), name: params[:nome], working_hours: params[:cargaHoraria], credits: params[:creditos], curriculum_unit_type_id: params[:tipo]
                 } )
@@ -173,7 +173,7 @@ module V1
 
       end # load
 
-      namespace :integration do 
+      namespace :integration do
 
         namespace :event do
 
@@ -200,7 +200,7 @@ module V1
         end # event
 
         namespace :events do
-          
+
           desc "Criação de um ou mais eventos"
           params do
             requires :Turmas, type: Array
@@ -212,7 +212,7 @@ module V1
           end
           post "/" do
             group_events = []
-        
+
             begin
               ActiveRecord::Base.transaction do
                 offer = get_offer(params[:CodigoDisciplina], params[:CodigoCurso], params[:Periodo])
