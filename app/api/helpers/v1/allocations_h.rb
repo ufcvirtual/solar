@@ -58,7 +58,7 @@ module V1::AllocationsH
   end
   ## remover
 
-  def allocate(params, cancel = false)
+  def allocate(params, cancel = false, raise_error=false)
     objects = ( params[:id].nil? ?  get_destination(params[:curriculum_unit_code], params[:course_code], params[:group_name], params[:semester], params[:group_code]) : params[:type].capitalize.constantize.find(params[:id]) )
     users  = get_users(params)
 
@@ -71,7 +71,13 @@ module V1::AllocationsH
         Rails.logger.info "[API] [WARNING] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [404] message: Não foi possível cadastrar o usuário de cpf #{user.try(:cpf)} - SI3 não enviou os dados"
       end
       user.cancel_allocations(params[:profile_id]) if params[:remove_user_previous_allocations]
-      [objects].flatten.map{|object| object.send(cancel ? :cancel_allocations : :allocate_user, user.id, params[:profile_id])}
+      [objects].flatten.map do |object|
+        if cancel
+          object.cancel_allocations(user.id, params[:profile_id], nil, {}, raise_error)
+        else
+          object.allocate_user(user.id, params[:profile_id])
+        end
+      end
     end
   end
 

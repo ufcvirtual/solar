@@ -25,9 +25,7 @@ class UsersController < ApplicationController
       user_cpf   = params[:cpf].delete(".").delete("-")
       integrated = User::MODULO_ACADEMICO["integrated"]
       user       = User.where("translate(cpf,'.-','') = ?", params[:cpf].gsub(/\D/, '')).first
-
       begin
-
         if user && integrated && !user.on_blacklist? # if user exists and system is integrated
           begin
             user_data = User.connect_and_import_user(user_cpf) # try to import
@@ -44,6 +42,8 @@ class UsersController < ApplicationController
             redirect_to login_path, alert: t(:new_user_cpf_in_use)
           end
         elsif user && !(integrated) # if user exists and system isn't integrated
+          redirect_to login_path, alert: t(:new_user_cpf_in_use)
+        elsif user && integrated && user.on_blacklist?
           redirect_to login_path, alert: t(:new_user_cpf_in_use)
         else # if user don't exist
           raise if !(integrated)

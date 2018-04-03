@@ -45,13 +45,14 @@ module V1
         optional :user_id, :id, type: Integer
         optional :cpf, type: String
         optional :users_ids, :cpfs, type: Array
+        optional :raise_error, type: Boolean, default: true
         exactly_one_of :cpf, :user_id, :users_ids, :cpfs
       end
       segment do
 
         delete ":type/:id" do
           begin
-            allocate(params, cancel: true)
+            allocate(params, true, params[:raise_error])
             { ok: :ok }
           end
         end
@@ -63,7 +64,7 @@ module V1
         delete ":type" do
           begin
             params[:group_code] = get_group_code(params[:group_code], params[:group_name]) unless params[:group_code].blank? || params[:group_name].blank?
-            allocate(params, cancel: true)
+            allocate(params, true, params[:raise_error])
             { ok: :ok }
           end
         end

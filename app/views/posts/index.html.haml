@@ -4,31 +4,19 @@
       %i.icon-forum
       = @discussion.name
   .block_content
-    .block_content_text= sanitize @discussion.description
-  
-  %h2
-    .block_title
-      %i.icon-forum
-      = t('.files.discussion_file_title')
-  .block_content
     .block_content_text
-      - unless @files.empty?
-        %table.tb_list
-          %thead
-            %tr.lines
-              %th{id: "name_discussion_file"}= t('.files.name')
-              %th{id: "size_discussion_file", align: "right", style: "width: 55px;"}= t('.files.size')
-          %tbody
+      = sanitize @discussion.description
+      %p
+        - unless @files.empty?
+          %ul
+            .title= t('.files.discussion_file_title')
             - @files.each do |file|
               - size = format('%.2f KB', file.attachment_file_size/1024.0)
-              %tr.lines
-                %td{:"data-tooltip" => file.attachment_file_name, headers: "name_discussion_file" }
-                  - link = discussion_download_path(id: file.id)
-                  = link_to image_tag(icon_attachment(file.attachment_file_name)), link, {class: "file_icon", :'aria-label'=> t('posts.post.download', file: file.attachment_file_name, size: size)}
-                  = link_to file.attachment_file_name.truncate(30), link, {class: "link_content", :'aria-label'=> t('posts.post.download', file: file.attachment_file_name, size: size)}
-                %td{headers: "size_discussion_file" }= size
-      - else
-        .text_none= t(:itens_not_found)
+              %li
+                - link = discussion_download_path(id: file.id)
+                = link_to image_tag(icon_attachment(file.attachment_file_name)), link, {class: "file_icon", :'aria-label'=> t('posts.post.download', file: file.attachment_file_name, size: size)}
+                = link_to file.attachment_file_name.truncate(30), link, {class: "link_content", :'aria-label'=> t('posts.post.download', file: file.attachment_file_name, size: size)}
+                = size
 
   .posts
     = content_tag(:i, nil, class: 'icon-pluscircle.png')
@@ -66,22 +54,22 @@
             = form.text_area(:content)
 
             = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'post_content', number: '', field: ''}
-            
+
             = button_tag content_tag(:i, nil, class: 'icon-paperclip'), class: 'btn', id: 'post_new_file', :'data-tooltip'=> t('posts.post.attach_file'), :'aria-label'=> t('posts.post.attach_file')
             = button_tag t('.save_draft'), class: "btn", id: "submit_post_draft", type: :button, :'data-tooltip' => raw(t('posts.post.fv_explain')), :'aria-label'=> t('.save_draft') + raw(t('posts.post.fv_explain_alt')), :'data-draft' => true
-           
+
 
             .new_post_dialog_buttons.btn-group
               = button_tag content_tag(:span, t(:cancel)), type: 'button', onclick: "cancel_posting(this)", class: 'btn btn_caution', id: 'btn_cancel_post'
               = button_tag t('.publish'), class: "btn btn_main submit_post", id: "submit_post", type: :button, :'data-draft' => false
 
-            
+
             #form_attached
               = form.simple_fields_for :files do |files|
                 .file_input
                   = files.input :_destroy, as: :hidden, input_html: { value: 0, class: "destroy_input_file", :"data-file-id" => files.object.id }
                   = files.input :attachment, label: false, input_html: { id: 'fileupload', class: 'hidden_input_file' }
-                  
+
               %br
               %br
               %h3.attachment_title_.invisible= t("posts.post.file_list")
@@ -141,21 +129,21 @@
             if (typeof($("#submit_post")) !== "undefined" && $("#submit_post").is(":visible")){
               if (window.confirm("#{t('posts.create.save_post')}"))
                 $("#submit_post").click();
-            } 
-          }  
+            }
+          }
         }
       }
     });
 
     CKEDITOR_BASEPATH  = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
-    
+
     var websocket_host = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["host"]}";
     var websocket_port = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["port"]}";
 
     $(".forum_button_attachment").call_fancybox({
       element_selector: '.focu'
     });
-    
+
     var display_list = ("#{escape_once(@display_mode) == 'list'}" == "true");
     var ac = "#{@academic_allocation.id}";
 
@@ -166,12 +154,12 @@
         $(b).html(text + $(b).text());
         var b1 = $('#forum_pagination').children("b")[1];
         $(b1).html($(b1).text()+text);
-      }else{  
+      }else{
         var b = $('#forum_pagination').text().split(".");
         $('#forum_pagination').html(b[0] + "#{t('.primary')}.");
-      }  
+      }
     }
-        
+
     /*Conexão com o WebSocket*/
     ws = new WebSocket('ws://'+websocket_host+':'+websocket_port+'/'+ac); // file websocket_server.rb
     ws.onopen = function (){ }; // ao iniciar ws
@@ -250,7 +238,7 @@
               }else
                 $(".forum_posts_wrapper").prepend(data2);
               msg = (draft ? "#{t('posts.create.draft')}" : "#{t('posts.create.created')}");
-            }  
+            }
             $(".forum_button_attachment").call_fancybox({
               afterShow: function(){
                 $('.focu').attr("tabindex", "0");
@@ -307,7 +295,7 @@
       $(".attachment_title_").show();
 
       $("input[type='file']", new_form).change(function(){
-        
+
         var text_aria_label = "#{I18n.t('posts.post.remove_file')}"+': ' + this.files[0].name + ' ' +humanFileSize(this.files[0].size);
 
         var new_file_name = "<div class='input files'> <label></label> <span id='file' data-input-file-name=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-square warning remove_file' tabindex= '0' aria-label= '"+text_aria_label+"' data-tooltip= '"+text_aria_label+"' ></i> </span> </div>";
@@ -328,7 +316,7 @@
 
             if (!$(".list_files_to_send_").children().length)
               $(".attachment_title_").addClass("invisible");
-          }    
+          }
         });
       });
     }
@@ -344,7 +332,7 @@
 
         if (!$(".list_files_to_send_").children().length)
           $(".attachment_title_").addClass("invisible");
-      }    
+      }
     });
     $("#post_new_file").click(function(e){
       e.preventDefault();
@@ -370,5 +358,4 @@
       });
     });
   }
-  
-  
+

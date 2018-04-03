@@ -33,13 +33,48 @@ module V1
             begin
               destination = get_destination(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:nome], (group_info[:periodo].blank? ? group_info[:ano] : "#{group_info[:ano]}.#{group_info[:periodo]}"))
 
-              destination.cancel_allocations(user.id, profile_id) if destination
-
+              destination.cancel_allocations(user.id, profile_id, nil, {}, true) if destination
               {ok: :ok}
             end
           end # block_profile
 
         end # groups
+
+        namespace :curriculum_units do
+          # load/curriculum_units/editors
+          post :editors do
+            load_editors  = params[:editores]
+            uc            = CurriculumUnit.find_by_code!(load_editors[:codDisciplina])
+            cpf_editores  = load_editors[:editores].map {|c| c.delete('.').delete('-')}
+
+            begin
+              User.where(cpf: cpf_editores).each do |user|
+                uc.allocate_user(user.id, 5)
+              end
+
+              {ok: :ok}
+            end
+          end
+
+          # load/curriculum_units
+          params do
+            requires :codigo, :nome, type: String
+            requires :cargaHoraria, type: Integer
+            requires :creditos, type: Float
+            optional :tipo, type: Integer, default: 2
+          end
+          post "/" do
+            begin
+              ActiveRecord::Base.transaction do
+                verify_or_create_curriculum_unit( {
+                  code: params[:codigo].slice(0..39), name: params[:nome], working_hours: params[:cargaHoraria], credits: params[:creditos], curriculum_unit_type_id: params[:tipo]
+                } )
+              end
+              {ok: :ok}
+            end
+          end
+
+        end # curriculum_units
 
         namespace :groups do
           # POST load/groups
