@@ -5,10 +5,10 @@ class AssignmentWebconferencesController < ApplicationController
   include Bbb
   include IpRealHelper
 
-  before_filter :set_current_user, except: [:edit, :show]
-  before_filter :get_ac, only: :new
+  before_action :set_current_user, except: [:edit, :show]
+  before_action :get_ac, only: :new
 
-  before_filter only: [:edit, :update, :destroy, :remove_record, :show, :change_status, :access] do |controller|
+  before_action only: [:edit, :update, :destroy, :remove_record, :show, :change_status, :access] do |controller|
     @assignment_webconference = AssignmentWebconference.find(params[:id])
   end
 

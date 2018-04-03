@@ -1,12 +1,12 @@
 class CreateUserContacts < ActiveRecord::Migration
   def self.up
-    create_table "user_contacts", :id => false do |t|
+    create_table(:user_contacts, id: false) do |t|
+      t.column :user_id, :integer
+      t.column :user_related_id, :integer
     end
+    add_foreign_key :user_contacts, :users
+    add_foreign_key :user_contacts, :users, column: :user_related_id
 
-    execute <<-SQL
-      ALTER TABLE user_contacts ADD COLUMN user_id INTEGER NOT NULL REFERENCES users(id);
-      ALTER TABLE user_contacts ADD COLUMN user_related_id INTEGER NOT NULL REFERENCES users(id)
-    SQL
 
     execute <<-SQL
       ALTER TABLE user_contacts ADD PRIMARY KEY (user_related_id,user_id);

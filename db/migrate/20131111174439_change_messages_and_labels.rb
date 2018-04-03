@@ -24,7 +24,7 @@ class ChangeMessagesAndLabels < ActiveRecord::Migration
     end
 
     ## msgs que nao tem label
-    msgs = Message.where("created_at is null and send_date is not null")
+    msgs = Message.where("created_at IS NULL AND send_date IS NOT NULL")
     msgs.each do |m|
       m.created_at = m.send_date
       m.save

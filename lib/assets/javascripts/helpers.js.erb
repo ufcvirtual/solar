@@ -180,8 +180,15 @@ $.fn.call_fancybox = function (options) {
   if (typeof(options) == "undefined")
     options = {};
 
-  $(this).addClass("fancybox.ajax");
 
+  $(this).addClass("fancybox.ajax");
+  //if(typeof(options.type) == "undefined"){
+  //  $(this).attr('data-type','ajax');
+ // }
+
+  //if(typeof(options.href) != "undefined"){
+  //  $(this).attr('data-src', options.herf);
+  //}
 
   /**
   * live: false
@@ -242,18 +249,18 @@ $.fn.call_fancybox = function (options) {
 
         if(options.dont_focus_back == undefined || !!$('.fancybox-wrap').length){
           give_focus_to_back();
-          if(!!event.element.is(":visible")){
+          if(!!$(event.element).is(":visible")){
             if(options.element_selector_back != undefined){
               focus_on_fancybox_element(options.element_selector_back, options.automatically, options.text_link);
             }else{
-              event.element.prop('tabindex', 0);
+              $(event.element).prop('tabindex', 0);
               event.element.focus();
             }
           }else{
-            var parent = event.element.parents('.dropdown');
+            var parent = $(event.element).parents('.dropdown');
             if(!!parent.length){
               $('[data-dropdown = "#'+$(parent).prop('id')+'"]:first').click();
-              event.element.prop('tabindex', 0);
+              $(event.element).prop('tabindex', 0);
               event.element.focus();
             }
           }

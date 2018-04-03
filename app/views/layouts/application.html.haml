@@ -18,7 +18,7 @@
     = javascript_include_tag "converse/converse"
     = stylesheet_link_tag "converse/converse"
     / IM \
-    = stylesheet_link_tag "application", "fancybox"
+    = stylesheet_link_tag "application", "fancyBox"
     = stylesheet_link_tag "themes/theme_" + "#{user_session[:theme]}", id: "themes"
     / Datapicker with time
     = stylesheet_link_tag 'jquery-ui-timepicker-addon'
@@ -116,7 +116,7 @@
               .mysolar_menu_group
                 %ul
                   %li.mysolar_menu_title_single{'data-menu-bread' => 'menu_home', 'data-contexts' => [Context_Curriculum_Unit]}
-                    = link_to t(:menu_home), active_tab[:breadcrumb].first[:url], class: 'mysolar_menu_title', :'data-shortcut-shift' => true, :'data-shortcut' => t(:menu_home, scope: "shortcut.vertical_menu.code"), :'data-shortcut-shift' => true, :'data-shortcut-complement' => (I18n.translate!(:menu_home, scope: "shortcut.vertical_menu.complement", raise: true) rescue '')
+                    = link_to t(:menu_home), params.permit(active_tab[:breadcrumb].first[:url]), class: 'mysolar_menu_title', :'data-shortcut-shift' => true, :'data-shortcut' => t(:menu_home, scope: "shortcut.vertical_menu.code"), :'data-shortcut-complement' => (I18n.translate!(:menu_home, scope: "shortcut.vertical_menu.complement", raise: true) rescue '')
 
             = raw menu_list
 
@@ -243,9 +243,9 @@
               }, 8000);
             }
           })
-          .error(function(data){
+          //.error(function(data){
             // console.log(data);
-          });
+          //});
         }
       }
     }
@@ -422,7 +422,7 @@
             $("#mysolar_top_submenu_username").html(data.name);
           if (typeof(data.email) != "undefined")
             $("#mysolar_top_submenu_useremail").html(data.email);
-        }).error(function(data){
+        }).fail(function(data){
           var data = $.parseJSON(data.responseText);
           if (typeof(data.alert) != "undefined")
             flash_message(data.alert, "alert");

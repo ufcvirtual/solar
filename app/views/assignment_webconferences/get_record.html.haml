@@ -1,28 +1,29 @@
 - view_disabled = view_disabled rescue @view_disabled
-%h1#lightBoxDialogTitle= t("webconferences.get_record.recordings", name: @assignment_webconference.title)
-.chat_messages
-  .title-warning
-    = raw t('webconferences.get_record.warning')
-  - unless @recordings.empty?
-    %table.tb_list
-      %thead
-        %tr.lines
-          %th#_access= t('webconferences.get_record.access')
-          %th#_start= t("webconferences.get_record.start")
-          %th#_end= t("webconferences.get_record.end")
-          - if @can_remove_record && !view_disabled
-            %th#_remove
-      %tbody
-        - @recordings.each_with_index do |record, idx|
+.recordings
+  %h1#lightBoxDialogTitle= t("webconferences.get_record.recordings", name: @assignment_webconference.title)
+  .chat_messages
+    .title-warning
+      = raw t('webconferences.get_record.warning')
+    - unless @recordings.empty?
+      %table.tb_list
+        %thead
           %tr.lines
-            %td{headers: '_access'}= link_to t('webconferences.get_record.record', number: idx+1), Bbb.get_recording_url(record), target: '_blank', :'aria-label' => t('webconferences.index.access_web_recording', name: t('webconferences.get_record.record', number: idx+1) )
-            %td{headers: '_start'}= l(record[:startTime].to_datetime)
-            %td{headers: '_end'}= l(record[:endTime].to_datetime)
+            %th#_access= t('webconferences.get_record.access')
+            %th#_start= t("webconferences.get_record.start")
+            %th#_end= t("webconferences.get_record.end")
             - if @can_remove_record && !view_disabled
-              %td{headers: '_remove'}= button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution remove_record', :'data-tooltip' => t('webconferences.get_record.remove'), :'data-url' => remove_record_assignment_webconference_path(id: @assignment_webconference.id, recordID: record[:recordID]), :'aria-label' => t('webconferences.get_record.remove')
+              %th#_remove
+        %tbody
+          - @recordings.each_with_index do |record, idx|
+            %tr.lines
+              %td{headers: '_access'}= link_to t('webconferences.get_record.record', number: idx+1), Bbb.get_recording_url(record), target: '_blank', :'aria-label' => t('webconferences.index.access_web_recording', name: t('webconferences.get_record.record', number: idx+1) )
+              %td{headers: '_start'}= l(record[:startTime].to_datetime)
+              %td{headers: '_end'}= l(record[:endTime].to_datetime)
+              - if @can_remove_record && !view_disabled
+                %td{headers: '_remove'}= button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution remove_record', :'data-tooltip' => t('webconferences.get_record.remove'), :'data-url' => remove_record_assignment_webconference_path(id: @assignment_webconference.id, recordID: record[:recordID]), :'aria-label' => t('webconferences.get_record.remove')
 
-  - else
-    .block_content_text_list.text_none= t("webconferences.get_record.no_message")
+    - else
+      .block_content_text_list.text_none= t("webconferences.get_record.no_message")
 
 = javascript_include_tag "tooltip"
 
@@ -36,7 +37,7 @@
       $.delete($(this).data('url'), function(data){
         tr.remove();
         flash_message(data.notice, "notice", 'fancybox-outer');
-      }).error(function(data){
+      }).fail(function(data){
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")
           flash_message(data.alert, 'alert', 'fancybox-outer');

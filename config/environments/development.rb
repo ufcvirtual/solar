@@ -46,6 +46,7 @@ Solar::Application.configure do
 
   # Only use best-standards-support built into browsers
   #config.action_dispatch.best_standards_support = :builtin
+  config.assets.quiet = true
 
   # Desabilitando compressão de assets
   config.assets.debug = true

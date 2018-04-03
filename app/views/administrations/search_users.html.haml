@@ -26,7 +26,7 @@
       $(user_data[0]).html(data.name);
       $(user_data[1]).html(data.email);
       $(user_data[2]).html(data.username);
-    }).error(function(data){
+    }).fail(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
         flash_message(data.alert, "alert");
@@ -38,7 +38,7 @@
     $.post($(user).data('url'), function(data){
       flash_message(data.notice, "notice");
       $(user).closest('tr').html(data.user);
-    }).error(function(data){
+    }).fail(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
         flash_message(data.alert, 'alert');
@@ -50,7 +50,7 @@
     $.delete($(user).data('url'), function(data){
       flash_message(data.notice, 'notice');
       $(user).closest('tr').html(data.user);
-    }).error(function(data){
+    }).fail(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
         flash_message(data.alert, 'alert');

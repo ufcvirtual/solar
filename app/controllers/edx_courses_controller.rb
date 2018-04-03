@@ -3,7 +3,7 @@ include EdxHelper
 class EdxCoursesController < ApplicationController
 
   layout false, except: [:index, :items]
-  before_filter :verify_integration
+  before_action :verify_integration
 
   def verify_integration
     if ((!EDX.nil? && !EDX["integrated"]) || (EDX.nil? || EDX_URLS.nil?))

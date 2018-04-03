@@ -32,25 +32,33 @@
               - if file['url'] == nil
                 - if file['attachment_content_type'].index('image') 
                   - type_class = 'link_content open_file fancybox.ajax'
+                  - data_type = ''
+                  - data_fancybox = 'images'
                 - elsif file['attachment_content_type'].index('pdf')
                   - type_class = 'link_content open_url fancybox.iframe'
+                  - data_type = 'iframe'
+                  - data_fancybox = ''
                 - elsif file['attachment_content_type'].index('audio')
-                  - type_class = 'link_content open_audio fancybox.iframe'  
+                  - type_class = 'link_content open_audio fancybox.iframe'
+                  - data_type = 'iframe'  
+                  - data_fancybox = ''
                 -else
                   - type_class = 'link_content open_file fancybox.iframe'
+                  - data_type = 'iframe'
+                  - data_fancybox = ''
 
                 - if file['attachment_content_type'].start_with?('image', 'application/pdf', 'audio', 'video') && (!file['attachment_content_type'].start_with?('video') || SupportMaterialFile.verify_file_type(file["attachment_file_name"]))
-                  = link_to image_tag(icon_attachment(file["attachment_file_name"])), open_support_material_files_path(id: file['id']), class: 'file_icon', :'aria-hidden'=> true
-                  = link_to file['attachment_file_name'], open_support_material_files_path(id: file['id']), :'aria-label'=> t('posts.post.open', file: file["attachment_file_name"], size: size), class: type_class, :title => file['title'], :'data-url' => SupportMaterialFile.find(file['id']).attachment.path
+                  = link_to image_tag(icon_attachment(file["attachment_file_name"])), open_support_material_files_path(id: file['id']), class: 'file_icon', :'aria-hidden'=> true, :'data-fancybox'=> data_fancybox
+                  = link_to file['attachment_file_name'], open_support_material_files_path(id: file['id']), :'aria-label'=> t('posts.post.open', file: file["attachment_file_name"], size: size), class: type_class, :title => file['title'], :'data-url' => SupportMaterialFile.find(file['id']).attachment.path, :'data-fancybox'=> data_fancybox, :'data-type'=> data_type
                 - else  #somente download
                   = link_to image_tag(icon_attachment(file["attachment_file_name"])), download_support_material_file_path(id: file['id']), class: 'file_icon', :'aria-hidden'=> true
                   = link_to file['attachment_file_name'], download_support_material_file_path(id: file['id']), :'aria-label'=> t('posts.post.download', file: file["attachment_file_name"], size: size), :title => file['title']
               - else
                 - type_class = 'link_content open_url fancybox.iframe'                  
 
-                = link_to image_tag('icon_file_link.png', alt: t("link_site_img", site: file['url'])), open_support_material_files_path(id: file['id']), :'aria-label'=> t('posts.post.open_site', file: file["url"]), class: type_class, :'aria-hidden' => 'true', :title => file['title']
+                = link_to image_tag('icon_file_link.png', alt: t("link_site_img", site: file['url'])), open_support_material_files_path(id: file['id']), :'aria-label'=> t('posts.post.open_site', file: file["url"]), class: type_class, :'aria-hidden' => 'true', :title => file['title'], :'data-fancybox'=>'', :'data-type'=> 'iframe'
 
-                = link_to file['url'], open_support_material_files_path(id: file['id']), :'aria-label'=> t('posts.post.open_site', file: file["url"]), class: type_class, :title => file['title']
+                = link_to file['url'], open_support_material_files_path(id: file['id']), :'aria-label'=> t('posts.post.open_site', file: file["url"]), class: type_class, :title => file['title'], :'data-fancybox'=>'', :'data-type'=> 'iframe'
 
             %td{headers: "size_#{folder}" }
               - if file['url'] == nil
@@ -94,6 +102,7 @@
       autoSize: true,
       maxHeight: '80%',
       height: '80%',
+      type: 'iframe'
     });
   });
 

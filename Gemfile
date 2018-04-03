@@ -2,17 +2,17 @@ source "http://rubygems.org"
 
 ruby "2.3.6"
 
-gem 'rails', '4.2.9'
-gem "rack", "~> 1.6.0"
+gem 'rails', '5.0.6'
+gem "rack", "~> 2.0.0"
 gem "rake", "~> 10.1.1"
-gem "pg", "~> 0.18.0"
-#gem "foreigner", "~> 1.4.0"
+gem "pg", "~> 0.19.0"
+
 gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'
 
-gem "koala", "1.2.0" # facebook
+gem "koala", "2.4.0" # facebook
 
-gem "devise", "~> 3.4.1"
+gem "devise", "~> 4.0.3"
 gem "devise-i18n", "~> 0.11.3"
 gem 'cancancan', '~> 2.0'
 gem "devise-encryptable", "~> 0.2.0"
@@ -21,9 +21,12 @@ gem "chronic", "0.6.1"
 gem 'simple_form', "~> 3.2.1"
 
 gem "paperclip", "~> 4.2.4"
-gem "will_paginate", "~> 3.0.7"
-gem "jquery-rails", "~> 2.2.2"
-gem "fancybox2-rails", "~> 0.2.8"
+gem "will_paginate", "~> 3.1.6"
+gem "jquery-rails", "~> 4.3.0"
+gem 'jquery-ui-rails', '~> 5.0.5'
+#gem "fancybox3", "~> 0.1.1"
+#gem 'rails-assets-fancyBox', source: 'https://rails-assets.org'
+gem 'rails-assets-fancyBox', '2.1.6', source: 'https://rails-assets.org'
 
 gem "haml", "~> 4.0.5"
 gem "haml-rails", "~> 0.5.3", group: :development
@@ -41,11 +44,11 @@ gem "passenger", "~> 5.0.30"
 
 gem "rubyzip", "~> 1.0.0"
 
-gem "doorkeeper", "~> 1.4.1"
+gem "doorkeeper", "~> 1.4.2"
 gem "rack-oauth2", "~> 1.0.10"
 gem "grape", "~> 0.17.0"
 gem "rabl", "~> 0.13.1"
-gem "grape-rabl", "~> 0.4.2"
+gem "grape-rabl", "~> 0.4.3"
 
 gem "savon", "~> 2.0" # comunicação com ws
 
@@ -73,7 +76,7 @@ gem 'delayed_job'
 gem 'activerecord-session_store'
 
 # add these gems to help with the transition:
-gem 'protected_attributes'
+#gem 'protected_attributes'
 
 group :development do
   gem "rb-readline", "~> 0.5.1"
@@ -84,7 +87,7 @@ group :development do
   gem "thin" # server local melhor
   gem "better_errors"
   gem "binding_of_caller" # better 'better errors'
-  gem "quiet_assets" # nao mostra log de assets em development
+  gem "sprockets-rails" # nao mostra log de assets em development
   gem 'rack-mini-profiler'
   # For memory profiling (requires Ruby MRI 2.1+)
   gem 'memory_profiler'
@@ -103,7 +106,7 @@ group :development, :test do
   gem "pry-rescue"
   gem "factory_girl_rails", "~> 4.2.1"
   gem "factory_girl", "~> 4.2.0"
-  gem "rspec-rails", "~> 3.4.2"
+  gem "rspec-rails", "~> 3.7.2"
   gem 'test-unit', '~> 3.1.5'
   gem "rubocop", require: false # A Ruby static code analyzer, based on the community Ruby style guide.
 end
@@ -122,8 +125,8 @@ end
 
 group :assets do
   gem "uglifier", "~> 1.3.0"
-  gem "sass-rails", "~> 4.0.5"
-  gem "compass-rails", "~> 2.0.0"
+  gem "sass-rails", "~> 5.0.1"
+  gem "compass-rails", "~> 3.0.2"
 end
 
 # new relic

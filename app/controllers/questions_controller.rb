@@ -2,7 +2,7 @@ class QuestionsController < ApplicationController
 
   include SysLog::Actions
 
-  before_filter :set_current_user, only: [:destroy, :change_status, :verify_owners, :copy]
+  before_action :set_current_user, only: [:destroy, :change_status, :verify_owners, :copy]
 
   layout false, except: :index
 

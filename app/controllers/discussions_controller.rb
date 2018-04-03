@@ -7,10 +7,10 @@ class DiscussionsController < ApplicationController
 
   layout false, except: :index
 
-  before_filter :prepare_for_group_selection, only: :index
-  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
+  before_action :prepare_for_group_selection, only: :index
+  before_action :get_groups_by_allocation_tags, only: [:new, :create]
 
-  before_filter only: [:edit, :update, :show] do |controller|
+  before_action only: [:edit, :update, :show] do |controller|
     get_groups_by_tool(@discussion = Discussion.find(params[:id]))
   end
 

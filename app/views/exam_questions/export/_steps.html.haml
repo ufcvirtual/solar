@@ -59,7 +59,7 @@
       $('.questions_export input:checked').each(function(i){ $(this).prop("checked", false); });
       $('tbody.exams_to_export_to tr.text_none').hide();
       disable_already_selected_exams();
-    }).error(function(data){
+    }).fail(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
         flash_message(data.alert, 'alert');

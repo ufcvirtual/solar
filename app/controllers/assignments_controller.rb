@@ -6,12 +6,12 @@ class AssignmentsController < ApplicationController
   include Bbb
   include IpRealHelper
 
-  before_filter :prepare_for_group_selection, only: :list
-  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
-  before_filter :set_current_user, only: :student
+  before_action :prepare_for_group_selection, only: :list
+  before_action :get_groups_by_allocation_tags, only: [:new, :create]
+  before_action :set_current_user, only: :student
 
 
-  before_filter only: [:edit, :update, :show] do |controller|
+  before_action only: [:edit, :update, :show] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
     get_groups_by_tool(@assignment = Assignment.find(params[:id]))
   end

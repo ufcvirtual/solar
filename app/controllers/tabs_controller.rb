@@ -1,7 +1,7 @@
 class TabsController < ApplicationController
 
-  before_filter :clear_breadcrumb_home, only: [:show, :create]
-  after_filter :get_group_allocation_tag, only: :create
+  before_action :clear_breadcrumb_home, only: [:show, :create]
+  after_action :get_group_allocation_tag, only: :create
 
   def show # activate
     # verifica se a aba que esta sendo acessada esta aberta

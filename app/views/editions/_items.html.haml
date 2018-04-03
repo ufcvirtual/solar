@@ -103,7 +103,7 @@
         $(".edition_items").html(data);
         $(".back").removeClass("invisible");
         loadFocus();
-      }).error(function(data){
+      }).fail(function(data){
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")
           flash_message(data.alert, 'alert');

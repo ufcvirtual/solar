@@ -3,9 +3,9 @@ class ExamsController < ApplicationController
   include SysLog::Actions
   include IpRealHelper
 
-  before_filter :prepare_for_group_selection, only: :index
-  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
-  before_filter :verify_exam, only: [:open]
+  before_action :prepare_for_group_selection, only: :index
+  before_action :get_groups_by_allocation_tags, only: [:new, :create]
+  before_action :verify_exam, only: [:open]
   layout false, except: :index
 
   def index

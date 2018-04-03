@@ -3,22 +3,22 @@ class NotificationsController < ApplicationController
   include SysLog::Actions
   include FilesHelper
 
-  before_filter only: [:edit, :new, :create] do |controller|
+  before_action only: [:edit, :new, :create] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
   end
 
-  before_filter only: [:edit, :update] do |controller|
+  before_action only: [:edit, :update] do |controller|
     get_groups_by_tool(@notification = Notification.find(params[:id]))
     authorize! :update, Notification, {on: @notification.academic_allocations.pluck(:allocation_tag_id), accepts_general_profile: true}
   end
 
-  before_filter only: [:new, :create] do |controller|
+  before_action only: [:new, :create] do |controller|
     get_groups_by_allocation_tags
     authorize! :create, Notification, {on: @allocation_tags_ids, accepts_general_profile: true}
   end
 
 
-  before_filter only: [:new, :edit, :create, :update] do |controller|
+  before_action only: [:new, :edit, :create, :update] do |controller|
     @can_mark_as_mandatory = current_user.profiles_with_access_on(:mark_as_mandatory, :notifications, (@allocation_tags_ids.split(' ') rescue nil), false, false, true).any?
    end
 

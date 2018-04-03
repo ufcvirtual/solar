@@ -3,7 +3,7 @@ class MessagesController < ApplicationController
   include MessagesHelper
   include SysLog::Actions
 
-  before_filter :prepare_for_group_selection, only: [:index]
+  before_action :prepare_for_group_selection, only: [:index]
 
   ## [inbox, outbox, trashbox]
   require 'will_paginate/array'
@@ -87,7 +87,8 @@ class MessagesController < ApplicationController
 
     begin
       Message.transaction do
-        @message = Message.new(message_params, without_validation: true)
+        #@message = Message.new(message_params, without_validation: true)
+        @message = Message.new(message_params)
         @message.sender = current_user
         @message.allocation_tag_id = @allocation_tag_id
 
@@ -180,7 +181,7 @@ class MessagesController < ApplicationController
     @reply_to = (params[:reply_to].blank? ? [] : User.where(id: params[:reply_to].split(',')).map(&:to_msg))
 
     unless params[:reply_to].blank? || @contacts.blank?
-      @list = @contacts.find_all_by_id(params[:reply_to].split(','))
+      @list = @contacts.where('users.id IN (?) ', params[:reply_to].split(','))
       @content_student = @list.any? { |u| u.types.to_i==Profile_Type_Student }
       @content_responsibles = @list.any? { |u| u.types.to_i==Profile_Type_Class_Responsible }
 

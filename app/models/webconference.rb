@@ -72,7 +72,7 @@ class Webconference < ActiveRecord::Base
   end
 
   def self.groups_codes(id)
-    web = Webconference.find(id)
+    web = Webconference.where(id: id).first
     if web.shared_between_groups
       Group.joins(:allocation_tag).where(allocation_tags: { id: web.academic_allocations.pluck(:allocation_tag_id) }).pluck(:code)
     else

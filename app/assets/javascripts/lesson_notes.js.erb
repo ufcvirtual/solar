@@ -66,7 +66,7 @@ function remove_note(icon){
       $(icon).parents('.note:first').fadeOut();
       if (typeof(data.notice) != "undefined")
         flash_message(data.notice, 'notice', 'lesson_notes');
-    }).error(function(data){
+    }).fail(function(data){
       var response = JSON.parse(data.responseText);
       if (typeof(response.alert) != "undefined")
         flash_message(response.alert, 'alert', 'lesson_notes');

@@ -63,7 +63,7 @@ $(function(){
   $("#search_user").click(function() {
     var url_for = "#{search_users_edx_courses_path(course: params[:course])}";
     var data = { user: encodeURIComponent($("#text_search").val()) };
-    $.get(url_for, data, function(data) { $('#list_users').html(data); }).error(function(data){
+    $.get(url_for, data, function(data) { $('#list_users').html(data); }).fail(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
         flash_message(data.alert, 'alert');
@@ -78,7 +78,7 @@ $(function(){
         });
 
         flash_message('#{I18n.t(:deallocated, :scope => [:edx, :success])}', 'notice');
-      }).error(function(){
+      }).fail(function(){
         flash_message('#{I18n.t(:not_deallocated, :scope => [:edx, :error])}', 'alert');
       });
     });

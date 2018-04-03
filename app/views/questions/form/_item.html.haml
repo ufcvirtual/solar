@@ -136,7 +136,7 @@
 
       remove_file_item_tmp($(link), type);
       
-    }).error(function(data){
+    }).fail(function(data){
       var response = $.parseJSON(data.responseText);
       if (typeof(response.alert) != "undefined")
        flash_message(response.alert, 'alert', 'new_question');

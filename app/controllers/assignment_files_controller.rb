@@ -5,8 +5,8 @@ class AssignmentFilesController < ApplicationController
   include AssignmentsHelper
   include IpRealHelper
 
-  before_filter :set_current_user, only: [:destroy, :create]
-  before_filter :get_ac, only: :new
+  before_action :set_current_user, only: [:destroy, :create]
+  before_action :get_ac, only: :new
 
   layout false
 

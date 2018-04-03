@@ -84,7 +84,7 @@
             $.get($('.list_lessons').data('link-list'), function(data){
               $('.list_lessons:first').replaceWith(data);
             });
-          }).error(function(data){
+          }).fail(function(data){
             flash_message(data.msg, 'alert');
           });
         }
@@ -113,7 +113,7 @@
           $.get($('.list_lessons').data('link-list'), function(data){
             $('.list_lessons:first').replaceWith(data);
           });
-        }).error(function(data) {
+        }).fail(function(data) {
           if(typeof(module_id) != "undefined"){
             $.get($('.list_lessons').data('link-list'), function(data2){
               $('.list_lessons:first').replaceWith(data2);
@@ -145,7 +145,7 @@
         var id2 = row.prev().attr('lesson_id');
         var url = "#{change_order_lesson_path(':id1', ':id2')}".replace(':id1', id1).replace(':id2', id2);
 
-        $.put(url, function(){ row.insertBefore(row.prev()); }).error(f_error);
+        $.put(url, function(){ row.insertBefore(row.prev()); }).fail(f_error);
 
       } else { // down
         if (row.next().attr('lesson_order') == undefined) return false;
@@ -153,7 +153,7 @@
         var id2 = row.next().attr('lesson_id');
         var url = "#{change_order_lesson_path(':id1', ':id2')}".replace(':id1', id1).replace(':id2', id2);
 
-        $.put(url, function(data, t, x){ row.insertAfter(row.next()); }).error(f_error);
+        $.put(url, function(data, t, x){ row.insertAfter(row.next()); }).fail(f_error);
       }
       return false;
     });
@@ -215,7 +215,7 @@
           success: function(){
             window.location.href = link_download;
           },
-          error: function() {
+          fail: function() {
             flash_message("#{I18n.t(:invalid_lesson_to_download, :scope => [:lessons, :errors])}", "alert");
           }
         });

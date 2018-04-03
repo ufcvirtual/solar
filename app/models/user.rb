@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
 
   has_many :allocations
   has_many :allocation_tags, -> { uniq }, through: :allocations
-  has_many :profiles, -> { where(profiles: { status: true }, allocations: { status: 1 }).uniq }, through: :allocations # allocation.status = Allocation_Activated
+  has_many :profiles, -> { where(profiles: { status: true }, allocations: { status: 1 }).distinct }, through: :allocations # allocation.status = Allocation_Activated
   has_many :log_access
   has_many :log_actions
   has_many :lessons
@@ -362,7 +362,7 @@ class User < ActiveRecord::Base
   def activated_allocation_tag_ids(related = true, interacts = false)
     query = interacts ? "cast(profiles.types & #{Profile_Type_Student} as boolean) OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)" : ''
     allocation_tags = AllocationTag.joins(allocations: :profile).where(allocations: {user_id: id, status: Allocation_Activated.to_i}).where(query)
-    (related ? allocation_tags.collect!{ |at| at.related }.flatten.uniq : allocation_tags.pluck(:id))
+    (related ? allocation_tags.to_a.collect!{ |at| at.related }.flatten.uniq : allocation_tags.pluck(:id))
   end
 
   # Returns all allocation_tags_ids with activated access on informed actions of controller

@@ -3,7 +3,7 @@ class PublicFilesController < ApplicationController
   include FilesHelper
   include SysLog::Actions
 
-  before_filter :set_current_user, only: :destroy
+  before_action :set_current_user, only: :destroy
 
   layout false, except: :index
 

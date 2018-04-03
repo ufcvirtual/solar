@@ -1,4 +1,4 @@
-// = require jquery
+// = require jquery3
 // = require jquery_ujs
 // = require jquery.qtip.min
 // = require jquery.sticky
@@ -25,7 +25,7 @@
 // = require messages
 // = require lessons
 
-// = require fancybox
+// = require fancyBox
 // = require helpers
 // = require nice
 
@@ -82,7 +82,7 @@ $(function() {
 * Alertas
 */
 
-$(window).load(function(){
+$(window).on('load', function(){
   $(".flash_message_wrapper").sticky({
     topSpacing: 0,
     center:true,

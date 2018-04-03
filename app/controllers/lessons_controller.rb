@@ -7,15 +7,15 @@ class LessonsController < ApplicationController
   include LessonFileHelper
   include LessonsHelper
 
-  before_filter :prepare_for_group_selection, only: :download_files
-  before_filter :offer_data, only: [:open, :open_module]
-  before_filter :set_current_user, only: :update
+  before_action :prepare_for_group_selection, only: :download_files
+  before_action :offer_data, only: [:open, :open_module]
+  before_action :set_current_user, only: :update
 
-  before_filter only: [:new, :create, :edit, :update] do |controller|
+  before_action only: [:new, :create, :edit, :update] do |controller|
     authorize! crud_action, Lesson, { on: @allocation_tags_ids = params[:allocation_tags_ids] }
   end
 
-  after_filter only: :update do
+  after_action only: :update do
     log(@lesson, "lesson: #{@lesson.id}, [copy original data] receive_updates_lessons: #{@lesson.receive_updates_lessons.pluck(:id)}") rescue nil
   end
 

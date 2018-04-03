@@ -7,10 +7,10 @@ class WebconferencesController < ApplicationController
 
   layout false, except: [:index, :preview]
 
-  before_filter :prepare_for_group_selection, only: :index
+  before_action :prepare_for_group_selection, only: :index
 
-  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
-  before_filter only: [:edit, :update] do |controller| # futuramente show aqui também
+  before_action :get_groups_by_allocation_tags, only: [:new, :create]
+  before_action only: [:edit, :update] do |controller| # futuramente show aqui também
     @allocation_tags_ids = params[:allocation_tags_ids]
     get_groups_by_tool(@webconference = Webconference.find(params[:id]))
   end

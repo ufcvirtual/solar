@@ -1,15 +1,16 @@
-%h1#lightBoxDialogTitle= t(".title")
-.block_content{style: "padding: 5px;"}
-  = form_for @assignment_file do |f|
-    = f.hidden_field :academic_allocation_user_id, value: @assignment_file.academic_allocation_user_id
-    = f.file_field :attachment, id: "focu", :'aria-label' => t(:send_file_to_upload)
-    .block_content_gray{style: "padding: 5px;"}
-      %p.file
-      %p=raw t('.send_file_obs')
-      %p=raw t(:send_file_text)
-    .right_buttons
-      = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_caution', id: 'btn_cancel_post'
-      = button_tag t(:save), class: "btn btn_main save_file", type: :button
+.assignment_file
+  %h1#lightBoxDialogTitle= t(".title")
+  .block_content{style: "padding: 5px;"}
+    = form_for @assignment_file do |f|
+      = f.hidden_field :academic_allocation_user_id, value: @assignment_file.academic_allocation_user_id
+      = f.file_field :attachment, id: "focu", :'aria-label' => t(:send_file_to_upload)
+      .block_content_gray{style: "padding: 5px;"}
+        %p.file
+        %p=raw t('.send_file_obs')
+        %p=raw t(:send_file_text)
+      .right_buttons
+        = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_caution', id: 'btn_cancel_post'
+        = button_tag t(:save), class: "btn btn_main save_file", type: :button
 
 :javascript
   $(document).on("keydown", function() {

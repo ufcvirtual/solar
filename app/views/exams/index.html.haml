@@ -165,7 +165,7 @@
       $(link).attr('disabled', true);
       $(link).html("<span class='activity_grade'>"+grade+"</span");
       $('.wh', $(link).parents('tr')).html("<span class='activity_grade'>"+wh+"</span");
-    }).error(function(data){
+    }).fail(function(data){
       var response = $.parseJSON(data.responseText);
       if (typeof(response.alert) != "undefined")
        flash_message(response.alert, 'alert');
@@ -176,7 +176,7 @@
     $.put($(link).data('url'), function(data){
       var success = data.success;
       flash_message(data.notice, 'notice');
-    }).error(function(data){
+    }).fail(function(data){
       var response = $.parseJSON(data.responseText);
       if (typeof(response.alert) != "undefined")
        flash_message(response.alert, 'alert');

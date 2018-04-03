@@ -7,9 +7,9 @@ class UsersController < ApplicationController
   layout false, only: [:show, :reset_password_url]
   load_and_authorize_resource only: [:mysolar, :update_photo, :salve_log_navigation]
 
-  before_filter :set_active_tab_to_home, only: :profiles
+  before_action :set_active_tab_to_home, only: :profiles
   # before_filter :application_context, only: :mysolar
-  after_filter :flash_notice, only: :create
+  after_action :flash_notice, only: :create
 
   def show
     # authorize! :show, User, on: allocation_tags # todo usuario vai ter permissao para ver todos?

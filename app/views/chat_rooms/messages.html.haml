@@ -1,49 +1,50 @@
-%h1#lightBoxDialogTitle= t(".history", chat_name: @chat_room.title)
-- if @can_evaluate
-  .title-warning= raw t('chat_rooms.user_messages.evaluation_info')
-.chat_messages
-  - unless @messages.empty?
-    %table.tb_list{:summary=> t("chat_rooms.messages.summary")}
-      %thead
-        %tr.lines
-          - if @can_evaluate || @can_comment
-            %th#to_evaluate= t('.to_evaluate')
-          %th#from_profile= t(".from_profile")
-          %th#from_name= t(".from_name")
-          %th#to= t(".to")
-          %th#message= t(".message")
-          %th#date= t(".date")
-          %th#time_msg= t(".time")
-          - if @academic_allocation.evaluative
-            %th#grade= t('.grade')
-          - if @academic_allocation.frequency
-            %th#wh= t('.wh')
-      %tbody
-        - @messages.each do |message|
-          - user = User.find(message.u_id.to_i)#message.user
-          - name, nick = user.nil? ? ["", t(".all")] : [user.info(:name, @researcher), user.info(:nick, @researcher)]
+.chat_message
+  %h1#lightBoxDialogTitle= t(".history", chat_name: @chat_room.title)
+  - if @can_evaluate
+    .title-warning= raw t('chat_rooms.user_messages.evaluation_info')
+  .chat_messages
+    - unless @messages.empty?
+      %table.tb_list{:summary=> t("chat_rooms.messages.summary")}
+        %thead
           %tr.lines
-            - if @can_evaluate
-              %td{headers: "to_evaluate" }
-                - if message.is_student == true && message.message_type == 1
-                  = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(@chat_room, user_id: message.u_id, back:true, score_type: @score_type), class: 'btn to_evaluate_chat', :'data-tooltip'=> t('.to_evaluate'), :'aria-label' => t('.to_evaluate')+t('fancybox.open')
-            %td.profile{headers: "from_profile" }= "(" + message.profile_name + ")"
-            %td.user{:'data-tooltip' => (@researcher ? t(:hidden_info) : message.user_name), headers: "from_name"}= (@researcher ? t(:hidden_info) : message.user_nick)
-            %td{:'data-tooltip' => name, :'aria-label' => name, headers: "to"}= nick
-            %td.message{headers: "message" }= message.text.try(:html_safe)
-            %td{headers: "date" }= l(message.created_at.to_datetime, format: :normal)
-            %td{headers: "time_msg" }= l(message.created_at.to_datetime, format: :clock_time)
+            - if @can_evaluate || @can_comment
+              %th#to_evaluate= t('.to_evaluate')
+            %th#from_profile= t(".from_profile")
+            %th#from_name= t(".from_name")
+            %th#to= t(".to")
+            %th#message= t(".message")
+            %th#date= t(".date")
+            %th#time_msg= t(".time")
             - if @academic_allocation.evaluative
-              %td{headers: "grade" }
-                - if @can_evaluate || (message.u_id.to_i == current_user.id)
-                  = message.grade
+              %th#grade= t('.grade')
             - if @academic_allocation.frequency
-              %td{headers: "wh" }
-                - if @can_evaluate || (message.u_id.to_i == current_user.id)
-                  = message.wh
+              %th#wh= t('.wh')
+        %tbody
+          - @messages.each do |message|
+            - user = User.find(message.u_id.to_i)#message.user
+            - name, nick = user.nil? ? ["", t(".all")] : [user.info(:name, @researcher), user.info(:nick, @researcher)]
+            %tr.lines
+              - if @can_evaluate
+                %td{headers: "to_evaluate" }
+                  - if message.is_student == true && message.message_type == 1
+                    = link_to content_tag(:i, nil, class: 'icon-write'), user_messages_chat_room_path(@chat_room, user_id: message.u_id, back:true, score_type: @score_type), class: 'btn to_evaluate_chat', :'data-tooltip'=> t('.to_evaluate'), :'aria-label' => t('.to_evaluate')+t('fancybox.open')
+              %td.profile{headers: "from_profile" }= "(" + message.profile_name + ")"
+              %td.user{:'data-tooltip' => (@researcher ? t(:hidden_info) : message.user_name), headers: "from_name"}= (@researcher ? t(:hidden_info) : message.user_nick)
+              %td{:'data-tooltip' => name, :'aria-label' => name, headers: "to"}= nick
+              %td.message{headers: "message" }= message.text.try(:html_safe)
+              %td{headers: "date" }= l(message.created_at.to_datetime, format: :normal)
+              %td{headers: "time_msg" }= l(message.created_at.to_datetime, format: :clock_time)
+              - if @academic_allocation.evaluative
+                %td{headers: "grade" }
+                  - if @can_evaluate || (message.u_id.to_i == current_user.id)
+                    = message.grade
+              - if @academic_allocation.frequency
+                %td{headers: "wh" }
+                  - if @can_evaluate || (message.u_id.to_i == current_user.id)
+                    = message.wh
 
-  - else
-    .block_content_text_list.text_none= t(".no_message")
+    - else
+      .block_content_text_list.text_none= t(".no_message")
 
 = javascript_include_tag "tooltip"
 

@@ -4,9 +4,9 @@ class CurriculumUnitsController < ApplicationController
 
   layout false, only: [:new, :edit, :create, :update]
 
-  before_filter :prepare_for_group_selection, only: [:home, :participants, :informations]
-  before_filter :curriculum_data, only: [:home, :informations, :participants]
-  before_filter :ucs_for_list, only: [:list, :mobilis_list]
+  before_action :prepare_for_group_selection, only: [:home, :participants, :informations]
+  before_action :curriculum_data, only: [:home, :informations, :participants]
+  before_action :ucs_for_list, only: [:list, :mobilis_list]
 
   load_and_authorize_resource only: [:edit, :update]
 
