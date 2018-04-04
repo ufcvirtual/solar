@@ -592,6 +592,7 @@ en_US:
   login_footer6: "Team"
   login_facebook: "The data collected from facebook are used exclusively for educational purposes at UFC Virtual Institute - Federal University of Ceará."
   login_app: "Download our App!"
+  login_app2: "Download Solar's APP"
   login_faq: FAQ
   login_new: "New"
   faq_title: "Frequently asked questions"
@@ -629,7 +630,9 @@ en_US:
   form_email_confirmation: "E-mail confirmation"
   form_email: "E-mail"
   form_google_play: 'Get it on Google Play'
+  form_google_play2: "Get Solar's app on Google Play"
   form_apple_store: 'Download on the App Store'
+  form_apple_store2: "Download Solar's App on App Store"
   back_home: "Back to Home"
   new_user_cpf_in_use: "CPF already in use"
   new_user_title: "New Register"
@@ -1215,6 +1218,7 @@ en_US:
       not_published: It was not possible to publish post
       draft: It's not possible to reply a draft post
       back_to_draft: It's not possible to set as draft a post with replies.
+      attachment_file_size_too_big: File too large. The maximum size should be up to 10MB.
     mail:
       subject: Reply to your post sent at %{discussion} - %{at_info}
       text: You have received the following answer
@@ -2014,6 +2018,7 @@ en_US:
     new:
       title: Send new file
       send_file_obs: Wait for the complete submission of the file. The size should not exceed 26MB.
+      attachment_file_size_too_big: File too large. The maximum size should be up to 26MB.
     error:
       download: It was not possible to download
       date_range_expired: It was not possible to execute action. Date range expired.
@@ -2087,6 +2092,7 @@ en_US:
       summary: "This table contains the following public file."
     new:
       title: Send new public file
+      attachment_file_size_too_big: File too large. The maximum size should be up to 5MB.
     success:
       new: File sent successfully
       removed: File removed successfully

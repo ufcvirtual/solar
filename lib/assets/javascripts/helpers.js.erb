@@ -551,8 +551,9 @@ function focuInpuErro(){
       }
 
       if( typeof(CKEDITOR) !== "undefined" && CKEDITOR != undefined ){
-        if (CKEDITOR.instances['notification_description'] !== undefined)
+        if(CKEDITOR.instances['notification_description'] !== undefined)
           CKEDITOR.instances['notification_description'].focus();
+          //console.log(CKEDITOR.instances['notification_description']);
       }
     }
   }

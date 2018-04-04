@@ -300,9 +300,12 @@ $.fn.serialize_and_submit = function(options) {
 
       update_tables_with_no_data();
       $(".block_toolbar_right a").attr('disabled', true); // desabilita os botoes da barra superior
-      //for(name in CKEDITOR.instances){
-       // CKEDITOR.instances[name].destroy()
-     // }
+
+      if(CKEDITOR.instances){
+        for(name in CKEDITOR.instances){
+          CKEDITOR.instances[name].destroy()
+        }
+      }  
     }
   }
 
@@ -340,7 +343,7 @@ $.fn.serialize_and_submit = function(options) {
     url: $(this).attr('action'),
     data: data,
     success: options.success,
-    fail: options.error
+    error: options.error
   };
 
   if (typeof(options.files) != "undefined") {

@@ -33,12 +33,16 @@
       - unless question_images.nil?
         %ul.question_images
           - question_images.each do |q_image|
-            /%li.image{class: (q_image.legend.blank? || @pdf == 1) ? '' : 'legend'}
             %li.image
               - unless @pdf == 1
-                .zoom
-                  %p= t('exams.open.image_zoom')
-                  = image_tag q_image.image.url(get_image_size(question_images.count('id'))), :class => 'item_image', alt: q_image.img_alt, :'aria-label' => t('exams.open.image', alt: q_image.img_alt) + (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend)), :"data-zoom-url" => q_image.image.url(:original)
+                - if q_image.image.exists?
+                  .zoom
+                    %p= t('exams.open.image_zoom')
+                    = image_tag q_image.image.url(get_image_size(question_images.count)), class: 'item_image', alt: q_image.img_alt, :'aria-label' => t('exams.open.image', alt: q_image.img_alt) + (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend)), :"data-zoom-url" => q_image.image.url(:original)
+                - else
+                  - img_url = q_image.image.url
+                  - img_url.gsub!('_original.', '.')
+                  = image_tag img_url,  alt: q_image.img_alt, :'aria-label' => t('exams.open.image', alt: q_image.img_alt) + (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend)), size: "350x350"
                 - unless q_image.legend.blank?
                   .legend{:'aria-hidden' => 'true'}= q_image.legend
               - else

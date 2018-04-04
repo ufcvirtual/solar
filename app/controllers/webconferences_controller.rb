@@ -30,7 +30,7 @@ class WebconferencesController < ApplicationController
     @selected = params[:selected]
     authorize! :list, Webconference, on: @allocation_tags_ids
 
-    @webconferences = Webconference.joins(academic_allocations: :allocation_tag).where(allocation_tags: { id: @allocation_tags_ids.split(' ').flatten }).uniq
+    @webconferences = Webconference.joins(academic_allocations: :allocation_tag).where(allocation_tags: { id: @allocation_tags_ids.split(' ').flatten }).distinct
   end
 
   # GET /webconferences/new

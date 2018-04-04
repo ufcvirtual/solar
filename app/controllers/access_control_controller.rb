@@ -132,6 +132,7 @@ class AccessControlController < ApplicationController
       lessons = [lesson = Lesson.find(params[:id])]
 
       if user_session.nil? && !@user_session_exam.nil?
+        # APP
         raise CanCan::AccessDenied if User.current.profiles_with_access_on(:show, :lessons, lesson.allocation_tags.map(&:related)).empty? # verify if user can access that lesson
       elsif user_session[:lessons].include?(params[:id])
         lessons << lesson.imported_to
@@ -191,6 +192,7 @@ class AccessControlController < ApplicationController
 
     def guard_with_access_token_or_authenticate
       unless get_access_token.blank? || !user_session.blank?
+        current_user = nil
         access_token = Doorkeeper::AccessToken.authenticate(get_access_token)
         case Oauth2::AccessTokenValidationService.validate(access_token, scopes: [])
         when Oauth2::AccessTokenValidationService::INSUFFICIENT_SCOPE

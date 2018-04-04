@@ -8,7 +8,7 @@ module Taggable
 
     after_create :allocation_tag_association
     after_create :allocate_profiles
-    
+
     has_one :allocation_tag, dependent: :destroy
 
     has_many :allocations, through: :allocation_tag
@@ -55,7 +55,7 @@ module Taggable
     allocation
   end
 
-  def cancel_allocations(user_id = nil, profile_id = nil, updated_by_user_id=nil, opts = {})
+  def cancel_allocations(user_id = nil, profile_id = nil, updated_by_user_id=nil, opts = {}, raise_error = false)
     query = {}
     query.merge!({user_id: user_id})       unless user_id.nil?
     query.merge!({profile_id: profile_id}) unless profile_id.nil?
@@ -66,7 +66,14 @@ module Taggable
       allocations
     end
 
-    all.where(query).each do |al|
+    all_query = all.where(query)
+
+    if raise_error && all_query.empty?
+      Rails.logger.info "[API] [ERROR] [#{Time.now}] can't cancel allocation that doesn't exists user_id #{user_id} - profile_id #{profile_id} - allocation_tag_id #{allocation_tag.id}"
+      raise "allocation doesnt exist"
+    end
+
+    all_query.each do |al|
       al.update_attributes(status: Allocation_Cancelled, updated_by_user_id: updated_by_user_id)
     end
   end

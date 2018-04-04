@@ -6,30 +6,20 @@
       = @discussion.name
   .block_content
     .block_content_text= sanitize @discussion.description
-
-  %h2
-    .block_title
-      %i.icon-forum
-      = t('.files.discussion_file_title')
-  .block_content
     .block_content_text
-      - unless @files.empty?
-        %table.tb_list
-          %thead
-            %tr.lines
-              %th{id: "name_discussion_file"}= t('.files.name')
-              %th{id: "size_discussion_file", align: "right", style: "width: 55px;"}= t('.files.size')
-          %tbody
+      = sanitize @discussion.description
+      %p
+        - unless @files.empty?
+          %ul
+            .title= t('.files.discussion_file_title')
             - @files.each do |file|
               - size = format('%.2f KB', file.attachment_file_size/1024.0)
-              %tr.lines
-                %td{:"data-tooltip" => file.attachment_file_name, headers: "name_discussion_file" }
-                  - link = discussion_download_path(id: file.id)
-                  = link_to image_tag(icon_attachment(file.attachment_file_name)), link, {class: "file_icon", :'aria-label'=> t('posts.post.download', file: file.attachment_file_name, size: size)}
-                  = link_to file.attachment_file_name.truncate(30), link, {class: "link_content", :'aria-label'=> t('posts.post.download', file: file.attachment_file_name, size: size)}
-                %td{headers: "size_discussion_file" }= size
-      - else
-        .text_none= t(:itens_not_found)
+              %li
+                - link = discussion_download_path(id: file.id)
+                = link_to image_tag(icon_attachment(file.attachment_file_name)), link, {class: "file_icon", :'aria-label'=> t('posts.post.download', file: file.attachment_file_name, size: size)}
+                = link_to file.attachment_file_name.truncate(30), link, {class: "link_content", :'aria-label'=> t('posts.post.download', file: file.attachment_file_name, size: size)}
+                = size
+
   - unless @display_mode == 'list'
     .expand_hide
       = link_to content_tag(:i, nil, class: 'icon-resize-enlarge', :"data-tooltip" => t('.expand')), "#void", onclick: 'show_all()'
@@ -314,29 +304,35 @@
       $(".attachment_title_").show();
 
       $("input[type='file']", new_form).change(function(){
+        if(this.files[0] != undefined) {
+          if(this.files[0].size > 10000000) {
+            $(this).remove();
+            flash_message("#{I18n.t('posts.error.attachment_file_size_too_big')}", "alert");
+          } else {
+            var text_aria_label = "#{I18n.t('posts.post.remove_file')}"+': ' + this.files[0].name + ' ' +humanFileSize(this.files[0].size);
 
-        var text_aria_label = "#{I18n.t('posts.post.remove_file')}"+': ' + this.files[0].name + ' ' +humanFileSize(this.files[0].size);
+            var new_file_name = "<div class='input files'> <label></label> <span id='file' data-input-file-name=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-square warning remove_file' tabindex= '0' aria-label= '"+text_aria_label+"' data-tooltip= '"+text_aria_label+"' ></i> </span> </div>";
 
-        var new_file_name = "<div class='input files'> <label></label> <span id='file' data-input-file-name=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-square warning remove_file' tabindex= '0' aria-label= '"+text_aria_label+"' data-tooltip= '"+text_aria_label+"' ></i> </span> </div>";
+            if ($(".list_files_to_send_ .files:last").lenght)
+              $(".list_files_to_send_ .files:last").after(new_file_name);
+            else
+              $(".list_files_to_send_").append(new_file_name);
 
-        if ($(".list_files_to_send_ .files:last").lenght)
-          $(".list_files_to_send_ .files:last").after(new_file_name);
-        else
-          $(".list_files_to_send_").append(new_file_name);
+            $(".remove_file", $('.posts')).on("click keypress", function(event){
+              var keynum = event.which || event.keyCode;
 
-        $(".remove_file", $('.posts')).on("click keypress", function(event){
-          var keynum = event.which || event.keyCode;
+              if( keynum == 13 || event.type == 'click'){
+                var span_file = $(this).parents('span#file');
 
-          if( keynum == 13 || event.type == 'click'){
-            var span_file = $(this).parents('span#file');
+                $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove();
+                $(span_file).parents('div.input.files').remove();
 
-            $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove();
-            $(span_file).parents('div.input.files').remove();
-
-            if (!$(".list_files_to_send_").children().length)
-              $(".attachment_title_").addClass("invisible");
+                if (!$(".list_files_to_send_").children().length)
+                  $(".attachment_title_").addClass("invisible");
+              }
+            });
           }
-        });
+        }
       });
     }
 

@@ -274,7 +274,7 @@ class Exam < Event
         .where(academic_allocations: { allocation_tag_id: ats })
         .select('exams.*')
         .group('exams.id')
-        .uniq('exams.id')
+        .distinct('exams.id')
   end
 
   def self.my_exams(allocation_tag_ids)

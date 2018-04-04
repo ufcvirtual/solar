@@ -28,8 +28,8 @@ class QuestionItem < ActiveRecord::Base
 
   before_destroy :can_destroy?
 
-  after_create :replace_audio, if: '(!item_audio_file_name.blank?)'
-  after_create :replace_image, if: '(!item_image_file_name.blank?)'
+  before_save :replace_audio, if: '(!item_audio_file_name.blank? && (new_record? || item_audio_file_name_changed?))'
+  before_save :replace_image, if: '(!item_image_file_name.blank? && (new_record? || item_image_file_name_changed?))'
 
 
   def can_destroy?
@@ -62,11 +62,11 @@ class QuestionItem < ActiveRecord::Base
 
   private
     def replace_audio
-      self.update_attributes(:item_audio_file_name => normalized_item_audio_file_name)
+      self.item_audio_file_name = normalized_item_audio_file_name
     end
 
     def replace_image
-      self.update_attributes(:item_image_file_name => normalized_item_image_file_name)
+      self.item_image_file_name = normalized_item_image_file_name
     end
 
 end

@@ -157,7 +157,10 @@ class EditionsController < ApplicationController
   end
 
   def manage_tools
-    params[:academic_allocations] = params[:academic_allocations].collect{|key,value| value}
+    ActionController::Parameters.permit_all_parameters = true
+    #params = ActionController::Parameters.new(params)
+
+    params[:academic_allocations] = params[:academic_allocations].to_h.collect{|key,value| value}
     params[:academic_allocations] = params[:academic_allocations].delete_if{|a| a.nil? || a['acs'].blank?}
     allocation_tags_ids = params[:academic_allocations].collect{|data| data['allocation_tags_ids'].delete('[]').split(' ')}.flatten.map(&:to_i).uniq
 
@@ -207,7 +210,7 @@ class EditionsController < ApplicationController
             end
           end
 
-          attributes.merge!(data.slice('evaluative', 'weight', 'equivalent_academic_allocation_id', 'final_exam', 'frequency', 'frequency_automatic', 'max_working_hours', 'final_weight'))
+          attributes.merge!(data.to_h.slice('evaluative', 'weight', 'equivalent_academic_allocation_id', 'final_exam', 'frequency', 'frequency_automatic', 'max_working_hours', 'final_weight'))
 
           changes << {previous: ac.as_json, after: attributes}
           unless ac.update_attributes(attributes)
@@ -221,9 +224,10 @@ class EditionsController < ApplicationController
       allocation_tags.where('group_id IS NOT NULL').each do |at|
         # getting errors to working_hours
         unless max_working_hours.nil?
-          acs = AcademicAllocation.where(allocation_tag_id: at.related, frequency: true).where('final_exam = false AND equivalent_academic_allocation_id IS NULL').pluck(:max_working_hours)
+          acs = AcademicAllocation.where(allocation_tag_id: at.related, frequency: true).where('final_exam = false AND equivalent_academic_allocation_id IS NULL').pluck("SUM(max_working_hours) AS max_working_hours")
+          
           if acs.any?
-            wh = acs.sum(:max_working_hours)
+            wh = acs.first
             if wh != max_working_hours
               working_hours_errors << {at: at, wh: wh}
               ats_errors << at.id
@@ -263,7 +267,6 @@ class EditionsController < ApplicationController
     errors.each do |error|
       alert << ("#{t(error[:ac].academic_tool_type.tableize.singularize.to_sym, scope: [:activerecord, :models])} #{error[:ac].tool_name}: #{error[:messages].join('; ')}" rescue error)
     end
-
     (working_hours_errors || []).each do |error|
       alert << ["#{error[:at].groups.map(&:code).join(', ')}", t('evaluative_tools.errors.working_hour_error', max: max_working_hours, wh: error[:wh])].join(': ')
     end

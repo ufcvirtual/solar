@@ -48,7 +48,7 @@ class Group < ActiveRecord::Base
 
   def students_allocations
     Allocation.joins(:profile).where("cast( profiles.types & '#{Profile_Type_Student}' as boolean )")
-      .where(status: Allocation_Activated, allocation_tag_id: allocation_tag.related).uniq(:user_id)
+      .where(status: Allocation_Activated, allocation_tag_id: allocation_tag.related).distinct(:user_id)
   end
 
   def any_lower_association?

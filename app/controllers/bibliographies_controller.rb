@@ -16,7 +16,7 @@ class BibliographiesController < ApplicationController
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, Bibliography, on: @allocation_tags_ids
 
-    @bibliographies = Bibliography.joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: @allocation_tags_ids.split(' ').flatten }).uniq
+    @bibliographies = Bibliography.joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: @allocation_tags_ids.split(' ').flatten }).distinct
   end
 
   # GET /bibliographies

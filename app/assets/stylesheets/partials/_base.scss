@@ -78,7 +78,7 @@ a, a.menor, a.link_content {
   color: $color_main_base_link;
 }
 
-.show_notification a{
+.show_notification a:not(.prev), .show_notification a:not(.next){
   text-decoration: underline;
 }
 

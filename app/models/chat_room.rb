@@ -77,7 +77,7 @@ class ChatRoom < Event
   end
 
   def self.to_list_by_ats(allocation_tags_ids)
-    joins(:schedule, :allocation_tags).where(allocation_tags: { id: allocation_tags_ids }).select('chat_rooms.*, schedules.start_date AS chat_start_date').order('chat_start_date, title').uniq
+    joins(:schedule, :allocation_tags).where(allocation_tags: { id: allocation_tags_ids }).select('chat_rooms.*, schedules.start_date AS chat_start_date').order('chat_start_date, title').distinct
   end
 
   def get_messages(at_id, user_query={})

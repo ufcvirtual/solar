@@ -3,6 +3,13 @@
   white-space: normal;
   margin-bottom: 10px;
   word-break: break-word;
+  .block_content_text{
+    ul{
+      .title{
+        font-weight: bold;
+      }
+    }
+  }
 }
 
 div.forum_navigation {
@@ -313,4 +320,8 @@ div.forum_navigation {
 
 .expand_hide {
   flex-direction: row;
+}
+
+.remove_file {
+  cursor: pointer;
 }

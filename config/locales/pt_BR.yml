@@ -669,6 +669,7 @@ pt_BR:
   login_footer5: "Código"
   login_footer6: "Equipe"
   login_app: "Baixe nosso App!"
+  login_app2: "Baixe o APP do Solar"
   login_faq: FAQ
   faq_title: "Dúvidas frequentes"
   login_language: "Idioma"
@@ -768,7 +769,9 @@ pt_BR:
   form_email_confirmation: "Confirmação do e-mail"
   form_email: "E-mail"
   form_google_play: 'Disponível no Google Play'
+  form_google_play2: 'Aplicativo do Solar disponível no Google Play'
   form_apple_store: 'Baixar na App Store'
+  form_apple_play2: 'Aplicativo do Solar disponível no App Store'
   back_home: "Voltar para Home"
 
   # pagina de cadastro de usuario
@@ -1406,6 +1409,7 @@ pt_BR:
       not_published: Não foi possível publicar o post
       draft: Não é possível responder um post de rascunho
       back_to_draft: Não é possível definir como rascunho um post com respostas.
+      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 10MB.
     mail:
       subject: Resposta a seu post enviado em %{discussion} - %{at_info}
       text: Você recebeu a seguinte resposta
@@ -2240,6 +2244,7 @@ pt_BR:
     new:
       title: Enviar novo arquivo
       send_file_obs: Aguarde o envio completo do arquivo. O tamanho não deve exceder 26MB.
+      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 26MB.
     error:
       download: Não foi possível realizar o download
       date_range_expired: Não foi possível realizar ação. Período encerrado.
@@ -2314,6 +2319,7 @@ pt_BR:
       summary: "Está tabela contém os arquivos publicos."
     new:
       title: Enviar novo arquivo público
+      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 5MB.
     success:
       new: Arquivo enviado com sucesso
       removed: Arquivo removido com sucesso
