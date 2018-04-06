@@ -51,7 +51,7 @@ class SupportMaterialFile < ActiveRecord::Base
 
   def link_path(api: false)
     raise 'not link' unless is_link?
-    
+
     return 'http://www.youtube.com/embed/' + url.split('v=')[1].split('&')[0] if !api && url.include?('youtube') && !url.include?('embed') && url.include?('list')
     return 'http://www.youtube.com/embed/' + url.split('v=')[1] if !api && url.include?('youtube') && !url.include?('embed')
     url
@@ -74,6 +74,6 @@ class SupportMaterialFile < ActiveRecord::Base
   end
 
   def self.verify_file_type(name)
-    (name.last(4).eql?('.aac') || name.last(4).eql?('.m4a') || name.last(4).eql?('.mp4') || name.last(4).eql?('.m4v')) 
+    (name.last(4).eql?('.aac') || name.last(4).eql?('.m4a') || name.last(4).eql?('.mp4') || name.last(4).eql?('.m4v') || name.last(5).eql?('.webm')) 
   end
 end

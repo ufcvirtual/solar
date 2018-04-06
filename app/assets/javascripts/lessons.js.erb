@@ -15,7 +15,7 @@ function minimize_lesson() {
   var home_tab = $(".mysolar_unit_active_tab.general_context").length;
   if (!home_tab) {
     // save cookie with the new url
-    var lesson_URL = $(".fancybox-iframe").contents().find(".lesson .content").data("url");
+    var lesson_URL = $(".fancybox-ajax").contents().find(".lesson .content").data("url");
     $.cookie(lesson_cookie_id, lesson_URL);
 
     $(".fancybox-skin").effect( "transfer", { to: $("#mysolar_open_lesson") }, 750 ); // transfer effect
@@ -46,7 +46,6 @@ function focus_element(element){
 
 function open_new_lesson_on_fancybox(lesson_path, lesson_url, draft) {
   $('.lesson .content').attr('data-url', lesson_url);
-
   $('.lesson .content iframe').attr('src', lesson_path);
 
   if (draft) {
@@ -69,21 +68,140 @@ function click_on_keypress(event, element){
 
 $(function(){
   // select modules
-  $(".breadcrumb .modules #lmodule-options-dropdown a").on('click',function(){
+  $("#lmodule-options-dropdown a").on('click keydown',function(event){
     var lessons_url = get_module_lessons_url.replace('lesson_module_id', $(this).data('id')).replace('allocation_tags_ids_value', $(this).data('ats'));
     $.get(lessons_url, function(data){
       $('.lesson.open').replaceWith(data);
       focus_element('.lesson.open h2');
     });
+
+    var that = this;
+    navigation_focus_modules(event, that);
   });
 
   // select lessons
-  $('.breadcrumb .lessons #lesson-options-dropdown a').on('click', function(){
-    var lesson_path = $(this).data('path');
-    var lesson_url  = get_lesson_url.replace('lesson_id', $(this).data('id'));
-    $('#lesson-selected').html($(this).html() + '<i aria-hidden="true" class="icon-arrow-down-triangle"></i>');
+  $('#lesson-options-dropdown a').on('click keydown', function(event){
+    if (event.which == 13 || event.type == 'click') {
+      var lesson_path = $(this).data('path');
+      var lesson_url  = get_lesson_url.replace('lesson_id', $(this).data('id'));
 
-    open_new_lesson_on_fancybox(lesson_path, lesson_url, $(this).data('draft'));
+      $(this).closest(".dropdown-menu").find("a").removeClass("selected");
+      $(this).addClass("selected");
+
+      if(/.aac|.m4a|.mp4|.m4v|.webm/.test(lesson_path)) {
+        $(".content").empty().html(video(lesson_path));
+      } else {
+        $(".content").empty().html(iframe(lesson_path));
+        var lesson_selected = $(this).html();
+        $('#lesson-selected').empty().html(lesson_selected + '<i aria-hidden="true" class="icon-arrow-down-triangle"></i>');
+        open_new_lesson_on_fancybox(lesson_path, lesson_url, $(this).data('draft'));
+      }
+    }
+
+    var that = this;
+    navigation_focus_lessons(event, that);
   });
 
+  $("#nav_modules").on("keydown", function(event){
+    var keynum = event.which || event.keyCode;
+
+    if(keynum == 39) {
+      $("#nav_lessons").find(".btn_dropdown").focus();
+    } else if (keynum == 32 || keynum == 13) {
+      $(this).find(".btn_dropdown").trigger('click');
+
+      openDropdown();
+      setTimeout(function() {
+        $("#nav_modules").find("ul li").first().find("a").focus();
+      }, 100);
+    }
+  });
+
+  $("#nav_lessons").on("keydown", function(event){
+    var keynum = event.which || event.keyCode;
+
+    if(keynum == 37) {
+      $("#nav_modules").find(".btn_dropdown").focus();
+    } else if (keynum == 32 || keynum == 13) {
+      $(this).find(".btn_dropdown").trigger('click');
+
+      openDropdown();
+      setTimeout(function() {
+        $("#nav_lessons").find("ul li").first().find("a").focus();
+      }, 100);
+    }
+  });
 });
+
+function video(url) {
+  var html  = '';
+
+  html += '<span class="hide">"#{t(:audio_suggestions)}"</span>'
+  html += '<video src=' + url + ' autoplay="false" controls="true" name="audioQuestion" preload="auto" onplay="check(this);" onclick="handleMediaErrorFirefox(this);" onkeypress="return handleEnterKey(event, this);">';
+  html += '<track kind="captions">';
+  html += '<track kind="descriptions">';
+  html += '</video>';
+
+  return html;
+}
+
+function iframe(url) {
+  return '<iframe id="content_lesson" src=' + url + ' width="100%" height="100%" name="content_lesson" target="_self" frameborder="0" framespacing="0"></iframe>';
+}
+
+function navigation_focus_modules(event, link) {
+  var keynum = event.which || event.keyCode;
+
+  switch( keynum ) {
+    case 40:
+      $(link).closest("li").next("li").find("a").focus();
+      break;
+    case 38:
+      $(link).closest("li").prev("li").find("a").focus();
+      break;
+    case 27:
+      $("#nav_modules").find(".btn_dropdown").trigger('click');
+      setTimeout(function() {
+        closeDropdown();
+      }, 250);
+      $("#nav_modules").find(".btn_dropdown").focus();
+      break;
+    case 13:
+      $(link).trigger('click');
+      $("#nav_modules").find(".btn_dropdown").trigger('click');
+      setTimeout(function() {
+        closeDropdown();
+      }, 250);
+      $("#nav_modules").find(".btn_dropdown").focus();
+      break;
+  }
+}
+
+function navigation_focus_lessons(event, link) {
+  var keynum = event.which || event.keyCode;
+
+  switch( keynum ) {
+    case 40:
+      $(link).closest("li").next("li").find("a").focus();
+      break;
+    case 38:
+      $(link).closest("li").prev("li").find("a").focus();
+      break;
+    case 27:
+      $("#lesson-selected").trigger('click');
+      setTimeout(function() {
+        closeDropdown();
+      }, 250);
+      $("#lesson-selected").focus();
+      break;
+    case 13:
+      $(link).trigger('click');
+      $("#lesson-selected").trigger('click');
+      setTimeout(function() {
+        closeDropdown();
+        $(".course #lesson_name").focus();
+      }, 250);
+      //$("#lesson-selected").focus();
+      break;
+  }
+}
