@@ -17,7 +17,7 @@ function minimize_lesson() {
   var home_tab = $(".mysolar_unit_active_tab.general_context").length;
   if (!home_tab) {
     // save cookie with the new url
-    var lesson_URL = $(".fancybox-iframe").contents().find(".lesson .content").data("url");
+    var lesson_URL = $(".fancybox-ajax").contents().find(".lesson .content").data("url");
     $.cookie(lesson_cookie_id, lesson_URL);
 
     $(".fancybox-skin").effect( "transfer", { to: $("#mysolar_open_lesson") }, 750 ); // transfer effect
@@ -98,10 +98,10 @@ function change_module(event, link) {
 
   if (keynum == 13 || keynum == 32 || event.type == 'click') {
     var lessons_url = get_module_lessons_url.replace('lesson_module_id', $(link).data('id')).replace('allocation_tags_ids_value', $(link).data('ats'));
-    $.get(lessons_url, function(data){
-      $('.lesson.open').replaceWith(data);
-      focus_element('.lesson.open h2');
-    });
+$(function(){
+  // select modules
+  $("#lmodule-options-dropdown a").on('click keydown',function(event){
+    var lessons_url = get_module_lessons_url.replace('lesson_module_id', $(this).data('id')).replace('allocation_tags_ids_value', $(this).data('ats'));
 
     hide_modules();
   }
@@ -163,6 +163,7 @@ function change_lesson(event, link) {
 function video(url) {
   var html  = '';
 
+fancybox
   html += '<span class="hide">"#{t(:audio_suggestions)}"</span>'
   html += '<video src=' + url + ' autoplay="false" controls="true" name="audioQuestion" preload="auto" onplay="check(this);" onclick="handleMediaErrorFirefox(this);" onkeypress="return handleEnterKey(event, this);">';
   html += '<track kind="captions">';
