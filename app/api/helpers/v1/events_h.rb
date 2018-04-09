@@ -11,34 +11,57 @@ module V1::EventsH
     end
   end
 
-  def create_event(params, ats, offer, old_event=nil)
+  def create_event(params, ats, offer, existing_ac=nil, update_event=nil)
+    if params[:Turmas].present?
+      params[:groups] = params[:Turmas]
+      params[:event] = params[:DataInserida]
+      params[:event][:date] = params[:DataInserida][:Data]
+      params[:event][:type] = params[:DataInserida][:Tipo]
+      params[:event][:start] = params[:DataInserida][:HoraInicio]
+      params[:event][:end] = params[:DataInserida][:HoraFim]
+    end
+
     event_info = (params[:event][:type].blank? ? { type: params[:event][:type_event], title: params[:event][:title] } : get_event_type_and_description(params[:event][:type]))
     start_hour, end_hour = params[:event][:start].split(':'), params[:event][:end].split(':')
     group_events = []
 
     event = ScheduleEvent.joins(:schedule, :academic_allocations).where(schedules: { start_date: params[:event][:date], end_date: params[:event][:date] }, title: event_info[:title], type_event: event_info[:type], place: 'Polo', start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":"), integrated: true, academic_allocations: { allocation_tag_id: ats } ).first_or_initialize
 
-    if event.new_record?
+    if event.new_record? && update_event.blank?
       schedule = Schedule.create! start_date: params[:event][:date], end_date: params[:event][:date]
       event.schedule_id = schedule.id
       event.save!
+    elsif event.new_record? && !update_event.blank? && !existing_ac.blank?
+      event = update_event
+      event.schedule.update_attributes! start_date: params[:event][:date], end_date: params[:event][:date]
+      event.update_attributes! start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":")
     end
 
-    params[:groups].each do |group_name|
-      group = get_offer_group(offer, group_name)
-
-      old_ac = old_event.academic_allocations.where(allocation_tag_id: group.allocation_tag.id).first unless old_event.blank?
-      ac_attributes = old_ac.blank? ? {} : old_ac.attributes.except('id', 'academic_tool_id', 'allocation_tag_id')
-
-      if old_ac.blank?
-        event.academic_allocations.where(allocation_tag_id: group.allocation_tag.id).first_or_create
-        AcademicTool.send_email(event, event.academic_allocations, true)
-      else
-        old_ac.update_attributes(academic_tool_id: event.id)
-        AcademicTool.send_email(event, old_ac, true)
+    if params[:groups].present?
+      acs = []
+      params[:groups].each do |group_name|
+        group = get_offer_group(offer, group_name)
+        ac = event.academic_allocations.where(allocation_tag_id: group.allocation_tag.id).first_or_initialize
+        Rails.logger.info "\n\n api 2\n\n"
+        if ac.new_record?
+          ac.merge = true
+          ac.save!
+          acs << ac
+        end
+        group_events << {name: group.name, id: ac.id, Codigo: group.name}
       end
-
-      group_events << {name: group.name, id: event.id}
+      AcademicTool.send_email(event, acs, false)
+    elsif !existing_ac.nil? && (event.id != update_event.try(:id))
+      old_event = old_event = ScheduleEvent.find(existing_ac.academic_tool_id)
+      existing_ac.update_attributes(academic_tool_id: event.id)
+      if !event.new_record? && !update_event.blank?
+        AcademicTool.send_email(event, [existing_ac], true, {start_date: update_event.schedule.start_date , end_date: update_event.schedule.end_date, start_hour: update_event.start_hour, end_hour: update_event.end_hour})
+        update_event.api = true
+        update_event.merge = true
+        update_event.destroy
+      else
+        AcademicTool.send_email(event, [existing_ac], true, {start_date: old_event.schedule.start_date , end_date: old_event.schedule.end_date, start_hour: old_event.start_hour, end_hour: old_event.end_hour})
+      end
     end
 
     group_events
