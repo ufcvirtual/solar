@@ -36,8 +36,6 @@ class LogAccess < ActiveRecord::Base
   end
 
   def logs_by_user(ats)
-    p ats
-    p self.student
     @logs = LogAccess.find_by_sql <<-SQL
     SELECT to_char(lognsub.created_at,'dd/mm/YYYY HH24:MI:SS') AS datetime,
       CASE 
@@ -158,11 +156,5 @@ class LogAccess < ActiveRecord::Base
   def get_allocation_tag
     allocation_tag = AllocationTag.find(self.allocation_tag_id).info unless self.allocation_tag_id.blank?
   end 
-
-  def logs_by_user2(ats)
-    p ats
-    p self.student 
-    User.where(id: self.student)
-  end  
 
 end

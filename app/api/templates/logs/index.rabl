@@ -1,5 +1,15 @@
 collection @logs
 
-@logs.each do |log|
-  extends 'logs/show', locals: {log: log}
+attributes :student
+
+node :actions do |log|	
+  log.logs_by_user(@ats).map { |l|{
+      datetime: l.datetime,
+      action: l.action,
+      tool: l.tool,
+      tool_type: l.tool_type,
+      group: l.action == 'acessou o Solar' ? '' : log.get_allocation_tag
+    }
+  }
 end
+
