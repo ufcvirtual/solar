@@ -21,14 +21,11 @@ module V1
       get :index, rabl: 'logs/index' do
 
         verify_permission(:index)
-        array_ats = Array.new
         semester = Semester.where(name: params[:semester]).first
         groups = Group.joins(:offer).where(offers: {course_id: params[:course_id], curriculum_unit_id: params[:curriculum_unit_id], semester_id: semester.id}, status: true)
 
-        groups.each do |group|
-          array_ats << group.allocation_tag.related
-        end  
-        @ats = array_ats.flatten.uniq
+        @ats = groups.map(&:allocation_tag).map(&:id).flatten.uniq
+        @ats << groups.first.offer.allocation_tag.related({upper: true})
 
         @logs = LogAccess.find_by_sql <<-SQL
           SELECT DISTINCT allocations.user_id AS student, allocations.allocation_tag_id
@@ -36,7 +33,8 @@ module V1
           WHERE profiles.id = allocations.profile_id AND cast(profiles.types & #{Profile_Type_Student} as boolean) AND 
           allocations.status = #{Allocation_Activated} AND allocations.allocation_tag_id IN (#{@ats.join(',')});
         SQL
-          
+        @arr_student = @logs.map(&:student).flatten.uniq
+        LogAccess.drop_and_create_temporary_logs(@ats, @arr_student)
           
       end # get
 

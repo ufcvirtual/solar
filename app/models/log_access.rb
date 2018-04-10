@@ -35,43 +35,9 @@ class LogAccess < ActiveRecord::Base
     create(params)
   end
 
-  def logs_by_user(ats)
+  def logs_by_user(ats, arr_id_student)
     @logs = LogAccess.find_by_sql <<-SQL
-    SELECT to_char(lognsub.created_at,'dd/mm/YYYY HH24:MI:SS') AS datetime,
-      CASE 
-        WHEN lognsub.assignment_id IS NOT NULL THEN 'acessou atividade'
-        WHEN lognsub.discussion_id IS NOT NULL THEN 'acessou fórun'
-        WHEN lognsub.chat_room_id IS NOT NULL THEN  'acessou chat'
-        WHEN lognsub.group_assignment_id IS NOT NULL THEN 'acessou atividade em grupo'
-        WHEN lognsub.exam_id IS NOT NULL THEN 'acessou prova'
-        WHEN lognsub.webconference_id IS NOT NULL THEN 'acessou webconferencia'
-        WHEN lognsub.lesson_id IS NOT NULL THEN 'acessou aula'
-        WHEN lognsub.support_material_file IS NOT NULL THEN 'acessou material de apoio'
-        WHEN lognsub.bibliography IS NOT NULL THEN 'acessou bilbiografia'
-        WHEN lognsub.digital_class_lesson IS NOT NULL THEN 'acessou digital class'
-      END AS action,
-      (coalesce((support_material_file),'') || coalesce((discussions.name),'') || coalesce((assignments.name),'') || coalesce((exams.name),'') || coalesce((chat_rooms.title),'')
-      || coalesce((chat_historico.title),'') || coalesce((group_assignments.group_name),'')  || coalesce((webconferences.title),'')  || 
-      coalesce((CASE lessons.type_lesson WHEN 0 THEN COALESCE(lessons.name, lesson) WHEN 1 THEN COALESCE(lessons.address, lesson) ELSE lesson END),'')) AS tool,
-      CASE 
-        WHEN lognsub.assignment_id IS NOT NULL THEN 'Assignment'
-        WHEN lognsub.discussion_id IS NOT NULL THEN 'Discussion'
-        WHEN lognsub.chat_room_id IS NOT NULL THEN  'ChatRoom'
-        WHEN lognsub.group_assignment_id IS NOT NULL THEN 'Assignment'
-        WHEN lognsub.exam_id IS NOT NULL THEN 'Exam'
-        WHEN lognsub.webconference_id IS NOT NULL THEN 'Webconference'
-        WHEN lognsub.lesson_id IS NOT NULL THEN 'Lesson'
-        WHEN lognsub.support_material_file IS NOT NULL THEN '"SupportMaterialFile"'
-        WHEN lognsub.bibliography IS NOT NULL THEN 'Bibliography'
-        WHEN lognsub.digital_class_lesson IS NOT NULL THEN 'Digitalclass'
-      END AS tool_type 
-    FROM log_navigation_subs AS lognsub LEFT JOIN log_navigations ON log_navigations.id = log_navigation_id LEFT JOIN  assignments ON lognsub.assignment_id = assignments.id
-           LEFT JOIN chat_rooms ON lognsub.chat_room_id = chat_rooms.id LEFT JOIN chat_rooms as chat_historico ON lognsub.hist_chat_room_id = chat_historico.id LEFT JOIN group_assignments ON 
-           lognsub.group_assignment_id = group_assignments.id LEFT JOIN lessons ON lognsub.lesson_id = lessons.id LEFT JOIN discussions ON lognsub.discussion_id = discussions.id LEFT JOIN exams 
-           ON exams.id = lognsub.exam_id LEFT JOIN webconferences ON lognsub.webconference_id = webconferences.id WHERE log_navigations.allocation_tag_id IN (#{ats.join(',')}) AND
-           (log_navigations.user_id = #{self.student}) AND (
-    lognsub.assignment_id IS NOT NULL OR lognsub.discussion_id IS NOT NULL OR lognsub.chat_room_id IS NOT NULL OR lognsub.group_assignment_id IS NOT NULL OR lognsub.exam_id IS NOT NULL OR
-    lognsub.webconference_id IS NOT NULL OR lognsub.lesson_id IS NOT NULL OR lognsub.support_material_file IS NOT NULL OR lognsub.digital_class_lesson IS NOT NULL)
+    SELECT datetime, action, tool, tool_type FROM temp_logs_nov_sub WHERE user_id=#{self.student}
     UNION
     SELECT to_char(created_at,'dd/mm/YYYY HH24:MI:SS') AS datetime, menus.name AS action, '' AS tool, '' AS tool_type
     FROM log_navigations LEFT JOIN menus ON log_navigations.menu_id = menus.id WHERE menus.name IS NOT NULL AND log_navigations.allocation_tag_id IN (#{ats.join(',')}) AND
@@ -156,5 +122,49 @@ class LogAccess < ActiveRecord::Base
   def get_allocation_tag
     allocation_tag = AllocationTag.find(self.allocation_tag_id).info unless self.allocation_tag_id.blank?
   end 
+
+  def self.drop_and_create_temporary_logs(ats, arr_id_student)
+    @logs = LogAccess.find_by_sql <<-SQL
+      DROP TABLE IF EXISTS temp_logs_nov_sub;
+
+      CREATE TEMPORARY TABLE temp_logs_nov_sub AS SELECT to_char(lognsub.created_at,'dd/mm/YYYY HH24:MI:SS') AS datetime,
+      CASE 
+        WHEN lognsub.assignment_id IS NOT NULL THEN 'acessou atividade'
+        WHEN lognsub.discussion_id IS NOT NULL THEN 'acessou fórun'
+        WHEN lognsub.chat_room_id IS NOT NULL THEN  'acessou chat'
+        WHEN lognsub.group_assignment_id IS NOT NULL THEN 'acessou atividade em grupo'
+        WHEN lognsub.exam_id IS NOT NULL THEN 'acessou prova'
+        WHEN lognsub.webconference_id IS NOT NULL THEN 'acessou webconferencia'
+        WHEN lognsub.lesson_id IS NOT NULL THEN 'acessou aula'
+        WHEN lognsub.support_material_file IS NOT NULL THEN 'acessou material de apoio'
+        WHEN lognsub.bibliography IS NOT NULL THEN 'acessou bilbiografia'
+        WHEN lognsub.digital_class_lesson IS NOT NULL THEN 'acessou digital class'
+      END AS action,
+      (coalesce((support_material_file),'') || coalesce((discussions.name),'') || coalesce((assignments.name),'') || coalesce((exams.name),'') || coalesce((chat_rooms.title),'')
+      || coalesce((chat_historico.title),'') || coalesce((group_assignments.group_name),'')  || coalesce((webconferences.title),'')  || 
+      coalesce((CASE lessons.type_lesson WHEN 0 THEN COALESCE(lessons.name, lesson) WHEN 1 THEN COALESCE(lessons.address, lesson) ELSE lesson END),'')) AS tool,
+      CASE 
+        WHEN lognsub.assignment_id IS NOT NULL THEN 'Assignment'
+        WHEN lognsub.discussion_id IS NOT NULL THEN 'Discussion'
+        WHEN lognsub.chat_room_id IS NOT NULL THEN  'ChatRoom'
+        WHEN lognsub.group_assignment_id IS NOT NULL THEN 'Assignment'
+        WHEN lognsub.exam_id IS NOT NULL THEN 'Exam'
+        WHEN lognsub.webconference_id IS NOT NULL THEN 'Webconference'
+        WHEN lognsub.lesson_id IS NOT NULL THEN 'Lesson'
+        WHEN lognsub.support_material_file IS NOT NULL THEN '"SupportMaterialFile"'
+        WHEN lognsub.bibliography IS NOT NULL THEN 'Bibliography'
+        WHEN lognsub.digital_class_lesson IS NOT NULL THEN 'Digitalclass'
+      END AS tool_type,
+      log_navigations.user_id
+    FROM log_navigation_subs AS lognsub LEFT JOIN log_navigations ON log_navigations.id = log_navigation_id LEFT JOIN  assignments ON lognsub.assignment_id = assignments.id
+           LEFT JOIN chat_rooms ON lognsub.chat_room_id = chat_rooms.id LEFT JOIN chat_rooms as chat_historico ON lognsub.hist_chat_room_id = chat_historico.id LEFT JOIN group_assignments ON 
+           lognsub.group_assignment_id = group_assignments.id LEFT JOIN lessons ON lognsub.lesson_id = lessons.id LEFT JOIN discussions ON lognsub.discussion_id = discussions.id LEFT JOIN exams 
+           ON exams.id = lognsub.exam_id LEFT JOIN webconferences ON lognsub.webconference_id = webconferences.id WHERE log_navigations.allocation_tag_id IN (#{ats.join(',')}) AND
+           log_navigations.user_id IN (#{arr_id_student.join(',')}) AND (
+    lognsub.assignment_id IS NOT NULL OR lognsub.discussion_id IS NOT NULL OR lognsub.chat_room_id IS NOT NULL OR lognsub.group_assignment_id IS NOT NULL OR lognsub.exam_id IS NOT NULL OR
+    lognsub.webconference_id IS NOT NULL OR lognsub.lesson_id IS NOT NULL OR lognsub.support_material_file IS NOT NULL OR lognsub.digital_class_lesson IS NOT NULL)
+
+    SQL
+  end  
 
 end
