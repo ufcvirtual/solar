@@ -81,6 +81,20 @@ class LessonsController < ApplicationController
       at_ids = (params[:allocation_tags_ids].present? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
       @modules = LessonModule.to_select(at_ids, current_user)
       @lesson  = Lesson.find(params[:id])
+
+      if @lesson.is_link?
+
+        if @lesson.address.include? "&"
+          @lesson.address.slice!(@lesson.address.index("&"), @lesson.address.length)
+        end
+        
+        if @lesson.address.include? "https://youtu.be"
+          @lesson.address.sub!("https://youtu.be", "https://www.youtube.com").sub!(".com/", ".com/watch?v=")
+        end
+      
+      end
+
+
       render layout: 'lesson'
     end
   rescue => error
