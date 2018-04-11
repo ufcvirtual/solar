@@ -1,25 +1,105 @@
-= javascript_include_tag 'lessons'
-
 .lesson.open
   .header
-    = render 'lessons/open/header'
-  = render 'lessons/open/content', locals: { lesson: @lesson }
+    .titlebar#lesson_header
+      .inline
+        .breadcrumb
+          %span.course
+            %h2#lesson_name{tabindex: 0}
+              = t('lessons.open.you_are', name: @offer.parent_name)
+              = " > "
+              %span.modules#nav_modules{role: 'menubar'}
+                %a.btn.btn_dropdown#module-selected{ href: 'javascript:toggle_modules()', :'aria-label' => t('lessons.open.lmodule_menu', lmodule: @lesson.lesson_module.name) }
+                  = @lesson.lesson_module.name
+                  %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
+                .dropdown.dropdown-tip#lmodule-options-dropdown
+                  %ul.dropdown-menu
+                    - @modules.each do |lmodule|
+                      %li= link_to lmodule[:name], '#', :'data-id' => lmodule[:id], class: (lmodule[:id] == @lesson.lesson_module_id ? 'selected' : ''), onclick: 'change_module(this)', onkeydown: 'click_on_keypress(event, this);', :'data-ats' => @lesson.allocation_tags.map(&:id)
+              = " > "
+              %span.lessons#nav_lessons{role: 'menubar'}
+                %a.btn.btn_dropdown#lesson-selected{ href: 'javascript:toggle_lessons()', :'aria-label' => t('lessons.open.lesson_menu', lesson: @lesson.name) }
+                  = @lesson.name
+                  %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
+                .dropdown.dropdown-tip#lesson-options-dropdown
+                  %ul.dropdown-menu
+                    - lessons_c = @lesson.lesson_module.lessons_to_open(current_user).map { |l| [l.name, l.id, { :'data-path' => l.path, :'data-draft' => l.is_draft? }] }
+                    - lessons_c.each do |lesson|
+                      %li{role: 'menuitem'}= link_to lesson[0], '#', {:'data-path' => lesson[2][:'data-path'], :'data-id' => lesson[1], class: (lesson[1] == @lesson.id ? 'selected' : ''), onclick: 'change_lesson(event, this)', onkeydown: 'click_on_keypress(event, this);', :'data-draft' => lesson[2][:'data-draft']}
+      - if can?(:change_status, @lesson) || current_user.admin?
+        .lesson_status
+          %span.draft{ class: @lesson.is_draft? ? '' : 'invisible' }
+            = image_tag 'rejected.png', :'aria-hidden' => 'true'
+            %span.type= t('lessons.index.draft')
+          %span.released{ class: @lesson.is_draft? ? 'invisible' : '' }
+            = image_tag 'released.png', :'aria-hidden' => 'true'
+            %span.type= t('lessons.index.released')
+
+  .content{ :"data-url" => open_lesson_path(@lesson) }
+    - if @lesson.valid_file? && @lesson.is_video?
+      %span.hide=t(:audio_suggestions)
+      %video{ src: @lesson.path, autoplay: false, controls: 'true', name: 'audioQuestion', preload: 'auto', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);" }
+        %track{ kind: "captions"}
+        %track{ kind: "descriptions"}
+    - else
+      %iframe#content_lesson{ title: @lesson.name, src: @lesson.path, width: '100%', height: '100%', name: 'content_lesson', target: '_self', frameborder: 0, framespacing: 0 }
+
+= javascript_include_tag 'lessons', 'audios'
 
 :javascript
+  var get_lesson_url = "#{lesson_url('lesson_id')}";
+  var get_module_lessons_url = "#{open_module_lessons_path('lesson_module_id', allocation_tags_ids: 'allocation_tags_ids_value')}";
 
   $(function(){
     document.domain = "#{YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['domain']}";
+
+    $(document).on("keydown", function(event){
+      var keynum = event.which || event.keyCode;
+
+      if(keynum == 27 && !dropdownIsOpen()) {
+        parent.$.fancybox.close();
+      }
+    });
+
+    $("#nav_modules").on("keydown", function(event){
+      var keynum = event.which || event.keyCode;
+
+      if(keynum == 39) {
+        $("#nav_lessons").find(".btn_dropdown").focus();
+      } else if (keynum == 32 || keynum == 13) {
+        $(this).find(".btn_dropdown").trigger('click');
+
+        openDropdown();
+        setTimeout(function() {
+          $("#nav_modules").find("ul li").first().find("a").focus();
+        }, 100);
+      }
+    });
+
+    $("#nav_lessons").on("keydown", function(event){
+      var keynum = event.which || event.keyCode;
+
+      if(keynum == 37) {
+        $("#nav_modules").find(".btn_dropdown").focus();
+      } else if (keynum == 32 || keynum == 13) {
+        $(this).find(".btn_dropdown").trigger('click');
+
+        openDropdown();
+        setTimeout(function() {
+          $("#nav_lessons").find("ul li").first().find("a").focus();
+        }, 100);
+      }
+    });
   });
 
   function find_note(name){
     var comment = '';
-    var data =  {  
+    var data =  {
                   'lesson_note': {
                     'name': name,
                     'lesson_id': "#{@lesson.id}"
                   }
-                };  
-   
+                };
+
     $.ajax({
       url: "#{find_lnotes_path}",
       data: data,
@@ -27,7 +107,7 @@
       async: false,
       success: function(data){
         comment = data.content;
-      }, 
+      },
       error: function(){
         alert("#{t('lesson_notes.error.cant_find_note')}");
       }
@@ -37,7 +117,7 @@
   }
 
   function create_or_update_note(name, description){
-    var data =  {  
+    var data =  {
                   'lesson_note': {
                     'name': name,
                     'description': description,
@@ -50,5 +130,5 @@
       alert("#{t('lesson_notes.success.created_updated')}");
     }).error(function(data){
       alert("#{t('lesson_notes.error.cant_create_note')}");
-    });   
+    });
   }
