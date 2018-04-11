@@ -112,13 +112,14 @@ class LogAccess < ActiveRecord::Base
           WHEN lognsub.chat_room_id IS NOT NULL THEN  'acessou chat'
           WHEN lognsub.group_assignment_id IS NOT NULL THEN 'acessou atividade em grupo'
           WHEN lognsub.exam_id IS NOT NULL THEN 'acessou prova'
-          WHEN lognsub.webconference_id IS NOT NULL THEN 'acessou webconferencia'
+          WHEN lognsub.webconference_id IS NOT NULL THEN 'acessou webconferência'
           WHEN lognsub.lesson_id IS NOT NULL THEN 'acessou aula'
           WHEN lognsub.support_material_file IS NOT NULL THEN 'acessou material de apoio'
           WHEN lognsub.bibliography IS NOT NULL THEN 'acessou bilbiografia'
           WHEN lognsub.digital_class_lesson IS NOT NULL THEN 'acessou digital class'
+          WHEN lognsub.public_file_name IS NOT NULL THEN 'download de arquivo em área publica'
         END AS action,
-        (coalesce((support_material_file),'') || coalesce((discussions.name),'') || coalesce((assignments.name),'') || coalesce((exams.name),'') || coalesce((chat_rooms.title),'')
+        (coalesce((lognsub.public_file_name),'') || coalesce((lognsub.support_material_file),'') || coalesce((discussions.name),'') || coalesce((assignments.name),'') || coalesce((exams.name),'') || coalesce((chat_rooms.title),'')
         || coalesce((chat_historico.title),'') || coalesce((group_assignments.group_name),'')  || coalesce((webconferences.title),'')  || 
         coalesce((CASE lessons.type_lesson WHEN 0 THEN COALESCE(lessons.name, lesson) WHEN 1 THEN COALESCE(lessons.address, lesson) ELSE lesson END),'')) AS tool,
         CASE 
@@ -132,6 +133,7 @@ class LogAccess < ActiveRecord::Base
           WHEN lognsub.support_material_file IS NOT NULL THEN '"SupportMaterialFile"'
           WHEN lognsub.bibliography IS NOT NULL THEN 'Bibliography'
           WHEN lognsub.digital_class_lesson IS NOT NULL THEN 'Digitalclass'
+          WHEN lognsub.public_file_name IS NOT NULL THEN 'PublicArea'
         END AS tool_type,
         log_navigations.user_id
         FROM log_navigation_subs AS lognsub LEFT JOIN log_navigations ON log_navigations.id = log_navigation_id LEFT JOIN  assignments ON lognsub.assignment_id = assignments.id
@@ -140,7 +142,7 @@ class LogAccess < ActiveRecord::Base
                ON exams.id = lognsub.exam_id LEFT JOIN webconferences ON lognsub.webconference_id = webconferences.id WHERE log_navigations.allocation_tag_id IN (#{ats.join(',')}) AND
                log_navigations.user_id IN (#{arr_id_student.join(',')}) AND (
         lognsub.assignment_id IS NOT NULL OR lognsub.discussion_id IS NOT NULL OR lognsub.chat_room_id IS NOT NULL OR lognsub.group_assignment_id IS NOT NULL OR lognsub.exam_id IS NOT NULL OR
-        lognsub.webconference_id IS NOT NULL OR lognsub.lesson_id IS NOT NULL OR lognsub.support_material_file IS NOT NULL OR lognsub.digital_class_lesson IS NOT NULL)
+        lognsub.webconference_id IS NOT NULL OR lognsub.lesson_id IS NOT NULL OR lognsub.support_material_file IS NOT NULL OR lognsub.digital_class_lesson IS NOT NULL OR lognsub.public_file_name IS NOT NULL)
     SQL
   end 
 
