@@ -69,9 +69,9 @@ function click_on_keypress(event, element){
 }
 
 function toggle_modules() {
-  var trigger = $("#module-selected").first();
+  var trigger = $("#module-selected");
   if (dropdownModulesIsOpen) {
-    hide_modules(trigger);
+    hide_modules();
   } else {
     show_modules(trigger);
   }
@@ -83,28 +83,36 @@ function show_modules(link) {
     left: link.position().left + parseInt(link.css('margin-left')),
     top: link.position().top + link.outerHeight(true) - parseInt(link.css('margin-top'))
   }).show();
+
+  $("#lmodule-options-dropdown a").first().focus();
 }
 
-function hide_modules(link) {
+function hide_modules() {
   dropdownModulesIsOpen = false;
   $("#lmodule-options-dropdown").hide();
 }
 
 // select modules
-function change_module(link) {
-  var lessons_url = get_module_lessons_url.replace('lesson_module_id', $(link).data('id')).replace('allocation_tags_ids_value', $(link).data('ats'));
-  $.get(lessons_url, function(data){
-    $('.lesson.open').replaceWith(data);
-    focus_element('.lesson.open h2');
-  });
+function change_module(event, link) {
+  var keynum = event.which || event.keyCode;
+
+  if (keynum == 13 || keynum == 32 || event.type == 'click') {
+    var lessons_url = get_module_lessons_url.replace('lesson_module_id', $(link).data('id')).replace('allocation_tags_ids_value', $(link).data('ats'));
+    $.get(lessons_url, function(data){
+      $('.lesson.open').replaceWith(data);
+      focus_element('.lesson.open h2');
+    });
+
+    hide_modules();
+  }
 
   navigation_focus_modules(event, link);
 }
 
 function toggle_lessons() {
-  var trigger = $("#lesson-selected").first();
+  var trigger = $("#lesson-selected");
   if (dropdownLessonsIsOpen) {
-    hide_lessons(trigger);
+    hide_lessons();
   } else {
     show_lessons(trigger);
   }
@@ -116,16 +124,20 @@ function show_lessons(link) {
     left: link.position().left + parseInt(link.css('margin-left')),
     top: link.position().top + link.outerHeight(true) - parseInt(link.css('margin-top'))
   }).show();
+
+  $("#lesson-options-dropdown a").first().focus();
 }
 
-function hide_lessons(link) {
+function hide_lessons() {
   dropdownLessonsIsOpen = false;
   $("#lesson-options-dropdown").hide();
 }
 
 // select lessons
 function change_lesson(event, link) {
-  if (event.which == 13 || event.type == 'click') {
+  var keynum = event.which || event.keyCode;
+
+  if (keynum == 13 || keynum == 32 || event.type == 'click') {
     var lesson_path = $(link).data('path');
     var lesson_url  = get_lesson_url.replace('lesson_id', $(link).data('id'));
 
@@ -135,14 +147,14 @@ function change_lesson(event, link) {
     var lesson_selected = $(link).html();
     $('#lesson-selected').empty().html(lesson_selected + '<i aria-hidden="true" class="icon-arrow-down-triangle"></i>');
     open_new_lesson_on_fancybox(lesson_path, lesson_url, $(link).data('draft'));
-    
+
     if(/.aac|.m4a|.mp4|.m4v|.webm/.test(lesson_path)) {
       $(".content").empty().html(video(lesson_path));
     } else {
       $(".content").empty().html(iframe(lesson_path));
     }
 
-    dropdownLessonsIsOpen = false;
+    hide_lessons();
   }
 
   navigation_focus_lessons(event, link);
@@ -171,23 +183,16 @@ function navigation_focus_modules(event, link) {
     case 40:
       $(link).closest("li").next("li").find("a").focus();
       break;
+    case 39:
+      hide_modules();
+      $("#lesson-selected").focus();
+      break;
     case 38:
       $(link).closest("li").prev("li").find("a").focus();
       break;
     case 27:
-      $("#nav_modules").find(".btn_dropdown").trigger('click');
-      setTimeout(function() {
-        closeDropdown();
-      }, 250);
-      $("#nav_modules").find(".btn_dropdown").focus();
-      break;
-    case 13:
-      $(link).trigger('click');
-      $("#nav_modules").find(".btn_dropdown").trigger('click');
-      setTimeout(function() {
-        closeDropdown();
-      }, 250);
-      $("#nav_modules").find(".btn_dropdown").focus();
+      hide_modules();
+      $("#module-selected").focus();
       break;
   }
 }
@@ -202,21 +207,13 @@ function navigation_focus_lessons(event, link) {
     case 38:
       $(link).closest("li").prev("li").find("a").focus();
       break;
-    case 27:
-      $("#lesson-selected").trigger('click');
-      setTimeout(function() {
-        closeDropdown();
-      }, 250);
-      $("#lesson-selected").focus();
+    case 37:
+      hide_lessons();
+      $("#module-selected").focus();
       break;
-    case 13:
-      $(link).trigger('click');
-      $("#lesson-selected").trigger('click');
-      setTimeout(function() {
-        closeDropdown();
-        $(".course #lesson_name").focus();
-      }, 250);
-      //$("#lesson-selected").focus();
+    case 27:
+      hide_lessons();
+      $("#lesson-selected").focus();
       break;
   }
 }
