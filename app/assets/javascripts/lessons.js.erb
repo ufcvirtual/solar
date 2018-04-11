@@ -69,15 +69,15 @@ function click_on_keypress(event, element){
 }
 
 function toggle_modules() {
-  var trigger = $("#module-selected");
   if (dropdownModulesIsOpen) {
     hide_modules();
   } else {
-    show_modules(trigger);
+    show_modules();
   }
 }
 
-function show_modules(link) {
+function show_modules() {
+  var link = $("#module-selected");
   dropdownModulesIsOpen = true;
   $("#lmodule-options-dropdown").css({
     left: link.position().left + parseInt(link.css('margin-left')),
@@ -110,15 +110,15 @@ function change_module(event, link) {
 }
 
 function toggle_lessons() {
-  var trigger = $("#lesson-selected");
   if (dropdownLessonsIsOpen) {
     hide_lessons();
   } else {
-    show_lessons(trigger);
+    show_lessons();
   }
 }
 
-function show_lessons(link) {
+function show_lessons() {
+  var link = $("#lesson-selected");
   dropdownLessonsIsOpen = true;
   $("#lesson-options-dropdown").css({
     left: link.position().left + parseInt(link.css('margin-left')),
