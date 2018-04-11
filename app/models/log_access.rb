@@ -46,8 +46,27 @@ class LogAccess < ActiveRecord::Base
     SELECT to_char(created_at,'dd/mm/YYYY HH24:MI:SS') AS datetime, CASE WHEN log_type=1 THEN 'acessou o Solar' ELSE 'acessou turma' END AS action,  '' AS tool, '' AS tool_type
       FROM log_accesses WHERE log_accesses.user_id = #{self.student} AND (allocation_tag_id IS NULL OR log_accesses.allocation_tag_id IN (#{ats.join(',')}))
     UNION
-    SELECT datetime, action, tool, tool_type FROM temp_logs_comments WHERE (user_id=#{self.student} OR group_user_id=#{self.student})
-      
+    SELECT datetime, action, tool, tool_type FROM temp_logs_comments WHERE (user_id=#{self.student} OR group_user_id=#{self.student}) 
+    UNION
+
+    SELECT DISTINCT 
+      CASE 
+        WHEN user_aluno.status=0 THEN to_char(messages.created_at,'dd/mm/YYYY HH24:MI:SS')
+        WHEN user_aluno.status=2 THEN to_char(user_aluno.updated_at,'dd/mm/YYYY HH24:MI:SS')
+      END AS datetime,
+      CASE 
+        WHEN user_aluno.status=0 THEN 'recebeu mensagem de responsável'
+        WHEN user_aluno.status=2 THEN 'recebeu e abril mensagem de responsável'
+      END AS action,
+      messages.id::text AS tool,
+      'Message' AS tool_type
+    FROM 
+      messages LEFT JOIN user_messages AS user_prof ON messages.id = user_prof.message_id AND (user_prof.status=1 OR user_prof.status=3)
+      LEFT JOIN allocations ON user_prof.user_id = allocations.user_id
+      LEFT JOIN profiles ON allocations.profile_id = profiles.id 
+      LEFT JOIN user_messages AS user_aluno ON messages.id = user_aluno.message_id AND user_aluno.user_id=#{self.student} AND (user_aluno.status=0 OR user_aluno.status=2)
+    WHERE user_aluno.status IS NOT NULL AND user_prof.status IS NOT NULL AND messages.allocation_tag_id IN (#{ats.join(',')}) AND cast(profiles.types & #{Profile_Type_Class_Responsible} AS boolean)
+
     UNION
     
     SELECT to_char(log_actions.created_at,'dd/mm/YYYY HH24:MI:SS') AS datetime,
@@ -167,7 +186,7 @@ class LogAccess < ActiveRecord::Base
     LogAccess.find_by_sql <<-SQL
         DROP TABLE IF EXISTS temp_logs_navigation;
 
-        CREATE TEMPORARY TABLE temp_logs_navigation AS SELECT to_char(created_at,'dd/mm/YYYY HH24:MI:SS') AS datetime, menus.name AS action, ''::text AS tool, ''::text AS tool_type, log_navigations.user_id
+        CREATE TEMPORARY TABLE temp_logs_navigation AS SELECT to_char(created_at,'dd/mm/YYYY HH24:MI:SS') AS datetime, menus.name AS action, CASE WHEN menus.name='menu_messages' THEN 'acessou lista de mensagens' ELSE '' END AS tool, ''::text AS tool_type, log_navigations.user_id
       FROM log_navigations LEFT JOIN menus ON log_navigations.menu_id = menus.id WHERE menus.name IS NOT NULL AND log_navigations.allocation_tag_id IN (#{ats.join(',')}) AND
       log_navigations.user_id IN (#{arr_id_student.join(',')})
     SQL
