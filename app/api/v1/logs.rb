@@ -25,7 +25,7 @@ module V1
 
         @ats = groups.map(&:allocation_tag).map(&:id).flatten.uniq
         @ats << groups.first.offer.allocation_tag.related({upper: true})
-
+        
         @logs = LogAccess.find_by_sql <<-SQL
           SELECT DISTINCT allocations.user_id AS student, allocations.allocation_tag_id
           FROM allocations, profiles
@@ -34,11 +34,11 @@ module V1
         SQL
         arr_student = @logs.map(&:student).flatten.uniq
         #APAGA E CRIA TABELAS TEMPORARIAS
-        LogAccess.drop_and_create_table_temporary_logs_navigation_sub(@ats, arr_student)
-        LogAccess.drop_and_create_table_temporary_logs_chat_messages(@ats, arr_student)   
-        LogAccess.drop_and_create_table_temporary_logs_navigation(@ats, arr_student)  
+        LogAccess.drop_and_create_table_temporary_logs_navigation_sub(@ats.flatten.uniq, arr_student)
+        LogAccess.drop_and_create_table_temporary_logs_chat_messages(@ats.flatten.uniq, arr_student)   
+        LogAccess.drop_and_create_table_temporary_logs_navigation(@ats.flatten.uniq, arr_student)  
         #LogAccess.drop_and_create_table_temporary_logs_access(@ats, arr_student)
-        LogAccess.drop_and_create_table_temporary_logs_comments(@ats, arr_student) 
+        LogAccess.drop_and_create_table_temporary_logs_comments(@ats.flatten.uniq, arr_student) 
       end # get
 
     end # namespace
