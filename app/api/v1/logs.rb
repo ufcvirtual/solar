@@ -8,7 +8,6 @@ module V1
       helpers do
         def verify_permission(method)
           permission = current_user.profiles_with_access_on(method, :logs, nil, true)
-
           raise CanCan::AccessDenied if permission.empty?
         end
       end
@@ -33,9 +32,13 @@ module V1
           WHERE profiles.id = allocations.profile_id AND cast(profiles.types & #{Profile_Type_Student} as boolean) AND 
           allocations.status = #{Allocation_Activated} AND allocations.allocation_tag_id IN (#{@ats.join(',')});
         SQL
-        @arr_student = @logs.map(&:student).flatten.uniq
-        LogAccess.drop_and_create_temporary_logs(@ats, @arr_student)
-          
+        arr_student = @logs.map(&:student).flatten.uniq
+        #APAGA E CRIA TABELAS TEMPORARIAS
+        LogAccess.drop_and_create_table_temporary_logs_navigation_sub(@ats, arr_student)
+        LogAccess.drop_and_create_table_temporary_logs_chat_messages(@ats, arr_student)   
+        LogAccess.drop_and_create_table_temporary_logs_navigation(@ats, arr_student)  
+        #LogAccess.drop_and_create_table_temporary_logs_access(@ats, arr_student)
+        LogAccess.drop_and_create_table_temporary_logs_comments(@ats, arr_student) 
       end # get
 
     end # namespace

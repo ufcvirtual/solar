@@ -3,7 +3,7 @@ collection @logs
 attributes :student
 
 node :actions do |log|	
-  log.logs_by_user(@ats, @arr_student).map { |l|{
+  log.logs_by_user(@ats).map { |l|{
       datetime: l.datetime,
       action: l.action,
       tool: l.tool,
