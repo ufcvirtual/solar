@@ -124,7 +124,7 @@ class Assignment < Event
               WHERE group_assignments.academic_allocation_id = academic_allocations.id
                 AND group_participants.user_id = users.id
             )')
-        .uniq
+        .distinct
   end
 
   def self.list_assigment(user_id, at_id, evaluative=false, frequency=false)

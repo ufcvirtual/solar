@@ -68,7 +68,7 @@ class MessagesController < ApplicationController
         @reply_to = [@original.sent_by.to_msg]
         @message.subject = "#{t(:reply, scope: [:messages, :subject])} #{@message.subject}"
       when "reply_all"
-        @reply_to = @original.users.uniq.map(&:to_msg)
+        @reply_to = @original.users.distinct.map(&:to_msg)
         @message.subject = "#{t(:reply, scope: [:messages, :subject])} #{@message.subject}"
       when "forward"
         # sem contato default

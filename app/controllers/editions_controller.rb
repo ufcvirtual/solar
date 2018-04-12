@@ -16,8 +16,8 @@ class EditionsController < ApplicationController
     @allocation_tags_ids = @allocation_tags_ids.join(" ")
     
     render partial: 'items'
-  rescue=> error
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  # rescue=> error
+  #   render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   # GET /editions/academic
@@ -69,8 +69,8 @@ class EditionsController < ApplicationController
     @semesters = Semester.all_by_period({period: params[:period], user_id: current_user.id, type_id: @type.id}) # semestres do período informado ou ativos
 
     @allocation_tags_ids = @allocation_tags_ids.join(" ")
-  rescue => error
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  # rescue => error
+  #   render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def groups
@@ -158,7 +158,6 @@ class EditionsController < ApplicationController
 
   def manage_tools
     ActionController::Parameters.permit_all_parameters = true
-    #params = ActionController::Parameters.new(params)
 
     params[:academic_allocations] = params[:academic_allocations].to_h.collect{|key,value| value}
     params[:academic_allocations] = params[:academic_allocations].delete_if{|a| a.nil? || a['acs'].blank?}

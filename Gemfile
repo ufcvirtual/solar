@@ -2,15 +2,15 @@ source "http://rubygems.org"
 
 ruby "2.3.6"
 
-gem 'rails', '5.0.6'
+gem 'rails', '5.0.7'
 gem "rack", "~> 2.0.0"
 gem "rake", "~> 10.1.1"
-gem "pg", "~> 0.19.0"
+gem "pg", "~> 0.21.0"
 
 gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'
 
-gem "koala", "2.4.0" # facebook
+#gem "koala", "2.4.0" # facebook
 
 gem "devise", "~> 4.0.3"
 gem "devise-i18n", "~> 0.11.3"
@@ -22,8 +22,8 @@ gem 'simple_form', "~> 3.2.1"
 
 gem "paperclip", "~> 4.2.4"
 gem "will_paginate", "~> 3.1.6"
-gem "jquery-rails", "~> 4.3.0"
-gem 'jquery-ui-rails', '~> 5.0.5'
+gem "jquery-rails", "~> 4.3.1"
+gem 'jquery-ui-rails', '~> 6.0.1'
 #gem "fancybox3", "~> 0.1.1"
 #gem 'rails-assets-fancyBox', source: 'https://rails-assets.org'
 gem 'rails-assets-fancyBox', '2.1.6', source: 'https://rails-assets.org'
@@ -40,12 +40,12 @@ gem "bigbluebutton-api-ruby", "~> 1.6.0"
 # platform adicionado para evitar que o unicorn tente ser executado no windows
 gem "unicorn", "~> 4.6.3", platform: :ruby
 gem 'unicorn-worker-killer', '~>0.4.4' # gerenciar os workers do unicorn
-gem "passenger", "~> 5.0.30"
+gem "passenger", "~> 5.2.0"
 
 gem "rubyzip", "~> 1.0.0"
 
 gem "doorkeeper", "~> 1.4.2"
-gem "rack-oauth2", "~> 1.0.10"
+gem "rack-oauth2", "~> 1.4.0"
 gem "grape", "~> 0.17.0"
 gem "rabl", "~> 0.13.1"
 gem "grape-rabl", "~> 0.4.3"
@@ -83,7 +83,7 @@ group :development do
   gem "net-ssh", "~> 2.6.8" # dependencia capistrano
   gem "rvm-capistrano", "~> 1.5.5"
   gem "capistrano", "~> 2.15.9"
-  gem "spork", "~> 0.9.2"
+  #gem "spork", "~> 0.9.2"
   gem "thin" # server local melhor
   gem "better_errors"
   gem "binding_of_caller" # better 'better errors'

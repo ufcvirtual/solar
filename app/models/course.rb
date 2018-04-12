@@ -2,9 +2,9 @@ class Course < ActiveRecord::Base
   include Taggable
 
   has_many :offers
-  has_many :groups,                -> { uniq }, through: :offers
-  has_many :curriculum_units,      -> { uniq }, through: :offers
-  has_many :curriculum_unit_types, -> { uniq }, through: :curriculum_units
+  has_many :groups,                -> { distinct }, through: :offers
+  has_many :curriculum_units,      -> { distinct }, through: :offers
+  has_many :curriculum_unit_types, -> { distinct }, through: :curriculum_units
   has_many :academic_allocations,  through: :allocation_tag
 
   validates :name, presence: true, uniqueness: true

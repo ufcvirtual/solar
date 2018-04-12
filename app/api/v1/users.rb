@@ -187,7 +187,7 @@ module V1
             query.merge!({ allocation_tags: { id: allocation_tags_ids } }) unless allocation_tags_ids.blank?
             query[:allocations].merge!({ status: Allocation_Activated }) if params[:only_active]
 
-            @users = User.joins(allocations: :allocation_tag).where(query).uniq
+            @users = User.joins(allocations: :allocation_tag).where(query).distinct
           rescue => error
             log_error(error, code = (allocation_tags_ids.nil? ? 404 : 422))
             error!(error, code)

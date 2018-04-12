@@ -200,12 +200,12 @@ class DigitalClass < ActiveRecord::Base
 
   def self.get_directories_by_allocation_tag(allocation_tag)
     column = "#{allocation_tag.refer_to}_id"
-    Group.joins(:related_taggables).where(related_taggables: { column => allocation_tag.send(column) }).uniq.map(&:digital_class_directory_id).compact
+    Group.joins(:related_taggables).where(related_taggables: { column => allocation_tag.send(column) }).distinct.map(&:digital_class_directory_id).compact
   end
 
   def self.get_directories_by_object(object)
     column = "#{object.class.to_s.tableize.singularize}_id"
-    Group.joins(:related_taggables).where(related_taggables: { column => object.id }).uniq.map(&:digital_class_directory_id).compact
+    Group.joins(:related_taggables).where(related_taggables: { column => object.id }).distinct.map(&:digital_class_directory_id).compact
   end
 
   def self.get_lessons_by_directory(directory_id)

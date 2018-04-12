@@ -93,7 +93,7 @@ class Group < ActiveRecord::Base
     query << "allocation_tags.group_id = #{id}"
     query << "log_type = #{LogAccess::TYPE[:group_access]}"
 
-    LogAccess.joins(:allocation_tag).joins('LEFT JOIN merges ON merges.main_group_id = allocation_tags.group_id OR merges.secundary_group_id = allocation_tags.group_id').where(query.join(' AND ')).uniq
+    LogAccess.joins(:allocation_tag).joins('LEFT JOIN merges ON merges.main_group_id = allocation_tags.group_id OR merges.secundary_group_id = allocation_tags.group_id').where(query.join(' AND ')).distinct
   end
 
   def verify_or_create_at_digital_class(available=nil)

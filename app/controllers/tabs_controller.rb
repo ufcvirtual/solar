@@ -11,7 +11,7 @@ class TabsController < ApplicationController
     else
       set_active_tab(params[:id])
       # dentro da aba, podem existir links abertos
-      redirect = active_tab[:breadcrumb].last[:url] if active_tab[:url][:context].to_i == Context_Curriculum_Unit.to_i
+      redirect = active_tab[:breadcrumb].last[:url].permit! if active_tab[:url][:context].to_i == Context_Curriculum_Unit.to_i
     end
 
     redirect_to url_for(redirect)#, flash: flash

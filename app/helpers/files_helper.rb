@@ -5,11 +5,13 @@ module FilesHelper
       send_file pathfile, filename: filename
     else
       Rails.logger.info "[ERROR] [APP] [#{Time.now}] [File doesn't exist] [file: #{pathfile.to_s}]"
-      redirect_to redirect_error, alert: t(:file_error_nonexistent_file)
+      #redirect_to redirect_error, alert: t(:file_error_nonexistent_file)
+      redirect_back(fallback_location: redirect_error, alert: t(:file_error_nonexistent_file))
     end
   rescue => error
     Rails.logger.info "[ERROR] [APP] [#{Time.now}] [#{error}] [file: #{pathfile.to_s}]"
-    redirect_to redirect_error, alert: t(:file_error_nonexistent_file)
+    #redirect_to redirect_error, alert: t(:file_error_nonexistent_file)
+    redirect_back(fallback_location: redirect_error, alert: t(:file_error_nonexistent_file))
   end
 
   ##

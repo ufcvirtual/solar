@@ -21,7 +21,7 @@ function open_evaluation(link){
                 $(link).parents('tr').find(data.show_element).parent().removeClass('invisible');
 
             },
-            fail: function(data){
+            error: function(data){
               var data = $.parseJSON(data.responseText);
               if (typeof(data.alert) != "undefined")
                 flash_message(data.alert, 'alert');

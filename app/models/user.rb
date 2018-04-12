@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
   has_one :personal_configuration
 
   has_many :allocations
-  has_many :allocation_tags, -> { uniq }, through: :allocations
+  has_many :allocation_tags, -> { distinct }, through: :allocations
   has_many :profiles, -> { where(profiles: { status: true }, allocations: { status: 1 }).distinct }, through: :allocations # allocation.status = Allocation_Activated
   has_many :log_access
   has_many :log_actions

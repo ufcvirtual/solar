@@ -17,7 +17,7 @@ class Report
       else 
         allocation_tags_ids << AllocationTag.find(allocation_tags_ids.first).lower_related 
       end
-      allocation_tags_ids = allocation_tags_ids.uniq.join(',')
+      allocation_tags_ids = allocation_tags_ids.distinct.join(',')
     end  
     
     case query_type
@@ -262,9 +262,9 @@ class Report
             groups = AllocationTag.find(at.to_i).groups
           }
 
-          models_info[19] = groups.uniq.size
+          models_info[19] = groups.distinct.size
  
-          models_info[20] = groups.where("status = TRUE").uniq.size
+          models_info[20] = groups.where("status = TRUE").distinct.size
           
         end
        
