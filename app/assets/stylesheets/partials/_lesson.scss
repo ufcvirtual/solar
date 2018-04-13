@@ -1,7 +1,7 @@
 // Lesson: content and navigation
 
-@import "fonts/fonts.css";
-@import "fonts/icons.css";
+@import "fonts/fonts";
+@import "fonts/icons";
 
 .fancybox-minimize {
   position: absolute;
@@ -241,8 +241,8 @@
 .list_lessons{
   table.tb_list{
     cellpadding: 10;
-    cellspacing: 0; 
-    width: 100%; 
+    cellspacing: 0;
+    width: 100%;
     border: 0;
 
     th[id^=name]{
@@ -252,7 +252,7 @@
       width: 30%;
     }
     th[id^=notes]{
-      width: 10%; 
+      width: 10%;
       text-align: center;
     }
     th[id^=accept]{
