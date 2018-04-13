@@ -174,7 +174,7 @@ class AssignmentsController < ApplicationController
       authorize! :download, Assignment, on: [allocation_tag_id]
       if params[:zip].present?
         assignment_started?(assignment)
-        path_zip = compress({ files: assignment.enunciation_files, table_column_name: 'attachment_file_name', name_zip_file: assignment.name })
+        path_zip = compress_file({ files: assignment.enunciation_files, table_column_name: 'attachment_file_name', name_zip_file: assignment.name })
         download_file(:back, path_zip || nil)
       else
         assignment_started?(file.assignment)
