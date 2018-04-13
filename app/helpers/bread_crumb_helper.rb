@@ -1,6 +1,7 @@
 module BreadCrumbHelper
 
   def show_breadcrumb
+    ActionController::Parameters.permit_all_parameters = true
     active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
 
     breadcrumb = if active_tab[:url][:context].to_i == Context_General.to_i
@@ -24,6 +25,7 @@ module BreadCrumbHelper
   end
 
   def show_breadcrumb_title
+    ActionController::Parameters.permit_all_parameters = true
     active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
     breadcrumb = active_tab[:breadcrumb]
     
