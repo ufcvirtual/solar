@@ -90,3 +90,8 @@ pesquisador:
   id: 26
   name: "Pesquisador"
   types: 0
+
+pesquisador_restrito:
+  id: 27
+  name: "Pesquisador restrito"
+  types: 0

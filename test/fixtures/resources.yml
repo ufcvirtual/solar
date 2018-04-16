@@ -1215,3 +1215,9 @@ res232:
   controller: 'allocations'
   action: 'index'
   description: 'Gerenciar matrículas'
+
+res233:
+  id: 233
+  controller: 'logs'
+  action: 'index'
+  description: '[API]Lista Logs por curso, disciplina e semestre'
