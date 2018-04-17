@@ -37,11 +37,7 @@ module V1
           profiles_ids   = current_user.profiles_with_access_on('show', 'curriculum_units', nil, true)
           profiles_ids   = (profiles_ids & params[:profiles_ids]) if params[:profiles_ids]
           # only returns groups with access to curriculum_unit
-<<<<<<< HEAD
           user_groups    = current_user.groups(profiles_ids, Allocation_Activated)
-=======
-          user_groups    = current_user.groups(profiles_ids, Allocation_Activated).pluck(:id)
->>>>>>> f3bef8254a011d943d758483b49f662b9a293b83
 
           offers = if params[:semester].present?
             Offer.joins(:semester).where(params.slice(:curriculum_unit_type_id, :course_id, :curriculum_unit_id)).where(semesters: { name: params[:semester] }).pluck(:id)
