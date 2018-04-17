@@ -55,8 +55,9 @@ class UserBlacklistController < ApplicationController
       raise if @user_blacklist.errors.any?
 
       render json: {success: true, notice: t('user_blacklist.success.created', cpf: user.cpf), user: render_to_string(partial: 'administrations/user', locals: {user: user})}
-    rescue
+    rescue => error
       alert = @user_blacklist.errors.any? ? @user_blacklist.errors.full_messages : t('user_blacklist.error.created')
+      alert = error if error.class == String
 
       render json: {success: false, alert: alert}, status: :unprocessable_entity
     end

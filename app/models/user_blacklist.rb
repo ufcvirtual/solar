@@ -24,10 +24,6 @@ class UserBlacklist < ActiveRecord::Base
       if user = User.find_by_cpf(self.cpf)
         ma_config = User::MODULO_ACADEMICO
         return true if ma_config.nil? || !ma_config['professor_profile'].present?
-        user_data = User.connect_and_import_user(self.cpf)
-
-        # even so the user can't be unbinded, if SI3 doesn't return it, it can.
-        return true if user_data.blank?
 
         # verifica se user eh aluno ou professor em um curso a distancia
         al = user.allocations.joins(group: { offer: { curriculum_unit: :curriculum_unit_type } })
@@ -35,8 +31,17 @@ class UserBlacklist < ActiveRecord::Base
 
         return true if al.empty?
 
-        errors.add(:cpf, I18n.t('user_blacklist.cpf_cannot_be_added'))
-        return false
+        user_data = User.connect_and_import_user(self.cpf)
+
+        # even so the user can't be unbinded, if SI3 doesn't return it, it can.
+        return true if user_data.blank?
+        if user_data.class == String
+          errors.add(:base, user_data)
+          return false
+        else
+          errors.add(:cpf, I18n.t('user_blacklist.cpf_cannot_be_added'))
+          return false
+        end
       end
 
       return true

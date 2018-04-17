@@ -49,7 +49,7 @@ module V1
                                .joins('JOIN allocation_tags ON allocation_tags.group_id = groups.id OR allocation_tags.offer_id = offers.id OR allocation_tags.course_id = courses.id OR allocation_tags.curriculum_unit_id = curriculum_units.id OR allocation_tags.curriculum_unit_type_id = curriculum_unit_types.id')
                                .joins("JOIN allocations ON allocations.allocation_tag_id = allocation_tags.id AND allocations.user_id = #{current_user.id}")
                                .where(offer_id: offers)
-                               .select("groups.id, groups.code, semesters.name AS semester_name, curriculum_units.code AS uc_code, curriculum_units.name AS uc_name, courses.code AS course_code, courses.name AS course_name, curriculum_unit_types.description AS type, replace(translate(array_agg(distinct allocations.profile_id)::text,'{}', ''),'\"', '') AS profiles")
+                               .select("groups.id, groups.code, groups.name, semesters.name AS semester_name, curriculum_units.code AS uc_code, curriculum_units.name AS uc_name, courses.code AS course_code, courses.name AS course_name, curriculum_unit_types.description AS type, replace(translate(array_agg(distinct allocations.profile_id)::text,'{}', ''),'\"', '') AS profiles")
                                .group('groups.id, semesters.id, courses.id, offers.id, curriculum_units.id, curriculum_unit_types.id') rescue []
         end
 

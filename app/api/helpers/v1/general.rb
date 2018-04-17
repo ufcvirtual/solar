@@ -44,7 +44,7 @@ module V1::General
     return user
   end
 
-  def get_destination(curriculum_unit_code, course_code, group_name, semester, group_code)
+  def get_destination(curriculum_unit_code, course_code, group_name, semester, group_code=nil)
     case
       when !group_name.blank? && !group_code.blank?
         get_group_by_code_and_name(curriculum_unit_code, course_code, group_name, semester, group_code)
