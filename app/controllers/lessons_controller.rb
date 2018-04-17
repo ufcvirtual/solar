@@ -55,7 +55,7 @@ class LessonsController < ApplicationController
 
   def open_module
     if Exam.verify_blocking_content(current_user.id)
-      render text: t('exams.restrict')
+      render plain: t('exams.restrict')
     else
       at_ids = (active_tab[:url][:allocation_tag_id].blank? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
       authorize! :show, Lesson, { on: [(@offer.allocation_tag.id rescue at_ids)].flatten, read: true, accepts_general_profile: true }
@@ -68,13 +68,13 @@ class LessonsController < ApplicationController
     end
   rescue => error
     Rails.logger.info "[ERROR] [APP] [#{Time.now}] [#{error}] [open lesson: #{@lesson.id}]"
-    render text: t('lessons.no_data'), status: :unprocessable_entity
+    render plain: t('lessons.no_data'), status: :unprocessable_entity
   end
 
   # GET /lessons/:id
   def open
     if Exam.verify_blocking_content(current_user.id)
-      render text: t('exams.restrict')
+      render plain: t('exams.restrict')
     else
      authorize! :show, Lesson, { on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true }
       user_session[:lessons] << params[:id].to_i unless user_session[:lessons].include?(params[:id].to_i)
@@ -100,7 +100,7 @@ class LessonsController < ApplicationController
     end
   rescue => error
     Rails.logger.info "[ERROR] [APP] [#{Time.now}] [#{error}] [open lesson: #{@lesson.id}]"
-    render text: t('lessons.no_data'), status: :unprocessable_entity
+    render plain: t('lessons.no_data'), status: :unprocessable_entity
   end
 
   def to_filter
@@ -212,7 +212,7 @@ class LessonsController < ApplicationController
     authorize! :download_files, Lesson, on: params[:allocation_tags_ids]
 
     if verify_lessons_to_download(params[:lessons_ids], true)
-      zip_file_path = compress(under_path: @all_files_paths, folders_names: @lessons_names)
+      zip_file_path = compress_file(under_path: @all_files_paths, folders_names: @lessons_names)
 
       if zip_file_path
         redirect = request.referer.nil? ? home_url(only_path: false) : request.referer

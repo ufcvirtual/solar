@@ -154,7 +154,7 @@ class AccessControlController < ApplicationController
       end
     else
       user_session[:blocking_content] = nil
-      render text: t('exams.restrict')
+      render plain: t('exams.restrict')
     end
   end
 
@@ -164,7 +164,7 @@ class AccessControlController < ApplicationController
     if File.exist?(file_path)
       send_file file_path, type: user.photo_content_type, disposition: 'inline'
     else
-      render :nothing => true, :status => 200, :content_type => 'text/html'
+      render :head => true, :status => 200, :content_type => 'text/html'
     end
   end
 
@@ -181,13 +181,13 @@ class AccessControlController < ApplicationController
         verify(object.allocation_tags.map(&:id).flatten.compact, model, :download)
         download_file(path)
       else
-        render text: t('exams.restrict')
+        render plain: t('exams.restrict')
       end
     end
 
     def download_file(path)
       file_path = File.join("#{Rails.root}", 'media', path, "#{params[:file]}.#{params[:extension]}")
-      File.exist?(file_path) ? send_file(file_path, disposition: 'inline') : render(nothing: true)
+      File.exist?(file_path) ? send_file(file_path, disposition: 'inline') : render(head: true)
     end
 
     def guard_with_access_token_or_authenticate

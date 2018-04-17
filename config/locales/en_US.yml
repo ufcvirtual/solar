@@ -284,6 +284,7 @@ en_US:
         attachment_file_size: "File too large. The maximum size should be up to 26MB."
         attachment_file_name: File
         academic_allocation_user_id: "Can't send file to this assignment"
+        attachment: ""
       group_assignment:
         group_name: "Group name"
       comment:
@@ -543,6 +544,8 @@ en_US:
               blank: must be selected
             academic_allocation_user_id:
               blank: "Can't send file to this assignment."
+            attachment:
+              spoofed_media_type: "TInvalid file type." 
         public_file:
           attributes:
             attachment_content_type:

@@ -223,7 +223,7 @@ class ExamQuestionsController < ApplicationController
     if params[:search_method].to_i == 1
       @questions = Question.joins(:exam_questions).where(exam_questions: { id: params[:ids].split(' ').flatten.compact }).select('questions.*, exam_questions.exam_id AS exam_id, exam_questions.score AS score').distinct
     else
-      @questions = Question.find(params[:ids].split(' ').flatten.compact).distinct
+      @questions = Question.find(params[:ids].split(' ').flatten.compact).uniq
       raise 'bank_without_exam' if params[:exam_id].to_i == 0
     end
     @exam = Exam.find(params[:exam_id].to_i) rescue nil
@@ -370,9 +370,9 @@ class ExamQuestionsController < ApplicationController
 
     render :edit
   rescue CanCan::AccessDenied
-    render text: t(:no_permission)
+    render plain: t(:no_permission)
   rescue => error
-    render text: t("exam_questions.errors.#{error}")
+    render plain: t("exam_questions.errors.#{error}")
     # render_json_error(error, 'exam_questions.errors')
   end
 

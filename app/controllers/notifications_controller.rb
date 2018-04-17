@@ -51,7 +51,7 @@ class NotificationsController < ApplicationController
 
     notification_show(@notification)
   rescue CanCan::AccessDenied
-    render text: t(:no_permission)
+    render plain: t(:no_permission)
   end
 
   require 'will_paginate/array'

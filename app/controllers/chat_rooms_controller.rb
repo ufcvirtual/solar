@@ -111,7 +111,7 @@ class ChatRoomsController < ApplicationController
   ## GET /chat_roms/1/messages/user/1
   def user_messages
     if Exam.verify_blocking_content(current_user.id)
-      render text: t('exams.restrict')
+      render plain: t('exams.restrict')
     else
       @user = User.find(params[:user_id])
       @chat_room = ChatRoom.find(params[:id])
@@ -144,7 +144,7 @@ class ChatRoomsController < ApplicationController
 
   def messages
     if Exam.verify_blocking_content(current_user.id)
-      render text: t('exams.restrict')
+      render plain: t('exams.restrict')
     else
       @chat_room, allocation_tag_id = ChatRoom.find(params[:id]), active_tab[:url][:allocation_tag_id]
       @score_type = params[:score_type]
@@ -168,7 +168,7 @@ class ChatRoomsController < ApplicationController
 
   def access
     if Exam.verify_blocking_content(current_user.id)
-      render text: t('exams.restrict')
+      render plain: t('exams.restrict')
     else
       @chat_room, allocation_tag_id = ChatRoom.find(params[:id]), active_tab[:url][:allocation_tag_id]
       authorize! :show, ChatRoom, on: [allocation_tag_id]

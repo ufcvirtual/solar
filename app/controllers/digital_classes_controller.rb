@@ -39,9 +39,9 @@ class DigitalClassesController < ApplicationController
       render :lesson
     end
   rescue CanCan::AccessDenied
-    render text: t(:no_permission)
+    render plain: t(:no_permission)
   rescue => error
-    render text: t('digital_classes.error.general_message')
+    render plain: t('digital_classes.error.general_message')
   end
 
   def create
@@ -130,7 +130,7 @@ class DigitalClassesController < ApplicationController
 
   def access
     if Exam.verify_blocking_content(current_user.id)
-      render text: t('exams.restrict')
+      render plain: t('exams.restrict')
     else
       authorize! :access, DigitalClass, on: @allocation_tags_ids = params[:allocation_tags_ids]
       redirect_to DigitalClass.access_authenticated(current_user, params[:url], AllocationTag.where(id: @allocation_tags_ids.split(' ')))
@@ -141,7 +141,7 @@ class DigitalClassesController < ApplicationController
     authorize(:update, @groups)
     @digital_class_lesson = DigitalClass.get_lesson(params[:id])
   rescue => error
-    render text: t(:no_permission_groups)
+    render plain: t(:no_permission_groups)
   end
 
   def update

@@ -10,7 +10,7 @@ class ExamResponsesController < ApplicationController
     exam_user_attempt = @exam_response.exam_user_attempt
     exam = Exam.find(exam_user_attempt.exam.id)
     if exam.controlled && IpReal.network_ips_permited(exam.id, get_remote_ip, :exam).blank?
-      render text: t('exams.restrict_test')
+      render plain: t('exams.restrict_test')
     else
       total_time = exam_user_attempt.get_total_time(params[:id], exam_response_params[:duration].to_i)
 

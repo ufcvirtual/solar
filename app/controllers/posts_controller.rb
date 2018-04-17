@@ -80,7 +80,7 @@ class PostsController < ApplicationController
   ## all posts of the user
   def user_posts
     if Exam.verify_blocking_content(current_user.id)
-      render text: t('exams.restrict')
+      render plain: t('exams.restrict')
     else
       @user = User.find(params[:user_id])
       @discussion = Discussion.find(params[:discussion_id])

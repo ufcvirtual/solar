@@ -27,7 +27,7 @@
                       = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam', :'aria-label' => exam.name + t('fancybox.open')
                       %br
                     - if exam.closed == true || exam.situation == 'corrected'
-                      = link_to I18n.t('exams.index.result'), result_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: 'link_content', class: 'exam-result'
+                      = link_to I18n.t('exams.index.result'), result_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: 'link_content exam-result'
                       %span{class: exam.situation == 'corrected' ? '' : 'invisible'}
                         |
                         = link_to I18n.t(:mirror_results, :scope => [:exams, :index]), open_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: 'corrected', user_id: @user.id), class: 'open_exam', :'aria-label' => t('.mirror_results_alt', exam: exam.name) + t('fancybox.open')
@@ -101,7 +101,7 @@
                       = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam', :'aria-label' => exam.name + t('fancybox.open')
                       %br
                     - if exam.closed == true || exam.situation == 'corrected'
-                      = link_to t(:result, :scope => [:exams, :index]), result_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: 'link_content', class: 'exam-result', :'aria-label' => exam.name + t('exams.index.result') + t('fancybox.open')
+                      = link_to t(:result, :scope => [:exams, :index]), result_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: 'link_content exam-result', :'aria-label' => exam.name + t('exams.index.result') + t('fancybox.open')
                       %span{class: exam.situation == 'corrected' ? '' : 'invisible'}
                         |
                         = link_to t(:mirror_results, :scope => [:exams, :index]), open_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: 'corrected', user_id: @user.id), class: 'open_exam', :'aria-label' => exam.name + t('exams.index.mirror_results') + t('fancybox.open')
@@ -173,7 +173,7 @@
                       = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam', :'aria-label' => exam.name + t('fancybox.open')
                       %br
                     - if exam.closed == true || exam.situation == 'corrected'
-                      = link_to t(:result, :scope => [:exams, :index]), result_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: 'link_content', class: 'exam-result', :'aria-label' => exam.name + t('exams.index.result') + t('fancybox.open')
+                      = link_to t(:result, :scope => [:exams, :index]), result_user_exam_path(exam.academic_tool_id, user_id: @user.id), class: 'link_content exam-result', :'aria-label' => exam.name + t('exams.index.result') + t('fancybox.open')
                       %span{class: exam.situation == 'corrected' ? '' : 'invisible'}
                         |
                         = link_to t(:mirror_results, :scope => [:exams, :index]), open_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: 'corrected', user_id: @user.id), class: 'open_exam', :'aria-label' => exam.name + t('exams.index.mirror_results') + t('fancybox.open')

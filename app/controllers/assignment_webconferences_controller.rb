@@ -162,6 +162,7 @@ class AssignmentWebconferencesController < ApplicationController
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
   rescue => error
+    p error
     render json: { success: false, alert: t('webconferences.error.access') }, status: :unprocessable_entity
   end
 

@@ -28,7 +28,7 @@ function validate_file_size(file, max_size, message) {
 
     var file_size_human_readable = (Math.round(file_size*100)/100) + " " + file_size_extension[i];
 
-    $(".file").html( "#{I18n.t(:send_file_name)}: " + file_name + "<br>" + "#{I18n.t(:send_file_size)}: " + file_size_human_readable );
+    $(".file").html( "<%= I18n.t(:send_file_name) %>: " + file_name + "<br>" + "<%= I18n.t(:send_file_size)%>: " + file_size_human_readable );
   }
 }
 

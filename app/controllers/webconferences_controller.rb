@@ -150,7 +150,7 @@ class WebconferencesController < ApplicationController
 
   def access
     if Exam.verify_blocking_content(current_user.id)
-      render text: t('exams.restrict')
+      render plain: t('exams.restrict')
     else
       authorize! :interact, Webconference, { on: [at_id = active_tab[:url][:allocation_tag_id] || params[:at_id]] }
 
@@ -238,7 +238,7 @@ class WebconferencesController < ApplicationController
 
   def get_record
     if Exam.verify_blocking_content(current_user.id)
-      render text: t('exams.restrict')
+      render plain: t('exams.restrict')
     else
       @webconference = Webconference.find(params[:id])
       api = @webconference.bbb_prepare
@@ -265,7 +265,7 @@ class WebconferencesController < ApplicationController
     render json: { success: false, alert: t('webconferences.list.removed_record') }, status: :unprocessable_entity
   rescue => error
     error_message = error == CanCan::AccessDenied ? t(:no_permission) : (I18n.translate!("webconferences.error.#{error}", raise: true) rescue t("webconferences.error.removed_record"))
-    render text: error_message
+    render plain: error_message
     # render_json_error(error, 'webconferences.error')
   end
 

@@ -142,7 +142,7 @@ class AssignmentsController < ApplicationController
   def summarized
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
     if (current_user.is_student?([@allocation_tag_id]) && Exam.verify_blocking_content(current_user.id))
-      render text: t('exams.restrict')
+      render plain: t('exams.restrict')
     else
       @assignment = Assignment.find(params[:id])
       @score_type = params[:score_type]
@@ -157,7 +157,7 @@ class AssignmentsController < ApplicationController
       @acu = AcademicAllocationUser.find_one(@ac.id, @student_id, @group_id, false, @can_evaluate)
     end
   rescue CanCan::AccessDenied
-    render text: t(:no_permission)
+    render plain: t(:no_permission)
   end
 
   def download
@@ -175,7 +175,7 @@ class AssignmentsController < ApplicationController
       authorize! :download, Assignment, on: [allocation_tag_id]
       if params[:zip].present?
         assignment_started?(assignment)
-        path_zip = compress({ files: assignment.enunciation_files, table_column_name: 'attachment_file_name', name_zip_file: assignment.name })
+        path_zip = compress_file({ files: assignment.enunciation_files, table_column_name: 'attachment_file_name', name_zip_file: assignment.name })
         download_file(:back, path_zip || nil)
       else
         assignment_started?(file.assignment)

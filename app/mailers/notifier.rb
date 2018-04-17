@@ -12,8 +12,8 @@ class Notifier < ActionMailer::Base
     config_mail[:reply_to] = from unless from.nil?
 
     mail(config_mail) do |format|
-      format.text { render text: message }
-      format.html { render text: message }
+      format.text { render plain: message }
+      format.html { render plain: message }
     end
   end
 

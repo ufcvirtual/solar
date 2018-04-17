@@ -84,10 +84,10 @@ class ScheduleEventsController < ApplicationController
     @acu = AcademicAllocationUser.find_one(@ac.id, params[:user_id])
 
   rescue CanCan::AccessDenied
-    render text: t(:no_permission)
+    render plain: t(:no_permission)
   rescue => error
     error_message = (I18n.translate!("schedule_events.error.#{error}", raise: true) rescue t("schedule_events.error.general_message"))
-    render text: error_message
+    render plain: error_message
   end
 
   private

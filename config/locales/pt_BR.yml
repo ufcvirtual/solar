@@ -324,9 +324,10 @@ pt_BR:
         message_content_type: ""
       assignment_file:
         attachment_content_type: ""
-        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 26MB."
+        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 26MB"
         attachment_file_name: Arquivo
         academic_allocation_user: ""
+        attachment: ""
       comment_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
@@ -603,29 +604,31 @@ pt_BR:
         assignment_file:
           attributes:
             attachment_content_type:
-              invalid_type: "Tipo de arquivo inválido."
+              invalid_type: "Tipo de arquivo inválido"
             attachment_file_name:
               blank: deve ser selecionado
             academic_allocation_user_id:
-              blank: Não é possivel enviar um arquivo para este trabalho.
+              blank: Não é possivel enviar um arquivo para este trabalho
+            attachment:
+              spoofed_media_type: "Tipo de arquivo inválido"  
         public_file:
           attributes:
             attachment_content_type:
-              invalid_type: "Tipo de arquivo inválido."
+              invalid_type: "Tipo de arquivo inválido"
             attachment_file_name:
               blank: deve ser selecionado
         comment_file:
           attributes:
             attachment_content_type:
-              invalid_type: "Tipo de arquivo inválido."
+              invalid_type: "Tipo de arquivo inválido"
         discussion_post_file:
           attributes:
             attachment_content_type:
-              invalid_type: "Tipo de arquivo inválido."
+              invalid_type: "Tipo de arquivo inválido"
         message_file:
           attributes:
             message_content_type:
-              invalid_type: "Tipo de arquivo inválido."
+              invalid_type: "Tipo de arquivo inválido"
         lesson:
           attributes:
             address:

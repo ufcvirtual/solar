@@ -20,7 +20,7 @@ gem "devise-encryptable", "~> 0.2.0"
 gem "chronic", "0.6.1"
 gem 'simple_form', "~> 3.2.1"
 
-gem "paperclip", "~> 4.2.4"
+gem "paperclip", "~> 4.3.7"
 gem "will_paginate", "~> 3.1.6"
 gem "jquery-rails", "~> 4.3.1"
 gem 'jquery-ui-rails', '~> 6.0.1'
@@ -44,7 +44,7 @@ gem "passenger", "~> 5.2.0"
 
 gem "rubyzip", "~> 1.0.0"
 
-gem "doorkeeper", "~> 1.4.2"
+gem "doorkeeper", "~> 4.0.0"
 gem "rack-oauth2", "~> 1.4.0"
 gem "grape", "~> 0.17.0"
 gem "rabl", "~> 0.13.1"

@@ -8,7 +8,7 @@ module IpRealHelper
       when :html
         redirect_back fallback_location: :back, alert: t('ip_control.errors.restrict')
       when :text
-        render text: t('ip_control.errors.restrict')
+        render plain: t('ip_control.errors.restrict')
       when :raise
         raise CanCan::AccessDenied
       when :boolean
