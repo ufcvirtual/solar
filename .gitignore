@@ -62,3 +62,4 @@ sink_test.sh
 ship.sh
 config/digital_class_access_token.txt
 .ruby-version
+.rvmrc
