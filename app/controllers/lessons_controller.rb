@@ -177,14 +177,25 @@ class LessonsController < ApplicationController
     lesson_ids = params[:id].split(',').flatten
     msg = change_lessons_status(lesson_ids, params[:status])
 
+    # respond_to do |format|
+    #   if msg.empty?
+    #     format.json { render json: {success: true} }
+    #     format.js
+    #   else
+    #     format.json { render json: { success: false, msg: msg }, status: :unprocessable_entity }
+    #     format.js { render js: "flash_message('#{msg.first}', 'alert');" }
+    #   end
+    # end
+    
     respond_to do |format|
       if msg.empty?
         format.json { render json: {success: true} }
         format.js
       else
-        format.json { render json: { success: false, msg: msg }, status: :unprocessable_entity }
-        format.js { render js: "flash_message('#{msg.first}', 'alert');" }
+        format.json { render json: { success: true, msg: msg }}
+        format.js
       end
+      
     end
   end
 
@@ -354,10 +365,30 @@ class LessonsController < ApplicationController
 
     def change_lessons_status(lesson_ids, new_status)
       msg = []
+      #msg = {}
       @lessons = Lesson.where(id: lesson_ids)
       @lessons.each do |lesson|
+
+        if Dir.glob(lesson.path(true)+'**/*').select{|f| File.file?(f)}.size == 1
+          single_file = Dir.glob(lesson.path(true)+'**/*').select{|f| File.file?(f)}[0]
+          lesson.address = single_file.sub(lesson.path(true),"")
+        end
+
         lesson.status = new_status
-        msg << lesson.errors[:base] unless lesson.save
+        #msg << lesson.errors[:base] unless lesson.save
+
+        if lesson.status == 1
+
+          if lesson.save
+            msg << "Arquivo #{File.basename(lesson.address)} definido como inicial em #{lesson.name}"
+          elsif
+            msg << "Um arquivo inicial deve ser definido em #{lesson.name}"
+          end
+
+        elsif
+          lesson.save
+        end
+
       end
       msg
     end
