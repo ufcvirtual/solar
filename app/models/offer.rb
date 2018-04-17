@@ -39,7 +39,7 @@ class Offer < ActiveRecord::Base
   attr_accessor :type_id, :verify_current_date
 
   def must_be_unique
-    equal_offers = Offer.find_all_by_course_id_and_curriculum_unit_id_and_semester_id(course_id, curriculum_unit_id, semester_id)
+    equal_offers = Offer.where(course_id: course_id, curriculum_unit_id: curriculum_unit_id, semester_id: semester_id)
     errors_to = (type_id == 3 ? :course : :curriculum_unit_id)
     errors.add(errors_to, I18n.t(:already_exist, scope: [:offers, :error])) if (@new_record && equal_offers.size > 0) || ((!equal_offers.empty?) && equal_offers.first.try(:id) != self.id)
   end

@@ -56,7 +56,7 @@ module V1
             blacklist = UserBlacklist.where(cpf: cpf).first_or_initialize
             blacklist.name = params[:name] if blacklist.new_record?
             can_add_or_exists_blacklist = blacklist.valid? || !blacklist.new_record?
-            blacklist.save if blacklist.new_record? && !user.nil? && user.integrated && can_add_or_exists_blacklist
+            blacklist.save if blacklist.new_record? && !user.nil? && user.integrated && can_add_or_exists_blacklist && !user.selfregistration
 
             if new_user || can_add_or_exists_blacklist
               ActiveRecord::Base.transaction do

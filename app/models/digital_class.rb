@@ -19,9 +19,9 @@ class DigitalClass < ActiveRecord::Base
     url = DigitalClass.get_url(path, params.slice(*replace.map(&:to_sym)))
 
     res = if method == :get || method == :delete
-      RestClient.send(method, url, { params: { access_token: self.access_token, accept: :json, content_type: 'x-www-form-urlencoded', 'Authorization' => "Bearer #{self.access_token}" }.merge!(params) })
+      RestClient.send(method, url, { params: { access_token: self.access_token, accept: :json, content_type: 'application/x-www-form-urlencoded', 'Authorization' => "Bearer #{self.access_token}" }.merge!(params) })
     else
-      RestClient.send(method, url, { access_token: self.access_token }.merge!(params), { accept: :json, content_type: 'x-www-form-urlencoded' })
+      RestClient.send(method, url, { access_token: self.access_token }.merge!(params), { accept: :json, content_type: 'application/x-www-form-urlencoded' })
     end
 
     response = JSON.parse(res.body)
@@ -40,7 +40,7 @@ class DigitalClass < ActiveRecord::Base
       permission = (write_access ? 'write' : 'read')
       directories = DigitalClass.get_directories_by_allocation_tag(allocation_tag)
       if directories.any?
-        dc_user_id = user.verify_or_create_at_digital_class 
+        dc_user_id = user.verify_or_create_at_digital_class
         DigitalClass.call('users_with_id', { user_id: dc_user_id, role: user.get_digital_class_role }, ['user_id'], :put)
         directories.each do |dir_id|
           member = DigitalClass.call('members_new', { directory_id: dir_id, permission: permission, user_id: dc_user_id }, ['directory_id'], :post)
@@ -110,7 +110,7 @@ class DigitalClass < ActiveRecord::Base
 
     unless allocation_tags[:allocation_tags].compact.blank?
       ats = RelatedTaggable.related_from_array_ats(allocation_tags[:allocation_tags].compact)
-      query << 'allocation_tags.id IN (:allocation_tags)' 
+      query << 'allocation_tags.id IN (:allocation_tags)'
       query2 = [query.join(' AND '), { initial_date: initial_date, allocation_tags: ats }]
       query3 = ['group_at_id IN (:allocation_tags) OR offer_at_id IN (:allocation_tags) OR course_at_id IN (:allocation_tags) OR curriculum_unit_at_id IN (:allocation_tags) OR curriculum_unit_type_at_id IN (:allocation_tags)', { allocation_tags: ats }]
     else
@@ -220,7 +220,7 @@ class DigitalClass < ActiveRecord::Base
       DigitalClass.verify_and_create_member(user, at)
     end
 
-    res = RestClient.post url, params, { accept: :json, content_type: 'x-www-form-urlencoded' }
+    res = RestClient.post url, params, { accept: :json, content_type: 'application/x-www-form-urlencoded' }
     redirect_url = JSON.parse(res.body)['redirect_url']
 
     DigitalClass.log_info('SUCCESS', [:post, 'authenticate_token'], "Params: #{params.merge!(redirect_url: redirect_to)} Response: #{redirect_url}")
@@ -278,7 +278,7 @@ class DigitalClass < ActiveRecord::Base
       if ignore_changes
         DigitalClass.log_info('ERROR', [], "Message: #{error}")
         raise error
-      else 
+      else
         return false # nothing happens
       end
     end
@@ -292,5 +292,5 @@ class DigitalClass < ActiveRecord::Base
       log << text
       DigitalClass.dc_logger.info log.join(' ')
     end
-  
+
 end

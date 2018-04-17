@@ -465,19 +465,22 @@ class User < ActiveRecord::Base
 
       user_exist = where(cpf: cpf).first
       user = user_exist.nil? ? new(cpf: cpf) : user_exist
+      user_data = nil
       if (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO['integrated'])
         user_data = User.connect_and_import_user(cpf) # try to import
         user.synchronize(user_data) # synchronize user with new MA data
       end
 
-      blacklist = UserBlacklist.where(cpf: user.cpf).first_or_initialize
-      blacklist.name = (user.try(:name) || row['Nome']) if blacklist.new_record?
-      can_add_to_blacklist = blacklist.valid? || !blacklist.new_record?
+      if user_data.blank? || !user.selfregistration
+        blacklist = UserBlacklist.where(cpf: user.cpf).first_or_initialize
+        blacklist.name = (user.try(:name) || row['Nome']) if blacklist.new_record?
+      end
+      can_add_to_blacklist = !blacklist.nil? && (blacklist.valid? || !blacklist.new_record?)
       new_password         = nil
       group = Group.joins(:allocation_tag).where(allocation_tags: {id: ats}).where("lower(code) = ?", row['Turma'].downcase).first if (row.include?('Turma') && !row['Turma'].blank? && !ats.blank?)
 
       if !user.integrated || can_add_to_blacklist
-        blacklist.save if blacklist.new_record? && user.integrated && can_add_to_blacklist
+        blacklist.save if !blacklist.nil? && blacklist.new_record? && user.integrated && can_add_to_blacklist
 
         params = {}
         params.merge!({ email: row['Email'].downcase })             if row.include?('Email') && !row['Email'].blank?
@@ -639,7 +642,7 @@ class User < ActiveRecord::Base
 
       self.synchronizing = true
       ma_attributes.merge!({encrypted_password: encrypted_password}) if ma_attributes[:encrypted_password].blank? && ma_attributes[:password].blank?
-      self.attributes = attributes.merge!(ma_attributes)
+      self.attributes = attributes.merge!(ma_attributes).except('id')
 
       raise "username in use #{ma_attributes}, can't replace" unless verify_column(self, 'username')
       unless email.blank?
@@ -678,12 +681,18 @@ class User < ActiveRecord::Base
   end
 
   def connect_and_validates_user
-    user_cpf = self.class.cpf_without_mask(cpf)
+    begin
+      user_cpf = self.class.cpf_without_mask(cpf)
 
-    client   = Savon.client wsdl: MODULO_ACADEMICO['wsdl']
-    response = client.call MODULO_ACADEMICO['methods']['user']['validate'].to_sym, message: {cpf: user_cpf, email: email, login: username } # gets user validation
+      client   = Savon.client wsdl: MODULO_ACADEMICO['wsdl']
+      response = client.call MODULO_ACADEMICO['methods']['user']['validate'].to_sym, message: {cpf: user_cpf, email: email, login: username } # gets user validation
 
-    User.validate_user_result(response.to_hash[:validar_usuario_response][:validar_usuario_result], client, user_cpf, self)
+      User.validate_user_result(response.to_hash[:validar_usuario_response][:validar_usuario_result], client, user_cpf, self)
+    rescue HTTPClient::ConnectTimeoutError # if MA don't respond (timeout)
+      I18n.t('users.errors.ma.cant_connect')
+    rescue => error
+      I18n.t('users.errors.ma.problem_accessing')
+    end
   end
 
   # user result from validation MA method
@@ -732,10 +741,16 @@ class User < ActiveRecord::Base
   end
 
   def self.connect_and_import_user(cpf, client = nil)
-    client    = Savon.client wsdl: MODULO_ACADEMICO['wsdl'] if client.nil?
-    response  = client.call(MODULO_ACADEMICO['methods']['user']['import'].to_sym, message: { cpf: cpf.delete('.').delete('-') }) # import user
-    user_data = response.to_hash[:importar_usuario_response][:importar_usuario_result]
-    return (user_data.nil? ? nil : user_data[:string])
+    begin
+      client    = Savon.client wsdl: MODULO_ACADEMICO['wsdl'] if client.nil?
+      response  = client.call(MODULO_ACADEMICO['methods']['user']['import'].to_sym, message: { cpf: cpf.delete('.').delete('-') }) # import user
+      user_data = response.to_hash[:importar_usuario_response][:importar_usuario_result]
+      return (user_data.nil? ? nil : user_data[:string])
+    rescue HTTPClient::ConnectTimeoutError # if MA don't respond (timeout)
+      I18n.t('users.errors.ma.cant_connect')
+    rescue => error
+      I18n.t('users.errors.ma.problem_accessing')
+    end
   end
 
   # alocar usuario em uma allocation_tag: profile, allocation_tags_ids, status

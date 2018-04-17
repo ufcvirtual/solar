@@ -7,6 +7,7 @@ node :groups do |uc|
     {
       id: group.id,
       code: group.code,
+      name: group.name,
       semester: group.offer.semester.name
     }
   }
