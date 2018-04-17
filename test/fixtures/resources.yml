@@ -1209,3 +1209,9 @@ res231:
   controller: 'emails'
   action: 'receive_academic_tool_notification'
   description: 'Receber avisos, por email, informando sobre criação, edição ou remoção de atividades'
+
+res232:
+  id: 232
+  controller: 'logs'
+  action: 'index'
+  description: '[API]Lista Logs por curso, disciplina e semestre'

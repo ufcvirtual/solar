@@ -277,6 +277,7 @@ module Bbb
     raise nil unless on_going?
     meeting_id = get_mettingID(at_id)
     @api       = bbb_prepare
+    URI.parse(@api[:url]).path # testing url to avoid connection errors
     meetings   = meetings || @api.get_meetings[:meetings].collect{|m| m[:meetingID]}
     raise nil unless !meetings.nil? && meetings.include?(meeting_id)
     response   = @api.get_meeting_info(meeting_id, Digest::MD5.hexdigest((title rescue name)+meeting_id))

@@ -53,7 +53,7 @@ module V1::AllocationsH
   end
   ## remover
 
-  def allocate(params, cancel = false)
+  def allocate(params, cancel=false, raise_error=false)
     object = ( params[:id].nil? ?  get_destination(params[:curriculum_unit_code], params[:course_code], params[:group_code], params[:semester]) : params[:type].capitalize.constantize.find(params[:id]) )
     users  = get_users(params)
 
@@ -63,7 +63,11 @@ module V1::AllocationsH
 
     users.each do |user|
       user.cancel_allocations(params[:profile_id]) if params[:remove_user_previous_allocations]
-      object.send(cancel ? :cancel_allocations : :allocate_user, user.id, params[:profile_id])
+      if cancel
+        object.cancel_allocations(user.id, params[:profile_id], nil, {}, raise_error)
+      else
+        object.allocate_user(user.id, params[:profile_id])
+      end
     end
   end
 

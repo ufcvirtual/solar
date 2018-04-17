@@ -61,6 +61,9 @@ $login_button_background: #f1cf65;
 $login_border_light: #F4F4F5;
 $login_border_yellow: #AE8711;
 
+$color_white_base: #ffffff;
+$color_black: #000000;
+
 $login_cancel_link_color: #CAD8E8;
 $login_register_steps_link_color: #919191;
 $login_bar_brazil_background: #004b82;
@@ -449,6 +452,7 @@ footer{
   text-decoration: none;
   width: 100%;
   position: absolute;
+  top: 96%;
   bottom: 0;
   left: 0;
   padding-bottom: 10px;
@@ -838,14 +842,14 @@ select option{
   padding:0 0 0 10px;
   display:block;
   #li_1{
-    display:inline; 
+    display:inline;
     float:left;
-    padding-right:10px; 
-    margin-right:10px; 
+    padding-right:10px;
+    margin-right:10px;
     border-right:1px solid #EDEDED;
     a{
-      font-family: sans,sans-serif; 
-      text-decoration: none; 
+      font-family: sans,sans-serif;
+      text-decoration: none;
       color:white;
     }
   }
@@ -853,9 +857,9 @@ select option{
     a{
       font-family: sans, sans-serif;
       right: 1px solid #EDEDED;
-      text-decoration: none; 
-      color: white; 
-    }  
+      text-decoration: none;
+      color: white;
+    }
   }
 
 }
@@ -936,4 +940,38 @@ select option{
 
 i.noscript{
   color: $login_warning_color;
+}
+
+.title, .app h2{
+  color: $color_white_base;
+  font-size: 11pt;
+  word-break: break-word;
+  font-style: none;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 100;
+}
+
+.app{
+  padding-top: 0.4em;
+  padding-left: 3%;
+  img{
+    display: inline-block;
+  }
+  .apple-app img{
+    width: 45%;
+    padding: 0;
+    vertical-align: middle;
+  }
+  .google-app img{
+    width: 53%;
+    vertical-align: middle;
+  }
+  h2{
+    i{
+      color: $color_white_base;
+      font-size: 19pt;
+      padding: 5px;
+    }
+    margin-bottom: 0;
+  }
 }

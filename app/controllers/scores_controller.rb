@@ -366,6 +366,7 @@ class ScoresController < ApplicationController
     authorize! :set_situation, Score, { on: allocation_tag_id = active_tab[:url][:allocation_tag_id]}
 
     allocation_tag = AllocationTag.find(allocation_tag_id)
+    raise 'date' if allocation_tag.situation_date.blank?
     allocation_tag.set_students_situations(true)
 
     render json: {success: true, notice: t('scores.notice.setted_situation')}
@@ -378,7 +379,7 @@ class ScoresController < ApplicationController
     authorize! :set_situation, Score, { on: allocation_tag_id = active_tab[:url][:allocation_tag_id]}
 
     allocation_tag = AllocationTag.find(allocation_tag_id)
-    raise 'date' if allocation_tag.situation_date <= Date.today
+    raise 'date' if allocation_tag.situation_date.blank? || allocation_tag.situation_date <= Date.today
     allocation_tag.remove_students_situations
 
     render json: {success: true, notice: t('scores.notice.removed_situation')}

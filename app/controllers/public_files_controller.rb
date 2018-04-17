@@ -42,13 +42,13 @@ class PublicFilesController < ApplicationController
 
       if params[:zip].present?
         user = (params[:user_id].present? ? User.find(params[:user_id]) : current_user)
-        path_zip = compress({ files: user.public_files.where(allocation_tag_id: allocation_tag_id), table_column_name: 'attachment_file_name', name_zip_file: t('public_files.index.title', name: user.name) })
+        path_zip = compress_file({ files: user.public_files.where(allocation_tag_id: allocation_tag_id), table_column_name: 'attachment_file_name', name_zip_file: t('public_files.index.title', name: user.name) })
         download_file(:back, path_zip)
       else
         file = PublicFile.find(params[:id])
         download_file(:back, file.attachment.path, file.attachment_file_name)
       end
-    end  
+    end
   end
 
   def destroy

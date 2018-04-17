@@ -135,19 +135,19 @@
                   = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: "erase_flash_messages(true)", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
                 - else
                   = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: "erase_flash_messages(true, "+@attribute.to_s+")", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
-          - name = active_tab[:breadcrumb].last[:name].gsub(".", "-") unless active_tab[:breadcrumb].last[:name].nil?
+          - name = active_tab[:breadcrumb].last[:name]#.gsub(".", "-") unless active_tab[:breadcrumb].last[:name].nil?
           #breadcrumb= raw show_breadcrumb
           - if is_curriculum_unit_selected?
             #page_title
               - if current_page?(controller: 'lessons', action: 'index')
-                %h1#main_content_accesskey{ tabindex: "0", :'aria-label' => t(name, default: name.try(:titleize)) + t('lessons.index.lesson_number_modules', modules: @lessons_modules.size) }= t(name, default: name.try(:titleize))
+                %h1#main_content_accesskey{ tabindex: "0", :'aria-label' => t(name, default: name) + t('lessons.index.lesson_number_modules', modules: @lessons_modules.size) }= t(name, default: name)
               - else
-                %h1#main_content_accesskey{ tabindex: "0" }=t(name, default: name.try(:titleize))
+                %h1#main_content_accesskey{ tabindex: "0" }=t(name, default: name)
               .block_content_text
                 %span.views#classes{role: 'menubar'}= raw(group_selection)
           - elsif not(in_mysolar?)
             #page_title
-              %h1#main_content_accesskey{ tabindex: "0" }=t(name, default: name.titleize)
+              %h1#main_content_accesskey{ tabindex: "0" }=t(name, default: name)
         = yield
 
         #lesson_external_div.invisible
@@ -191,7 +191,7 @@
 
     #loading
       %h2=t(:page_loading)
-      %div= image_tag('loading.gif') 
+      %div= image_tag('loading.gif')
 
   :javascript
 

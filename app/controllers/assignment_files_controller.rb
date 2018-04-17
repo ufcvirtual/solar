@@ -58,7 +58,7 @@ class AssignmentFilesController < ApplicationController
       if params[:zip].present?
         assignment = Assignment.find(params[:assignment_id])
         academic_allocation_user = assignment.academic_allocation_users.where(user_id: params[:student_id], group_assignment_id: params[:group_id], academic_allocations: {allocation_tag_id: allocation_tag_id}).first
-        path_zip   = compress({ files: academic_allocation_user.assignment_files, table_column_name: 'attachment_file_name', name_zip_file: assignment.name })
+        path_zip   = compress_file({ files: academic_allocation_user.assignment_files, table_column_name: 'attachment_file_name', name_zip_file: assignment.name })
       else
         file = AssignmentFile.find(params[:id])
         academic_allocation_user = file.academic_allocation_user
