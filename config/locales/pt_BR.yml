@@ -318,10 +318,13 @@ pt_BR:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 20MB."
         attachment_file_name: Arquivo
+        attachment: ""
       discussion_post_file:
         attachment_content_type: ""
+        attachment: ""
       message_file:
         message_content_type: ""
+        attachment: ""
       assignment_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 26MB"
@@ -333,6 +336,7 @@ pt_BR:
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
         attachment: Arquivo
         attachment_file_name: Arquivo
+        attachment: ""
       group_assignment:
         group_name: "Nome do grupo"
       comment:
@@ -431,6 +435,7 @@ pt_BR:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
         attachment_file_name: Arquivo
+        attachment: ""
       semester:
         offer: Oferta
         enrollment: Matrícula
@@ -486,6 +491,7 @@ pt_BR:
         additional_information: Informações Complementares
         url: Disponível em
         accessed_in: Acessado em
+        attachment: ""
       schedule_event:
         title: Título
         type_event: Tipo
@@ -617,18 +623,26 @@ pt_BR:
               invalid_type: "Tipo de arquivo inválido"
             attachment_file_name:
               blank: deve ser selecionado
+            attachment:
+              spoofed_media_type: "Tipo de arquivo inválido"
         comment_file:
           attributes:
             attachment_content_type:
               invalid_type: "Tipo de arquivo inválido"
+            attachment:
+              spoofed_media_type: "Tipo de arquivo inválido"
         discussion_post_file:
           attributes:
             attachment_content_type:
               invalid_type: "Tipo de arquivo inválido"
+            attachment:
+              spoofed_media_type: "Tipo de arquivo inválido"
         message_file:
           attributes:
             message_content_type:
               invalid_type: "Tipo de arquivo inválido"
+            attachment:
+              spoofed_media_type: "Tipo de arquivo inválido"
         lesson:
           attributes:
             address:
@@ -637,6 +651,12 @@ pt_BR:
           attributes:
             attachment_content_type:
               invalid_type: inválido
+            attachment:
+              spoofed_media_type: "Tipo de arquivo inválido"
+        post_file:
+          attributes:
+            attachment:
+              spoofed_media_type: "Tipo de arquivo inválido"
 
 
   ########### GERAL ###############

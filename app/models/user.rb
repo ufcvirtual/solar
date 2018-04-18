@@ -780,6 +780,13 @@ class User < ActiveRecord::Base
     DigitalClass.update_user(self, ignore_changes)
   end
 
+  # Forces a new authentication token to be generated for this user and saves it
+  # to the database
+  def reset_authentication_token!
+    self.authentication_token = generate_authentication_token
+    save
+  end
+
   # groups that user can enroll
   def groups_to_enroll
     Offer.find_by_sql <<-SQL
@@ -870,10 +877,18 @@ class User < ActiveRecord::Base
 
 
 
+
   private
 
     def login_differ_from_cpf
       any_user = User.where(cpf: self.class.cpf_without_mask(username))
       errors.add(:username, I18n.t(:new_user_msg_cpf_error)) if (new_record? && any_user.any?) || (any_user.where('id <> ?', id).any?)
+    end
+
+    def generate_authentication_token
+      loop do
+        token = Devise.friendly_token
+        break token unless User.find_by(authentication_token: token)
+      end
     end
 end

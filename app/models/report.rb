@@ -17,9 +17,9 @@ class Report
       else 
         allocation_tags_ids << AllocationTag.find(allocation_tags_ids.first).lower_related 
       end
-      allocation_tags_ids = allocation_tags_ids.distinct.join(',')
+      allocation_tags_ids = allocation_tags_ids.uniq.join(',')
     end  
-    
+
     case query_type
       when '1'
         #reset_arrays #clean precausion..

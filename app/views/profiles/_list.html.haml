@@ -22,7 +22,7 @@
       erase_flash_messages();
 
       $(".profiles-list").hide();
-      $(".profile-permissions-list").on('load', $(this).data("show-link"), function(){
+      $(".profile-permissions-list").load($(this).data("show-link"), function(){
         $(".profile-permissions-list").show();
       });
 

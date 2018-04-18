@@ -130,7 +130,7 @@ class Webconference < ActiveRecord::Base
 
   def login_meeting(user, meeting_id, meeting_name, options)
     @api.create_meeting(meeting_name, meeting_id, options) unless @api.is_meeting_running?(meeting_id)
-     if (responsible?(user.id) || user.can?(:preview, Webconference, { on: academic_allocations.flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true, any: true }))
+     if (responsible?(user.id) || user.can?(:preview, Webconference, { on: academic_allocations.to_a.flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true, any: true }))
       @api.join_meeting_url(meeting_id, "#{user.name}*", options[:moderatorPW])
     else
       @api.join_meeting_url(meeting_id, user.name, options[:attendeePW])
@@ -140,7 +140,7 @@ class Webconference < ActiveRecord::Base
   def have_permission?(user, at_id = nil)
     (student_or_responsible?(user.id, at_id) ||
       (
-        ats = (shared_between_groups || at_id.nil?) ? academic_allocations.flatten.map(&:allocation_tag_id).flatten : [at_id].flatten
+        ats = (shared_between_groups || at_id.nil?) ? academic_allocations.to_a.flatten.map(&:allocation_tag_id).flatten : [at_id].flatten
         allocations_with_acess =  user.allocation_tags_ids_with_access_on('interact','webconferences', false, true)
         allocations_with_acess.include?(nil) || (allocations_with_acess & ats).any?
       )
