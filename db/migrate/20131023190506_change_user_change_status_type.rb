@@ -1,4 +1,4 @@
-class ChangeUserChangeStatusType < ActiveRecord::Migration
+class ChangeUserChangeStatusType < ActiveRecord::Migration[5.0]
   def up
     change_table :users do |t|
       t.boolean :active, default: true, null: false

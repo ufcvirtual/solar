@@ -1,4 +1,4 @@
-class AddChildrenCountCacheDrafsToPosts < ActiveRecord::Migration
+class AddChildrenCountCacheDrafsToPosts < ActiveRecord::Migration[5.0]
   def up
     change_table :discussion_posts do |t|
       t.integer :children_drafts_count, default: 0, null: false

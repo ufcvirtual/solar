@@ -1,4 +1,4 @@
-class CreateLessonLogs < ActiveRecord::Migration
+class CreateLessonLogs < ActiveRecord::Migration[5.0]
   def self.up
     create_table "lesson_logs" do |t|
       t.integer  "lesson_id", :null => false

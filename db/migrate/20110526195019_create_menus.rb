@@ -1,4 +1,4 @@
-class CreateMenus < ActiveRecord::Migration
+class CreateMenus < ActiveRecord::Migration[5.0]
   def self.up
     create_table "menus" do |t|
       t.integer "resource_id"

@@ -1,4 +1,4 @@
-class CreateAllocationTags < ActiveRecord::Migration
+class CreateAllocationTags < ActiveRecord::Migration[5.0]
   def self.up
     create_table "allocation_tags" do |t|
       t.integer "group_id"

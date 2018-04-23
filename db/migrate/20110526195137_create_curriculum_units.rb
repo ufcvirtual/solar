@@ -1,4 +1,4 @@
-class CreateCurriculumUnits < ActiveRecord::Migration
+class CreateCurriculumUnits < ActiveRecord::Migration[5.0]
   def self.up
     create_table "curriculum_units" do |t|
       t.integer  "curriculum_unit_type_id"

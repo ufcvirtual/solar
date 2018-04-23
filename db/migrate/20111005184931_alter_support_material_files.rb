@@ -1,4 +1,4 @@
-class AlterSupportMaterialFiles < ActiveRecord::Migration
+class AlterSupportMaterialFiles < ActiveRecord::Migration[5.0]
   def self.up
     execute <<-SQL
       ALTER TABLE support_material_files ADD url text;

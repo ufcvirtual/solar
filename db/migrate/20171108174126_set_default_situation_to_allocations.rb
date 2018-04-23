@@ -1,4 +1,4 @@
-class SetDefaultSituationToAllocations < ActiveRecord::Migration
+class SetDefaultSituationToAllocations < ActiveRecord::Migration[5.0]
   def up
   	change_column :allocations, :grade_situation, :integer
 

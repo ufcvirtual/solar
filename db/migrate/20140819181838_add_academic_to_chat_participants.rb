@@ -1,8 +1,8 @@
-class AddAcademicToChatParticipants < ActiveRecord::Migration
+class AddAcademicToChatParticipants < ActiveRecord::Migration[5.0]
   def up
     change_table :chat_participants do |t|
       t.references :academic_allocation
-      t.index :academic_allocation_id
+      #t.index :academic_allocation_id
     end
 
     execute "DROP INDEX IF EXISTS index_chat_participants_on_chat_room_id_and_allocation_id;"

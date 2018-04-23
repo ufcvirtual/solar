@@ -1,4 +1,4 @@
-class AddWhToAllocations < ActiveRecord::Migration
+class AddWhToAllocations < ActiveRecord::Migration[5.0]
   def up
     add_column :allocations, :working_hours, :integer, default: 0
 

@@ -1,4 +1,4 @@
-class CreateModule < ActiveRecord::Migration
+class CreateModule < ActiveRecord::Migration[5.0]
   def self.up
     create_table :lesson_modules do |t|
       t.integer :allocation_tag_id, :null => false

@@ -1,4 +1,4 @@
-class CreateLogs < ActiveRecord::Migration
+class CreateLogs < ActiveRecord::Migration[5.0]
   def self.up
     create_table "logs" do |t|
       t.integer  "log_type", :default => 1 # login

@@ -1,8 +1,8 @@
-class AddAcademicToChatMessages < ActiveRecord::Migration
+class AddAcademicToChatMessages < ActiveRecord::Migration[5.0]
   def up
     change_table :chat_messages do |t|
       t.references :academic_allocation
-      t.index :academic_allocation_id
+      #t.index :academic_allocation_id
     end
 
     change_column :chat_messages, :chat_room_id, :integer, null: true

@@ -1,4 +1,4 @@
-class CreateSchedules < ActiveRecord::Migration
+class CreateSchedules < ActiveRecord::Migration[5.0]
   def self.up
     create_table :schedules do |t|
     t.date :start_date

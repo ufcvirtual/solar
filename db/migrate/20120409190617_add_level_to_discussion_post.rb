@@ -1,4 +1,4 @@
-class AddLevelToDiscussionPost < ActiveRecord::Migration
+class AddLevelToDiscussionPost < ActiveRecord::Migration[5.0]
   def self.up
     add_column :discussion_posts, :level, :integer, :default => 1
   end

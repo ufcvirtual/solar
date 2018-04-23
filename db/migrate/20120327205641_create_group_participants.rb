@@ -1,4 +1,4 @@
-class CreateGroupParticipants < ActiveRecord::Migration
+class CreateGroupParticipants < ActiveRecord::Migration[5.0]
   def self.up
     create_table :group_participants do |t|
       t.integer  :group_assignment_id, :null => false

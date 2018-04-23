@@ -1,4 +1,4 @@
-class RenameAssignmentComments < ActiveRecord::Migration
+class RenameAssignmentComments < ActiveRecord::Migration[5.0]
   def up
     remove_foreign_key :comment_files, :assignment_comments
     rename_table :assignment_comments, :comments

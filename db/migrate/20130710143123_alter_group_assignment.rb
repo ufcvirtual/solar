@@ -1,4 +1,4 @@
-class AlterGroupAssignment < ActiveRecord::Migration
+class AlterGroupAssignment < ActiveRecord::Migration[5.0]
   def up
 
     change_table :group_assignments do |t|

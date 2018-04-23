@@ -1,4 +1,4 @@
-class CreateIpFakes < ActiveRecord::Migration
+class CreateIpFakes < ActiveRecord::Migration[5.0]
   def change
     create_table :ip_fakes do |t|
       t.string :ip_v4
@@ -8,6 +8,6 @@ class CreateIpFakes < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index :ip_fakes, :ip_real_id
+    #add_index :ip_fakes, :ip_real_id
   end
 end

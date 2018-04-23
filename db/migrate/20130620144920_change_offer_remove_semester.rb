@@ -1,4 +1,4 @@
-class ChangeOfferRemoveSemester < ActiveRecord::Migration
+class ChangeOfferRemoveSemester < ActiveRecord::Migration[5.0]
   def up
     change_table :offers do |t|
       t.integer :offer_schedule_id

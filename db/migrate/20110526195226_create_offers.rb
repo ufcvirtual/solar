@@ -1,4 +1,4 @@
-class CreateOffers < ActiveRecord::Migration
+class CreateOffers < ActiveRecord::Migration[5.0]
   def self.up
     create_table "offers" do |t|
       t.integer  "curriculum_unit_id"

@@ -1,4 +1,4 @@
-class UserChangeAddressType < ActiveRecord::Migration
+class UserChangeAddressType < ActiveRecord::Migration[5.0]
   def up
     change_column :users, :address_number, :string, limit: 10
   end

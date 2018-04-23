@@ -1,4 +1,4 @@
-class AlterLogsColumnDescription < ActiveRecord::Migration
+class AlterLogsColumnDescription < ActiveRecord::Migration[5.0]
   def up  	
     execute "ALTER TABLE logs RENAME COLUMN message TO description"
     change_column :logs, :description, :string, :limit => 1000, :null => true

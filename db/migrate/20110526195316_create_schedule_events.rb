@@ -1,4 +1,4 @@
-class CreateScheduleEvents < ActiveRecord::Migration
+class CreateScheduleEvents < ActiveRecord::Migration[5.0]
   def self.up
     create_table :schedule_events do |t|
       t.string :title , :limit => 100

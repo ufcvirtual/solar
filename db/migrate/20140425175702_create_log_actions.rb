@@ -1,4 +1,4 @@
-class CreateLogActions < ActiveRecord::Migration
+class CreateLogActions < ActiveRecord::Migration[5.0]
   def up
     create_table :log_actions do |t|
       t.integer :log_type, null: false
@@ -13,7 +13,7 @@ class CreateLogActions < ActiveRecord::Migration
       t.datetime :created_at
     end
 
-    add_index :log_actions, :user_id
+    #add_index :log_actions, :user_id
     add_index :log_actions, :tool_id
   end
 

@@ -1,4 +1,4 @@
-class CreateAssignmentComments < ActiveRecord::Migration
+class CreateAssignmentComments < ActiveRecord::Migration[5.0]
   def self.up
     create_table :assignment_comments do |t|
       t.integer :send_assignment_id, :null => false

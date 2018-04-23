@@ -1,4 +1,4 @@
-class CreateUserContacts < ActiveRecord::Migration
+class CreateUserContacts < ActiveRecord::Migration[5.0]
   def self.up
     create_table(:user_contacts, id: false) do |t|
       t.column :user_id, :integer

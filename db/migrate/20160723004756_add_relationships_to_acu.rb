@@ -1,4 +1,4 @@
-class AddRelationshipsToAcu < ActiveRecord::Migration
+class AddRelationshipsToAcu < ActiveRecord::Migration[5.0]
   def change
     #remove_foreign_key :academic_allocation_users, name: :sent_assignments_academic_allocation_id_fk
     #remove_foreign_key :academic_allocation_users, name: :sent_assignments_user_id_fk

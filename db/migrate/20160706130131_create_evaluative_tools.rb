@@ -1,4 +1,4 @@
-class CreateEvaluativeTools < ActiveRecord::Migration
+class CreateEvaluativeTools < ActiveRecord::Migration[5.0]
     def up
     change_table :academic_allocations do |t|
       t.boolean :evaluative, default: false

@@ -1,4 +1,4 @@
-class AddImportedAndPermissionColumnsToLesson < ActiveRecord::Migration
+class AddImportedAndPermissionColumnsToLesson < ActiveRecord::Migration[5.0]
   def up
     change_table :lessons do |t|
       t.integer :imported_from_id, null: true

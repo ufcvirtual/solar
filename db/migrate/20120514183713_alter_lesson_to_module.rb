@@ -1,4 +1,4 @@
-class AlterLessonToModule < ActiveRecord::Migration
+class AlterLessonToModule < ActiveRecord::Migration[5.0]
   def self.up
     change_table :lessons do |t|
       t.integer :lesson_module_id

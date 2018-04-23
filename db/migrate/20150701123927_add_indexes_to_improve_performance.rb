@@ -1,4 +1,4 @@
-class AddIndexesToImprovePerformance < ActiveRecord::Migration
+class AddIndexesToImprovePerformance < ActiveRecord::Migration[5.0]
   def up
     # run sql directly on database
     # ActiveRecord::Base.connection.execute <<-SQL

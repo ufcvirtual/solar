@@ -1,8 +1,8 @@
-class ChangeDiscussionPosts < ActiveRecord::Migration
+class ChangeDiscussionPosts < ActiveRecord::Migration[5.0]
   def up
     change_table :discussion_posts do |t|
       t.references :academic_allocation
-      t.index :academic_allocation_id
+     # t.index :academic_allocation_id
     end
 
     Post.where(parent_id: nil).each do |post|

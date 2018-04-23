@@ -1,4 +1,4 @@
-class AddUserToBlacklist < ActiveRecord::Migration
+class AddUserToBlacklist < ActiveRecord::Migration[5.0]
   def up
     change_table :user_blacklist do |t|
       t.references :user, null: true

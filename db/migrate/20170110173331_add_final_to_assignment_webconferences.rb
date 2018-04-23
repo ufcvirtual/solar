@@ -1,4 +1,4 @@
-class AddFinalToAssignmentWebconferences < ActiveRecord::Migration
+class AddFinalToAssignmentWebconferences < ActiveRecord::Migration[5.0]
   def change
   	add_column :assignment_webconferences, :final, :boolean, default: false
   end

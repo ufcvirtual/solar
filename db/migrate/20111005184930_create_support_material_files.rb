@@ -1,4 +1,4 @@
-class CreateSupportMaterialFiles < ActiveRecord::Migration
+class CreateSupportMaterialFiles < ActiveRecord::Migration[5.0]
   def self.up
     create_table :support_material_files do |t|
       t.integer :allocation_tag_id,         :null => false

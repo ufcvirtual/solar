@@ -1,4 +1,4 @@
-class CreateGroupAssignments < ActiveRecord::Migration
+class CreateGroupAssignments < ActiveRecord::Migration[5.0]
   def self.up
     create_table :group_assignments do |t|
       t.integer  :assignment_id, :null => false

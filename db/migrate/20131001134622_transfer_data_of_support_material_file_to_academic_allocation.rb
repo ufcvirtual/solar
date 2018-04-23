@@ -1,4 +1,4 @@
-class TransferDataOfSupportMaterialFileToAcademicAllocation < ActiveRecord::Migration
+class TransferDataOfSupportMaterialFileToAcademicAllocation < ActiveRecord::Migration[5.0]
   def up
     SupportMaterialFile.all.each do |support_material|
       AcademicAllocation.create(allocation_tag_id: support_material.allocation_tag_id, academic_tool_id: support_material.id, academic_tool_type: 'SupportMaterialFile')

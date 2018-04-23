@@ -1,4 +1,4 @@
-class AddQuestionIdToExamResponses < ActiveRecord::Migration
+class AddQuestionIdToExamResponses < ActiveRecord::Migration[5.0]
   def change
     add_column :exam_responses, :question_id, :integer, null: false
     add_index :exam_responses, :question_id

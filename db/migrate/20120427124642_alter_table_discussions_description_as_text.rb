@@ -1,4 +1,4 @@
-class AlterTableDiscussionsDescriptionAsText < ActiveRecord::Migration
+class AlterTableDiscussionsDescriptionAsText < ActiveRecord::Migration[5.0]
   def self.up
   	change_column :discussions, :description, :text
   end

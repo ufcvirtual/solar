@@ -1,4 +1,4 @@
-class CreatePublicFiles < ActiveRecord::Migration
+class CreatePublicFiles < ActiveRecord::Migration[5.0]
   def self.up
     create_table :public_files do |t|
       t.integer :allocation_tag_id,         :null => false

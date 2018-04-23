@@ -1,4 +1,4 @@
-class CreateExamParticipants < ActiveRecord::Migration
+class CreateExamParticipants < ActiveRecord::Migration[5.0]
   def change
     create_table :exam_participants do |t|
       t.references :user, null: false

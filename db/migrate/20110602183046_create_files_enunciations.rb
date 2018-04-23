@@ -1,4 +1,4 @@
-class CreateFilesEnunciations < ActiveRecord::Migration
+class CreateFilesEnunciations < ActiveRecord::Migration[5.0]
   def self.up
     create_table :files_enunciations do |t|
       t.integer :assignment_id, :null => false

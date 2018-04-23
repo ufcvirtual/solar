@@ -1,4 +1,4 @@
-class AddDigitalClassDirectoryIdToGroups < ActiveRecord::Migration
+class AddDigitalClassDirectoryIdToGroups < ActiveRecord::Migration[5.0]
   def change
     add_column :groups, :digital_class_directory_id, :integer, index: true
   end

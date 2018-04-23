@@ -1,4 +1,4 @@
-class ChangeMessagesAndLabels < ActiveRecord::Migration
+class ChangeMessagesAndLabels < ActiveRecord::Migration[5.0]
   def up
     ml = MessageLabel.where(label_system: true)
 

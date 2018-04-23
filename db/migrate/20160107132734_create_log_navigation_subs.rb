@@ -1,4 +1,4 @@
-class CreateLogNavigationSubs < ActiveRecord::Migration
+class CreateLogNavigationSubs < ActiveRecord::Migration[5.0]
   def change
     create_table :log_navigation_subs do |t|
       t.integer  :log_navigation_id

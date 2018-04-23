@@ -1,4 +1,4 @@
-class RenameSendAssignmentsToSentAssignments < ActiveRecord::Migration
+class RenameSendAssignmentsToSentAssignments < ActiveRecord::Migration[5.0]
   def up
     remove_foreign_key :send_assignments, :assignments
     remove_foreign_key :send_assignments, :users

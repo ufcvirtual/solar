@@ -1,4 +1,4 @@
-class CreateDiscussionPosts < ActiveRecord::Migration
+class CreateDiscussionPosts < ActiveRecord::Migration[5.0]
   def self.up
     create_table "discussion_posts" do |t|
       t.integer  "user_id", :null => false

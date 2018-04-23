@@ -1,4 +1,4 @@
-class AddTimeToAssignment < ActiveRecord::Migration
+class AddTimeToAssignment < ActiveRecord::Migration[5.0]
   def change
   	add_column  :assignments, :start_hour, :string
     add_column  :assignments, :end_hour, :string

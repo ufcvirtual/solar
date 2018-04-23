@@ -1,4 +1,4 @@
-class TransferDataOfAssignmentToAcademicAllocation < ActiveRecord::Migration
+class TransferDataOfAssignmentToAcademicAllocation < ActiveRecord::Migration[5.0]
   def up
     
     drop_table :educational_tools
@@ -6,7 +6,7 @@ class TransferDataOfAssignmentToAcademicAllocation < ActiveRecord::Migration
     create_table :academic_allocations do |t|
       t.references :allocation_tag
       t.foreign_key :allocation_tags
-      t.references :academic_tool, :polymorphic => true
+      t.references :academic_tool, :polymorphic => true, index: {:name => "index_all_on_all_tool_type_and_at_id"}
     end
 
     change_table :sent_assignments do |t|

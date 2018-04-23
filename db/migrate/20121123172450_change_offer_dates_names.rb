@@ -1,4 +1,4 @@
-class ChangeOfferDatesNames < ActiveRecord::Migration
+class ChangeOfferDatesNames < ActiveRecord::Migration[5.0]
   def up
   	rename_column :offers, :start, :start_date
   	rename_column :offers, :end, :end_date

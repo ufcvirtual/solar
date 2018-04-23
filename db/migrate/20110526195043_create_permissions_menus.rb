@@ -1,4 +1,4 @@
-class CreatePermissionsMenus < ActiveRecord::Migration
+class CreatePermissionsMenus < ActiveRecord::Migration[5.0]
   def self.up
     create_table "permissions_menus", :id => false do |t|
       t.integer "profile_id", :null => false

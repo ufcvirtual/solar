@@ -1,4 +1,4 @@
-class CreateDiscussionPostFiles < ActiveRecord::Migration
+class CreateDiscussionPostFiles < ActiveRecord::Migration[5.0]
   def self.up
     create_table :discussion_post_files do |t|
       t.integer :discussion_post_id, :null => false

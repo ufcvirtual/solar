@@ -1,4 +1,4 @@
-class CreateDiscussions < ActiveRecord::Migration
+class CreateDiscussions < ActiveRecord::Migration[5.0]
   def self.up
     create_table "discussions" do |t|
       t.string  "name", :limit => 120

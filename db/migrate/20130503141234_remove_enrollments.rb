@@ -1,4 +1,4 @@
-class RemoveEnrollments < ActiveRecord::Migration
+class RemoveEnrollments < ActiveRecord::Migration[5.0]
   def up
     # Passa os valores salvos em enrollments para ofertas/schedules
     

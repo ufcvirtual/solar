@@ -1,4 +1,4 @@
-class AddCurriculumUnitTypeToAllocationTagsTable < ActiveRecord::Migration
+class AddCurriculumUnitTypeToAllocationTagsTable < ActiveRecord::Migration[5.0]
   def change
     change_table :allocation_tags do |t|
       t.references :curriculum_unit_type

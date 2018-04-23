@@ -1,4 +1,4 @@
-class AddOrderToLessonModule < ActiveRecord::Migration
+class AddOrderToLessonModule < ActiveRecord::Migration[5.0]
   def up
   	add_column :lesson_modules, :order, :integer
   end

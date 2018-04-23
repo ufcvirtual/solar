@@ -1,4 +1,4 @@
-class MessageFilesChangeColumns < ActiveRecord::Migration
+class MessageFilesChangeColumns < ActiveRecord::Migration[5.0]
   def up
     change_table :message_files do |t|
       t.rename :message_file_name,    :attachment_file_name

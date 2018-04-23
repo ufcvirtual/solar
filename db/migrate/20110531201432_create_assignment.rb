@@ -1,4 +1,4 @@
-class CreateAssignment < ActiveRecord::Migration
+class CreateAssignment < ActiveRecord::Migration[5.0]
   def self.up
     create_table :assignments do |t|
       t.integer :allocation_tag_id, :null => false

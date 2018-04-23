@@ -1,4 +1,4 @@
-class CreateExamResponsesQuestionItems < ActiveRecord::Migration
+class CreateExamResponsesQuestionItems < ActiveRecord::Migration[5.0]
   def change
     create_table :exam_responses_question_items, :id => false do |t|
       t.integer :exam_response_id

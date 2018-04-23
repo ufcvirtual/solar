@@ -1,4 +1,4 @@
-class CreateBibliographies < ActiveRecord::Migration
+class CreateBibliographies < ActiveRecord::Migration[5.0]
   def self.up
     create_table :bibliographies do |t|
       t.integer :allocation_tag_id, :null => false

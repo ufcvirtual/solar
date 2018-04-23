@@ -1,4 +1,4 @@
-class AddSchemaOffer < ActiveRecord::Migration
+class AddSchemaOffer < ActiveRecord::Migration[5.0]
   def self.up
     add_column :offers, :schedule_id, :integer, false: true
     add_foreign_key :offers, :schedules

@@ -1,4 +1,4 @@
-class CreateLessons < ActiveRecord::Migration
+class CreateLessons < ActiveRecord::Migration[5.0]
   def self.up
     create_table "lessons" do |t|
       t.integer  "allocation_tag_id"
