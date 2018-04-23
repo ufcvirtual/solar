@@ -44,11 +44,12 @@ gem "passenger", "~> 5.2.0"
 
 gem "rubyzip", "~> 1.0.0"
 
-gem "doorkeeper", "~> 4.0.0"
+gem "doorkeeper", "~> 4.2.0"
 gem "rack-oauth2", "~> 1.4.0"
-gem "grape", "~> 0.17.0"
+gem "grape", "~> 0.18.0"
 gem "rabl", "~> 0.13.1"
 gem "grape-rabl", "~> 0.4.3"
+gem 'wine_bouncer', '~> 1.0.2'
 
 gem "savon", "~> 2.0" # comunicação com ws
 

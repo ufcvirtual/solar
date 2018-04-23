@@ -1,4 +1,7 @@
+require 'doorkeeper/grape/helpers'
+
 class ApplicationAPI < Grape::API
+  helpers Doorkeeper::Grape::Helpers
   include APIGuard
 
   format :json
@@ -40,9 +43,9 @@ class ApplicationAPI < Grape::API
 
   ## helper geral
   helpers do
-   def authorize!(*args)
-     guard!
-     ::Ability.new(current_user).authorize!(*args)
-   end
+    def authorize!(*args)
+      guard!
+      ::Ability.new(current_user).authorize!(*args)
+    end
   end
 end

@@ -82,3 +82,4 @@ Doorkeeper.configure do
   # WWW-Authenticate Realm (default "Doorkeeper").
   # realm "Doorkeeper"
 end
+Doorkeeper.configuration.token_grant_types << "password"

@@ -134,7 +134,7 @@ class LessonFilesController < ApplicationController
       error = true
     end
 
-    render error ? { nothing: true, status: 500 } : { action: :index, status: :ok }
+    render error ? { plain: true, status: 500 } : { action: :index, status: :ok }
   end
 
   def destroy

@@ -1,9 +1,11 @@
 # Guard API with OAuth 2.0 Access Token
 
 require 'rack/oauth2'
+require 'doorkeeper/grape/helpers'
 
 module APIGuard
   extend ActiveSupport::Concern
+
 
   included do |base|
     # OAuth2 Resource Server Authentication
@@ -14,6 +16,7 @@ module APIGuard
       request.access_token
     end
 
+    helpers Doorkeeper::Grape::Helpers
     helpers HelperMethods
 
     install_error_responders(base)
@@ -47,7 +50,7 @@ module APIGuard
       if token_string.blank?
         raise MissingTokenError
 
-      elsif (access_token = find_access_token(token_string)).nil?
+      elsif (access_token = find_access_token).nil?
         raise TokenNotFoundError
 
       else
@@ -81,8 +84,8 @@ module APIGuard
       request.env[Rack::OAuth2::Server::Resource::ACCESS_TOKEN]
     end
 
-    def find_access_token(token_string)
-      Doorkeeper::AccessToken.authenticate(token_string)
+    def find_access_token
+      doorkeeper_token
     end
 
     def validate_access_token(access_token, scopes)
