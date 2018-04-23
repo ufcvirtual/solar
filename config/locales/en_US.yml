@@ -727,8 +727,9 @@ en_US:
   menu_aside: "Skip to menu [2]"
   search_box: "Skip to Search [3]"
   footer_site: "Skip to the footer [4]"
-  high_contrast_link: "High contrast [6]"
+  high_contrast_link: "High contrast [5]"
   libras: Translate to Libras
+  shortcut_acceskey_link: Content Shortcuts [9]
   description: "Description"
   edition: "Edition"
   enrollment: "Enrollment"
