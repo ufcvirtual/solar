@@ -492,8 +492,10 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :schedule_events, except: [:index] do
+  # resources :schedule_events, except: [:index] do
+  resources :schedule_events do
     member do
+      get :participants
       get :evaluate_user
       put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'ScheduleEvent', as: :evaluate
     end

@@ -1,0 +1,30 @@
+.assignments_list
+  .block_wrapper
+    .block_title
+      %h2{:'data-shortcut'=> t("shortcut.assignment.code.individual_assignments"), :'data-shortcut-name'=> t("shortcut.assignment.name.individual_assignments"), :'data-shortcut-focus' => 'true'}
+        %i.icon-suitcase
+        = t('.events_list')
+    .block_content
+      = render partial: 'events', locals: { events: @events }
+
+  .block_wrapper
+    = link_to t(:back), :back, class: 'btn', id: 'back'
+
+= javascript_include_tag 'academic_allocation_user', 'schedule_events'
+
+:javascript
+  $(function(){
+    $(".enunciation_more").click(function(){
+      $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "none");
+      $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "block");
+      focus_element($(".enunciation_complete", $(this).parent().parent()));
+      return false;
+    });
+
+    $(".enunciation_less").click(function(){
+      $(".enunciation_slice, .enunciation_more", $(this).parent().parent()).css("display", "block");
+      $(".enunciation_complete, .enunciation_less", $(this).parent().parent()).css("display", "none");
+      focus_element($(".enunciation_slice", $(this).parent().parent()));
+      return false;
+    });
+  });

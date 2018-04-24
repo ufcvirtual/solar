@@ -1,0 +1,68 @@
+- if events.any?
+  %table.tb_list.assignments
+    %thead
+      %tr.lines
+        %th= "Nome"
+        %th.center= "Período"
+        %th.center= "Tipo"
+        %th.center= "Local"
+        %th.center= "Situação"
+        %th.center= "Avaliativa"
+        %th.center= "Frequência"
+        - if @is_student
+          %th.center= "Arquivos enviados"
+          %th.center= "Nota/frequência e comentários"
+        - if @can_evaluate
+          %th.no_sort
+    %tbody
+      - events.each do |event|
+        %tr.assignment.lines
+          %td
+            %div.title-yellow= event.name
+            .description
+              - if event.description.size > 180
+                .enunciation_slice= event.description.slice(0..180) << '...'
+                .enunciation_complete= event.description
+                .more_or_less
+                  %a.enunciation_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);' }= t('assignments.list.more')
+                  %a.enunciation_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);' }= t('assignments.list.less')
+              - else
+                = event.description
+            .equivalent
+              - unless event.eq_name.blank?
+                %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{event.academic_tool_id}" }
+                  %i.icon-flow-parallel
+                  = t('scores.info.equivalency')
+                  %i.icon-arrow-down-triangle
+                .dropdown.dropdown-tip{id: "dropdown_eq_#{event.academic_tool_id}"}
+                  %ul{ class: 'dropdown-menu' }
+                    = raw t('scores.info.equivalent', name: event.eq_name)
+              - else
+                %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{event.academic_tool_id}", :'data-url' => equalities_tools_path(tool_type: event.academic_tool_type, ac_id: event.id), onclick: 'open_dropdown(this);' }
+                  %i.icon-flow-parallel
+                  =t('scores.info.equalities')
+                  %i.icon-arrow-down-triangle
+                .dropdown.dropdown-tip{id: "dropdown_eq_#{event.academic_tool_id}"}
+                  %ul{ class: 'dropdown-menu' }
+          %td.center
+            %div= [l(event.start_date.to_date, format: :normal), l(event.end_date.to_date, format: :normal)].join(' - ')
+            %div= [(event.start_hour), (event.end_hour)].join(' - ') unless event.start_hour.blank?
+          %td.center
+            = ScheduleEvent.type_name_event(event.type_event.to_i)
+          %td.center
+            = event.place
+          %td.center{class: "assignment_#{event.situation}"}
+            = t("scores.situation.#{event.situation}")
+          %td.center
+            = raw (event.final_exam == true ? t(event.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(event.evaluative, scope: [:scores, :info]))
+          %td.center
+            = raw t(event.frequency, scope: [:common_between_pages, :frequency], hours: event.max_working_hours, automatic: (!@is_student && event.frequency_automatic == true ? t("common_between_pages.frequency.automatic").delete('()') : ""))
+          - if @is_student
+            %td.center
+              = 'Teste'
+            %td.center= link_to content_tag(:i, nil, class: 'icon-comment'), "#void", onclick: "open_summary(this); return false", :'data-url' => summary_schedule_events_path(ac_id: event.id, tool_id: event.academic_tool_id, group_id: event.group_id), class: "btn #{event.has_info ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt', tool: event.name, count: event.count_comments), :'aria-label' => t('comments.summary.title_alt', tool: event.name, count: event.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+          - if @can_evaluate
+            %td.center
+              = link_to content_tag(:i, nil, class: 'icon-users'), '#void', class: 'btn participants', :'data-url' => participants_schedule_event_path(event.academic_tool_id, situation: event.situation)
+- else
+  .text_none.empty_message= t(:itens_not_found)
