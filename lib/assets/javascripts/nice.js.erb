@@ -280,7 +280,8 @@ $.fn.serialize_and_submit = function(options) {
               options.prepend_to_list.prepend(data2);
             });
           }else{
-            $('#'+$(data).prop('id')).remove();
+            if($(data).prop('id'))
+              $('#'+$(data).prop('id')).remove();
             options.prepend_to_list.prepend(data);
           }
           $('.empty_message.text_none').addClass('invisible');

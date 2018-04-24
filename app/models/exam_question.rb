@@ -15,8 +15,8 @@ class ExamQuestion < ActiveRecord::Base
 
   before_destroy :can_reorder?, :can_save?, :unpublish
 
-  before_save :can_save?, unless: 'annulled_changed?'
-  after_save :recalculate_grades, if: 'annulled_changed? && exam.status'
+  before_save :can_save?, unless: 'saved_change_to_annulled?'
+  after_save :recalculate_grades, if: 'saved_change_to_annulled? && exam.status'
 
   attr_accessor :merge
 

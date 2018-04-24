@@ -24,7 +24,7 @@ class Post < ActiveRecord::Base
 
   after_create :increment_counter
   after_destroy :decrement_counter, :remove_drafts_children, :decrement_counter_draft
-  after_save :change_counter_draft, if: '!parent_id.nil? && draft_changed?'
+  after_save :change_counter_draft, if: '!parent_id.nil? && saved_change_to_draft?'
   after_save :send_email, unless: 'parent_id.blank? || draft || parent.user_id == user_id || !merge.nil?'
 
   validates :content, :profile_id, presence: true
@@ -32,11 +32,11 @@ class Post < ActiveRecord::Base
   validate :can_change?, if: 'merge.nil?'
   validate :parent_post, if: 'merge.nil? && !parent_id.blank?'
 
-  validate :can_set_draft?, if: '!new_record? && draft_changed? && draft'
+  validate :can_set_draft?, if: '!new_record? && saved_change_to_draft? && draft'
 
-  before_save :set_parent, if: '!new_record? && parent_id_changed?'
+  before_save :set_parent, if: '!new_record? && saved_change_to_parent_id?'
   before_save :set_draft, if: 'draft.nil?'
-  before_save :remove_draft_children, if: 'draft_changed? && draft'
+  before_save :remove_draft_children, if: 'saved_change_to_draft? && draft'
 
   attr_accessor :merge
 

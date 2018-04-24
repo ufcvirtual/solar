@@ -32,10 +32,10 @@ class Exam < Event
 
   before_save :set_status, :set_can_publish, on: :update
 
-  after_save :set_random_questions, if: 'status_changed? || random_questions_changed? || number_questions_changed?'
-  after_save :recalculate_grades,   if: 'attempts_correction_changed? || (result_email_changed? && result_email)'
+  after_save :set_random_questions, if: 'saved_change_to_status? || saved_change_to_random_questions? || saved_change_to_number_questions?'
+  after_save :recalculate_grades,   if: 'saved_change_to_attempts_correction? || (saved_change_to_result_email? && result_email)'
 
-  after_save :redefine_management, if: 'status_changed? && !status'
+  after_save :redefine_management, if: 'saved_change_to_status? && !status'
 
   def redefine_management
     return true if academic_allocations.blank?

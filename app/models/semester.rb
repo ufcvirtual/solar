@@ -16,7 +16,7 @@ class Semester < ActiveRecord::Base
 
   accepts_nested_attributes_for :offer_schedule, :enrollment_schedule, allow_destroy: true
 
-  after_save :update_digital_class, if: "name_changed?"
+  after_save :update_digital_class, if: "saved_change_to_name?"
 
   attr_accessor :type_id, :verify_current_date
 

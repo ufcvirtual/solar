@@ -16,7 +16,7 @@ class Course < ActiveRecord::Base
   validate :smaller_than_passing_grade, if: '!passing_grade.blank? && !min_grade_to_final_exam.blank?'
   validates :passing_grade, presence: true, if: 'passing_grade.blank? && (!min_grade_to_final_exam.blank? || !min_final_exam_grade.blank? || !final_exam_passing_grade.blank?)'
 
-  after_save :update_digital_class, if: "code_changed? || name_changed?"
+  after_save :update_digital_class, if: "saved_change_to_code? || saved_change_to_name?"
   before_update :update_correspondent_uc, if: '!ignore_uc'
   after_destroy :destroy_correspondent_uc, if: '!ignore_uc'
 

@@ -19,7 +19,7 @@ class CurriculumUnit < ActiveRecord::Base
   validates :min_hours, numericality: { greater_than_or_equal_to: 0, allow_blank: true, less_than_or_equal_to: 100 }
   validates :working_hours, presence: true, if: 'working_hours.blank? && !min_hours.blank?' 
 
-  after_save :update_digital_class, if: "code_changed? || name_changed?"
+  after_save :update_digital_class, if: "saved_change_to_code? || saved_change_to_name?"
 
   attr_accessor :ignore_course, :passing_grade, :min_grade_to_final_exam, :min_final_exam_grade, :final_exam_passing_grade
 

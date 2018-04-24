@@ -19,14 +19,14 @@ class Lesson < ActiveRecord::Base #< Event
   before_create :set_order
 
   before_save :url_protocol,        if: :is_link?
-  before_save :set_receive_updates, if: 'receive_updates_changed?'
+  before_save :set_receive_updates, if: 'saved_change_to_receive_updates?'
   before_save :receive_changes,     if: :must_receive_changes?
 
   before_validation :set_schedule, if: 'schedule'
 
   after_save :send_changes,         if: :must_send_changes?
   after_save :create_or_update_folder
-  after_save :lesson_privacy,       if: 'privacy_changed?'
+  after_save :lesson_privacy,       if: 'saved_change_to_privacy?'
   after_save :remove_dir_files,     if: :must_receive_changes?
 
   before_destroy :can_destroy?, :verify_files_before_destroy

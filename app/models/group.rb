@@ -27,7 +27,7 @@ class Group < ActiveRecord::Base
 
   validates :digital_class_directory_id, uniqueness: true, on: :update, unless: 'digital_class_directory_id.blank?'
 
-  after_save :update_digital_class, if: "code_changed?"
+  after_save :update_digital_class, if: "saved_change_to_code?"
 
   def order
    'groups.status, groups.code'
