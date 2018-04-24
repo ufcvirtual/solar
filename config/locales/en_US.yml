@@ -1613,6 +1613,7 @@ en_US:
   menu_responsibles: Consult Responsibles
   menu_home: Home
   menu_admin_notifications: General notifications
+  menu_events: Events
 
   places_nav_panel_course_hint: "Type the course's name or part of it"
   places_nav_panel_semester_hint: "Type the semester or part of it"
@@ -3020,6 +3021,10 @@ en_US:
       monthAlt: View by month
       listAlt: View next events list
   schedule_events:
+    index:
+      events_list: Events List
+      individual_events: Individual Events
+      group_events: Group Events
     types:
       presential_test: Presential Test
       presential_meeting: Presential Meeting
@@ -3071,6 +3076,9 @@ en_US:
       summary_evaluative: "This table contains all the evaluation shedule events."
       summary_frequency: "This table contains all the frequency shedule events."
       summary_notevaluative: "This table contains all the not evaluation shedule events."
+    participants:
+      title: Participants
+      student: Students
 
   agendas:
     dropdown_content:

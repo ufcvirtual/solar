@@ -1823,6 +1823,7 @@ pt_BR:
   menu_responsibles: Consultar Responsáveis
   menu_home: Início
   menu_admin_notifications: Avisos Gerais
+  menu_events: "Eventos"
 
   # Componente de filtro/busca de allocationTags (places_nav_panel)
   places_nav_panel_course_hint: "Digite o nome do curso ou parte dele"
@@ -3269,6 +3270,10 @@ pt_BR:
 
   #Eventos da agenda
   schedule_events:
+    index:
+      events_list: Lista de Eventos
+      individual_events: Eventos individuais
+      group_events: Eventos em grupo
     types:
       presential_test: Prova Presencial
       presential_meeting: Encontro Presencial
@@ -3320,6 +3325,9 @@ pt_BR:
       summary_evaluative: "Está tabela contém todos os eventos agendados avaliativas."
       summary_frequency: "Está tabela contém todos os eventos agendados de frequência."
       summary_notevaluative: "Está tabela contém todos os eventos agendados não avaliativas."
+    participants:
+      title: Participantes
+      student: Alunos
 
   agendas:
     dropdown_content:

@@ -2,6 +2,7 @@ class ScheduleEventsController < ApplicationController
 
   include SysLog::Actions
 
+  # before_action :prepare_for_group_selection, only: :index
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
 
   before_filter only: [:edit, :update, :show] do |controller|
@@ -9,7 +10,17 @@ class ScheduleEventsController < ApplicationController
     get_groups_by_tool(@schedule_event = ScheduleEvent.find(params[:id]))
   end
 
-  layout false
+  layout false, except: :index
+
+  def index
+    authorize! :index, ScheduleEvent, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
+
+    allocation_tag = AllocationTag.find(@allocation_tag_id)
+    @is_student = current_user.is_student?([allocation_tag.id])
+    @events = Score.list_tool(current_user.id, @allocation_tag_id, 'schedule_events', false, false, true)
+
+    @can_evaluate = can?(:evaluate, ScheduleEvent, on: [@allocation_tag_id])
+  end
 
   def show
     authorize! :show, ScheduleEvent, on: @allocation_tags_ids
@@ -60,7 +71,7 @@ class ScheduleEventsController < ApplicationController
     authorize! :destroy, ScheduleEvent, on: @schedule_event.academic_allocations.pluck(:allocation_tag_id)
 
     evaluative = @schedule_event.verify_evaluatives
-    if @schedule_event.can_remove_groups? 
+    if @schedule_event.can_remove_groups?
       @schedule_event.destroy
       message = evaluative ? ['warning', t('evaluative_tools.warnings.evaluative')] : ['notice', t(:deleted, scope: [:schedule_events, :success])]
       render json: { success: true, type_message: message.first,  message: message.last }
@@ -77,9 +88,10 @@ class ScheduleEventsController < ApplicationController
     @ac = @schedule_event.academic_allocations.where(allocation_tag_id: @allocation_tag_id).first
     @user = User.find(params[:user_id])
     @score_type = params[:score_type]
+    @situation = params[:situation]
 
     @can_evaluate = can? :evaluate, ScheduleEvent, { on: @allocation_tag_id }
-   
+
     raise 'not_student' unless @user.has_profile_type_at(@allocation_tag_id)
     @acu = AcademicAllocationUser.find_one(@ac.id, params[:user_id])
 
@@ -88,6 +100,14 @@ class ScheduleEventsController < ApplicationController
   rescue => error
     error_message = (I18n.translate!("schedule_events.error.#{error}", raise: true) rescue t("schedule_events.error.general_message"))
     render text: error_message
+  end
+
+  def participants
+    raise CanCan::AccessDenied unless AllocationTag.find(@allocation_tag_id = active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id)
+    @event = ScheduleEvent.find(params[:id])
+    @participants = AllocationTag.get_participants(@allocation_tag_id, { students: true })
+    @situation = params[:situation]
+    render partial: 'participants'
   end
 
   private

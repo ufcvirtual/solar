@@ -36,8 +36,8 @@ $(function(){
             $(this).hide();
           });
           $(this).toggleClass("required");
-        });  
-      
+        });
+
       }else{
         $(".schedule_event_place").parent().attr('required', true);
         $(".schedule_event_start_hour, .schedule_event_end_hour").attr('required', true);
@@ -61,6 +61,15 @@ $(function(){
   $('#save').click(function(){
     $('#event_form:last').serialize_and_submit({
       replace_list: $(".calendar_schedules")
+    });
+  });
+
+  $(".participants").click(function(){
+    var url = $(this).data("url");
+    $(this).call_fancybox({
+      href: url,
+      open: true,
+      // type: 'iframe',
     });
   });
 
