@@ -533,11 +533,16 @@
         $('#link_to_shortcut, #shortcut_accesskey_content').on('keydown click', function(event) {
           var keynum = event.which || event.keyCode;
 
-          if( keynum == 13 || keynum == 32 || event.type == 'click') {
+          if( keynum == 32 || event.type == 'click') {
             setTimeout(function() {
               $("#shortcut_accesskey").trigger("click");
             }, 100);
           }
+
+          if( keynum == 13){
+            $("#shortcut_accesskey").trigger("click");
+          }
+
         });
       }
     });
