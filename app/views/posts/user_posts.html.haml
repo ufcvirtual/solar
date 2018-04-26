@@ -39,6 +39,7 @@
             = f.input :working_hours, required: true, as: :float, label: t(".frequency") + (@academic_allocation.frequency_automatic && !@alluser.try(:evaluated_by_responsible) ? t("common_between_pages.frequency.automatic") : t("common_between_pages.frequency.defined")), input_html: { value: @alluser.try(:working_hours), min:0, max: @academic_allocation.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@academic_allocation.max_working_hours.to_s ) }
           = link_to t(:save), "#void", onclick: 'finish_evaluation(this)', class: 'btn btn_main'
 
+= javascript_include_tag 'audios'
 
 :javascript
   function finish_evaluation(btn){

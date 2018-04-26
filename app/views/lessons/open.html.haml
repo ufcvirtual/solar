@@ -11,7 +11,7 @@
                 %a.btn.btn_dropdown#module-selected{ href: 'javascript:toggle_modules()', :'aria-label' => t('lessons.open.lmodule_menu', lmodule: @lesson.lesson_module.name) }
                   = @lesson.lesson_module.name
                   %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-                .dropdown.dropdown-tip#lmodule-options-dropdown
+                .dropdown.dropdown-tip.dropdown-relative#lmodule-options-dropdown
                   %ul.dropdown-menu
                     - @modules.each do |lmodule|
                       %li= link_to lmodule[:name], '#', :'data-id' => lmodule[:id], class: (lmodule[:id] == @lesson.lesson_module_id ? 'selected' : ''), onclick: 'change_module(event, this)', onkeydown: 'change_module(event, this)', :'data-ats' => @lesson.allocation_tags.map(&:id)
@@ -20,7 +20,7 @@
                 %a.btn.btn_dropdown#lesson-selected{ href: 'javascript:toggle_lessons()', :'aria-label' => t('lessons.open.lesson_menu', lesson: @lesson.name) }
                   = @lesson.name
                   %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-                .dropdown.dropdown-tip#lesson-options-dropdown
+                .dropdown.dropdown-tip.dropdown-relative#lesson-options-dropdown
                   %ul.dropdown-menu
                     - lessons_c = @lesson.lesson_module.lessons_to_open(current_user).map { |l| [l.name, l.id, { :'data-path' => l.path, :'data-draft' => l.is_draft? }] }
                     - lessons_c.each do |lesson|

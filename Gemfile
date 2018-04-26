@@ -32,8 +32,8 @@ gem "haml", "~> 5.0.4"
 gem "haml-rails", "~> 1.0.0", group: :development
 gem "ckeditor", ">= 4.2.4"
 
-gem "fullcalendar-rails", "~> 3.4.0.0"
-gem "momentjs-rails", "~> 2.20.1"
+gem "fullcalendar-rails", "~> 2.0.2.0"
+gem "momentjs-rails", "~> 2.9.0"
 
 gem "bigbluebutton-api-ruby", "~> 1.6.0"
 

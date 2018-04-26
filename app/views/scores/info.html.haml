@@ -23,7 +23,7 @@
         = content_tag(:i, nil, class: 'icon-list')
         = t('scores.index.show_hide_tools')
         %i.icon-arrow-down-triangle
-      #dropdown_menu.dropdown.dropdown-tip
+      #dropdown_menu.dropdown.dropdown-tip.dropdown-relative
         %ul.dropdown-menu
           - @types.each_with_index do |tool, idx|
             %li
