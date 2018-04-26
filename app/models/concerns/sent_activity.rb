@@ -4,8 +4,8 @@ module SentActivity
   extend ActiveSupport::Concern
 
   included do
-    after_save :update_acu, if: '(!respond_to?(:log_type) || log_type == LogAction::TYPE[:access_webconference]) && merge.nil?'
-    after_destroy :update_acu, if: '(!respond_to?(:log_type) || log_type == LogAction::TYPE[:access_webconference]) && merge.nil?'
+    after_save :update_acu, if: -> {(!respond_to?(:log_type) || log_type == LogAction::TYPE[:access_webconference]) && merge.nil?}
+    after_destroy :update_acu, if: -> {(!respond_to?(:log_type) || log_type == LogAction::TYPE[:access_webconference]) && merge.nil?}
 
   end
 

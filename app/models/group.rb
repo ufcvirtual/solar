@@ -21,13 +21,13 @@ class Group < ActiveRecord::Base
 
   validates :code, :offer_id, presence: true
 
-  validate :unique_code_on_offer, unless: 'offer_id.nil? || code.nil? || !code_changed?'
+  validate :unique_code_on_offer, unless: -> {offer_id.nil? || code.nil? || !code_changed?}
 
   validates_length_of :code, maximum: 40
 
-  validates :digital_class_directory_id, uniqueness: true, on: :update, unless: 'digital_class_directory_id.blank?'
+  validates :digital_class_directory_id, uniqueness: true, on: :update, unless: -> {digital_class_directory_id.blank?}
 
-  after_save :update_digital_class, if: "saved_change_to_code?"
+  after_save :update_digital_class, if: -> {saved_change_to_code?}
 
   def order
    'groups.status, groups.code'

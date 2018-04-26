@@ -17,15 +17,15 @@ class Bibliography < ActiveRecord::Base
     path: ":rails_root/media/bibliography/:id_:basename.:extension",
     url: "/media/bibliography/:id_:basename.:extension"
 
-  validates :issn, length: { is: 9 },  if: 'issn.present?' # com formatacao
-  validates :isbn, length: { is: 17 }, if: 'isbn.present?' # com formatacao
+  validates :issn, length: { is: 9 },  if: -> {issn.present?} # com formatacao
+  validates :isbn, length: { is: 17 }, if: -> {isbn.present?} # com formatacao
 
-  validates :title, :type_bibliography                                        , presence: true, unless: "type_bibliography == Bibliography::TYPE_FILE"
-  validates :address, :publisher, :edition, :publication_year                 , presence: true, if: "type_bibliography == Bibliography::TYPE_BOOK"
-  validates :address, :publisher, :periodicity_year_start                     , presence: true, if: "type_bibliography == Bibliography::TYPE_PERIODICAL"
-  validates :address, :volume, :pages, :publication_year, :publication_month  , presence: true, if: "type_bibliography == Bibliography::TYPE_ARTICLE"
-  validates :url, :accessed_in                                                , presence: true, if: "type_bibliography == Bibliography::TYPE_ELECTRONIC_DOC"
-  validates :attachment_file_name                                             , presence: true, if: "type_bibliography == Bibliography::TYPE_FILE"
+  validates :title, :type_bibliography                                        , presence: true, unless: -> {type_bibliography == Bibliography::TYPE_FILE}
+  validates :address, :publisher, :edition, :publication_year                 , presence: true, if: -> {type_bibliography == Bibliography::TYPE_BOOK}
+  validates :address, :publisher, :periodicity_year_start                     , presence: true, if: -> {type_bibliography == Bibliography::TYPE_PERIODICAL}
+  validates :address, :volume, :pages, :publication_year, :publication_month  , presence: true, if: -> {type_bibliography == Bibliography::TYPE_ARTICLE}
+  validates :url, :accessed_in                                                , presence: true, if: -> {type_bibliography == Bibliography::TYPE_ELECTRONIC_DOC}
+  validates :attachment_file_name                                             , presence: true, if: -> {type_bibliography == Bibliography::TYPE_FILE}
 
   validates_attachment_size :attachment, less_than: 5.megabyte, message: ' '
   validates_attachment_content_type_in_black_list :attachment

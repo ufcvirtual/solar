@@ -16,9 +16,8 @@ class PublicFile < ActiveRecord::Base
   validates_attachment_content_type_in_black_list :attachment
   do_not_validate_attachment_file_type :attachment
   
-  before_save :verify_offer, if: 'merge.nil?'
+  before_save :verify_offer, if: -> {merge.nil?}
 
-  #default_scope order: 'attachment_updated_at DESC'
   attr_accessor :merge
 
   def order

@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
 
   before_save :ensure_authentication_token!, :downcase_username, :downcase_email
   after_save :log_update_user
-  after_save :update_digital_class_user, if: '(!new_record? && (saved_change_to_name? || saved_change_to_email? || saved_change_to_cpf?) && !digital_class_user_id.nil?)', on: :update
+  after_save :update_digital_class_user, if: -> {(!new_record? && (saved_change_to_name? || saved_change_to_email? || saved_change_to_cpf?) && !digital_class_user_id.nil?)}, on: :update
 
   @has_special_needs
 
@@ -83,9 +83,9 @@ class User < ActiveRecord::Base
   validate :integration, if: Proc.new{ |a| !a.new_record? && !a.on_blacklist? && a.integrated? && (a.synchronizing.nil? || !a.synchronizing) }
   validate :data_integration, if: Proc.new{ |a| (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO["integrated"]) && (a.new_record? || username_changed? || email_changed? || cpf_changed?) && (a.synchronizing.nil? || !a.synchronizing) }
 
-  validate :unique_cpf, if: "saved_change_to_cpf?"
+  validate :unique_cpf, if: -> { saved_change_to_cpf }
   validate :login_differ_from_cpf
-  validate :only_admin, if: '!new_record? && (saved_change_to_cpf? || saved_change_to_active?)'
+  validate :only_admin, if: -> { !new_record? && (saved_change_to_cpf? || saved_change_to_active?) }
 
   validates_attachment_size :photo, less_than: 700.kilobyte, message: '' # Esse message vazio deve permanecer dessa forma enquanto nao descobrirmos como passar a mensagem de forma correta. Se o message for vazio a validacao nao eh feita.
   validates_attachment_content_type :photo,

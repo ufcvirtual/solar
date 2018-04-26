@@ -19,12 +19,12 @@ class Webconference < ActiveRecord::Base
   validates :title, :description, length: { maximum: 255 }
   validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
 
-  validate :cant_change_date, on: :update, if: 'initial_time_changed? || duration_changed?'
-  validate :cant_change_shared, on: :update, if: 'shared_between_groups_changed?'
+  validate :cant_change_date, on: :update, if: -> {initial_time_changed? || duration_changed?}
+  validate :cant_change_shared, on: :update, if: -> {shared_between_groups_changed?}
 
-  validate :verify_quantity, if: '!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed? || new_record?) && merge.nil?'
+  validate :verify_quantity, if: -> {!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed? || new_record?) && merge.nil?}
 
-  validate :verify_offer, unless: 'allocation_tag_ids_associations.blank?'
+  validate :verify_offer, unless: -> {allocation_tag_ids_associations.blank?}
 
   def link_to_join(user, at_id = nil, url = false)
     ((on_going? && bbb_online? && have_permission?(user, at_id.to_i)) ? (url ? bbb_join(user, at_id) : ActionController::Base.helpers.link_to((title rescue name), bbb_join(user, at_id), target: '_blank')) : (title rescue name))

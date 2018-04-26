@@ -16,7 +16,7 @@ class Semester < ActiveRecord::Base
 
   accepts_nested_attributes_for :offer_schedule, :enrollment_schedule, allow_destroy: true
 
-  after_save :update_digital_class, if: "saved_change_to_name?"
+  after_save :update_digital_class, if: -> {saved_change_to_name?}
 
   attr_accessor :type_id, :verify_current_date
 
@@ -81,7 +81,7 @@ class Semester < ActiveRecord::Base
   end
 
   def update_digital_class(ignore_changes=false)
-    DigitalClass.update_taggable(self, ignore_changes) unless created_at_changed?
+    DigitalClass.update_taggable(self, ignore_changes) unless saved_change_to_created_at?
   end
 
 end

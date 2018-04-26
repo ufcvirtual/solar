@@ -4,12 +4,12 @@ class IpReal < ActiveRecord::Base
   belongs_to :exam
   belongs_to :assignment
 
-  validate :validate_ip_v4, unless: 'ip_v4.blank?'
-  validate :validade_ip_v6, unless: 'ip_v6.blank?'
+  validate :validate_ip_v4, unless: -> {ip_v4.blank?}
+  validate :validade_ip_v6, unless: -> {ip_v6.blank?}
 
-  validate :can_create?, on: :create, unless: 'parent.blank? || !merge.nil?'
-  validate :can_change?, on: :update, if: 'merge.nil?'
-  before_destroy :can_destroy_callback?, if: 'parent.controlled'
+  validate :can_create?, on: :create, unless: -> {parent.blank? || !merge.nil?}
+  validate :can_change?, on: :update, if: -> {merge.nil?}
+  before_destroy :can_destroy_callback?, if: -> {parent.controlled}
 
   attr_accessor :merge
 

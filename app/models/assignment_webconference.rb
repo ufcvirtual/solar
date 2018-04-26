@@ -10,19 +10,19 @@ class AssignmentWebconference < ActiveRecord::Base
   has_one :assignment, through: :academic_allocation_user
   has_one :allocation_tag, through: :academic_allocation
 
-  before_save :can_change?, if: 'merge.nil?'
+  before_save :can_change?, if: -> {merge.nil?}
 
-  before_destroy :can_destroy?, :remove_records, if: 'merge.nil?'
+  before_destroy :can_destroy?, :remove_records, if: -> {merge.nil?}
 
   validates :title, :initial_time, :duration, :academic_allocation_user_id, presence: true
   validates :duration, numericality: { only_integer: true, less_than_or_equal_to: 60,  greater_than_or_equal_to: 1 }
   validates :title, length: { maximum: 255 }
 
-  validate :cant_change_date, on: :update, if: '(!duration.nil? && !initial_time.nil?) && (initial_time_changed? || duration_changed?)'
+  validate :cant_change_date, on: :update, if: -> {(!duration.nil? && !initial_time.nil?) && (initial_time_changed? || duration_changed?)}
 
-  validate :verify_quantity_users, :verify_time, if: '(((initial_time_changed? || duration_changed?)) || new_record?) && merge.nil? && (!duration.nil? && !initial_time.nil?)'
+  validate :verify_quantity_users, :verify_time, if: -> {(((initial_time_changed? || duration_changed?)) || new_record?) && merge.nil? && (!duration.nil? && !initial_time.nil?)}
 
-  validate :verify_assignment_time, if: '(!duration.nil? && !initial_time.nil?) && (duration_changed? || initial_time_changed? || new_record?) && merge.nil?'
+  validate :verify_assignment_time, if: -> {(!duration.nil? && !initial_time.nil?) && (duration_changed? || initial_time_changed? || new_record?) && merge.nil?}
 
   validates :academic_allocation_user_id, presence: true
 

@@ -16,7 +16,7 @@ class PostFile < ActiveRecord::Base
   do_not_validate_attachment_file_type :attachment
 
   #validate :can_change?, if: 'merge.nil?'
-  before_destroy :verify_children_with_raise, :can_change?, if: 'merge.nil?'
+  before_destroy :verify_children_with_raise, :can_change?, if: -> {merge.nil?}
 
   attr_accessor :merge
 

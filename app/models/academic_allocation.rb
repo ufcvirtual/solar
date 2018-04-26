@@ -19,7 +19,7 @@ class AcademicAllocation < ActiveRecord::Base
   has_many :chat_messages, dependent: :destroy
   has_many :chat_participants, inverse_of: :academic_allocation, dependent: :destroy
 
-  before_save :verify_association_with_allocation_tag, unless: 'allocation_tag_id.blank?'
+  before_save :verify_association_with_allocation_tag, unless: -> {allocation_tag_id.blank?}
 
   before_destroy :move_lessons_to_default, if: :lesson_module?
 
@@ -29,29 +29,29 @@ class AcademicAllocation < ActiveRecord::Base
 
   validate :verify_assignment_offer_date_range, if: :assignment?
 
-  validates :weight, presence: true, numericality: { greater_than: 0,  only_float: true }, if: 'evaluative? && !final_exam? && equivalent_academic_allocation_id.nil?'
-  validates :final_weight, presence: true, numericality: { greater_than: 0,  only_float: true, smaller_than: 100.1 }, if: 'evaluative? && !final_exam? && equivalent_academic_allocation_id.nil?'
-  validates :max_working_hours, presence: true, numericality: { greater_than: 0,  only_float: true, allow_blank: true }, if: 'frequency? && !final_exam? && equivalent_academic_allocation_id.nil?'
+  validates :weight, presence: true, numericality: { greater_than: 0,  only_float: true }, if: -> {evaluative? && !final_exam? && equivalent_academic_allocation_id.nil?}
+  validates :final_weight, presence: true, numericality: { greater_than: 0,  only_float: true, smaller_than: 100.1 }, if: -> {evaluative? && !final_exam? && equivalent_academic_allocation_id.nil?}
+  validates :max_working_hours, presence: true, numericality: { greater_than: 0,  only_float: true, allow_blank: true }, if: -> {frequency? && !final_exam? && equivalent_academic_allocation_id.nil?}
 
-  validate :verify_equivalents, if: '(equivalent_academic_allocation_id_changed? && !equivalent_academic_allocation_id.nil?) || (!equivalent_academic_allocation_id.nil? && (frequency_changed? || evaluative_changed?))'
-  validate :verify_type, if: "(evaluative || frequency) && academic_tool_type == 'ScheduleEvent'"
+  validate :verify_equivalents, if: -> {(equivalent_academic_allocation_id_changed? && !equivalent_academic_allocation_id.nil?) || (!equivalent_academic_allocation_id.nil? && (frequency_changed? || evaluative_changed?))}
+  validate :verify_type, if: -> {(evaluative || frequency) && academic_tool_type == 'ScheduleEvent'}
 
-  before_save :set_evaluative_params, on: :update, unless: 'new_record?'
-  before_save :change_dependencies, on: :update, unless: 'new_record?'
-  before_save :set_automatic_frequency, on: :update, if: "frequency"
+  before_save :set_evaluative_params, on: :update, unless: -> {new_record?}
+  before_save :change_dependencies, on: :update, unless: -> {new_record?}
+  before_save :set_automatic_frequency, on: :update, if: -> {frequency}
 
-  after_save :update_acus, on: :update, if: "frequency_automatic && !max_working_hours.blank?"
+  after_save :update_acus, on: :update, if: -> {frequency_automatic && !max_working_hours.blank?}
 
   before_destroy :set_situation_date
   after_destroy :verify_management
 
   attr_accessor :merge
 
-  after_create if: 'verify_tool' do
+  after_create if: -> {verify_tool} do
     AcademicTool.send_email(academic_tool, [self], false)
   end
 
-  before_destroy if: 'verify_tool', prepend: true do
+  before_destroy if: -> {verify_tool}, prepend: true do
     AcademicTool.send_email(academic_tool, [self]) if academic_tool.verify_can_destroy
   end
 

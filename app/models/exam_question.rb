@@ -11,12 +11,12 @@ class ExamQuestion < ActiveRecord::Base
   validates :score, presence: true
   validates :score, numericality: { greater_than_or_equal_to: 0.1, allow_blank: false, less_than_or_equal_to: 10 }
 
-  before_create :set_order, if: 'merge.nil?'
+  before_create :set_order, if: -> {merge.nil?}
 
   before_destroy :can_reorder?, :can_save?, :unpublish
 
-  before_save :can_save?, unless: 'saved_change_to_annulled?'
-  after_save :recalculate_grades, if: 'saved_change_to_annulled? && exam.status'
+  before_save :can_save?, unless: -> {saved_change_to_annulled?}
+  after_save :recalculate_grades, if: -> {saved_change_to_annulled? && exam.status}
 
   attr_accessor :merge
 
