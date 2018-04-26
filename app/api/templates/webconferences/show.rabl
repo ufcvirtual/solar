@@ -4,8 +4,7 @@ attributes :id, :title, :initial_time, :duration, :situation, :evaluative, :freq
 
 node (:access_url) { |web| "/api/v1/webconferences/#{@group_id}/access/#{web.id}" }
 
-node(:recordings) {|web| web.get_all_recordings_urls}
-  
+node (:recordings_url) { |web| "/api/v1/webconferences/#{@group_id}/recordings/#{web.id}" }
 
 if @is_student
   attributes :grade, :working_hours
