@@ -15,7 +15,7 @@ module V1
         get ":id/groups", rabl: "groups/list" do
           profiles_ids   = current_user.profiles_with_access_on('show', 'curriculum_units', nil, true)
           profiles_ids   = (profiles_ids & params[:profiles_ids]) if params[:profiles_ids]
-          
+
           user_groups    = current_user.groups(profiles_ids, Allocation_Activated).map(&:id)
           current_offers = Offer.currents({verify_end_date: true, profiles: profiles_ids, user_id: current_user.id})
           @groups = Group.joins(:offer).where(id: user_groups, offer_id: current_offers).where("offers.curriculum_unit_id = ?", params[:id]) rescue []
@@ -37,8 +37,8 @@ module V1
           profiles_ids   = current_user.profiles_with_access_on('show', 'curriculum_units', nil, true)
           profiles_ids   = (profiles_ids & params[:profiles_ids]) if params[:profiles_ids]
           # only returns groups with access to curriculum_unit
-          user_groups    = current_user.groups(profiles_ids, Allocation_Activated).pluck(:id)
-          
+          user_groups    = current_user.groups(profiles_ids, Allocation_Activated)
+
           offers = if params[:semester].present?
             Offer.joins(:semester).where(params.slice(:curriculum_unit_type_id, :course_id, :curriculum_unit_id)).where(semesters: { name: params[:semester] }).pluck(:id)
           else
@@ -128,7 +128,7 @@ module V1
 
           @groups.map{ |group|
             offer = group.offer
-            { 
+            {
               id: group.id,
               code: group.code,
               offer_id: group.offer_id,
@@ -156,12 +156,12 @@ module V1
           query =  ["semesters.name = :semester"]
           query << "curriculum_units.curriculum_unit_type_id = :curriculum_unit_type_id"
           query << if params[:course_id].present?
-           "(courses.id = :course_id)" 
+           "(courses.id = :course_id)"
           elsif params[:course_code].present?
             "(courses.code = :course_code)"
           end
           query << if params[:curriculum_unit_id].present?
-           "(curriculum_units.id = :curriculum_unit_id)" 
+           "(curriculum_units.id = :curriculum_unit_id)"
           elsif params[:curriculum_unit_code].present?
             "(curriculum_units.code = :curriculum_unit_code)"
           end
@@ -175,14 +175,14 @@ module V1
 
       namespace :group do
 
-        segment do 
+        segment do
           after_validation do
             if params[:course_code].present?
               offer_id = Offer.where(course_id: Course.find_by_code(params[:course_code]).try(:id), curriculum_unit_id: CurriculumUnit.find_by_code(params[:curriculum_unit_code]).try(:id),
                 semester_id: Semester.find_by_name(params[:semester]).try(:id)).first.try(:id)
               params.merge!({offer_id: offer_id})
             end
-          end 
+          end
 
           desc "Criação de turma"
           params do
@@ -236,7 +236,7 @@ module V1
                   group.offer.notify_editors_of_disabled_groups([group])
                 end
               end
-              {ok: :ok}             
+              {ok: :ok}
             end
           end
 
@@ -267,8 +267,8 @@ module V1
         get :students_info, rabl: 'groups/students_info' do
           begin
             group = Group.joins(offer: [:semester, :course, :curriculum_unit])
-                         .where(code: params[:group_code], 
-                            semesters: { name: params[:semester] }, 
+                         .where(code: params[:group_code],
+                            semesters: { name: params[:semester] },
                             curriculum_units: { code: params[:curriculum_unit_code], curriculum_unit_type_id: params[:curriculum_unit_type_id] },
                             courses: { code: params[:course_code] }
                          ).first
@@ -289,8 +289,8 @@ module V1
           begin
 
             group = Group.joins(offer: [:semester, :course, :curriculum_unit])
-                         .where(code: params[:group_code], 
-                            semesters: { name: params[:semester] }, 
+                         .where(code: params[:group_code],
+                            semesters: { name: params[:semester] },
                             curriculum_units: { code: params[:curriculum_unit_code], curriculum_unit_type_id: params[:curriculum_unit_type_id] },
                             courses: { code: params[:course_code] }
                          ).first
@@ -313,8 +313,8 @@ module V1
             raise ActiveRecord::RecordNotFound if user.nil?
 
             group = Group.joins(offer: [:semester, :course, :curriculum_unit])
-                         .where(code: params[:group_code], 
-                            semesters: { name: params[:semester] }, 
+                         .where(code: params[:group_code],
+                            semesters: { name: params[:semester] },
                             curriculum_units: { code: params[:curriculum_unit_code], curriculum_unit_type_id: params[:curriculum_unit_type_id] },
                             courses: { code: params[:course_code] }
                          ).first

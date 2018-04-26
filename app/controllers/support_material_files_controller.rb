@@ -24,7 +24,7 @@ class SupportMaterialFilesController < ApplicationController
       @list_files.collect { |file|
         @folders_list[file["folder"]] = [] unless @folders_list[file["folder"]].is_a?(Array) # utiliza nome do folder como chave da lista
         @folders_list[file["folder"]] << file
-      } 
+      }
   end
 
   def new
@@ -78,7 +78,7 @@ class SupportMaterialFilesController < ApplicationController
   def open
     if Exam.verify_blocking_content(current_user.id)
         redirect_to :back, alert: t('exams.restrict')
-    else  
+    else
       @file = SupportMaterialFile.find(params[:id]) unless params[:id].blank?
       if @file.url.blank? && !File.exist?(@file.attachment.path)
         render text: t(:file_error_nonexistent_file)
@@ -91,12 +91,12 @@ class SupportMaterialFilesController < ApplicationController
             @file.academic_allocations.map(&:allocation_tag_id)
           end
         authorize! :download, SupportMaterialFile, on: allocation_tag_ids, read: true
-        
-        render layout: 'lesson'
-      end  
-    end 
 
-  end  
+        render layout: 'lesson'
+      end
+    end
+
+  end
 
   def destroy
     @support_material_files = SupportMaterialFile.where(id: params[:id].split(",").flatten)
@@ -115,7 +115,7 @@ class SupportMaterialFilesController < ApplicationController
   def download
     if Exam.verify_blocking_content(current_user.id)
         redirect_to :back, alert: t('exams.restrict')
-    else  
+    else
       file = SupportMaterialFile.find(params[:id]) unless params[:id].blank?
 
       unless file.nil? || file.url.blank?
@@ -135,7 +135,7 @@ class SupportMaterialFilesController < ApplicationController
           redirect_error = support_material_files_path
 
           folder = (params[:type] == :folder && !params[:folder].blank?) ? params[:folder] : nil
-          path_zip = compress({ files: SupportMaterialFile.find_files(allocation_tag_ids, folder), table_column_name: 'attachment_file_name' })
+          path_zip = compress_file({ files: SupportMaterialFile.find_files(allocation_tag_ids, folder), table_column_name: 'attachment_file_name' })
 
           if path_zip
             download_file(redirect_error, path_zip)
@@ -146,14 +146,14 @@ class SupportMaterialFilesController < ApplicationController
           download_file(support_material_files_path, file.attachment.path, file.attachment_file_name)
         end
       end
-    end  
+    end
   end
 
   def list
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, SupportMaterialFile, on: @allocation_tags_ids
 
-    @support_materials = SupportMaterialFile.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).order("attachment_updated_at DESC").uniq 
+    @support_materials = SupportMaterialFile.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).order("attachment_updated_at DESC").uniq
   rescue => error
     request.format = :json
     raise error.class

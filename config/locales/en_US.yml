@@ -212,6 +212,8 @@ en_US:
       comment_file: File
       email: Email
       supportmaterialfile: Support Material
+      log: Logs
+      oauth: API
     attributes:
       user:
         password: "Password"

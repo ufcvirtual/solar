@@ -37,6 +37,8 @@ class MessagesController < ApplicationController
 
   def show
     @message = Message.find(params[:id])
+    sent_by_responsible = @message.allocation_tag.is_responsible?(@message.sent_by.id) unless @message.allocation_tag_id.blank?
+    LogAction.create(log_type: LogAction::TYPE[:update], user_id: current_user.id, ip: get_remote_ip, description: "message: #{@message.id} read message from #{sent_by_responsible ? 'responsible' : 'other'}", allocation_tag_id: @message.allocation_tag_id) rescue nil
     change_message_status(@message.id, "read", @box = params[:box] || "inbox")
   end
 

@@ -21,6 +21,7 @@ module V1
     mount Savs
     mount Comments
     mount Webconferences
+    mount Logs
 
     mount RemoveAfterChanges
   end

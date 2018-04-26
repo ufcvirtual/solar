@@ -248,6 +248,8 @@ pt_BR:
       comment_file: Arquivo
       email: Email
       supportmaterialfile: Material de Apoio
+      log: Logs
+      oauth: API
     attributes:
       user:
         alternate_email: "E-mail alternativo"

@@ -106,7 +106,7 @@ class BibliographiesController < ApplicationController
       redirect_error = bibliographies_path
 
       if bibliographies_to_download.respond_to?(:length)
-        path_zip = compress({ files: bibliographies_to_download, table_column_name: 'attachment_file_name', name_zip_file: t('bibliographies.zip', info: AllocationTag.where(id: allocation_tags_ids).first.offers.first.info) })
+        path_zip = compress_file({ files: bibliographies_to_download, table_column_name: 'attachment_file_name', name_zip_file: t('bibliographies.zip', info: AllocationTag.where(id: allocation_tags_ids).first.offers.first.info) })
         if path_zip
           download_file(redirect_error, path_zip)
         else

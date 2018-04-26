@@ -274,9 +274,9 @@ class Webconference < ActiveRecord::Base
     acu.comments
   end
 
-  def get_all_recordings_urls
+  def get_all_recordings_urls(at_id)
     urls = []
-    urls << recordings([], at_id).collect{|r| Bbb.get_recording_url(r)}
+    urls << recordings([], at_id).collect{|r| {url: Bbb.get_recording_url(r), start_time: r[:startTime].to_datetime, end_time: r[:endTime].to_datetime} }
     urls.flatten
   end
 

@@ -25,13 +25,13 @@ module FilesHelper
   #   folders_names: ['folder_path1', 'folder_path2']
   # }
   ##
-  def compress(opts = {})
+  def compress_file(opts = {})
     require 'zip'
 
     some_file_doesnt_exist = false
 
     ## arquivos e o caminho principal nao foram indicados
-    return if !opts[:files].present? && !opts[:under_path].present?
+    return if (!opts[:files].present? && !opts[:under_path].present?)
 
     archive = File.join(Rails.root.to_s, 'tmp', '%s') << '.zip'
     ## arquivos armazenados sem uso de banco de dados
@@ -46,7 +46,7 @@ module FilesHelper
           dir = (opts[:folders_names].present?) ? opts[:folders_names][idx] : path.split('/').last
           zipfile.mkdir(dir)
           Dir["#{path}/**/**"].each do |file| # varre cada diretório/arquivo (file) dentro do diretório atual (path) e adiciona no zip
-            zipfile.add(File.join(dir, file.sub(path + '/', '')), file) # nome do arquivo, path do arquivo 
+            zipfile.add(File.join(dir, file.sub(path + '/', '')), file) # nome do arquivo, path do arquivo
           end # dir
         end # each
       end # zip
@@ -62,10 +62,10 @@ module FilesHelper
           make_tree(opts[:files], opts[:name_zip_file]).each do |dir, files|
             zipfile.mkdir(dir.to_s)
             # adiciona todos os arquivos do nível em questão no zip
-            files.map do |file| 
+            files.map do |file|
               if File.exists?(file.attachment.path.to_s)
                 begin
-                  zipfile.add(File.join(dir.to_s, file.attachment_file_name), file.attachment.path.to_s) 
+                  zipfile.add(File.join(dir.to_s, file.attachment_file_name), file.attachment.path.to_s)
                 rescue
                 end
               else
