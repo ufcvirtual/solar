@@ -660,7 +660,12 @@ class User < ActiveRecord::Base
 
       return true
     else
-      Rails.logger.info "\n[WARNING] [SYNCHRONIZE USER] [#{Time.now}] [USER CPF #{cpf}] message: not returned by si3"
+      if integrated
+        self.integrated = false
+        save(validate: false)
+      end
+
+      Rails.logger.info "\n[WARNING] [SYNCHRONIZE USER] [#{Time.now}] [USER CPF #{cpf}] message: not returned by si3 - setted as not integrated"
       return nil
     end
   rescue => error
@@ -979,7 +984,9 @@ class User < ActiveRecord::Base
         # não é integrado ou tá na blacklist?
         else
           # há algum usuário integrado com mesmo login?
-          integrated = same_column.joins('LEFT JOIN user_blacklist ub ON ub.cpf = users.cpf').where(integrated: true).where('ub.id IS NULL')
+          integrated = same_column.joins('LEFT JOIN user_blacklist ub ON ub.cpf = users.cpf').where(integrated: true).where('ub.id IS NULL').pluck(:id)
+          integrated = User.where(id: integrated)
+
           send("change_#{column}".to_sym) if integrated.any?
           # muda dos outros
           (same_column - integrated).map{|u| u.send("change_#{column}".to_sym)}
