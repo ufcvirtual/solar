@@ -30,7 +30,9 @@
 :javascript
 
   $(function(){
-    $('#new_semester, .link_new_offer, [id^="edit_semester_"]').call_fancybox();
+    $('#new_semester, .link_new_offer, [id^="edit_semester_"]').call_fancybox({
+       minWidth: 425
+    });
 
     $('.btn_del').attr("disabled", true);
 
