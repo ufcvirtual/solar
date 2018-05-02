@@ -232,7 +232,7 @@ class User < ActiveRecord::Base
 
   # faltando pegar apenas alocacoes validas
   def all_allocation_tags(objects = false)
-    allocation_tags.collect! { |at| RelatedTaggable.related(at) }.flatten.uniq
+    allocation_tags.to_a.collect! { |at| RelatedTaggable.related(at) }.flatten.uniq
   end
 
   def to_msg

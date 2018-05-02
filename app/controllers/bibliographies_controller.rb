@@ -36,7 +36,8 @@ class BibliographiesController < ApplicationController
 
   # GET /bibliographies/1/edit
   def edit
-    raise 'cant_edit_file' if @bibliography.is_file?
+    #raise 'cant_edit_file' if @bibliography.is_file?
+    render plain: t('bibliographies.error.cant_edit_file') if @bibliography.is_file?
     authorize! :update, Bibliography, on: @allocation_tags_ids
   end
 

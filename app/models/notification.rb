@@ -35,8 +35,12 @@ class Notification < ActiveRecord::Base
   def copy_dependencies_from(notification_to_copy)
     unless notification_to_copy.notification_files.empty?
       notification_to_copy.notification_files.each do |file|
-        new_file = NotificationFile.create! file.attributes.merge({ notification_id: self.id })
-        copy_file(file, new_file, 'notifications', 'file')
+        #new_file = NotificationFile.create! file.attributes.merge({ notification_id: self.id })
+        #copy_file(file, new_file, 'notifications', 'file')
+        new_file = file.dup
+        new_file.file = file.file
+        new_file.notification_id = self.id
+        new_file.save!
       end
     end
   end

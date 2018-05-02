@@ -9,7 +9,7 @@
           %a{ href: '#', :"data-dropdown" => "#dropdown" }
             = t('notifications.show.count_groups', count: @groups.size)
             %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-          .dropdown.dropdown-tip.dropdown-relative{id: "dropdown"}
+          .dropdown.dropdown-tip{id: "dropdown"}
             %ul{ class: 'dropdown-menu' }
               - @groups.each do |code|
                 %li= code

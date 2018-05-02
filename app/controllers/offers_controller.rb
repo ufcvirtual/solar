@@ -66,10 +66,8 @@ class OffersController < ApplicationController
   def update
     @type_id =  params[:offer][:type_id].to_i
     @offer   = Offer.find(params[:id])
-    
     optional_authorize(:update)
     update_offer_activities(@offer)
-    
     if @offer.update_attributes(offer_params)
       render json: { success: true, notice: t(:updated, scope: [:offers, :success]) }
     else
@@ -88,7 +86,7 @@ class OffersController < ApplicationController
 
     @offers.map(&:can_destroy?)
     @offers.destroy_all
-   
+
     render json: {success: true, notice: t('offers.success.deleted')}
   rescue ActiveRecord::DeleteRestrictionError
     render json: {success: false, alert: t('offers.error.deleted')}, status: :unprocessable_entity
@@ -120,10 +118,10 @@ class OffersController < ApplicationController
     def optional_authorize(method)
       at_c, at_uc = nil
       at_c  = AllocationTag.find_by_course_id(params[:offer][:course_id]).try(:id) unless params[:offer][:course_id].blank?
-      at_uc = if params[:offer][:curriculum_unit_id].blank? 
+      at_uc = if params[:offer][:curriculum_unit_id].blank?
         AllocationTag.joins(:curriculum_unit).joins("JOIN courses ON courses.name = curriculum_units.name AND courses.id = #{params[:offer][:course_id]}").first.try(:id) unless params[:offer][:course_id].blank? || params[:offer][:type_id].blank? || params[:offer][:type_id].to_i != 3
       else
-        AllocationTag.find_by_curriculum_unit_id(params[:offer][:curriculum_unit_id]).try(:id) 
+        AllocationTag.find_by_curriculum_unit_id(params[:offer][:curriculum_unit_id]).try(:id)
       end
 
       if at_c.nil? && at_uc.nil?
@@ -138,12 +136,11 @@ class OffersController < ApplicationController
     end
 
     def update_offer_activities(offer)
-      
       param_off_start_date = params[:offer][:period_schedule_attributes][:start_date].blank? ? nil : Date.parse(params[:offer][:period_schedule_attributes][:start_date])
       param_off_end_date = params[:offer][:period_schedule_attributes][:end_date].blank? ? nil : Date.parse(params[:offer][:period_schedule_attributes][:end_date])
-      
+
       if (param_off_end_date != nil && param_off_start_date != nil)
-        
+
         group_id = Group.where(offer_id: offer.id).pluck(:id)
         allocation_tag_id = AllocationTag.where(group_id: group_id).pluck(:id)
         academic_allocation = AcademicAllocation.where(allocation_tag_id: allocation_tag_id)
@@ -151,7 +148,6 @@ class OffersController < ApplicationController
         activities_to_email = {}
         activities_to_save = []
         Struct.new('Activity_Object',:name, :start_date, :end_date)
-
 
         academic_allocation.each do |al|
           act = al.academic_tool
@@ -179,9 +175,8 @@ class OffersController < ApplicationController
             end
 
           end
-          
+
           if ['Webconference'].include? al.academic_tool_type
-            
             if act.initial_time < param_off_start_date
               act.initial_time = Time.new(param_off_start_date.year, param_off_start_date.month, param_off_start_date.day, act.initial_time.hour, act.initial_time.min, act.initial_time.sec)
             end
@@ -214,7 +209,6 @@ class OffersController < ApplicationController
               if lesson.schedule.start_date < param_off_start_date
                 lesson.schedule.start_date = param_off_start_date
               end
-  
               if lesson.schedule.end_date != nil && lesson.schedule.end_date  > param_off_end_date
                 lesson.schedule.end_date = param_off_end_date
               end
@@ -231,7 +225,6 @@ class OffersController < ApplicationController
           end
 
           if ['Exam'].include? al.academic_tool_type
-            
             difference_in_days = (act.schedule.end_date - act.schedule.start_date).to_i
 
             # se tentou mover o periodo total da oferta para antes do inicio da atividade
@@ -259,9 +252,7 @@ class OffersController < ApplicationController
               activities_to_email[al.academic_tool_type] << act
               activities_to_save << act
             end
-           
           end
-          
         end
 
         unless activities_to_save.blank?
@@ -271,13 +262,11 @@ class OffersController < ApplicationController
             end
           end
         end
-        
         unless activities_to_email.blank?
           Notifier.send_mail(related_users_emails, "Alteração do Período da(s) Atividade(s)", email_template(activities_to_email), []).deliver
         end
 
       end
-    
     end
 
     def msg_template(activities)
@@ -295,7 +284,7 @@ class OffersController < ApplicationController
     end
 
     def email_template(activities)
-      %{#{msg_template(activities)}}    
+      %{#{msg_template(activities)}}
     end
 
 end

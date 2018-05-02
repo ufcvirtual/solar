@@ -249,6 +249,8 @@ pt_BR:
       email: Email
       supportmaterialfile: Material de Apoio
       lessonmodule: Módulos de Aula
+      log: Logs
+      oauth: API
     attributes:
       user:
         alternate_email: "E-mail alternativo"

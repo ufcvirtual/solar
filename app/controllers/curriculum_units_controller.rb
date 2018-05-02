@@ -127,7 +127,8 @@ class CurriculumUnitsController < ApplicationController
     end
   rescue => error
     request.format = :json
-    raise error.class
+    #raise error.class
+    render_json_error(error, 'enrollments.index')
   end
 
   # information about UC from a offer from the group selected

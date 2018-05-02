@@ -213,6 +213,8 @@ en_US:
       email: Email
       supportmaterialfile: Support Material
       lessonmodule: Lesson Module
+      log: Logs
+      oauth: API
     attributes:
       user:
         password: "Password"

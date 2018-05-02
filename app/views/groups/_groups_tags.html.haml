@@ -17,7 +17,7 @@
     %span.new_groups
       - unless tool.kind_of? Integer 
         = content_tag(:i, nil, class: 'icon icon-cross unbind_groups', :"data-dropdown" => ".unbind_group_dropdown_#{tool_id}", :"data-tooltip" => t('.unbind_groups'))
-        %div{id: 'dropdown', class: "dropdown dropdown-tip unbind_group_dropdown_#{tool_id}"}
+        %div{id: 'dropdown', class: "dropdown dropdown-tip unbind_group_dropdown_#{tool_id} dropdown-relative"}
           %h1=t('.unbind_groups')
           = form_for :group do |f|
             %span.select_all_box
@@ -32,7 +32,7 @@
   - unless inside_tab || paths.blank? || new_groups.flatten.empty? || !can_add_groups
     %span.new_groups
       = content_tag(:i, nil, class: 'icon icon-plus add_group', :"data-dropdown" => ".add_group_dropdown_#{tool_id}", :"data-tooltip" => t('.add_group'))
-      #dropdown{class: "dropdown dropdown-tip add_group_dropdown_#{tool_id}"}
+      #dropdown{class: "dropdown dropdown-tip add_group_dropdown_#{tool_id} dropdown-relative"}
         %h1=t('.add_group')
         = form_for :group do |f|
           %span.select_all_box

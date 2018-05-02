@@ -6,6 +6,12 @@
       = @discussion.name
   .block_content
     .block_content_text= sanitize @discussion.description
+
+  %h2
+    .block_title
+      %i.icon-forum
+      = t('.files.discussion_file_title')
+  .block_content
     .block_content_text
       = sanitize @discussion.description
       %p
