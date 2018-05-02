@@ -245,6 +245,7 @@ class AcademicAllocationUser < ActiveRecord::Base
 
   def delete_with_dependents
     comments.map(&:delete_with_dependents)
+    schedule_event_files.map(&:delete_with_dependents)
 
     case academic_allocation.academic_tool_type
     when 'Exam'
@@ -338,12 +339,12 @@ class AcademicAllocationUser < ActiveRecord::Base
     when 'ScheduleEvent'
       grade, working_hours, comments = try(:grade), try(:working_hours), try(:comments)
 
-      files = ScheduleEventFiles.where(academic_allocation_user_id: id)
+      files = ScheduleEventFile.where(academic_allocation_user_id: id)
 
       has_files = !files.empty?
       file_amount = files.size
 
-      { grade: grade, working_hours: working_hours, comments: comments, has_files: has_files, file_amount: file_amount, file_sent_date: (has_files ? I18n.l(files.last.to_datetime, format: :normal) : ' - ') }
+      { grade: grade, working_hours: working_hours, comments: comments, has_files: has_files, file_amount: file_amount, file_sent_date: (has_files ? I18n.l(files.last.updated_at, format: :normal) : ' - ') }
     end
   end
 

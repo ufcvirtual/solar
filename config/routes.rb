@@ -502,6 +502,13 @@ Solar::Application.routes.draw do
     get :summary , to: 'academic_allocation_users#summary', tool: 'ScheduleEvent', on: :collection
   end
 
+  resources :schedule_event_files, except: [:index, :show] do
+    collection do
+      get :download
+      get :zip_download, to: :download, defaults: {zip: true}
+    end
+  end
+
   resources :messages, only: [:new, :show, :create, :index] do
     member do
       put ":box/:new_status", to: "messages#update", as: :change_status, constraints: { box: /(inbox)|(outbox)|(trashbox)|(box_value)/, new_status: /(read)|(unread)|(trash)|(restore)/ }

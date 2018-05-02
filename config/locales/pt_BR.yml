@@ -248,8 +248,6 @@ pt_BR:
       comment_file: Arquivo
       email: Email
       supportmaterialfile: Material de Apoio
-      log: Logs
-      oauth: API
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -1852,6 +1850,7 @@ pt_BR:
   curriculum_unit: "Disciplina"
 
   select_files: Selecionar arquivos
+  add_files: Adicionar arquivos
 
   devise:
     failure:
@@ -3274,6 +3273,16 @@ pt_BR:
       events_list: Lista de Eventos
       individual_events: Eventos individuais
       group_events: Eventos em grupo
+    events:
+      name: Nome
+      data_range: Período
+      type: Tipo
+      place: Local
+      situation: Situação
+      evaluative: Avaliativa
+      frequency: Frequência
+      files_sended: Arquivos enviados
+      grade_work_hours_comments: Nota/frequência e comentários
     types:
       presential_test: Prova Presencial
       presential_meeting: Encontro Presencial
@@ -3328,6 +3337,27 @@ pt_BR:
     participants:
       title: Participantes
       student: Alunos
+      list_name: Lista de Alunos
+      name: Nome
+      send_file: Enviar Arquivos
+      evaluate_comments: Avaliar/Comentar
+      grade: Nota
+      working_hours: Carga Horária
+      files: Arquivos
+
+  schedule_event_files:
+    new:
+      title: Título
+      confirm: Confirma cancelamento do envio de arquivos?
+    list:
+      name: Nome
+      size: Tamanho
+      sent_on: Enviado em
+      sent_by: Enviado por
+      summary_files: Arquivos enviados pelo tutor
+    success:
+      created: Arquivo(s) enviado(s) com sucesso(s).
+      deleted: Arquivo(s) deletado(s) com sucesso(s).
 
   agendas:
     dropdown_content:

@@ -1,0 +1,74 @@
+-# #file_size.alert.invisible
+-#   %span.message_file_size{ tabindex: 0 }
+-#   %span.close
+-#     %a{href: "#void", onclick: "hide_element(event)", onkeydown: "hide_element(event)", :'aria-label' => t('flash_message.close')}
+-#       %i.icon-cross{ :'aria-hidden' => "true" }
+
+.schedule_event_file_form
+  = simple_form_for @schedule_event_file, html: { id: 'event_file_form', multipart: true } do |f|
+    -# - title = [(f.object.persisted? ? "edit" : "new"), (f.object.is_link? ? "link" : "file")].join("_")
+
+    -# %h1#lightBoxDialogTitle= t('.title')
+    %span.form_requirement= t(:required_fields)
+
+    .form-inputs.block_content
+      = f.hidden_field :academic_allocation_user_id, value: @schedule_event_file.academic_allocation_user_id
+
+    .event_file_form
+      .form-inputs.block_content
+        .input.string.files
+          = f.simple_fields_for @schedule_event_file do |file|
+            .file_input
+              = file.input :_destroy, as: :hidden, input_html: { value: 0, class: "destroy_input_file", :"data-file-id" => file.object.id }
+              = file_field_tag 'files[]', type: :file, multiple: true
+              = button_tag t(:select_files), :type => 'button', :onclick => "add_new_file()", class: 'btn add_files'
+          .files_list
+
+        .schedule_event_file_buttons
+          = button_tag t(:cancel), type: 'button', id: 'cancel_files', class: 'btn btn_default btn_lightbox'
+          = button_tag t(:save), type: "button", id: "save", class: "btn btn_main btn_lightbox"
+
+= javascript_include_tag 'schedule_event_files'
+
+:javascript
+  $(function(){
+    $('#event_file_form:first').keypress(function(event) { if (event.keyCode == 13) { event.preventDefault(); } }); // prevenir enter
+
+    $('#save').click(function(){
+      $('#event_file_form:first').serialize_and_submit({
+        files: true,
+        // replace_list: $('.list_support_material:last'),
+        prepend_to_list: $("#tb_lf tbody"),
+        dont_remove_lightbox: true,
+        outer: 'fancybox-outer',
+        error_message: '',
+        complement_success: function(data){
+          $('#tb_lf').show();
+          $(".event_file_form").html('');
+          $("#new_file").show();
+          // flash_message("#{t('assignment_files.success.uploaded')}", "notice");
+          // $(".assignment_to_be_sent").html("#{t(:sent)}").css("color","#2900C2");
+          // update_tables_with_no_data();
+          // focus_element_time('#flash_message_span');
+          if(!!$('.fancybox-outer').length)
+            flash_message("#{t('schedule_event_files.success.created')}", "notice", 'fancybox-outer');
+          else
+            flash_message("#{t('schedule_event_files.success.created')}", "notice");
+        }
+      });
+    });
+
+    $("#cancel_files").click(function(){
+      if(confirm("#{t('schedule_event_files.new.confirm')}")){
+        cancel_new_files();
+        update_tables_with_no_data();
+      }
+    });
+
+    $('#files_').change(function(){
+      var files = $(this)[0].files;
+      $.each(files, function(i){
+        $('.files_list').append("<div id='file'>"+files[i].name+" ("+file_size_human_readable(files[i])+") <a href='#void' onclick='remove_file(this, event)'><i class='icon-cross-square warning'></a></div>");
+      });
+    });
+  });
