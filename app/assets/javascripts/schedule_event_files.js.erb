@@ -1,0 +1,37 @@
+function add_new_file(){
+  $('#files_').click();
+}
+
+function file_size_human_readable(file) {
+  var file_size = file.size;
+
+  var file_size_extension = new Array('Bytes', 'KB', 'MB', 'GB');
+
+  var count = 0;
+  while(file_size >= 1000) {
+    file_size /= 1000;
+    count++;
+  }
+
+  return (Math.round(file_size*100)/100) + " " + file_size_extension[count];
+}
+
+function remove_file(link, event) {
+  var keynum = event.which || event.keyCode;
+  if( keynum == 13 || event.type == 'click'){
+    $(link).parent().remove();
+  }
+}
+
+function delete_file(button){
+  $(button).nice_delete({
+    parent: 'tr.lines'
+  });
+  update_tables_with_no_data();
+}
+
+function cancel_new_files(){
+  $(".event_file_form").html('');
+  $("#new_file").show();
+  return false;
+}

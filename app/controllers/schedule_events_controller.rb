@@ -2,7 +2,7 @@ class ScheduleEventsController < ApplicationController
 
   include SysLog::Actions
 
-  # before_action :prepare_for_group_selection, only: :index
+  before_action :prepare_for_group_selection, only: :index
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
 
   before_filter only: [:edit, :update, :show] do |controller|
@@ -107,6 +107,7 @@ class ScheduleEventsController < ApplicationController
     @event = ScheduleEvent.find(params[:id])
     @participants = AllocationTag.get_participants(@allocation_tag_id, { students: true })
     @situation = params[:situation]
+    @group_id = params[:group_id]
     render partial: 'participants'
   end
 

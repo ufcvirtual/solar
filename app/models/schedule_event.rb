@@ -13,7 +13,6 @@ class ScheduleEvent < Event
   validate :verify_hours, unless: Proc.new { |a| a.start_hour.blank? or a.end_hour.blank?}, if:  Proc.new{|event| [Presential_Test, WebConferenceLesson, Presential_Meeting].include?(event.type_event)}
 
   accepts_nested_attributes_for :schedule
-  # accepts_nested_attributes_for :schedule_event_files, allow_destroy: true, reject_if: proc { |attributes| !attributes.include?(:attachment) || attributes[:attachment] == '0' || attributes[:attachment].blank? }
 
   before_destroy :can_remove_groups_with_raise
 

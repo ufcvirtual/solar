@@ -212,8 +212,6 @@ en_US:
       comment_file: File
       email: Email
       supportmaterialfile: Support Material
-      log: Logs
-      oauth: API
     attributes:
       user:
         password: "Password"
@@ -759,6 +757,7 @@ en_US:
   url: "Enter here the URL of the image in the textbox above."
   send: "Send"
   select_files: Select files
+  add_files: Add files
   information_access_website: "Information access website"
   states_brazil_website: "States of Brazil website"
   user_place_holder: "Type your login"
@@ -2992,6 +2991,16 @@ en_US:
       events_list: Events List
       individual_events: Individual Events
       group_events: Group Events
+    events:
+      name: Name
+      data_range: Data range
+      type: Type
+      place: Place
+      situation: Situation
+      evaluative: Evaluative
+      frequency: Frequency
+      files_sended: Files sended
+      grade_work_hours_comments: Grade/frequency and comments
     types:
       presential_test: Presential Test
       presential_meeting: Presential Meeting
@@ -3046,6 +3055,27 @@ en_US:
     participants:
       title: Participants
       student: Students
+      list_name: Students List
+      name: Name
+      send_file: Send File
+      evaluate_comments: Evaluate/Comments
+      grade: Grade
+      working_hours: Working Hours
+      files: Files
+
+  schedule_event_files:
+    new:
+      title: Title
+      confirm: Confirm to cancel sending files?
+    list:
+      name: Name
+      size: Size
+      sent_on: Sent on
+      sent_by: Sent by
+      summary_files: Files sent by the tutor
+    success:
+      created: File was successfully sent.
+      deleted: File was successfully deleted.
 
   agendas:
     dropdown_content:
