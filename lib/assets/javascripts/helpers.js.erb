@@ -691,11 +691,27 @@ function clear_ckeditor(){
 }
 
 function calendar_prev_next_month_accessible(){
-  $(".ui-datepicker-next").attr("tabindex", "0");
-  $(".ui-datepicker-next").attr("aria-label", "Próximo Mês");
+  setTimeout(function(){
 
-  $(".ui-datepicker-prev").attr("tabindex", "0");
-  $(".ui-datepicker-prev").attr("aria-label", "Mês Anterior");
+    $(".ui-datepicker-next").attr("tabindex", "0");
+    $(".ui-datepicker-next").attr("aria-label", "Próximo Mês");
+  
+    $(".ui-datepicker-prev").attr("tabindex", "0");
+    $(".ui-datepicker-prev").attr("aria-label", "Mês Anterior");
+
+    $(".ui-datepicker-month").attr("tabindex", "0");
+    $(".ui-datepicker-year").attr("tabindex", "0");
+
+    $(".ui-datepicker-next, .ui-datepicker-prev").on("keydown", function(event){
+      var keynum = event.which || event.keyCode;
+  
+      if( keynum == 13) {
+        $(this).trigger("click");
+        focus_element_time(".ui-datepicker-month");
+      }
+    });
+
+  }, 500);
 }
 
 function calendar_accessible(){
