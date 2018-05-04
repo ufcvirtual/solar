@@ -451,6 +451,7 @@ class Score # < ActiveRecord::Base
                 false
               END AS has_info,
             academic_allocation_users.comments_count AS count_comments,
+            NULL::bigint AS schedule_event_files_count,
             eq_disc.name AS eq_name,
             NULL AS group_id,
             NULL AS type_tool,
@@ -528,6 +529,7 @@ class Score # < ActiveRecord::Base
                     false
                   END AS has_info,
                 academic_allocation_users.comments_count AS count_comments,
+                NULL::bigint AS schedule_event_files_count,
                 eq_assig.name AS eq_name,
                 groups.group_id::text AS group_id,
                 assignments.type_assignment::text as type_tool,
@@ -599,6 +601,7 @@ class Score # < ActiveRecord::Base
                   false
                 END AS has_info,
               academic_allocation_users.comments_count AS count_comments,
+              NULL::bigint AS schedule_event_files_count,
               eq_chat.title AS eq_name,
               NULL AS group_id,
               chat_rooms.chat_type::text AS type_tool,
@@ -668,6 +671,7 @@ class Score # < ActiveRecord::Base
             academic_allocation_users.new_after_evaluation,
             NULL::boolean AS has_info,
             NULL::bigint AS count_comments,
+            NULL::bigint AS schedule_event_files_count,
             eq_exam.name AS eq_name,
             NULL AS group_id,
             NULL AS type_tool,
@@ -741,6 +745,7 @@ class Score # < ActiveRecord::Base
                 false
               END AS has_info,
             academic_allocation_users.comments_count AS count_comments,
+            academic_allocation_users.schedule_event_files_count,
             eq_event.title AS eq_name,
             NULL AS group_id,
             NULL AS type_tool,
@@ -803,6 +808,7 @@ class Score # < ActiveRecord::Base
                 false
               END AS has_info,
             academic_allocation_users.comments_count AS count_comments,
+            NULL::bigint AS schedule_event_files_count,
             eq_web.title AS eq_name,
             NULL AS group_id,
             webconferences.shared_between_groups::text AS type_tool,

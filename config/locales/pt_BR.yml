@@ -3249,7 +3249,7 @@ pt_BR:
       evaluative: Avaliativa
       frequency: Frequência
       files_sended: Arquivos enviados
-      grade_work_hours_comments: Nota/frequência e comentários
+      grade_work_hours_comments: Nota/frequência, arquivos e comentários
     types:
       presential_test: Prova Presencial
       presential_meeting: Encontro Presencial
@@ -3311,6 +3311,7 @@ pt_BR:
       grade: Nota
       working_hours: Carga Horária
       files: Arquivos
+      see_files: Ver arquivos enviados
 
   schedule_event_files:
     new:
@@ -3322,6 +3323,15 @@ pt_BR:
       sent_on: Enviado em
       sent_by: Enviado por
       summary_files: Arquivos enviados pelo tutor
+    summary:
+      title: "Arquivos para %{user} em %{tool}"
+      name: Nome
+      size: Tamanho
+      sent_on: Enviado em
+      sent_by: Enviado por
+      title_alt: "Acessar nota/frequência, arquivos e comentários para %{tool} (%{files} arquivos e %{comments} comentários)"
+    files:
+      delete: Remover arquivo
     success:
       created: Arquivo(s) enviado(s) com sucesso(s).
       deleted: Arquivo(s) deletado(s) com sucesso(s).

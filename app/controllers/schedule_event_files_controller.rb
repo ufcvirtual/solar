@@ -12,7 +12,7 @@ class ScheduleEventFilesController < ApplicationController
     # @schedule_event = ScheduleEvent.find(params['tool_id'])
     # verify_ip!(@schedule_event.id, :schedule_event, @schedule_event.controlled, :text)
     # group = GroupAssignment.by_user_id(current_user.id, @ac.id)
-    academic_allocation_user = AcademicAllocationUser.find_one(@ac.id, params[:student_id])
+    academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], params[:student_id])
     @schedule_event_file = ScheduleEventFile.new academic_allocation_user_id: academic_allocation_user.id
   end
 
@@ -25,7 +25,6 @@ class ScheduleEventFilesController < ApplicationController
     # set_ip_user
 
     render partial: 'files', locals: { files: @schedule_event_files, disabled: false }
-    # render json: { success: true, notice: t('schedule_event_files.success.created') }
   # rescue ActiveRecord::AssociationTypeMismatch
   #   render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
   # rescue CanCan::AccessDenied

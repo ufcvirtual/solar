@@ -16,15 +16,16 @@
         %tr.lines
           %td= participant.name
           %td.center
-            %a.btn.btn_main{ href: "#void" }
-              = content_tag(:i, nil, class: 'icon-plus')
-            -# = link_to content_tag(:i, nil, class: 'icon-plus'), "#void", class: "btn btn_main", onclick: "add_new_file(this)", :'data-url' => new_schedule_event_file_path(schedule_event_id: @event.id, student_id: participant.id, group_id: info[:group_id]), onkeydown: 'click_on_keypress(event, this);'
+            = link_to content_tag(:i, nil, class: 'icon-plus'), "#void", id: "new_file-#{participant.id}", class: "btn btn_main btn_new_file", onclick: 'new_file(this)', :'data-url' => new_schedule_event_file_path(tool_id: @event.id, tool: 'ScheduleEvent', student_id: participant.id, group_id: info[:group_id], score_type: 'evaluative'), :"data-tooltip" => t(".send_file"), :'aria-label' => t('.send_file'), onkeydown: 'click_on_keypress(event, this);'
           %td.center
-            = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: 'open_tool(this)', class: 'btn to_evaluate_schedule_event', :'data-url' => redirect_to_evaluate_scores_path(tool_type: 'ScheduleEvent', ac_id: info[:ac_id], user_id: participant.id, group_id: info[:group_id], score_type: 'evaluative', situation: @situation), onkeydown: 'click_on_keypress(event, this);'
+            = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: 'open_tool(this)', class: 'btn to_evaluate_schedule_event', :'data-url' => redirect_to_evaluate_scores_path(tool_type: 'ScheduleEvent', ac_id: info[:ac_id], user_id: participant.id, group_id: info[:group_id], score_type: 'evaluative', situation: @situation), :"data-tooltip" => t(".evaluate_comments"), :'aria-label' => t('.evaluate_comments'), onkeydown: 'click_on_keypress(event, this);'
           %td.center= info[:grade] || "-"
           %td.center= info[:working_hours] || "-"
-          %td.center
-            = (info[:has_files] ? info[:file_amount] : 0)
+          %td.center.file_amount
+            = link_to (info[:has_files] ? info[:file_amount] : 0), "#void", onclick: "open_summary(this); return false", :'data-url' => summary_schedule_event_files_path(ac_id: info[:ac_id], tool_id: @event.id, user_id: participant.id, group_id: info[:group_id]), :'data-tooltip' => t('.see_files'), :'aria-label' => t('.see_files'), onkeydown: 'click_on_keypress(event, this);'
+        %tr.file_form
+          %td.center{ colspan: 6 }
+            .file_form{ class: "new_file-#{participant.id}" }
 - else
   .text_none= t(:itens_not_found)
 

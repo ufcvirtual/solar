@@ -506,6 +506,7 @@ Solar::Application.routes.draw do
     collection do
       get :download
       get :zip_download, to: :download, defaults: {zip: true}
+      get :summary , to: 'academic_allocation_users#files_sent', tool: 'ScheduleEvent'
     end
   end
 

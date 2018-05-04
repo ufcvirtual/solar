@@ -1,3 +1,60 @@
+$(function(){
+  $('#event_file_form:first').keypress(function(event) { if (event.keyCode == 13) { event.preventDefault(); } }); // prevenir enter
+
+  $('#save').click(function(){
+    var file_amount = $(this).closest('tr.file_form').prev('tr.lines').find('.file_amount');
+    $('#event_file_form:first').serialize_and_submit({
+      files: true,
+      prepend_to_list: $("#tb_lf tbody"),
+      dont_remove_lightbox: true,
+      outer: 'fancybox-outer',
+      error_message: '',
+      complement_success: function(data){
+        var count = (data.match(/<tr class='lines'>/g) || []).length;
+        count = parseInt(file_amount.text().trim()) + count;
+        file_amount.text(count);
+        $('#tb_lf').show();
+        $('.btn_new_file').show();
+        $(".event_file_form").html('');
+        if(!!$('.fancybox-outer').length)
+          flash_message("<%= I18n.t('schedule_event_files.success.created') %>", "notice", 'fancybox-outer');
+        else
+          flash_message("<%= I18n.t('schedule_event_files.success.created') %>", "notice");
+      }
+    });
+  });
+
+  $('#files_').change(function(){
+    var files = $(this)[0].files;
+    $.each(files, function(i){
+      $('.files_list').append("<div id='file'>"+files[i].name+" ("+file_size_human_readable(files[i])+") <a href='#void' onclick='remove_file(this, event)'><i class='icon-cross-square warning'></a></div>");
+    });
+  });
+});
+
+function cancel_files() {
+  if(confirm("<%= I18n.t('schedule_event_files.new.confirm') %>")){
+    $('.btn_new_file').show();
+    cancel_new_files();
+    update_tables_with_no_data();
+  }
+}
+
+function new_file(link) {
+  $(link).hide();
+  var form_file = $(link).attr('id');
+
+  $.get($(link).data('url'), function(data){
+    $('.'+form_file).html(data);
+    $("#no_itens_message_file").addClass('hide_message');
+    $.fancybox.update();
+  }).error(function(data){
+    var data = $.parseJSON(data.responseText);
+    if (typeof(data.alert) != "undefined")
+      flash_message(data.alert, 'alert', 'fancybox-outer');
+  });
+}
+
 function add_new_file(){
   $('#files_').click();
 }

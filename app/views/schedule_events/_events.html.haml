@@ -10,7 +10,6 @@
         %th.center= t('.evaluative')
         %th.center= t('.frequency')
         - if @is_student
-          %th.center= t('.files_sended')
           %th.center= t('.grade_work_hours_comments')
         - if @can_evaluate
           %th.no_sort
@@ -58,9 +57,7 @@
           %td.center
             = raw t(event.frequency, scope: [:common_between_pages, :frequency], hours: event.max_working_hours, automatic: (!@is_student && event.frequency_automatic == true ? t("common_between_pages.frequency.automatic").delete('()') : ""))
           - if @is_student
-            %td.center
-              = 'Teste'
-            %td.center= link_to content_tag(:i, nil, class: 'icon-comment'), "#void", onclick: "open_summary(this); return false", :'data-url' => summary_schedule_events_path(ac_id: event.id, tool_id: event.academic_tool_id, group_id: event.group_id), class: "btn #{event.has_info ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt', tool: event.name, count: event.count_comments), :'aria-label' => t('comments.summary.title_alt', tool: event.name, count: event.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+            %td.center= link_to content_tag(:i, nil, class: 'icon-comment'), "#void", onclick: "open_summary(this); return false", :'data-url' => summary_schedule_events_path(ac_id: event.id, tool_id: event.academic_tool_id, group_id: event.group_id), class: "btn #{event.has_info ? 'btn_main' : ''}", :'data-tooltip' => t('schedule_event_files.summary.title_alt', tool: event.name, files: event.schedule_event_files_count, comments: event.count_comments), :'aria-label' => t('schedule_event_files.summary.title_alt', tool: event.name, files: event.schedule_event_files_count, comments: event.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
           - if @can_evaluate
             %td.center
               = link_to content_tag(:i, nil, class: 'icon-users'), '#void', class: 'btn participants', :'data-url' => participants_schedule_event_path(event.academic_tool_id, situation: event.situation, group_id: event.group_id)
