@@ -67,19 +67,19 @@ module V1::EventsH
     group_events
   end
 
-  def def_attributes1(params, schedule)
-    event_info = get_event_type_and_description(params[:Tipo])
-    start_hour, end_hour = params[:HoraInicio].split(":"), params[:HoraFim].split(":")
-    {
-      title: event_info[:title], type_event: event_info[:type], place: params[:Polo], start_hour: [start_hour[0], start_hour[1]].join(":"),
-      end_hour: [end_hour[0], end_hour[1]].join(":"), schedule_id: schedule.id, integrated: true
-    }
-  end
+  # def def_attributes1(params, schedule)
+  #   event_info = get_event_type_and_description(params[:Tipo])
+  #   start_hour, end_hour = params[:HoraInicio].split(":"), params[:HoraFim].split(":")
+  #   {
+  #     title: event_info[:title], type_event: event_info[:type], place: params[:Polo], start_hour: [start_hour[0], start_hour[1]].join(":"),
+  #     end_hour: [end_hour[0], end_hour[1]].join(":"), schedule_id: schedule.id, integrated: true
+  #   }
+  # end
 
-  def create_event1(group, params)
-    schedule = Schedule.create! start_date: params[:Data], end_date: params[:Data]
-    event    = ScheduleEvent.create! def_attributes1(params, schedule)
-    event.academic_allocations.create! allocation_tag_id: group.allocation_tag.id
-    {Codigo: group.name, id: event.id}
-  end
+  # def create_event1(group, params)
+  #   schedule = Schedule.create! start_date: params[:Data], end_date: params[:Data]
+  #   event    = ScheduleEvent.create! def_attributes1(params, schedule)
+  #   event.academic_allocations.create! allocation_tag_id: group.allocation_tag.id
+  #   {Codigo: group.name, id: event.id}
+  # end
 end
