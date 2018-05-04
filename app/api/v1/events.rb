@@ -34,7 +34,7 @@ module V1
         requires :course_code, :curriculum_unit_code, :semester, type: String
         requires :event, type: Hash do
           requires :date
-          requires :start, :end, :place, type: String
+          requires :start, :end, type: String
           requires :type, type: Integer
         end
       end

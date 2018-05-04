@@ -39,6 +39,7 @@ module V1::General
       import = user.synchronize
       return user if(import.blank? && !user.new_record?)
       raise user.errors.full_messages.join(', ') unless import || user.errors.empty?
+      raise "error while synchronize new user #{cpf}" if !import && user.try(:id).blank?
     end
 
     return user
@@ -63,13 +64,16 @@ module V1::General
     end
   end
 
-  def get_group_code(code, name)
+  def get_group_code(code, name, year=nil)
     # groups created at MA before integration with SI3 have a name with
     # a pattern, but after integration, all groups created at SI3 have
     # another pattern.
     # code must have to be equal from name if created by MA
 
-    return (name.include?(code.delete('_')) ? name : code)
+    return name if code.blank? && !year.nil? && year <= 2018 # MA group without a location
+    return (name.include?(code.delete('_')) ? name : code) unless code.blank?
+
+    return nil
   end
 
 end

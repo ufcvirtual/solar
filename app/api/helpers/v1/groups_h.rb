@@ -9,11 +9,18 @@ module V1::GroupsH
     group
   end
 
-  def get_group_by_names(curriculum_unit_code, course_code, name, semester)
+  def get_group_by_names(curriculum_unit_code, course_code, name, semester, dont_raise_error=false)
     # besides the name, groups are searched by its name
-    group = Group.joins(offer: :semester).where(name: name, offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first, course_id: Course.where(code: course_code).first}, semesters: {name: semester}).first
+    query = course_code.blank? ? {} : {course_id: Course.where(code: course_code).first}
+    group = Group.joins(offer: :semester).where(name: name, offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first}.merge!(query), semesters: {name: semester}).first
 
-    raise "group not found to uc: #{curriculum_unit_code}; course: #{course_code}; semester: #{semester} with name: #{name}" if group.blank?
+    if group.blank?
+      if dont_raise_error
+        Rails.logger.info "[API] [ERROR] [#{Time.now}] group not found to uc: #{curriculum_unit_code}; course: #{course_code}; semester: #{semester} with name: #{name} and name: #{name}"
+      else
+        raise "group not found to uc: #{curriculum_unit_code}; course: #{course_code}; semester: #{semester} with name: #{name}"
+      end
+    end
 
     group
   end

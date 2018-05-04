@@ -68,6 +68,9 @@ module V1
           post "/" do
             begin
               ActiveRecord::Base.transaction do
+                params[:cargaHoraria] = nil if params[:cargaHoraria] == 0
+                params[:creditos] = nil if params[:creditos] == 0
+
                 verify_or_create_curriculum_unit( {
                   code: params[:codigo].slice(0..39), name: params[:nome], working_hours: params[:cargaHoraria], credits: params[:creditos], curriculum_unit_type_id: params[:tipo]
                 } )
@@ -98,9 +101,10 @@ module V1
               ActiveRecord::Base.transaction do
                 semester = verify_or_create_semester(semester_name, offer_period)
                 offer    = verify_or_create_offer(semester, {curriculum_unit_id: uc.id, course_id: course.id}, offer_period)
-                load_group[:code] = get_group_code(load_group[:code], load_group[:name]) unless load_group[:code].blank? || load_group[:name].blank?
+                load_group[:code] = get_group_code(load_group[:code], load_group[:name], load_group[:year].to_i) unless load_group[:name].blank?
 
                 group    = verify_or_create_group({offer_id: offer.id, code: load_group[:code], name: load_group[:name], location_name: load_group[:location_name], location_office: load_group[:location_office]})
+
               end
 
               allocate_professors(group, cpfs || [])
@@ -115,20 +119,21 @@ module V1
               load_enrollments = params[:matriculas]
               @user             = verify_or_create_user(load_enrollments[:cpf])
               @groups           = JSON.parse(load_enrollments[:turmas])
+              # @groups = load_enrollments[:turmas]
               @student_profile  = 1 # Aluno => 1
 
               @groups = @groups.collect do |group_info|
                 group_info["nome"] = group_info["codigo"] if group_info["nome"].blank?
-                get_group_by_names(group_info["codDisciplina"], group_info["codGraduacao"], group_info["nome"], (group_info["periodo"].blank? ? group_info["ano"] : "#{group_info["ano"]}.#{group_info["periodo"]}")) unless group_info["codDisciplina"] == 78
+                get_group_by_names(group_info["codDisciplina"], group_info["codGraduacao"], group_info["nome"], (group_info["periodo"].blank? ? group_info["ano"] : "#{group_info["ano"]}.#{group_info["periodo"]}"), true) unless group_info["codDisciplina"] == 78
               end # Se cód. graduação for 78, desconsidera (por hora, vem por engano).
-
-              raise ActiveRecord::RecordNotFound if @groups.include?(nil)
             end # before
 
             # POST load/groups/enrollments
             post :enrollments do
               begin
                 create_allocations(@groups.compact, @user, @student_profile)
+
+                raise ActiveRecord::RecordNotFound if @groups.include?(nil)
 
                 { ok: :ok }
               end
@@ -138,6 +143,8 @@ module V1
             delete :enrollments do
               begin
                 cancel_allocations(@groups.compact, @user, @student_profile)
+
+                raise ActiveRecord::RecordNotFound if @groups.include?(nil)
 
                 { ok: :ok }
               end

@@ -635,7 +635,8 @@ class User < ActiveRecord::Base
   def synchronize(user_data = nil)
     return nil if on_blacklist?
     return nil unless (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO['integrated'])
-    user_data = User.connect_and_import_user(cpf) if user_data.nil?
+    user_data = User.connect_and_import_user(cpf, nil, true) if user_data.nil?
+
     unless user_data.blank? # if user exists
       ma_attributes = User.user_ma_attributes(user_data)
       errors.clear # clear all errors, so the system can import and save user's data
@@ -745,16 +746,24 @@ class User < ActiveRecord::Base
     return data
   end
 
-  def self.connect_and_import_user(cpf, client = nil)
+  def self.connect_and_import_user(cpf, client = nil, raise_error=false)
     begin
       client    = Savon.client wsdl: MODULO_ACADEMICO['wsdl'] if client.nil?
       response  = client.call(MODULO_ACADEMICO['methods']['user']['import'].to_sym, message: { cpf: cpf.delete('.').delete('-') }) # import user
       user_data = response.to_hash[:importar_usuario_response][:importar_usuario_result]
       return (user_data.nil? ? nil : user_data[:string])
     rescue HTTPClient::ConnectTimeoutError # if MA don't respond (timeout)
-      I18n.t('users.errors.ma.cant_connect')
+      if raise_error
+        raise I18n.t('users.errors.ma.cant_connect')
+      else
+        return I18n.t('users.errors.ma.cant_connect')
+      end
     rescue => error
-      I18n.t('users.errors.ma.problem_accessing')
+      if raise_error
+        raise I18n.t('users.errors.ma.problem_accessing')
+      else
+        return I18n.t('users.errors.ma.problem_accessing')
+      end
     end
   end
 
