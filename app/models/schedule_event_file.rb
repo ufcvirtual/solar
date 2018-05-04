@@ -6,11 +6,7 @@ class ScheduleEventFile < ActiveRecord::Base
   include FilesHelper
 
   belongs_to :user
-  belongs_to :academic_allocation_user
-
-  # has_one :academic_allocation, through: :academic_allocation_user, autosave: false
-  # has_one :schedule_event, through: :academic_allocation_user
-  # has_one :allocation_tag, through: :academic_allocation
+  belongs_to :academic_allocation_user, counter_cache: true
 
   # before_save :can_change?, if: 'merge.nil?'
   # before_destroy :can_destroy?

@@ -5,11 +5,11 @@
       = t('.summary_files')
     - if (can?(:create, ScheduleEventFile, on: [@allocation_tag_id]) && @allocation_tag_id.class != Array)
       %span.right_buttons
-        = button_tag content_tag(:i, nil, class: 'icon-plus'), class: "btn btn_main #{tool.offer_opened? ? '' : 'disabled'}", id: 'new_file', disabled: !tool.offer_opened?
-  .file_form
+        = button_tag content_tag(:i, nil, class: 'icon-plus'), id: "new_file-#{@allocation_tag_id}", class: "btn btn_main btn_new_file #{tool.offer_opened? ? '' : 'disabled'}", onclick: 'new_file(this)', :'data-url' => new_schedule_event_file_path(tool_id: tool.id, tool: tool_type, student_id: student_id, group_id: @group_id, score_type: @score_type),  disabled: !tool.offer_opened?
+  .file_form{ class: "new_file-#{@allocation_tag_id}" }
   .block_content
     - no_files = files.nil? || files.empty? ? true : false
-    %table.tb_list#tb_lf{ :summary=> t("assignments.list.summary_student_files"), style: (no_files ? 'display: none' : '') }
+    %table.tb_list#tb_lf{ :summary=> t("schedule_events.list.summary_student_files"), style: (no_files ? 'display: none' : '') }
       %thead{ style: (no_files ? 'display: none' : '')}
         %tr.lines
           %th{id: "name_file"}= t('.name')
@@ -23,22 +23,4 @@
         = render partial: 'schedule_event_files/files', locals: { files: files }
     .text_none.empty_message{class: (no_files ? "" : "hide_message")}= t(:itens_not_found)
 
-= javascript_include_tag 'tooltip'
-
-:javascript
-  $(function(){
-    $("#new_file").click(function(){
-      $(this).hide();
-      // $("#new_file, .edit_file").attr("disabled", "disabled");
-      // $(".new_file_btns").removeClass("invisible");
-      $.get("#{new_schedule_event_file_path(tool_id: tool.id, tool: tool_type, student_id: student_id, group_id: @group_id, score_type: @score_type)}", function(data){
-        $(".file_form").html(data);
-        $("#no_itens_message_file").addClass('hide_message');
-        $.fancybox.update();
-      }).error(function(data){
-        var data = $.parseJSON(data.responseText);
-        if (typeof(data.alert) != "undefined")
-          flash_message(data.alert, 'alert', 'fancybox-outer');
-      });
-    });
-  });
+= javascript_include_tag 'tooltip', 'schedule_event_files'

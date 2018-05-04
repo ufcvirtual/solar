@@ -3033,7 +3033,7 @@ en_US:
       evaluative: Evaluative
       frequency: Frequency
       files_sended: Files sended
-      grade_work_hours_comments: Grade/frequency and comments
+      grade_work_hours_comments: Grade/frequency, files and comments
     types:
       presential_test: Presential Test
       presential_meeting: Presential Meeting
@@ -3095,6 +3095,7 @@ en_US:
       grade: Grade
       working_hours: Working Hours
       files: Files
+      see_files: See files sent
 
   schedule_event_files:
     new:
@@ -3106,6 +3107,15 @@ en_US:
       sent_on: Sent on
       sent_by: Sent by
       summary_files: Files sent by the tutor
+    summary:
+      title: "Files to %{user} at %{tool}"
+      name: Name
+      size: Size
+      sent_on: Sent on
+      sent_by: Sent by
+      title_alt: "Access grade/frequency, files and comments to %{tool} (%{files} files e %{comments} comments)"
+    files:
+      delete: Remove file
     success:
       created: File was successfully sent.
       deleted: File was successfully deleted.
