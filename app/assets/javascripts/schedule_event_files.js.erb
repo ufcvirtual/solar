@@ -2,7 +2,7 @@ $(function(){
   $('#event_file_form:first').keypress(function(event) { if (event.keyCode == 13) { event.preventDefault(); } }); // prevenir enter
 
   $('#save').click(function(){
-    var file_amount = $(this).closest('tr.file_form').prev('tr.lines').find('.file_amount');
+    var file_amount = $(this).closest('tr.file_form').prev('tr.lines').find('.file_amount').find('a');
     $('#event_file_form:first').serialize_and_submit({
       files: true,
       prepend_to_list: $("#tb_lf tbody"),
@@ -27,7 +27,7 @@ $(function(){
   $('#files_').change(function(){
     var files = $(this)[0].files;
     $.each(files, function(i){
-      $('.files_list').append("<div id='file'>"+files[i].name+" ("+file_size_human_readable(files[i])+") <a href='#void' onclick='remove_file(this, event)'><i class='icon-cross-square warning'></a></div>");
+      $('.files_list').append("<div id='file'>"+files[i].name+" ("+file_size_human_readable(files[i])+")</div>");
     });
   });
 });
@@ -41,6 +41,9 @@ function cancel_files() {
 }
 
 function new_file(link) {
+  $(".event_file_form").html('');
+  $(".btn_new_file").show();
+
   $(link).hide();
   var form_file = $(link).attr('id');
 
@@ -71,13 +74,6 @@ function file_size_human_readable(file) {
   }
 
   return (Math.round(file_size*100)/100) + " " + file_size_extension[count];
-}
-
-function remove_file(link, event) {
-  var keynum = event.which || event.keyCode;
-  if( keynum == 13 || event.type == 'click'){
-    $(link).parent().remove();
-  }
 }
 
 function delete_file(button){

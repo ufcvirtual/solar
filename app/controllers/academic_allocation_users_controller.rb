@@ -47,6 +47,7 @@ class AcademicAllocationUsersController < ApplicationController
     user_id = (params[:user_id].blank? ? current_user.id : params[:user_id])
     acu = AcademicAllocationUser.find_or_create_one(ac_id, at, user_id, params[:group_id], false, nil)
 
+    @allocation_tag_id = at
     @files = ScheduleEventFile.where(academic_allocation_user_id: acu.id)
     @tool = params[:tool].constantize.find(params[:tool_id])
 

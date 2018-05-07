@@ -26,7 +26,6 @@ class ScheduleEventFile < ActiveRecord::Base
   end
 
   def can_destroy?
-    raise CanCan::AccessDenied unless user_id == User.current.try(:id)
     raise 'date_range_expired' unless schedule_event.in_time?
   end
 

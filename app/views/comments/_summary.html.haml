@@ -2,6 +2,7 @@
 - evaluative = @acu.academic_allocation.evaluative || model_name == "Assignment" || model_name == "Exam"
 - frequency = @acu.academic_allocation.frequency
 - no_files = @files.nil? || @files.empty? ? true : false
+- is_event = model_name == "ScheduleEvent"
 .summary
   %h1#lightBoxDialogTitle=t(".title", user: current_user.name, tool: (@tool.title rescue @tool.name))
 
@@ -20,7 +21,7 @@
               = label_tag t(".working_hours"), nil, class: "form_label"
               %span.label_info= @acu.working_hours || raw(t('.no_wh'))
 
-  - unless no_files
+  - unless no_files && !is_event
     .files
       = render partial: 'schedule_event_files/list', locals: { files: @files }
 

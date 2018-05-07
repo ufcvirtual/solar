@@ -3368,6 +3368,12 @@ pt_BR:
     success:
       created: Arquivo(s) enviado(s) com sucesso(s).
       deleted: Arquivo(s) deletado(s) com sucesso(s).
+    error:
+      download: Não foi possível realizar o download
+      date_range_expired: Não foi possível realizar ação. Período encerrado.
+      remove: Não foi possível deletar arquivo.
+      new: Não foi possível enviar arquivo.
+      not_started_up: Não é possível fazer o envio do arquivo. O evento ainda não foi iniciado.
 
   agendas:
     dropdown_content:

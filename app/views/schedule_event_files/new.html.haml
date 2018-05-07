@@ -14,11 +14,9 @@
     .event_file_form
       .form-inputs.block_content
         .input.string.files
-          = f.simple_fields_for @schedule_event_file do |file|
-            .file_input
-              = file.input :_destroy, as: :hidden, input_html: { value: 0, class: "destroy_input_file", :"data-file-id" => file.object.id }
-              = file_field_tag 'files[]', type: :file, multiple: true
-              = button_tag t(:select_files), :type => 'button', :onclick => "add_new_file()", class: 'btn add_files'
+          .file_input
+            = file_field_tag 'files[]', type: :file, multiple: true
+            = button_tag t(:select_files), :type => 'button', :onclick => "add_new_file()", class: 'btn add_files'
           .files_list
 
         .schedule_event_file_buttons
