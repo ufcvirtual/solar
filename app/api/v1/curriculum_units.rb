@@ -1,6 +1,6 @@
 module V1
   class CurriculumUnits < Base
-    
+
     segment do
       before do
         guard!
@@ -32,7 +32,7 @@ module V1
 
       before { verify_ip_access_and_guard! }
 
-      namespace :curriculum_unit do 
+      namespace :curriculum_unit do
 
         desc "Criação de disciplina"
         params do
@@ -43,6 +43,9 @@ module V1
         end
         post "/" do
           begin
+            params[:working_hours] = nil if params[:working_hours] == 0
+            params[:credits] = nil if params[:credits] == 0
+
             uc = unless params[:update_if_exists]
               CurriculumUnit.create! curriculum_unit_params(params, true)
             else
@@ -92,7 +95,7 @@ module V1
             {ok: :ok}
           end
         end
-        
+
       end # curriculum_unit
 
       desc "Todas as disciplinas por tipo, semestre ou curso"
