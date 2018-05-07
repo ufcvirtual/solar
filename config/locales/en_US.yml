@@ -3086,6 +3086,12 @@ en_US:
     success:
       created: File was successfully sent.
       deleted: File was successfully deleted.
+    error:
+      download: It was not possible to download
+      date_range_expired: It was not possible to execute action. Date range expired.
+      remove: It was not possible to remove file.
+      new: It was not possible to send file.
+      not_started_up: It was not possible to send file. Event not started yet.
 
   agendas:
     dropdown_content:

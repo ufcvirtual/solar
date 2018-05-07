@@ -36,6 +36,8 @@
             = f.input :working_hours, required: true, as: :float, label: t(".frequency") + (@ac.frequency_automatic && !@acu.try(:evaluated_by_responsible) ? t("common_between_pages.frequency.automatic") : t("common_between_pages.frequency.defined")), input_html: { value: @acu.try(:working_hours), min:0, max: @ac.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@ac.max_working_hours.to_s ) }
           %span= link_to t(:save), "#void", onclick: 'finish_evaluation(this)', class: 'btn btn_main'
 
+  = button_tag t(:back), type: 'button', class: 'btn btn_default'
+
 :javascript
   function finish_evaluation(btn){
     var form = $(btn).parents('form:first');
