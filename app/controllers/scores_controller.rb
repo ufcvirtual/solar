@@ -307,7 +307,7 @@ class ScoresController < ApplicationController
       when 'Discussion'
         render json: { url: user_discussion_posts_path(discussion_id: tool_id, user_id: params[:user_id], score_type: params[:score_type], situation: params[:situation]) }
       when 'ScheduleEvent'
-        render json: { url: evaluate_user_schedule_event_path(tool_id, user_id: params[:user_id], score_type: params[:score_type], situation: params[:situation]) }
+        render json: { url: evaluate_user_schedule_event_path(tool_id, user_id: params[:user_id], score_type: params[:score_type], situation: params[:situation], back_to_participants: params[:back_to_participants]) }
       when 'Exam'
         params[:score_type] = 'not_evaluative' if params[:score_type].blank?
         if ['evaluated', 'corrected'].include?(params[:situation])
