@@ -1,8 +1,8 @@
--# #file_size.alert.invisible
--#   %span.message_file_size{ tabindex: 0 }
--#   %span.close
--#     %a{href: "#void", onclick: "hide_element(event)", onkeydown: "hide_element(event)", :'aria-label' => t('flash_message.close')}
--#       %i.icon-cross{ :'aria-hidden' => "true" }
+#file_size.alert.invisible
+  %span.message_file_size{ tabindex: 0 }
+  %span.close
+    %a{href: "#void", onclick: "hide_element(event)", onkeydown: "hide_element(event)", :'aria-label' => t('flash_message.close')}
+      %i.icon-cross{ :'aria-hidden' => "true" }
 
 .schedule_event_file_form
   = simple_form_for @schedule_event_file, html: { id: 'event_file_form', multipart: true } do |f|
@@ -15,7 +15,7 @@
       .form-inputs.block_content
         .input.string.files
           .file_input
-            = file_field_tag 'files[]', type: :file, multiple: true
+            = file_field_tag 'files[]', type: :file, multiple: true, :'aria-label' => t(:send_file_to_upload)
             = button_tag t(:select_files), :type => 'button', :onclick => "add_new_file()", class: 'btn add_files'
           .files_list
 
@@ -23,4 +23,9 @@
           = button_tag t(:cancel), type: 'button', onclick: 'cancel_files()', class: 'btn btn_default btn_lightbox'
           = button_tag t(:save), type: "button", id: "save", class: "btn btn_main btn_lightbox"
 
-= javascript_include_tag 'schedule_event_files'
+= javascript_include_tag 'schedule_event_files', 'assignment_files'
+
+:css
+  span.close a {
+    text-decoration: none;
+  }

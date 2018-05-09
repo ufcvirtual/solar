@@ -20,17 +20,18 @@ class ScheduleEventFilesController < ApplicationController
   def create
     authorize! :create, ScheduleEventFile, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
-    # verify_owner!(schedule_event_file_params)
     create_many
     # set_ip_user
 
     render partial: 'files', locals: { files: @schedule_event_files, disabled: false }
   rescue ActiveRecord::AssociationTypeMismatch
     render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
+  rescue ActiveRecord::RecordInvalid
+    render json: { success: false, alert: t('schedule_event_files.error.wrong_type') }, status: :unprocessable_entity
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
-    render_json_error(error, 'schedule_event_files.error', (error == 'not_started_up' ? 'not_started_up' : 'new'))
+    render_json_error(error, 'schedule_event_files.error', (error == 'attachment_file_size_too_big' ? 'attachment_file_size_too_big' : 'new'))
   end
 
   def destroy

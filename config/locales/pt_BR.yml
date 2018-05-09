@@ -3249,7 +3249,7 @@ pt_BR:
       evaluative: Avaliativa
       frequency: Frequência
       files_sended: Arquivos enviados
-      grade_work_hours_comments: Nota/frequência, arquivos e comentários
+      grade_work_hours_comments: Arquivos e comentários enviados
     types:
       presential_test: Prova Presencial
       presential_meeting: Encontro Presencial
@@ -3341,6 +3341,8 @@ pt_BR:
       remove: Não foi possível deletar arquivo.
       new: Não foi possível enviar arquivo.
       not_started_up: Não é possível fazer o envio do arquivo. O evento ainda não foi iniciado.
+      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 26MB.
+      wrong_type: "Tipo de arquivo não permitido (apenas imagens jpeg/png/gif ou pdfs)"
 
   agendas:
     dropdown_content:
