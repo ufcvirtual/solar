@@ -10,9 +10,6 @@ class ScheduleEventFilesController < ApplicationController
   layout false
 
   def new
-    # @schedule_event = ScheduleEvent.find(params['tool_id'])
-    # verify_ip!(@schedule_event.id, :schedule_event, @schedule_event.controlled, :text)
-    # group = GroupAssignment.by_user_id(current_user.id, @ac.id)
     academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], params[:student_id])
     @schedule_event_file = ScheduleEventFile.new academic_allocation_user_id: academic_allocation_user.id
   end

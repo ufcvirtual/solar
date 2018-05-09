@@ -9,10 +9,7 @@
         %th.center= t('.situation')
         %th.center= t('.evaluative')
         %th.center= t('.frequency')
-        - if @is_student
-          %th.center= t('.grade_work_hours_comments')
-        - if @can_evaluate
-          %th.no_sort
+        %th.center.no_sort= @is_student ? t('.grade_work_hours_comments') : ''
     %tbody
       - events.each do |event|
         %tr.assignment.lines
@@ -56,10 +53,11 @@
             = raw (event.final_exam == true ? t(event.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(event.evaluative, scope: [:scores, :info]))
           %td.center
             = raw t(event.frequency, scope: [:common_between_pages, :frequency], hours: event.max_working_hours, automatic: (!@is_student && event.frequency_automatic == true ? t("common_between_pages.frequency.automatic").delete('()') : ""))
-          - if @is_student
-            %td.center= link_to content_tag(:i, nil, class: 'icon-comment'), "#void", onclick: "open_summary(this); return false", :'data-url' => summary_schedule_events_path(ac_id: event.id, tool_id: event.academic_tool_id, group_id: event.group_id), class: "btn #{event.has_info ? 'btn_main' : ''}", :'data-tooltip' => t('schedule_event_files.summary.title_alt', tool: event.name, files: event.schedule_event_files_count, comments: event.count_comments), :'aria-label' => t('schedule_event_files.summary.title_alt', tool: event.name, files: event.schedule_event_files_count, comments: event.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
-          - if @can_evaluate
-            %td.center
+          %td.center
+            - if @is_student && [Presential_Meeting, Presential_Test].include?(event.type_event.to_i)
+              = link_to content_tag(:i, nil, class: 'icon-comment'), "#void", onclick: "open_summary(this); return false", :'data-url' => summary_schedule_events_path(ac_id: event.id, tool_id: event.academic_tool_id, group_id: event.group_id), class: "btn #{event.has_info ? 'btn_main' : ''}", :'data-tooltip' => t('schedule_event_files.summary.title_alt', tool: event.name, files: event.schedule_event_files_count, comments: event.count_comments), :'aria-label' => t('schedule_event_files.summary.title_alt', tool: event.name, files: event.schedule_event_files_count, comments: event.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+            - if @can_evaluate && [Presential_Meeting, Presential_Test].include?(event.type_event.to_i)
               = link_to content_tag(:i, nil, class: 'icon-users'), '#void', class: 'btn participants', :'data-url' => participants_schedule_event_path(event.academic_tool_id, situation: event.situation, group_id: event.group_id)
+
 - else
   .text_none.empty_message= t(:itens_not_found)
