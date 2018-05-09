@@ -3033,7 +3033,7 @@ en_US:
       evaluative: Evaluative
       frequency: Frequency
       files_sended: Files sended
-      grade_work_hours_comments: Grade/frequency, files and comments
+      grade_work_hours_comments: Files and comments sent
     types:
       presential_test: Presential Test
       presential_meeting: Presential Meeting
@@ -3125,6 +3125,8 @@ en_US:
       remove: It was not possible to remove file.
       new: It was not possible to send file.
       not_started_up: It was not possible to send file. Event not started yet.
+      attachment_file_size_too_big: File too large. The maximum size should be up to 26MB.
+      wrong_type: file type is not allowed (only jpeg/png/gif images or pdfs)
 
   agendas:
     dropdown_content:

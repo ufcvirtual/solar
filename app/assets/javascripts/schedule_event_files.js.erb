@@ -29,6 +29,7 @@ $(function(){
     $.each(files, function(i){
       $('.files_list').append("<div id='file'>"+files[i].name+" ("+file_size_human_readable(files[i])+")</div>");
     });
+    validate_file_size(this, 26000000, "<%= I18n.t('schedule_event_files.error.attachment_file_size_too_big') %>");
   });
 });
 
