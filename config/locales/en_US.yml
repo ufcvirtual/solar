@@ -3020,6 +3020,7 @@ en_US:
       monthAlt: View by month
       listAlt: View next events list
   schedule_events:
+    restrict_events: "Not allowed to access events"
     index:
       events_list: Events List
       individual_events: Individual Events

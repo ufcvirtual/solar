@@ -3269,6 +3269,7 @@ pt_BR:
 
   #Eventos da agenda
   schedule_events:
+    restrict_events: "Não permitido é permitido acessar os eventos"
     index:
       events_list: Lista de Eventos
       individual_events: Eventos individuais
