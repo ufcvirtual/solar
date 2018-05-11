@@ -37,6 +37,12 @@ class ScheduleEventFile < ActiveRecord::Base
     self.delete
   end
 
+  def self.get_all_event_files event_id
+    ScheduleEventFile.joins("INNER JOIN academic_allocation_users AS acu ON schedule_event_files.academic_allocation_user_id = acu.id
+                            INNER JOIN academic_allocations AS ac ON acu.academic_allocation_id = ac.id")
+                      .where("ac.academic_tool_id = ? AND ac.academic_tool_type = 'ScheduleEvent'", event_id)
+  end
+
   private
 
     def replace_attachment_file_name

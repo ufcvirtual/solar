@@ -1,6 +1,9 @@
 - show_fields = [Presential_Meeting, Presential_Test].include?(@event.type_event)
 .block_title
   %h2{align: "center"}= t('.list_name')
+  %span.block_actions
+    %button.download_folder.btn{"data-tooltip" => t("support_download_folder"), onclick: "javascript:window.location.href='#{zip_download_schedule_event_files_path(event_id: @event.id)}'", type: "button", :value => t("support_download_folder"), :'aria-label' => t("support_download_folder")}
+      %i.icon-install
 - unless @participants.empty?
   %table.tb_list
     %thead

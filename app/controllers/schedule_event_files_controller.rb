@@ -44,24 +44,20 @@ class ScheduleEventFilesController < ApplicationController
   end
 
   def download
-    # if Exam.verify_blocking_content(current_user.id)
-    #   redirect_to list_assignments_path, alert: t('assignments.restrict_assignment')
-    # else
-      allocation_tag_id = active_tab[:url][:allocation_tag_id]
-
-      # if params[:zip].present?
-      #   assignment = ScheduleEvent.find(params[:assignment_id])
-      #   academic_allocation_user = assignment.academic_allocation_users.where(user_id: params[:student_id], group_assignment_id: params[:group_id], academic_allocations: {allocation_tag_id: allocation_tag_id}).first
-      #   path_zip = compress_file({ files: academic_allocation_user.assignment_files, table_column_name: 'attachment_file_name', name_zip_file: assignment.name })
-      # else
+    if Exam.verify_blocking_content(current_user.id)
+      redirect_to schedule_events_path, alert: t('schedule_events.restrict_events')
+    else
+      if params[:zip].present?
+        event = ScheduleEvent.find(params[:event_id])
+        schedule_event_files = ScheduleEventFile.get_all_event_files(params[:event_id])
+        path_zip = compress_file({ files: schedule_event_files, table_column_name: 'attachment_file_name', name_zip_file: event.title })
+      else
         file = ScheduleEventFile.find(params[:id])
-        academic_allocation_user = file.academic_allocation_user
         path_zip  = file.attachment.path
         file_name = file.attachment_file_name
-      # end
-      # raise CanCan::AccessDenied unless ScheduleEventFile.owned_by_user?(current_user.id, { academic_allocation_user: academic_allocation_user }) || AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(current_user.id)
+      end
       download_file(:back, path_zip, file_name)
-    # end
+    end
   end
 
   private
