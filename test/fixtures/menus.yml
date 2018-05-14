@@ -38,6 +38,13 @@ forum_ativ:
   order: 1
   resource_id: 22
 
+schedule_event_files:
+  id: 209
+  parent_id: 20
+  name: menu_events
+  order: 9
+  resource_id: 233
+
 # portfolio
 portfolio_ativ:
   id: 202
@@ -249,7 +256,7 @@ admin_notifications:
   parent_id: 60
   name: menu_admin_notifications
   order: 15
-  resource_id: 228  
+  resource_id: 228
 
 # MENU PAI - 70
 disco_virtual:

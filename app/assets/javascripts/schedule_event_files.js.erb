@@ -3,7 +3,7 @@ $(function(){
 
   $('#save').click(function(){
     var file_amount = $(this).closest('tr.file_form').prev('tr.lines').find('.file_amount').find('a');
-    $('#event_file_form:first').serialize_and_submit({
+    $(this).closest('form').serialize_and_submit({
       files: true,
       prepend_to_list: $("#tb_lf tbody"),
       dont_remove_lightbox: true,

@@ -24,6 +24,10 @@ forum_ativ:
   menu_id: 201
   context_id: 2
 
+schedule_event_files:
+  menu_id: 209
+  context_id: 2
+
 # portfolio do aluno
 portfolio_ativ:
   menu_id: 202
@@ -113,7 +117,7 @@ relat_admin:
   menu_id: 604
   context_id: 1
 
-user_user: 
+user_user:
   menu_id: 605
   context_id: 1
 
@@ -156,7 +160,7 @@ admin_reports:
 
 admin_notifications:
   menu_id: 804
-  context_id: 1  
+  context_id: 1
 
 # MENU PAI - 70
 disco_virtual:
@@ -191,7 +195,7 @@ registration:
   context_id: 1
 
 # MENU PAI - 130
-edition: 
+edition:
   menu_id: 130
   context_id: 1
 
