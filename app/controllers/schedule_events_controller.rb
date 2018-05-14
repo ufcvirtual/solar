@@ -87,6 +87,7 @@ class ScheduleEventsController < ApplicationController
     @schedule_event = ScheduleEvent.find(params[:id])
     @ac = @schedule_event.academic_allocations.where(allocation_tag_id: @allocation_tag_id).first
     @user = User.find(params[:user_id])
+    @student_id = params[:user_id]
     @score_type = params[:score_type]
     @situation = params[:situation]
 

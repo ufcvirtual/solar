@@ -1215,3 +1215,15 @@ res232:
   controller: 'logs'
   action: 'index'
   description: '[API]Lista Logs por curso, disciplina e semestre'
+
+res233:
+  id: 233
+  controller: 'schedule_events'
+  action: 'index'
+  description: 'Menu Eventos das atividades'
+
+res234:
+  id: 234
+  controller: 'schedule_event_files'
+  action: 'create'
+  description: 'Permissão para criar eventos'
