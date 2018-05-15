@@ -3128,6 +3128,7 @@ en_US:
       not_started_up: It was not possible to send file. Event not started yet.
       attachment_file_size_too_big: File too large. The maximum size should be up to 26MB.
       wrong_type: file type is not allowed (only jpeg/png/gif images or pdfs)
+      situation: Can not send files yet, because the activity was not started.
 
   agendas:
     dropdown_content:
