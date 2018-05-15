@@ -10,15 +10,18 @@ class ScheduleEventFilesController < ApplicationController
   layout false
 
   def new
-    academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], params[:student_id])
-    @schedule_event_file = ScheduleEventFile.new academic_allocation_user_id: academic_allocation_user.id
+    if ['not_started', 'to_send'].include?(params[:situation])
+      render json: { alert: t('schedule_event_files.error.situation') }, status: :unprocessable_entity
+    else
+      academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], params[:student_id])
+      @schedule_event_file = ScheduleEventFile.new academic_allocation_user_id: academic_allocation_user.id
+    end
   end
 
   def create
     authorize! :create, ScheduleEventFile, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
     create_many
-    # set_ip_user
 
     render partial: 'files', locals: { files: @schedule_event_files, disabled: false }
   rescue ActiveRecord::AssociationTypeMismatch
@@ -33,7 +36,6 @@ class ScheduleEventFilesController < ApplicationController
 
   def destroy
     @schedule_event_file = ScheduleEventFile.find(params[:id])
-    # set_ip_user
     @schedule_event_file.destroy
 
     render json: { success: true, notice: t('schedule_event_files.success.deleted') }

@@ -3344,6 +3344,7 @@ pt_BR:
       not_started_up: Não é possível fazer o envio do arquivo. O evento ainda não foi iniciado.
       attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 26MB.
       wrong_type: "Tipo de arquivo não permitido (apenas imagens jpeg/png/gif ou pdfs)"
+      situation: Não é possível enviar arquivos ainda, pois a atividade não foi iniciada.
 
   agendas:
     dropdown_content:
