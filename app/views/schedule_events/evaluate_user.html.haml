@@ -44,9 +44,13 @@
 
 :javascript
   function finish_evaluation(btn){
+    var is_closable = "#{@back_to_participants}";
     var form = $(btn).parents('form:first');
     $.put(form.attr('action'), form.serialize(), function(data){
+      data.dont_close = (is_closable ? is_closable : undefined);
       after_evaluate('ScheduleEvent', "#{@score_type}", "#{@ac.id}", "#{@user.id}", data);
+      if(is_closable)
+        flash_message(data.notice, 'notice', 'fancybox-outer');
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
