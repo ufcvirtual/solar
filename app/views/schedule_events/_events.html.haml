@@ -16,7 +16,7 @@
           %td
             %div.title-yellow= event.name
             .description
-              - if event.description.size > 180
+              - if !event.description.nil? && event.description.size > 180
                 .enunciation_slice= event.description.slice(0..180) << '...'
                 .enunciation_complete= event.description
                 .more_or_less

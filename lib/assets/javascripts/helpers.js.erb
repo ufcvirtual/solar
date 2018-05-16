@@ -620,7 +620,6 @@ function after_evaluate(class_name, score_type, ac_id, user_id, data, group_id){
 
   if(!!$('.info_summary').length){
     $.get($('.info_summary').data('url'), function(data){
-      console.log(data);
       $('.info_summary').replaceWith(data);
     });
   }
@@ -695,7 +694,7 @@ function calendar_prev_next_month_accessible(){
 
     $(".ui-datepicker-next").attr("tabindex", "0");
     $(".ui-datepicker-next").attr("aria-label", "Próximo Mês");
-  
+
     $(".ui-datepicker-prev").attr("tabindex", "0");
     $(".ui-datepicker-prev").attr("aria-label", "Mês Anterior");
 
@@ -704,7 +703,7 @@ function calendar_prev_next_month_accessible(){
 
     $(".ui-datepicker-next, .ui-datepicker-prev").on("keydown", function(event){
       var keynum = event.which || event.keyCode;
-  
+
       if( keynum == 13) {
         $(this).trigger("click");
         focus_element_time(".ui-datepicker-month");
@@ -718,7 +717,7 @@ function calendar_accessible(){
 
   setTimeout(function(){
     calendar_prev_next_month_accessible();
-      
+
     $all_days = $(".ui-datepicker-calendar .ui-state-default");
     console.log($all_days);
 
@@ -728,5 +727,5 @@ function calendar_accessible(){
     });
 
   }, 500);
-  
+
 }
