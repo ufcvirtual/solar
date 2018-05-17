@@ -1,6 +1,7 @@
 - @users.each_with_index do |student, idx|
   - status = Allocation.status_name(student.grade_situation)
   %tr.lines
+    %td{style: 'text-align:center;'}= check_box_tag("ckb_student_score", student.id)
     %th.td_student{:'data-tooltip' => student.name, headers: 'student'}= link_to student.name, user_info_scores_path(student.id)
     %td{headers: 'access_to_the_course'}=student.u_logs
     - unless @wh.nil?

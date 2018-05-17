@@ -539,6 +539,8 @@ Solar::Application.routes.draw do
     end
   end
 
+  get "new_message_score_student/:id", to: 'messages#new_score_message_student'
+
   # resources :tabs, only: [:show, :create, :destroy]
   get :activate_tab, to: "tabs#show"   , as: :activate_tab
   get :add_tab     , to: "tabs#create" , as: :add_tab
