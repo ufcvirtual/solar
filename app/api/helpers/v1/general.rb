@@ -40,6 +40,8 @@ module V1::General
       return user if(import.blank? && !user.new_record?)
       raise user.errors.full_messages.join(', ') unless import || user.errors.empty?
       raise "error while synchronize new user #{cpf}" if !import && user.try(:id).blank?
+    else
+      Rails.logger.info Rails.logger.info "[API] [INFO] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] user #{cpf} was not synchronized - blacklist or ignore param activated"
     end
 
     return user
