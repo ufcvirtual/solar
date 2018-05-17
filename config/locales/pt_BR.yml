@@ -1873,7 +1873,7 @@ pt_BR:
       send_paranoid_instructions: "Um link de recuperação de senha será enviado para seu email, caso ele exista em nossa base de dados."
       ma_request: "Para recuperar seus dados de acesso, vá ao endereço: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
       not_found: Nenhum usuário foi encontrado para o CPF informado. Faça seu cadastro na aba 'Cadastrar'.
-      no_email: Não há nenhum email cadastrado para o CPF informado. Entre em contato com atendimento@virtual.ufc.br informando seu CPF, nome completo e data de nascimento.
+      no_email: Não há nenhum email cadastrado para o CPF informado. Entre em contato com atendimento@virtual.ufc.br informando seu CPF, nome completo, data de nascimento e email a ser cadastrado.
     password:
       change_my_password: Alterar
     passwords:
@@ -2475,6 +2475,7 @@ pt_BR:
       email_sent: Email enviado com sucesso
     error:
       email_not_sent: Não foi possível enviar email
+      no_email: É necessário definir um email primeiro.
     allocation_approval:
       not_specified: Não especificado
       none_pending_allocation: Não há solicitações pendentes
@@ -3787,6 +3788,7 @@ pt_BR:
       situation4: "- Ao remover as situações dos alunos, todas serão definidas como 'Pendente' ou 'Indefinida' até que sejam definidas novamente."
       situation5: "- Uma vez definida a situação, a cada nova avaliação, carga horária e afins, a situação do aluno será imediatamente atualizada."
       confirm: A última atividade avaliativa ainda não aconteceu. Tem certeza que deseja definir as situações?
+      origin_group: Turma original (aglutinada)
     info:
       assignments: Trabalhos
       date_range: Período
