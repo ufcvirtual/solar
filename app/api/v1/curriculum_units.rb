@@ -43,9 +43,6 @@ module V1
         end
         post "/" do
           begin
-            params[:working_hours] = nil if params[:working_hours] == 0
-            params[:credits] = nil if params[:credits] == 0
-
             uc = unless params[:update_if_exists]
               CurriculumUnit.create! curriculum_unit_params(params, true)
             else
