@@ -68,9 +68,6 @@ module V1
           post "/" do
             begin
               ActiveRecord::Base.transaction do
-                params[:cargaHoraria] = nil if params[:cargaHoraria] == 0
-                params[:creditos] = nil if params[:creditos] == 0
-
                 verify_or_create_curriculum_unit( {
                   code: params[:codigo].slice(0..39), name: params[:nome], working_hours: params[:cargaHoraria], credits: params[:creditos], curriculum_unit_type_id: params[:tipo]
                 } )
