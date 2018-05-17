@@ -1656,7 +1656,7 @@ en_US:
       send_paranoid_instructions: "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
       ma_request: "To recover your access data, go to the address: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
       not_found: No user was found with informed CPF. Register yourself at 'Sign Up' tab.
-      no_email: There is no email registered to the informed CPF. Contact atendimento@virtual.ufc.br informing your CPF, complete name and birthdate.
+      no_email: There is no email registered to the informed CPF. Contact atendimento@virtual.ufc.br informing your CPF, complete name, birthdate and email to save at the system.
     password:
       change_my_password: Change
     passwords:
@@ -2248,6 +2248,7 @@ en_US:
       email_sent: Email sent sucessfully
     error:
       email_not_sent: Email not sent
+      no_email: It's necessary set an email first.
     allocation_approval:
       not_specified: Not specified
       none_pending_allocation: There are no pending request
@@ -3539,6 +3540,7 @@ en_US:
       situation4: "- By removing sutdent's situations, all will be setted as 'Pending' or 'Undefined' until they're setted again."
       situation5: "- Once situation was defined, at every new evaluation or working hours, student's situation will be immediately updated."
       confirm: Last evaluative activity haven't happened yet. Are you sure that you want to set situations?
+      origin_group: Original group (merged)
     info:
       assignments: Assignments
       date_range: Date range

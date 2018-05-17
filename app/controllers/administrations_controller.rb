@@ -72,9 +72,13 @@ class AdministrationsController < ApplicationController
   def reset_password_user
     authorize! :reset_password_user, Administration
     @user = User.find(params[:id])
-    token = @user.get_reset_password_token
 
-    render json: {success: true, notice: t('administrations.success.email_sent'), token: token}
+    if @user.email.blank? && ((@user.integrated && @user.on_blacklist?) || !@user.integrated)
+      render json: {success: false, alert: t("administrations.error.no_email").html_safe}, status: :unprocessable_entity
+    else
+      token = @user.get_reset_password_token
+      render json: {success: true, notice: t('administrations.success.email_sent'), token: token}
+    end
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
@@ -88,7 +92,7 @@ class AdministrationsController < ApplicationController
 
     @user_id = params[:id]
 
-    @allocations = list_allocations_user(@user_id, params[:semester_id])               
+    @allocations = list_allocations_user(@user_id, params[:semester_id])
 
     @profiles = @allocations.map(&:profile).flatten.uniq
     @periods = Semester.all.select('id, name').order('name DESC')#flatten.uniq.sort! {|x,y| y <=> x}
@@ -104,7 +108,7 @@ class AdministrationsController < ApplicationController
     profiles = allocations.map(&:profile).flatten.uniq
 
     render partial: 'allocations_user_list',  locals: { profiles: profiles, allocations: allocations }
-  end  
+  end
 
   def show_allocation
     authorize! :update_allocation, Administration
