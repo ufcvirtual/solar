@@ -1,10 +1,13 @@
 %div{ class: 'link_btns_scores' }
   = link_to t('scores.index.print_pdf'), general_scores_path(report: true, format: :pdf), :target => "_blank", class: "btn"
+  = link_to "Enviar Mensagem", "#", class: "btn btn_send_msg", disabled: true
 
 .parent
   %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('scores.index.list_of_students')}
     %thead
       %tr.lines
+        %th.no_sort
+          %input#all_students_general{type: "checkbox", :"data-children-names" => "ckb_student_score_general"}
         %th#student{style: "width: 100px;"}= t("scores.index.student")
         %th#public_files= t('scores.index.public_files')
         %th#assignment= t("activerecord.models.assignment")
@@ -22,3 +25,27 @@
         = render partial: 'pending_general', locals: { users: @users }
 - unless @users.blank?
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), general_scores_path(page: @users.next_page), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items), :'aria-label' => t(:load_items)  if @users.next_page
+
+:javascript
+
+  $(function(){
+
+    $('#all_students_general').nice_checkbox();
+
+    $(".btn_send_msg").on('click', function(event){
+      event.preventDefault();
+
+      students_ids = []
+
+      $('tbody :checkbox:checked').each(function(index, element){
+        students_ids.push(element.value)
+      });
+
+      $(this).call_fancybox({
+        href: '/new_message_score_student/' + students_ids.join(","),
+        open: true
+      });
+
+    });
+
+  });
