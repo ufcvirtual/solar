@@ -1,12 +1,13 @@
 class ScheduleEventFile < ActiveRecord::Base
 
-  # include ControlledDependency
-  # include SentActivity
   include AcademicTool
   include FilesHelper
+  include SentActivity
 
   belongs_to :user
   belongs_to :academic_allocation_user, counter_cache: true
+
+  has_one :academic_allocation, through: :academic_allocation_user, autosave: false
 
   before_destroy :can_destroy?
   before_save :replace_attachment_file_name
@@ -30,7 +31,7 @@ class ScheduleEventFile < ActiveRecord::Base
   end
 
   def can_destroy?
-    raise 'remove' unless academic_allocation_user.grade.nil? && academic_allocation_user.working_hours.nil? && academic_allocation_user.comments_count == 0
+    raise 'remove' if !academic_allocation_user.grade.nil? || (academic_allocation.frequency_automatic == true && academic_allocation_user.evaluated_by_responsible == true) || (academic_allocation.frequency_automatic == false && !academic_allocation_user.working_hours.nil?) || academic_allocation_user.comments_count > 0
   end
 
   def delete_with_dependents
