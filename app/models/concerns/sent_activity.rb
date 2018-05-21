@@ -15,6 +15,7 @@ module SentActivity
     table_name = self.class.to_s.tableize
     empty_associations = case table_name
     when 'assignment_files'; (academic_allocation_user.assignment_files.empty? && academic_allocation_user.assignment_webconferences.empty?)
+    when 'schedule_event_files'; (academic_allocation_user.schedule_event_files.empty?)
     when 'assignment_webconferences'; (academic_allocation_user.assignment_files.empty? && academic_allocation_user.assignment_webconferences.empty?)
     when 'posts'; academic_allocation_user.discussion_posts.where(draft: false).empty?
     else

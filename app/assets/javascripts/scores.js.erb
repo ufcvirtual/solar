@@ -60,8 +60,12 @@ function open_tool(link){
     }
   }).error(function(data){
     var data = $.parseJSON(data.responseText);
-    if (typeof(data.alert) != "undefined")
-      flash_message(data.alert, 'alert');
+    if (typeof(data.alert) != "undefined") {
+      if(!!$('.fancybox-outer').length)
+        flash_message(data.alert, "alert", 'fancybox-outer');
+      else
+        flash_message(data.alert, 'alert');
+    }
   });
 }
 
