@@ -306,7 +306,6 @@ class AcademicAllocation < ActiveRecord::Base
     end
 
     def set_automatic_frequency
-      self.frequency_automatic = false if academic_tool_type == 'ScheduleEvent'
       self.frequency_automatic = true if academic_tool_type == 'Exam'
       return nil
     end
