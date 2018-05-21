@@ -27,12 +27,12 @@ class Devise::LoginController < Devise::SessionsController
       end
 
       unless correct_password
-        previous_user = User.find_by_previous_username(params[:user][:login])
+        previous_user = User.where(previous_username: params[:user][:login])
+        previous_user = previous_user.collect{|puser| puser if puser.valid_password?(params[:user][:password])}
+        previous_user = previous_user.compact.first
         unless previous_user.blank?
-          if previous_user.valid_password?(params[:user][:password])
-            redirect_to login_path, alert: t("users.errors.ma.changed_username", new_username: previous_user.username).html_safe
-            return
-          end
+          redirect_to login_path, alert: t("users.errors.ma.changed_username", new_username: previous_user.username).html_safe
+          return
         end
       end
 
