@@ -79,7 +79,15 @@ function file_size_human_readable(file) {
 
 function delete_file(button){
   $(button).nice_delete({
-    parent: 'tr.lines'
+    parent: 'tr.lines',
+    complement_success: function(data) {
+      flash_message(data.notice, "notice", 'fancybox-outer');
+    },
+    error: function(data) {
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert', 'fancybox-outer');
+    },
   });
   update_tables_with_no_data();
 }
