@@ -4,6 +4,7 @@ class Devise::LoginController < Devise::SessionsController
 
   def create
     user = User.find_by_username(params[:user][:login])
+    correct_password = user.valid_password?(params[:user][:password])
 
     if user.nil?
       if !User::MODULO_ACADEMICO.nil?
@@ -11,14 +12,33 @@ class Devise::LoginController < Devise::SessionsController
       else
         redirect_to login_path, alert: t('devise.failure.invalid_login')
       end
+      return
     else
       if user.integrated && !user.on_blacklist? && !user.selfregistration
         user.synchronize
-        redirect_to login_path, alert: t("users.errors.ma.selfregistration").html_safe unless user.selfregistration
+        unless user.selfregistration
+          redirect_to login_path, alert: t("users.errors.ma.selfregistration").html_safe
+          return
+        end
+      elsif user.integrated && !user.on_blacklist? && !correct_password
+        user.synchronize
+        user = User.find_by_username(params[:user][:login])
+        correct_password = user.valid_password?(params[:user][:password])
+      end
+
+      unless correct_password
+        previous_user = User.find_by_previous_username(params[:user][:login])
+        unless previous_user.blank?
+          if previous_user.valid_password?(params[:user][:password])
+            redirect_to login_path, alert: t("users.errors.ma.changed_username", new_username: previous_user.username).html_safe
+            return
+          end
+        end
       end
 
       unless user.integrated && !user.on_blacklist? && !user.selfregistration
         super
+
         current_user.session_token = Devise.friendly_token
         user_session[:token] = current_user.session_token
         current_user.save(validate: false)
