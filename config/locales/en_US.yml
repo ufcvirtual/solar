@@ -3035,6 +3035,7 @@ en_US:
       frequency: Frequency
       files_sended: Files sended
       grade_work_hours_comments: Files and comments sent
+      participants: See participants
     types:
       presential_test: Presential Test
       presential_meeting: Presential Meeting
@@ -3086,6 +3087,7 @@ en_US:
       summary_evaluative: "This table contains all the evaluation shedule events."
       summary_frequency: "This table contains all the frequency shedule events."
       summary_notevaluative: "This table contains all the not evaluation shedule events."
+      summary_student_files: "This table contains the files sent by the responsible, with the following information: Name, size, date of sending and who sent the file."
     participants:
       title: Participants
       student: Students
@@ -3488,8 +3490,8 @@ en_US:
         menu_lesson_key: "Shift + L"
         menu_support_material: "Support Material"
         menu_support_material_key: "Shift + U"
-        menu_dc_lesson: "Digital Class"
-        menu_dc_lesson_key: "Shift + I"
+        # menu_dc_lesson: "Digital Class"
+        # menu_dc_lesson_key: "Shift + I"
         menu_discussion: "Discussions"
         menu_discussion_key: "Shift + D"
         menu_portfolio: "Portfolio (Assignments)"
@@ -3517,16 +3519,18 @@ en_US:
         menu_messages: "Messages"
         menu_messages_key: "Shift + M"
         menu_registration: "Registration"
-        menu_registration_key: "Shift + T"
+        menu_registration_key: "Shift + I"
         menu_home: "Curriculum Unit Home"
         menu_home: "Shift + H"
+        menu_events: "Events"
+        menu_events_key: "Shift + E"
       code:
         menu_lesson: 76
         menu_support_material: 85
-        menu_dc_lesson: 73
+        # menu_dc_lesson: 73
         menu_discussion: 68
         menu_portfolio: 65
-        menu_exam: 69
+        menu_exam: 84
         menu_score_student: 83
         menu_chat: 67
         menu_webconference: 87
@@ -3537,8 +3541,9 @@ en_US:
         menu_participants: 82
         menu_content_edition: 78
         menu_messages: 77
-        menu_registration: 84
+        menu_registration: 73
         menu_home: 72
+        menu_events: 69
       complement:
         menu_portfolio: " (Assignments)"
         menu_exam: " (Exams)"
@@ -3554,6 +3559,11 @@ en_US:
       code:
         window: 65
         analyzer_position: 83
+    schedule_events:
+      name:
+        events_list: "Events List [E]"
+      code:
+        events_list: 69
 
   scores:
     index:
@@ -4830,8 +4840,8 @@ en_US:
     frequency:
       'true': 'Yes <br/>(max: %{hours}h)%{automatic})'
       'false': 'No'
-      a: "<br/>automactic"
-      d: defined by responsible
+      automatic: " (automactic)"
+      defined: " (defined by responsible) "
     ev_final_exam:
       'true': 'Yes <br/>(Final Exam)'
       'false': 'No'

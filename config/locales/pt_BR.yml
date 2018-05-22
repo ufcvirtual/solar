@@ -3284,6 +3284,7 @@ pt_BR:
       frequency: Frequência
       files_sended: Arquivos enviados
       grade_work_hours_comments: Arquivos e comentários enviados
+      participants: 'Ver participantes'
     types:
       presential_test: Prova Presencial
       presential_meeting: Encontro Presencial
@@ -3335,6 +3336,7 @@ pt_BR:
       summary_evaluative: "Está tabela contém todos os eventos agendados avaliativas."
       summary_frequency: "Está tabela contém todos os eventos agendados de frequência."
       summary_notevaluative: "Está tabela contém todos os eventos agendados não avaliativas."
+      summary_student_files: "Está tabela contém os arquivos enviados pelo tutor, com as seguintes informações: Nome, tamanho, data de envio e quem envio o arquivo."
     participants:
       title: Participantes
       student: Alunos
@@ -3771,7 +3773,8 @@ pt_BR:
         menu_registration_key: "Shift + U"
         menu_home: "Tela inicial da disciplina"
         menu_home_key: "Shift + I"
-
+        menu_events: "Eventos"
+        menu_events_key: "Shift + S"
       code:
         menu_lesson: 65
         menu_support_material: 77
@@ -3791,6 +3794,7 @@ pt_BR:
         menu_messages: 78
         menu_registration: 85
         menu_home: 73
+        menu_events: 83
       complement:
         menu_portfolio: " (Trabalhos)"
     comments:
@@ -3805,6 +3809,11 @@ pt_BR:
       code:
         window: 65
         analyzer_position: 83
+    schedule_events:
+      name:
+        events_list: "Lista de Eventos [E]"
+      code:
+        events_list: 69
 
   scores:
     index:
