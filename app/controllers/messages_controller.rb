@@ -108,7 +108,11 @@ class MessagesController < ApplicationController
         end
       end
 
-      redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages)
+      respond_to do |format|
+        format.html { redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages) }
+        #format.json { render :json => {"msg": "Contato removido com sucesso"} }
+      end
+
     rescue => error
       @unreads = Message.unreads(current_user.id, @allocation_tag_id)
       unless @allocation_tag_id.nil?
@@ -194,12 +198,13 @@ class MessagesController < ApplicationController
     @message = Message.new
     @message.files.build
     @unreads = Message.unreads(current_user.id, @allocation_tag_id)
-
-    users = User.find(params[:id].split(",")) unless params[:id].nil?
-    @reply_to_many = users.size > 0 ? users.map{|u| u.to_msg} : nil
-
-    @reply_to = [User.find(params[:id]).to_msg] unless params[:id].nil?
-    #@reply_to = [{resume: t("messages.support")}] unless params[:support].nil?
+    
+    unless params[:id].nil?
+      users = User.find(params[:id].split(",")) 
+      @reply_to_many = users.size > 0 ? users.map{|u| u.to_msg} : nil
+  
+      @reply_to = [User.find(params[:id]).to_msg]
+    end
 
     render partial: 'form'
   end

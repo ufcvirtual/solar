@@ -168,7 +168,15 @@
       $('ul.dropdown-menu li input[type="checkbox"]#all').click();
     }
 
-    $("#send_scores_message").call_fancybox();
+    $("#send_scores_message").on('click', function(event){
+      event.preventDefault();
+
+      $(this).call_fancybox({
+        href: '/new_message_score_student/',
+        open: true,
+      });
+    });
+
 
   });
 
