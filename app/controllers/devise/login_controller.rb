@@ -4,7 +4,7 @@ class Devise::LoginController < Devise::SessionsController
 
   def create
     user = User.find_by_username(params[:user][:login])
-    correct_password = user.valid_password?(params[:user][:password])
+    correct_password = user.valid_password?(params[:user][:password]) unless user.blank?
 
     if user.nil?
       if !User::MODULO_ACADEMICO.nil?
@@ -25,7 +25,6 @@ class Devise::LoginController < Devise::SessionsController
         user = User.find_by_username(params[:user][:login])
         correct_password = user.valid_password?(params[:user][:password])
       end
-
       unless correct_password
         previous_user = User.where(previous_username: params[:user][:login])
         previous_user = previous_user.collect{|puser| puser if puser.valid_password?(params[:user][:password])}
@@ -38,7 +37,6 @@ class Devise::LoginController < Devise::SessionsController
 
       unless user.integrated && !user.on_blacklist? && !user.selfregistration
         super
-
         current_user.session_token = Devise.friendly_token
         user_session[:token] = current_user.session_token
         current_user.save(validate: false)
