@@ -69,7 +69,7 @@ module V1::Contents
       replicate_discussions(from_academic_allocations, to_at)
       replicate_chats(from_academic_allocations, to_at)
       replicate_assignments(from_academic_allocations, to_at)
-      replicate_webconferences(from_academic_allocations, to_at, from_group.allocation_tag.id)
+      replicate_webconferences(from_academic_allocations, to_at, from_group.allocation_tag.id, merge)
       replicate_exams(from_academic_allocations, to_at)
       replicate_schedule_events(from_academic_allocations, from_group.allocation_tag.id, to_at)
 
@@ -92,6 +92,7 @@ module V1::Contents
       end
       ac.group_assignments.map(&:delete_with_dependents)
     }
+
     AcademicAllocation.where(academic_tool_type: 'ChatRoom', allocation_tag_id: allocation_tag).map{ |ac|
       ac.academic_allocation_users.map(&:delete_with_dependents)
       ac.chat_messages.delete_all
@@ -201,15 +202,18 @@ module V1::Contents
     copy_academic_allocation_users(AcademicAllocationUser.where(academic_allocation_id: ac_ids), to_at) # copy all sent assignments and dependents
   end
 
-  def replicate_webconferences(from_academic_allocations, to_at, from_at)
+  def replicate_webconferences(from_academic_allocations, to_at, from_at, merge)
     from_webconferences_academic_allocations = from_academic_allocations.where(academic_tool_type: 'Webconference')
     create_missing_tools(from_webconferences_academic_allocations.pluck(:academic_tool_id).uniq, to_at, 'Webconference', :create_copy, from_at)
     from_webconferences_academic_allocations.each do |web|
       to_ac = AcademicAllocation.joins(:webconference).where(allocation_tag_id: to_at, academic_tool_type: 'Webconference').where("origin_meeting_id = '?' OR origin_meeting_id = ? OR academic_tool_id = ?", web.academic_tool_id, [from_at, web.academic_tool_id].join('_'), web.academic_tool_id).order('id').last
+      if !merge && to_ac.blank?
+        web_tmp = Webconference.find(web.academic_tool_id)
+        to_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Webconference').where("academic_tool_id = ?", web_tmp.origin_meeting_id.to_s.split('_').last).order('id').last
+      end
 
       unless to_ac.nil?
         copy_objects(LogAction.where(academic_allocation_id: web.id, log_type: 7), {"academic_allocation_id" => to_ac.id}, false, nil, {}, true)
-
         #from acs, copy all acus which doesnt have any access
         from_acus_without_access = AcademicAllocationUser.joins('LEFT JOIN log_actions ON log_actions.academic_allocation_user_id = academic_allocation_users.id').where(academic_allocation_id: web.id).where('log_actions.id IS NULL')
         from_acus_without_access.each do |from_acu_without_access|
