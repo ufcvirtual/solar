@@ -3,81 +3,95 @@ g1:
   offer_id: 1
   code: 'IL-FOR'
   status: TRUE
+  name: 'IL-FOR'
 
 g2:
   id: 2
   offer_id: 2
   code: 'TL-CAU'
   status: TRUE
+  name: 'TL-CAU'
 
 g3:
   id: 3
   offer_id: 3
   code: 'QM-CAU'
   status: TRUE
+  name: 'QM-CAU'
 
 g4:
   id: 4
   offer_id: 4
   code: 'SP-FOR'
   status: TRUE
+  name: 'SP-FOR'
 
 g5:
   id: 5
   offer_id: 5
   code: 'LB-CAR'
   status: TRUE
+  name: 'LB-CAR'
 
 g6:
   id: 6
   offer_id: 6
   code: 'IL-FOR'
   status: TRUE
+  name: 'IL-FOR'
 
 g7:
   id: 7
   offer_id: 3
   code: 'QM-MAR'
   status: TRUE
+  name: 'QM-MAR'
 
 g8:
   id: 8
   offer_id: 6
   code: 'IL-CAU'
   status: TRUE
+  name: 'IL-CAU'
 
 g9:
   id: 9
   offer_id: 3
   code: 'TL-FOR'
   status: TRUE
+  name: 'TL-FOR'
 
 g10: # turma que não está disponível para matrícula
   id: 10
   offer_id: 8
   code: 'SP-CAU'
   status: TRUE
+  name: 'SP-CAU'
 
 g11: # turma curso livre | Introducao a Linguistica
   id: 11
   offer_id: 11
   code: 'IL-MAR'
   status: TRUE
+  name: 'IL-MAR'
 
 g12:
   id: 12
   offer_id: 9
   code: 'QM-SOL'
   status: TRUE
+  name: 'QM-SOL'
 
 g13: # turma vazia
   id: 13
   offer_id: 2
   code: 'QM-QTN'
   status: true
+  name: 'QM-QTN'
 
 g14:
   id: 14
   offer_id: 3
   code: "QM-AUR"
   status: false
+  name: "QM-AUR"
