@@ -45,6 +45,7 @@ module V1::GroupsH
     group.code = params[:code]
     group.status = true
     group.integrated = true
+    group.new_record? ? (group.created_at = DateTime.now) : (group.updated_at = DateTime.now)
     group.api = true
     group.save!
     group
