@@ -26,6 +26,8 @@ class Allocation < ActiveRecord::Base
   after_save :update_digital_class_members, if: '(!new_record? && (status_changed? || profile_id_changed?))', on: :update
   after_save :update_digital_class_user_role, if: '(!new_record? && profile_id_changed?)', on: :update
 
+  after_create :calculate_grade_and_hours
+
   validate :verify_profile, if: 'new_record? || profile_id_changed?'
 
   def can_change_group?
@@ -400,6 +402,14 @@ class Allocation < ActiveRecord::Base
     when 6; 'undefined'
     end
   end
+
+  def calculate_grade_and_hours
+    if profile_id = Profile.student_profile && !allocation_tag.nil?
+      calculate_working_hours
+      calculate_final_grade
+    end
+  end
+
 
   private
 
