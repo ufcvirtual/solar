@@ -2,13 +2,13 @@
   %table.tb_list.assignments
     %thead
       %tr.lines
-        %th{id: 'event-name'}= t('.name')
-        %th.center{id: 'event-data-range'}= t('.data_range')
-        %th.center{id: 'event-type'}= t('.type')
-        %th.center{id: 'event-place'}= t('.place')
+        %th{id: 'event-name', style: 'width: 21%'}= t('.name')
+        %th.center{id: 'event-data-range', style: 'width: 12%'}= t('.data_range')
+        %th.center{id: 'event-type', style: 'width: 12%'}= t('.type')
+        %th.center{id: 'event-place', style: 'width: 12%'}= t('.place')
         %th.center{id: 'event-situation'}= t('.situation')
         %th.center{id: 'event-evaluative'}= t('.evaluative')
-        %th.center{id: 'event-frequency'}= t('.frequency')
+        %th.center{id: 'event-frequency', style: 'width: 12%'}= t('.frequency')
         %th.center.no_sort{id: 'event-grade-wh'}= @is_student ? t('.grade_work_hours_comments') : ''
     %tbody
       - events.each do |event|
