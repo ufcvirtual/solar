@@ -65,17 +65,44 @@
 
 :javascript
   function finish_evaluation(btn){
-    var form = $(btn).parents('form:first');
-    $.put(form.attr('action'), form.serialize(), function(data){
-      if("#{@back}" =='true')
-        flash_message(data.notice, 'notice', 'fancybox-outer');
-      else
-        after_evaluate('Webconference', "#{@score_type}", "#{@academic_allocation.id}", "#{@user.id}", data);
-    }).error(function(data){
-      var data = $.parseJSON(data.responseText);
-      if (typeof(data.alert) != "undefined")
-        flash_message(data.alert, 'alert', 'fancybox-outer');
-    });
+
+    var content = $('div.ckeditor .cke_contents iframe').contents().find('body').html();
+    if (content != undefined && content != "<p><br></p>" && content != "<br>" && content != ""){
+        $('textarea.ckeditor').html(content);
+      
+        if (confirm("Há comentário(s) não salvo(s), deseja salvá-lo(s) antes de finalizar a ação?")){
+  
+            $('#comment_form').serialize_and_submit({
+              files: true,
+              prepend_to_list: $(".comments_list"),
+              dont_remove_lightbox: true,
+              outer: 'fancybox-outer',
+              complement_success: function(data){
+                cancel_new_comment();
+                update_tables_with_no_data('.comments_list', '.comments_list > li');
+                if(data.ac_id != undefined)
+                  after_evaluate(data.tool, data.score_type, data.ac_id, data.user_id, data, data.group_id);
+                if(!!$('.fancybox-outer').length)
+                  flash_message("#{t('comments.success.new')}", "notice", 'fancybox-outer');
+                else
+                  flash_message("#{t('comments.success.new')}", "notice");
+              }
+            });     
+        }
+      }
+
+      var form = $(btn).parents('form:first');
+      $.put(form.attr('action'), form.serialize(), function(data){
+        if("#{@back}" =='true')
+          flash_message(data.notice, 'notice', 'fancybox-outer');
+        else
+          after_evaluate('Webconference', "#{@score_type}", "#{@academic_allocation.id}", "#{@user.id}", data);
+      }).error(function(data){
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert', 'fancybox-outer');
+      });
+
   }
 
   $(function(){
