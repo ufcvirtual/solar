@@ -4926,6 +4926,7 @@ en_US:
       new: New comment
       title: "Responsible's comments"
       confirm: Confirm to cancel comment?
+      comment_finish_evaluation_unsaved: There is comment not saved. Do you want to proceed and save it before finish?
     comment:
       attached_files: Attachments
       edit: Edit comment
