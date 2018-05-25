@@ -2374,6 +2374,7 @@ en_US:
       lesson: Lesson
       support_material: Support material
       assignment: Assignment
+      event: Event
       test: Test
       question_bank: Question Bank
       edition_of: Edition of %{of}
@@ -3051,10 +3052,19 @@ en_US:
       closed: Closed
       started: Started
     list:
+      expand_enunciation: Expand enunciation
       summary_evaluative: "This table contains all the evaluation shedule events."
       summary_frequency: "This table contains all the frequency shedule events."
       summary_notevaluative: "This table contains all the not evaluation shedule events."
       summary_student_files: "This table contains the files sent by the responsible, with the following information: Name, size, date of sending and who sent the file."
+      none: No event registered
+      new: New event
+      edit: Edit event
+      delete: Remove event
+      name: Name
+      data_range: Data range
+      type: Type
+      place: Place
     participants:
       title: Participants
       student: Students

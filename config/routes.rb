@@ -499,7 +499,11 @@ Solar::Application.routes.draw do
       get :evaluate_user
       put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'ScheduleEvent', as: :evaluate
     end
-    get :summary , to: 'academic_allocation_users#summary', tool: 'ScheduleEvent', on: :collection
+
+    collection do
+      get :list
+      get :summary , to: 'academic_allocation_users#summary', tool: 'ScheduleEvent'
+    end
   end
 
   resources :schedule_event_files, except: [:index, :show] do

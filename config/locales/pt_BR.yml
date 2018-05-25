@@ -2606,6 +2606,7 @@ pt_BR:
       lesson: Aula
       support_material: Material de apoio
       assignment: Trabalho
+      event: Evento
       test: Prova
       question_bank: Banco de Questões
       edition_of: Edição de %{of}
@@ -3300,10 +3301,19 @@ pt_BR:
       closed: Encerrado
       started: Iniciado
     list:
+      expand_enunciation: Expandir enunciado
       summary_evaluative: "Está tabela contém todos os eventos agendados avaliativas."
       summary_frequency: "Está tabela contém todos os eventos agendados de frequência."
       summary_notevaluative: "Está tabela contém todos os eventos agendados não avaliativas."
       summary_student_files: "Está tabela contém os arquivos enviados pelo tutor, com as seguintes informações: Nome, tamanho, data de envio e quem envio o arquivo."
+      none: Nenhum evento cadastrado
+      new: Novo evento
+      edit: Editar evento
+      delete: Remover evento
+      name: Nome
+      data_range: Período
+      type: Tipo
+      place: Local
     participants:
       title: Participantes
       student: Alunos

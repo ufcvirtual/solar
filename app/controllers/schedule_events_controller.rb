@@ -22,6 +22,11 @@ class ScheduleEventsController < ApplicationController
     @can_evaluate = can?(:evaluate, ScheduleEvent, on: [@allocation_tag_id])
   end
 
+  def list
+    authorize! :list, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    @events = ScheduleEvent.get_all_events @allocation_tags_ids
+  end
+
   def show
     authorize! :show, ScheduleEvent, on: @allocation_tags_ids
   end
