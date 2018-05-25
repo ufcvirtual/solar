@@ -5116,6 +5116,7 @@ pt_BR:
       new: Novo comentário
       title: Comentários dos responsáveis
       confirm: Confirma cancelamento do comentário?
+      comment_finish_evaluation_unsaved: Há comentário não salvo, deseja salvá-lo antes de finalizar a ação?
     comment:
       attached_files: Anexos
       edit: Editar comentário
