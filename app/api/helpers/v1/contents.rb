@@ -64,6 +64,8 @@ module V1::Contents
 
       Merge.create! main_group_id: main_group.id, secundary_group_id: secundary_group.id, type_merge: merge
 
+      secundary_group.update_attributes main_group_id: (merge ? main_group.id : nil)
+
       remove_all_content(to_at) unless merge
 
       replicate_discussions(from_academic_allocations, to_at)

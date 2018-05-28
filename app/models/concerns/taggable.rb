@@ -48,10 +48,20 @@ module Taggable
   ## Alocações
 
   # creates or activates user allocation
-  def allocate_user(user_id, profile_id, updated_by_user_id=nil)
+  def allocate_user(user_id, profile_id, updated_by_user_id=nil, origin_group_id=nil, status=Allocation_Activated)
     allocation = Allocation.where(user_id: user_id, allocation_tag_id: self.allocation_tag.id, profile_id: profile_id).first_or_initialize
-    allocation.status = Allocation_Activated
+    allocation.status = status
     allocation.updated_by_user_id = updated_by_user_id # if nil, was updated by system
+
+    # if was merged and not anymore, but student still allocated at last group
+    allocation.origin_group.cancel_allocations(user_id, profile_id) unless allocation.origin_group_id.blank? || origin_group_id == allocation.origin_group_id
+    unless origin_group_id.blank?
+      Allocation.where(origin_group_id: origin_group_id, user_id: user_id, profile_id: profile_id).where("id != ?", allocation.id).each do |al|
+        al.group.change_allocation_status(user_id, Allocation_Cancelled, nil, {profile_id: profile_id})
+      end
+    end
+
+    allocation.origin_group_id = (origin_group_id.blank? ? nil : origin_group_id)
     allocation.save!
     allocation
   end
@@ -75,7 +85,7 @@ module Taggable
     end
 
     all_query.each do |al|
-      al.update_attributes(status: Allocation_Cancelled, updated_by_user_id: updated_by_user_id)
+      al.update_attributes(status: Allocation_Cancelled, updated_by_user_id: updated_by_user_id, origin_group_id: nil)
     end
   end
 
@@ -88,9 +98,11 @@ module Taggable
     else
       allocations.where(where)
     end
-
     all.each do |al|
-      al.update_attributes(status: new_status, updated_by_user_id: updated_by_user_id)
+      # if was merged and not anymore, but student cancel allocation at last group
+      al.origin_group.cancel_allocations(user_id, opts[:profile_id]) unless al.origin_group_id.blank? || opts[:origin_group_id] == al.origin_group_id || opts[:profile_id].blank?
+
+      al.update_attributes(status: new_status, updated_by_user_id: updated_by_user_id, origin_group_id: (opts[:origin_group_id].blank? ? nil : opts[:origin_group_id]))
     end
   end
 

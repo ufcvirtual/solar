@@ -13,6 +13,7 @@ class Allocation < ActiveRecord::Base
   has_one :offer,                -> { where('offer_id is not null')}, through: :allocation_tag
   has_one :group,                -> { where('group_id is not null')}, through: :allocation_tag
   has_one :curriculum_unit_type, -> { where('curriculum_unit_type_id is not null')}, through: :allocation_tag
+  belongs_to :origin_group, class_name: "Group", foreign_key: :origin_group_id
 
   has_many :chat_rooms
   has_many :chat_messages
@@ -32,6 +33,10 @@ class Allocation < ActiveRecord::Base
 
   def can_change_group?
     not [Allocation_Cancelled, Allocation_Rejected].include?(status)
+  end
+
+  def merged_to
+    Allocation.where(origin_group_id: group.try(:id)).map(&:allocation_tag).first.try(:info) unless group.blank?
   end
 
   def pending?
@@ -91,7 +96,7 @@ class Allocation < ActiveRecord::Base
     case status
       when Allocation_Pending_Reactivate, Allocation_Pending; "#FF6600"
       when Allocation_Activated; "#006600"
-      when Allocation_Cancelled, Allocation_Rejected; "#FF0000"
+      when Allocation_Cancelled, Allocation_Rejected, Allocation_Merged; "#FF0000"
     end
   end
 
@@ -404,12 +409,11 @@ class Allocation < ActiveRecord::Base
   end
 
   def calculate_grade_and_hours
-    if profile_id = Profile.student_profile && !allocation_tag.nil?
+    if profile_id == Profile.student_profile && !allocation_tag.nil?
       calculate_working_hours
       calculate_final_grade
     end
   end
-
 
   private
 

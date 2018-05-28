@@ -9,6 +9,7 @@ class Group < ActiveRecord::Base
   has_one :course,               through: :offer
   has_one :semester,             through: :offer
   has_one :curriculum_unit_type, through: :curriculum_unit
+  has_one :main_group, class_name: 'Group', foreign_key: :main_group_id
 
   has_many :academic_allocations, through: :allocation_tag
   has_many :lesson_modules,       through: :academic_allocations, source: :academic_tool, source_type: 'LessonModule'
@@ -42,6 +43,10 @@ class Group < ActiveRecord::Base
   end
 
   attr_accessor :api
+
+  def is_merged?
+    Group.where(main_group_id: id).any?
+  end
 
   def code_semester
     "#{code} - #{offer.semester.name}"

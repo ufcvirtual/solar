@@ -976,6 +976,7 @@ pt_BR:
       enrolled: "Matriculado"
       rejected: "Matricula Rejeitada"
       pending: Pendente
+      merged: Aglutinada
       cancelled_rejected: Rejeitadas/Canceladas
       ucs_available: Disciplinas diponíveis
       confirm: "Tem certeza de que deseja cancelar?"
@@ -2020,6 +2021,7 @@ pt_BR:
       enrolled: Matriculado
       cancelled: Cancelado
       rejected: Rejeitado
+      merged: Aglutinado
     manage:
       enrollment_successful_update: Atualizacao realizada com sucesso
       enrollment_unsuccessful_update: Atualizacao nao realizada
@@ -3881,6 +3883,8 @@ pt_BR:
       hours: Carga Horária Máxima
       info_evaluation: Nota/frequência e comentários
       comments: Comentários
+      origin_group: "<b>Turma original (aglutinada):</b>"
+      origin_group2: "<b>Turma original (aglutinada):</b> %{group}"
     reports:
       general_evaluative: Relatório Acompanhamento - Atividades Avaliativas
       general_frequency: Relatório Acompanhamento - Atividades de Frequência

@@ -20,7 +20,9 @@ module V1::AllocationsH
   def create_allocations(groups, user, profile_id)
     ActiveRecord::Base.transaction do
       groups.each do |group|
-        group.allocate_user(user.id, profile_id)
+        group.first.allocate_user(user.id, profile_id, nil, group.last.try(:id))
+        # set or create merged allocation
+        group.last.allocate_user(user.id, profile_id, nil, nil, 5) unless group.last.blank?
       end
     end
   end
@@ -28,7 +30,12 @@ module V1::AllocationsH
   def cancel_allocations(groups, user, profile_id)
     ActiveRecord::Base.transaction do
       groups.each do |group|
-        group.change_allocation_status(user.id, 2, nil, {profile_id: profile_id}) # cancel all users previous allocations as profile_id
+        # cancel all users previous allocations as profile_id
+        group.first.change_allocation_status(user.id, 2, nil, {profile_id: profile_id, origin_group_id: groups.last.try(:id)})
+
+        Allocation.where(origin_group_id: group.first.id, user_id: user.id, profile_id: profile_id).each do |al|
+          al.group.change_allocation_status(user.id, Allocation_Cancelled, nil, {profile_id: profile_id})
+        end
       end
     end
   end

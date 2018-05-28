@@ -801,6 +801,7 @@ en_US:
       enrolled: "Enrolled"
       rejected: "Enrollment Rejected"
       pending: Pending
+      merged: Merged
       cancelled_rejected: Rejected/Cancelled
       ucs_available: Subjects Available
       confirm: "Are you sure you want to cancel?"
@@ -1794,6 +1795,7 @@ en_US:
       enrolled: Enrolled
       cancelled: Cancelled
       rejected: Rejected
+      merged: Merged
     manage:
       enrollment_successful_update: Successful update
       enrollment_unsuccessful_update: Unsuccessful update
@@ -3632,6 +3634,8 @@ en_US:
       hours: Maximum Working Hours
       info_evaluation: Grade/Frequency and comments
       comments: Comments
+      origin_group: "<b>Original group (merged):</b>"
+      origin_group2: "<b>Original group (merged):</b> %{group}"
     situation:
       not_started: Not started
       to_answer: To answer

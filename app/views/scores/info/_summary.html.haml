@@ -4,3 +4,13 @@
   .grade= raw t('scores.info.grade_i', grade: (g.final_grade.blank? ? ' - ' : g.final_grade.round(2).to_s))
   .frequency= raw t('scores.info.frequency_i', wh: g.working_hours || 0)
   .situation= raw t("scores.info.situation2", situation: t("scores.index.#{Allocation.status_name(g.grade_situation)}"))
+  - if @merged_group && !g.origin_group.blank?
+    - origin_group = g.origin_group
+    .main_group
+      =raw t('scores.info.origin_group')
+      %a{ href: '#', :"data-dropdown" => "#dropdown_origin_group" }
+        =(origin_group.name == origin_group.code) ? origin_group.name : "#{origin_group.name} (#{origin_group.code})"
+        %i.icon-arrow-down-triangle{:'aria-hidden' => true}
+      .dropdown.dropdown-tip{id: "dropdown_origin_group"}
+        %ul{ class: 'dropdown-menu' }
+          = origin_group.allocation_tag.info

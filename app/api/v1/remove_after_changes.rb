@@ -83,7 +83,8 @@ module V1
           post "/" do
             load_group    = params[:turmas]
             cpfs          = load_group[:professores]
-            semester_name = load_group[:periodo].blank? ? load_group[:ano] : "#{load_group[:ano]}.#{load_group[:periodo]}"
+            semester_name = load_group[:periodo].blank? ? load_group[:ano] : "#{
+            load_group[:ano]}.#{load_group[:periodo]}"
             offer_period  = { start_date: load_group[:dtInicio].to_date, end_date: (load_group[:dtFim].to_date) }
             course        = Course.find_by_code! load_group[:codGraduacao]
             uc            = CurriculumUnit.find_by_code! load_group[:codDisciplina]
@@ -101,7 +102,6 @@ module V1
                 load_group[:code] = get_group_code(load_group[:code], load_group[:name], load_group[:year].to_i) unless load_group[:name].blank?
 
                 group    = verify_or_create_group({offer_id: offer.id, code: load_group[:code], name: load_group[:name], location_name: load_group[:location_name], location_office: load_group[:location_office]})
-
               end
 
               allocate_professors(group, cpfs || [])
@@ -115,13 +115,15 @@ module V1
             before do
               load_enrollments = params[:matriculas]
               @user             = verify_or_create_user(load_enrollments[:cpf])
-              @groups           = JSON.parse(load_enrollments[:turmas])
-              # @groups = load_enrollments[:turmas]
+              @groups           = JSON.parse(load_enrollments[:turmas]) #production
+              # @groups = load_enrollments[:turmas] #development
               @student_profile  = 1 # Aluno => 1
+
 
               @groups = @groups.collect do |group_info|
                 group_info["nome"] = group_info["codigo"] if group_info["nome"].blank?
-                get_group_by_names(group_info["codDisciplina"], group_info["codGraduacao"], group_info["nome"], (group_info["periodo"].blank? ? group_info["ano"] : "#{group_info["ano"]}.#{group_info["periodo"]}"), true) unless group_info["codDisciplina"] == 78
+
+                [get_group_by_names(group_info["codDisciplina"], group_info["codGraduacao"], group_info["nome"], (group_info["periodo"].blank? ? group_info["ano"] : "#{group_info["ano"]}.#{group_info["periodo"]}"), true), group_info["codigoOrigem"].blank? ? nil : get_group_by_names(group_info["codDiscOrigem"], group_info["codGradOrigem"], group_info["codigoOrigem"], group_info["semestreOrigem"], true)] unless group_info["codDisciplina"] == 78
               end # Se cód. graduação for 78, desconsidera (por hora, vem por engano).
             end # before
 

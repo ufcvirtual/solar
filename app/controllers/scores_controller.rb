@@ -10,16 +10,18 @@ class ScoresController < ApplicationController
 
   require 'will_paginate/array'
   def index
+
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
     @allocation_tag = AllocationTag.find(@allocation_tag_id)
     @allocation_tag.set_students_situations if @allocation_tag.can_set_situation_automatically?
 
     @group = @allocation_tag.groups.first
+    @merged_group = @group.is_merged?
 
     ats = @allocation_tag.related
     @responsibles = AllocationTag.get_participants(@allocation_tag_id, { responsibles: true, profiles: Profile.with_access_on("create", "posts").join(",") }, true) if current_user.profiles_with_access_on("responsibles", "scores", ats).any?
 
-    @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true).paginate(:page => params[:page], :per_page => 20)
+    @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true).paginate(page: params[:page], per_page: 20)
     @tools = ( ats.empty? ? [] : EvaluativeTool.count_tools(ats.join(',')) )
     @tools_list = EvaluativeTool.descendants
 
@@ -98,11 +100,14 @@ class ScoresController < ApplicationController
     @tools = ( ats.empty? ? [] : EvaluativeTool.count_tools(ats) )
     @allocation_tag = AllocationTag.find(@allocation_tag_id)
 
+    @group = @allocation_tag.groups.first
+    @merged_group = @group.is_merged?
+
     if params[:report]
       @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true)
       @ats = AllocationTag.find(@allocation_tag_id)
 
-      send_data ReportsHelper.scores_general(@ats, @wh, @users, @allocation_tag_id, @tools, params[:type]).render, :filename => "#{t("scores.reports.#{params[:type]}")}.pdf", :type => "application/pdf", disposition: 'inline'
+      send_data ReportsHelper.scores_general(@ats, @wh, @users, @allocation_tag_id, @tools, params[:type], @merged_group).render, :filename => "#{t("scores.reports.#{params[:type]}")}.pdf", :type => "application/pdf", disposition: 'inline'
 
     else
       @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true).paginate(:page => params[:page], :per_page => 20)
@@ -124,6 +129,9 @@ class ScoresController < ApplicationController
     @allocation_tag = AllocationTag.find(@allocation_tag_id)
     @curriculum_unit = @allocation_tag.get_curriculum_unit
     @responsible = AllocationTag.get_participants(@allocation_tag_id, {responsibles: true})
+
+    group = @allocation_tag.groups.first
+    @merged_group = group.is_merged?
 
     @is_student = @user.is_student?([@allocation_tag_id])
     @current_user_is_student = current_user.is_student?([@allocation_tag_id])
@@ -234,7 +242,10 @@ class ScoresController < ApplicationController
     @tool = Score.list_tool(@user.id, allocation_tag_id, 'all', evaluative, frequency, (@type == 'all'))
     @access, @public_files, @access_count = Score.informations(@user.id, allocation_tag_id)
 
-    send_data ReportsHelper.generate_pdf(@type, @ats, @user, @curriculum_unit, @is_student, @g, @tool, @access, @access_count, @public_files).render, :filename => "#{t("scores.reports.student_#{@type}", name: @user.name)}.pdf", :type => "application/pdf", disposition: 'inline'
+    group = @ats.groups.first
+    @merged_group = group.is_merged?
+
+    send_data ReportsHelper.generate_pdf(@type, @ats, @user, @curriculum_unit, @is_student, @g, @tool, @access, @access_count, @public_files, @merged_group).render, :filename => "#{t("scores.reports.student_#{@type}", name: @user.name)}.pdf", :type => "application/pdf", disposition: 'inline'
   end
 
   def user_info
@@ -245,6 +256,9 @@ class ScoresController < ApplicationController
     @allocation_tag = AllocationTag.find(@allocation_tag_id)
     @curriculum_unit = @allocation_tag.get_curriculum_unit
     @responsible = AllocationTag.get_participants(@allocation_tag_id, {responsibles: true})
+
+    group = @allocation_tag.groups.first
+    @merged_group = group.is_merged?
 
     @is_student = @user.is_student?([@allocation_tag_id])
 

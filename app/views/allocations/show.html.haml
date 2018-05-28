@@ -4,7 +4,7 @@
 %td= @allocation.group.code_semester
 %td= @allocation.group.curriculum_unit.try(:name)
 %td= name_of(@allocation.status)
-%td= button_tag t(:manage, :scope => [:allocations, :index]), :type => 'button', :onclick => "manage_enrollment(this)", class: "btn btn_default btn_manage_enrollment", "show-link" => allocation_path(@allocation), :"edit-link" => edit_allocation_path(@allocation)
+%td= button_tag t('allocations.index.manage'), type: 'button', onclick: "manage_enrollment(this)", class: "btn btn_default btn_manage_enrollment", "show-link" => allocation_path(@allocation), :"edit-link" => edit_allocation_path(@allocation)
 
 :javascript
   eval("#{show_flash}");

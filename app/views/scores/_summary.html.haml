@@ -28,12 +28,14 @@
         %th#af_grade= t('scores.index.af_grade')
         %th#final_grade= t('scores.index.final_grade')
         %th#situation= t('scores.index.situation')
+        - if @merged_group
+          %th#main_group= t('scores.index.origin_group')
 
     %tbody.users
       - if @users.blank?
         %tr.lines
           %td{colspan: 10}= t('scores.index.no_data')
       - else
-        = render partial: 'pending_summary', locals: { users: @users }
+        = render partial: 'pending_summary', locals: { users: @users, merged_group: @merged_group }
 - unless @users.blank?
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), summary_scores_path(page: @users.next_page), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items), :'aria-label' => t(:load_items)  if @users.next_page

@@ -20,6 +20,13 @@
 
   .block_wrapper
     .block_title
+      %h2= t('.merged')
+    .block_content
+      %table.tb_list.enrollment_list_enrolled.table_ucs
+        = render 'enrollments/requests', status: [Allocation_Merged]
+
+  .block_wrapper
+    .block_title
       %h2= t('.pending')
     .block_content
       %table.tb_list.enrollment_list_pending.table_ucs
