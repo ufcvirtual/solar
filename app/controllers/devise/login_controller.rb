@@ -42,6 +42,7 @@ class Devise::LoginController < Devise::SessionsController
         current_user.save(validate: false)
       end
     end
+
   rescue CanCan::AccessDenied
     # something
   rescue => error
