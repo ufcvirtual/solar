@@ -119,7 +119,7 @@ res24:
   id: 24
   controller: 'assignments'
   action: 'list'
-  description: 'Lista dos trabalhos - visão professor'
+  description: 'Lista dos trabalhos'
 
 res25:
   id: 25
@@ -200,7 +200,7 @@ res48:
   id: 48
   controller: 'scores'
   action: 'index'
-  description: 'Acompanhamento de uma turma e cada aluno individualmente' # professor 
+  description: 'Acompanhamento de uma turma e cada aluno individualmente' # professor
 
 # Arquivos
 
@@ -1136,7 +1136,7 @@ res219:
   id: 219
   controller: 'exams'
   action: 'evaluate'
-  description: 'Calcular nota de prova de alunos' 
+  description: 'Calcular nota de prova de alunos'
 
 res220:
   id: 220
@@ -1177,8 +1177,8 @@ res225:
 res226:
   id: 226
   controller: 'reports'
-  action: 'index' 
-  description: 'Gerar Relatórios'  
+  action: 'index'
+  description: 'Gerar Relatórios'
 
 res227:
   id: 227
