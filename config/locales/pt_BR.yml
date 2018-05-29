@@ -2712,6 +2712,7 @@ pt_BR:
       chats_call: 'Gerenciar chats avaliativos / de frequência'
       assignments_call: 'Gerenciar trabalhos avaliativos / de frequência'
       webconferences_call: 'Gerenciar webconferências avaliativas / de frequência'
+      schedule_event_call: 'Gerenciar eventos avaliativos / de frequência'
       offer_period: Oferta já encerrou
       same_type_af: deve ter o mesmo valor no campo 'Avaliação Final'
       details: Ver descrição
@@ -3334,7 +3335,8 @@ pt_BR:
       closed: Encerrado
       started: Iniciado
     list:
-      expand_enunciation: Expandir enunciado
+      expand_description: Expandir descrição
+      compress_description: Comprimir descrição
       summary_evaluative: "Está tabela contém todos os eventos agendados avaliativas."
       summary_frequency: "Está tabela contém todos os eventos agendados de frequência."
       summary_notevaluative: "Está tabela contém todos os eventos agendados não avaliativas."
@@ -3347,6 +3349,8 @@ pt_BR:
       data_range: Período
       type: Tipo
       place: Local
+      choose_one: "Selecione um evento"
+      choose_at_least_one: "Selecione, ao menos, um evento"
     participants:
       title: Participantes
       student: Alunos

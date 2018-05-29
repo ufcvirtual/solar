@@ -2479,6 +2479,7 @@ en_US:
       chats_call: 'Manage evaluative / frequency chats'
       assignments_call: 'Manage evaluative / frequency assignments'
       webconferences_call: 'Manage evaluative / frequency webconferences'
+      schedule_event_call: 'Manage evaluative / frequency events'
       offer_period: Offer already ended
       same_type_af: must have same value at 'Final Exam'
       details: See description
@@ -3085,7 +3086,8 @@ en_US:
       closed: Closed
       started: Started
     list:
-      expand_enunciation: Expand enunciation
+      expand_description: Expand description
+      compress_description: Compress description
       summary_evaluative: "This table contains all the evaluation shedule events."
       summary_frequency: "This table contains all the frequency shedule events."
       summary_notevaluative: "This table contains all the not evaluation shedule events."
@@ -3098,6 +3100,8 @@ en_US:
       data_range: Data range
       type: Type
       place: Place
+      choose_one: "Choose a event"
+      choose_at_least_one: "Choose at least one event"
     participants:
       title: Participants
       student: Students
