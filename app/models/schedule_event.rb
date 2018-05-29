@@ -119,15 +119,4 @@ class ScheduleEvent < Event
 
   end
 
-  def self.get_all_events allocation_tags_ids
-    joins(:schedule, academic_allocations: :allocation_tag)
-    .where(allocation_tags: { id: allocation_tags_ids })
-    .select("schedule_events.*, academic_allocations.id AS ac_id, schedules.start_date AS start_date, schedules.end_date AS end_date, CASE WHEN current_date>schedules.end_date OR current_date=schedules.end_date AND current_time>cast(end_hour as time) THEN 'closed'
-       WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND start_hour IS NULL THEN 'started'
-       WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND current_time>=cast(start_hour as time) AND current_time<=cast(end_hour as time) THEN 'started'
-       ELSE 'not_started'  END AS status")
-    .group('schedule_events.id, schedules.start_date, schedules.end_date, title , academic_allocations.id')
-    .order('start_date, end_date, title ')
-  end
-
 end

@@ -1,9 +1,8 @@
--# .block_wrapper.list_assignments{:"data-link-list" => assignments_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id])}
-.block_wrapper.list_assignments
+.block_wrapper.list_schedule_events{:"data-link-list" => list_schedule_events_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id])}
   .block_title
     %h2= t(:event, scope: [:editions, :items])
-    -# - if can? :tool_management, Edition, {on: @allocation_tags_ids}
-      .tool_managmenet_link= link_to t('editions.evaluative_tools.assignments_call'), "#void", onclick: 'call_tool_management(this)', :'data-link' => assignment_tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids)
+    - if can? :tool_management, Edition, {on: @allocation_tags_ids}
+      .tool_managmenet_link= link_to t('editions.evaluative_tools.schedule_event_call'), "#void", onclick: 'call_tool_management(this)', :'data-link' => schedule_event_tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids)
 
   .block_content_toolbar
     .block_toolbar_left.btn-group
@@ -15,13 +14,11 @@
 
   - unless @events.blank?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
-    -# - can_delete = event.academic_allocation_users.count.zero?
-    -# - has_file = (not event.schedule_event_files.empty?)
     %table.tb_list
       %thead
         %tr.lines
           %th.center.no_sort{style: 'width: 25px;'}
-            %input#all_events{id: 'event-ckb_event', type: "checkbox", :"data-children-names" => "ckb_event"}
+            = check_box_tag :all_schedule_event, false, false, :"data-children-names" => "c_", class: "all_schedule_event"
           %th{id: 'event-title'}= t('.name')
           %th.center{id: 'event-data-range', style: 'width: 21%'}= t('.data_range')
           %th.center{id: 'event-type', style: 'width: 12%'}= t('.type')
@@ -29,22 +26,21 @@
 
       %tbody
         - @events.each do |event|
+          - can_delete = event.academic_allocation_users.count.zero?
+          -# - has_file = (not event.schedule_event_files.empty?)
           %tr.lines{id: "tr_#{event.id}"}
             %td{style: 'text-align:center;'}
-              = check_box_tag("ckb_event", event.id, false, {class: "ckb_event"})
-              -# = check_box_tag("ckb_event", event.id, false, {class: "ckb_event", :"data-can-delete" => can_delete})
+              = check_box_tag("c_#{event.id}", event.id, false, {class: "ckb_event", :"data-can-delete" => can_delete})
             %td{headers: 'event-title'}
               %div
                 .title
                   = event.title
-                  -# - if has_file
-                    %i.icon-paperclip
                 .description
                   .minimun
                     - if !event.description.nil?
                       = event.description.truncate(200)
-                      - if event.description.size > 200 # or has_file
-                        = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_enunciation"))
+                      - if event.description.size > 200
+                        = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))
                   .complete.invisible
                     = event.description
                     -# - if has_file
@@ -53,9 +49,10 @@
                         .file
                           = image_tag( icon_attachment(file.attachment_file_name) )
                           = file.attachment_file_name
-                    = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_enunciation"))
+                    = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                .group_label.invisible= render "groups/groups_tags", groups: event.groups, tool: event, all_groups: all_groups, paths: {add: add_group_to_schedule_events_path(id: "param_id", tool_id: event.id), remove: remove_group_from_schedule_events_path(id: "param_id", tool_id: event.id), unbind: unbind_group_from_schedule_events_path(id: "param_id", tool_id: event.id), tags: group_tags_from_schedule_events_path(tool_id: event.id)}
             %td.center{headers: 'event-data-range'}
-              %div= [l(event.start_date.to_date, format: :normal), l(event.end_date.to_date, format: :normal)].join(' - ')
+              %div= [l(event.schedule.start_date.to_date, format: :normal), l(event.schedule.end_date.to_date, format: :normal)].join(' - ')
               %div= [(event.start_hour), (event.end_hour)].join(' - ') unless event.start_hour.blank?
             %td.center{headers: 'event-type'}
               = ScheduleEvent.type_name_event(event.type_event.to_i)
@@ -68,5 +65,5 @@
 
 :javascript
 
-  var div_list = $(".list_assignments");
+  var div_list = $(".list_schedule_events");
   var offer_id = "#{escape_once(params[:offer_id])}";

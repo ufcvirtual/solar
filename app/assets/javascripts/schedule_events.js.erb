@@ -60,7 +60,7 @@ $(function(){
 
   $('#save').click(function(){
     $('#event_form:last').serialize_and_submit({
-      replace_list: $(".calendar_schedules")
+      replace_list: (("#{escape_once(params[:calendar])}" == "") ? $(".list_schedule_events .tb_list") : $(".calendar_schedules"))
     });
   });
 
@@ -73,5 +73,58 @@ $(function(){
   });
 
   $("#new_schedule_event").call_fancybox();
+
+  $(".all_schedule_event").map(function(){ $(this).nice_checkbox() });
+
+  $('.edit_event').click(function() {
+    if ($(this).attr('disabled') == 'disabled'){
+      flash_message("<%= I18n.t(:choose_one, scope: [:schedule_events, :list]) %>", "alert");
+      return false;
+    }
+
+    var event_ids = $('.ckb_event:checked', $(this).parents("div.list_schedule_events")).map(function() { return this.value; }).get();
+    if (event_ids.length && event_ids.length == 1) {
+      var url_edit = $(this).data('link-to-edit').replace(':id', event_ids);
+      $(this).call_fancybox({href : url_edit, open: true});
+    }
+
+    return false;
+  });
+
+  $('.delete_event').click(function(){
+
+    if ($(this).attr('disabled') == 'disabled'){
+      flash_message("<%= I18n.t(:choose_at_least_one, scope: [:schedule_events, :list]) %>", "alert");
+      return false;
+    }
+
+    if (!confirm("<%= I18n.t(:message_confirm) %>"))
+      return false;
+
+    if(!$(this).hasClass('disabled')){
+      var events = $('.ckb_event:checked', $(this).parents("div.list_schedule_events"));
+      var events_ids = events.map(function() { return this.value; }).get();
+
+      if ($(events_ids).length != 0){
+        $.delete($(this).data('link-delete').replace(':id', events_ids), function(data){
+          flash_message(data.notice, 'notice');
+          events.parents('tr').fadeOut().remove();
+
+          $(".btn_edit, .btn_del").attr("disabled", true);
+        }).error(function(data){
+          var data = $.parseJSON(data.responseText);
+          if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+        })
+      } else {
+        return false;
+      }
+    }
+  });
+
+  $(".expand, .compress").click(function(){
+    $(this).parent().hide();
+    $($(this).parent().siblings()[0]).show();
+  });
 
 });

@@ -24,7 +24,7 @@ class ScheduleEventsController < ApplicationController
 
   def list
     authorize! :list, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
-    @events = ScheduleEvent.get_all_events @allocation_tags_ids
+    @events = ScheduleEvent.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(' ').flatten}).uniq
   end
 
   def show

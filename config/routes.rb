@@ -292,6 +292,7 @@ Solar::Application.routes.draw do
       get :assignment_tool_management, tool_name: 'Assignment', to: :tool_management
       get :chat_tool_management, tool_name: 'ChatRoom', to: :tool_management
       get :webconference_tool_management, tool_name: 'Webconference', to: :tool_management
+      get :schedule_event_tool_management, tool_name: 'ScheduleEvent', to: :tool_management
       put :manage_tools
       get "academic/:curriculum_unit_type_id/courses", to: "editions#courses", as: :academic_courses
       get "academic/:curriculum_unit_type_id/curriculum_units", to: "editions#curriculum_units", as: :academic_uc
@@ -503,6 +504,10 @@ Solar::Application.routes.draw do
     collection do
       get :list
       get :summary , to: 'academic_allocation_users#summary', tool: 'ScheduleEvent'
+      put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: 'unbind', tool_type: 'ScheduleEvent', as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: 'remove', tool_type: 'ScheduleEvent', as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: 'add'   , tool_type: 'ScheduleEvent', as: :add_group_to
+      get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: 'ScheduleEvent', as: :group_tags_from
     end
   end
 
