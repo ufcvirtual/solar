@@ -124,7 +124,7 @@ class Group < ActiveRecord::Base
 
   def get_code_name
     # show groups name with code only if uab (distance)
-    (name.blank? || curriculum_unit.blank? || curriculum_unit.curriculum_unit_type_id != 2 || name == code) ? code : "#{code} (#{name})"
+    (name.blank? || curriculum_unit.blank? || curriculum_unit.curriculum_unit_type_id != 2 || name == code) ? code : "#{name} (#{code})"
   end
 
   def params_to_directory
