@@ -3318,6 +3318,8 @@ pt_BR:
       place: Local
       choose_one: "Selecione um evento"
       choose_at_least_one: "Selecione, ao menos, um evento"
+      integrated_event_edit: 'Este evento possui integração com outras bases de dados e por isso não pode ser editado'
+      integrated_events_delete: 'Existem eventos selecionados que não podem ser removidos devido a integração com outras bases de dados'
     participants:
       title: Participantes
       student: Alunos

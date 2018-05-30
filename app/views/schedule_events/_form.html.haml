@@ -31,7 +31,7 @@
           .left
             = s.input :start_date, as: :string, input_html: {id: 'start_date', value: l(@schedule_event.schedule.start_date.try(:to_date) || Date.today, format: :datepicker)}
             = f.input :start_hour, input_html: {size: 10}, required: required_fields
-          
+
           .right_form{style: "margin-left: 60px; margin-right: 30px; #{show_fields ? "" : "display: none"}"}
             = s.input :end_date, as: :string, input_html: {id: 'end_date', value: l(@schedule_event.schedule.end_date.try(:to_date) || Date.today, format: :datepicker)}
             = f.input :end_hour, input_html: {size: 10}, required: required_fields
@@ -50,3 +50,4 @@
   var start_date = "#{escape_once(@schedule_event.schedule.start_date)}";
   var end_date = "#{escape_once(@schedule_event.schedule.end_date)}";
   $("#start_date, #end_date").mask("#{I18n.t('date.formats.mask')}");
+  var div_to_replace = ("#{escape_once(params[:calendar])}" == "" ? $(".list_schedule_events") : $(".calendar_schedules"));
