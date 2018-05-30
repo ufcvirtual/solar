@@ -27,10 +27,10 @@
       %tbody
         - @events.each do |event|
           - can_delete = event.academic_allocation_users.count.zero?
-          -# - has_file = (not event.schedule_event_files.empty?)
+          - is_integrated = event.integrated
           %tr.lines{id: "tr_#{event.id}"}
             %td{style: 'text-align:center;'}
-              = check_box_tag("c_#{event.id}", event.id, false, {class: "ckb_event", :"data-can-delete" => can_delete})
+              = check_box_tag("c_#{event.id}", event.id, false, {class: "ckb_event", :"data-can-delete" => can_delete, :"data-is-integrated" => is_integrated})
             %td{headers: 'event-title'}
               %div
                 .title
@@ -43,12 +43,6 @@
                         = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))
                   .complete.invisible
                     = event.description
-                    -# - if has_file
-                      .attached_files=t(".attached_files")
-                      - event.files.each do |file|
-                        .file
-                          = image_tag( icon_attachment(file.attachment_file_name) )
-                          = file.attachment_file_name
                     = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
                 .group_label.invisible= render "groups/groups_tags", groups: event.groups, tool: event, all_groups: all_groups, paths: {add: add_group_to_schedule_events_path(id: "param_id", tool_id: event.id), remove: remove_group_from_schedule_events_path(id: "param_id", tool_id: event.id), unbind: unbind_group_from_schedule_events_path(id: "param_id", tool_id: event.id), tags: group_tags_from_schedule_events_path(tool_id: event.id)}
             %td.center{headers: 'event-data-range'}
@@ -62,8 +56,3 @@
     .block_content_text_list.text_none= t(".none")
 
 = javascript_include_tag "tablesorter", "tooltip", "schedule_events", "groups_tags"
-
-:javascript
-
-  var div_list = $(".list_schedule_events");
-  var offer_id = "#{escape_once(params[:offer_id])}";
