@@ -1,0 +1,32 @@
+#event_form {
+  .invisible {
+    display: none;
+  }
+
+  .ckb{
+    margin: 20px;
+    .input.boolean{
+      display: none;
+    }
+    label{
+      display: inline;
+    }
+    a, input, select {
+      display: inline-block;
+      float: right;
+    }
+  }
+
+  .steps, .steps_print {
+    margin-bottom: 20px;
+  }
+
+  .steps{
+    width: 127px;
+  }
+
+  .steps_print {
+    width: 259px;
+  }
+
+}

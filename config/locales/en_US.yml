@@ -425,6 +425,7 @@ en_US:
         description: Description
         start_hour: Start hour
         end_hour: End hour
+        content_exam: Exam content
       notification:
         title: Title
         description: Description
@@ -3016,6 +3017,14 @@ en_US:
       groups: Groups
       new: New event
       edit: Edit event
+      info: Information
+      print: Print
+    info:
+      has_files_to_print: Has files to print
+      not_has_files_to_print: Not has files to print
+      continue: Continue
+    print:
+      previous: Previous
     success:
       created: Event was successfully created.
       updated: Event was successfully updated.

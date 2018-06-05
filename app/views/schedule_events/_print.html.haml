@@ -1,0 +1,5 @@
+= f.input :content_exam, as: :ckeditor
+
+.right_buttons
+  = button_tag t('.previous'), :type => 'button', :onclick => "back_to_info(event)", class: 'btn btn_default btn_lightbox', onkeypress: 'back_to_info(event)', alt: t('.previous')
+  = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", id: "save"
