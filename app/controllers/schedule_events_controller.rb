@@ -121,7 +121,7 @@ class ScheduleEventsController < ApplicationController
   private
 
     def schedule_event_params
-      params.require(:schedule_event).permit(:title, :description, :type_event, :start_hour, :end_hour, :place, :integrated, schedule_attributes: [:id, :start_date, :end_date])
+      params.require(:schedule_event).permit(:title, :description, :type_event, :start_hour, :end_hour, :place, :integrated, :content_exam, schedule_attributes: [:id, :start_date, :end_date])
     end
 
     def render_schedule_event_success_json(method)

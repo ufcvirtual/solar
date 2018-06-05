@@ -56,6 +56,21 @@ $(function(){
       $(".schedule_event_start_hour, .schedule_event_end_hour").hide();
     }
 
+    if($(this).val() == "<%= Presential_Test %>"){
+      $("#with_exam_content").show();
+      $("#without_exam_content").hide();
+
+      $("#steps").removeClass('steps');
+      $("#steps").addClass('steps_print');
+      $('li.print').removeClass('invisible');
+    } else {
+      $("#with_exam_content").hide();
+      $("#without_exam_content").show();
+
+      $("#steps").removeClass('steps_print');
+      $("#steps").addClass('steps');
+      $('li.print').addClass('invisible');
+    }
   });
 
   $('#save').click(function(){
@@ -147,3 +162,29 @@ $(function(){
   });
 
 });
+
+function go_to_send_files(event) {
+  var keynum = event.which || event.keyCode;
+  if(keynum == 13 || event.type == 'click') {
+    $('.step-info').addClass('invisible');
+    $('.step-print').removeClass('invisible');
+
+    $('li.info').removeClass('active');
+    $('#dot-info').removeClass('active');
+    $('li.print').addClass('active');
+    $('#dot-print').addClass('active');
+  }
+}
+
+function back_to_info(event){
+  var keynum = event.which || event.keyCode;
+  if(keynum == 13 || event.type == 'click') {
+    $('.step-info').removeClass('invisible');
+    $('.step-print').addClass('invisible');
+
+    $('li.info').addClass('active');
+    $('#dot-info').addClass('active');
+    $('li.print').removeClass('active');
+    $('#dot-print').removeClass('active');
+  }
+}

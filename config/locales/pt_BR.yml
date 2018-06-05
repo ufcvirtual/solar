@@ -491,6 +491,7 @@ pt_BR:
         description: Descrição
         start_hour: Horário
         end_hour: à
+        content_exam: "Conteúdo da Prova"
       notification:
         title: Título
         description: Descrição
@@ -3298,6 +3299,14 @@ pt_BR:
       groups: Turmas
       new: Novo evento
       edit: Editar evento
+      info: Informações
+      print: Conteúdo
+    info:
+      has_files_to_print: 'Possui arquivos para impressão'
+      not_has_files_to_print: 'Não possui arquivos para impressão'
+      continue: "Próximo"
+    print:
+      previous: Voltar
     success:
       created: Evento criado com sucesso.
       updated: Evento atualizado com sucesso.
