@@ -73,8 +73,9 @@ $(function(){
     }
   });
 
-  $('#save').click(function(){
-    $('#event_form:last').serialize_and_submit({
+  $('.save').click(function(){
+    save_values_ckeditor();
+    $('#event_form').serialize_and_submit({
       replace_list: div_to_replace
     });
   });
@@ -162,6 +163,12 @@ $(function(){
   });
 
 });
+
+function destroy_editor() {
+  if (CKEDITOR.instances['schedule_event_content_exam']) {
+    CKEDITOR.instances['schedule_event_content_exam'].destroy();
+  }
+}
 
 function go_to_send_files(event) {
   var keynum = event.which || event.keyCode;
