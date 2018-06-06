@@ -34,7 +34,7 @@
 .schedule_dates
   .right_buttons#without_exam_content{style: exam_content ? "display: none" : ""}
     = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(:cancel)
-    = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", id: "save"
+    = button_tag t(:save), class: "btn btn_main btn_lightbox save", type: "button"
 
   .right_buttons#with_exam_content{style: exam_content ? "" : "display: none"}
     = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(:cancel)

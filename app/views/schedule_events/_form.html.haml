@@ -1,3 +1,4 @@
+- exam_content = [Presential_Test].include?(@schedule_event.type_event)
 .new_event
   = simple_form_for @schedule_event, html: {id: 'event_form', multipart: true} do |f|
     %h1#lightBoxDialogTitle= t((@schedule_event.persisted? ? ".edit" : ".new"))
@@ -6,12 +7,12 @@
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
     .form-inputs.block_content
-      #steps.steps
+      #steps.steps{class: exam_content ? "steps_print" : ""}
         %ul
           %li.info.active
             = t('.info')
             .dot.active#dot-info
-          %li.print.invisible
+          %li.print{class: exam_content ? "" : "invisible"}
             = t('.print')
             .dot#dot-print
       .step-info
