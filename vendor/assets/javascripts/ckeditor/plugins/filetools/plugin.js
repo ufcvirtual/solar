@@ -62,7 +62,7 @@
 					}
 				}
 				// Append token preventing CSRF attacks.
-				$formData.append( 'ckCsrfToken', CKEDITOR.tools.getCsrfToken() );
+				$formData.append( 'authenticity_token', CKEDITOR.tools.getCsrfToken() );
 
 				fileLoader.xhr.send( $formData );
 			}, null, null, 999 );

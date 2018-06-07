@@ -11,30 +11,43 @@
     CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
 
     CKEDITOR.editorConfig = function (config) {
-      config.toolbar =
-        [
-          { name: 'document', items: [ 'Print' ] },
-          { name: 'clipboard', items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-    			{ name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
-    			{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat', 'CopyFormatting' ] },
-    			{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-    			{ name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
-    			{ name: 'links', items: [ 'Link', 'Unlink' ] },
-    			{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
-    			{ name: 'insert', items: [ 'EqnEditor', 'Image', 'Table' ] },
-    			{ name: 'tools', items: [ 'Maximize' ] },
-    			{ name: 'editing', items: [ 'Scayt' ] }
-        ];
+      /* Filebrowser routes */
+      // The location of an external file browser, that should be launched when "Browse Server" button is pressed.
+      config.filebrowserBrowseUrl = "/ckeditor/attachment_files";
 
-      config.disallowedContent = 'img{width,height,float}';
-      config.extraAllowedContent = 'img[width,height,align]';
+      // The location of an external file browser, that should be launched when "Browse Server" button is pressed in the Flash dialog.
+      config.filebrowserFlashBrowseUrl = "/ckeditor/attachment_files";
 
-      config.extraPlugins = 'eqneditor,oembed,tableresize,uploadimage,uploadfile';
-      config.uploadUrl = "#{schedule_event_files_path}";
-      config.imageUploadUrl = "#{schedule_event_files_path}";
-      config.resize_enabled = true;
-      config.autoParagraph = true;
-      config.format_tags = 'p;h1;h2;h3;h4;h5;h6;pre';
+      // The location of a script that handles file uploads in the Flash dialog.
+      config.filebrowserFlashUploadUrl = "/ckeditor/attachment_files";
+
+      // The location of an external file browser, that should be launched when "Browse Server" button is pressed in the Link tab of Image dialog.
+      config.filebrowserImageBrowseLinkUrl = "/ckeditor/pictures";
+
+      // The location of an external file browser, that should be launched when "Browse Server" button is pressed in the Image dialog.
+      config.filebrowserImageBrowseUrl = "/ckeditor/pictures";
+
+      // The location of a script that handles file uploads in the Image dialog.
+      config.filebrowserImageUploadUrl = "/ckeditor/pictures?";
+
+      // The location of a script that handles file uploads.
+      config.filebrowserUploadUrl = "/ckeditor/attachment_files";
+
+      config.allowedContent = true;
+
+      config.toolbar = [
+        { name: 'document', groups: [ 'mode', 'document', 'doctools' ], items: [ 'Source', 'Print' ] },
+        { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+  			{ name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
+  			{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat', 'CopyFormatting' ] },
+  			{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+  			{ name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+  			{ name: 'links', items: [ 'Link', 'Unlink' ] },
+  			{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv' ] },
+  			{ name: 'insert', items: [ 'EqnEditor', 'Image', 'Table', 'SpecialChar' ] },
+  			{ name: 'tools', items: [ 'Maximize' ] },
+  			{ name: 'editing', items: [ 'Scayt' ] }
+      ];
     };
 
   });
