@@ -2572,3 +2572,83 @@ schedule_event_files10:
 schedule_event_files11:
   profile_id: 18
   resource_id: 234
+
+schedule_events_score1:
+  profile_id: 2
+  resource_id: 235
+
+schedule_events_score2:
+  profile_id: 5
+  resource_id: 235
+
+schedule_events_score3:
+  profile_id: 14
+  resource_id: 235
+
+schedule_events_score4:
+  profile_id: 17
+  resource_id: 235
+
+schedule_events_score5:
+  profile_id: 2
+  resource_id: 145
+
+schedule_events_score6:
+  profile_id: 5
+  resource_id: 145
+
+schedule_events_score7:
+  profile_id: 14
+  resource_id: 145
+
+schedule_events_score8:
+  profile_id: 17
+  resource_id: 145
+
+schedule_events_score9:
+  profile_id: 2
+  resource_id: 147
+
+schedule_events_score10:
+  profile_id: 5
+  resource_id: 147
+
+schedule_events_score11:
+  profile_id: 14
+  resource_id: 147
+
+schedule_events_score12:
+  profile_id: 17
+  resource_id: 147
+
+schedule_events_score13:
+  profile_id: 2
+  resource_id: 148
+
+schedule_events_score14:
+  profile_id: 5
+  resource_id: 148
+
+schedule_events_score15:
+  profile_id: 14
+  resource_id: 148
+
+schedule_events_score16:
+  profile_id: 17
+  resource_id: 148
+
+schedule_events_score17:
+  profile_id: 2
+  resource_id: 149
+
+schedule_events_score18:
+  profile_id: 5
+  resource_id: 149
+
+schedule_events_score19:
+  profile_id: 14
+  resource_id: 149
+
+schedule_events_score20:
+  profile_id: 17
+  resource_id: 149

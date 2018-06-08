@@ -1227,3 +1227,9 @@ res234:
   controller: 'schedule_event_files'
   action: 'create'
   description: 'Permissão para criar eventos'
+
+res235:
+  id: 235
+  controller: 'schedule_events'
+  action: 'list'
+  description: 'Botão de Eventos na edição de conteúdo'
