@@ -12,7 +12,7 @@ module V1::GroupsH
   def get_group_by_names(curriculum_unit_code, course_code, name, semester, dont_raise_error=false)
     # besides the name, groups are searched by its name
     query = course_code.blank? ? {} : {course_id: Course.where(code: course_code).first}
-    group = Group.joins(offer: :semester).where(name: name, offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first}.merge!(query), semesters: {name: semester}).first
+    group = Group.joins(offer: :semester).where(name: name, status: true, offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first}.merge!(query), semesters: {name: semester}).first
 
     if group.blank?
       if dont_raise_error
@@ -49,6 +49,28 @@ module V1::GroupsH
     group.api = true
     group.save!
     group
+  end
+
+  def verify_previous_groups(semester, curriculum_unit_id, course_id, name)
+    if name.size < 4
+      offers = Offer.where(curriculum_unit_id: curriculum_unit_id, semester_id: semester.id).where('course_id != ?', course_id).map(&:id)
+
+      # if some group exists with same name, same curriculum unit and semester, but other course, than group shouldn't exist anymore for other courses
+      Group.where(name: name, offer_id: offers).each do |group|
+        group.api = true
+        begin
+          raise 'error' unless group.can_destroy?
+          group.destroy
+        rescue
+          group.status = false
+          group.save!
+
+          group.allocations.where(profile_id: 17).update_all(status: 2)
+
+          group.offer.notify_editors_of_disabled_groups([group])
+        end
+      end
+    end
   end
 
   def group_params(params)

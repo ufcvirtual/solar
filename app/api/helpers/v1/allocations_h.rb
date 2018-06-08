@@ -21,8 +21,16 @@ module V1::AllocationsH
     ActiveRecord::Base.transaction do
       groups.each do |group|
         group.first.allocate_user(user.id, profile_id, nil, group.last.try(:id))
-        # set or create merged allocation
-        group.last.allocate_user(user.id, profile_id, nil, nil, 5) unless group.last.blank?
+        unless group.last.blank?
+          # set or create merged allocation
+          group.last.allocate_user(user.id, profile_id, nil, nil, 5)
+        else
+          # cancel possible previous merges allocations
+          Allocation.where(origin_group_id: group.first.id, user_id: user.id, profile_id: profile_id).each do |al|
+            al.update_attributes origin_group_id: nil
+            al.group.change_allocation_status(user.id, Allocation_Cancelled, nil, {profile_id: profile_id})
+          end
+        end
       end
     end
   end
