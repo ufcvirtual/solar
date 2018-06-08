@@ -46,6 +46,8 @@ module V1
         post "/" do
           begin
             cpf = params[:cpf].delete('.').delete('-')
+            cpf = cpf.rjust(11, '0')
+
             user_exist = User.where(cpf: cpf).first
             user = user_exist.nil? ? User.new(cpf: cpf) : user_exist
 
@@ -101,7 +103,9 @@ module V1
         end
         post "import/:cpf" do
           begin
-            verify_or_create_user(params[:cpf].delete('.').delete('-'), false, params[:only_if_exists])
+            cpf = params[:cpf].delete('.').delete('-')
+            cpf = cpf.rjust(11, '0')
+            verify_or_create_user(cpf, false, params[:only_if_exists])
             {ok: :ok}
           rescue => error
             raise error
@@ -114,7 +118,9 @@ module V1
         end
         put "unbind/:cpf" do
           begin
-            user_blacklist = UserBlacklist.where(cpf: params[:cpf].delete('.').delete('-')).first_or_initialize
+            cpf = params[:cpf].delete('.').delete('-')
+            cpf = cpf.rjust(11, '0')
+            user_blacklist = UserBlacklist.where(cpf: cpf).first_or_initialize
             user_blacklist.name = params[:name] unless params[:name].blank?
             user_blacklist.save!
             {ok: :ok}
@@ -124,7 +130,10 @@ module V1
         params{requires :cpf, type: String}
         get "verify/:cpf" do
           begin
-            user_blacklist = UserBlacklist.where(cpf: params[:cpf].delete('.').delete('-')).first_or_initialize
+            cpf = params[:cpf].delete('.').delete('-')
+            cpf = cpf.rjust(11, '0')
+
+            user_blacklist = UserBlacklist.where(cpf: cpf).first_or_initialize
             user_blacklist.name = params[:cpf]
             can_add_to_blacklist = (user_blacklist.valid? || !user_blacklist.new_record?)
 
@@ -140,11 +149,13 @@ module V1
         end
         get "validates/:cpf" do
           begin
-            error = 0
-            user = User.where(cpf: params[:cpf]).first
-            user = User.new cpf: params[:cpf] if user.blank?
-
             cpf = params[:cpf].delete('.').delete('-')
+            cpf = cpf.rjust(11, '0')
+
+            error = 0
+            user = User.where(cpf: cpf).first
+            user = User.new cpf: cpf if user.blank?
+
             if params[:email].present?
               error = error | 2 if User.where("lower(email) = ? AND cpf != ?", params[:email].downcase, cpf).any?
             end
