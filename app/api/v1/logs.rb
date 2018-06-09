@@ -44,6 +44,31 @@ module V1
       #   LogAccess.drop_and_create_table_temporary_logs_comments(@ats.flatten.uniq, arr_student)
       # end # get
 
+      get "user/:id", rabl: "users/show" do
+        user = User.find(params[:id])
+        courses = (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['uab_courses'] rescue nil)
+        unless courses.blank?
+          courses_ids = Course.where(code: courses.split(',')).pluck(:id)
+          allocations = Allocation.find_by_sql <<-SQL
+            SELECT allocations.id FROM allocations
+              LEFT JOIN allocation_tags ON allocations.allocation_tag_id = allocation_tags.id
+              LEFT JOIN groups ON groups.id = allocation_tags.group_id
+              LEFT JOIN offers ON groups.offer_id = offers.id
+              WHERE allocations.user_id = #{user.id}
+              AND allocations.status = 1
+              AND allocations.profile_id = 1
+              AND offers.course_id IN (#{courses_ids.join(',')})
+              LIMIT 1;
+          SQL
+          raise 'not uab student' if allocations.empty?
+        end
+
+        {
+          country: user.country, state: user.state, city: user.city, zipcode: user.zipcode, address: user.address, address_number: user.address_number, address_complement: user.address_complement, address_neighborhood: user.address_neighborhood, zipcode: user.zipcode, special_needs: user.special_needs
+        }
+
+      end
+
     end # namespace
   end
 end
