@@ -47,6 +47,7 @@ module V1
       get "user/:id", rabl: "users/show" do
         user = User.find(params[:id])
         courses = (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['uab_courses'] rescue nil)
+
         unless courses.blank?
           courses_ids = Course.where(code: courses.split(',')).pluck(:id)
           allocations = Allocation.find_by_sql <<-SQL
@@ -63,6 +64,7 @@ module V1
           raise 'not uab student' if allocations.empty?
         end
 
+        verify_permission(:index, user.allocations.where(profile_id: 1, status: 1).map(&:allocation_tag).map(&:related).flatten.uniq)
         {
           country: user.country, state: user.state, city: user.city, zipcode: user.zipcode, address: user.address, address_number: user.address_number, address_complement: user.address_complement, address_neighborhood: user.address_neighborhood, zipcode: user.zipcode, special_needs: user.special_needs
         }
