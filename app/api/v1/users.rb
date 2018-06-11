@@ -12,11 +12,6 @@ module V1
           @user = current_user
         end
 
-        # GET /users/1
-        get "/:id", rabl: "users/show" do
-          @user = User.find(params[:id])
-        end
-
         # GET /users/1/photo
         params do
           optional :style, type: String, values: %w(small forum medium), default: 'medium'
@@ -106,6 +101,7 @@ module V1
             cpf = params[:cpf].delete('.').delete('-')
             cpf = cpf.rjust(11, '0')
             verify_or_create_user(cpf, false, params[:only_if_exists])
+
             {ok: :ok}
           rescue => error
             raise error

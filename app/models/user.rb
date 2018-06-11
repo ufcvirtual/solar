@@ -705,6 +705,10 @@ class User < ActiveRecord::Base
   # receives the response and the WS client
   def self.validate_user_result(result, client, cpf, user = nil)
     unless result.nil?
+      cpf = cpf.delete('.').delete('-')
+      cpf = cpf.rjust(11, '0')
+
+
       result = result[:int]
       cpf_user = User.find_by_cpf(cpf)
       cpf_user = User.new(cpf: cpf) if cpf_user.nil?
@@ -748,8 +752,11 @@ class User < ActiveRecord::Base
 
   def self.connect_and_import_user(cpf, client = nil, raise_error=false)
     begin
+      cpf = cpf.delete('.').delete('-')
+      cpf = cpf.rjust(11, '0')
+
       client    = Savon.client wsdl: MODULO_ACADEMICO['wsdl'] if client.nil?
-      response  = client.call(MODULO_ACADEMICO['methods']['user']['import'].to_sym, message: { cpf: cpf.delete('.').delete('-') }) # import user
+      response  = client.call(MODULO_ACADEMICO['methods']['user']['import'].to_sym, message: { cpf: cpf }) # import user
       user_data = response.to_hash[:importar_usuario_response][:importar_usuario_result]
       return (user_data.nil? ? nil : user_data[:string])
     rescue HTTPClient::ConnectTimeoutError # if MA don't respond (timeout)
