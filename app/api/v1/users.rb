@@ -100,7 +100,7 @@ module V1
           begin
             cpf = params[:cpf].delete('.').delete('-')
             cpf = cpf.rjust(11, '0')
-            verify_or_create_user(cpf, false, params[:only_if_exists])
+            verify_or_create_user(cpf, false, params[:only_if_exists], true)
 
             {ok: :ok}
           rescue => error

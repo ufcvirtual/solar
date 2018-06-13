@@ -27,13 +27,13 @@ module V1::General
   end
 
 
-  def verify_or_create_user(cpf, ignore_synchronize=false, only_if_exists=false)
+  def verify_or_create_user(cpf, ignore_synchronize=false, only_if_exists=false, import=false)
     user = User.find_by_cpf(cpf.delete('.').delete('-'))
     user = User.new(cpf: cpf) unless user || only_if_exists
 
     return true if only_if_exists && user.blank?
 
-    return user if user.selfregistration
+    return user if user.selfregistration && !import
 
     if user.can_synchronize?  && (!ignore_synchronize || user.new_record?)
       import = user.synchronize
