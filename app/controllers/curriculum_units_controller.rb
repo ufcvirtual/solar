@@ -30,8 +30,12 @@ class CurriculumUnitsController < ApplicationController
         @course_name      = Course.find(params[:course_id]).name
         @curriculum_units = CurriculumUnit.where(name: @course_name).order(:name)
       else
-        @curriculum_units = CurriculumUnit.joins(:offers).where(curriculum_unit_type_id: @type.id).order(:name)
-        @curriculum_units = @curriculum_units.where(offers: {course_id: params[:course_id]}) unless params[:course_id].blank?
+        unless params[:course_id].blank?
+          @curriculum_units = CurriculumUnit.joins(:offers).where(curriculum_unit_type_id: @type.id).order(:name)
+          @curriculum_units = @curriculum_units.where(offers: {course_id: params[:course_id]})
+        else
+          @curriculum_units = CurriculumUnit.where(curriculum_unit_type_id: @type.id).order(:name)
+        end
       end
 
       render json: { html: render_to_string(partial: 'select_curriculum_unit.html', locals: { curriculum_units: @curriculum_units.uniq! }) }
