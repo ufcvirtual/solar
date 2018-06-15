@@ -68,9 +68,9 @@ class GroupAssignment < ActiveRecord::Base
         alloc_tag_id = academic_allocation.allocation_tag_id
 
         students_without_group = academic_allocation.academic_tool.students_without_groups(alloc_tag_id)
-        group_quantity_students = academic_allocation.allocation_tag.group.students_participants.count
-
+        
         unless students_without_group.blank?
+          group_quantity_students = academic_allocation.allocation_tag.group.students_participants.count
           
           responsibles_emails = User.joins(:allocations, :profiles).where(allocations: {allocation_tag_id: alloc_tag_id}).where(profiles: {types: 2}).uniq.map{|user| user.email}
           students_ids = students_without_group.pluck(:id).shuffle
