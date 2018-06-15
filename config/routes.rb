@@ -748,6 +748,9 @@ Solar::Application.routes.draw do
   get '/media/questions/items/:file.:extension', to: 'access_control#question_item'
   get '/media/questions/audios/:file.:extension', to: 'access_control#question_audio'
 
+  get '/media/ckeditor/pictures/:id/:file.:extension', to: 'access_control#ckeditor_pictures'
+  get '/media/ckeditor/attachment_files/:id/:file.:extension', to: 'access_control#ckeditor_attachment_files'
+
   mount Ckeditor::Engine => '/ckeditor'
   ## como a API vai ser menos usada, fica mais rapido para o solar rodar sem precisar montar essas rotas
   mount ApplicationAPI => '/api'

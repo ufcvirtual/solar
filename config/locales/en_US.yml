@@ -655,6 +655,7 @@ en_US:
   verify: "Verify"
   back: "Back"
   save: "Save"
+  continue: "Continue"
   edit: "Edit"
   show: "View"
   destroy: "Delete"
@@ -2697,6 +2698,8 @@ en_US:
       code: Code
       save: Save
       cancel: Cancel
+      info: Information
+      exam_header: Exam Headers
     success:
       created: Course was successfully created.
       updated: Course was successfully updated.
