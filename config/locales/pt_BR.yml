@@ -789,6 +789,7 @@ pt_BR:
   verify: "Verificar"
   back: "Voltar"
   save: "Salvar"
+  continue: "Próximo"
   edit: "Editar"
   show: "Visualizar"
   destroy: "Excluir"
@@ -2901,6 +2902,8 @@ pt_BR:
       code: Código
       save: Salvar
       cancel: Cancelar
+      info: Informações
+      exam_header: Cabeçalho para as Provas
     success:
       created: Curso criado com sucesso.
       updated: Curso atualizado com sucesso.
