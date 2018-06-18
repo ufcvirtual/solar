@@ -1,10 +1,10 @@
-= f.input :content_exam, as: :ckeditor
+= f.input :header_exam, as: :ckeditor
 
 .right_buttons
-  = button_tag t('.previous'), :type => 'button', :onclick => "back_to_info(event)", class: 'btn btn_default btn_lightbox', onkeypress: 'back_to_info(event)', alt: t('.previous')
-  = button_tag t(:save), class: "btn btn_main btn_lightbox save", type: "button"
+  = button_tag t(:back), :type => 'button', :onclick => "back_to_info(event)", class: 'btn btn_default btn_lightbox', onkeypress: 'back_to_info(event)', alt: t(:back)
+  = button_tag t(:save), class: 'btn btn_main btn_lightbox save', alt: t(:save), type: 'button'
 
-= javascript_include_tag 'ckeditor/init'
+= javascript_include_tag 'ckeditor/init', 'courses'
 
 :javascript
   $(function(){
@@ -36,7 +36,6 @@
       config.allowedContent = true;
       config.extraPlugins = 'tableresize,uploadimage,uploadfile';
 
-      // Toolbar groups configuration.
       config.toolbar = [
         { name: 'document', groups: [ 'mode', 'document', 'doctools' ], items: [ 'Source' ] },
         { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },

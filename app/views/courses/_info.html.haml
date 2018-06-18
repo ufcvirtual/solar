@@ -1,0 +1,21 @@
+= f.input :code, input_html: { size: 50 }, required: true
+= f.input :name
+= f.input :passing_grade, input_html: { min: 0, max: 10, step: 0.5 }
+= f.input :min_hours
+= f.input :min_grade_to_final_exam
+= f.input :min_final_exam_grade
+= f.input :final_exam_passing_grade
+.ckb
+  = f.label :has_exam_header
+  = f.input :has_exam_header, as: :boolean, label: false
+  = link_to (image_tag "#{f.object.has_exam_header ? 'released' : 'rejected'}.png"), "#", onclick: 'change(this, ["#without_exam_content", "#with_exam_content"])', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => (f.object.has_exam_header ? t('.has_header') : t('.not_has_header')), :'data-id' => 'has_exam_header', :'data-active' => t('.has_header'), :'data-not-active' => t('.not_has_header')
+  - if @course.errors[:has_exam_header].any?
+    %span.field_with_errors.error= @course.errors[:has_exam_header].first
+
+.right_buttons#without_exam_content{style: @course.has_exam_header ? "display: none" : ""}
+  = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(:cancel)
+  = button_tag t(:save), class: 'btn btn_main btn_lightbox save', alt: t(:save), type: 'button'
+
+.right_buttons#with_exam_content{style: @course.has_exam_header ? "" : "display: none"}
+  = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(:cancel)
+  = button_tag t(:continue), :type => 'button', :onclick => "go_to_send_header(event)", class: 'btn btn_main btn_lightbox', onkeypress: 'go_to_controls(event)', alt: t(:continue), id: "_continue"
