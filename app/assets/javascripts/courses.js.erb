@@ -1,0 +1,101 @@
+$(function(){
+
+  $('.save').click(function(){
+    save_values_ckeditor();
+    $('#course_form').serialize_and_submit({
+      complement_success: function(data) {
+        var post_code_name = data.code_name;
+        var id  = data.id;
+        var course = $("#course");
+
+        if(course.is_empty())
+          var course_id = '';
+        else
+          var course_id = course.combobox('value');
+
+        var url = "#{courses_path(type_id: @type_id, course_id: 'course_param')}".replace('course_param', course_id);
+
+        $.get(url, function(data) {
+          var inicio = data.search("<table class='tb_list'>");
+          var fim = data.search("</table>");
+
+          $('table.tb_list').html(data.substr(inicio, fim-inicio+7));
+
+          var autocomplete_option = $('option[value='+id+']');
+
+          if (!autocomplete_option.length){
+            // cria novo curso na lista
+            $("<option value="+id+">"+post_code_name+"</option>").appendTo("#course");
+          }else{
+            // atualiza o curso alterada na lista do autocomplete
+            autocomplete_option.text(post_code_name);
+            // se a curso alterada foi a selecionada no autocomplete, alterar o valor do input
+            if(course_id == id)
+              $("#autocomplete-input").val(post_code_name);
+          }
+        });
+      }
+    });
+  });
+
+});
+
+function change(img, toggleDiv){
+  var checkbox = $(img).siblings('.input').find('input');
+  checkbox.prop('checked', !checkbox.prop('checked'));
+
+  if(toggleDiv != undefined){
+    $.each(toggleDiv,function(idx) {
+      $(toggleDiv[idx]).toggle();
+    });
+  }
+
+  if(!!checkbox.prop('checked')){
+    $("#with_exam_content").show();
+    $("#without_exam_content").hide();
+
+    $("#steps").removeClass('steps');
+    $("#steps").addClass('steps_header');
+    $('li.header').removeClass('invisible');
+
+    $(img).html('<img alt="Released" src="/assets/released.png"/>');
+    $(img).attr('data-tooltip', $(img).data('active'));
+  }else{
+    $("#with_exam_content").hide();
+    $("#without_exam_content").show();
+
+    $("#steps").removeClass('steps_header');
+    $("#steps").addClass('steps');
+    $('li.header').addClass('invisible');
+
+    $(img).html('<img alt="Rejected" src="/assets/rejected.png"/>');
+    $(img).attr('data-tooltip', $(img).data('not-active'));
+  }
+  $.getScript("/assets/tooltip.js");
+}
+
+function go_to_send_header(event) {
+  var keynum = event.which || event.keyCode;
+  if(keynum == 13 || event.type == 'click') {
+    $('.step-info').addClass('invisible');
+    $('.step-header').removeClass('invisible');
+
+    $('li.info').removeClass('active');
+    $('#dot-info').removeClass('active');
+    $('li.header').addClass('active');
+    $('#dot-header').addClass('active');
+  }
+}
+
+function back_to_info(event){
+  var keynum = event.which || event.keyCode;
+  if(keynum == 13 || event.type == 'click') {
+    $('.step-info').removeClass('invisible');
+    $('.step-header').addClass('invisible');
+
+    $('li.info').addClass('active');
+    $('#dot-info').addClass('active');
+    $('li.header').removeClass('active');
+    $('#dot-header').removeClass('active');
+  }
+}

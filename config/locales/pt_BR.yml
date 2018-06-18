@@ -308,6 +308,7 @@ pt_BR:
         min_grade_to_final_exam: Média mínima para realização de AF
         min_final_exam_grade: Nota mínima permitida para AF
         final_exam_passing_grade: Média mínima para aprovação após realização de AF
+        has_exam_header: "Cabeçalho para as provas presenciais"
       discussion_post:
         content: Conteúdo
       post:
@@ -2936,6 +2937,9 @@ pt_BR:
       cancel: Cancelar
       info: Informações
       exam_header: Cabeçalho para as Provas
+    info:
+      has_header: "Cabeçalho padronizado para as provas"
+      not_has_header: "Não há cabeçalho padronizado para as provas"
     success:
       created: Curso criado com sucesso.
       updated: Curso atualizado com sucesso.

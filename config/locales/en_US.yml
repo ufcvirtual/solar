@@ -271,6 +271,7 @@ en_US:
         min_grade_to_final_exam: Minimum final grade to do final exam
         min_final_exam_grade: Minimum final exam grade allowed
         final_exam_passing_grade: Minimum final grade to approval after final exam
+        has_exam_header: Header for presential tests
       discussion_post:
         content: Content
       post:
@@ -2700,6 +2701,9 @@ en_US:
       cancel: Cancel
       info: Information
       exam_header: Exam Headers
+    info:
+      has_header: Standardized header for tests
+      not_has_header: No standardized header for tests
     success:
       created: Course was successfully created.
       updated: Course was successfully updated.
