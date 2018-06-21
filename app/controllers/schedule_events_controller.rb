@@ -119,7 +119,7 @@ class ScheduleEventsController < ApplicationController
   end
 
   def print_presential_test
-    # authorize! :print_presential_test, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    authorize! :print_presential_test, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
     @event = ScheduleEvent.find(params[:id])
     @course = AllocationTag.find(@allocation_tag_id = active_tab[:url][:allocation_tag_id]).get_course
