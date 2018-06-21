@@ -2652,3 +2652,19 @@ schedule_events_score19:
 schedule_events_score20:
   profile_id: 17
   resource_id: 149
+
+schedule_events_score17:
+  profile_id: 2
+  resource_id: 236
+
+schedule_events_score18:
+  profile_id: 5
+  resource_id: 236
+
+schedule_events_score19:
+  profile_id: 14
+  resource_id: 236
+
+schedule_events_score20:
+  profile_id: 17
+  resource_id: 236

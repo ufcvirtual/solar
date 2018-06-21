@@ -1233,3 +1233,9 @@ res235:
   controller: 'schedule_events'
   action: 'list'
   description: 'Botão de Eventos na edição de conteúdo'
+
+res236:
+  id: 236
+  controller: 'schedule_events'
+  action: 'print_presential_test'
+  description: 'Botão de imprimir provas presenciais'
