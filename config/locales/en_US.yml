@@ -3120,6 +3120,7 @@ en_US:
       choose_at_least_one: "Choose at least one event"
       integrated_event_edit: 'This event has integration with other databases and therefore can not be edited'
       integrated_events_delete: 'There are selected events that can not be removed due to integration with other databases'
+      print: Print exam
     participants:
       title: Participants
       student: Students

@@ -98,13 +98,13 @@ class AccessControlController < ApplicationController
   end
 
   def ckeditor_pictures
-    @picture = Ckeditor.picture_adapter.get!(params[:id])
-    download_file(File.join('ckeditor/pictures', params[:id]))
+    @picture = Ckeditor.picture_adapter.get!(params[:file].split('_')[0])
+    download_file(File.join('ckeditor', 'pictures'))
   end
 
   def ckeditor_attachment_files
-    @attachment = Ckeditor.attachment_file_adapter.get!(params[:id])
-    download_file(File.join('ckeditor/attachments', params[:id]))
+    @attachment = Ckeditor.attachment_file_adapter.get!(params[:file].split('_')[0])
+    download_file(File.join('ckeditor', 'attachments'))
   end
 
   #def post

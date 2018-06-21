@@ -1,0 +1,11 @@
+!!!
+%html
+  %head
+    %meta{charset: 'utf-8'}
+    = wicked_pdf_stylesheet_link_tag  "pdf", :media => "all"
+  %body
+    %header
+      -if @course.has_exam_header
+        = @course.header_exam
+    %main
+      = @event.content_exam
