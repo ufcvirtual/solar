@@ -118,6 +118,19 @@ class ScheduleEventsController < ApplicationController
     render partial: 'participants'
   end
 
+  def print_presential_test
+    # authorize! :print_presential_test, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
+
+    @event = ScheduleEvent.find(params[:id])
+    @course = AllocationTag.find(@allocation_tag_id = active_tab[:url][:allocation_tag_id]).get_course
+
+    html = HTMLEntities.new.decode render_to_string("print_presential_test.html.haml", formats: [:html], layout: false)
+    html = pictures_with_abs_path html
+    pdf = WickedPdf.new.pdf_from_string(html)
+
+    send_data(pdf, filename: "#{@event.title}.pdf", type: "application/pdf",  disposition: 'inline')
+  end
+
   private
 
     def schedule_event_params
@@ -128,4 +141,7 @@ class ScheduleEventsController < ApplicationController
       render json: {success: true, notice: t(method, scope: 'schedule_events.success')}
     end
 
+    def pictures_with_abs_path(html)
+      html.gsub(/(href|src)=(['"])\/([^\"']*|[^"']*)['"]/, '\1=\2' + "#{Rails.root}/" + '\3\2')
+    end
 end

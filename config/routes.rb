@@ -503,6 +503,7 @@ Solar::Application.routes.draw do
 
     collection do
       get :list
+      get :print_presential_test
       get :summary , to: 'academic_allocation_users#summary', tool: 'ScheduleEvent'
       put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: 'unbind', tool_type: 'ScheduleEvent', as: :unbind_group_from
       put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: 'remove', tool_type: 'ScheduleEvent', as: :remove_group_from
@@ -746,8 +747,8 @@ Solar::Application.routes.draw do
   get '/media/questions/items/:file.:extension', to: 'access_control#question_item'
   get '/media/questions/audios/:file.:extension', to: 'access_control#question_audio'
 
-  get '/media/ckeditor/pictures/:id/:file.:extension', to: 'access_control#ckeditor_pictures'
-  get '/media/ckeditor/attachment_files/:id/:file.:extension', to: 'access_control#ckeditor_attachment_files'
+  get '/media/ckeditor/pictures/:file.:extension', to: 'access_control#ckeditor_pictures'
+  get '/media/ckeditor/attachment_files/:file.:extension', to: 'access_control#ckeditor_attachment_files'
 
   mount Ckeditor::Engine => '/ckeditor'
   ## como a API vai ser menos usada, fica mais rapido para o solar rodar sem precisar montar essas rotas

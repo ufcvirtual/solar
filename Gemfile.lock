@@ -212,6 +212,7 @@ GEM
     hashie (3.5.7)
     highline (1.7.10)
     hike (1.2.3)
+    htmlentities (4.3.4)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     http_parser.rb (0.6.0)
@@ -507,6 +508,7 @@ DEPENDENCIES
   hairtrigger (~> 0.2.12)
   haml (~> 4.0.5)
   haml-rails (~> 0.4.0)
+  htmlentities
   jquery-rails (~> 2.2.2)
   koala (= 1.2.0)
   launchy (= 2.1.0)
@@ -559,4 +561,4 @@ RUBY VERSION
    ruby 2.1.0p0
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
