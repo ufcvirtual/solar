@@ -121,8 +121,10 @@ class ScheduleEventsController < ApplicationController
   def print_presential_test
     authorize! :print_presential_test, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
+    allocation_id = @allocation_tags_ids.split(" ").map { |e| e.to_i  }
+
     @event = ScheduleEvent.find(params[:id])
-    @course = AllocationTag.find(@allocation_tag_id = active_tab[:url][:allocation_tag_id]).get_course
+    @course = AllocationTag.find(allocation_id.first).get_course
 
     html = HTMLEntities.new.decode render_to_string("print_presential_test.html.haml", formats: [:html], layout: false)
     html = pictures_with_abs_path html
