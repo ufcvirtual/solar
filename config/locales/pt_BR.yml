@@ -3370,6 +3370,7 @@ pt_BR:
       integrated_event_edit: 'Este evento possui integração com outras bases de dados e por isso não pode ser editado'
       integrated_events_delete: 'Existem eventos selecionados que não podem ser removidos devido a integração com outras bases de dados'
       print: Imprimir prova
+      users: Imprimir prova individual
     participants:
       title: Participantes
       student: Alunos
@@ -3381,6 +3382,12 @@ pt_BR:
       working_hours: Carga Horária
       files: Arquivos
       see_files: Ver arquivos enviados
+    presential_test_participants:
+      list_name: Lista de Alunos
+      name_studante: Nome
+      type_exam: Tipo de prova
+      print_personal_test: Prova com cabeçalho preenchido
+      print_user_test: Imprimir prova de %{student}
 
   schedule_event_files:
     new:

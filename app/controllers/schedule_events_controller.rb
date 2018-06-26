@@ -118,6 +118,14 @@ class ScheduleEventsController < ApplicationController
     render partial: 'participants'
   end
 
+  def presential_test_participants
+    # raise CanCan::AccessDenied unless AllocationTag.find(@allocation_tag_id = active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id)
+    @allocation_tag_id = active_tab[:url][:allocation_tag_id]
+    @event = ScheduleEvent.find(params[:id])
+    @participants = AllocationTag.get_participants(@allocation_tag_id, { students: true })
+    render partial: 'presential_test_participants'
+  end
+
   def print_presential_test
     authorize! :print_presential_test, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
