@@ -3088,6 +3088,7 @@ en_US:
       integrated_event_edit: 'This event has integration with other databases and therefore can not be edited'
       integrated_events_delete: 'There are selected events that can not be removed due to integration with other databases'
       print: Print exam
+      users: Print individual exam
     participants:
       title: Participants
       student: Students
@@ -3099,6 +3100,11 @@ en_US:
       working_hours: Working Hours
       files: Files
       see_files: See files sent
+    presential_test_participants:
+      list_name: Students List
+      name: Name
+      print_personal_test: Exam with filled header
+      print_user_test: Print %{student} exam
 
   schedule_event_files:
     new:
