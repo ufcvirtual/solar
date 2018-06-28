@@ -125,7 +125,7 @@ class CurriculumUnitsController < ApplicationController
 
     @curriculum_units = CurriculumUnit.where(id: uc_ids)
     if @curriculum_units.destroy_all.map(&:destroyed?).include?(false)
-      render json: {success: false, alert: t('curriculum_units.error.deleted')}, status: :unprocessable_entity
+      render json: {success: false, alert: (@curriculum_units.map(&:errors).flatten.map(&:full_messages).flatten.compact.any? ? @curriculum_units.map(&:errors).flatten.map(&:full_messages).flatten.uniq.join(', ') : t('curriculum_units.error.deleted'))}, status: :unprocessable_entity
     else
       render json: {success: true, notice: t('curriculum_units.success.deleted')}
     end

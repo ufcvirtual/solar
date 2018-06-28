@@ -779,7 +779,7 @@ pt_BR:
   form_google_play: 'Disponível no Google Play'
   form_google_play2: 'Aplicativo do Solar disponível no Google Play'
   form_apple_store: 'Baixar na App Store'
-  form_apple_play2: 'Aplicativo do Solar disponível no App Store'
+  form_apple_store2: 'Aplicativo do Solar disponível no App Store'
   back_home: "Voltar para Home"
 
   # pagina de cadastro de usuario
@@ -1009,6 +1009,8 @@ pt_BR:
       semester: Semestre
       group: Turma
     not_defined: Não definido
+    requests:
+      info: Informações
 
   enrollm_request_cancel_message: "Pedido de matrícula cancelado"
   enrollm_cancelled_message: "Matrícula cancelada"
@@ -3698,6 +3700,7 @@ pt_BR:
         menu_registration_key: "Shift + U"
         menu_home: "Tela inicial da disciplina"
         menu_home_key: "Shift + I"
+
       code:
         menu_lesson: 65
         menu_support_material: 77

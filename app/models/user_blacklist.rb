@@ -51,4 +51,14 @@ class UserBlacklist < ActiveRecord::Base
       return true
     end
 
+    def self.related_with_uab(cpf)
+      ma_config = User::MODULO_ACADEMICO
+      return false if ma_config.nil? || !ma_config['professor_profile'].present?
+      user = User.find_by_cpf(cpf)
+      return false if user.blank?
+      al = user.allocations.joins(group: { offer: { curriculum_unit: :curriculum_unit_type } })
+          .where(curriculum_unit_types: { allows_enrollment: false }, profile_id: [1, ma_config['professor_profile']]) # 1: aluno, 17: professor titular a distancia
+      return al.any?
+    end
+
 end

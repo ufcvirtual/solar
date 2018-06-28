@@ -188,6 +188,8 @@ class Allocation < ActiveRecord::Base
   end
 
   def calculate_final_grade(grade=nil)
+    return true unless profile_id == Profile.student_profile && !allocation_tag.nil?
+
     calculate_parcial_grade
     calculate_final_exam_grade
   end
@@ -238,7 +240,7 @@ class Allocation < ActiveRecord::Base
     course = allocation_tag.get_course
     uc = allocation_tag.get_curriculum_unit
     ats = allocation_tag.related
-    min_hours = (uc.min_hours || course.min_hours)
+    min_hours = (uc.try(:min_hours) || course.try(:min_hours))
 
     # if final_exam rules not defined or (have enough hours and everything is ok)
     if (course.passing_grade.blank? || ((parcial_grade < course.passing_grade && (course.min_grade_to_final_exam.blank? || course.min_grade_to_final_exam <= parcial_grade)) && (course.min_hours.blank? || uc.working_hours.blank? || (min_hours*0.01)*uc.working_hours <= working_hours)))
@@ -282,11 +284,12 @@ class Allocation < ActiveRecord::Base
   end
 
   def set_situation(manually = false)
+    return true unless profile_id == Profile.student_profile && !allocation_tag.nil?
 
     course = allocation_tag.get_course
     uc = allocation_tag.get_curriculum_unit
     date = allocation_tag.situation_date
-    min_hours = (uc.min_hours || course.min_hours)
+    min_hours = (uc.try(:min_hours) || course.try(:min_hours))
 
     if date.blank?
       last_date = AcademicTool.last_date(allocation_tag.id)
@@ -358,12 +361,13 @@ class Allocation < ActiveRecord::Base
   end
 
   def calculate_working_hours
-    update_attributes working_hours: Allocation.get_working_hours(user_id, allocation_tag)
+    if profile_id == Profile.student_profile && !allocation_tag.nil?
+      update_attributes working_hours: Allocation.get_working_hours(user_id, allocation_tag)
+    end
   end
 
   def self.get_working_hours(user_id, allocation_tag, tool=nil)
     # return 0 if allocation_tag.curriculum_unit.try(:working_hours).nil?
-
     query = tool.blank? ? '' : " AND academic_allocations.academic_tool_type=#{tool}"
     ats = allocation_tag.related.join(',')
     hours = AcademicAllocation.find_by_sql <<-SQL

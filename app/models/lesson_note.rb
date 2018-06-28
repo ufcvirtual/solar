@@ -5,9 +5,9 @@ class LessonNote < ActiveRecord::Base
 
   validates :description, :lesson_id, :user_id, presence: true
 
-  validates :name, length: { maximum: 50 }
+  validates :name, length: { maximum: 150 }
 
-  before_save :unique_name 
+  before_save :unique_name
 
   def unique_name
     lesson_note = LessonNote.where(name: name, user_id: user_id, lesson_id: lesson_id)

@@ -661,12 +661,12 @@ class User < ActiveRecord::Base
 
       return true
     else
-      if integrated
+      if integrated && UserBlacklist.related_with_uab(cpf)
         self.integrated = false
         save(validate: false)
-      end
 
       Rails.logger.info "\n[WARNING] [SYNCHRONIZE USER] [#{Time.now}] [USER CPF #{cpf}] message: not returned by si3 - setted as not integrated"
+      end
       return nil
     end
   rescue => error

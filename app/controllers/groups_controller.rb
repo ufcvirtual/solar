@@ -214,7 +214,7 @@ class GroupsController < ApplicationController
     def destroy_multiple
       Group.transaction do
         if @groups.map(&:can_destroy?).include?(false)
-          render json: { success: false, alert: t('groups.error.deleted') }, status: :unprocessable_entity
+          render json: { success: false, alert: (@groups.map(&:errors).flatten.map(&:full_messages).flatten.compact.any? ? @groups.map(&:errors).flatten.map(&:full_messages).flatten.uniq.join(', ') : t('groups.error.deleted')) }, status: :unprocessable_entity
         else
           @groups.destroy_all
           render_group_success_json('deleted')

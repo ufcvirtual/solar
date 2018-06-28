@@ -907,7 +907,7 @@ res180:
 res181:
   id: 181
   controller: 'allocations'
-  action: 'manage_enrolls'
+  action: 'index'
   description: 'Gerenciar matrículas'
 
 res182:

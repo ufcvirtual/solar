@@ -60,7 +60,9 @@
     .label{
       border-radius: 7px;
       margin: 8px;
-      width: auto;
+      /*width: auto;*/
+      width: 95%;
+      margin-left: 0;
       word-wrap: break-word;
       padding: 5px;
       background-color: $color_main_light;

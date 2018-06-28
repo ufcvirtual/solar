@@ -834,6 +834,8 @@ en_US:
       semester: Semester
       group: Group
     not_defined: Not defined
+    requests:
+      info: Information
   enrollm_request_cancel_message: "Request for enrollment cancelled"
   enrollm_cancelled_message: "Enrollment cancelled"
   enrollm_not_cancelled_message: "Enrollment not cancelled"

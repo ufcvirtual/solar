@@ -8,13 +8,13 @@
           - @users.each do |user|
             - if user.types.to_i==Profile_Type_Student
               - profiles = user.profile_name.join(", ")
-              %li.contact.li_contacts= link_to "#{user.name} <#{user.email}> (#{profiles})", "#void", onclick:"add_contact(this, true, null, '"+user.name+"', '"+user.email+"', '"+profiles+"', '"+user.types.to_s+"')", "data-user-id" => user.id, "data-user-type" => user.types, "data-at" => @allocation_tags_ids, :'aria-label' => t('.user_alt', name: user.name, email: user.email), onkeydown: 'click_on_keypress(event, this);'
+              %li.contact.li_contacts= link_to "#{user.name} <#{user.get_email}> (#{profiles})", "#void", onclick:"add_contact(this, true, null, '"+user.name+"', '"+user.get_email+"', '"+profiles+"', '"+user.types.to_s+"')", "data-user-id" => user.id, "data-user-type" => user.types, "data-at" => @allocation_tags_ids, :'aria-label' => t('.user_alt', name: user.name, email: user.get_email), onkeydown: 'click_on_keypress(event, this);'
       %li.button_add_responsibles_list
         = link_to raw(t(".add_responsibles")), "#void", onclick: "add_all_responsibles(this)", id: "add_res", :'aria-label' => t('.add_res_alt'), onkeydown: 'click_on_keypress(event, this);'
         %ul.add_responsibles_list
           - @users.each do |user|
             - unless user.types.to_i==Profile_Type_Student
               - profiles = user.profile_name.join(", ")
-              %li.contact.li_contacts= link_to "#{user.name} <#{user.email}> (#{profiles})", "#void", onclick: "add_contact(this, true, null, '"+user.name+"', '"+user.email+"', '"+profiles+"', '"+user.types.to_s+"')", "data-user-id" => user.id, "data-user-type" => user.types, "data-at" => @allocation_tags_ids, :'aria-label' => t('.user_alt', name: user.name, email: user.email), onkeydown: 'click_on_keypress(event, this);'
+              %li.contact.li_contacts= link_to "#{user.name} <#{user.get_email}> (#{profiles})", "#void", onclick: "add_contact(this, true, null, '"+user.name+"', '"+user.get_email+"', '"+profiles+"', '"+user.types.to_s+"')", "data-user-id" => user.id, "data-user-type" => user.types, "data-at" => @allocation_tags_ids, :'aria-label' => t('.user_alt', name: user.name, email: user.get_email), onkeydown: 'click_on_keypress(event, this);'
   - else
     %div{ style: "margin-top:15%; margin-left:32%" }= t(".no_user_found")

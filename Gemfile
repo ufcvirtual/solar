@@ -3,7 +3,7 @@ source "http://rubygems.org"
 ruby "2.1.0"
 
 #gem "rails", "~> 3.2.16"
-gem 'rails', '4.0.0'
+gem 'rails', '4.0.13'
 gem "rack", "~> 1.5.2"
 gem "rake", "~> 10.1.1"
 gem "pg", "~> 0.15.0"
@@ -77,9 +77,9 @@ gem 'delayed_job_active_record'
 gem 'activerecord-session_store'
 
 # add these gems to help with the transition:
-gem 'protected_attributes'
+gem 'protected_attributes', '~> 1.0.9'
 #gem 'rails-observers'
-gem "actionpack", "4.0.0"
+gem "actionpack", "4.0.13"
 gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'
 
@@ -127,11 +127,11 @@ group :test do
   gem "simplecov", require: false # cobertura de testes
 end
 
-group :assets do
+# group :assets do
   gem "uglifier", "~> 1.3.0"
   gem "sass-rails", "~> 4.0.0"
   gem "compass-rails", "~> 1.1.7"
-end
+# end
 
 # new relic
 #gem 'newrelic_rpm'

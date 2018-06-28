@@ -39,7 +39,7 @@ module V1::AllocationsH
     ActiveRecord::Base.transaction do
       groups.each do |group|
         # cancel all users previous allocations as profile_id
-        group.first.change_allocation_status(user.id, 2, nil, {profile_id: profile_id, origin_group_id: groups.last.try(:id)})
+        group.first.change_allocation_status(user.id, 2, nil, {profile_id: profile_id, origin_group_id: group.last.try(:id), create_if_dont_exists: true})
 
         Allocation.where(origin_group_id: group.first.id, user_id: user.id, profile_id: profile_id).each do |al|
           al.group.change_allocation_status(user.id, Allocation_Cancelled, nil, {profile_id: profile_id})

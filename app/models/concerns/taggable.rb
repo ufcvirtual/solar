@@ -25,11 +25,13 @@ module Taggable
 
   def can_destroy?
     errors.add(:base, I18n.t(:dont_destroy_with_lower_associations)) if any_lower_association?
-    allocations = allocations.where(status: Allocation_Activated).select("DISTINCT user_id")
-    errors.add(:base, I18n.t(:dont_destroy_with_many_allocations))   if allocations.count > 1 || allocations.where(profile_id: 1).any? # se possuir mais de um usuario ativo alocado ou pelo menos 1 aluno ativo, nao deleta
+    all = allocations.where(status: Allocation_Activated)
+    errors.add(:base, I18n.t(:dont_destroy_with_many_allocations))  if all.select('DISTINCT user_id').count > 1 || all.where(profile_id: 1).any? # se possuir mais de um usuario ativo alocado ou pelo menos 1 aluno ativo, nao deleta
     # pode destruir somente se o conteudo for apenas um modulo de aula
-    errors.add(:base, I18n.t(:dont_destroy_with_content))            unless (academic_allocations.count == 0 || (academic_allocations.count == 1 && academic_allocations.where(academic_tool_type: 'LessonModule').any?))
-    raise false if errors.any?
+    errors.add(:base, I18n.t(:dont_destroy_with_content)) unless (academic_allocations.count == 0 || (academic_allocations.count == 1 && academic_allocations.where(academic_tool_type: 'LessonModule').any?))
+
+    # raise false
+    return false if errors.any?
     errors.empty?
   end
 
@@ -103,6 +105,19 @@ module Taggable
       al.origin_group.cancel_allocations(user_id, opts[:profile_id]) unless al.origin_group_id.blank? || opts[:origin_group_id] == al.origin_group_id || opts[:profile_id].blank?
 
       al.update_attributes(status: new_status, updated_by_user_id: updated_by_user_id, origin_group_id: (opts[:origin_group_id].blank? ? nil : opts[:origin_group_id]))
+    end
+
+    origin_group = Group.where(id: opts[:origin_group_id]).first
+
+    # in case of allocations dont exists, system must creat them to cancel
+    unless opts[:create_if_dont_exists].blank? || (all.any? && origin_group.blank?) || opts[:profile_id].blank?
+      new_allocation = Allocation.create allocation_tag_id: allocation_tag.id, user_id: user_id, profile_id: opts[:profile_id], status: new_status, origin_group_id: (opts[:origin_group_id].blank? ? nil : opts[:origin_group_id]) if all.blank?
+
+      unless (origin_group.blank? && new_allocation.try(:origin_group).blank?)
+        new_al = Allocation.where(allocation_tag_id: (new_allocation.blank? ? origin_group : new_allocation.origin_group).try(:allocation_tag).try(:id), user_id: user_id, profile_id: opts[:profile_id]).first_or_initialize
+        new_al.status = Allocation_Merged
+        new_al.save
+      end
     end
   end
 
