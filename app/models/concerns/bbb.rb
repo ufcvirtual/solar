@@ -209,7 +209,7 @@ module Bbb
     common_recordings = []
 
     recordings.each do |m|
-      common_recordings << m if m[:meetingID] == meeting_id
+      common_recordings << m if m[:metadata][:meetingId] == meeting_id
     end
 
     return common_recordings
@@ -227,7 +227,11 @@ module Bbb
   end
 
   def self.get_recording_url(recording)
-    recording[:playback][:format][:url]
+    response = recording[:playback][:format]
+    response = response.kind_of?(Array) ? response.find {|x| x[:type] == 'presentation'} : response
+    response = URI.parse(response[:url])
+    response.scheme = "https"
+    response.to_s
   end
 
   def started?
@@ -277,7 +281,8 @@ module Bbb
     raise nil unless on_going?
     meeting_id = get_mettingID(at_id)
     @api       = bbb_prepare
-    URI.parse(@api[:url]).path # testing url to avoid connection errors
+    #URI.parse(@api[:url]).path # testing url to avoid connection errors
+    raise nil unless @api.test_connection
     meetings   = meetings || @api.get_meetings[:meetings].collect{|m| m[:meetingID]}
     raise nil unless !meetings.nil? && meetings.include?(meeting_id)
     response   = @api.get_meeting_info(meeting_id, Digest::MD5.hexdigest((title rescue name)+meeting_id))
