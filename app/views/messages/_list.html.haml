@@ -36,19 +36,22 @@
 
 .message_div_navigation
   -total = @messages.try(:first).total_messages rescue 0
-  =t('will_paginate.page_entries_info.multi_page_html', model: t(:menu_messages), from: @min, to: @min+@limit, count: total)
-  .pagination
-    - if @min > 0
-      %a.previous_page{:'aria-label'=> t(:navigation_first_page), :'data-shortcut-focus'=>false, :'data-shortcut-alt'=>false}=link_to t(:navigation_first), anybox_messages_path(box: @box, page: 1, subject: 'subject_value', user: 'user_value', search_for: 'search_for_value')
-      %a.previous_page{:'aria-label'=> t(:navigation_previous_page), :'data-shortcut'=>t('shortcut.code.pagination.previous'), :'data-shortcut-name'=>t('shortcut.name.pagination.previous'), :'data-shortcut-focus'=>false, :'data-shortcut-alt'=>false, :'data-shortcut-shift'=>true}=link_to t('will_paginate.previous_label'), anybox_messages_path(box: @box, page: @page-1, subject: 'subject_value', user: 'user_value', search_for: 'search_for_value')
-    = t(:navigation_page) + @page.to_s
-    - unless @min + @limit >= total
-      %a.next_page{:'aria-label'=> t(:navigation_next_page), :'data-shortcut'=>t('shortcut.code.pagination.next'), :'data-shortcut-name'=>t('shortcut.name.pagination.next'), :'data-shortcut-focus'=>false, :'data-shortcut-alt'=>false, :'data-shortcut-shift'=>true}=link_to t('will_paginate.next_label'), anybox_messages_path(box: @box, page: @page+1, subject: 'subject_value', user: 'user_value', search_for: 'search_for_value')
-      %a.next_page{:'aria-label'=> t(:navigation_last_page), :'data-shortcut-focus'=>false, :'data-shortcut-alt'=>false}=link_to t(:navigation_last), anybox_messages_path(box: @box, page: (total/@limit.to_f).ceil, subject: 'subject_value', user: 'user_value', search_for: 'search_for_value')
-  .choose_page
-    = label_tag :page, t(:navigation_page)
-    = text_field_tag :page, @page, size: 2
-    = button_tag t('portlets.curricular_unit.search2'), class: 'btn', id: 'search_page', :'data-url' => anybox_messages_path(box: @box, page: 'page_input', subject: 'subject_value', user: 'user_value', search_for: 'search_for_value')
+  - if total==0
+    = t('messages.none')
+  - else
+    =t('will_paginate.page_entries_info.multi_page_html', model: t(:menu_messages), from: @min+1, to: @min+@limit, count: total)
+    .pagination
+      - if @min > 0
+        %a.previous_page{:'aria-label'=> t(:navigation_first_page), :'data-shortcut-focus'=>false, :'data-shortcut-alt'=>false}=link_to t(:navigation_first), anybox_messages_path(box: @box, page: 1, subject: 'subject_value', user: 'user_value', search_for: 'search_for_value')
+        %a.previous_page{:'aria-label'=> t(:navigation_previous_page), :'data-shortcut'=>t('shortcut.code.pagination.previous'), :'data-shortcut-name'=>t('shortcut.name.pagination.previous'), :'data-shortcut-focus'=>false, :'data-shortcut-alt'=>false, :'data-shortcut-shift'=>true}=link_to t('will_paginate.previous_label'), anybox_messages_path(box: @box, page: @page-1, subject: 'subject_value', user: 'user_value', search_for: 'search_for_value')
+      = t(:navigation_page) + @page.to_s
+      - unless @min + @limit >= total
+        %a.next_page{:'aria-label'=> t(:navigation_next_page), :'data-shortcut'=>t('shortcut.code.pagination.next'), :'data-shortcut-name'=>t('shortcut.name.pagination.next'), :'data-shortcut-focus'=>false, :'data-shortcut-alt'=>false, :'data-shortcut-shift'=>true}=link_to t('will_paginate.next_label'), anybox_messages_path(box: @box, page: @page+1, subject: 'subject_value', user: 'user_value', search_for: 'search_for_value')
+        %a.next_page{:'aria-label'=> t(:navigation_last_page), :'data-shortcut-focus'=>false, :'data-shortcut-alt'=>false}=link_to t(:navigation_last), anybox_messages_path(box: @box, page: (total/@limit.to_f).ceil, subject: 'subject_value', user: 'user_value', search_for: 'search_for_value')
+    .choose_page
+      = label_tag :page, t(:navigation_page)
+      = text_field_tag :page, @page, size: 2
+      = button_tag t('portlets.curricular_unit.search2'), class: 'btn', id: 'search_page', :'data-url' => anybox_messages_path(box: @box, page: 'page_input', subject: 'subject_value', user: 'user_value', search_for: 'search_for_value')
 
 
 = javascript_include_tag 'pagination', 'messages'
