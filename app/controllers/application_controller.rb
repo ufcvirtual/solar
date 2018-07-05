@@ -83,7 +83,7 @@ class ApplicationController < ActionController::Base
 
   def another_level_breadcrumb
     same_level_for_all = 1 # ultimo nivel, por enquanto o breadcrumb só comporta 3 níveis
-    user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb][same_level_for_all] = { name: params[:bread], url: params } if params[:bread].present?
+    user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb][same_level_for_all] = { name: params[:bread], url: params.except(:page) } if params[:bread].present?
   end
 
   def current_menu_context
