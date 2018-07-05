@@ -1550,6 +1550,8 @@ en_US:
   hidden_info: Hidden information
   navigation_previous_page: "Page previous: "
   navigation_next_page: "Page next: "
+  navigation_first_page: "First page "
+  navigation_last_page: "Last page "
   navigation_page: "Page: "
 
   menu_dc_lesson: Digital Class

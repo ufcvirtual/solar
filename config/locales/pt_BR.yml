@@ -1709,6 +1709,8 @@ pt_BR:
   navigation_last: "Última >>"
   navigation_previous_page: "Ir para página anterior: "
   navigation_next_page: "Ir para próxima página "
+  navigation_first_page: "Ir para a primeira página "
+  navigation_last_page: "Ir para a última página "
   navigation_page: "Página: "
 
   icon_agenda: "Ícone da agenda"

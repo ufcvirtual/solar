@@ -502,7 +502,7 @@ Solar::Application.routes.draw do
 
   resources :messages, only: [:new, :show, :create, :index] do
     member do
-      put ":box/:new_status", to: "messages#update", as: :change_status, constraints: { box: /(inbox)|(outbox)|(trashbox)/, new_status: /(read)|(unread)|(trash)|(restore)/ }
+      put ":box/:new_status", to: "messages#update", as: :change_status, constraints: { box: /(inbox)|(outbox)|(trashbox)|(box_value)/, new_status: /(read)|(unread)|(trash)|(restore)/ }
 
       get :reply,     to: :reply, type: "reply"
       get :reply_all, to: :reply, type: "reply_all"
@@ -516,10 +516,12 @@ Solar::Application.routes.draw do
       get :inbox,    action: :index, box: "inbox",    as: :inbox
       get :outbox,   action: :index, box: "outbox",   as: :outbox
       get :trashbox, action: :index, box: "trashbox", as: :trashbox
+      get :anybox, action: :index
       get :count_unread
       get :find_users
       get :contacts
       get :search
+      get :pending
 
       get "download/file/:file_id", to: "messages#download_files", as: :download_file
 

@@ -414,7 +414,7 @@ ul.files_to_send{
 .contacts-selection{
   h3.select, h3.selected{
     font-weight: normal;
-  }  
+  }
 }
 
 .contacts-type, .contacts-uc .filter{
@@ -498,4 +498,17 @@ ul.files_to_send{
   text-align: center;
   background-color: $background_dark_gray;
   text-decoration: underline;
+}
+
+.choose_page{
+  label{
+    color: unset;
+    display: unset;
+    width: unset;
+  }
+
+}
+
+.btn-group ul li.only-trash{
+  display: none;
 }

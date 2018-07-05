@@ -12,13 +12,18 @@ class CurriculumUnitsController < ApplicationController
 
   def home
     authorize! :show, CurriculumUnit, { on: @allocation_tags_ids, read: true }
-    @messages = Message.by_box(current_user.id, 'inbox', @allocation_tag_id, { only_unread: true })
+    @page = (params[:page] || 1).to_i
+
+    @messages = Message.by_box(current_user.id, 'inbox', @allocation_tag_id, { only_unread: true, page: @page, ignore_at: true })
+
+    @limit = Rails.application.config.items_per_page
+    @min = (@page * @limit) - @limit
+
     user_profiles     = current_user.resources_by_allocation_tags_ids(@allocation_tags_ids)
     @lessons_modules  = (!user_profiles.include?(lessons: :show) ? [] : LessonModule.to_select(@allocation_tags_ids, current_user))
     @discussion_posts = list_portlet_discussion_posts(@allocation_tags_ids)
     @scheduled_events = (!user_profiles.include?(agendas: :calendar) ? [] : Agenda.events(@allocation_tags_ids, nil, true))
     @researcher = current_user.is_researcher?(@allocation_tags_ids)
-
   end
 
   def index

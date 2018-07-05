@@ -5,22 +5,60 @@ class MessagesController < ApplicationController
 
   before_filter :prepare_for_group_selection, only: [:index]
 
+  layout false, only: [:new]
+
   ## [inbox, outbox, trashbox]
-  require 'will_paginate/array'
   def index
     allocation_tag_id = active_tab[:url][:allocation_tag_id]
+
     @show_system_label = allocation_tag_id.nil?
 
     @box = option_user_box(params[:box])
+    @page = (params[:page] || 1).to_i
 
-    @messages = Message.by_box(current_user.id, @box, allocation_tag_id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
-    @unreads  = Message.unreads(current_user.id, allocation_tag_id)
+    search = {}
+    search.merge!({user: params[:user]}) unless params[:user].blank?
+    search.merge!({subject: params[:subject]}) unless params[:subject].blank?
+
+    options = {page: @page, ignore_at: true}
+    options.merge!(option_search_for(params[:search_for]))
+
+    @messages = Message.by_box(current_user.id, @box, allocation_tag_id, options, search)
+
+    @limit = Rails.application.config.items_per_page
+    @min = (@page * @limit) - @limit
+
+    @unreads  = @messages.first.try(:unread) rescue 0
     render partial: 'list' unless params[:page].nil?
+  end
+
+  def pending
+    # used at the uc home
+    @page = (params[:page] || 1).to_i
+
+    @messages = Message.by_box(current_user.id, 'inbox', active_tab[:url][:allocation_tag_id], { only_unread: true, page: @page, ignore_at: true })
+
+    @limit = Rails.application.config.items_per_page
+    @min = (@page * @limit) - @limit
+    @total = @messages.try(:first).total_messages rescue 0
+
+    respond_to do |format|
+      format.json { render json: @messages }
+      format.js
+    end
   end
 
   def search
     @box = option_user_box(params[:box])
-    @messages = Message.by_box(current_user.id, @box, active_tab[:url][:allocation_tag_id], {}, { user: params[:user], subject: params[:subject] }).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page)
+    @page = (params[:page] || 1).to_i
+
+    options = {page: @page, ignore_at: true}
+    options.merge!(option_search_for(params[:search_for]))
+
+    @messages = Message.by_box(current_user.id, @box, active_tab[:url][:allocation_tag_id], options, { user: params[:user], subject: params[:subject] })
+
+    @limit = Rails.application.config.items_per_page
+    @min = (@page * @limit) - @limit
 
     render partial: 'list'
   end
@@ -29,7 +67,6 @@ class MessagesController < ApplicationController
     authorize! :index, Message, { on: [@allocation_tag_id  = active_tab[:url][:allocation_tag_id]], accepts_general_profile: true } unless active_tab[:url][:allocation_tag_id].nil?
     @message = Message.new
     @message.files.build
-    @unreads = Message.unreads(current_user.id, @allocation_tag_id)
 
     @reply_to = [User.find(params[:user_id]).to_msg] unless params[:user_id].nil? # se um usuário for passado, colocá-lo na lista de destinatários
     @reply_to = [{resume: t("messages.support")}] unless params[:support].nil?
@@ -47,7 +84,6 @@ class MessagesController < ApplicationController
     raise CanCan::AccessDenied unless @original.user_has_permission?(current_user.id)
 
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
-    @unreads = Message.unreads(current_user.id, @allocation_tag_id)
 
     @message = Message.new subject: @original.subject
     @message.files.build
@@ -103,14 +139,11 @@ class MessagesController < ApplicationController
         #Thread.new do
           #Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files, current_user.email).deliver
         #end
-        Thread.new do
-          Job.send_mass_email(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email)
-        end
+        Job.send_mass_email(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email)
       end
 
       redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages)
     rescue => error
-      @unreads = Message.unreads(current_user.id, @allocation_tag_id)
       unless @allocation_tag_id.nil?
         allocation_tag      = AllocationTag.find(@allocation_tag_id)
         @group              = allocation_tag.group
@@ -135,16 +168,16 @@ class MessagesController < ApplicationController
   def update
     begin
       Message.transaction do
-        params[:id].split(',').map(&:to_i).each { |i| change_message_status(i, params[:new_status], params[:box]) }
+        params[:id].split(',').map(&:to_i).each { |i| change_message_status(i, params[:new_status], option_user_box(params[:box])) }
       end
       render json: {success: true}
-    rescue
+    rescue => error
       render json: {success: false}, status: :unprocessable_entity
     end
   end
 
   def count_unread
-    render json: { unread: Message.unreads(current_user.id, active_tab[:url][:allocation_tag_id]) }
+    render json: { unread: (Message.by_box(current_user.id, 'inbox', active_tab[:url][:allocation_tag_id], {ignore_at: true, page: 1, only_unread: true}).first.try(:total_messages) rescue 0) }
   end
 
   def download_files
@@ -216,6 +249,11 @@ class MessagesController < ApplicationController
     def option_user_box(type)
       return type if ['outbox', 'trashbox'].include?(type)
       'inbox'
+    end
+
+    def option_search_for(type)
+      return {type.to_sym => true} if ['only_read', 'only_unread'].include?(type)
+      {}
     end
 
     def message_params
