@@ -10,7 +10,7 @@
 
     .align-right
       %ul
-        %li= link_to content_tag(:i, nil, class: 'icon-plus', :"aria-hidden" => 'true'),  new_message_path, class: 'btn', id: "button_new_msg", 'data-tooltip' => t(:new, scope: :messages), :'aria-label'=> t("messages.new")
+        %li= link_to content_tag(:i, nil, class: 'icon-plus', :"aria-hidden" => 'true'), '#void', class: 'btn', id: "button_new_msg", 'data-tooltip' => t(:new, scope: :messages), :'aria-label'=> t("messages.new"), :'data-url' => new_message_path
 
         - if @box != "trashbox"
           %li#mark_as_unread=link_to content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true'), '#', {:"data-tooltip" => t('.unread'), :"data-new-status" => "unread", :"data-link-udpate-status" => change_status_message_path(id: @message.id, new_status: "unread", box: @box), :'aria-label'=> t(".unread"), onkeydown: 'click_on_keypress(event, this);', id: 'unread', class: 'btn'}
@@ -57,6 +57,8 @@
       %i.icon-arrow-left{:'aria-hidden' => 'true'}
       = t(:back)
 
+= javascript_include_tag 'messages'
+
 :javascript
 
   $(function(){
@@ -73,5 +75,13 @@
           window.location.href = "#{inbox_messages_path}";
         }
       });
+    });
+
+    $('#button_new_msg').on('click', function(){
+      $.get($(this).data('url'), function(data){
+        $('.message_external_div').replaceWith(data);
+
+      });
+      return false;
     });
   });

@@ -24,9 +24,9 @@
                 %span.message_label= label
               = link_to message.subject, msg_path, class: css_class
             %td.td_attachment.center{headers: 'th_attachment'}
-              - if message.count_files != '0'
+              - if message.count_files != 0
                 = content_tag(:i, nil, class: 'icon-paperclip', :'aria-hidden'=>'true')
-              .visuallyhidden= message.count_files != '0' ? t('messages.show.at_yes') : t('messages.show.at_no')
+              .visuallyhidden= message.count_files != 0 ? t('messages.show.at_yes') : t('messages.show.at_no')
             - if 'outbox' == @box
               %td.td_recipient{ :'data-tooltip' => message.sent_to_names, headers: 'th_sent_to' }= (link_to message.sent_to_names.truncate(100), msg_path rescue '')
             - else
@@ -37,9 +37,12 @@
 .message_div_navigation
   -total = @messages.try(:first).total_messages rescue 0
   - if total==0
-    = t('messages.none')
+    =t('messages.none')
+  - elsif total <= @min+@limit
+    =raw t('will_paginate.page_entries_info.single_page_html.other', model: t(:menu_messages), count: total)
+
   - else
-    =t('will_paginate.page_entries_info.multi_page_html', model: t(:menu_messages), from: @min+1, to: @min+@limit, count: total)
+    =raw t('will_paginate.page_entries_info.multi_page_html', model: t(:menu_messages), from: @min+1, to: @min+@limit, count: total)
     .pagination
       - if @min > 0
         %a.previous_page{:'aria-label'=> t(:navigation_first_page), :'data-shortcut-focus'=>false, :'data-shortcut-alt'=>false}=link_to t(:navigation_first), anybox_messages_path(box: @box, page: 1, subject: 'subject_value', user: 'user_value', search_for: 'search_for_value')
