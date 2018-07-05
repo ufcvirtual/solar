@@ -573,6 +573,7 @@ en_US:
 
   all: "All"
   of: "of"
+  signature: "Student signature:"
   required_fields: "* required field(s)"
   object_not_found: "Object not found"
   search: "Search"

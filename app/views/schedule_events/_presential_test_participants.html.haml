@@ -5,20 +5,14 @@
     %thead
       %tr.lines
         %th{id: 'participant-name'}= t('.name_studante')
-        %th.center{id: 'type-exam'}= t('.type_exam')
         %th.center{id: 'personal-test'}= t('.print_personal_test')
     %tbody
       - @participants.each_with_index do |participant|
-        - info = @event.info(participant.id, @allocation_tag_id)
         %tr.lines
           %td{headers: 'participant-name'}= participant.name
-          %td.center{headers: 'type-exam'}= info[:grade] || "-"
           %td.center{headers: 'personal-test'}
-            = link_to content_tag(:i, nil, class: 'icon-printer'), "#void", id: "new_file-#{participant.id}", class: "btn btn_main btn_new_file", onclick: 'new_file(this)', :'data-url' => new_schedule_event_file_path(tool_id: @event.id, tool: 'ScheduleEvent', student_id: participant.id, group_id: info[:group_id], score_type: 'evaluative', situation: @situation), :"data-tooltip" => t('.print_user_test', student: participant.name), :'aria-label' => t('.send_file'), onkeydown: 'click_on_keypress(event, this);'
-        %tr.file_form
-          %td.center{ colspan: 6 }
-            .file_form{ class: "new_file-#{participant.id}" }
+            = link_to content_tag(:i, nil, class: 'icon-printer'), print_presential_test_schedule_events_path(id: @event.id, student_id: participant.id, allocation_tags_ids: @allocation_tag_id), target: "_blank", class: "btn btn_main", :"data-print-title" => t(".print_user_test", student: participant.name), :"data-tooltip" => t(".print_user_test", student: participant.name)
 - else
   .text_none= t(:itens_not_found)
 
-= javascript_include_tag 'tooltip', 'scores', 'schedule_event_files'
+= javascript_include_tag 'tooltip', 'schedule_events'

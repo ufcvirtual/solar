@@ -119,25 +119,37 @@ class ScheduleEventsController < ApplicationController
   end
 
   def presential_test_participants
-    # raise CanCan::AccessDenied unless AllocationTag.find(@allocation_tag_id = active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id)
+    raise CanCan::AccessDenied unless AllocationTag.find(@allocation_tag_id = active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id)
+
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
     @event = ScheduleEvent.find(params[:id])
     @participants = AllocationTag.get_participants(@allocation_tag_id, { students: true })
+
     render partial: 'presential_test_participants'
   end
 
   def print_presential_test
     authorize! :print_presential_test, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
 
-    allocation_id = @allocation_tags_ids.split(" ").map { |e| e.to_i  }
+    allocation_ids = @allocation_tags_ids.split(" ").map { |e| e.to_i  }
+    allocation_tag = AllocationTag.find(allocation_ids.first)
 
+    @course = allocation_tag.get_course
     @event = ScheduleEvent.find(params[:id])
-    @course = AllocationTag.find(allocation_id.first).get_course
 
     html = HTMLEntities.new.decode render_to_string("print_presential_test.html.haml", formats: [:html], layout: false)
-    html = pictures_with_abs_path html
-    pdf = WickedPdf.new.pdf_from_string(html)
 
+    unless params[:student_id].blank?
+      student = User.find(params[:student_id])
+      curriculum_unit = allocation_tag.get_curriculum_unit
+      coordinator = User.joins(:allocations, :profiles).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND profiles.id = 8", allocation_tag.related, Allocation_Activated).first
+
+      normalize_exam_header(html, student, @event, curriculum_unit, coordinator)
+    end
+
+    pictures_with_abs_path html
+
+    pdf = WickedPdf.new.pdf_from_string(html)
     send_data(pdf, filename: "#{@event.title}.pdf", type: "application/pdf",  disposition: 'inline')
   end
 
@@ -151,7 +163,53 @@ class ScheduleEventsController < ApplicationController
       render json: {success: true, notice: t(method, scope: 'schedule_events.success')}
     end
 
+    def curriculum_unit_name(html, name)
+      remove_underscore_input_between_patterns(html, /disciplina:/i)
+      html.sub!(/disciplina:/i, "Disciplina: #{name}")
+    end
+
+    def exam_name(html, exam_name)
+      remove_underscore_input_between_patterns(html, /prova:/i)
+      html.sub!(/prova:/i, "Prova: #{exam_name}")
+    end
+
+    def exam_date(html, date)
+      remove_underscore_input_between_patterns(html, /data:/i)
+      html.sub!(/data:/i, "Data: #{date}")
+    end
+
+    def place_exam(html, place)
+      remove_underscore_input_between_patterns(html, /polo:/i)
+      html.sub!(/polo:/i, "Polo: #{place}")
+    end
+
+    def student_name(html, student_name)
+      remove_underscore_input_between_patterns(html, /nome do\(a\) aluno\(a\):/i)
+      html.sub!(/nome do\(a\) aluno\(a\):/i, "Nome do(a) aluno(a): #{student_name}")
+    end
+
+    def coordinator_name(html, coordinator_name)
+      remove_underscore_input_between_patterns(html, /coordenador\(a\) da disciplina:/i)
+      html.sub!(/coordenador\(a\) da disciplina:/i, "Coordenador(a) da disciplina: #{coordinator_name}")
+    end
+
+    def normalize_exam_header(html, student, event, curriculum_unit, coordinator)
+      curriculum_unit_name html, curriculum_unit.name
+      coordinator_name html, coordinator.name
+      place_exam html, event.place
+      exam_name html, event.title
+      exam_date html, event.schedule.end_date
+      student_name html, student.name
+    end
+
+    def remove_underscore_input_between_patterns(html, pattern)
+      initial_match = html.match(pattern)
+      fim_match = initial_match.post_match.match(/<\/span>/) unless initial_match.nil?
+      removed_underscore = fim_match.pre_match.gsub!(/_/, '') unless fim_match.nil?
+      html.sub!(fim_match.pre_match, removed_underscore) unless initial_match.nil? || fim_match.nil? || removed_underscore.nil?
+    end
+
     def pictures_with_abs_path(html)
-      html.gsub(/(href|src)=(['"])\/([^\"']*|[^"']*)['"]/, '\1=\2' + "#{Rails.root}/" + '\3\2')
+      html.gsub!(/(href|src)=(['"])\/([^\"']*|[^"']*)['"]/i, '\1=\2' + "#{Rails.root}/" + '\3\2')
     end
 end
