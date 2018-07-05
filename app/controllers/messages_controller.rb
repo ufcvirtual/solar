@@ -5,8 +5,6 @@ class MessagesController < ApplicationController
 
   before_filter :prepare_for_group_selection, only: [:index]
 
-  layout false, only: [:new]
-
   ## [inbox, outbox, trashbox]
   def index
     allocation_tag_id = active_tab[:url][:allocation_tag_id]
@@ -70,6 +68,10 @@ class MessagesController < ApplicationController
 
     @reply_to = [User.find(params[:user_id]).to_msg] unless params[:user_id].nil? # se um usuário for passado, colocá-lo na lista de destinatários
     @reply_to = [{resume: t("messages.support")}] unless params[:support].nil?
+
+    @support = params[:support]
+
+    render layout: false unless @support
   end
 
   def show
@@ -158,6 +160,8 @@ class MessagesController < ApplicationController
       end
       @reply_to = []
       @reply_to = User.where(id: params[:message][:contacts].split(',')).select("id, (name||' <'||email||'>') as resume")
+
+      @support = params[:message][:support]
 
       #flash.now[:alert] = @message.errors.full_messages.join(', ')
       render :new
