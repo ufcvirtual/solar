@@ -70,7 +70,8 @@
           .analyzer
             = link_to content_tag(:i, nil, class: 'icon-popup', :"data-tooltip" => t('.window_analyzer_home')), "#void", onclick: 'slideDraggable()'
             = link_to t('.analyzer'), "#void", onclick: 'slideDraggable()'
-
+            = link_to content_tag(:i, nil, class: 'icon-clipboard'), "#void", onclick: "manage_automatic_tools(#{@allocation_tags_ids.flatten.uniq})"
+            = link_to "Executar Gerência Automática", "#void", onclick: "manage_automatic_tools(#{@allocation_tags_ids.flatten.uniq})"
 
           - tools_ids = []
           - @tools.collect{|key, value| value}.flatten.each do |tool|
@@ -336,4 +337,47 @@
       if(!value)
         parent.find("select[id$='equivalent_academic_allocation_id']").val('');
     }
+  }
+
+  function manage_automatic_tools(allocation_tags_ids){
+
+    if(confirm("Deseja realizar a gerência automática?")){
+      
+      loading_page($('#teste'));
+      
+      $.ajax({
+         url: '/editions/automatic_management',
+         type: 'post',
+         data: {allocation_tags_ids},
+         success: function(resp) {
+            if(resp.success){
+              console.log(resp.msg);         
+
+              $.get('/editions/tool_management?allocation_tags_ids='+allocation_tags_ids, function(data){
+                $(".edition_items").html(data);
+                $(".back").removeClass("invisible");
+                loadFocus();
+                $.fancybox.close();
+                flash_message(resp.msg, 'notice');
+              }).error(function(data){
+                var data = $.parseJSON(data.responseText);
+                if (typeof(data.alert) != "undefined")
+                  flash_message(data.alert, 'alert');
+              });
+
+            }
+            else{
+              console.log(resp.msg);
+              $.fancybox.close();
+              flash_message(resp.msg, 'alert');
+            }
+         },
+         error: function( req, status, err ) {
+           console.log("Error: " + status);
+           $.fancybox.close();
+           flash_message("Error: " + status, 'alert');
+         }
+      });
+    }
+    
   }
