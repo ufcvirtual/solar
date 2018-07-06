@@ -83,6 +83,7 @@ module V1
 
             unless uc.blank?
               begin
+                uc.api = true
                 uc.destroy
               rescue
                 uc.deactivate_all_groups
