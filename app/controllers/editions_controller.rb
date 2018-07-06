@@ -134,6 +134,113 @@ class EditionsController < ApplicationController
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   end
 
+  def automatic_management
+
+    allocation_tag_ids = params[:allocation_tags_ids]
+
+    allocation_tag_ids.each do |allocation_tag_id|
+      
+      academic_allocations = AcademicAllocation.where(allocation_tag_id: allocation_tag_id.to_i)
+      
+      total_hours_of_curriculum_unit = AllocationTag.find(allocation_tag_id.to_i).group.offer.curriculum_unit.working_hours
+      quantity_activities = 0
+      quantity_used_hours = 0
+      
+      acad_alloc_not_event = []
+      acad_alloc_event = []
+
+      acad_alloc_to_save = []
+  
+      academic_allocations.each do |academic_allocation|
+        academic_tool = academic_allocation.academic_tool
+  
+        if academic_allocation.academic_tool_type == 'ScheduleEvent' #&& academic_tool.integrated == true
+          
+          if academic_tool.type_event == Presential_Test # eventos tipo 1 ou 2 chamada
+            academic_allocation.evaluative = true
+            academic_allocation.final_weight = 60
+            academic_allocation.frequency = true
+            academic_allocation.max_working_hours = BigDecimal.new(2)
+  
+            if academic_tool.title == "Prova Presencial: AF - 1ª chamada" || academic_tool.title == "Prova Presencial: AF - 2ª chamada" # se Avaliação Final
+              academic_allocation.final_exam = true
+              academic_allocation.frequency = false
+              academic_allocation.max_working_hours = BigDecimal.new(0)
+            end
+  
+            if academic_tool.title == "Prova Presencial: AP - 2ª chamada" || academic_tool.title == "Prova Presencial: AF - 2ª chamada" # se 2 chamada, então deve ser equivalente a 1 chamada
+                                    
+              equivalent = ScheduleEvent.joins(:academic_allocations).where(title: academic_tool.title.sub("2", "1"), academic_allocations: {equivalent_academic_allocation_id: nil, allocation_tag_id: allocation_tag_id.to_i})
+              
+              unless equivalent.blank?
+                academic_allocation.equivalent_academic_allocation_id = equivalent[0].academic_allocations[0].id
+                academic_allocation.max_working_hours = BigDecimal.new(0)
+              end
+              
+            end
+            
+          end
+          
+          unless [Presential_Test, Recess, Holiday, Other].include?(academic_tool.type_event) # demais eventos exceto: recesso, feriado e outros
+            academic_allocation.frequency = true
+            academic_allocation.max_working_hours = BigDecimal.new(2)
+          end
+
+          acad_alloc_event << academic_allocation
+  
+        else # atividades que não são eventos
+          
+          unless academic_allocation.academic_tool_type == 'LessonModule' && academic_allocation.final_weight == 100 && academic_allocation.max_working_hours.to_i == 1 # LessonModule criado por padrão
+                    
+            academic_allocation.evaluative = true
+            academic_allocation.final_weight = 40
+            academic_allocation.frequency = true
+            quantity_activities += 1
+    
+            acad_alloc_not_event << academic_allocation
+          end
+
+        end
+  
+      end
+
+      acad_alloc_event.each do |event|
+        if event.final_exam == false || event.equivalent_academic_allocation_id.nil?
+          quantity_used_hours += event.max_working_hours.to_i
+        end
+      end
+      
+      remaining_hours = total_hours_of_curriculum_unit - quantity_used_hours
+      resto = remaining_hours % quantity_activities
+      hours_per_activity = remaining_hours / quantity_activities
+            
+      acad_alloc_not_event.each do |ac_all|
+        ac_all.max_working_hours = BigDecimal.new(hours_per_activity)
+      end
+
+      if resto != 0
+        acad_alloc_not_event.last.max_working_hours += BigDecimal.new(resto)
+      end
+
+      acad_alloc_to_save.concat(acad_alloc_event.sort).concat(acad_alloc_not_event)
+
+      unless acad_alloc_to_save.blank?
+        ActiveRecord::Base.transaction do
+          acad_alloc_to_save.each do |acad_alloc|
+            acad_alloc.save!
+          end
+        end
+      end
+      
+    end
+   
+    render json: { success: true, msg: 'Gerência automática realizada com sucesso.' }
+
+  rescue StandardError => erro
+    puts erro
+    render json: { success: false, msg: 'Um erro ocorreu, por favor entre em contato com o suporte.' } 
+  end
+
   def tool_management
     @allocation_tags_ids = params[:allocation_tags_ids].split(' ').flatten.map(&:to_i)
     @tool_name = params[:tool_name]
@@ -141,7 +248,6 @@ class EditionsController < ApplicationController
     raise 'only_groups_and_offer' if AllocationTag.where(id: @allocation_tags_ids).where('group_id IS NOT NULL OR offer_id IS NOT NULL').count != @allocation_tags_ids.size
 
     authorize! :tool_management, Edition, { on: @allocation_tags_ids }
-
     @tools = EvaluativeTool.find_tools(@allocation_tags_ids)
     @tools = @tools.group_by { |t| t['academic_tool_type'] }
 
