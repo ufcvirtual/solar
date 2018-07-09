@@ -11,19 +11,23 @@
           .signature-box
             %span.completed-by= t(:signature)
             %span.signature
-            %br
-            %br
-            %br
     %main
       = @event.content_exam
 
 :css
+  .signature-box {
+    margin-top: 30px;
+    padding-bottom: 50px;
+  }
+  .completed-by {
+    margin-left: 15%;
+  }
   .completed-by, .signature {
     float: left;
   }
   .signature {
     margin: 20px 10px;
-    border-top: 1px solid #000;
-    width: 80%;
+    border-bottom: 1px solid #000;
+    width: 50%;
     text-align: center;
   }

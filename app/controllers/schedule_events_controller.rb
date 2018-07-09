@@ -142,9 +142,14 @@ class ScheduleEventsController < ApplicationController
     unless params[:student_id].blank?
       student = User.find(params[:student_id])
       curriculum_unit = allocation_tag.get_curriculum_unit
-      coordinator = User.joins(:allocations, :profiles).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND profiles.id = 8", allocation_tag.related, Allocation_Activated).first
 
-      normalize_exam_header(html, student, @event, curriculum_unit, coordinator)
+      coordinator = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id = 8", allocation_tag.related, Allocation_Activated).first
+
+      profs = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", allocation_tag.related, Allocation_Activated, [2, 17]).distinct
+
+      tutors = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", allocation_tag.related, Allocation_Activated, [3, 4, 18]).distinct
+
+      normalize_exam_header(html, student, profs, tutors, @event, curriculum_unit, coordinator)
     end
 
     pictures_with_abs_path html
@@ -163,46 +168,25 @@ class ScheduleEventsController < ApplicationController
       render json: {success: true, notice: t(method, scope: 'schedule_events.success')}
     end
 
-    def curriculum_unit_name(html, name)
-      remove_underscore_input_between_patterns(html, /disciplina:/i)
-      html.sub!(/disciplina:/i, "Disciplina: #{name}")
+    def fill_field_info(html, pattern, name)
+      remove_underscore(html, pattern)
+      html.sub!(pattern, name)
     end
 
-    def exam_name(html, exam_name)
-      remove_underscore_input_between_patterns(html, /prova:/i)
-      html.sub!(/prova:/i, "Prova: #{exam_name}")
+    def normalize_exam_header(html, student, profs, tutors, event, curriculum_unit, coordinator)
+      fill_field_info html, /disciplina:(\s*\n*\t*(&nbsp;)*)/i, "Disciplina: #{curriculum_unit.code} - #{curriculum_unit.name}<br>" unless curriculum_unit.nil?
+      fill_field_info html, /(coordenador\(a\)(\s*\n*\t*(&nbsp;)*)da(\s*\n*\t*(&nbsp;)*)disciplina:|coordenador(\s*\n*\t*(&nbsp;)*)da(\s*\n*\t*(&nbsp;)*)disciplina:|coordenador:(\s*\n*\t*(&nbsp;)*))/i, "Coordenador(a) da disciplina: #{coordinator.name}<br>" unless coordinator.nil?
+      fill_field_info html, /(nome(\s*\n*\t*(&nbsp;)*)do\(a\)(\s*\n*\t*(&nbsp;)*)aluno\(a\):(\s*\n*\t*(&nbsp;)*)|nome(\s*\n*\t*(&nbsp;)*)do(\s*\n*\t*(&nbsp;)*)aluno:|aluno:)/i, "Nome do(a) aluno(a): #{student.name}<br>" unless student.nil?
+      unless event.nil?
+        fill_field_info html, /polo:(\s*\n*\t*(&nbsp;)*)|pólo:(\s*\n*\t*(&nbsp;)*)/i, "Polo: #{event.place}<br>"
+        fill_field_info html, /prova:(\s*\n*\t*(&nbsp;)*)/i, "Prova: #{event.title}<br>"
+        fill_field_info html, /data:(\s*\n*\t*(&nbsp;)*)/i, "Data: #{event.schedule.end_date}<br>"
+      end
+      profs.each { |prof| fill_field_info html, /(professor\(a\)(\s*\n*\t*(&nbsp;)*)titular:(\s*\n*\t*(&nbsp;)*)|professor(\s*\n*\t*(&nbsp;)*)titular:(\s*\n*\t*(&nbsp;)*)|professor:(\s*\n*\t*(&nbsp;)*))/i, "Professor(a) da disciplina: #{prof.name}<br>"  } unless profs.nil? || profs.empty?
+      tutors.each { |tutor| fill_field_info html, /(tutor\(a\)(\s*\n*\t*(&nbsp;)*)da(\s*\n*\t*(&nbsp;)*)disciplina:(\s*\n*\t*(&nbsp;)*)|tutor(\s*\n*\t*(&nbsp;)*)da(\s*\n*\t*(&nbsp;)*)disciplina:(\s*\n*\t*(&nbsp;)*)|tutor:(\s*\n*\t*(&nbsp;)*))/i, "Tutor(a) da disciplina: #{tutor.name}<br>"  } unless tutors.nil? || tutors.empty?
     end
 
-    def exam_date(html, date)
-      remove_underscore_input_between_patterns(html, /data:/i)
-      html.sub!(/data:/i, "Data: #{date}")
-    end
-
-    def place_exam(html, place)
-      remove_underscore_input_between_patterns(html, /polo:/i)
-      html.sub!(/polo:/i, "Polo: #{place}")
-    end
-
-    def student_name(html, student_name)
-      remove_underscore_input_between_patterns(html, /nome do\(a\) aluno\(a\):/i)
-      html.sub!(/nome do\(a\) aluno\(a\):/i, "Nome do(a) aluno(a): #{student_name}")
-    end
-
-    def coordinator_name(html, coordinator_name)
-      remove_underscore_input_between_patterns(html, /coordenador\(a\) da disciplina:/i)
-      html.sub!(/coordenador\(a\) da disciplina:/i, "Coordenador(a) da disciplina: #{coordinator_name}")
-    end
-
-    def normalize_exam_header(html, student, event, curriculum_unit, coordinator)
-      curriculum_unit_name html, curriculum_unit.name
-      coordinator_name html, coordinator.name
-      place_exam html, event.place
-      exam_name html, event.title
-      exam_date html, event.schedule.end_date
-      student_name html, student.name
-    end
-
-    def remove_underscore_input_between_patterns(html, pattern)
+    def remove_underscore(html, pattern)
       initial_match = html.match(pattern)
       fim_match = initial_match.post_match.match(/<\/span>/) unless initial_match.nil?
       removed_underscore = fim_match.pre_match.gsub!(/_/, '') unless fim_match.nil?
