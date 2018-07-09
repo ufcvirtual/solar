@@ -9,6 +9,7 @@
       = link_to content_tag(:i, nil, class: 'icon-plus'), new_schedule_event_path(allocation_tags_ids: @allocation_tags_ids), class: "btn btn_main fancybox.ajax", id: "new_schedule_event", :"data-tooltip" => t(".new"), :'aria-label' => t(".new")
     .block_toolbar_right
       .btn-group
+        = link_to (content_tag(:i, nil, class: 'icon-users')), "#void", class: 'btn btn_users users_event', :"data-link-to-users" => presential_test_participants_schedule_events_path(id: 'event_id', allocation_tags_ids: @allocation_tags_ids), :"data-users-title" => t(".users"), disabled: true, :"data-tooltip" => t(".users")
         = link_to (content_tag(:i, nil, class: 'icon-printer')), "#void", class: 'btn btn_print print_event fancybox.iframe', :"data-link-to-print" => print_presential_test_schedule_events_path(id: 'event_id', allocation_tags_ids: @allocation_tags_ids), :"data-print-title" => t(".print"), disabled: true, :"data-tooltip" => t(".print")
         = link_to (content_tag(:i, nil, class: 'icon-edit')), "#void", class: 'btn btn_edit edit_event', :"data-link-to-edit" => edit_schedule_event_path(':id', allocation_tags_ids: @allocation_tags_ids), :"data-edit-title" => t(".edit"), disabled: true, :"data-tooltip" => t(".edit")
         = link_to (content_tag(:i, nil, class: 'icon-trash')), "#void", class: 'btn btn_del delete_event', :"data-link-delete" => schedule_event_path(':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".delete"), :'aria-label' => t(".delete")

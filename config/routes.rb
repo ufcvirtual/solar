@@ -505,6 +505,7 @@ Solar::Application.routes.draw do
     collection do
       get :list
       get :print_presential_test
+      get :presential_test_participants
       get :summary , to: 'academic_allocation_users#summary', tool: 'ScheduleEvent'
       put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: 'unbind', tool_type: 'ScheduleEvent', as: :unbind_group_from
       put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: 'remove', tool_type: 'ScheduleEvent', as: :remove_group_from

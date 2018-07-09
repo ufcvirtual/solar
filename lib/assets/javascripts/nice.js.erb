@@ -40,6 +40,8 @@ $.fn.nice_checkbox = function(options) {
     /**
      * Funcoes para habilitar/desabilitar edicao/delecao
      */
+    var enable_users = function() { $(".btn_users", parent_block_div).attr("disabled", false); };
+    var disable_users = function() { $(".btn_users", parent_block_div).attr("disabled", true); };
     var enable_print = function() { $(".btn_print", parent_block_div).attr("disabled", false); };
     var disable_print = function() { $(".btn_print", parent_block_div).attr("disabled", true); };
     var enable_edition = function() { $(".btn_edit", parent_block_div).attr("disabled", false); };
@@ -59,11 +61,15 @@ $.fn.nice_checkbox = function(options) {
         if (kid.checked) { // filho selecionado
           enable_deletion();
           enable_edition();
-          if ($(kid).data("is-exam")) enable_print();
+          if ($(kid).data("is-exam")) {
+            enable_print();
+            enable_users();
+          }
 
           if (children_checked.length == 0 || children_checked.length > 1){
             disable_edition();
             disable_print();
+            disable_users();
           }
 
           enable_send_msg();
@@ -72,18 +78,21 @@ $.fn.nice_checkbox = function(options) {
             disable_deletion();
             disable_edition();
             disable_print();
+            disable_users();
 
             disable_send_msg();
           } else if (children_checked.length == 1) { // apenas um filho selecionado
             enable_deletion();
             enable_edition();
             enable_print();
+            enable_users();
 
             enable_send_msg();
           } else if (children_checked.length > 1) { // mais de um filho selecionado
             enable_deletion();
             disable_edition();
             disable_print();
+            disable_users();
 
             enable_send_msg();
           }
@@ -125,6 +134,7 @@ $.fn.nice_checkbox = function(options) {
       var children_checked = $('input:checkbox[name*="' + children_names + '"]:checked:not(".disabled")');
       $(".btn_edit", parent_block_div).attr("disabled", !(children_checked.length == 1));
       $(".btn_print", parent_block_div).attr("disabled", !(children_checked.length == 1));
+      $(".btn_users", parent_block_div).attr("disabled", !(children_checked.length == 1));
       $(".btn_del", parent_block_div).attr("disabled", !check);
 
       $(".btn_send_msg", $(parent_block_div).parent()).attr("disabled", !check);
