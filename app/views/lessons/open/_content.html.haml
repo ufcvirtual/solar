@@ -1,2 +1,23 @@
-.content{ :"data-url" => open_lesson_path(@lesson) }
-  %iframe#content_lesson{ title: @lesson.name, src: @lesson.path, width: '100%', height: '100%', name: 'content_lesson', target: '_self', frameborder: 0, framespacing: 0 }
+.content#iframelesson{ :"data-url" => open_lesson_path(@lesson) }
+  %iframe#content_lesson{ title: @lesson.name, src: @lesson.path, name: 'content_lesson', target: '_self', frameborder: 0}
+
+
+:javascript
+	$( function() {
+    $("#iframelesson" ).dialog();
+  } );
+
+  window.setTimeout(function(){
+
+    var iframe = document.getElementById('content_lesson');
+    var style = document.createElement('style');
+    style.textContent =
+      'md-sidenav {' +
+      '  bottom: auto;' +
+      '}' +
+      'uab-sidenav md-sidenav {' +
+      '  height: auto;' +
+      '}'
+      ;
+    iframe.contentDocument.head.appendChild(style);   
+  }, 1000);

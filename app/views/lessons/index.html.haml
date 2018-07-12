@@ -22,4 +22,71 @@
   - else
     .block_content.block_content_text= t(:lesson_message)
 
-= javascript_include_tag 'contextual_help/lessons'
+= link_to "TESTE MODAL", "#void", class: "trigger"
+
+#modalAddConsumption.izimodal-iframe
+
+#modal-demo.iziModal
+  %iframe#content_lesson{ title: 'TESTE 001', src: "http://localhost:3000/media/lessons/14/Aula%2001:%20Contrato%20Psicol%C3%B3gico/aula_01/index.html#!/topico-orientacoes", name: 'content_lesson', target: '_self', frameborder: 0}
+  
+
+
+= stylesheet_link_tag "iziModal.css"
+= javascript_include_tag 'contextual_help/lessons', 'iziModal'
+
+:javascript
+  $(function(){
+
+    $("#modal-demo").iziModal({
+      iconColor: '#FFF',
+      headerColor: '#337ab7',
+      padding:  0,
+      top: '10%',
+      width: '95%',
+      fullscreen: true,
+      openFullscreen: false,
+      iframeHeight: $(window).height()-200,
+      iframeURL: null,
+      history: false,
+      autoOpen: false,
+    });
+
+    $("body").on("click",".trigger", function (event) {
+      event.preventDefault();
+      $('#modal-demo').iziModal('open');
+    });
+
+
+    $(".izimodal-iframe").each(function(i,e){
+      izimodalIframe(e);
+    });
+
+    $("body").on("click",".addConsumption",function(e){
+      e.preventDefault();
+      e.target = e.currentTarget;
+      $("#modalAddConsumption").data("url",e.target.href);
+      $("#modalAddConsumption").iziModal("setTitle",e.target.innerText);
+      $("#modalAddConsumption").iziModal("setSubtitle","");
+      $("#modalAddConsumption").iziModal("open",e);
+    });
+
+  });
+
+  function izimodalIframe(e){
+    $(e).addClass("iziModal").iziModal({
+        title: $(e).attr("title") || $(e).data("title") || '',
+        subtitle: $(e).attr("subtitle") || $(e).data("subtitle") || '',
+        iconColor: $(e).data("icon-color") || '#FFF',
+        headerColor: $(e).data("header-color") || '#337ab7',
+        padding: $(e).data("padding") || 0,
+        top: '10%',
+        width: '95%',
+        fullscreen: true,
+        openFullscreen: false,
+        iframe: true,
+        iframeHeight: $( window ).height()-200,
+        iframeURL: $(e).data("url") || null,
+        history: false,
+        autoOpen: false,
+    });
+  }

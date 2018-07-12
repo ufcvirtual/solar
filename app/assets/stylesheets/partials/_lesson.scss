@@ -265,3 +265,12 @@
     text-decoration: none;
   }
 }
+
+#iframelesson        {position:relative;}
+#iframelesson .ratio {display:block;width:100%;height:100%;}
+#iframelesson iframe {position:absolute;top:2.5em;left:0;width:100%; height:100%;}
+
+.iziModal-wrap       {position:relative;}
+.iziModal-content       {position:relative;}
+.iziModal-content .ratio {display:block;width:100%;height:100%;}
+.iziModal-content iframe {position:absolute;left:0;width:100%; height:100%;}

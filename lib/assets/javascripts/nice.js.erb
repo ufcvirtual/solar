@@ -374,10 +374,14 @@ $.fn.nice_open_lesson = function(options) {
     options = {};
 
   var default_options = {
-    minHeight: '95%',
-    minWidth: '95%',
-    autoScale: true,
-    autoSize: true,
+    width: '100%',
+    height: '100%',
+    autoScale: false,
+    autoSize: false,
+    autoWidth: false,
+    fitToView: false,
+    autoDimensions: false,
+    autoResize: false,
     afterShow: function() {
       $("<a class='fancybox-item fancybox-minimize'  title=<%=I18n.t('fancybox.minimize')%> aria-label=<%=I18n.t('fancybox.minimize')%>></a>").appendTo(this.skin).click(minimize_lesson);
 
@@ -397,4 +401,6 @@ $.fn.nice_open_lesson = function(options) {
 
   options = $.extend(default_options, options, {live: false} );
   $.fancybox.open($(this), options);
+  $.fancybox.update();
+
 }
