@@ -26,7 +26,11 @@ class MessagesController < ApplicationController
     @limit = Rails.application.config.items_per_page
     @min = (@page * @limit) - @limit
 
-    @unreads  = @messages.first.try(:unread) rescue 0
+
+    @unreads = @messages.first.try(:unread) rescue 0
+    if @unreads.nil?
+      @unreads = Message.get_count_unread_in_inbox(current_user.id, allocation_tag_id, options.except(:ignore_at), search)
+    end
     render partial: 'list' unless params[:page].nil?
   end
 
