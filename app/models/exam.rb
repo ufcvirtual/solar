@@ -74,11 +74,10 @@ class Exam < Event
 
     if result_email && (configure_mail_exam.nil? || configure_mail_exam)
       # send email with grades if period have already ended
-      subject = I18n.t('exams.result_exam_user.subject', exam: name, at_info: acu.allocation_tag.info, locale: (user.personal_configuration.try(:default_locale) || 'pt_BR'))
+      locale = user.personal_configuration.try(:default_locale)
+      subject = I18n.t('exams.result_exam_user.subject', exam: name, at_info: acu.allocation_tag.info, locale: (locale.blank? ?  'pt_BR' : locale))
       recipients = "#{user.name} <#{user.email}>"
-      Thread.new do
-        Notifier.exam(recipients, subject, self, acu, grade).deliver
-      end
+      Job.send_mass_email_exam(recipients, subject, self, acu, grade)
     end
   end
 

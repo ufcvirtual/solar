@@ -144,12 +144,12 @@ class Message < ActiveRecord::Base
       OFFSET #{offset.to_i};
     SQL
 
-    UserMessage.find_by_sql <<-SQL
-      DROP TABLE IF EXISTS temp_user_messages;
-    SQL
 
     UserMessage.find_by_sql <<-SQL
       DROP TABLE IF EXISTS temp_user_messages2;
+    SQL
+    UserMessage.find_by_sql <<-SQL
+      DROP TABLE IF EXISTS temp_user_messages;
     SQL
 
     msgs
