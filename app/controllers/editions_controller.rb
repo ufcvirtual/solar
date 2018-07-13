@@ -211,18 +211,16 @@ class EditionsController < ApplicationController
       end
       
       remaining_hours = total_hours_of_curriculum_unit - quantity_used_hours
-      resto = remaining_hours % quantity_activities
-      hours_per_activity = remaining_hours / quantity_activities
+      resto = remaining_hours % quantity_activities rescue 0
+      hours_per_activity = remaining_hours / quantity_activities rescue 0
             
-      acad_alloc_not_event.each do |ac_all|
-        ac_all.max_working_hours = BigDecimal.new(hours_per_activity)
-      end
+      acad_alloc_not_event.each{ |ac_all| ac_all.max_working_hours = BigDecimal.new(hours_per_activity)}
 
       if resto != 0
         acad_alloc_not_event.last.max_working_hours += BigDecimal.new(resto)
       end
 
-      acad_alloc_to_save.concat(acad_alloc_event.sort).concat(acad_alloc_not_event)
+      acad_alloc_to_save.concat(acad_alloc_event.sort_by!{|all| all.academic_tool.title}).concat(acad_alloc_not_event)
 
       unless acad_alloc_to_save.blank?
         ActiveRecord::Base.transaction do
@@ -234,10 +232,10 @@ class EditionsController < ApplicationController
       
     end
    
-    render json: { success: true, msg: 'Gerência automática realizada com sucesso.' }
+    render json: { success: true, msg: 'Atividades Gerenciadas com sucesso!' }
 
-  rescue StandardError => erro
-    puts erro
+  rescue StandardError => error
+    puts error
     render json: { success: false, msg: 'Um erro ocorreu, por favor entre em contato com o suporte.' } 
   end
 
