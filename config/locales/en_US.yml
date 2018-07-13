@@ -3124,8 +3124,10 @@ en_US:
       sent_on: Sent on
       sent_by: Sent by
       title_alt: "Access grade/frequency, files and comments to %{tool} (%{files} files e %{comments} comments)"
+      online_correction: Online correction
     files:
       delete: Remove file
+      correction_file: Exam online correction
     success:
       created: File was successfully sent.
       deleted: File was successfully deleted.

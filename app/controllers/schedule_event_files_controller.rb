@@ -34,6 +34,10 @@ class ScheduleEventFilesController < ApplicationController
     render_json_error(error, 'schedule_event_files.error', (error == 'attachment_file_size_too_big' ? 'attachment_file_size_too_big' : 'new'))
   end
 
+  def online_correction
+    @file_to_correction = ScheduleEventFile.find(params[:id])
+  end
+
   def destroy
     @schedule_event_file = ScheduleEventFile.find(params[:id])
     @schedule_event_file.destroy

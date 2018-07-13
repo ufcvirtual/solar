@@ -3374,8 +3374,10 @@ pt_BR:
       sent_on: Enviado em
       sent_by: Enviado por
       title_alt: "Acessar nota/frequência, arquivos e comentários para %{tool} (%{files} arquivos e %{comments} comentários)"
+      online_correction: Correção online
     files:
       delete: Remover arquivo
+      correction_file: Correção de prova online
     success:
       created: Arquivo(s) enviado(s) com sucesso(s).
       deleted: Arquivo(s) deletado(s) com sucesso(s).

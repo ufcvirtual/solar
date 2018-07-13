@@ -514,6 +514,9 @@ Solar::Application.routes.draw do
   end
 
   resources :schedule_event_files, except: [:index, :show] do
+    member do
+      get :online_correction
+    end
     collection do
       get :download
       get :zip_download, to: :download, defaults: {zip: true}
