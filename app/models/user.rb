@@ -64,8 +64,7 @@ class User < ActiveRecord::Base
   validates :name, presence: true, length: { within: 6..200 }
   validates :nick, presence: true, length: { within: 3..34 }
   validates :birthdate, presence: true
-  validates :username, presence: true, length: { maximum: 20 }, uniqueness: {case_sensitive: false}
-  validates :username, length: { minimum: 3 }, format: { with: /\A[_.a-zA-Z0-9\-]+\Z/ }, unless: Proc.new{ |a| !a.on_blacklist? && a.integrated? && (a.synchronizing.nil? || a.synchronizing) }
+  validates :username, presence: true, length: { maximum: 20, minimum: 3 }, uniqueness: {case_sensitive: false}, format: { with: /\A[_.a-zA-Z0-9\-]+\Z/ }, unless: Proc.new{ |a| !a.on_blacklist? && a.integrated? && (a.synchronizing.nil? || a.synchronizing) }
 
   validates :password, presence: true, confirmation: true, length: { minimum: 6, maximum: 120 }, unless: Proc.new { |a| !a.encrypted_password.blank? || (a.integrated? && !a.on_blacklist?) }
   # validates :alternate_email, format: { with: email_format }, uniqueness: {case_sensitive: false}, unless: 'alternate_email.blank?'
@@ -643,11 +642,12 @@ class User < ActiveRecord::Base
 
       self.synchronizing = true
       ma_attributes.merge!({encrypted_password: encrypted_password}) if ma_attributes[:encrypted_password].blank? && ma_attributes[:password].blank?
+
       self.attributes = attributes.merge!(ma_attributes).except('id')
 
-      raise "username in use #{ma_attributes}, can't replace" unless verify_column(self, 'username')
+      raise "username in use #{ma_attributes}, can't replace" unless username_was == ma_attributes[:username] || verify_column(self, 'username')
       unless email.blank?
-        raise "email in use #{ma_attributes}, can't replace" unless verify_column(self, 'email')
+        raise "email in use #{ma_attributes}, can't replace" unless email_was == ma_attributes[:email] || verify_column(self, 'email')
       end
 
       set_previous
@@ -981,7 +981,7 @@ class User < ActiveRecord::Base
       # ver se tem mais de um usuario com esse login
       if same_column.any?
         # se sim, é integrado e não tá na blacklist?
-        if user.integrated && !user.on_blacklist? && selfregistration
+        if user.integrated && !user.on_blacklist? && user.selfregistration
           # altera todos os outros
           same_column.map{|u| u.send("change_#{column}".to_sym)}
         # não é integrado ou tá na blacklist?

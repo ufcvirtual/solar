@@ -12,7 +12,11 @@ module V1::GroupsH
   def get_group_by_names(curriculum_unit_code, course_code, name, semester, dont_raise_error=false)
     # besides the name, groups are searched by its name
     query = course_code.blank? ? {} : {course_id: Course.where(code: course_code).first}
-    group = Group.joins(offer: :semester).where(name: name, status: true, offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first}.merge!(query), semesters: {name: semester}).first
+    offer_query = {offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first}.merge!(query)}
+    basic_query = {name: name, semesters: {name: semester}}.merge!(offer_query)
+    basic_query.merge!({status: true}) if course_code.blank?
+
+    group = Group.joins(offer: :semester).where(basic_query).first
 
     if group.blank?
       if dont_raise_error
