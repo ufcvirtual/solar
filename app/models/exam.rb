@@ -77,7 +77,7 @@ class Exam < Event
       locale = user.personal_configuration.try(:default_locale)
       subject = I18n.t('exams.result_exam_user.subject', exam: name, at_info: acu.allocation_tag.info, locale: (locale.blank? ?  'pt_BR' : locale))
       recipients = "#{user.name} <#{user.email}>"
-      Job.send_mass_email_exam(recipients, subject, self, acu, grade)
+      Job.send_mass_email_exam([recipients], subject, self, acu, grade)
     end
   end
 
