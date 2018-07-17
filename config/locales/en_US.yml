@@ -1659,7 +1659,7 @@ en_US:
       updated: 'Your password was changed successfully. You are now signed in.'
       updated_not_active: 'Your password was changed successfully.'
       send_paranoid_instructions: "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
-      ma_request: "To recover your access data, go to the address: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
+      ma_request: "Your SI3 data was synchronized. If you still don't have access, to recover your data, go to the address: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
       not_found: No user was found with informed CPF. Register yourself at 'Sign Up' tab.
       no_email: There is no email registered to the informed CPF. Contact atendimento@virtual.ufc.br informing your CPF, complete name, birthdate and email to save at the system.
     password:
