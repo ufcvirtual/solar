@@ -21,51 +21,51 @@
             %tr.lines{ class: (lesson.closed? && !@only_student) ? 'period_ended' : '', id: "lesson_#{lesson.id}" }= render(lesson)
   - else
     .block_content.block_content_text= t(:lesson_message)
-
-= link_to "TESTE MODAL", "#void", class: "trigger"
-
+    
 #modalAddConsumption.izimodal-iframe
+  %button{ :'data-iziModal-close'=>"", class: "icon-close"}='x'
 
-#modal-demo.iziModal
-  %iframe#content_lesson{ title: 'TESTE 001', src: "http://localhost:3000/media/lessons/14/Aula%2001:%20Contrato%20Psicol%C3%B3gico/aula_01/index.html#!/topico-orientacoes", name: 'content_lesson', target: '_self', frameborder: 0}
-  
-
-
-= stylesheet_link_tag "iziModal.css"
-= javascript_include_tag 'contextual_help/lessons', 'iziModal'
+= stylesheet_link_tag "iziModal.css", "jquery.jspanel.css"
+= javascript_include_tag 'contextual_help/lessons', 'iziModal', 'jquery.jspanel'
 
 :javascript
   $(function(){
+    $('head').append('<meta name="viewport" content="width=device-width, initial-scale=1"/>');
 
-    $("#modal-demo").iziModal({
-      iconColor: '#FFF',
-      headerColor: '#337ab7',
-      padding:  0,
-      top: '10%',
-      width: '95%',
-      fullscreen: true,
-      openFullscreen: false,
-      iframeHeight: $(window).height()-200,
-      iframeURL: null,
-      history: false,
-      autoOpen: false,
+
+    $("body").on("click",".jspanel",function(e){
+      e.preventDefault();
+      e.target = e.currentTarget;
+      $.jsPanel({
+        iframe: {
+          src:    e.target.href,
+          id:     "myFrame",
+          style:  {"display": "none", "border": "10px solid transparent"},
+          width:  '100%',
+          height: '100%'
+        },
+        callback: function () {
+            document.getElementById("myFrame").onload = function(){
+                $("#myFrame").fadeIn(2000);
+            }
+        },
+        size:     {width: $(window).width()-100, height: $(window).height()-100},
+        position: {left: "center", top: 10},
+        theme:    "light",
+      });
     });
-
-    $("body").on("click",".trigger", function (event) {
-      event.preventDefault();
-      $('#modal-demo').iziModal('open');
-    });
-
 
     $(".izimodal-iframe").each(function(i,e){
-      izimodalIframe(e);
+        izimodalIframe(e);
     });
-
+    
+    
     $("body").on("click",".addConsumption",function(e){
       e.preventDefault();
       e.target = e.currentTarget;
+
       $("#modalAddConsumption").data("url",e.target.href);
-      $("#modalAddConsumption").iziModal("setTitle",e.target.innerText);
+      $("#modalAddConsumption").iziModal("setTitle", e.target.name);
       $("#modalAddConsumption").iziModal("setSubtitle","");
       $("#modalAddConsumption").iziModal("open",e);
     });
@@ -79,14 +79,16 @@
         iconColor: $(e).data("icon-color") || '#FFF',
         headerColor: $(e).data("header-color") || '#337ab7',
         padding: $(e).data("padding") || 0,
-        top: '10%',
+        top: '2%',
         width: '95%',
         fullscreen: true,
         openFullscreen: false,
         iframe: true,
-        iframeHeight: $( window ).height()-200,
+        iframeHeight: $( window ).height()-70,
         iframeURL: $(e).data("url") || null,
         history: false,
         autoOpen: false,
+        focusInput: true,
+        navigateArrows: true,
     });
   }
