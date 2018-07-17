@@ -140,7 +140,7 @@ module V1
               begin
                 create_allocations(@groups.compact, @user, @student_profile)
 
-                raise ActiveRecord::RecordNotFound if @groups.include?(nil)
+                raise ActiveRecord::RecordNotFound if @groups.collect{ |r| r[0] }.flatten.include?(nil)
 
                 { ok: :ok }
               end
@@ -151,7 +151,7 @@ module V1
               begin
                 cancel_allocations(@groups.compact, @user, @student_profile)
 
-                raise ActiveRecord::RecordNotFound if @groups.include?(nil)
+                raise ActiveRecord::RecordNotFound if @groups.collect{ |r| r[0] }.flatten.include?(nil)
 
                 { ok: :ok }
               end
