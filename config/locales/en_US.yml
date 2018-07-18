@@ -2473,6 +2473,8 @@ en_US:
       same_type_af: must have same value at 'Final Exam'
       details: See description
       details_about: Access description about %{name}
+      errors:
+        offer_period: Offer already ended
     tools:
       expand: Expand
       compress: Compress

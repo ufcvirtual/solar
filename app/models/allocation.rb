@@ -302,12 +302,15 @@ class Allocation < ActiveRecord::Base
     calculate_final_grade if parcial_grade.blank? && (manually || !final_grade.blank?)
     calculate_working_hours if (working_hours.blank? || working_hours == 0) && manually
 
+    has_evaluative_activities = allocation_tag.academic_allocations.where(evaluative: true).any?
+    has_frequency_activities = allocation_tag.academic_allocations.where(frequency: true).any?
+
     # if today should update situation or mannually update and has passing grade or hours defined
-    if ((!date.nil? && Date.today >= date) || manually || allocation_tag.setted_situation) && (has_passing_grade || hours_defined)
+    if ((!date.nil? && Date.today >= date) || manually || allocation_tag.setted_situation) && (has_passing_grade || hours_defined) && (has_evaluative_activities || has_frequency_activities)
       # if hours defined and doesnt have enough hours
-      if (hours_defined && (working_hours.blank? || ((min_hours*0.01)*uc.working_hours > working_hours)))
+      if (hours_defined && (working_hours.blank? || ((min_hours*0.01)*uc.working_hours > working_hours))) && has_frequency_activities
         update_attributes grade_situation: FailedFrequency
-      elsif has_passing_grade
+      elsif has_passing_grade && has_evaluative_activities
         # if parcial grade is already enough
         if (!parcial_grade.blank? && parcial_grade >= course.passing_grade)
           update_attributes grade_situation: Approved
@@ -349,6 +352,9 @@ class Allocation < ActiveRecord::Base
             end # !course.min_grade_to_final_exam.blank? && course.min_grade_to_final_exam > parcial_grade
           end # min_grade_to_final_exam > parcial_grade
         end # parcial_grade >= course.passing_grade
+      # if does not have evaluated activities or setted grade, but do have frequency configuration and activities, approved
+      elsif (hours_defined && has_frequency_activities && (!has_evaluative_activities || !has_passing_grade))
+        update_attributes grade_situation: Approved
       end # has_passing_grade
       allocation_tag.update_attributes setted_situation: true
     elsif (has_passing_grade || hours_defined)

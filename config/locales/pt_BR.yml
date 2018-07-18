@@ -2706,6 +2706,8 @@ pt_BR:
       same_type_af: deve ter o mesmo valor no campo 'Avaliação Final'
       details: Ver descrição
       details_about: Acessar descrição de %{name}
+      errors:
+        offer_period: Oferta já encerrou
     tools:
       expand: Expandir
       compress: Comprimir
