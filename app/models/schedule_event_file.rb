@@ -16,8 +16,8 @@ class ScheduleEventFile < ActiveRecord::Base
   validates :academic_allocation_user_id, presence: true
 
   has_attached_file :attachment,
-    path: ":rails_root/media/schedule_event/schedule_event_files/:id_:normalized_attachment_file_name",
-    url: "/media/schedule_event/schedule_event_files/:id_:normalized_attachment_file_name"
+    path: ":rails_root/media/schedule_event/schedule_event_files/:id_:basename.:extension",
+    url: "/media/schedule_event/schedule_event_files/:id_:basename.:extension"
 
   validates_attachment_size :attachment, less_than: 26.megabyte, message: I18n.t('schedule_event_files.error.attachment_file_size_too_big')
   validates_attachment_content_type :attachment, content_type: /(^image\/(jpeg|jpg|gif|png)$)|\Aapplication\/pdf/, message: I18n.t('schedule_event_files.error.wrong_type')
@@ -27,7 +27,7 @@ class ScheduleEventFile < ActiveRecord::Base
   end
 
   def normalized_attachment_file_name
-    "#{self.academic_allocation_user.user.cpf}-#{self.attachment_file_name.gsub( /[^a-zA-Z0-9_\.]/, '_')}"
+    "#{self.academic_allocation_user.user.cpf}-#{self.attachment_file_name.gsub( /[^a-zA-Z0-9\.]/, '_')}"
   end
 
   def can_destroy?

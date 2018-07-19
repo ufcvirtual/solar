@@ -35,7 +35,8 @@ class ScheduleEventFilesController < ApplicationController
   end
 
   def online_correction
-    @file_to_correction = ScheduleEventFile.find(params[:id])
+    extension = params[:extension].split('/').last
+    @file_path = get_file_path(id: params[:id], file: params[:file], extension: extension)
   end
 
   def destroy

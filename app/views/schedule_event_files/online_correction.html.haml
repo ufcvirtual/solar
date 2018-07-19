@@ -1,7 +1,59 @@
 !!!
-%html
+%html{lang: I18n.locale.to_s.gsub('_', '-')}
   %head
     %meta{charset: 'utf-8'}
+    %title= show_breadcrumb_title
+    = stylesheet_link_tag "themes/theme_" + "#{user_session[:theme]}", id: "themes"
   %body
-    %canvas{id: 'viewer', width: '1024px', height: '600px'}
-      %p= "This is fallback content for users of assistive technologies or of browsers that don't have full support for the Canvas API."
+    %header#mysolar_topbar
+      #mysolar_identity
+        #mysolar_logo
+          = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
+    %main#container
+
+= javascript_include_tag 'jquery-3.3.1.min', 'pdfjs/pdf'
+
+:javascript
+  $(function(){
+    var url = "#{@file_path}";
+
+    PDFJS.getDocument(url).then(function(pdf){
+        // Get main#container and cache it for later use
+        var container = document.getElementById("container");
+
+        // Loop from 1 to total_number_of_pages in PDF document
+        for (var i = 1; i <= pdf.numPages; i++) {
+          // Get desired page
+          pdf.getPage(i).then(function(page) {
+            var scale = 1.5; // Set scale (zoom) level
+            var viewport = page.getViewport(scale); // Get viewport (dimensions)
+
+            var div = document.createElement("div"); // Create div where the page will be rendered
+            div.setAttribute("id", "page-" + (page.pageIndex + 1)); // Set id attribute with page-pdf_page_number format
+            div.setAttribute("style", "position: relative"); // This will keep positions of child elements as per our needs
+            container.appendChild(div); // Append div within main#container
+
+            var canvas = document.createElement("canvas"); // Create a new Canvas element
+            div.appendChild(canvas); // Append Canvas within div#page-pdf_page_number
+
+            var context = canvas.getContext('2d'); // Fetch canvas 2d context
+            canvas.height = viewport.height; // Set height dimension to Canvas
+            canvas.width = viewport.width; // Set width dimension to Canvas
+
+            // Prepare object needed by render method
+            var renderContext = {
+              canvasContext: context,
+              viewport: viewport
+            };
+
+            // Render PDF page
+            page.render(renderContext);
+          });
+        }
+      });
+  });
+
+:css
+  #container, #mysolar_logo {
+    margin-left: 25%;
+  }
