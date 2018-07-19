@@ -774,6 +774,27 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.connect_and_import_by_username(username, client = nil, raise_error=false)
+    begin
+      client    = Savon.client wsdl: MODULO_ACADEMICO['wsdl'] if client.nil?
+      response  = client.call(MODULO_ACADEMICO['methods']['user']['import_by_username'].to_sym, message: { login: username }) # import user
+      user_data = response.to_hash[:importar_usuario_login_response][:importar_usuario_login_result]
+      return (user_data.nil? ? nil : user_data[:string])
+    rescue HTTPClient::ConnectTimeoutError # if MA don't respond (timeout)
+      if raise_error
+        raise I18n.t('users.errors.ma.cant_connect')
+      else
+        return I18n.t('users.errors.ma.cant_connect')
+      end
+    rescue => error
+      if raise_error
+        raise I18n.t('users.errors.ma.problem_accessing')
+      else
+        return I18n.t('users.errors.ma.problem_accessing')
+      end
+    end
+  end
+
   # alocar usuario em uma allocation_tag: profile, allocation_tags_ids, status
   def allocate_in(allocation_tag_ids: [], profile: Profile.student_profile, status: Allocation_Pending, by_user: nil)
     result = { success: [], error: [] }
