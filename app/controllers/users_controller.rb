@@ -120,11 +120,17 @@ class UsersController < ApplicationController
 
   def remove_photo
     current_user.photo = nil
-    current_user.save
+    current_user.save!
 
     respond_to do |format|
       format.json { render json: {succes: true, notice: t(:remove_photo_msg) } }
       format.html { redirect_to :back, notice: t(:remove_photo_msg) }
+    end
+  rescue
+    errors = current_user.errors.full_messages.join(',')
+    respond_to do |format|
+      format.json { render json: {succes: false, alert: errors }, status: :unprocessable_entity }
+      format.html { redirect_to :back, alert: errors }
     end
   end
 
