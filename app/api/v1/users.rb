@@ -46,13 +46,20 @@ module V1
             user_exist = User.where(cpf: cpf).first
             user = user_exist.nil? ? User.new(cpf: cpf) : user_exist
 
-            user.synchronize if user.can_synchronize?
+            user_data = nil
+            if (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO['integrated'])
+              user_data = User.connect_and_import_user(cpf) # try to import
+              user.synchronize(user_data) # synchronize user with new MA data
+            end
 
             new_user = (user.new_record? && !user.integrated)
 
-            blacklist = UserBlacklist.where(cpf: cpf).first_or_initialize
-            blacklist.name = params[:name] if blacklist.new_record?
-            can_add_or_exists_blacklist = blacklist.valid? || !blacklist.new_record?
+            if user_data.blank? || !user.selfregistration
+              blacklist = UserBlacklist.where(cpf: user.cpf).first_or_initialize
+              blacklist.name = params[:name] if blacklist.new_record?
+            end
+            can_add_or_exists_blacklist = !blacklist.nil? && (blacklist.valid? || !blacklist.new_record?)
+
             blacklist.save if blacklist.new_record? && !user.nil? && user.integrated && can_add_or_exists_blacklist && !user.selfregistration
 
             if new_user || can_add_or_exists_blacklist
