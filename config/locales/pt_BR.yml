@@ -1083,6 +1083,7 @@ pt_BR:
       summary: Tabela contendo link de acesso às aulas disponíveis e nome em texto das aulas indisponíveis, bem como períodos de acesso e link de acesso às notas de aula para cada aula. Todas as aulas são referentes ao módulo %{module_name}.
       caption: Lista de aulas para o módulo %{module_name}
       number_of_lessons: "%{module_name} possui %{lesson_number} aulas"
+      jspanel_count_window: "Permitido somente 3 janelas"
     list:
       lesson: Aula
       order: Ordem

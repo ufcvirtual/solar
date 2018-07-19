@@ -4,9 +4,9 @@
   - draft = lesson.is_draft? ? " (#{t(:lesson_test)})" : ''
   - if lesson.closed?
     - if @only_student
-      = (@not_offer_area ? (link_to lesson.name + closed + draft, "#void", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, onkeydown: 'click_on_keypress(event, this);') : link_to(lesson.name + closed, '#', disabled: true, class: 'disabled', :'aria-label' => lesson.name + closed + t(:disabled)))
+      = (@not_offer_area ? (link_to lesson.name + closed + draft, path, class: 'link_content lesson jspanel', :'name' => lesson.name, onkeydown: 'click_on_keypress(event, this);') : link_to(lesson.name + closed, '#', disabled: true, class: 'disabled', :'aria-label' => lesson.name + closed + t(:disabled)))
     -else
-      = (link_to lesson.name + closed + draft, "#void", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, onkeydown: 'click_on_keypress(event, this);')
+      = (link_to lesson.name + closed + draft, path, class: 'link_content lesson jspanel', :'name' => lesson.name, onkeydown: 'click_on_keypress(event, this);')
 
   - else
     - unless lesson.address.blank?
@@ -22,14 +22,12 @@
       - text << lesson.name
       - text << t('fancybox.open')
 
-      = link_to lesson.name, "#void", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, :'aria-label' => text.join(' '), onkeydown: 'click_on_keypress(event, this);'
+      = link_to lesson.name, path, class: 'link_content lesson jspanel', :'aria-label' => text.join(' '), onkeydown: 'click_on_keypress(event, this);', :'name' => lesson.name
 
     - else
       = link_to(lesson.name, '#void', disabled: true)
       .test_lesson= "(#{ (lesson.is_file? ? t(:lesson_without_initial_file) : t(:lesson_without_url)) })"
 
-    = link_to lesson.name, path, class: "link_content lesson addConsumption", :'name' => lesson.name
-    = link_to lesson.name, path, class: "link_content lesson jspanel", :'name' => lesson.name
 
 %td{ width: '30%', headers: "period_#{lesson.lesson_module_id}" }
   = "#{t(:since)}" if (lesson.schedule.end_date.nil?)

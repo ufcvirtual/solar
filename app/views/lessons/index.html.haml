@@ -21,74 +21,46 @@
             %tr.lines{ class: (lesson.closed? && !@only_student) ? 'period_ended' : '', id: "lesson_#{lesson.id}" }= render(lesson)
   - else
     .block_content.block_content_text= t(:lesson_message)
-    
-#modalAddConsumption.izimodal-iframe
-  %button{ :'data-iziModal-close'=>"", class: "icon-close"}='x'
 
-= stylesheet_link_tag "iziModal.css", "jquery.jspanel.css"
-= javascript_include_tag 'contextual_help/lessons', 'iziModal', 'jquery.jspanel'
+= stylesheet_link_tag "jspanel.css"
+= javascript_include_tag 'contextual_help/lessons', 'jspanel'
 
 :javascript
   $(function(){
     $('head').append('<meta name="viewport" content="width=device-width, initial-scale=1"/>');
-
+    var countInstanceJsPanel = 0;
 
     $("body").on("click",".jspanel",function(e){
-      e.preventDefault();
-      e.target = e.currentTarget;
-      $.jsPanel({
-        iframe: {
-          src:    e.target.href,
-          id:     "myFrame",
-          style:  {"display": "none", "border": "10px solid transparent"},
-          width:  '100%',
-          height: '100%'
-        },
-        callback: function () {
-            document.getElementById("myFrame").onload = function(){
-                $("#myFrame").fadeIn(2000);
-            }
-        },
-        size:     {width: $(window).width()-100, height: $(window).height()-100},
-        position: {left: "center", top: 10},
-        theme:    "light",
-      });
+      
+      if(countInstanceJsPanel<3){
+        countInstanceJsPanel++;
+        e.preventDefault();
+        e.target = e.currentTarget;
+        var color = $('#mysolar_topbar_wide_background').css('backgroundColor');
+        jsPanel.create({
+          theme:       color,
+          headerTitle: e.target.name,
+          position: 'center-top',
+          contentSize: {
+              width:  $(window).width() * 0.9,
+              height: $(window).height() * 0.85
+          },
+          contentOverflow: 'hidden',
+          content: '<iframe src='+e.target.href+' style="width: 100%; height: 100%;"></iframe>',
+          closeOnEscape: true,
+          onbeforeclose: function(){
+            countInstanceJsPanel--;
+            return true;
+          }
+        });
+      }else{ 
+        flash_message("#{t('lessons.index.jspanel_count_window')}", "alert");
+        return false;
+      }
     });
 
-    $(".izimodal-iframe").each(function(i,e){
-        izimodalIframe(e);
-    });
     
-    
-    $("body").on("click",".addConsumption",function(e){
-      e.preventDefault();
-      e.target = e.currentTarget;
-
-      $("#modalAddConsumption").data("url",e.target.href);
-      $("#modalAddConsumption").iziModal("setTitle", e.target.name);
-      $("#modalAddConsumption").iziModal("setSubtitle","");
-      $("#modalAddConsumption").iziModal("open",e);
-    });
 
   });
 
-  function izimodalIframe(e){
-    $(e).addClass("iziModal").iziModal({
-        title: $(e).attr("title") || $(e).data("title") || '',
-        subtitle: $(e).attr("subtitle") || $(e).data("subtitle") || '',
-        iconColor: $(e).data("icon-color") || '#FFF',
-        headerColor: $(e).data("header-color") || '#337ab7',
-        padding: $(e).data("padding") || 0,
-        top: '2%',
-        width: '95%',
-        fullscreen: true,
-        openFullscreen: false,
-        iframe: true,
-        iframeHeight: $( window ).height()-70,
-        iframeURL: $(e).data("url") || null,
-        history: false,
-        autoOpen: false,
-        focusInput: true,
-        navigateArrows: true,
-    });
-  }
+  
