@@ -4461,6 +4461,7 @@ en_US:
       event_frequency: "can't be defined, Reccess or Holiday events can't be frequency."
       same_type: 'Must have same type of equivalency'
       same_type_af: must have same value at 'Final Exam'
+      offer_period: Offer already ended
     success:
       manage: Activities managed successfully.
     warnings:
