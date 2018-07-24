@@ -2,58 +2,110 @@
 %html{lang: I18n.locale.to_s.gsub('_', '-')}
   %head
     %meta{charset: 'utf-8'}
+    %meta{name:'viewport', content:'width=device-width, initial-scale=1, shrink-to-fit=no'}
     %title= show_breadcrumb_title
     = stylesheet_link_tag "themes/theme_" + "#{user_session[:theme]}", id: "themes"
+    = stylesheet_link_tag "viewer"
   %body
     %header#mysolar_topbar
       #mysolar_identity
-        #mysolar_logo
-          = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
-    %main#container
+        .container
+          #mysolar_logo.navbar-brand
+            = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
+    %main.container
 
-= javascript_include_tag 'jquery-3.3.1.min', 'pdfjs/pdf'
+= javascript_include_tag 'jquery-3.3.1.min', 'pdfjs/pdf', 'online_correction_files'
 
 :javascript
   $(function(){
+    if (!canvasSupport()) { return; } // Verify if the browser support HTML5 Canvas
+
     var url = "#{@file_path}";
 
     PDFJS.getDocument(url).then(function(pdf){
-        // Get main#container and cache it for later use
-        var container = document.getElementById("container");
+      // Get main#container and cache it for later use
+      var container = document.querySelector("main");
 
-        // Loop from 1 to total_number_of_pages in PDF document
-        for (var i = 1; i <= pdf.numPages; i++) {
-          // Get desired page
-          pdf.getPage(i).then(function(page) {
-            var scale = 1.5; // Set scale (zoom) level
-            var viewport = page.getViewport(scale); // Get viewport (dimensions)
+      // Loop from 1 to total_number_of_pages in PDF document
+      for (var i = 1; i <= pdf.numPages; i++) {
+        // Get desired page
+        pdf.getPage(i).then(function(page) {
+          var scale = 1.5; // Set scale (zoom) level
+          var viewport = page.getViewport(scale); // Get viewport (dimensions)
 
-            var div = document.createElement("div"); // Create div where the page will be rendered
-            div.setAttribute("id", "page-" + (page.pageIndex + 1)); // Set id attribute with page-pdf_page_number format
-            div.setAttribute("style", "position: relative"); // This will keep positions of child elements as per our needs
-            container.appendChild(div); // Append div within main#container
+          var div = document.createElement("div"); // Create div where the page will be rendered
+          div.setAttribute("id", "page-" + (page.pageIndex + 1)); // Set id attribute with page-pdf_page_number format
+          div.setAttribute("style", "position: relative"); // This will keep positions of child elements as per our needs
+          container.appendChild(div); // Append div within main#container
 
-            var canvas = document.createElement("canvas"); // Create a new Canvas element
-            div.appendChild(canvas); // Append Canvas within div#page-pdf_page_number
+          var canvas = document.createElement("canvas"); // Create a new Canvas element
+          canvas.setAttribute('id', "canvas-" + (page.pageIndex + 1)); // Set ID for the Canvas element
+          div.appendChild(canvas); // Append Canvas within div#page-pdf_page_number
 
-            var context = canvas.getContext('2d'); // Fetch canvas 2d context
-            canvas.height = viewport.height; // Set height dimension to Canvas
-            canvas.width = viewport.width; // Set width dimension to Canvas
+          var context = canvas.getContext('2d'); // Fetch canvas 2d context
+          canvas.height = viewport.height; // Set height dimension to Canvas
+          canvas.width = viewport.width; // Set width dimension to Canvas
 
-            // Prepare object needed by render method
-            var renderContext = {
-              canvasContext: context,
-              viewport: viewport
-            };
+          // Prepare object needed by render method
+          var renderContext = {
+            canvasContext: context,
+            viewport: viewport
+          };
 
-            // Render PDF page
-            page.render(renderContext);
-          });
-        }
-      });
+          // Render PDF page
+          page.render(renderContext)
+            .then(function(){
+              $("canvas").mouseover(function(event){
+                var canvasID = "#" + $(this).attr('id');
+
+                var canvas = document.querySelector(canvasID);
+                var context = canvas.getContext('2d');
+
+                var clickX = new Array();
+                var clickY = new Array();
+                var clickDrag = new Array();
+                var currentTool = 'brush';
+                var paint = false;
+
+                $(canvasID).mousedown(function(event){
+                  var mouseX = event.pageX - $(this).offset().left;
+                  var mouseY = event.pageY - $(this).offset().top;
+
+                  paint = true;
+                  addClick(mouseX, mouseY);
+                  redraw(context, clickX, clickY, clickDrag, currentTool);
+                });
+
+                $(canvasID).mousemove(function(event){
+                  if(paint){
+                    var mouseX = event.pageX - $(this).offset().left;
+                    var mouseY = event.pageY - $(this).offset().top;
+
+                    addClick(mouseX, mouseY, true);
+                    redraw(context, clickX, clickY, clickDrag, currentTool);
+                  }
+                });
+
+                $(canvasID).mouseup(function(event){
+                  paint = false;
+                });
+
+                function addClick(x, y, dragging){
+                  clickX.push(x);
+                  clickY.push(y);
+                  clickDrag.push(dragging);
+                }
+              });
+            });
+        });
+      }
+    });
   });
 
 :css
-  #container, #mysolar_logo {
+  .container {
     margin-left: 25%;
+  }
+  canvas:hover{
+    cursor: crosshair;
   }
