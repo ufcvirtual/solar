@@ -12,7 +12,7 @@ module V1
           put :allocate_user do # Receives user's cpf, group and profile to allocate
             begin
               allocation = params[:allocation]
-              user       = verify_or_create_user(allocation[:cpf])
+              user       = verify_or_create_user(allocation[:cpf], false, false, false, true)
               profile_id = get_profile_id(allocation[:perfil])
 
               raise "user #{allocation[:cpf]} doesn't exist" if user.blank? || user.id.blank?

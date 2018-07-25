@@ -27,7 +27,7 @@ module V1::General
   end
 
 
-  def verify_or_create_user(cpf, ignore_synchronize=false, only_if_exists=false, import=false)
+  def verify_or_create_user(cpf, ignore_synchronize=false, only_if_exists=false, import=false, ignore_raise_error=false)
     user = User.find_by_cpf(cpf.delete('.').delete('-'))
     user = User.new(cpf: cpf) unless user || only_if_exists
 
@@ -39,7 +39,7 @@ module V1::General
       import = user.synchronize
       return user if(import.blank? && !user.new_record?)
       raise user.errors.full_messages.join(', ') unless import || user.errors.empty?
-      raise "error while synchronize new user #{cpf}" if !import && user.try(:id).blank?
+      raise "error while synchronize new user #{cpf}" if !import && user.try(:id).blank? && !ignore_raise_error
     else
       Rails.logger.info Rails.logger.info "[API] [INFO] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] user #{cpf} was not synchronized - blacklist or ignore param activated"
     end
