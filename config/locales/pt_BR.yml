@@ -4752,8 +4752,8 @@ pt_BR:
       whats_solar: 'O que é o Solar?'
       whats_ava: 'O que é um AVA?'
       uab_forgot_login_password: 'Sou aluno ou professor da UAB e não lembro meu login ou senha. O que fazer?'
-      forgot_login_password_ma: 'Não lembro meu login ou senha do Solar, mas tenho acesso ao Sigaa. O que fazer?'
-      forgot_login_password_sync1: 'Não lembro meu login ou senha do Solar e também não tenho acesso ao Sigaa. O que fazer?'
+      forgot_login_password_ma: 'Não lembro meu login ou senha do Solar, mas tenho cadastro no Sigaa. O que fazer?'
+      forgot_login_password_sync1: 'Não lembro meu login ou senha do Solar e também não tenho cadastro no Sigaa. O que fazer?'
       forgot_login_password_sync2: 'Tentei fazer cadastro ou recuperar senha e meus dados foram importados do Sigaa, mas não tenho acesso ao Sigaa.'
       forgot_login_password_sync3: 'Tentei recuperar minha senha, mas recebi uma mensagem me direcionando ao Sigaa, mas não tenho acesso a ele.  O que devo fazer?'
       forgot_login_password: 'Esqueci meu login e/ou senha.'
@@ -4790,6 +4790,7 @@ pt_BR:
       error: "Sou responsável por uma disciplina e um portfólio enviado pelo aluno aparece em branco. Pode ser erro do sistema?"
       cant_find_faq: "Não encontrei minha dúvida neste FAQ?"
       uab_selfregistration: "O que é o autocadastro no Sigaa? Como posso realizar o autocadastro?"
+      email_confirmation: "Realizei meu autocadastro, como faço para utilizar o Solar?"
     answers:
       whats_solar: "O Solar 2.0 é um AVA, ambiente virtual de aprendizagem, desenvolvido pelo Instituto UFC Virtual, da Universidade Federal do Ceará. <br/> Ele é orientado ao professor e ao aluno, possibilitando a publicação de cursos e a interação com eles. Ele foi desenvolvido visando potencializar o aprendizado a partir da relação com a própria interface gráfica do ambiente, de modo que o usuário tenha acesso a várias ferramentas de aprendizagem e compartilhamento de conteúdo.  <br/> O ambiente é apoiado numa filosofia de interação e não de controle."
       whats_ava: "AVAs - Ambientes Virtuais de Aprendizagem são softwares disponíveis online que permitem a realização de cursos via web ou, até mesmo, o auxílio e complemento a cursos presenciais via web."
@@ -4834,6 +4835,7 @@ pt_BR:
       error: "O Solar 2.0 não altera dados nem arquivos previamente enviados pelos usuários sem comunicá-los ou sem prévia autorização. Portanto, se o portfolio do aluno está em branco, sugerimos que entre em contato com ele para solicitar um re-envio do arquivo correto."
       cant_find_faq: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação. Lembre-se de informar: <br/> ‣ Nome <br/> ‣ Cpf <br/> ‣ Email<br/> ‣ O maior número de informações sobre o ocorrido. Se possível, imagens (prints de tela) também."
       uab_selfregistration: "Todos os dados que existiam no Módulo Acadêmico, antigo sistema acadêmico utilizado pela UAB, foram transferidos para o Sigaa, sistema acadêmico atual. Isso implica, portanto, na transferência, dentre outros, dos dados cadastrados para cada usuário, aluno ou professor. Entretanto, os dados de acesso não são transferidos para evitar conflitos com os demais usuários previamente existentes no Sigaa. Por este motivo, é necessário que todo usuário que existia no Módulo Acadêmico faça seu autocadastro no Sigaa e, em seguida, confirme seu email, para poder definir seus novos dados de acesso como, por exemplo, login e senha. <br/> <br/> Para realizar seu autocadastro, basta acessar <a href='https://si3.ufc.br/sigaa/public/cadastro/discente.jsf' target='_blank'>https://si3.ufc.br/sigaa/public/cadastro/discente.jsf</a> e informar seu cpf, nome completo e data de nascimento conforme constavam no Módulo Acadêmico e, também, informar email, login e senha. Você pode, se assim quiser, utilizar os mesmos email, login e senha que utilizava no Módulo Acadêmico. Se estes já estiverem em uso por outro usuário ou não atenderem aos novos padrões, o sistema não irá salvar e irá comunicá-lo para escolher novos dados."
+      email_confirmation: "Uma vez feito o autocadastro no SIGAA, você precisa acessar o email informado e clicar no link de confirmação de cadastro. <br/> Caso não tenha recebido o email ou tenha apagado, é possível solicitá-lo novamente através da url <a href='https://si3.ufc.br/admin/public/recuperar_codigo.jsf' target='_blank'>https://si3.ufc.br/admin/public/recuperar_codigo.jsf</a>. <br/>Lembre-se de verificar a caixa de spam!<br/> Uma vez confirmado o cadastro, basta acessar o Solar com o mesmo login e senha definidos no SIGAA."
   ckeditor:
     confirms:
       question: "Deseja excluir os itens em branco?"
