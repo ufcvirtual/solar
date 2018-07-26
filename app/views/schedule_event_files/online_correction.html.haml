@@ -5,16 +5,34 @@
     %meta{name:'viewport', content:'width=device-width, initial-scale=1, shrink-to-fit=no'}
     %title= show_breadcrumb_title
     = stylesheet_link_tag "themes/theme_" + "#{user_session[:theme]}", id: "themes"
-    = stylesheet_link_tag "viewer"
+    = stylesheet_link_tag "application", "viewer"
+    = javascript_include_tag 'jquery-3.3.1.min', 'pdfjs/pdf', 'online_correction_files'
   %body
-    %header#mysolar_topbar
-      #mysolar_identity
-        .container
-          #mysolar_logo.navbar-brand
-            = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
+    %header#topbar
+      .container-topbar
+        .solar-logo
+          = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
+        %ul.topbar-options
+          %li#save
+            %a{href: "#", onclick: ""}= t(:save)
+          %li#tools
+            %a{href: "#", onclick: "submenuToggle(event, this)"}= "Ferramentas"
+            %ul.submenu
+              %li
+                %a#text-tool{href: "#", onclick: "toolChanger(event, this)"}= "Texto"
+                %i.icon-write
+              %li
+                %a#brush-tool{href: "#", onclick: "toolChanger(event, this)"}= "Pincel"
+                %i.icon-database
+              %li
+                %a#eraser-tool{href: "#", onclick: "toolChanger(event, this)"}= "Borracha"
+                %i.icon-erase
+          %li#user
+            = image_tag current_user.user_photo(:small), alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", :'aria-hidden' => 'true'
+            = current_user.nick
+    -# %button{onclick: "javascript:undo();return false;"}= "Undo"
+    -# %button{onclick: "javascript:redo();return false;"}= "Redo"
     %main.container
-
-= javascript_include_tag 'jquery-3.3.1.min', 'pdfjs/pdf', 'online_correction_files'
 
 :javascript
   $(function(){
@@ -61,51 +79,10 @@
                 var canvas = document.querySelector(canvasID);
                 var context = canvas.getContext('2d');
 
-                var clickX = new Array();
-                var clickY = new Array();
-                var clickDrag = new Array();
-                var currentTool = 'brush';
-                var paint = false;
-
-                $(canvasID).mousedown(function(event){
-                  var mouseX = event.pageX - $(this).offset().left;
-                  var mouseY = event.pageY - $(this).offset().top;
-
-                  paint = true;
-                  addClick(mouseX, mouseY);
-                  redraw(context, clickX, clickY, clickDrag, currentTool);
-                });
-
-                $(canvasID).mousemove(function(event){
-                  if(paint){
-                    var mouseX = event.pageX - $(this).offset().left;
-                    var mouseY = event.pageY - $(this).offset().top;
-
-                    addClick(mouseX, mouseY, true);
-                    redraw(context, clickX, clickY, clickDrag, currentTool);
-                  }
-                });
-
-                $(canvasID).mouseup(function(event){
-                  paint = false;
-                });
-
-                function addClick(x, y, dragging){
-                  clickX.push(x);
-                  clickY.push(y);
-                  clickDrag.push(dragging);
-                }
+                paint(canvas, context);
               });
             });
         });
       }
     });
   });
-
-:css
-  .container {
-    margin-left: 25%;
-  }
-  canvas:hover{
-    cursor: crosshair;
-  }

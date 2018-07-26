@@ -1,0 +1,82 @@
+#topbar {
+  background-color: $color_main_mysolar;
+  height: $mysolar_topbar_height;
+  margin: 0;
+  width: 100%;
+}
+
+.container-topbar {
+  box-sizing: border-box;
+  width: 900px;
+}
+
+.topbar-options {
+  li {
+    color: $color_white_base_link;
+    display: inline-block;
+    float: right;
+    line-height: $mysolar_topbar_height;
+    padding: 3px 6px 0 6px;
+    vertical-align: middle;
+    /* necessario para funcionar ok no IE7 */
+    /*    zoom: 1;
+    *display: inline;*/
+    a {
+      color: $color_white_base_link;
+    }
+  }
+}
+
+#user, #tools, #save {
+  padding-right: 30px;
+}
+
+.submenu {
+  position: absolute;
+  top: $mysolar_topbar_height;
+  z-index: 100;
+  display: none;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+  border-right: 2px solid;
+  border-top: 0;
+  padding-left: 5px;
+  overflow: hidden;
+  color: $color_main;
+  background-color: $color_white_base;
+  border-bottom-color: $color_contrast;
+  border-left-color: $color_contrast;
+  border-right-color: $color_contrast;
+  width: 120px;
+
+  li {
+    width: 100%;
+    display: block;
+    text-align: left;
+
+    i {
+      display: inline-block;
+      height: 55px;
+      padding-top: 17px;
+    }
+
+    a{
+      width: 50%;
+      float: left;
+      color: $color_black;
+    }
+  }
+}
+
+.container,
+.container-topbar {
+  margin-left: 25%;
+}
+
+.solar-logo {
+  float: left;
+}
+
+canvas:hover {
+  cursor: crosshair;
+}
