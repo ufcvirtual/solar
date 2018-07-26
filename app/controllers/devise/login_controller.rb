@@ -14,6 +14,7 @@ class Devise::LoginController < Devise::SessionsController
       current_user.session_token = Devise.friendly_token
       user_session[:token] = current_user.session_token
       current_user.save(validate: false)
+    when 0; redirect_to login_path
     end
 
   rescue CanCan::AccessDenied
@@ -30,6 +31,8 @@ class Devise::LoginController < Devise::SessionsController
 
   def verify_user_data
     @return = 0
+
+    return if params.blank?
     user = User.find_by_username(params[:user][:login])
     correct_password = user.valid_password?(params[:user][:password]) unless user.blank?
 
