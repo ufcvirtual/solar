@@ -198,7 +198,7 @@ module V1
 
           offer = Offer.joins(:semester, :curriculum_unit, :course).where(query.compact.join(' AND '), params.slice(:semester, :curriculum_unit_type_id, :course_id, :course_code, :curriculum_unit_code, :curriculum_unit_id)).first
 
-          @groups = offer.send(params[:only_active] ? :active_groups : :groups)
+          @groups = offer.send(params[:only_active] ? :active_groups : :groups) rescue []
         end
 
       end # groups
