@@ -32,7 +32,7 @@ class Devise::LoginController < Devise::SessionsController
   def verify_user_data
     @return = 0
 
-    return if params.blank?
+    return if params[:user].blank?
     user = User.find_by_username(params[:user][:login])
     correct_password = user.valid_password?(params[:user][:password]) unless user.blank?
 
