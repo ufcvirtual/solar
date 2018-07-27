@@ -735,6 +735,18 @@ class User < ActiveRecord::Base
 
   end
 
+  def self.import_user_by_username(username)
+    user_data = User.connect_and_import_by_username(username) # try to import
+
+    tmp_user = User.where(cpf: user_data[0]).first
+    tmp_user = tmp_user.nil? ? User.new(cpf: user_data[0]) : tmp_user
+
+    tmp_user.synchronize(user_data) # synchronize user with new Sigaa data
+    return User.find_by_username(username)
+  rescue
+    return nil
+  end
+
   def self.user_ma_attributes(user_data)
     data = { name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == 'M'), cell_phone: user_data[17], nick: (user_data[7].nil? ? ([user_data[2].split(' ')[0], user_data[2].split(' ')[1]].join(' ')) : user_data[7]), telephone: user_data[18], special_needs: ((user_data[19].blank? || user_data[19].downcase == 'nenhuma') ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13], address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]), email: user_data[8], integrated: true }
 

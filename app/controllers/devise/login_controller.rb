@@ -38,7 +38,7 @@ class Devise::LoginController < Devise::SessionsController
 
     if user.nil?
       @return = if !User::MODULO_ACADEMICO.nil?
-        user = import_user_by_username(params[:user][:login])
+        user = User.import_user_by_username(params[:user][:login])
         if user.nil?
           1
         else
@@ -69,24 +69,12 @@ class Devise::LoginController < Devise::SessionsController
           @previous_username = previous_user.username
           return
         else
-          user = import_user_by_username(params[:user][:login])
+          user = User.import_user_by_username(params[:user][:login])
         end
       end
 
       @return = 5 unless user.integrated && !user.on_blacklist? && !user.selfregistration
     end
-  end
-
-  def import_user_by_username(username)
-    user_data = User.connect_and_import_by_username(username) # try to import
-
-    tmp_user = User.where(cpf: user_data[0]).first
-    tmp_user = tmp_user.nil? ? User.new(cpf: user_data[0]) : tmp_user
-
-    tmp_user.synchronize(user_data) # synchronize user with new Sigaa data
-    return User.find_by_username(username)
-  rescue
-    return nil
   end
 
   def set_flash_message!(key, kind, options = {})
