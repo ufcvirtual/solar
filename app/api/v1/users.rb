@@ -160,7 +160,7 @@ module V1
             user = User.new cpf: cpf if user.blank?
 
             if params[:email].present?
-              error = error | 2 if !(!user.new_record? && user.email.downcase == params[:email].downcase) && User.where("lower(email) = ? AND cpf != ?", params[:email].downcase, cpf).any?
+              error = error | 2 if !(!user.new_record? && user.email.try(:downcase) == params[:email].downcase) && User.where("lower(email) = ? AND cpf != ?", params[:email].downcase, cpf).any?
             end
 
             if params[:username].present?
