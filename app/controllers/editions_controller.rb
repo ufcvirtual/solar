@@ -142,7 +142,9 @@ class EditionsController < ApplicationController
       
       academic_allocations = AcademicAllocation.where(allocation_tag_id: allocation_tag_id.to_i)
       
-      total_hours_of_curriculum_unit = AllocationTag.find(allocation_tag_id.to_i).group.offer.curriculum_unit.working_hours
+      at = AllocationTag.find(allocation_tag_id.to_i)
+
+      total_hours_of_curriculum_unit = at.group.nil? ? at.offer.curriculum_unit.working_hours : at.group.offer.curriculum_unit.working_hours
       quantity_activities = 0
       quantity_used_hours = 0
       
