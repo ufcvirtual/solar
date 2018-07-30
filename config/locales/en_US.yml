@@ -3128,6 +3128,10 @@ en_US:
     files:
       delete: Remove file
       correction_file: Exam online correction
+    online_correction:
+      tools: Tools
+      text: Text
+      brush: Brush
     success:
       created: File was successfully sent.
       deleted: File was successfully deleted.

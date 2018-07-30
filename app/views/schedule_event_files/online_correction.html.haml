@@ -16,29 +16,26 @@
           %li#save
             %a{href: "#", onclick: ""}= t(:save)
           %li#tools
-            %a{href: "#", onclick: "submenuToggle(event, this)"}= "Ferramentas"
+            %a{href: "#", onclick: "submenuToggle(event, this)"}= t(".tools")
             %ul.submenu
               %li
-                %a#text-tool{href: "#", onclick: "toolChanger(event, this)"}= "Texto"
-                %i.icon-write
+                %a#text-tool{href: "#", onclick: "toolChanger(event, this)"}
+                  %i.icon-write
+                  = t(".text")
               %li
-                %a#brush-tool{href: "#", onclick: "toolChanger(event, this)"}= "Pincel"
-                %i.icon-database
-              %li
-                %a#eraser-tool{href: "#", onclick: "toolChanger(event, this)"}= "Borracha"
-                %i.icon-erase
+                %a#brush-tool{href: "#", onclick: "toolChanger(event, this)"}
+                  %i.icon-plus
+                  = t(".brush")
           %li#user
             = image_tag current_user.user_photo(:small), alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", :'aria-hidden' => 'true'
             = current_user.nick
-    -# %button{onclick: "javascript:undo();return false;"}= "Undo"
-    -# %button{onclick: "javascript:redo();return false;"}= "Redo"
     %main.container
 
 :javascript
   $(function(){
     if (!canvasSupport()) { return; } // Verify if the browser support HTML5 Canvas
 
-    var url = "#{@file_path}";
+    var url = "#{@file_path}"; // Url to render file
 
     PDFJS.getDocument(url).then(function(pdf){
       // Get main#container and cache it for later use
@@ -79,7 +76,7 @@
                 var canvas = document.querySelector(canvasID);
                 var context = canvas.getContext('2d');
 
-                paint(canvas, context);
+                write(canvas, context);
               });
             });
         });

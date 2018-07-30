@@ -54,16 +54,14 @@
     display: block;
     text-align: left;
 
-    i {
-      display: inline-block;
-      height: 55px;
-      padding-top: 17px;
-    }
-
     a{
-      width: 50%;
+      width: 100%;
       float: left;
       color: $color_black;
+
+      i {
+        padding: 0 5px;
+      }
     }
   }
 }
@@ -77,6 +75,16 @@
   float: left;
 }
 
-canvas:hover {
-  cursor: crosshair;
+.close {
+    color: $color_gray_light;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: $color_black;
+    text-decoration: none;
+    cursor: pointer;
 }

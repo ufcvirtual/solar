@@ -3378,6 +3378,10 @@ pt_BR:
     files:
       delete: Remover arquivo
       correction_file: Correção de prova online
+    online_correction:
+      tools: "Ferramentas"
+      text: "Texto"
+      brush: "Pincel"
     success:
       created: Arquivo(s) enviado(s) com sucesso(s).
       deleted: Arquivo(s) deletado(s) com sucesso(s).
