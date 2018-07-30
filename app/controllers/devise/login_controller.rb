@@ -1,9 +1,12 @@
 class Devise::LoginController < Devise::SessionsController
 
   skip_before_filter :check_concurrent_session
-  prepend_before_action :verify_user_data
+  # prepend_before_action :verify_user_data
 
   def create
+
+    @return = verify_user_data
+
     case @return
     when 1; redirect_to login_path, alert: t('devise.failure.invalid_login_si3')
     when 2; redirect_to login_path, alert: t('devise.failure.invalid_login')
@@ -47,13 +50,12 @@ class Devise::LoginController < Devise::SessionsController
       else
         2
       end
-      return if user.nil?
+      # return if user.nil?
     else
       if user.integrated && !user.on_blacklist? && !user.selfregistration
         user.synchronize
         unless user.selfregistration
           @return = 3
-          return
         end
       elsif (user.integrated && !user.on_blacklist? && !correct_password)
         user.synchronize
@@ -67,13 +69,14 @@ class Devise::LoginController < Devise::SessionsController
         unless previous_user.blank?
           @return = 4
           @previous_username = previous_user.username
-          return
         else
           user = User.import_user_by_username(params[:user][:login])
         end
       end
 
-      @return = 5 unless user.integrated && !user.on_blacklist? && !user.selfregistration
+      @return = 5 unless @return != 0 && user.integrated && !user.on_blacklist? && !user.selfregistration
+
+      @return
     end
   end
 
