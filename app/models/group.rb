@@ -141,6 +141,167 @@ class Group < ActiveRecord::Base
     SQL
   end
 
+  def self.management_groups
+    codes_file_uab = YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["uab_courses"]["code"]
+    code_courses_uab = codes_file_uab.split(";")
+
+    groups_to_manage = []
+    acs_offers = []
+
+    code_courses_uab.each do |code_course|
+
+      course = Course.find_by(code: code_course)
+      offers = Offer.where(course_id: course.id) unless course.blank?
+      groups = Group.where(offer_id: offers)
+
+      allocation_tags = AllocationTag.where(group_id: groups)
+      
+      acs_offers = AcademicAllocation.where(allocation_tag_id: AllocationTag.where(offer_id: offers).where(group_id: nil)).where(academic_tool_type: 'LessonModule')
+
+      allocation_tags.each do |allocation_tag|
+        academic_allocations = AcademicAllocation.where(allocation_tag_id: allocation_tag.id)
+
+        group = allocation_tag.group
+        offer = group.offer
+
+        academic_allocations.each do |academic_allocation|
+          academic_tool = academic_allocation.academic_tool
+
+          if academic_allocation.academic_tool_type == 'LessonModule'
+           
+            lessons = Lesson.where(lesson_module_id: academic_tool.id)
+
+            lessons.flatten.each do |lesson|
+              
+              if lesson.schedule.start_date <= Date.current && lesson.schedule.start_date >= offer.semester.offer_schedule.start_date
+                groups_to_manage << group unless groups_to_manage.include? group
+                break
+              end
+
+            end
+
+          end
+
+        end
+      
+      end
+
+    end
+
+    unless groups_to_manage.blank?
+      groups_to_manage.uniq.each do |group|
+        verify_management(group.allocation_tag)
+      end
+    end
+
+    unless acs_offers.blank?
+      acs_offers.each do |academic_allocation_offer|
+        verify_management(academic_allocation_offer.allocation_tag)
+      end
+    end
+
+  end
+
+  def self.verify_management(allocation_tag)
+
+      academic_allocations = AcademicAllocation.where(allocation_tag_id: allocation_tag.id)
+
+      at = AllocationTag.find(allocation_tag.id)
+
+      total_hours_of_curriculum_unit = at.group.nil? ? at.offer.curriculum_unit.working_hours : at.group.offer.curriculum_unit.working_hours
+      quantity_activities = 0
+      quantity_used_hours = 0
+      
+      acad_alloc_not_event = []
+      acad_alloc_event = []
+
+      acad_alloc_to_save = []
+
+      academic_allocations.select!{|ac| ac.evaluative == false || ac.frequency == false }
+
+      academic_allocations.each do |academic_allocation|
+        academic_tool = academic_allocation.academic_tool
+        puts "Entrou aqui 2"
+        if academic_allocation.academic_tool_type == 'ScheduleEvent' #&& academic_tool.integrated == true
+          
+          if academic_tool.type_event == Presential_Test # eventos tipo 1 ou 2 chamada
+            academic_allocation.evaluative = true
+            academic_allocation.final_weight = 60
+            academic_allocation.frequency = true
+            academic_allocation.max_working_hours = BigDecimal.new(2)
+  
+            if academic_tool.title == "Prova Presencial: AF - 1ª chamada" || academic_tool.title == "Prova Presencial: AF - 2ª chamada" # se Avaliação Final
+              academic_allocation.final_exam = true
+              academic_allocation.frequency = false
+              academic_allocation.max_working_hours = BigDecimal.new(0)
+            end
+  
+            if academic_tool.title == "Prova Presencial: AP - 2ª chamada" || academic_tool.title == "Prova Presencial: AF - 2ª chamada" # se 2 chamada, então deve ser equivalente a 1 chamada
+                                    
+              equivalent = ScheduleEvent.joins(:academic_allocations).where(title: academic_tool.title.sub("2", "1"), academic_allocations: {equivalent_academic_allocation_id: nil, allocation_tag_id: allocation_tag_id.to_i})
+              
+              unless equivalent.blank?
+                academic_allocation.equivalent_academic_allocation_id = equivalent[0].academic_allocations[0].id
+                academic_allocation.max_working_hours = BigDecimal.new(0)
+              end
+              
+            end
+            
+          end
+          
+          unless [Presential_Test, Recess, Holiday, Other].include?(academic_tool.type_event) # demais eventos exceto: recesso, feriado e outros
+            academic_allocation.frequency = true
+            academic_allocation.max_working_hours = BigDecimal.new(2)
+          end
+
+          acad_alloc_event << academic_allocation
+  
+        else # atividades que não são eventos
+          
+          unless academic_allocation.academic_tool_type == 'LessonModule' && academic_allocation.final_weight == 100 && academic_allocation.max_working_hours.to_i == 1 # LessonModule criado por padrão
+                    
+            academic_allocation.evaluative = true
+            academic_allocation.final_weight = 40
+            academic_allocation.frequency = true
+            quantity_activities += 1
+    
+            acad_alloc_not_event << academic_allocation
+          end
+
+        end
+
+      end
+
+      acad_alloc_event.each do |event|
+        if event.final_exam == false || event.equivalent_academic_allocation_id.nil?
+          quantity_used_hours += event.max_working_hours.to_i
+        end
+      end
+      
+      remaining_hours = total_hours_of_curriculum_unit - quantity_used_hours
+      resto = remaining_hours % quantity_activities rescue 0
+      hours_per_activity = remaining_hours / quantity_activities rescue 0
+            
+      acad_alloc_not_event.each{ |ac_all| ac_all.max_working_hours = BigDecimal.new(hours_per_activity)}
+
+      if resto != 0
+        acad_alloc_not_event.last.max_working_hours += BigDecimal.new(resto)
+      end
+
+      acad_alloc_to_save.concat(acad_alloc_event.sort_by!{|all| all.academic_tool.title}).concat(acad_alloc_not_event)
+
+      unless acad_alloc_to_save.blank?
+        ActiveRecord::Base.transaction do
+          acad_alloc_to_save.each do |acad_alloc|
+            acad_alloc.save!
+          end
+        end
+      end
+
+    
+
+  end
+
   private
 
     def unique_code_on_offer
