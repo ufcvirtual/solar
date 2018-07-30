@@ -71,6 +71,8 @@ class Devise::LoginController < Devise::SessionsController
           user = User.import_user_by_username(params[:user][:login])
         end
       end
+
+      @return = 5 if user.blank?
       @return = 5 unless @return != 0 || (user.integrated && !user.on_blacklist? && !user.selfregistration)
 
       @return
