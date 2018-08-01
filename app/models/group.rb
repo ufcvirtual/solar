@@ -143,20 +143,41 @@ class Group < ActiveRecord::Base
 
   def self.management_groups
     codes_file_uab = YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["uab_courses"]["code"]
-    code_courses_uab = codes_file_uab.split(";")
+    # code_courses_uab = codes_file_uab.split(";")
+    code_courses_uab = ['202']
 
+    offers_to_manage = []
     groups_to_manage = []
-    acs_offers = []
 
     code_courses_uab.each do |code_course|
 
       course = Course.find_by(code: code_course)
       offers = Offer.where(course_id: course.id) unless course.blank?
       groups = Group.where(offer_id: offers)
+      
+      offers.each do |offer|
+        
+        acs_offers = AcademicAllocation.where(allocation_tag_id: AllocationTag.where(offer_id: offer).where(group_id: nil)).where(academic_tool_type: 'LessonModule')
+
+        acs_offers.each do |academic_allocation_offer|
+          academic_tool_offer = academic_allocation_offer.academic_tool
+          
+          lessons_offer = Lesson.where(lesson_module_id: academic_tool_offer.id)
+          
+          lessons_offer.flatten.each do |lesson_offer|
+            
+            if lesson_offer.schedule.start_date <= Date.current && lesson_offer.schedule.start_date >= offer.semester.offer_schedule.start_date
+              offers_to_manage << academic_allocation_offer unless offers_to_manage.include? academic_allocation_offer
+              break
+            end
+            
+          end
+          
+        end
+
+      end
 
       allocation_tags = AllocationTag.where(group_id: groups)
-      
-      acs_offers = AcademicAllocation.where(allocation_tag_id: AllocationTag.where(offer_id: offers).where(group_id: nil)).where(academic_tool_type: 'LessonModule')
 
       allocation_tags.each do |allocation_tag|
         academic_allocations = AcademicAllocation.where(allocation_tag_id: allocation_tag.id)
@@ -194,8 +215,8 @@ class Group < ActiveRecord::Base
       end
     end
 
-    unless acs_offers.blank?
-      acs_offers.each do |academic_allocation_offer|
+    unless offers_to_manage.blank?
+      offers_to_manage.each do |academic_allocation_offer|
         verify_management(academic_allocation_offer.allocation_tag)
       end
     end
@@ -221,7 +242,7 @@ class Group < ActiveRecord::Base
 
       academic_allocations.each do |academic_allocation|
         academic_tool = academic_allocation.academic_tool
-        puts "Entrou aqui 2"
+        
         if academic_allocation.academic_tool_type == 'ScheduleEvent' #&& academic_tool.integrated == true
           
           if academic_tool.type_event == Presential_Test # eventos tipo 1 ou 2 chamada
