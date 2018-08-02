@@ -3382,6 +3382,7 @@ pt_BR:
       tools: "Ferramentas"
       text: "Texto"
       brush: "Pincel"
+      arrow: "Flecha"
     success:
       created: Arquivo(s) enviado(s) com sucesso(s).
       deleted: Arquivo(s) deletado(s) com sucesso(s).

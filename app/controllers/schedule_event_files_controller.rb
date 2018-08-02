@@ -35,8 +35,22 @@ class ScheduleEventFilesController < ApplicationController
   end
 
   def online_correction
+    # authorize! :online_correction, ScheduleEventFile, on: active_tab[:url][:allocation_tag_id]
+    @canvas_data = ScheduleEventFile.find(params[:id]).file_correction.to_json
     extension = params[:extension].split('/').last
     @file_path = get_file_path(id: params[:id], file: params[:file], extension: extension)
+  end
+
+  def save_online_correction_file
+    # authorize! :save_online_correction_file, ScheduleEventFile, on: active_tab[:url][:allocation_tag_id]
+    @schedule_event_file = ScheduleEventFile.find(params[:id])
+    @schedule_event_file.file_correction = params[:imgs]
+
+    if @schedule_event_file.save
+      render json: { success: true, notice: "Deu certo parça!!! =D" }
+    else
+      render json: { success: false, alert: "Deu ruim. =(" }, status: :unprocessable_entity
+    end
   end
 
   def destroy
@@ -70,7 +84,7 @@ class ScheduleEventFilesController < ApplicationController
   private
 
     def schedule_event_file_params
-      params.require(:schedule_event_file).permit(:user_id, :academic_allocation_user_id, :attachment)
+      params.require(:schedule_event_file).permit(:user_id, :academic_allocation_user_id, :attachment, :file_correction)
     end
 
     def create_one(params = schedule_event_file_params)

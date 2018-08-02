@@ -5,8 +5,9 @@
     %meta{name:'viewport', content:'width=device-width, initial-scale=1, shrink-to-fit=no'}
     %title= show_breadcrumb_title
     = stylesheet_link_tag "themes/theme_" + "#{user_session[:theme]}", id: "themes"
-    = stylesheet_link_tag "application", "viewer"
+    = stylesheet_link_tag "application", "online_correction_files", "viewer"
     = javascript_include_tag 'jquery-3.3.1.min', 'pdfjs/pdf', 'online_correction_files'
+    = csrf_meta_tag
   %body
     %header#topbar
       .container-topbar
@@ -14,9 +15,9 @@
           = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
         %ul.topbar-options
           %li#save
-            %a{href: "#", onclick: ""}= t(:save)
+            %a{href: "#"}= t(:save)
           %li#tools
-            %a{href: "#", onclick: "submenuToggle(event, this)"}= t(".tools")
+            %a{href: "#", onclick: "submenuToggle()"}= t(".tools")
             %ul.submenu
               %li
                 %a#text-tool{href: "#", onclick: "toolChanger(event, this)"}
@@ -24,7 +25,7 @@
                   = t(".text")
               %li
                 %a#brush-tool{href: "#", onclick: "toolChanger(event, this)"}
-                  %i.icon-plus
+                  %i.icon-pencil
                   = t(".brush")
           %li#user
             = image_tag current_user.user_photo(:small), alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", :'aria-hidden' => 'true'
@@ -36,6 +37,29 @@
     if (!canvasSupport()) { return; } // Verify if the browser support HTML5 Canvas
 
     var url = "#{@file_path}"; // Url to render file
+    var editions_by_user = JSON.parse('#{@canvas_data}');
+
+    $("#save > a").click(function(event){
+      var images = {};
+
+      $("main").find("canvas").each(function(index, canvas){
+        images[canvas.id] = canvas.toDataURL('image/png');
+      });
+
+      $.ajax({
+        url: "save_online_correction_file",
+        data: { imgs: images },
+        type: "POST",
+        beforeSend: function (xhr){
+          var token =$("meta[name='csrf-token']").attr("content");
+          xhr.setRequestHeader("X-CSRF-Token", token);
+        }
+      }).done(function (data) {
+        // TODO: mandar feedback pro usuário
+      }).fail(function(jqXHR, textStatus, data){
+        // TODO: mandar feedback pro usuário
+      });
+    });
 
     PDFJS.getDocument(url).then(function(pdf){
       // Get main#container and cache it for later use
@@ -70,6 +94,15 @@
           // Render PDF page
           page.render(renderContext)
             .then(function(){
+              $("main").find("canvas").each(function(index, canvas){
+                var img = new Image();
+                img.src = editions_by_user[canvas.id];
+
+                img.onload = function () {
+                  canvas.getContext('2d').drawImage(img, 0, 0);
+                };
+              });
+
               $("canvas").mouseover(function(event){
                 var canvasID = "#" + $(this).attr('id');
 

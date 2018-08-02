@@ -516,6 +516,7 @@ Solar::Application.routes.draw do
   resources :schedule_event_files, except: [:index, :show] do
     member do
       get :online_correction
+      post :save_online_correction_file
     end
     collection do
       get :download

@@ -1,3 +1,10 @@
+/* Fontes e ícones */
+@import "fonts/fonts";
+@import "fonts/icons";
+
+@import "themes/variables/theme_blue";
+@import "partials/all";
+
 #topbar {
   background-color: $color_main_mysolar;
   height: $mysolar_topbar_height;
@@ -7,7 +14,7 @@
 
 .container-topbar {
   box-sizing: border-box;
-  width: 900px;
+  width: 980px;
 }
 
 .topbar-options {
@@ -60,7 +67,8 @@
       color: $color_black;
 
       i {
-        padding: 0 5px;
+        padding: 5px;
+        vertical-align: top;
       }
     }
   }

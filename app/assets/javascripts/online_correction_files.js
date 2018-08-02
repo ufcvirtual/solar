@@ -4,7 +4,7 @@ function canvasSupport() {
   return !!document.createElement('canvas').getContext;
 }
 
-function submenuToggle(event, element){
+function submenuToggle(){
   var left = $("#tools").find("a").offset().left;
   $("#tools").find(".submenu").css('left', left);
   $("#tools").find(".submenu").slideToggle(150);
@@ -45,11 +45,12 @@ function write(canvas, context) {
   }
 
   canvas.onmousedown = function(event){
+    var mouseX = event.pageX - $(this).offset().left;
+    var mouseY = event.pageY - $(this).offset().top;
+
     var keynum = event.which || event.keyCode;
 
     if (keynum == 1) { // Left mouse button is pressed
-      var mouseX = event.pageX - $(this).offset().left;
-      var mouseY = event.pageY - $(this).offset().top;
 
       addClick(mouseX, mouseY);
 
@@ -71,7 +72,7 @@ function write(canvas, context) {
     }
 
     if (keynum == 3) { // Right mouse button is pressed
-      // TODO: abrir caixa de ferramentas
+      // TODO: abrir caixa de ferramentas ao clicar com o botão direito do mouse
     }
   };
 
@@ -97,42 +98,13 @@ function write(canvas, context) {
 }
 
 function drawScreen(context, clickX, clickY, clickDrag, currentTool, message){
-  context.save();
-
   if (currentTool == 'brush') {
-    context.strokeStyle = "#000000";
-    context.lineJoin = "round";
-    context.lineWidth = 2;
-
-    for(var i=0; i < clickX.length; i++) {
-      context.beginPath();
-
-      if(clickDrag[i] && i){
-        context.moveTo(clickX[i-1], clickY[i-1]);
-      }else{
-        context.moveTo(clickX[i]-1, clickY[i]);
-      }
-
-      context.lineTo(clickX[i], clickY[i]);
-      context.closePath();
-      context.stroke();
-    }
+    canvasPaint(context, clickX, clickY, clickDrag);
   }
 
   if (currentTool == 'text') {
-    context.font = "14px sans-serif";
-    context.fillStyle = "#000000";
-
-    var metrics = context.measureText(message);
-    var textWidth = metrics.width;
-
-    var xPosition = clickX;
-    var yPosition = clickY;
-
-    context.fillText(message, xPosition, yPosition);
+    canvasText(context, clickX, clickY, message);
   }
-
-  context.restore();
 }
 
 function closeDiv(event, element) {
@@ -146,4 +118,68 @@ function closeDiv(event, element) {
   drawScreen(context, positionX, positionY, false, tool, message);
 
   $(element).closest('div').remove();
+}
+
+function canvasPaint(context, clickX, clickY, clickDrag) {
+  context.save();
+  context.strokeStyle = "#000000";
+  context.lineJoin = "round";
+  context.lineWidth = 2;
+
+  for(var i=0; i < clickX.length; i++) {
+    context.beginPath();
+
+    if(clickDrag[i] && i){
+      context.moveTo(clickX[i-1], clickY[i-1]);
+    }else{
+      context.moveTo(clickX[i]-1, clickY[i]);
+    }
+
+    context.lineTo(clickX[i], clickY[i]);
+    context.closePath();
+    context.stroke();
+  }
+
+  context.restore();
+}
+
+function canvasText(context, clickX, clickY, message) {
+  context.save();
+  context.font = "14px sans-serif";
+  context.fillStyle = "#000000";
+
+  var metrics = context.measureText(message);
+  var textWidth = metrics.width;
+
+  var xPosition = clickX;
+  var yPosition = clickY;
+
+  context.fillText(message, xPosition, yPosition);
+  context.restore();
+}
+
+function canvasArrow(context, fromX, fromY, toX, toY){
+  context.save();
+
+  var headLength = 10;
+  var angle = Math.atan2(toY-fromY,toX-fromX);
+
+  context.strokeStyle = "#000000";
+  context.lineJoin = "round";
+  context.lineWidth = 2;
+
+  context.beginPath();
+
+  // Create line
+  context.moveTo(fromX, fromY);
+  context.lineTo(toX, toY);
+
+  // Create arrow head
+  context.lineTo(toX-headLength*Math.cos(angle-Math.PI/6),toY-headLength*Math.sin(angle-Math.PI/6));
+  context.moveTo(toX, toY);
+  context.lineTo(toX-headLength*Math.cos(angle+Math.PI/6),toY-headLength*Math.sin(angle+Math.PI/6));
+
+  context.closePath();
+  context.stroke();
+  context.restore();
 }

@@ -15,6 +15,8 @@ class ScheduleEventFile < ActiveRecord::Base
   validates :attachment, presence: true
   validates :academic_allocation_user_id, presence: true
 
+  serialize :file_correction, JSON
+
   has_attached_file :attachment,
     path: ":rails_root/media/schedule_event/schedule_event_files/:id_:basename.:extension",
     url: "/media/schedule_event/schedule_event_files/:id_:basename.:extension"
@@ -27,7 +29,8 @@ class ScheduleEventFile < ActiveRecord::Base
   end
 
   def normalized_attachment_file_name
-    "#{self.academic_allocation_user.user.cpf}-#{self.attachment_file_name.gsub( /[^a-zA-Z0-9\.]/, '_')}"
+    file_name = self.attachment_file_name.gsub( /[^a-zA-Z0-9\.]/, '_').split("#{self.academic_allocation_user.user.cpf}_").join("")
+    "#{self.academic_allocation_user.user.cpf}_#{file_name}"
   end
 
   def can_destroy?
