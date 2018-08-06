@@ -2,8 +2,10 @@
 @import "fonts/fonts";
 @import "fonts/icons";
 
+@import "modules/variables";
 @import "themes/variables/theme_blue";
-@import "partials/all";
+@import "partials/base";
+@import "partials/alerts";
 
 #topbar {
   background-color: $color_main_mysolar;
@@ -36,6 +38,23 @@
 
 #user, #tools, #save {
   padding-right: 30px;
+}
+
+#solar_logo {
+  padding-top: 4px;
+  padding-left: 5px;
+}
+
+#image_user {
+  height: 30px;
+  width: 30px;
+  float: left;
+  margin-right: 7px;
+}
+
+#loading{
+  text-align: center;
+  display: none;
 }
 
 .submenu {

@@ -3383,7 +3383,9 @@ pt_BR:
       text: "Texto"
       brush: "Pincel"
       arrow: "Flecha"
+      saving_file: "Salvando arquivo."
     success:
+      file_saved: Arquivo salvo com sucesso.
       created: Arquivo(s) enviado(s) com sucesso(s).
       deleted: Arquivo(s) deletado(s) com sucesso(s).
     error:
@@ -3395,6 +3397,7 @@ pt_BR:
       attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 26MB.
       wrong_type: "Tipo de arquivo não permitido (apenas imagens jpeg/png/gif ou pdfs)"
       situation: Não é possível enviar arquivos ainda, pois a atividade não foi iniciada.
+      file_not_saved: "Não foi possível salvar o arquivo."
 
   agendas:
     dropdown_content:

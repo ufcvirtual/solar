@@ -4,9 +4,8 @@
     %meta{charset: 'utf-8'}
     %meta{name:'viewport', content:'width=device-width, initial-scale=1, shrink-to-fit=no'}
     %title= show_breadcrumb_title
-    = stylesheet_link_tag "themes/theme_" + "#{user_session[:theme]}", id: "themes"
-    = stylesheet_link_tag "application", "online_correction_files", "viewer"
-    = javascript_include_tag 'jquery-3.3.1.min', 'pdfjs/pdf', 'online_correction_files'
+    = stylesheet_link_tag "application", "jquery.fancybox3.min", "online_correction_files", "viewer"
+    = javascript_include_tag 'jquery-3.3.1.min', 'jquery.fancybox3.min', 'pdfjs/pdf', 'online_correction_files'
     = csrf_meta_tag
   %body
     %header#topbar
@@ -30,7 +29,17 @@
           %li#user
             = image_tag current_user.user_photo(:small), alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", :'aria-hidden' => 'true'
             = current_user.nick
+        .block_wrapper
+          .flash_message_wrapper
+            - flash.each do |name, msg|
+              #flash_message{ class: name }
+                = content_tag(:span, msg, id: "flash_message_span")
+                = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: "erase_flash_messages(true)", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
     %main.container
+
+    #loading
+      %h2= t('.saving_file')
+      %img= image_tag('loading.gif')
 
 :javascript
   $(function(){
@@ -46,6 +55,7 @@
         images[canvas.id] = canvas.toDataURL('image/png');
       });
 
+      salving();
       $.ajax({
         url: "save_online_correction_file",
         data: { imgs: images },
@@ -55,9 +65,11 @@
           xhr.setRequestHeader("X-CSRF-Token", token);
         }
       }).done(function (data) {
-        // TODO: mandar feedback pro usuário
+        $.fancybox.close();
+        flash_message(data.notice, 'notice');
       }).fail(function(jqXHR, textStatus, data){
-        // TODO: mandar feedback pro usuário
+        $.fancybox.close();
+        flash_message(data.alert, 'alert');
       });
     });
 

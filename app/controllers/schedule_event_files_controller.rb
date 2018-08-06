@@ -47,9 +47,9 @@ class ScheduleEventFilesController < ApplicationController
     @schedule_event_file.file_correction = params[:imgs]
 
     if @schedule_event_file.save
-      render json: { success: true, notice: "Deu certo parça!!! =D" }
+      render json: { success: true, notice: t('schedule_event_files.success.file_saved') }
     else
-      render json: { success: false, alert: "Deu ruim. =(" }, status: :unprocessable_entity
+      render json: { success: false, alert: t('schedule_event_files.error.file_not_saved') }, status: :unprocessable_entity
     end
   end
 

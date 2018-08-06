@@ -183,3 +183,45 @@ function canvasArrow(context, fromX, fromY, toX, toY){
   context.stroke();
   context.restore();
 }
+
+function salving(){
+  $.fancybox.open($('#loading'));
+}
+
+function flash_message(msg, css_class, div_to_show, onclick_function, object) {
+  var div_to_show = (typeof div_to_show == "undefined" || div_to_show == '') ? $(".flash_message_wrapper:last") : $("." + div_to_show);
+  if(!div_to_show.length)
+    div_to_show = $(".flash_message_wrapper:last")
+
+  if(typeof div_to_show == "undefined"){
+    div_to_show = $(".flash_message_wrapper");
+    if(!div_to_show.parents('.undefined-sticky-wrapper').length())
+      div_to_show.height($("#flash_message").height() + 20);
+  }
+
+  erase_flash_messages();
+
+  if(typeof msg != 'undefined'){
+    if (typeof onclick_function != "undefined")
+      var onclick_function = onclick_function + "()";
+    if (typeof object != "undefined"){
+      var html = '<div id="flash_message" class="' + css_class + '" onclick='+onclick_function+'><span id="flash_message_span">' + msg + '</span><span class="close"><a onclick="javascript:erase_flash_messages(true, '+ object +');" onkeydown="javascript:click_on_keypress(event, this);" href="#"><i class="icon-cross" aria-hidden="true"></i></a></span></div>';
+    }else
+       var html = '<div id="flash_message" class="' + css_class + '" onclick='+onclick_function+'><span id="flash_message_span">' + msg + '</span><span class="close"><a onclick="javascript:erase_flash_messages(true);" onkeydown="javascript:click_on_keypress(event, this);" href="#"><i class="icon-cross" aria-hidden="true"></i></a></span></div>';
+    div_to_show.prepend($(html));
+    $("#flash_message").closest(".sticky-wrapper").css("height","40px").css("width", "auto");
+  }
+}
+
+function erase_flash_messages(focus, obj) {
+  if(focus == undefined)
+    focus = false;
+
+  if ($('#flash_message')) {
+    $('#flash_message').closest(".sticky-wrapper").css("height","0");
+    $(".flash_message_wrapper").children().remove();
+    $("#flash_message").remove();
+
+    return true;
+  }
+}

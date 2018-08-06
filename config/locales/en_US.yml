@@ -3133,7 +3133,9 @@ en_US:
       text: Text
       brush: Brush
       arrow: Arrow
+      saving_file: Saving file.
     success:
+      file_saved: File was successfully saved.
       created: File was successfully sent.
       deleted: File was successfully deleted.
     error:
@@ -3145,6 +3147,7 @@ en_US:
       attachment_file_size_too_big: File too large. The maximum size should be up to 26MB.
       wrong_type: file type is not allowed (only jpeg/png/gif images or pdfs)
       situation: Can not send files yet, because the activity was not started.
+      file_not_saved: It was not possible to save file.
 
   agendas:
     dropdown_content:
