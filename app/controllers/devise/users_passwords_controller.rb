@@ -6,6 +6,8 @@ class Devise::UsersPasswordsController < Devise::PasswordsController
     if user.blank?
       redirect_to login_path, alert: t("devise.users_passwords.not_found").html_safe
     elsif user.integrated? && !user.on_blacklist?
+      user.synchronize
+      user = User.find_by_cpf(params[:user][:cpf].delete('.-'))
       unless (user.selfregistration)
         redirect_to login_path, alert: t("users.errors.ma.selfregistration").html_safe
       else

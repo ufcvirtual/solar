@@ -144,15 +144,25 @@ class Message < ActiveRecord::Base
       OFFSET #{offset.to_i};
     SQL
 
-    UserMessage.find_by_sql <<-SQL
-      DROP TABLE IF EXISTS temp_user_messages;
-    SQL
 
     UserMessage.find_by_sql <<-SQL
       DROP TABLE IF EXISTS temp_user_messages2;
     SQL
+    UserMessage.find_by_sql <<-SQL
+      DROP TABLE IF EXISTS temp_user_messages;
+    SQL
 
     msgs
+  end
+
+  def self.get_count_unread_in_inbox(user_id, allocation_tags_ids=[], options={ ignore_user: false, ignore_at: false }, search={})
+    ats = [allocation_tags_ids].flatten.compact
+    query = []
+    query << "NOT(cast(user_messages.status & #{Message_Filter_Read} as boolean) OR cast(user_messages.status & #{Message_Filter_Sender} as boolean) OR cast(user_messages.status & #{Message_Filter_Trash} as boolean))"
+    query << "messages.allocation_tag_id IN (#{ats.join(',')})" unless ats.blank? || options[:ignore_at]
+    query << "user_messages.user_id = #{user_id}" unless options[:ignore_user]
+    query << "position(lower(unaccent('#{search[:subject]}')) in lower(unaccent(messages.subject))) > 0 " unless search[:subject].blank?
+    Message.joins(:user_messages).where(query.join(' AND ')).select("DISTINCT messages.id").count
   end
 
   def user_has_permission?(user_id)

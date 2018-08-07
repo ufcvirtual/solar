@@ -35,10 +35,6 @@ class UserBlacklist < ActiveRecord::Base
 
         return true if al.empty?
 
-        user_data = User.connect_and_import_user(self.cpf)
-
-        # even so the user can't be unbinded, if SI3 doesn't return it, it can.
-        return true if user_data.blank?
         if user_data.class == String
           errors.add(:base, user_data)
           return false

@@ -35,6 +35,11 @@
       .invisible
         %p.title_child_first= raw t('faq.answers.uab_selfregistration')
     .question
+      = link_to '#', onkeydown: 'click_on_keypress(event, this);', onclick: 'slide_info(this, event)', class: 'title' do
+        %h4.title= t('faq.questions.email_confirmation')
+      .invisible
+        %p.title_child_first= raw t('faq.answers.email_confirmation')
+    .question
       = link_to '#void', onkeydown: 'click_on_keypress(event, this);', onclick: 'slide_info(this, event)', class: 'title' do
         %h4.title= t('faq.questions.forgot_login_password_ma')
       .invisible

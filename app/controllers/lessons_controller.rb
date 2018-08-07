@@ -140,12 +140,15 @@ class LessonsController < ApplicationController
 
     render json: { success: true, notice: t('lessons.success.updated') }
   rescue ActiveRecord::RecordInvalid
-    lesson_modules_by_ats(@allocation_tags_ids)
-    groups_by_lesson(@lesson)
-    render :edit
+    unless @lesson.errors[:base].any?
+      lesson_modules_by_ats(@allocation_tags_ids)
+      groups_by_lesson(@lesson)
+      render :edit
+    else
+      render json: { success: false, alert: [@lesson.errors.full_messages, @lesson.schedule.errors.full_messages].flatten.join(',')}, status: :unprocessable_entity
+    end
   rescue => error
-    request.format = :json
-    raise error.class
+    render json: { success: false, alert: [@lesson.errors.full_messages, @lesson.schedule.errors.full_messages].flatten.join(',')}, status: :unprocessable_entity
   end
 
   def show

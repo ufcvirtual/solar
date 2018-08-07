@@ -172,6 +172,35 @@ module V1
           @groups = (params[:only_active] ? :active_groups : :groups)
         end
 
+        desc "Todas as turmas por semestre, tipo de curso, curso, disciplina e status da turma - retorna apenas os dados das turma"
+        params do
+          requires :semester, type: String
+          optional :curriculum_unit_type_id, default: 2, type: Integer
+          optional :course_id, :curriculum_unit_id, type: Integer
+          optional :course_code, :curriculum_unit_code, type: String
+          optional :only_active, default: false, type: Boolean
+          exactly_one_of :course_code, :course_id
+          exactly_one_of :curriculum_unit_code, :curriculum_unit_id
+        end
+        get :all_names , rabl: "groups/all_names" do
+          query =  ["semesters.name = :semester"]
+          query << "curriculum_units.curriculum_unit_type_id = :curriculum_unit_type_id"
+          query << if params[:course_id].present?
+           "(courses.id = :course_id)"
+          elsif params[:course_code].present?
+            "(courses.code = :course_code)"
+          end
+          query << if params[:curriculum_unit_id].present?
+           "(curriculum_units.id = :curriculum_unit_id)"
+          elsif params[:curriculum_unit_code].present?
+            "(curriculum_units.code = :curriculum_unit_code)"
+          end
+
+          offer = Offer.joins(:semester, :curriculum_unit, :course).where(query.compact.join(' AND '), params.slice(:semester, :curriculum_unit_type_id, :course_id, :course_code, :curriculum_unit_code, :curriculum_unit_id)).first
+
+          @groups = offer.send(params[:only_active] ? :active_groups : :groups) rescue []
+        end
+
       end # groups
 
       namespace :group do

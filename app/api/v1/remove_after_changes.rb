@@ -12,7 +12,7 @@ module V1
           put :allocate_user do # Receives user's cpf, group and profile to allocate
             begin
               allocation = params[:allocation]
-              user       = verify_or_create_user(allocation[:cpf])
+              user       = verify_or_create_user(allocation[:cpf], false, false, false, true)
               profile_id = get_profile_id(allocation[:perfil])
 
               raise "user #{allocation[:cpf]} doesn't exist" if user.blank? || user.id.blank?
@@ -105,11 +105,11 @@ module V1
 
                 group    = verify_or_create_group({offer_id: offer.id, code: load_group[:code], name: load_group[:name], location_name: load_group[:location_name], location_office: load_group[:location_office]})
 
-                # "main_name"=>nil, "main_curriculum_unit"=>nil, "main_course"=>nil, "main_semester"=>nil
-                # unless load_group[:main_name].blank?
-                #   main_group = get_group_by_names(load_group[:main_curriculum_unit], load_group[:main_course], load_group[:main_name], load_group[:main_semester], true)
-                #   group.update_attributes main_group_id: (main_group.blank? nil : main_group.id), status: (main_group.blank? ? group.try(:status) : false)
-                # end
+              end
+
+              unless load_group[:main_name].blank?
+                main_group = get_group_by_names(load_group[:main_curriculum_unit], load_group[:main_course], load_group[:main_name], load_group[:main_semester], true)
+                group.update_attributes main_group_id: (main_group.blank? ? nil : main_group.id), status: (main_group.blank? ? group.try(:status) : false)
               end
 
               allocate_professors(group, cpfs || [])
@@ -140,7 +140,7 @@ module V1
               begin
                 create_allocations(@groups.compact, @user, @student_profile)
 
-                raise ActiveRecord::RecordNotFound if @groups.include?(nil)
+                raise ActiveRecord::RecordNotFound if @groups.collect{ |r| r[0] }.flatten.include?(nil)
 
                 { ok: :ok }
               end
@@ -151,7 +151,7 @@ module V1
               begin
                 cancel_allocations(@groups.compact, @user, @student_profile)
 
-                raise ActiveRecord::RecordNotFound if @groups.include?(nil)
+                raise ActiveRecord::RecordNotFound if @groups.collect{ |r| r[0] }.flatten.include?(nil)
 
                 { ok: :ok }
               end

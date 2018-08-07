@@ -1660,7 +1660,7 @@ en_US:
       updated: 'Your password was changed successfully. You are now signed in.'
       updated_not_active: 'Your password was changed successfully.'
       send_paranoid_instructions: "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
-      ma_request: "To recover your access data, go to the address: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
+      ma_request: "Your SI3 data was synchronized. If you still don't have access, to recover your data, go to the address: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
       not_found: No user was found with informed CPF. Register yourself at 'Sign Up' tab.
       no_email: There is no email registered to the informed CPF. Contact atendimento@virtual.ufc.br informing your CPF, complete name, birthdate and email to save at the system.
     password:
@@ -2474,6 +2474,8 @@ en_US:
       same_type_af: must have same value at 'Final Exam'
       details: See description
       details_about: Access description about %{name}
+      errors:
+        offer_period: Offer already ended
     tools:
       expand: Expand
       compress: Compress
@@ -4460,6 +4462,7 @@ en_US:
       event_frequency: "can't be defined, Reccess or Holiday events can't be frequency."
       same_type: 'Must have same type of equivalency'
       same_type_af: must have same value at 'Final Exam'
+      offer_period: Offer already ended
     success:
       manage: Activities managed successfully.
     warnings:
@@ -4496,8 +4499,8 @@ en_US:
       whats_solar: 'What is Solar?'
       whats_ava: 'What is a LMS?'
       uab_forgot_login_password: "I'm a UAB student or professor and I don't remember my username or password. What should I do?"
-      forgot_login_password_ma: "I don't remember my username or password, but I have access to Sigaa. What should I do?"
-      forgot_login_password_sync1: "I can't remember my username or password and also don't have access to Sigaa. What should I do?"
+      forgot_login_password_ma: "I don't remember my username or password, but I am registered at Sigaa. What should I do?"
+      forgot_login_password_sync1: "I can't remember my username or password and also I'm not registered at Sigaa. What should I do?"
       forgot_login_password_sync2: "I've tryed to register or recover my password, but my data was imported from Sigaa and I don't have access to it."
       forgot_login_password_sync3: "I've tryed recover my password, but I've received a message directing me to Sigaa, but I don't have access to it. What should I do?"
       forgot_login_password: 'Forgot my username and/or password.'
@@ -4534,6 +4537,7 @@ en_US:
       error: "I'm responsible for a subject and a student assignment is blank. Can be a system error?"
       cant_find_faq: "I've not found my doubt at this FAQ."
       uab_selfregistration: "What's Sigaa's selfregistration? How do I do it?"
+      email_confirmation: "I've made my selfregistration, how do I use Solar?"
     answers:
       whats_solar: "Solar 2.0 is a LMS, learning management system, developed by Virtual UFC Institute (Instituto UFC Virtual), of Federal University of Ceará (Universidade Federal do Ceará). <br/> It is oriented to the teacher and the student, allowing the publication of courses and interaction with them. It was developed to enhance the learning from the relationship with its own graphical user interface environment, so that the user has access to various learning tools and content sharing. <br/> The system is supported by a philosophy of interaction and not of control"
       whats_ava: "LMS - Learning Management Systems are softwares available online which allow the realization of web-courses or even the help and complement of classroom courses by the web."
@@ -4578,6 +4582,7 @@ en_US:
       error: "Solar 2.0 doesn't make changes at previously files sent by it's users without informing them or without authorization. Therefore, if student's assignment is blank, we suggest that you get in touch with him and ask him to send again the right file."
       cant_find_faq: "Get in touch with atendimento@virtual.ufc.br explaining your situation. Remember of inform: <br/> ‣ Name <br/> ‣ Cpf <br/> ‣ Email<br/> ‣ The most information you can get about what have happened. If possible, images (print screens) too."
       uab_selfregistration: "All data that used to exist at Modulo Academico, previous academic system used by UAB, were transfered to Sigaa, current academic system. Therefore, were transfered, among others, user's data, student's and teatcher's. However, access data could not be transfered due to avoid conflicts with existing sigaa's users. For this reason, every user that used to exist at Modulo Academico have to do a selfregistration at Sigaa and confirm your email so they can define their new access data such as username and password. <br/> <br/> To do your selfregistration, just access <a href='https://si3.ufc.br/sigaa/public/cadastro/discente.jsf' target='_blank'>https://si3.ufc.br/sigaa/public/cadastro/discente.jsf</a> and type your cpf, complete name and birthdate such as it was registered at Modulo Academico and, also, inform an email, a username and a password. You can, if you want to, use the same email, username and password that you used at Modulo Academico. If they are already in use by another user or doesn't match the new rules, the system will not save and will throw you an error so you can choose new data."
+      email_confirmation: "Once your SIGAA's selfregistration is done, you have to access the informed email and click on the registration's confirmation link. <br/> In case you didn't received the email or have deleted it, is possible to request for it by the following url <a href='https://si3.ufc.br/admin/public/recuperar_codigo.jsf' target='_blank'>https://si3.ufc.br/admin/public/recuperar_codigo.jsf</a>. <br/>Remember of checking the spam box!<br/> Once your registration is confirmed, you can access Solar with the same username and password used at SIGAA."
   ckeditor:
     confirms:
       question: "Do you want to remove the blank items?"

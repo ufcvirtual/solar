@@ -64,8 +64,7 @@ class User < ActiveRecord::Base
   validates :name, presence: true, length: { within: 6..200 }
   validates :nick, presence: true, length: { within: 3..34 }
   validates :birthdate, presence: true
-  validates :username, presence: true, length: { maximum: 20 }, uniqueness: {case_sensitive: false}
-  validates :username, length: { minimum: 3 }, format: { with: /\A[_.a-zA-Z0-9\-]+\Z/ }, unless: Proc.new{ |a| !a.on_blacklist? && a.integrated? && (a.synchronizing.nil? || a.synchronizing) }
+  validates :username, presence: true, length: { maximum: 20, minimum: 3 }, uniqueness: {case_sensitive: false}, format: { with: /\A[_.a-zA-Z0-9\-]+\Z/ }, unless: Proc.new{ |a| !a.on_blacklist? && a.integrated? && (a.synchronizing.nil? || a.synchronizing) }
 
   validates :password, presence: true, confirmation: true, length: { minimum: 6, maximum: 120 }, unless: Proc.new { |a| !a.encrypted_password.blank? || (a.integrated? && !a.on_blacklist?) }
   # validates :alternate_email, format: { with: email_format }, uniqueness: {case_sensitive: false}, unless: 'alternate_email.blank?'
@@ -643,11 +642,12 @@ class User < ActiveRecord::Base
 
       self.synchronizing = true
       ma_attributes.merge!({encrypted_password: encrypted_password}) if ma_attributes[:encrypted_password].blank? && ma_attributes[:password].blank?
+
       self.attributes = attributes.merge!(ma_attributes).except('id')
 
-      raise "username in use #{ma_attributes}, can't replace" unless verify_column(self, 'username')
+      raise "username in use #{ma_attributes}, can't replace" unless username_was == ma_attributes[:username] || verify_column(self, 'username')
       unless email.blank?
-        raise "email in use #{ma_attributes}, can't replace" unless verify_column(self, 'email')
+        raise "email in use #{ma_attributes}, can't replace" unless email_was == ma_attributes[:email] || verify_column(self, 'email')
       end
 
       set_previous
@@ -661,7 +661,7 @@ class User < ActiveRecord::Base
 
       return true
     else
-      if integrated && UserBlacklist.related_with_uab(cpf)
+      if integrated && !UserBlacklist.related_with_uab(cpf)
         self.integrated = false
         save(validate: false)
 
@@ -735,6 +735,18 @@ class User < ActiveRecord::Base
 
   end
 
+  def self.import_user_by_username(username)
+    user_data = User.connect_and_import_by_username(username) # try to import
+
+    tmp_user = User.where(cpf: user_data[0]).first
+    tmp_user = tmp_user.nil? ? User.new(cpf: user_data[0]) : tmp_user
+
+    tmp_user.synchronize(user_data) # synchronize user with new Sigaa data
+    return User.find_by_username(username)
+  rescue
+    return nil
+  end
+
   def self.user_ma_attributes(user_data)
     data = { name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == 'M'), cell_phone: user_data[17], nick: (user_data[7].nil? ? ([user_data[2].split(' ')[0], user_data[2].split(' ')[1]].join(' ')) : user_data[7]), telephone: user_data[18], special_needs: ((user_data[19].blank? || user_data[19].downcase == 'nenhuma') ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13], address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]), email: user_data[8], integrated: true }
 
@@ -758,6 +770,27 @@ class User < ActiveRecord::Base
       client    = Savon.client wsdl: MODULO_ACADEMICO['wsdl'] if client.nil?
       response  = client.call(MODULO_ACADEMICO['methods']['user']['import'].to_sym, message: { cpf: cpf }) # import user
       user_data = response.to_hash[:importar_usuario_response][:importar_usuario_result]
+      return (user_data.nil? ? nil : user_data[:string])
+    rescue HTTPClient::ConnectTimeoutError # if MA don't respond (timeout)
+      if raise_error
+        raise I18n.t('users.errors.ma.cant_connect')
+      else
+        return I18n.t('users.errors.ma.cant_connect')
+      end
+    rescue => error
+      if raise_error
+        raise I18n.t('users.errors.ma.problem_accessing')
+      else
+        return I18n.t('users.errors.ma.problem_accessing')
+      end
+    end
+  end
+
+  def self.connect_and_import_by_username(username, client = nil, raise_error=false)
+    begin
+      client    = Savon.client wsdl: MODULO_ACADEMICO['wsdl'] if client.nil?
+      response  = client.call(MODULO_ACADEMICO['methods']['user']['import_by_username'].to_sym, message: { login: username }) # import user
+      user_data = response.to_hash[:importar_usuario_login_response][:importar_usuario_login_result]
       return (user_data.nil? ? nil : user_data[:string])
     rescue HTTPClient::ConnectTimeoutError # if MA don't respond (timeout)
       if raise_error
@@ -978,10 +1011,11 @@ class User < ActiveRecord::Base
 
     def verify_column(user, column)
       same_column = User.where("lower(#{column}) = '#{user.send(column.to_sym).try(:downcase)}' AND users.cpf != '#{user.cpf}'")
+      same_column.delete_if{|user| user.integrated && !user.on_blacklist?}
       # ver se tem mais de um usuario com esse login
       if same_column.any?
         # se sim, é integrado e não tá na blacklist?
-        if user.integrated && !user.on_blacklist? && selfregistration
+        if user.integrated && !user.on_blacklist? && user.selfregistration
           # altera todos os outros
           same_column.map{|u| u.send("change_#{column}".to_sym)}
         # não é integrado ou tá na blacklist?
