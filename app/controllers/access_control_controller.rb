@@ -107,6 +107,11 @@ class AccessControlController < ApplicationController
     download_file(File.join('ckeditor', 'attachments'))
   end
 
+  def online_correction_files
+    file = ScheduleEventFile.find(params[:id])
+    send_file file.attachment.path, filename: file.attachment_file_name, disposition: 'inline'
+  end
+
   #def post
   #end
 
