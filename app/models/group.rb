@@ -143,8 +143,7 @@ class Group < ActiveRecord::Base
 
   def self.management_groups
     codes_file_uab = YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["uab_courses"]["code"]
-    # code_courses_uab = codes_file_uab.split(";")
-    code_courses_uab = ['202']
+    code_courses_uab = codes_file_uab.split(";")
 
     offers_to_manage = []
     groups_to_manage = []
