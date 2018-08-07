@@ -3157,9 +3157,19 @@ en_US:
       sent_on: Sent on
       sent_by: Sent by
       title_alt: "Access grade/frequency, files and comments to %{tool} (%{files} files e %{comments} comments)"
+      online_correction: Online correction
     files:
       delete: Remove file
+      correction_file: Exam online correction
+    online_correction:
+      tools: Tools
+      hand: Hand
+      text: Text
+      brush: Brush
+      arrow: Arrow
+      saving_file: Saving file.
     success:
+      file_saved: File was successfully saved.
       created: File was successfully sent.
       deleted: File was successfully deleted.
     error:
@@ -3171,6 +3181,7 @@ en_US:
       attachment_file_size_too_big: File too large. The maximum size should be up to 26MB.
       wrong_type: file type is not allowed (only jpeg/png/gif images or pdfs)
       situation: Can not send files yet, because the activity was not started.
+      file_not_saved: It was not possible to save file.
 
   agendas:
     dropdown_content:

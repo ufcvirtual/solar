@@ -66,10 +66,8 @@ class OffersController < ApplicationController
   def update
     @type_id =  params[:offer][:type_id].to_i
     @offer   = Offer.find(params[:id])
-
     optional_authorize(:update)
     update_offer_activities(@offer)
-
     if @offer.update_attributes(offer_params)
       render json: { success: true, notice: t(:updated, scope: [:offers, :success]) }
     else
@@ -179,7 +177,6 @@ class OffersController < ApplicationController
           end
 
           if ['Webconference'].include? al.academic_tool_type
-
             if act.initial_time < param_off_start_date
               act.initial_time = Time.new(param_off_start_date.year, param_off_start_date.month, param_off_start_date.day, act.initial_time.hour, act.initial_time.min, act.initial_time.sec)
             end
@@ -256,7 +253,6 @@ class OffersController < ApplicationController
               activities_to_save << act
             end
           end
-
         end
 
         unless activities_to_save.blank?
@@ -266,13 +262,11 @@ class OffersController < ApplicationController
             end
           end
         end
-
         unless activities_to_email.blank?
           Notifier.send_mail(related_users_emails, "Alteração do Período da(s) Atividade(s)", email_template(activities_to_email), []).deliver
         end
 
       end
-
     end
 
     def msg_template(activities)

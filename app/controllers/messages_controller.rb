@@ -238,11 +238,11 @@ class MessagesController < ApplicationController
     @message = Message.new
     @message.files.build
     @unreads = Message.unreads(current_user.id, @allocation_tag_id)
-    
+
     unless params[:id].nil?
-      users = User.find(params[:id].split(",")) 
+      users = User.find(params[:id].split(","))
       @reply_to_many = users.size > 0 ? users.map{|u| u.to_msg} : nil
-  
+
       @reply_to = [User.find(params[:id]).to_msg]
     end
 

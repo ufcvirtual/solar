@@ -242,9 +242,7 @@ class SemestersController < ApplicationController
                 activities_to_email[al.academic_tool_type] << act
                 activities_to_save << act
               end
-
             end
-
           end
 
           unless activities_to_save.blank?
@@ -254,15 +252,11 @@ class SemestersController < ApplicationController
               end
             end
           end
-
           unless activities_to_email.blank?
             Notifier.send_mail(related_users_emails, "Alteração do Período da(s) Atividade(s)", email_template(activities_to_email), []).deliver
           end
-
         end
-
       end
-
     end
 
     def msg_template(activities)

@@ -1,0 +1,137 @@
+/* Fontes e ícones */
+@import "fonts/fonts";
+@import "fonts/icons";
+
+@import "modules/variables";
+@import "themes/variables/theme_blue";
+@import "partials/base";
+@import "partials/alerts";
+
+#topbar {
+  background-color: $color_main_mysolar;
+  height: $mysolar_topbar_height;
+  margin: 0;
+  width: 100%;
+}
+
+.container-topbar {
+  box-sizing: border-box;
+  width: 980px;
+}
+
+.topbar-options {
+  li {
+    color: $color_white_base_link;
+    display: inline-block;
+    float: right;
+    line-height: $mysolar_topbar_height;
+    padding: 3px 6px 0 6px;
+    vertical-align: middle;
+    /* necessario para funcionar ok no IE7 */
+    /*    zoom: 1;
+    *display: inline;*/
+    a {
+      color: $color_white_base_link;
+    }
+  }
+}
+
+#user, #tools, #save {
+  padding-right: 30px;
+}
+
+#solar_logo {
+  padding-top: 4px;
+  padding-left: 5px;
+}
+
+#image_user {
+  height: 30px;
+  width: 30px;
+  float: left;
+  margin-right: 7px;
+}
+
+#loading{
+  text-align: center;
+  display: none;
+}
+
+#box-tools {
+  display: none;
+  position: absolute;
+  z-index: 100;
+  color: $color_main;
+  background-color: $color_white_base;
+  border: 2px solid $color_contrast;
+  line-height: $mysolar_topbar_height;
+  text-align: center;
+  width: 120px;
+}
+
+#box-tools-header {
+  padding: 10px;
+  cursor: move;
+  z-index: 100;
+  color: $color_white;
+  background-color: $color_main_mysolar;
+}
+
+.submenu {
+  position: absolute;
+  top: $mysolar_topbar_height;
+  z-index: 100;
+  display: none;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+  border-right: 2px solid;
+  border-top: 0;
+  padding-left: 5px;
+  overflow: hidden;
+  color: $color_main;
+  background-color: $color_white_base;
+  border-bottom-color: $color_contrast;
+  border-left-color: $color_contrast;
+  border-right-color: $color_contrast;
+  width: 120px;
+
+  li {
+    width: 100%;
+    display: block;
+    text-align: left;
+
+    a{
+      width: 100%;
+      float: left;
+      color: $color_black;
+
+      i {
+        padding: 5px;
+        vertical-align: top;
+      }
+    }
+  }
+}
+
+.container,
+.container-topbar {
+  margin-left: 25%;
+}
+
+.solar-logo {
+  float: left;
+}
+
+.close {
+    color: $color_gray_light;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: $color_black;
+    text-decoration: none;
+    cursor: pointer;
+}
