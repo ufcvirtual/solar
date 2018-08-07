@@ -7,7 +7,7 @@
     = stylesheet_link_tag "application", "jquery.fancybox3.min", "online_correction_files", "viewer"
     = javascript_include_tag 'jquery-3.3.1.min', 'jquery.fancybox3.min', 'pdfjs/pdf', 'online_correction_files'
     = csrf_meta_tag
-  %body
+  %body{oncontextmenu: "return false;"}
     %header#topbar
       .container-topbar
         .solar-logo
@@ -18,6 +18,10 @@
           %li#tools
             %a{href: "#", onclick: "submenuToggle()"}= t(".tools")
             %ul.submenu
+              %li
+                %a#hand-tool{href: "#", onclick: "toolChanger(event, this)"}
+                  %i.icon-hand
+                  = t(".hand")
               %li
                 %a#text-tool{href: "#", onclick: "toolChanger(event, this)"}
                   %i.icon-write
@@ -35,6 +39,24 @@
               #flash_message{ class: name }
                 = content_tag(:span, msg, id: "flash_message_span")
                 = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: "erase_flash_messages(true)", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
+
+    #box-tools
+      #box-tools-header
+        = t(".tools")
+      %ul
+        %li
+          %a#hand-tool{href: "#void", onclick: "toolChanger(event, this)"}
+            %i.icon-hand
+            = t(".hand")
+        %li
+          %a#text-tool{href: "#void", onclick: "toolChanger(event, this)"}
+            %i.icon-write
+            = t(".text")
+        %li
+          %a#brush-tool{href: "#void", onclick: "toolChanger(event, this)"}
+            %i.icon-pencil
+            = t(".brush")
+
     %main.container
 
     #loading

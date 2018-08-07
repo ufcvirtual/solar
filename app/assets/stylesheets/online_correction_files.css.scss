@@ -57,6 +57,26 @@
   display: none;
 }
 
+#box-tools {
+  display: none;
+  position: absolute;
+  z-index: 100;
+  color: $color_main;
+  background-color: $color_white_base;
+  border: 2px solid $color_contrast;
+  line-height: $mysolar_topbar_height;
+  text-align: center;
+  width: 120px;
+}
+
+#box-tools-header {
+  padding: 10px;
+  cursor: move;
+  z-index: 100;
+  color: $color_white;
+  background-color: $color_main_mysolar;
+}
+
 .submenu {
   position: absolute;
   top: $mysolar_topbar_height;

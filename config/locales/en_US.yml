@@ -3130,6 +3130,7 @@ en_US:
       correction_file: Exam online correction
     online_correction:
       tools: Tools
+      hand: Hand
       text: Text
       brush: Brush
       arrow: Arrow

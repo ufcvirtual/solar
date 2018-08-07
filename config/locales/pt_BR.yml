@@ -3380,6 +3380,7 @@ pt_BR:
       correction_file: Correção de prova online
     online_correction:
       tools: "Ferramentas"
+      hand: "Mão"
       text: "Texto"
       brush: "Pincel"
       arrow: "Flecha"

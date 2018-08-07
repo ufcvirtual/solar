@@ -11,15 +11,20 @@ function submenuToggle(){
 }
 
 function toolChanger(event, element) {
-  if (element.id == 'brush-tool') {
-    currentTool = 'brush';
+  if (element.id == 'hand-tool') {
+    currentTool = 'hand';
   }
 
   if (element.id == 'text-tool') {
     currentTool = 'text';
   }
 
+  if (element.id == 'brush-tool') {
+    currentTool = 'brush';
+  }
+
   $("#tools").find(".submenu").slideUp(150);
+  $("#box-tools").hide(150);
 }
 
 function getToolSelected() {
@@ -31,14 +36,17 @@ function write(canvas, context) {
   var clickY = [];
   var clickDrag = [];
   var currentTool = getToolSelected();
-  var pen_touching_paper = false;
+  var dragging_through_paper = false;
 
   switch (currentTool) {
-    case 'brush':
-      canvas.style.cursor = 'crosshair';
+    case 'hand':
+      canvas.style.cursor = 'grab';
       break;
     case 'text':
       canvas.style.cursor = 'text';
+      break;
+    case 'brush':
+      canvas.style.cursor = 'crosshair';
       break;
     default:
       canvas.style.cursor = 'default';
@@ -54,8 +62,8 @@ function write(canvas, context) {
 
       addClick(mouseX, mouseY);
 
-      if (getToolSelected() == 'brush') {
-        pen_touching_paper = true;
+      if (getToolSelected() == 'hand') {
+        dragging_through_paper = true;
         drawScreen(context, clickX, clickY, clickDrag, currentTool);
       }
 
@@ -69,17 +77,33 @@ function write(canvas, context) {
 
         $(canvas).closest('div').append(box_text);
       }
+
+      if (getToolSelected() == 'brush') {
+        dragging_through_paper = true;
+        drawScreen(context, clickX, clickY, clickDrag, currentTool);
+      }
     }
 
     if (keynum == 3) { // Right mouse button is pressed
-      // TODO: abrir caixa de ferramentas ao clicar com o botão direito do mouse
+      var toolsBox = document.querySelector("#box-tools");
+      $(toolsBox).css({"top": mouseY + $(canvas).offset().top, "left": mouseX + $(canvas).offset().left}).show();
+      dragElement(toolsBox);
     }
   };
 
   canvas.onmousemove = function(event){
-    if(pen_touching_paper && getToolSelected() == 'brush'){
-      var mouseX = event.pageX - $(this).offset().left;
-      var mouseY = event.pageY - $(this).offset().top;
+    if(dragging_through_paper && getToolSelected() == 'brush'){
+      let mouseX = event.pageX - $(this).offset().left;
+      let mouseY = event.pageY - $(this).offset().top;
+
+      addClick(mouseX, mouseY, true);
+      drawScreen(context, clickX, clickY, clickDrag, currentTool);
+    }
+
+    if(dragging_through_paper && getToolSelected() == 'hand'){
+      canvas.style.cursor = 'grabbing';
+      let mouseX = event.pageX - $(this).offset().left;
+      let mouseY = event.pageY - $(this).offset().top;
 
       addClick(mouseX, mouseY, true);
       drawScreen(context, clickX, clickY, clickDrag, currentTool);
@@ -87,7 +111,10 @@ function write(canvas, context) {
   };
 
   canvas.onmouseup = function(event){
-    pen_touching_paper = false;
+    dragging_through_paper = false;
+    if (getToolSelected() == 'hand') {
+      canvas.style.cursor = 'grab';
+    }
   };
 
   function addClick(x, y, dragging){
@@ -98,12 +125,17 @@ function write(canvas, context) {
 }
 
 function drawScreen(context, clickX, clickY, clickDrag, currentTool, message){
-  if (currentTool == 'brush') {
-    canvasPaint(context, clickX, clickY, clickDrag);
-  }
-
-  if (currentTool == 'text') {
-    canvasText(context, clickX, clickY, message);
+  switch (currentTool) {
+    case 'hand':
+      canvasHand(context, clickX, clickY, clickDrag);
+      break;
+    case 'text':
+      canvasText(context, clickX, clickY, message);
+      break;
+    case 'brush':
+      canvasBrush(context, clickX, clickY, clickDrag);
+      break;
+    // default:
   }
 }
 
@@ -120,7 +152,7 @@ function closeDiv(event, element) {
   $(element).closest('div').remove();
 }
 
-function canvasPaint(context, clickX, clickY, clickDrag) {
+function canvasBrush(context, clickX, clickY, clickDrag) {
   context.save();
   context.strokeStyle = "#000000";
   context.lineJoin = "round";
@@ -141,6 +173,17 @@ function canvasPaint(context, clickX, clickY, clickDrag) {
   }
 
   context.restore();
+}
+
+function canvasHand(context, clickX, clickY, clickDrag) {
+  var canvas = context.canvas;
+
+  for(var i=0; i < clickX.length; i++) {
+
+    if(clickDrag[i] && i){
+      $(window).scrollTop($(window).scrollTop() + (clickY[i-1] - clickY[i]));
+    }
+  }
 }
 
 function canvasText(context, clickX, clickY, message) {
@@ -204,11 +247,10 @@ function flash_message(msg, css_class, div_to_show, onclick_function, object) {
   if(typeof msg != 'undefined'){
     if (typeof onclick_function != "undefined")
       var onclick_function = onclick_function + "()";
-    if (typeof object != "undefined"){
-      var html = '<div id="flash_message" class="' + css_class + '" onclick='+onclick_function+'><span id="flash_message_span">' + msg + '</span><span class="close"><a onclick="javascript:erase_flash_messages(true, '+ object +');" onkeydown="javascript:click_on_keypress(event, this);" href="#"><i class="icon-cross" aria-hidden="true"></i></a></span></div>';
-    }else
-       var html = '<div id="flash_message" class="' + css_class + '" onclick='+onclick_function+'><span id="flash_message_span">' + msg + '</span><span class="close"><a onclick="javascript:erase_flash_messages(true);" onkeydown="javascript:click_on_keypress(event, this);" href="#"><i class="icon-cross" aria-hidden="true"></i></a></span></div>';
+
+    var html = '<div id="flash_message" class="' + css_class + '" onclick='+onclick_function+'><span id="flash_message_span">' + msg + '</span><span class="close"><a onclick="javascript:erase_flash_messages(true);" onkeydown="javascript:click_on_keypress(event, this);" href="#void"><i class="icon-cross" aria-hidden="true"></i></a></span></div>';
     div_to_show.prepend($(html));
+
     $("#flash_message").closest(".sticky-wrapper").css("height","40px").css("width", "auto");
   }
 }
@@ -223,5 +265,50 @@ function erase_flash_messages(focus, obj) {
     $("#flash_message").remove();
 
     return true;
+  }
+}
+
+function dragElement(element) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(element.id + "-header")) {
+    /* if present, the header is where you move the DIV from:*/
+    document.getElementById(element.id + "-header").onmousedown = dragMouseDown;
+  } else {
+    /* otherwise, move the DIV from anywhere inside the DIV:*/
+    element.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(event) {
+    event = event || window.event;
+    event.preventDefault();
+
+    // get the mouse cursor position at startup:
+    pos3 = event.clientX;
+    pos4 = event.clientY;
+    document.onmouseup = closeDragElement;
+
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(event) {
+    event = event || window.event;
+    event.preventDefault();
+
+    // calculate the new cursor position:
+    pos1 = pos3 - event.clientX;
+    pos2 = pos4 - event.clientY;
+    pos3 = event.clientX;
+    pos4 = event.clientY;
+
+    // set the element's new position:
+    element.style.top = (element.offsetTop - pos2) + "px";
+    element.style.left = (element.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    /* stop moving when mouse button is released:*/
+    document.onmouseup = null;
+    document.onmousemove = null;
   }
 }
