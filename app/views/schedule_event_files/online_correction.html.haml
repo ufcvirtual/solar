@@ -95,60 +95,9 @@
       });
     });
 
-    PDFJS.getDocument(url).then(function(pdf){
-      // Get main#container and cache it for later use
-      var container = document.querySelector("main");
-
-      // Loop from 1 to total_number_of_pages in PDF document
-      for (var i = 1; i <= pdf.numPages; i++) {
-        // Get desired page
-        pdf.getPage(i).then(function(page) {
-          var scale = 1.5; // Set scale (zoom) level
-          var viewport = page.getViewport(scale); // Get viewport (dimensions)
-
-          var div = document.createElement("div"); // Create div where the page will be rendered
-          div.setAttribute("id", "page-" + (page.pageIndex + 1)); // Set id attribute with page-pdf_page_number format
-          div.setAttribute("style", "position: relative"); // This will keep positions of child elements as per our needs
-          container.appendChild(div); // Append div within main#container
-
-          var canvas = document.createElement("canvas"); // Create a new Canvas element
-          canvas.setAttribute('id', "canvas-" + (page.pageIndex + 1)); // Set ID for the Canvas element
-          div.appendChild(canvas); // Append Canvas within div#page-pdf_page_number
-
-          var context = canvas.getContext('2d'); // Fetch canvas 2d context
-          canvas.height = viewport.height; // Set height dimension to Canvas
-          canvas.width = viewport.width; // Set width dimension to Canvas
-
-          // Prepare object needed by render method
-          var renderContext = {
-            canvasContext: context,
-            viewport: viewport
-          };
-
-          // Render PDF page
-          page.render(renderContext)
-            .then(function(){
-              if(editions_by_user != null){
-                $("main").find("canvas").each(function(index, canvas){
-                  var img = new Image();
-                  img.src = editions_by_user[canvas.id];
-
-                  img.onload = function () {
-                    canvas.getContext('2d').drawImage(img, 0, 0);
-                  };
-                });
-              }
-
-              $("canvas").mouseover(function(event){
-                var canvasID = "#" + $(this).attr('id');
-
-                var canvas = document.querySelector(canvasID);
-                var context = canvas.getContext('2d');
-
-                write(canvas, context);
-              });
-            });
-        });
-      }
-    });
+    if( url.search("pdf") == -1) {
+      renderImage(url, editions_by_user);
+    } else {
+      renderPDF(url, editions_by_user);
+    }
   });

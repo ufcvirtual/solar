@@ -4,6 +4,7 @@
 
 @import "modules/variables";
 @import "themes/variables/theme_blue";
+@import "partials/reset";
 @import "partials/base";
 @import "partials/alerts";
 
@@ -36,7 +37,7 @@
   }
 }
 
-#user, #tools, #save {
+#user, #tools, #download, #save {
   padding-right: 30px;
 }
 
@@ -50,11 +51,6 @@
   width: 30px;
   float: left;
   margin-right: 7px;
-}
-
-#loading{
-  text-align: center;
-  display: none;
 }
 
 #box-tools {
