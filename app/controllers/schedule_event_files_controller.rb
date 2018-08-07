@@ -35,14 +35,14 @@ class ScheduleEventFilesController < ApplicationController
   end
 
   def online_correction
-    # authorize! :online_correction, ScheduleEventFile, on: active_tab[:url][:allocation_tag_id]
+    authorize! :online_correction, ScheduleEventFile, on: active_tab[:url][:allocation_tag_id]
     @canvas_data = ScheduleEventFile.find(params[:id]).file_correction.to_json
     extension = params[:extension].split('/').last
     @file_path = get_file_path(id: params[:id], file: params[:file], extension: extension)
   end
 
   def save_online_correction_file
-    # authorize! :save_online_correction_file, ScheduleEventFile, on: active_tab[:url][:allocation_tag_id]
+    authorize! :online_correction, ScheduleEventFile, on: active_tab[:url][:allocation_tag_id]
     @schedule_event_file = ScheduleEventFile.find(params[:id])
     @schedule_event_file.file_correction = params[:imgs]
 
