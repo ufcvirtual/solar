@@ -1239,3 +1239,9 @@ res236:
   controller: 'schedule_events'
   action: 'print_presential_test'
   description: 'Botão de imprimir provas presenciais'
+
+res237:
+  id: 237
+  controller: 'schedule_event_files'
+  action: 'online_correction'
+  description: 'Correção online de Provas'

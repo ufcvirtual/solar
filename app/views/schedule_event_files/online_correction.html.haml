@@ -128,14 +128,16 @@
           // Render PDF page
           page.render(renderContext)
             .then(function(){
-              $("main").find("canvas").each(function(index, canvas){
-                var img = new Image();
-                img.src = editions_by_user[canvas.id];
+              if(editions_by_user != null){
+                $("main").find("canvas").each(function(index, canvas){
+                  var img = new Image();
+                  img.src = editions_by_user[canvas.id];
 
-                img.onload = function () {
-                  canvas.getContext('2d').drawImage(img, 0, 0);
-                };
-              });
+                  img.onload = function () {
+                    canvas.getContext('2d').drawImage(img, 0, 0);
+                  };
+                });
+              }
 
               $("canvas").mouseover(function(event){
                 var canvasID = "#" + $(this).attr('id');
