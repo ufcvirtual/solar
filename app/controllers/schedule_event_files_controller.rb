@@ -10,7 +10,9 @@ class ScheduleEventFilesController < ApplicationController
   layout false
 
   def new
-    if ['not_started', 'to_send'].include?(params[:situation])
+    check_end_offer = @ac.allocation_tag.offers.any? { |offer| Time.new > offer.end_date }
+    check_activity_not_started = Time.new < ScheduleEvent.find(params[:tool_id]).schedule.start_date
+    if check_activity_not_started || check_end_offer
       render json: { alert: t('schedule_event_files.error.situation') }, status: :unprocessable_entity
     else
       academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], params[:student_id])
