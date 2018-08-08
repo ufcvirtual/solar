@@ -797,6 +797,7 @@ pt_BR:
   verify: "Verificar"
   back: "Voltar"
   save: "Salvar"
+  download: "Baixar"
   continue: "Próximo"
   edit: "Editar"
   show: "Visualizar"
@@ -3400,6 +3401,7 @@ pt_BR:
       sent_on: Enviado em
       sent_by: Enviado por
       summary_files: Arquivos enviados pelo tutor
+      online_correction: Correção online
     summary:
       title: "Arquivos para %{user} em %{tool}"
       name: Nome

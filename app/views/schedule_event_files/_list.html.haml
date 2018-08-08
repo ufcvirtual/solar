@@ -16,6 +16,8 @@
           %th.center{id: "size_file" }= t('.size')
           %th.date_column.center{id: "sent_on_file" }= t('.sent_on')
           %th.date_column.center{id: "sent_by_file" }= t('.sent_by')
+          - if (can?(:online_correction, ScheduleEventFile, on: [@allocation_tag_id]) && @allocation_tag_id.class != Array)
+            %th.no_sort.center{id: "correction_file" }= t('.online_correction')
           - if (can?(:create, ScheduleEventFile, on: [@allocation_tag_id]) && @allocation_tag_id.class != Array)
             %th.no_sort{id: "delete_file" }
               .visuallyhidden=t("schedule_event_files.file.delete")

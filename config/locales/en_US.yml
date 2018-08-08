@@ -657,6 +657,7 @@ en_US:
   verify: "Verify"
   back: "Back"
   save: "Save"
+  download: "Download"
   continue: "Continue"
   edit: "Edit"
   show: "View"
@@ -3150,6 +3151,7 @@ en_US:
       sent_on: Sent on
       sent_by: Sent by
       summary_files: Files sent by the tutor
+      online_correction: Online correction
     summary:
       title: "Files to %{user} at %{tool}"
       name: Name
