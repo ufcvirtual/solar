@@ -1652,6 +1652,7 @@ pt_BR:
       acu: Não é possível remover a gravação ou webconferência, pois há alunos avaliados/com comentários.
     preview:
       delete_record: Remover gravação
+      report: Relatório webconferências (UAB)
       placeholder: Digite qualquer valor a ser buscado na tabela desta página
       search: Busca
       location: Localização
@@ -1674,9 +1675,9 @@ pt_BR:
       access_web_recording: Acessar %{name} da webconferência (abrirá uma nova janela)
       summary: Tabela cujo conteúdo há links de acesso às webconferências, com seus dados de moderação, compartilhamento entre turmas, equivalências, data e horário, nota, frequência, situação, quantidade de usuários online e link para acessar gravação.
       accessibility_title: <b>Acessibilidade (acesso com leitor de tela)</b>
-      accessibility: "<p> Para participar da webconferência utilizando leitores de tela, recomendamos a versão mais recente do navegador <strong>Mozilla Firefox</strong> (com o plugin flash-player atualizado) e os seguintes leitores de tela: <strong>NVDA ou Window-eyes.</strong> </p><p> O carregamento de todos os componentes da ferramenta leva aproximadamente <strong>10 segundos</strong>. Você ouvirá um 'bip' quando tudo estiver pronto. </p>"
+      accessibility: "<p> Para participar da webconferência utilizando leitores de tela, recomendamos a versão mais recente do navegador e os seguintes leitores de tela: <strong><a href='http://docs.bigbluebutton.org/html/html5-accessibility.html#nvda' target='_blank'>NVDA</a> ou <a href='http://docs.bigbluebutton.org/html/html5-accessibility.html#jaws' target='_blank'>JAWS</a>.</strong> </p>"
       information_title: <b>Informações básicas</b>
-      information: "<p> Para participar da webconferência, seu computador deve ter, no mínimo, um processador dual-core com pelo menos 2G de memória, uma conexão de 1 Mbits de download e 0.5 Mbits de upload. Você pode testar sua conexão usando o <a href='http://speedtest.net' target='_blank'>speedtest.net</a>. </p> <p> São recomendadas as últimas versões dos navegadores  <a href='https://www.mozilla.org/pt-BR/firefox/new/' target='_blank'>Firefox</a> ou <a href='https://www.google.com.br/chrome/browser/desktop/' target='_blank'>Chrome</a>. </p> <p> Para ter acesso a webconferência é necessário o plugin <a href='https://get.adobe.com/flashplayer' target='_blank'>flashplayer</a> atualizado. Caso você não tenha instalado o flashplayer no seu computador anteriormente, aparecerá um aviso solicitando a instalação. Ao acessar, permita que o navegador execute o flash. </p> <p> Escolha como você quer entrar na conferência de voz: Somente ouvir ou utilizando o seu microfone. Caso escolha com o uso do microfone, permita que o seu navegador acesse o mesmo e realize o teste de som. </p> <p> Se a webconferência tiver sido gravada, após o encerramento, será possível reassisti-la através do botão 'acessar lista de gravações' na tabela abaixo. </p>"
+      information: "<p> Para participar da webconferência, seu computador deve ter, no mínimo, um processador dual-core com pelo menos 2G de memória, uma conexão de 1 Mbits de download e 0.5 Mbits de upload. Você pode testar sua conexão usando o <a href='http://speedtest.net' target='_blank'>speedtest.net</a>. </p> <p> São recomendadas as últimas versões dos navegadores  <a href='https://www.mozilla.org/pt-BR/firefox/new/' target='_blank'>Firefox</a> ou <a href='https://www.google.com.br/chrome/browser/desktop/' target='_blank'>Chrome</a>. </p> <p> Também é possível acessar utilizando smartphones e tablets Android e dispositivos Apple (a partir do IOS 11). Nos dispositivos android, recomendamos o uso do navegador Firefox. </p> <p> Escolha como você quer entrar na conferência de voz: Somente ouvir ou utilizando o seu microfone. Caso escolha com o uso do microfone, permita que o seu navegador acesse o mesmo e realize o teste de som. </p> <p> Se a webconferência tiver sido gravada, após o encerramento, será possível reassisti-la através do botão 'acessar lista de gravações' na tabela abaixo. </p>"
     list_access:
       no_log: Nenhum participante acessou esta webconferência
       too_old: Esta webconferência ocorreu antes dos acessos começarem a ser gravados
@@ -1709,8 +1710,64 @@ pt_BR:
       evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por acesso. Deste modo, ao avaliar/informar a frequência de um acesso, todos os outros acessos do aluno terão a mesma nota/carga horária.'
       title: Lista de acessos de %{user} a webconferêcia %{webconference_name}
       no_log: Nenhum acesso à esta webconferência
-
-
+    report:
+      title: 'Relatório Webconferências UAB'
+      title_resume: 'Resumo (UAB)'
+      resume_max: 'Máximo de webconferências em um dia (efetivas):'
+      resume_avg: 'Média de webconferências por dia (efetivas):'
+      resume_total: 'Total de webconferências criadas desde 2014.2 (efetivas):'
+      resume_max_access: 'Máximo de acessos únicos a uma webconferência:'
+      resume_avg_access: 'Média de acessos únicos nas webconferências (usuários/web):'
+      resume_total_access: 'Total de acessos únicos desde 2014.2:'
+      resume_grade: 'Nota atual do semestre (média geral do feddback):'
+      resume_grade_value: '7,58/10'
+      title_statistic: 'Estatísticas do Servidor (Gerais)'
+      statistic_duration: 'Média de duração das webconferências (minutos):'
+      statistic_rec: 'Porcentagem de webconferências gravadas:'
+      statistic_recording_per_server_1: 'Horas de gravações (BBB1):'
+      statistic_recording_per_server_2: 'Horas de gravações (BBB2):'
+      statistic_shared: 'Porcentagem de Webconferẽncias compartilhadas entre turmas:'
+      statistic_per_server: 'Webconferências por servidor:'
+      statistic_per_type: 'Webconferẽncias por tipo (total):'
+      statistic_ps_total: 'Total'
+      statistic_ps_rt: 'Webconferências em tempo real (agendadas)'
+      statistic_ps_rt_access: 'Usuários em tempo real'
+      web_title: 'Webconferências (UAB)'
+      web_total: 'Total de webconferências criadas e efetivas por semestre:'
+      web_12_month: 'Total por mês (últimos 12 meses):'
+      web_month: 'Webconferências por mês (agrupadas):'
+      web_day: 'Webconferências por dia da semana (agrupadas):'
+      web_hour: 'Webconferências por hora do dia (agrupadas):'
+      web_course: 'Webconferências por curso:'
+      web_offer: 'Webconferências por disciplina:'
+      web_creator: 'Webconferências por criador:'
+      access_title: 'Acessos (UAB)'
+      access_course: 'Quantidade de acessos únicos por Curso:'
+      access_offer: 'Quantidade de acessos únicos por disciplina:'
+      access_avg: 'Média de acessos por webconferência efetiva:'
+      historic_title: 'Histórico de mudanças'
+      historic_d7: '??/??/????'
+      historic_t7: 'Implantação do botão de suporte'
+      historic_d6: '06/07/2018'
+      historic_t6: 'Implantação da versão 2.0 com html5, novo layout e novo slide default.'
+      historic_d5: '22/05/2017'
+      historic_t5: 'Informações básicas de uso da ferramenta'
+      historic_d4: '24/04/2017'
+      historic_t4: 'Implantação do https, configuração inicial simplificada e mensagem de boas vindas'
+      historic_d3: '16/02/2017'
+      historic_t3: 'Balanceamento de carga com 2 servidores, bbb 1.0'
+      historic_d2: '09/02/2017'
+      historic_t2: 'Formulário de feedback'
+      historic_d1: '??/??/2014'
+      historic_t1: 'BBB 0.81'
+      feedback_title: 'Feedback - 7737 respostas (22% dos usuários)'
+      feedback_grade: 'Nota das webconferências (1 à 5):'
+      feedback_difficulty: 'Dificuldades na webconferência:'
+      feedback_access: 'Local de acesso:'
+      feedback_equipament: 'Equipamento utilizado:'
+      feedback_internet: 'Velocidade da internet:'
+      feedback_html5: 'Aceitação da versão em html5:'
+      feedback_html5_flash: 'HTML5 X Flash:'
   navigation_of: " de "
   navigation_next: "Próxima >"
   navigation_previous: "< Anterior"
