@@ -5,7 +5,7 @@
     %meta{name:'viewport', content:'width=device-width, initial-scale=1, shrink-to-fit=no'}
     %title= show_breadcrumb_title
     = stylesheet_link_tag "application", "jquery.fancybox3.min", "online_correction_files", "viewer"
-    = javascript_include_tag 'jquery-3.3.1.min', 'jquery.fancybox3.min', 'pdfjs/pdf', 'online_correction_files'
+    = javascript_include_tag 'jquery-3.3.1.min', 'jquery.fancybox3.min', 'pdfjs/pdf', 'online_correction_files' , "jspdf.min"
     = csrf_meta_tag
   %body{oncontextmenu: "return false;"}
     %header#topbar
@@ -15,6 +15,8 @@
         %ul.topbar-options
           %li#save
             %a{href: "#"}= t(:save)
+          %li#download
+            %a{href: "#"}= t(:download)
           %li#tools
             %a{href: "#", onclick: "submenuToggle()"}= t(".tools")
             %ul.submenu
@@ -69,6 +71,31 @@
 
     var url = "#{@file_path}"; // Url to render file
     var editions_by_user = JSON.parse('#{@canvas_data}');
+    var file_name = "#{@file_name}";
+
+    $("#download > a").click(function(event){
+      var pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'px',
+        format: 'a4',
+      });
+
+      var canvas_in_page = document.querySelector("main").querySelectorAll("canvas");
+
+      canvas_in_page.forEach(function (canvas, index) {
+        var imgData = canvas.toDataURL("image/jpeg", 1.0);
+        pdf.addImage(imgData, 'JPEG', 0 , 0, 450, 630);
+        if(index < canvas_in_page.length-1) {
+          pdf.addPage();
+        }
+      });
+
+      if(file_name.search(".pdf") == -1) {
+        file_name += ".pdf";
+      }
+
+      pdf.save(file_name);
+    });
 
     $("#save > a").click(function(event){
       var images = {};
