@@ -5191,6 +5191,10 @@ pt_BR:
     click_to_close: (clique para fechar)
     open: (Abrirá janela modal)
     minimize: "Minimizar janela modal"
+    smallify: "Encolher janela modal"
+    normalize: "Restaurar janela modal"
+    maximize: "Maximizar janela modal"
+    smallifyrev: "Esticar janela modal"
 
   flash_message:
     close: "Fechar aviso"

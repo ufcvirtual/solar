@@ -4880,6 +4880,10 @@ en_US:
     click_to_close: (click to close)
     open: (Will open modal window)
     minimize: "Minimize modal window"
+    smallify: "Smallify modal window"
+    normalize: "To restore modal window"
+    maximize: "Maximize modal window"
+    smallifyrev: "To stretch modal window"
 
   flash_message:
     close: "Close notification"
