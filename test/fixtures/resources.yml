@@ -1215,3 +1215,33 @@ res232:
   controller: 'logs'
   action: 'index'
   description: '[API]Lista Logs por curso, disciplina e semestre'
+
+res233:
+  id: 233
+  controller: 'schedule_events'
+  action: 'index'
+  description: 'Menu Eventos das atividades'
+
+res234:
+  id: 234
+  controller: 'schedule_event_files'
+  action: 'create'
+  description: 'Permissão para criar eventos'
+
+res235:
+  id: 235
+  controller: 'schedule_events'
+  action: 'list'
+  description: 'Botão de Eventos na edição de conteúdo'
+
+res236:
+  id: 236
+  controller: 'schedule_events'
+  action: 'print_presential_test'
+  description: 'Botão de imprimir provas presenciais'
+
+res237:
+  id: 237
+  controller: 'schedule_event_files'
+  action: 'online_correction'
+  description: 'Correção online de Provas'

@@ -1,0 +1,18 @@
+.block_title
+  %h2{align: "center"}= t('.list_name')
+- unless @participants.empty?
+  %table.tb_list
+    %thead
+      %tr.lines
+        %th{id: 'participant-name'}= t('.name_studante')
+        %th.center{id: 'personal-test'}= t('.print_personal_test')
+    %tbody
+      - @participants.each_with_index do |participant|
+        %tr.lines
+          %td{headers: 'participant-name'}= participant.name
+          %td.center{headers: 'personal-test'}
+            = link_to content_tag(:i, nil, class: 'icon-printer'), print_presential_test_schedule_events_path(id: @event.id, student_id: participant.id, allocation_tags_ids: @allocation_tag_id), target: "_blank", class: "btn btn_main", :"data-print-title" => t(".print_user_test", student: participant.name), :"data-tooltip" => t(".print_user_test", student: participant.name)
+- else
+  .text_none= t(:itens_not_found)
+
+= javascript_include_tag 'tooltip', 'schedule_events'

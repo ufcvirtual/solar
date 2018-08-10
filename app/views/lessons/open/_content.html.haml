@@ -1,2 +1,8 @@
 .content{ :"data-url" => open_lesson_path(@lesson) }
-  %iframe#content_lesson{ title: @lesson.name, src: @lesson.path, width: '100%', height: '100%', name: 'content_lesson', target: '_self', frameborder: 0, framespacing: 0 }
+  - if @lesson.valid_file? && @lesson.is_video?
+    %span.hide=t(:audio_suggestions)
+    %video{ src: @lesson.path, autoplay: false, controls: 'true', name: 'audioQuestion', preload: 'auto', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}
+      %track{ kind: "captions"}
+      %track{ kind: "descriptions"}
+  - else
+    %iframe#content_lesson{ title: @lesson.name, src: @lesson.path, width: '100%', height: '100%', name: 'content_lesson', target: '_self', frameborder: 0, framespacing: 0 }

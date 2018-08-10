@@ -14,12 +14,15 @@
     = hidden_field_tag :type, score_type
     %div{ class: 'print_pdf' }
       = f.button :submit, :class => "btn",  value: t('scores.index.print_pdf')
+  = link_to "Enviar Mensagem", "#", class: "btn btn_send_msg", disabled: true
 
 .parent
   %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('scores.index.list_of_students')  }
     %thead
       - if @acs.any?
         %tr.lines.moviment
+          %th.no_sort
+            %input#all_students_evaluative_frequency{type: "checkbox", :"data-children-names" => "ckb_student_score_evaluative_frequency"}
           %th#student= t("scores.index.student")
           - @acs.group_by{|t| t['tool_type']}.each do |ac|
             - ac[1].each_with_index do |tool, idx|

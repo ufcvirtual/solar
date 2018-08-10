@@ -29,10 +29,60 @@ class ScheduleEvent < Event
       when WebConferenceLesson; :webconference_lesson
       when Recess; :recess
       when Holiday; :holiday
-      when Other; :other  
+      when Other; :other
     end
 
     I18n.t(te, scope: "schedule_events.types")
+  end
+
+  def self.type_name_event(type_event)
+    te = case type_event
+      when Presential_Meeting; :presential_meeting
+      when Presential_Test; :presential_test
+      when WebConferenceLesson; :webconference_lesson
+      when Recess; :recess
+      when Holiday; :holiday
+      when Other; :other
+    end
+
+    I18n.t(te, scope: "schedule_events.types")
+  end
+
+  def info(user_id, allocation_tag_id)
+    academic_allocation = academic_allocations.where(allocation_tag_id: allocation_tag_id).first
+    return unless academic_allocation
+
+    params = { user_id: user_id }
+    acu = academic_allocation.academic_allocation_users.where(params).first
+    info = acu.try(:info) || { has_files: false, file_sent_date: ' - ' }
+
+    comments = (!info[:comments].nil? && info[:comments].any?)
+    { situation: situation(info[:has_files], info[:grade], info[:working_hours], comments), has_comments: comments, ac_id: academic_allocation.id }.merge(info)
+  end
+
+  def situation(has_files, grade = nil, working_hours = nil, has_comments=[])
+    case
+    when !started? then 'not_started'
+    when !grade.blank? || !working_hours.blank? || has_comments then 'corrected'
+    when has_files then 'sent'
+    when on_going? then 'to_be_sent'
+    when ended? then 'not_sent'
+    else
+      '-'
+    end
+  end
+
+  def on_going?
+    has_hours = (!start_hour.blank? && !end_hour.blank?)
+    startt    = (has_hours ? (schedule.start_date.beginning_of_day + start_hour.split(':')[0].to_i.hours + start_hour.split(':')[1].to_i.minutes) : schedule.start_date.beginning_of_day)
+    endt      = (has_hours ? (schedule.end_date.beginning_of_day + end_hour.split(':')[0].to_i.hours + end_hour.split(':')[1].to_i.minutes) : schedule.end_date.end_of_day)
+    Time.now.between?(startt,endt)
+  end
+
+  def ended?
+    has_hours = (!start_hour.blank? && !end_hour.blank?)
+    endt      = (has_hours ? (schedule.end_date.beginning_of_day + end_hour.split(':')[0].to_i.hours + end_hour.split(':')[1].to_i.minutes) : schedule.end_date.end_of_day)
+    Time.now > endt
   end
 
   def can_change?
@@ -67,6 +117,6 @@ class ScheduleEvent < Event
     .group('schedule_events.id, schedules.start_date, schedules.end_date, title , academic_allocations.id')
     .order('start_date, end_date, title ')
 
-  end  
+  end
 
 end

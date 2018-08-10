@@ -1,0 +1,36 @@
+#course_form {
+  .invisible {
+    display: none;
+  }
+
+  .ckb{
+    margin-bottom: 20px;
+    .input.boolean{
+      display: none;
+    }
+    label{
+      display: inline-block;
+      width: 27%;
+    }
+    a, input, select {
+      display: inline-block;
+    }
+  }
+
+  #steps ul li {
+    width: 145px;
+  }
+
+  .steps, .steps_header {
+    margin-bottom: 20px;
+  }
+
+  .steps{
+    width: 155px;
+  }
+
+  .steps_header {
+    width: 315px;
+  }
+
+}

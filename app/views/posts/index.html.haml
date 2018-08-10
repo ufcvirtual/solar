@@ -1,8 +1,16 @@
+- posts_to_hide_all = @posts.map { |post| post.id }
 .block_wrapper#forum_description
   %h2
     .block_title
       %i.icon-forum
       = @discussion.name
+  .block_content
+    .block_content_text= sanitize @discussion.description
+
+  %h2
+    .block_title
+      %i.icon-forum
+      = t('.files.discussion_file_title')
   .block_content
     .block_content_text
       = sanitize @discussion.description
@@ -17,6 +25,13 @@
                 = link_to image_tag(icon_attachment(file.attachment_file_name)), link, {class: "file_icon", :'aria-label'=> t('posts.post.download', file: file.attachment_file_name, size: size)}
                 = link_to file.attachment_file_name.truncate(30), link, {class: "link_content", :'aria-label'=> t('posts.post.download', file: file.attachment_file_name, size: size)}
                 = size
+
+  - unless @display_mode == 'list'
+    .expand_hide
+      = link_to content_tag(:i, nil, class: 'icon-resize-enlarge', :"data-tooltip" => t('.expand')), "#void", onclick: 'show_all()'
+      .expand_link= link_to t('.expand'), "#void", onclick: 'show_all()'
+      = link_to content_tag(:i, nil, class: 'icon-resize-shrink', :"data-tooltip" => t('.compress')), "#void", onclick: 'hide_all()'
+      .compress_link= link_to t('.compress'), "#void", onclick: 'hide_all()'
 
   .posts
     = content_tag(:i, nil, class: 'icon-pluscircle.png')
@@ -295,29 +310,35 @@
       $(".attachment_title_").show();
 
       $("input[type='file']", new_form).change(function(){
+        if(this.files[0] != undefined) {
+          if(this.files[0].size > 10000000) {
+            $(this).remove();
+            flash_message("#{I18n.t('posts.error.attachment_file_size_too_big')}", "alert");
+          } else {
+            var text_aria_label = "#{I18n.t('posts.post.remove_file')}"+': ' + this.files[0].name + ' ' +humanFileSize(this.files[0].size);
 
-        var text_aria_label = "#{I18n.t('posts.post.remove_file')}"+': ' + this.files[0].name + ' ' +humanFileSize(this.files[0].size);
+            var new_file_name = "<div class='input files'> <label></label> <span id='file' data-input-file-name=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-square warning remove_file' tabindex= '0' aria-label= '"+text_aria_label+"' data-tooltip= '"+text_aria_label+"' ></i> </span> </div>";
 
-        var new_file_name = "<div class='input files'> <label></label> <span id='file' data-input-file-name=" + input_name + ">" + this.files[0].name + "<i class='icon-cross-square warning remove_file' tabindex= '0' aria-label= '"+text_aria_label+"' data-tooltip= '"+text_aria_label+"' ></i> </span> </div>";
+            if ($(".list_files_to_send_ .files:last").lenght)
+              $(".list_files_to_send_ .files:last").after(new_file_name);
+            else
+              $(".list_files_to_send_").append(new_file_name);
 
-        if ($(".list_files_to_send_ .files:last").lenght)
-          $(".list_files_to_send_ .files:last").after(new_file_name);
-        else
-          $(".list_files_to_send_").append(new_file_name);
+            $(".remove_file", $('.posts')).on("click keypress", function(event){
+              var keynum = event.which || event.keyCode;
 
-        $(".remove_file", $('.posts')).on("click keypress", function(event){
-          var keynum = event.which || event.keyCode;
+              if( keynum == 13 || event.type == 'click'){
+                var span_file = $(this).parents('span#file');
 
-          if( keynum == 13 || event.type == 'click'){
-            var span_file = $(this).parents('span#file');
+                $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove();
+                $(span_file).parents('div.input.files').remove();
 
-            $("[name='" + span_file.data("input-file-name") + "']").parents("div.file_input").remove();
-            $(span_file).parents('div.input.files').remove();
-
-            if (!$(".list_files_to_send_").children().length)
-              $(".attachment_title_").addClass("invisible");
+                if (!$(".list_files_to_send_").children().length)
+                  $(".attachment_title_").addClass("invisible");
+              }
+            });
           }
-        });
+        }
       });
     }
 
@@ -359,3 +380,44 @@
     });
   }
 
+  function show_all(){
+    var lines = $('.forum_posts_wrapper').find('article').find('._line');
+    var link_show = $('.forum_posts_wrapper').find('article').find('.link-show');
+    var link_hide = $('.forum_posts_wrapper').find('article').find('.link-hide');
+    var icon_up = $('.forum_posts_wrapper').find('article').find('.icon-arrow-up-triangle');
+    var icon_down = $('.forum_posts_wrapper').find('article').find('.icon-arrow-down-triangle');
+
+    lines.show('slow');
+    link_hide.removeClass('invisible');
+    link_show.addClass('invisible');
+    icon_up.removeClass('invisible');
+    icon_down.addClass('invisible');
+
+    $('.forum_posts_wrapper').find('article').find('.display_replies_posts_summary').addClass('invisible');
+    $('.forum_posts_wrapper').find('article').find('.forum_post').removeClass('clip_area_around_summary');
+    $('.forum_posts_wrapper').find('article').find('.display_replies_posts_summary').css('margin', '0');
+  }
+
+  function hide_all(){
+    var posts_ids = "#{posts_to_hide_all}";
+    posts_ids = posts_ids.replace(/,|\[|]/g, '').split(" ");
+    $(posts_ids).each(function(index, post_id){
+      $("#"+post_id).find('article').find('._line').hide('slow');
+      $("#"+post_id).find('.link-show').removeClass('invisible');
+      $("#"+post_id).find('.link-hide').addClass('invisible');
+      $("#"+post_id).find('.icon-arrow-up-triangle').addClass('invisible');
+      $("#"+post_id).find('.icon-arrow-down-triangle').removeClass('invisible');
+
+      var summary_div = $("#"+post_id).find('.display_replies_posts_summary');
+
+      summary_div.removeClass('invisible');
+      summary_div.css('margin', '20px 0');
+      summary_div.find('li').css('display', 'inline-block').css('padding', '7px 10px');
+
+      var amount_of_children_posts = $("#"+post_id).find('article').length;
+      var link_text_answers = summary_div.find('.amount-answers').first().text().replace(/\d+/g, '');
+
+      summary_div.find('.amount-answers').html(amount_of_children_posts + link_text_answers);
+      $("#"+post_id).find('.forum_post').addClass('clip_area_around_summary');
+    });
+  }

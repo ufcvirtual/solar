@@ -1,13 +1,21 @@
+#file_size.alert.invisible
+  %span.message_file_size{ tabindex: 0 }
+  %span.close
+    %a{href: "#void", onclick: "hide_element(event)", onkeydown: "hide_element(event)", :'aria-label' => t('flash_message.close')}
+      %i.icon-cross{ :'aria-hidden' => "true" }
 .public_file
   %h1#lightBoxDialogTitle= t(".title")
   .block_content{style: "padding: 5px;"}
     = simple_form_for @public_file, html: {multipart: true, id: "new_public_file"} do |f|
-      = f.file_field :attachment
+      = f.file_field :attachment, id: "focu"
       .block_content_gray{style: "padding: 5px;"}
+        %p.file
         %p=raw t(:send_file_obs)
         %p=raw t(:send_file_text)
       .right_buttons
         = button_tag t(:save), class: "btn btn_main save_file", type: :button
+
+= javascript_include_tag "assignment_files"
 
 :javascript
   $(function(){
@@ -23,5 +31,9 @@
         }
       });
     });
+
+    $("#focu").on("change", function(){
+      var that = this;
+      validate_file_size(that, 5000000, "#{t('public_files.new.attachment_file_size_too_big')}");
+    });
   });
-  

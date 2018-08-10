@@ -1,0 +1,55 @@
+= f.input :content_exam, as: :ckeditor
+
+.right_buttons
+  = button_tag t('.previous'), :type => 'button', :onclick => "back_to_info(event)", class: 'btn btn_default btn_lightbox', onkeypress: 'back_to_info(event)', alt: t('.previous')
+  = button_tag t(:save), class: "btn btn_main btn_lightbox save", type: "button"
+
+= javascript_include_tag 'ckeditor/init'
+
+:javascript
+  $(function(){
+    CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
+
+    CKEDITOR.editorConfig = function (config) {
+      /* Filebrowser routes */
+      // The location of an external file browser, that should be launched when "Browse Server" button is pressed.
+      config.filebrowserBrowseUrl = "/ckeditor/attachment_files";
+
+      // The location of an external file browser, that should be launched when "Browse Server" button is pressed in the Flash dialog.
+      config.filebrowserFlashBrowseUrl = "/ckeditor/attachment_files";
+
+      // The location of a script that handles file uploads in the Flash dialog.
+      config.filebrowserFlashUploadUrl = "/ckeditor/attachment_files";
+
+      // The location of an external file browser, that should be launched when "Browse Server" button is pressed in the Link tab of Image dialog.
+      config.filebrowserImageBrowseLinkUrl = "/ckeditor/pictures";
+
+      // The location of an external file browser, that should be launched when "Browse Server" button is pressed in the Image dialog.
+      config.filebrowserImageBrowseUrl = "/ckeditor/pictures";
+
+      // The location of a script that handles file uploads in the Image dialog.
+      config.filebrowserImageUploadUrl = "/ckeditor/pictures?";
+
+      // The location of a script that handles file uploads.
+      config.filebrowserUploadUrl = "/ckeditor/attachment_files";
+
+      config.allowedContent = true;
+      config.extraPlugins = 'tableresize,uploadimage,uploadfile';
+
+      // Toolbar groups configuration.
+      config.toolbar = [
+        { name: 'document', groups: [ 'mode', 'document', 'doctools' ], items: [ 'Source' ] },
+        { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+  			{ name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
+  			{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat', 'CopyFormatting' ] },
+  			{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+  			{ name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+  			{ name: 'links', items: [ 'Link', 'Unlink' ] },
+  			{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv' ] },
+  			{ name: 'insert', items: [ 'EqnEditor', 'Image', 'Table', 'SpecialChar', 'HorizontalRule' ] },
+  			{ name: 'tools', items: [ 'Maximize' ] },
+  			{ name: 'editing', items: [ 'Scayt' ] }
+      ];
+    };
+
+  });

@@ -212,8 +212,6 @@ en_US:
       comment_file: File
       email: Email
       supportmaterialfile: Support Material
-      log: Logs
-      oauth: API
     attributes:
       user:
         password: "Password"
@@ -273,6 +271,7 @@ en_US:
         min_grade_to_final_exam: Minimum final grade to do final exam
         min_final_exam_grade: Minimum final exam grade allowed
         final_exam_passing_grade: Minimum final grade to approval after final exam
+        has_exam_header: Header for presential tests
       discussion_post:
         content: Content
       post:
@@ -427,6 +426,7 @@ en_US:
         description: Description
         start_hour: Start hour
         end_hour: End hour
+        content_exam: Exam content
       notification:
         title: Title
         description: Description
@@ -579,6 +579,7 @@ en_US:
 
   all: "All"
   of: "of"
+  signature: "Student signature:"
   required_fields: "* required field(s)"
   object_not_found: "Object not found"
   search: "Search"
@@ -656,6 +657,7 @@ en_US:
   verify: "Verify"
   back: "Back"
   save: "Save"
+  continue: "Continue"
   edit: "Edit"
   show: "View"
   destroy: "Delete"
@@ -732,8 +734,9 @@ en_US:
   menu_aside: "Skip to menu [2]"
   search_box: "Skip to Search [3]"
   footer_site: "Skip to the footer [4]"
-  high_contrast_link: "High contrast [6]"
+  high_contrast_link: "High contrast [5]"
   libras: Translate to Libras
+  shortcut_acceskey_link: Content Shortcuts [9]
   description: "Description"
   edition: "Edition"
   enrollment: "Enrollment"
@@ -765,6 +768,7 @@ en_US:
   url: "Enter here the URL of the image in the textbox above."
   send: "Send"
   select_files: Select files
+  add_files: Add files
   information_access_website: "Information access website"
   states_brazil_website: "States of Brazil website"
   user_place_holder: "Type your login"
@@ -1163,6 +1167,8 @@ en_US:
       primary: " primary"
       save_draft: Save draft
       publish: Publish
+      expand: Expand all
+      compress: Compress all
     post:
       remove_file_confirm: "Your file will be deleted permanently. Proceed?"
       answer: "Reply"
@@ -1174,6 +1180,9 @@ en_US:
       new_posts: " new(s) post(s) at discussion"
       new_posts_page: "1 new post at discussion (page "
       moved_allocation: "Allocation moved to other class"
+      show_posts: "Show Answers"
+      hide_posts: "Hide Answers"
+      amount_answers: " hidden posts. To view them, click "
       to_evaluate: Evaluate/Comment
       grade: '(Grade: %{grade})'
       frequency: '(Frequency: %{wh})'
@@ -1223,6 +1232,7 @@ en_US:
       not_published: It was not possible to publish post
       draft: It's not possible to reply a draft post
       back_to_draft: It's not possible to set as draft a post with replies.
+      attachment_file_size_too_big: File too large. The maximum size should be up to 10MB.
     mail:
       subject: Reply to your post sent at %{discussion} - %{at_info}
       text: You have received the following answer
@@ -1469,9 +1479,9 @@ en_US:
       access_web_recording: Access %{name} of webconference (will open a new window)
       summary: Table which content has webconference access links, and also information about it such as moderator, group sharing, equivalencies, date and time, working hours, grade, situation, amount of online users and a link to access recordings.
       accessibility_title: <b>Accessibility (screen reader access)</b>
-      accessibility: "<p> To join the webconference using screen readers, we recommend the latest version of the <strong>Mozilla Firefox</strong> (with the updated flash-player plugin) and the following screen readers: <strong>NVDA or Window-eyes.</strong> </p><p> The load of all the components of the tool takes approximately <strong>10 seconds</strong>. You will hear a 'beep' when everything is ready. </p>"
+      accessibility: "<p> To join the webconference using screen readers, we recommend the latest version of the browser and the following screen readers: <strong><a href='http://docs.bigbluebutton.org/html/html5-accessibility.html#nvda' target='_blank'>NVDA</a> ou <a href='http://docs.bigbluebutton.org/html/html5-accessibility.html#jaws' target='_blank'>JAWS</a> .</strong> </p>"
       information_title: <b>Basic information</b>
-      information: "<p> To participate in web conferencing, your computer must have at least a dual-core processor with at least 2G of memory, 1 Mbits download connection and 0.5Mbit upload. You can test your connection using <a href='http://speedtest.net' target='_blank'>speedtest.net</a>. </p> <p> The latest versions of browsers are recommended (<a href='https://www.mozilla.org/pt-BR/firefox/new/' target='_blank'>Firefox</a> or <a href='https://www.google.com.br/chrome/browser/desktop/' target='_blank'>Chrome</a>).</p> <p> To access web conferencing you need the updated <a href='https://get.adobe.com/flashplayer' target='_blank'>flashplayer</a> plugin. If you have not installed the flashplayer on your computer previously, a warning will appear asking you to install it. </p> <p> Choose how you want to join the voice conference: Just listening or using your microphone. Pick up using the microphone, allow your browser to access it and perform the sound test. </p> <p> If the webconference has been saved, after the closing, you can watch it through the 'access recordings list' button in the table below. </p>"
+      information: "<p> To participate in web conferencing, your computer must have at least a dual-core processor with at least 2G of memory, 1 Mbits download connection and 0.5Mbit upload. You can test your connection using <a href='http://speedtest.net' target='_blank'>speedtest.net</a>. </p> <p> The latest versions of browsers are recommended (<a href='https://www.mozilla.org/pt-BR/firefox/new/' target='_blank'>Firefox</a> or <a href='https://www.google.com.br/chrome/browser/desktop/' target='_blank'>Chrome</a>).</p> <p> You can also access using Android smartphones and tablets and Apple devices (from IOS 11). On android devices, we recommend using the Firefox browser. </p> <p> Choose how you want to join the voice conference: Just listening or using your microphone. Pick up using the microphone, allow your browser to access it and perform the sound test. </p> <p> If the webconference has been saved, after the closing, you can watch it through the 'access recordings list' button in the table below. </p>"
     list_access:
       no_log: No participant accessed this webconference
       too_old: This webconference happened before the access start to be saved
@@ -1607,6 +1617,7 @@ en_US:
   menu_responsibles: Consult Responsibles
   menu_home: Home
   menu_admin_notifications: General notifications
+  menu_events: Events
 
   places_nav_panel_course_hint: "Type the course's name or part of it"
   places_nav_panel_semester_hint: "Type the semester or part of it"
@@ -2035,6 +2046,7 @@ en_US:
     new:
       title: Send new file
       send_file_obs: Wait for the complete submission of the file. The size should not exceed 26MB.
+      attachment_file_size_too_big: File too large. The maximum size should be up to 26MB.
     error:
       download: It was not possible to download
       date_range_expired: It was not possible to execute action. Date range expired.
@@ -2108,6 +2120,7 @@ en_US:
       summary: "This table contains the following public file."
     new:
       title: Send new public file
+      attachment_file_size_too_big: File too large. The maximum size should be up to 5MB.
     success:
       new: File sent successfully
       removed: File removed successfully
@@ -2395,6 +2408,7 @@ en_US:
       lesson: Lesson
       support_material: Support material
       assignment: Assignment
+      event: Event
       test: Test
       question_bank: Question Bank
       edition_of: Edition of %{of}
@@ -2470,6 +2484,7 @@ en_US:
       chats_call: 'Manage evaluative / frequency chats'
       assignments_call: 'Manage evaluative / frequency assignments'
       webconferences_call: 'Manage evaluative / frequency webconferences'
+      schedule_event_call: 'Manage evaluative / frequency events'
       offer_period: Offer already ended
       same_type_af: must have same value at 'Final Exam'
       details: See description
@@ -2686,6 +2701,11 @@ en_US:
       code: Code
       save: Save
       cancel: Cancel
+      info: Information
+      exam_header: Exam Headers
+    info:
+      has_header: Standardized header for tests
+      not_has_header: No standardized header for tests
     success:
       created: Course was successfully created.
       updated: Course was successfully updated.
@@ -3012,6 +3032,22 @@ en_US:
       monthAlt: View by month
       listAlt: View next events list
   schedule_events:
+    restrict_events: "Not allowed to access events"
+    index:
+      events_list: Events List
+      individual_events: Individual Events
+      group_events: Group Events
+    events:
+      name: Name
+      data_range: Data range
+      type: Type
+      place: Place
+      situation: Situation
+      evaluative: Evaluative
+      frequency: Frequency
+      files_sended: Files sended
+      grade_work_hours_comments: Files and comments sent
+      participants: See participants
     types:
       presential_test: Presential Test
       presential_meeting: Presential Meeting
@@ -3023,6 +3059,14 @@ en_US:
       groups: Groups
       new: New event
       edit: Edit event
+      info: Information
+      print: Print
+    info:
+      has_files_to_print: Has files to print
+      not_has_files_to_print: Not has files to print
+      continue: Continue
+    print:
+      previous: Previous
     success:
       created: Event was successfully created.
       updated: Event was successfully updated.
@@ -3060,9 +3104,85 @@ en_US:
       closed: Closed
       started: Started
     list:
+      expand_description: Expand description
+      compress_description: Compress description
       summary_evaluative: "This table contains all the evaluation shedule events."
       summary_frequency: "This table contains all the frequency shedule events."
       summary_notevaluative: "This table contains all the not evaluation shedule events."
+      summary_student_files: "This table contains the files sent by the responsible, with the following information: Name, size, date of sending and who sent the file."
+      none: No event registered
+      new: New event
+      edit: Edit event
+      delete: Remove event
+      name: Name
+      data_range: Data range
+      type: Type
+      place: Place
+      choose_one: "Choose a event"
+      choose_at_least_one: "Choose at least one event"
+      integrated_event_edit: 'This event has integration with other databases and therefore can not be edited'
+      integrated_events_delete: 'There are selected events that can not be removed due to integration with other databases'
+      print: Print exam
+      users: Print individual exam
+    participants:
+      title: Participants
+      student: Students
+      list_name: Students List
+      name: Name
+      send_file: Send File
+      evaluate_comments: Evaluate/Comments
+      grade: Grade
+      working_hours: Working Hours
+      files: Files
+      see_files: See files sent
+    presential_test_participants:
+      list_name: Students List
+      name: Name
+      print_personal_test: Exam with filled header
+      print_user_test: Print %{student} exam
+
+  schedule_event_files:
+    new:
+      title: Title
+      confirm: Confirm to cancel sending files?
+    list:
+      name: Name
+      size: Size
+      sent_on: Sent on
+      sent_by: Sent by
+      summary_files: Files sent by the tutor
+    summary:
+      title: "Files to %{user} at %{tool}"
+      name: Name
+      size: Size
+      sent_on: Sent on
+      sent_by: Sent by
+      title_alt: "Access grade/frequency, files and comments to %{tool} (%{files} files e %{comments} comments)"
+      online_correction: Online correction
+    files:
+      delete: Remove file
+      correction_file: Exam online correction
+    online_correction:
+      tools: Tools
+      hand: Hand
+      text: Text
+      brush: Brush
+      arrow: Arrow
+      saving_file: Saving file.
+    success:
+      file_saved: File was successfully saved.
+      created: File was successfully sent.
+      deleted: File was successfully deleted.
+    error:
+      download: It was not possible to download
+      date_range_expired: It was not possible to execute action. Date range expired.
+      remove: It was not possible to remove file.
+      new: It was not possible to send file.
+      not_started_up: It was not possible to send file. Event not started yet.
+      attachment_file_size_too_big: File too large. The maximum size should be up to 26MB.
+      wrong_type: file type is not allowed (only jpeg/png/gif images or pdfs)
+      situation: Can not send files yet, because the activity was not started.
+      file_not_saved: It was not possible to save file.
 
   agendas:
     dropdown_content:
@@ -3422,8 +3542,8 @@ en_US:
         menu_lesson_key: "Shift + L"
         menu_support_material: "Support Material"
         menu_support_material_key: "Shift + U"
-        menu_dc_lesson: "Digital Class"
-        menu_dc_lesson_key: "Shift + I"
+        # menu_dc_lesson: "Digital Class"
+        # menu_dc_lesson_key: "Shift + I"
         menu_discussion: "Discussions"
         menu_discussion_key: "Shift + D"
         menu_portfolio: "Portfolio (Assignments)"
@@ -3451,16 +3571,18 @@ en_US:
         menu_messages: "Messages"
         menu_messages_key: "Shift + M"
         menu_registration: "Registration"
-        menu_registration_key: "Shift + T"
+        menu_registration_key: "Shift + I"
         menu_home: "Curriculum Unit Home"
         menu_home: "Shift + H"
+        menu_events: "Events"
+        menu_events_key: "Shift + E"
       code:
         menu_lesson: 76
         menu_support_material: 85
-        menu_dc_lesson: 73
+        # menu_dc_lesson: 73
         menu_discussion: 68
         menu_portfolio: 65
-        menu_exam: 69
+        menu_exam: 84
         menu_score_student: 83
         menu_chat: 67
         menu_webconference: 87
@@ -3471,8 +3593,9 @@ en_US:
         menu_participants: 82
         menu_content_edition: 78
         menu_messages: 77
-        menu_registration: 84
+        menu_registration: 73
         menu_home: 72
+        menu_events: 69
       complement:
         menu_portfolio: " (Assignments)"
         menu_exam: " (Exams)"
@@ -3488,6 +3611,11 @@ en_US:
       code:
         window: 65
         analyzer_position: 83
+    schedule_events:
+      name:
+        events_list: "Events List [E]"
+      code:
+        events_list: 69
 
   scores:
     index:
@@ -4764,8 +4892,8 @@ en_US:
     frequency:
       'true': 'Yes <br/>(max: %{hours}h)%{automatic})'
       'false': 'No'
-      a: "<br/>automactic"
-      d: defined by responsible
+      automatic: " (automactic)"
+      defined: " (defined by responsible) "
     ev_final_exam:
       'true': 'Yes <br/>(Final Exam)'
       'false': 'No'
@@ -4840,6 +4968,7 @@ en_US:
       new: New comment
       title: "Responsible's comments"
       confirm: Confirm to cancel comment?
+      comment_finish_evaluation_unsaved: There is comment not saved. Do you want to proceed and save it before finish?
     comment:
       attached_files: Attachments
       edit: Edit comment

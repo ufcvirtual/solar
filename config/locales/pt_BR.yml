@@ -248,8 +248,6 @@ pt_BR:
       comment_file: Arquivo
       email: Email
       supportmaterialfile: Material de Apoio
-      log: Logs
-      oauth: API
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -310,6 +308,7 @@ pt_BR:
         min_grade_to_final_exam: Média mínima para realização de AF
         min_final_exam_grade: Nota mínima permitida para AF
         final_exam_passing_grade: Média mínima para aprovação após realização de AF
+        has_exam_header: "Cabeçalho para as provas presenciais"
       discussion_post:
         content: Conteúdo
       post:
@@ -493,6 +492,7 @@ pt_BR:
         description: Descrição
         start_hour: Horário
         end_hour: à
+        content_exam: "Conteúdo da Prova"
       notification:
         title: Título
         description: Descrição
@@ -797,6 +797,7 @@ pt_BR:
   verify: "Verificar"
   back: "Voltar"
   save: "Salvar"
+  continue: "Próximo"
   edit: "Editar"
   show: "Visualizar"
   destroy: "Excluir"
@@ -812,6 +813,7 @@ pt_BR:
   # User
   user_error_no_file_sent: Nenhum arquivo enviado
   user_cannot_login: "Este usuário está bloqueado. Por favor, entre em contato com o atendimento@virtual.ufc.br."
+  signature: "Assinatura do aluno:"
 
   #Meus dados
   my_data: "Meus Dados"
@@ -896,8 +898,9 @@ pt_BR:
   menu_aside: "Ir para o menu [2]"
   search_box: "Ir para a busca [3]"
   footer_site: "Ir para o rodapé [4]"
-  high_contrast_link: "Alto contraste [6]"
+  high_contrast_link: "Alto contraste [5]"
   libras: Tradução para Libras
+  shortcut_acceskey_link: Atalhos da tela [9]
 
   # Página de tutoriais
   description: "Descrição"
@@ -1347,6 +1350,8 @@ pt_BR:
       primary: " primárias"
       save_draft: Salvar Rascunho
       publish: Publicar
+      expand: "Expandir todos"
+      compress: "Comprimir todos"
       files:
         discussion_file_title: Arquivos
         name: Nome
@@ -1363,6 +1368,9 @@ pt_BR:
       new_posts: " nova(s) postagem(ns) no fórum"
       new_posts_page: "1 nova postagem no fórum (página "
       moved_allocation: "Alocação transferida para outra turma"
+      show_posts: "Mostrar Respostas"
+      hide_posts: "Esconder Respostas"
+      amount_answers: " posts ocultados. Para visualizá-los, clique em "
       to_evaluate: Avaliar/Comentar
       grade: '(Nota: %{grade})'
       frequency: '(Frequência: %{wh}hs)'
@@ -1414,6 +1422,7 @@ pt_BR:
       not_published: Não foi possível publicar o post
       draft: Não é possível responder um post de rascunho
       back_to_draft: Não é possível definir como rascunho um post com respostas.
+      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 10MB.
     mail:
       subject: Resposta a seu post enviado em %{discussion} - %{at_info}
       text: Você recebeu a seguinte resposta
@@ -1644,6 +1653,7 @@ pt_BR:
       acu: Não é possível remover a gravação ou webconferência, pois há alunos avaliados/com comentários.
     preview:
       delete_record: Remover gravação
+      report: Relatório webconferências (UAB)
       placeholder: Digite qualquer valor a ser buscado na tabela desta página
       search: Busca
       location: Localização
@@ -1666,9 +1676,9 @@ pt_BR:
       access_web_recording: Acessar %{name} da webconferência (abrirá uma nova janela)
       summary: Tabela cujo conteúdo há links de acesso às webconferências, com seus dados de moderação, compartilhamento entre turmas, equivalências, data e horário, nota, frequência, situação, quantidade de usuários online e link para acessar gravação.
       accessibility_title: <b>Acessibilidade (acesso com leitor de tela)</b>
-      accessibility: "<p> Para participar da webconferência utilizando leitores de tela, recomendamos a versão mais recente do navegador <strong>Mozilla Firefox</strong> (com o plugin flash-player atualizado) e os seguintes leitores de tela: <strong>NVDA ou Window-eyes.</strong> </p><p> O carregamento de todos os componentes da ferramenta leva aproximadamente <strong>10 segundos</strong>. Você ouvirá um 'bip' quando tudo estiver pronto. </p>"
+      accessibility: "<p> Para participar da webconferência utilizando leitores de tela, recomendamos a versão mais recente do navegador e os seguintes leitores de tela: <strong><a href='http://docs.bigbluebutton.org/html/html5-accessibility.html#nvda' target='_blank'>NVDA</a> ou <a href='http://docs.bigbluebutton.org/html/html5-accessibility.html#jaws' target='_blank'>JAWS</a>.</strong> </p>"
       information_title: <b>Informações básicas</b>
-      information: "<p> Para participar da webconferência, seu computador deve ter, no mínimo, um processador dual-core com pelo menos 2G de memória, uma conexão de 1 Mbits de download e 0.5 Mbits de upload. Você pode testar sua conexão usando o <a href='http://speedtest.net' target='_blank'>speedtest.net</a>. </p> <p> São recomendadas as últimas versões dos navegadores  <a href='https://www.mozilla.org/pt-BR/firefox/new/' target='_blank'>Firefox</a> ou <a href='https://www.google.com.br/chrome/browser/desktop/' target='_blank'>Chrome</a>. </p> <p> Para ter acesso a webconferência é necessário o plugin <a href='https://get.adobe.com/flashplayer' target='_blank'>flashplayer</a> atualizado. Caso você não tenha instalado o flashplayer no seu computador anteriormente, aparecerá um aviso solicitando a instalação. Ao acessar, permita que o navegador execute o flash. </p> <p> Escolha como você quer entrar na conferência de voz: Somente ouvir ou utilizando o seu microfone. Caso escolha com o uso do microfone, permita que o seu navegador acesse o mesmo e realize o teste de som. </p> <p> Se a webconferência tiver sido gravada, após o encerramento, será possível reassisti-la através do botão 'acessar lista de gravações' na tabela abaixo. </p>"
+      information: "<p> Para participar da webconferência, seu computador deve ter, no mínimo, um processador dual-core com pelo menos 2G de memória, uma conexão de 1 Mbits de download e 0.5 Mbits de upload. Você pode testar sua conexão usando o <a href='http://speedtest.net' target='_blank'>speedtest.net</a>. </p> <p> São recomendadas as últimas versões dos navegadores  <a href='https://www.mozilla.org/pt-BR/firefox/new/' target='_blank'>Firefox</a> ou <a href='https://www.google.com.br/chrome/browser/desktop/' target='_blank'>Chrome</a>. </p> <p> Também é possível acessar utilizando smartphones e tablets Android e dispositivos Apple (a partir do IOS 11). Nos dispositivos android, recomendamos o uso do navegador Firefox. </p> <p> Escolha como você quer entrar na conferência de voz: Somente ouvir ou utilizando o seu microfone. Caso escolha com o uso do microfone, permita que o seu navegador acesse o mesmo e realize o teste de som. </p> <p> Se a webconferência tiver sido gravada, após o encerramento, será possível reassisti-la através do botão 'acessar lista de gravações' na tabela abaixo. </p>"
     list_access:
       no_log: Nenhum participante acessou esta webconferência
       too_old: Esta webconferência ocorreu antes dos acessos começarem a ser gravados
@@ -1701,8 +1711,64 @@ pt_BR:
       evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por acesso. Deste modo, ao avaliar/informar a frequência de um acesso, todos os outros acessos do aluno terão a mesma nota/carga horária.'
       title: Lista de acessos de %{user} a webconferêcia %{webconference_name}
       no_log: Nenhum acesso à esta webconferência
-
-
+    report:
+      title: 'Relatório Webconferências UAB'
+      title_resume: 'Resumo (UAB)'
+      resume_max: 'Máximo de webconferências em um dia (efetivas):'
+      resume_avg: 'Média de webconferências por dia (efetivas):'
+      resume_total: 'Total de webconferências criadas desde 2014.2 (efetivas):'
+      resume_max_access: 'Máximo de acessos únicos a uma webconferência:'
+      resume_avg_access: 'Média de acessos únicos nas webconferências (usuários/web):'
+      resume_total_access: 'Total de acessos únicos desde 2014.2:'
+      resume_grade: 'Nota atual do semestre (média geral do feddback):'
+      resume_grade_value: '7,58/10'
+      title_statistic: 'Estatísticas do Servidor (Gerais)'
+      statistic_duration: 'Média de duração das webconferências (minutos):'
+      statistic_rec: 'Porcentagem de webconferências gravadas:'
+      statistic_recording_per_server_1: 'Horas de gravações (BBB1):'
+      statistic_recording_per_server_2: 'Horas de gravações (BBB2):'
+      statistic_shared: 'Porcentagem de Webconferẽncias compartilhadas entre turmas:'
+      statistic_per_server: 'Webconferências por servidor:'
+      statistic_per_type: 'Webconferẽncias por tipo (total):'
+      statistic_ps_total: 'Total'
+      statistic_ps_rt: 'Webconferências em tempo real (agendadas)'
+      statistic_ps_rt_access: 'Usuários em tempo real'
+      web_title: 'Webconferências (UAB)'
+      web_total: 'Total de webconferências criadas e efetivas por semestre:'
+      web_12_month: 'Total por mês (últimos 12 meses):'
+      web_month: 'Webconferências por mês (agrupadas):'
+      web_day: 'Webconferências por dia da semana (agrupadas):'
+      web_hour: 'Webconferências por hora do dia (agrupadas):'
+      web_course: 'Webconferências por curso:'
+      web_offer: 'Webconferências por disciplina:'
+      web_creator: 'Webconferências por criador:'
+      access_title: 'Acessos (UAB)'
+      access_course: 'Quantidade de acessos únicos por Curso:'
+      access_offer: 'Quantidade de acessos únicos por disciplina:'
+      access_avg: 'Média de acessos por webconferência efetiva:'
+      historic_title: 'Histórico de mudanças'
+      historic_d7: '??/??/????'
+      historic_t7: 'Implantação do botão de suporte'
+      historic_d6: '06/07/2018'
+      historic_t6: 'Implantação da versão 2.0 com html5, novo layout e novo slide default.'
+      historic_d5: '22/05/2017'
+      historic_t5: 'Informações básicas de uso da ferramenta'
+      historic_d4: '24/04/2017'
+      historic_t4: 'Implantação do https, configuração inicial simplificada e mensagem de boas vindas'
+      historic_d3: '16/02/2017'
+      historic_t3: 'Balanceamento de carga com 2 servidores, bbb 1.0'
+      historic_d2: '09/02/2017'
+      historic_t2: 'Formulário de feedback'
+      historic_d1: '??/??/2014'
+      historic_t1: 'BBB 0.81'
+      feedback_title: 'Feedback - 7737 respostas (22% dos usuários)'
+      feedback_grade: 'Nota das webconferências (1 à 5):'
+      feedback_difficulty: 'Dificuldades na webconferência:'
+      feedback_access: 'Local de acesso:'
+      feedback_equipament: 'Equipamento utilizado:'
+      feedback_internet: 'Velocidade da internet:'
+      feedback_html5: 'Aceitação da versão em html5:'
+      feedback_html5_flash: 'HTML5 X Flash:'
   navigation_of: " de "
   navigation_next: "Próxima >"
   navigation_previous: "< Anterior"
@@ -1817,6 +1883,7 @@ pt_BR:
   menu_responsibles: Consultar Responsáveis
   menu_home: Início
   menu_admin_notifications: Avisos Gerais
+  menu_events: "Eventos"
 
   # Componente de filtro/busca de allocationTags (places_nav_panel)
   places_nav_panel_course_hint: "Digite o nome do curso ou parte dele"
@@ -1845,6 +1912,7 @@ pt_BR:
   curriculum_unit: "Disciplina"
 
   select_files: Selecionar arquivos
+  add_files: Adicionar arquivos
 
   devise:
     failure:
@@ -2261,6 +2329,7 @@ pt_BR:
     new:
       title: Enviar novo arquivo
       send_file_obs: Aguarde o envio completo do arquivo. O tamanho não deve exceder 26MB.
+      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 26MB.
     error:
       download: Não foi possível realizar o download
       date_range_expired: Não foi possível realizar ação. Período encerrado.
@@ -2335,6 +2404,7 @@ pt_BR:
       summary: "Está tabela contém os arquivos publicos."
     new:
       title: Enviar novo arquivo público
+      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 5MB.
     success:
       new: Arquivo enviado com sucesso
       removed: Arquivo removido com sucesso
@@ -2627,6 +2697,7 @@ pt_BR:
       lesson: Aula
       support_material: Material de apoio
       assignment: Trabalho
+      event: Evento
       test: Prova
       question_bank: Banco de Questões
       edition_of: Edição de %{of}
@@ -2703,6 +2774,7 @@ pt_BR:
       chats_call: 'Gerenciar chats avaliativos / de frequência'
       assignments_call: 'Gerenciar trabalhos avaliativos / de frequência'
       webconferences_call: 'Gerenciar webconferências avaliativas / de frequência'
+      schedule_event_call: 'Gerenciar eventos avaliativos / de frequência'
       offer_period: Oferta já encerrou
       same_type_af: deve ter o mesmo valor no campo 'Avaliação Final'
       details: Ver descrição
@@ -2922,6 +2994,11 @@ pt_BR:
       code: Código
       save: Salvar
       cancel: Cancelar
+      info: Informações
+      exam_header: Cabeçalho para as Provas
+    info:
+      has_header: "Cabeçalho padronizado para as provas"
+      not_has_header: "Não há cabeçalho padronizado para as provas"
     success:
       created: Curso criado com sucesso.
       updated: Curso atualizado com sucesso.
@@ -3261,6 +3338,22 @@ pt_BR:
 
   #Eventos da agenda
   schedule_events:
+    restrict_events: "Não permitido é permitido acessar os eventos"
+    index:
+      events_list: Lista de Eventos
+      individual_events: Eventos individuais
+      group_events: Eventos em grupo
+    events:
+      name: Nome
+      data_range: Período
+      type: Tipo
+      place: Local
+      situation: Situação
+      evaluative: Avaliativa
+      frequency: Frequência
+      files_sended: Arquivos enviados
+      grade_work_hours_comments: Arquivos e comentários enviados
+      participants: 'Ver participantes'
     types:
       presential_test: Prova Presencial
       presential_meeting: Encontro Presencial
@@ -3272,6 +3365,14 @@ pt_BR:
       groups: Turmas
       new: Novo evento
       edit: Editar evento
+      info: Informações
+      print: Conteúdo
+    info:
+      has_files_to_print: 'Possui arquivos para impressão'
+      not_has_files_to_print: 'Não possui arquivos para impressão'
+      continue: "Próximo"
+    print:
+      previous: Voltar
     success:
       created: Evento criado com sucesso.
       updated: Evento atualizado com sucesso.
@@ -3309,9 +3410,86 @@ pt_BR:
       closed: Encerrado
       started: Iniciado
     list:
+      expand_description: Expandir descrição
+      compress_description: Comprimir descrição
       summary_evaluative: "Está tabela contém todos os eventos agendados avaliativas."
       summary_frequency: "Está tabela contém todos os eventos agendados de frequência."
       summary_notevaluative: "Está tabela contém todos os eventos agendados não avaliativas."
+      summary_student_files: "Está tabela contém os arquivos enviados pelo tutor, com as seguintes informações: Nome, tamanho, data de envio e quem envio o arquivo."
+      none: Nenhum evento cadastrado
+      new: Novo evento
+      edit: Editar evento
+      delete: Remover evento
+      name: Nome
+      data_range: Período
+      type: Tipo
+      place: Local
+      choose_one: "Selecione um evento"
+      choose_at_least_one: "Selecione, ao menos, um evento"
+      integrated_event_edit: 'Este evento possui integração com outras bases de dados e por isso não pode ser editado'
+      integrated_events_delete: 'Existem eventos selecionados que não podem ser removidos devido a integração com outras bases de dados'
+      print: Imprimir prova
+      users: Imprimir prova individual
+    participants:
+      title: Participantes
+      student: Alunos
+      list_name: Lista de Alunos
+      name: Nome
+      send_file: Enviar Arquivos
+      evaluate_comments: Avaliar/Comentar
+      grade: Nota
+      working_hours: Carga Horária
+      files: Arquivos
+      see_files: Ver arquivos enviados
+    presential_test_participants:
+      list_name: Lista de Alunos
+      name_studante: Nome
+      type_exam: Tipo de prova
+      print_personal_test: Prova com cabeçalho preenchido
+      print_user_test: Imprimir prova de %{student}
+
+  schedule_event_files:
+    new:
+      title: Título
+      confirm: Confirma cancelamento do envio de arquivos?
+    list:
+      name: Nome
+      size: Tamanho
+      sent_on: Enviado em
+      sent_by: Enviado por
+      summary_files: Arquivos enviados pelo tutor
+    summary:
+      title: "Arquivos para %{user} em %{tool}"
+      name: Nome
+      size: Tamanho
+      sent_on: Enviado em
+      sent_by: Enviado por
+      title_alt: "Acessar nota/frequência, arquivos e comentários para %{tool} (%{files} arquivos e %{comments} comentários)"
+      online_correction: Correção online
+    files:
+      delete: Remover arquivo
+      correction_file: Correção de prova online
+    online_correction:
+      tools: "Ferramentas"
+      hand: "Mão"
+      text: "Texto"
+      brush: "Pincel"
+      arrow: "Flecha"
+      saving_file: "Salvando arquivo."
+    success:
+      file_saved: Arquivo salvo com sucesso.
+      created: Arquivo(s) enviado(s) com sucesso(s).
+      deleted: Arquivo(s) deletado(s) com sucesso(s).
+    error:
+      download: Não foi possível realizar o download
+      date_range_expired: Não foi possível realizar ação. Período encerrado.
+      remove: Não foi possível deletar arquivo.
+      new: Não foi possível enviar arquivo.
+      not_started_up: Não é possível fazer o envio do arquivo. O evento ainda não foi iniciado.
+      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 26MB.
+      wrong_type: "Tipo de arquivo não permitido (apenas imagens jpeg/png/gif ou pdfs)"
+      situation: Não é possível enviar arquivos ainda, pois a atividade não foi iniciada.
+      file_not_saved: "Não foi possível salvar o arquivo."
 
   agendas:
     dropdown_content:
@@ -3705,7 +3883,8 @@ pt_BR:
         menu_registration_key: "Shift + U"
         menu_home: "Tela inicial da disciplina"
         menu_home_key: "Shift + I"
-
+        menu_events: "Eventos"
+        menu_events_key: "Shift + S"
       code:
         menu_lesson: 65
         menu_support_material: 77
@@ -3725,6 +3904,7 @@ pt_BR:
         menu_messages: 78
         menu_registration: 85
         menu_home: 73
+        menu_events: 83
       complement:
         menu_portfolio: " (Trabalhos)"
     comments:
@@ -3739,6 +3919,11 @@ pt_BR:
       code:
         window: 65
         analyzer_position: 83
+    schedule_events:
+      name:
+        events_list: "Lista de Eventos [E]"
+      code:
+        events_list: 69
 
   scores:
     index:
@@ -5094,6 +5279,7 @@ pt_BR:
       new: Novo comentário
       title: Comentários dos responsáveis
       confirm: Confirma cancelamento do comentário?
+      comment_finish_evaluation_unsaved: Há comentário não salvo, deseja salvá-lo antes de finalizar a ação?
     comment:
       attached_files: Anexos
       edit: Editar comentário
