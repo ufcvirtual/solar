@@ -114,6 +114,7 @@
           xhr.setRequestHeader("X-CSRF-Token", token);
         }
       }).done(function (data) {
+        there_is_change_without_save = false;
         $.fancybox.close();
         flash_message(data.notice, 'notice');
       }).fail(function(jqXHR, textStatus, data){
@@ -127,4 +128,6 @@
     } else {
       renderPDF(url, editions_by_user);
     }
+
+    window.onbeforeunload = windowCloseHanlder;
   });

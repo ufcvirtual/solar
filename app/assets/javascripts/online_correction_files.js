@@ -1,7 +1,22 @@
 var currentTool = null;
+var there_is_change_without_save = false;
 
 function canvasSupport() {
   return !!document.createElement('canvas').getContext;
+}
+
+function windowCloseHanlder(event) {
+  if( there_is_change_without_save ) {
+    var event = event || window.event;
+
+    //IE & Firefox
+    if (event) {
+      event.returnValue = 'Are you sure?';
+    }
+
+    // For Safari
+    return 'Are you sure?';
+  }
 }
 
 function submenuToggle(){
@@ -170,6 +185,7 @@ function write(canvas, context) {
 
       if (getToolSelected() == 'brush') {
         dragging_through_paper = true;
+        there_is_change_without_save = true;
         drawScreen(context, clickX, clickY, clickDrag, currentTool);
       }
     }
@@ -187,6 +203,7 @@ function write(canvas, context) {
       let mouseY = event.pageY - $(this).offset().top;
 
       addClick(mouseX, mouseY, true);
+      there_is_change_without_save = true;
       drawScreen(context, clickX, clickY, clickDrag, currentTool);
     }
 
@@ -277,6 +294,10 @@ function canvasHand(context, clickX, clickY, clickDrag) {
 }
 
 function canvasText(context, clickX, clickY, message) {
+  if (message != "") {
+    there_is_change_without_save = true;
+  }
+
   context.save();
   context.font = "14px sans-serif";
   context.fillStyle = "#000000";
