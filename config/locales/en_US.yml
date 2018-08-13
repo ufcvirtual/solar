@@ -908,6 +908,7 @@ en_US:
       summary: Table which content includes access links to available lessons and text name of unavailable lessons, also access periods and access links to lesson's notes for each one of them. All lessons are related to lesson module %{module_name}.
       caption: Lesson module %{module_name} lesson's list
       number_of_lessons: "%{module_name} has %{lesson_number} lessons"
+      jspanel_count_window: "Allowed only 3 windows"
     list:
       lesson: Lesson
       order: Order
@@ -1479,9 +1480,9 @@ en_US:
       access_web_recording: Access %{name} of webconference (will open a new window)
       summary: Table which content has webconference access links, and also information about it such as moderator, group sharing, equivalencies, date and time, working hours, grade, situation, amount of online users and a link to access recordings.
       accessibility_title: <b>Accessibility (screen reader access)</b>
-      accessibility: "<p> To join the webconference using screen readers, we recommend the latest version of the <strong>Mozilla Firefox</strong> (with the updated flash-player plugin) and the following screen readers: <strong>NVDA or Window-eyes.</strong> </p><p> The load of all the components of the tool takes approximately <strong>10 seconds</strong>. You will hear a 'beep' when everything is ready. </p>"
+      accessibility: "<p> To join the webconference using screen readers, we recommend the latest version of the browser and the following screen readers: <strong><a href='http://docs.bigbluebutton.org/html/html5-accessibility.html#nvda' target='_blank'>NVDA</a> ou <a href='http://docs.bigbluebutton.org/html/html5-accessibility.html#jaws' target='_blank'>JAWS</a> .</strong> </p>"
       information_title: <b>Basic information</b>
-      information: "<p> To participate in web conferencing, your computer must have at least a dual-core processor with at least 2G of memory, 1 Mbits download connection and 0.5Mbit upload. You can test your connection using <a href='http://speedtest.net' target='_blank'>speedtest.net</a>. </p> <p> The latest versions of browsers are recommended (<a href='https://www.mozilla.org/pt-BR/firefox/new/' target='_blank'>Firefox</a> or <a href='https://www.google.com.br/chrome/browser/desktop/' target='_blank'>Chrome</a>).</p> <p> To access web conferencing you need the updated <a href='https://get.adobe.com/flashplayer' target='_blank'>flashplayer</a> plugin. If you have not installed the flashplayer on your computer previously, a warning will appear asking you to install it. </p> <p> Choose how you want to join the voice conference: Just listening or using your microphone. Pick up using the microphone, allow your browser to access it and perform the sound test. </p> <p> If the webconference has been saved, after the closing, you can watch it through the 'access recordings list' button in the table below. </p>"
+      information: "<p> To participate in web conferencing, your computer must have at least a dual-core processor with at least 2G of memory, 1 Mbits download connection and 0.5Mbit upload. You can test your connection using <a href='http://speedtest.net' target='_blank'>speedtest.net</a>. </p> <p> The latest versions of browsers are recommended (<a href='https://www.mozilla.org/pt-BR/firefox/new/' target='_blank'>Firefox</a> or <a href='https://www.google.com.br/chrome/browser/desktop/' target='_blank'>Chrome</a>).</p> <p> You can also access using Android smartphones and tablets and Apple devices (from IOS 11). On android devices, we recommend using the Firefox browser. </p> <p> Choose how you want to join the voice conference: Just listening or using your microphone. Pick up using the microphone, allow your browser to access it and perform the sound test. </p> <p> If the webconference has been saved, after the closing, you can watch it through the 'access recordings list' button in the table below. </p>"
     list_access:
       no_log: No participant accessed this webconference
       too_old: This webconference happened before the access start to be saved
@@ -4881,6 +4882,10 @@ en_US:
     click_to_close: (click to close)
     open: (Will open modal window)
     minimize: "Minimize modal window"
+    smallify: "Smallify modal window"
+    normalize: "To restore modal window"
+    maximize: "Maximize modal window"
+    smallifyrev: "To stretch modal window"
 
   flash_message:
     close: "Close notification"
