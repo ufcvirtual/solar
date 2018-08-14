@@ -43,6 +43,8 @@
                 = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: "erase_flash_messages(true)", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
 
     #box-tools
+      %span.close-button{onclick: 'hideDiv(event, this)'}
+        %i.icon-cross.close
       #box-tools-header
         = t(".tools")
       %ul
