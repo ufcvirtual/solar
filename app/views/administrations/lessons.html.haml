@@ -1,1 +1,4 @@
 = render partial: 'editions/content_filter', locals: { list_class: 'lessons', url: lessons_path, optionals: nil, types: @types, back: false, type_id: nil }
+
+= stylesheet_link_tag "jspanel.css"
+= javascript_include_tag 'jspanel', 'initialize-jspanel'
