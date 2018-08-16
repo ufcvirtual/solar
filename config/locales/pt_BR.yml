@@ -1233,6 +1233,7 @@ pt_BR:
       you_are: "Você está em: %{name} "
       lmodule_menu: " %{lmodule} (Clique para alterar o módulo. Um submenu para seleção de módulos ficará disponível)"
       lesson_menu: " %{lesson} (Clique para alterar a aula. Um submenu para seleção de aulas ficará disponível)"
+      download: "Baixar aula em arquivo PDF"
 
   lesson_modules:
     general_of_offer: "Geral"
