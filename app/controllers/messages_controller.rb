@@ -134,7 +134,7 @@ class MessagesController < ApplicationController
         @message.sender = current_user
         @message.allocation_tag_id = @allocation_tag_id
 
-        raise "error" if params[:message][:contacts].empty?
+        raise "error" if params[:message][:contacts].empty? && params[:support].empty?
         emails = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
                       .where("(nmail.message IS NULL OR nmail.message=TRUE)")
                       .where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
@@ -144,6 +144,7 @@ class MessagesController < ApplicationController
         #Thread.new do
           #Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files, current_user.email).deliver
         #end
+        emails << params[:support] unless params[:support].blank?
         Job.send_mass_email(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email)
       end
 
@@ -167,8 +168,7 @@ class MessagesController < ApplicationController
       end
       @reply_to = []
       @reply_to = User.where(id: params[:message][:contacts].split(',')).select("id, (name||' <'||email||'>') as resume")
-
-      @support = params[:message][:support]
+      @support = params[:support]
 
       #flash.now[:alert] = @message.errors.full_messages.join(', ')
       render :new

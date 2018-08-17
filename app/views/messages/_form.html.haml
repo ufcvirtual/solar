@@ -183,6 +183,11 @@
       href: url,
       open: true
     });
+
+    if($("#message_to").val().indexOf('Atendimento')){
+      $('<div class="contact help"><a data-at="" class="help_link_support" data-selected="true" href="#" onclick="$(this).parent().remove(); return false;">#{I18n.t(".messages.support_html")}</a></div>').appendTo(".contacts-selected");
+    }
+    
   }
   $(function(){
     inputFocuErroMsg();
