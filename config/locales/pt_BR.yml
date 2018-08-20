@@ -3478,6 +3478,8 @@ pt_BR:
       brush: "Pincel"
       arrow: "Flecha"
       saving_file: "Salvando arquivo."
+      undo: "Desfazer"
+      redo: "Refazer"
     success:
       file_saved: Arquivo salvo com sucesso.
       created: Arquivo(s) enviado(s) com sucesso(s).

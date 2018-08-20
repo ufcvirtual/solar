@@ -63,6 +63,10 @@
   line-height: $mysolar_topbar_height;
   text-align: center;
   width: 120px;
+
+  a {
+    color: $color_black;
+  }
 }
 
 #box-tools-header {

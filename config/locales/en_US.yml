@@ -3171,6 +3171,8 @@ en_US:
       brush: Brush
       arrow: Arrow
       saving_file: Saving file.
+      undo: Undo
+      redo: Redo
     success:
       file_saved: File was successfully saved.
       created: File was successfully sent.

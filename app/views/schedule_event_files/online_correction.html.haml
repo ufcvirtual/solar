@@ -32,6 +32,14 @@
                 %a#brush-tool{href: "#", onclick: "toolChanger(event, this)"}
                   %i.icon-pencil
                   = t(".brush")
+              %li
+                %a#undo{href: "#", onclick: "toolChanger(event, this)"}
+                  %i.icon-redo
+                  = t(".undo")
+              %li
+                %a#redo{href: "#", onclick: "toolChanger(event, this)"}
+                  %i.icon-redo2
+                  = t(".redo")
           %li#user
             = image_tag current_user.user_photo(:small), alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", :'aria-hidden' => 'true'
             = current_user.nick
@@ -60,6 +68,14 @@
           %a#brush-tool{href: "#void", onclick: "toolChanger(event, this)"}
             %i.icon-pencil
             = t(".brush")
+        %li
+          %a#undo{href: "#void", onclick: "undo()"}
+            %i.icon-redo
+            = t(".undo")
+        %li
+          %a#redo{href: "#void", onclick: "redo()"}
+            %i.icon-redo2
+            = t(".redo")
 
     %main.container
 
@@ -130,6 +146,16 @@
     } else {
       renderPDF(url, editions_by_user);
     }
+
+    $(document).keydown(function (event) {
+      var keynum  = event.which || event.keyCode;
+      if(event.ctrlKey && keynum == 90) {
+        undo();
+      }
+      if(event.ctrlKey && keynum == 89) {
+        redo();
+      }
+    });
 
     window.onbeforeunload = windowCloseHanlder;
   });

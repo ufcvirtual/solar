@@ -1,5 +1,7 @@
 var currentTool = null;
 var there_is_change_without_save = false;
+var history_to_undo = [];
+var history_for_redo = [];
 
 function canvasSupport() {
   return !!document.createElement('canvas').getContext;
@@ -36,6 +38,14 @@ function toolChanger(event, element) {
 
   if (element.id == 'brush-tool') {
     currentTool = 'brush';
+  }
+
+  if (element.id == 'undo') {
+    undo();
+  }
+
+  if (element.id == 'redo') {
+    redo();
   }
 
   $("#tools").find(".submenu").slideUp(150);
@@ -183,11 +193,13 @@ function write(canvas, context) {
         $(box_text).append(input_textarea);
 
         $(canvas).closest('div').append(box_text);
+        saveState(canvas);
       }
 
       if (getToolSelected() == 'brush') {
         dragging_through_paper = true;
         there_is_change_without_save = true;
+        saveState(canvas);
         drawScreen(context, clickX, clickY, clickDrag, currentTool);
       }
     }
@@ -223,6 +235,10 @@ function write(canvas, context) {
     dragging_through_paper = false;
     if (getToolSelected() == 'hand') {
       canvas.style.cursor = 'grab';
+    }
+    if (getToolSelected() == 'brush') {
+      clickX = [];
+      clickY = [];
     }
   };
 
@@ -431,5 +447,51 @@ function dragElement(element) {
     /* stop moving when mouse button is released:*/
     document.onmouseup = null;
     document.onmousemove = null;
+  }
+}
+
+function saveState(canvas) {
+  if (history_to_undo.length >= 10) {
+    history_to_undo.shift();
+  }
+  history_to_undo.push({ canvas_id: canvas.id, img: canvas.toDataURL() });
+}
+
+function restoreState(canvas) {
+  if (history_for_redo.length >= 10) {
+    history_for_redo.shift();
+  }
+  history_for_redo.push({ canvas_id: canvas.id, img: canvas.toDataURL() });
+}
+
+function undo() {
+  if(history_to_undo.length) {
+    there_is_change_without_save = true;
+    var last_canvas = history_to_undo.pop();
+    var canvas = document.querySelector("#" + last_canvas.canvas_id);
+    restoreState(canvas);
+
+    var img = new Image();
+    img.src = last_canvas.img;
+
+    img.onload = function () {
+      canvas.getContext('2d').drawImage(img, 0, 0);
+    };
+  }
+}
+
+function redo() {
+  if(history_for_redo.length) {
+    there_is_change_without_save = true;
+    var last_canvas = history_for_redo.pop();
+    var canvas = document.querySelector("#" + last_canvas.canvas_id);
+    saveState(canvas);
+
+    var img = new Image();
+    img.src = last_canvas.img;
+
+    img.onload = function () {
+      canvas.getContext('2d').drawImage(img, 0, 0);
+    };
   }
 }
