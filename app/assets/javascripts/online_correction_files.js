@@ -120,27 +120,27 @@ function renderPDF(url, editions_by_user) {
 
         // Render PDF page
         page.render(renderContext)
-          .then(function(){
-            if(editions_by_user != null){
-              $("main").find("canvas").each(function(index, canvas){
-                var img = new Image();
-                img.src = editions_by_user[canvas.id];
+        .then(function(){
+          if(editions_by_user != null){
+            $("main").find("canvas").each(function(index, canvas){
+              var img = new Image();
+              img.src = editions_by_user[canvas.id];
 
-                img.onload = function () {
-                  canvas.getContext('2d').drawImage(img, 0, 0);
-                };
-              });
-            }
-
-            $("canvas").mouseover(function(event){
-              var canvasID = "#" + $(this).attr('id');
-
-              var canvas = document.querySelector(canvasID);
-              var context = canvas.getContext('2d');
-
-              write(canvas, context);
+              img.onload = function () {
+                canvas.getContext('2d').drawImage(img, 0, 0);
+              };
             });
+          }
+
+          $("canvas").mouseover(function(event){
+            var canvasID = "#" + $(this).attr('id');
+
+            var canvas = document.querySelector(canvasID);
+            var context = canvas.getContext('2d');
+
+            write(canvas, context);
           });
+        });
       });
     }
   });
@@ -334,8 +334,27 @@ function canvasText(context, clickX, clickY, message) {
   var xPosition = clickX;
   var yPosition = clickY;
 
-  context.fillText(message, xPosition, yPosition);
+  printAt(context, message, xPosition, yPosition, 15, 250);
   context.restore();
+}
+
+function printAt(context, text, x, y, lineHeight, fitWidth) {
+  fitWidth = fitWidth || 0;
+
+  if (fitWidth <= 0) {
+    context.fillText(text, x, y);
+    return;
+  }
+
+  for (var idx = 1; idx <= text.length; idx++) {
+    var str = text.substr(0, idx);
+    if (context.measureText(str).width > fitWidth) {
+      context.fillText( text.substr(0, idx-1), x, y );
+      printAt(context, text.substr(idx-1), x, y + lineHeight, lineHeight,  fitWidth);
+      return;
+    }
+  }
+  context.fillText(text, x, y);
 }
 
 function canvasArrow(context, fromX, fromY, toX, toY){
@@ -371,19 +390,19 @@ function salving(){
 function flash_message(msg, css_class, div_to_show, onclick_function, object) {
   var div_to_show = (typeof div_to_show == "undefined" || div_to_show == '') ? $(".flash_message_wrapper:last") : $("." + div_to_show);
   if(!div_to_show.length)
-    div_to_show = $(".flash_message_wrapper:last")
+  div_to_show = $(".flash_message_wrapper:last")
 
   if(typeof div_to_show == "undefined"){
     div_to_show = $(".flash_message_wrapper");
     if(!div_to_show.parents('.undefined-sticky-wrapper').length())
-      div_to_show.height($("#flash_message").height() + 20);
+    div_to_show.height($("#flash_message").height() + 20);
   }
 
   erase_flash_messages();
 
   if(typeof msg != 'undefined'){
     if (typeof onclick_function != "undefined")
-      var onclick_function = onclick_function + "()";
+    var onclick_function = onclick_function + "()";
 
     var html = '<div id="flash_message" class="' + css_class + '" onclick='+onclick_function+'><span id="flash_message_span">' + msg + '</span><span class="close"><a onclick="javascript:erase_flash_messages(true);" onkeydown="javascript:click_on_keypress(event, this);" href="#void"><i class="icon-cross" aria-hidden="true"></i></a></span></div>';
     div_to_show.prepend($(html));
@@ -394,7 +413,7 @@ function flash_message(msg, css_class, div_to_show, onclick_function, object) {
 
 function erase_flash_messages(focus, obj) {
   if(focus == undefined)
-    focus = false;
+  focus = false;
 
   if ($('#flash_message')) {
     $('#flash_message').closest(".sticky-wrapper").css("height","0");
