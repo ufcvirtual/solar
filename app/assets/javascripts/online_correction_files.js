@@ -7,7 +7,7 @@ function canvasSupport() {
   return !!document.createElement('canvas').getContext;
 }
 
-function windowCloseHanlder(event) {
+function windowCloseHandler(event) {
   if( there_is_change_without_save ) {
     var event = event || window.event;
 
@@ -381,10 +381,6 @@ function canvasArrow(context, fromX, fromY, toX, toY){
   context.closePath();
   context.stroke();
   context.restore();
-}
-
-function salving(){
-  $.fancybox.open($('#loading'));
 }
 
 function flash_message(msg, css_class, div_to_show, onclick_function, object) {

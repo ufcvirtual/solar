@@ -3174,8 +3174,12 @@ en_US:
       saving_file: Saving file.
       undo: Undo
       redo: Redo
+      clear: Clear
+      deleting_canvas: Cleaning file.
+      message_confirm_cleaning: "This action can't be undone. Are you sure?"
     success:
       file_saved: File was successfully saved.
+      file_cleaned: File was successfully cleaned.
       created: File was successfully sent.
       deleted: File was successfully deleted.
     error:
@@ -3188,6 +3192,7 @@ en_US:
       wrong_type: file type is not allowed (only jpeg/png/gif images or pdfs)
       situation: Can not send files yet, because the activity was not started.
       file_not_saved: It was not possible to save file.
+      file_not_cleaned: It was not possible to clean file.
 
   agendas:
     dropdown_content:

@@ -37,7 +37,7 @@
   }
 }
 
-#user, #tools, #download, #save {
+#user, #tools, #download, #save, #clear {
   padding-right: 30px;
 }
 
@@ -75,6 +75,11 @@
   z-index: 100;
   color: $color_white;
   background-color: $color_main_mysolar;
+}
+
+#saving, #cleaning {
+  text-align: center;
+  display: none;
 }
 
 .submenu {

@@ -3481,8 +3481,12 @@ pt_BR:
       saving_file: "Salvando arquivo."
       undo: "Desfazer"
       redo: "Refazer"
+      clear: "Limpar"
+      deleting_canvas: "Limpando arquivo."
+      message_confirm_cleaning: "Está ação não pode ser desfeita. Você tem certeza disso?"
     success:
       file_saved: Arquivo salvo com sucesso.
+      file_cleaned: Arquivo limpo com sucesso.
       created: Arquivo(s) enviado(s) com sucesso(s).
       deleted: Arquivo(s) deletado(s) com sucesso(s).
     error:
@@ -3495,6 +3499,7 @@ pt_BR:
       wrong_type: "Tipo de arquivo não permitido (apenas imagens jpeg/png/gif ou pdfs)"
       situation: Não é possível enviar arquivos ainda, pois a atividade não foi iniciada.
       file_not_saved: "Não foi possível salvar o arquivo."
+      file_not_cleaned: "Não foi possível limpar o arquivo."
 
   agendas:
     dropdown_content:

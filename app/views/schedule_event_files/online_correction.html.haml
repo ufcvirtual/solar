@@ -15,6 +15,8 @@
         %ul.topbar-options
           %li#save
             %a{href: "#"}= t(:save)
+          %li#clear
+            %a{href: "#"}= t('.clear')
           %li#download
             %a{href: "#"}= t(:download)
           %li#tools
@@ -79,8 +81,12 @@
 
     %main.container
 
-    #loading
+    #saving
       %h2= t('.saving_file')
+      %img= image_tag('loading.gif')
+
+    #cleaning
+      %h2= t('.deleting_canvas')
       %img= image_tag('loading.gif')
 
 :javascript
@@ -90,6 +96,7 @@
     var url = "#{@file_path}"; // Url to render file
     var editions_by_user = JSON.parse('#{@canvas_data}');
     var file_name = "#{@file_name}";
+    var message_confirm_cleaning = "#{t('schedule_event_files.online_correction.message_confirm_cleaning')}";
 
     $("#download > a").click(function(event){
       var pdf = new jsPDF({
@@ -115,6 +122,27 @@
       pdf.save(file_name);
     });
 
+    $("#clear > a").click(function(event){
+      var delete_canvas = confirm(message_confirm_cleaning);
+      if(delete_canvas) {
+        $.fancybox.open($('#cleaning'));
+        $.ajax({
+          url: "delete_online_correction_canvas",
+          type: "DELETE",
+          beforeSend: function (xhr){
+            var token = $("meta[name='csrf-token']").attr("content");
+            xhr.setRequestHeader("X-CSRF-Token", token);
+          }
+        }).done(function (data) {
+          $.fancybox.close();
+          location.reload(true);
+        }).fail(function(jqXHR, textStatus, data){
+          $.fancybox.close();
+          flash_message(data.alert, 'alert');
+        });
+      }
+    });
+
     $("#save > a").click(function(event){
       var images = {};
 
@@ -122,13 +150,13 @@
         images[canvas.id] = canvas.toDataURL('image/png');
       });
 
-      salving();
+      $.fancybox.open($('#saving'));
       $.ajax({
         url: "save_online_correction_file",
         data: { imgs: images },
         type: "POST",
         beforeSend: function (xhr){
-          var token =$("meta[name='csrf-token']").attr("content");
+          var token = $("meta[name='csrf-token']").attr("content");
           xhr.setRequestHeader("X-CSRF-Token", token);
         }
       }).done(function (data) {
@@ -155,10 +183,7 @@
       if(event.ctrlKey && keynum == 89) {
         redo();
       }
-      if(keynum == 27) {
-        // TODO: code here
-      }
     });
 
-    window.onbeforeunload = windowCloseHanlder;
+    window.onbeforeunload = windowCloseHandler;
   });

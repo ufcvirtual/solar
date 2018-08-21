@@ -517,6 +517,7 @@ Solar::Application.routes.draw do
     member do
       get :online_correction
       post :save_online_correction_file
+      delete :delete_online_correction_canvas
     end
     collection do
       get :download

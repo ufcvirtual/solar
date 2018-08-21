@@ -84,6 +84,18 @@ class ScheduleEventFilesController < ApplicationController
     end
   end
 
+  def delete_online_correction_canvas
+    authorize! :online_correction, ScheduleEventFile, on: active_tab[:url][:allocation_tag_id]
+    @schedule_event_file = ScheduleEventFile.find(params[:id])
+    @schedule_event_file.file_correction = nil
+
+    if @schedule_event_file.save
+      render json: { success: true, notice: t('schedule_event_files.success.file_cleaned') }
+    else
+      render json: { success: false, alert: t('schedule_event_files.error.file_not_cleaned') }, status: :unprocessable_entity
+    end
+  end
+
   private
 
     def schedule_event_file_params
