@@ -21,8 +21,10 @@
 
       - text << lesson.name
       - text << t('fancybox.open')
-
-      = link_to lesson.name, path, class: 'link_content lesson jspanel', :'aria-label' => text.join(' '), onkeydown: 'click_on_keypress(event, this);', :'name' => lesson.name
+      - if lesson.path.include? ".pdf" and mobile_device?
+        = link_to lesson.name, lesson.path, class: 'link_content lesson', :'aria-label' => t('lessons.open.download'), onkeydown: 'click_on_keypress(event, this);'
+      - else
+        = link_to lesson.name, path, class: 'link_content lesson jspanel', :'aria-label' => text.join(' '), onkeydown: 'click_on_keypress(event, this);', :'name' => lesson.name
 
     - else
       = link_to(lesson.name, '#void', disabled: true)

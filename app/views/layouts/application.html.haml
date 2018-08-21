@@ -6,8 +6,8 @@
   %head
     %meta{content: "text/html; charset=utf-8", "http-equiv" => "Content-Type"}
     %title= show_breadcrumb_title
-
     = javascript_include_tag "application"
+
     = javascript_tag '$.fx.off = true;' if Rails.env.test?
     /[if lte IE 9]
       <haml_loud> stylesheet_link_tag "fonts/fonts-ie" </haml_loud>
@@ -194,7 +194,7 @@
     #loading
       %h2=t(:page_loading)
       %div= image_tag('loading.gif')
-
+  = javascript_include_tag 'jspanel'
   :javascript
 
     /**
