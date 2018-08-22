@@ -22,6 +22,8 @@
     .block_user
       .title_user= t('.student')
       = user.name
+      - if @not_only_student_profile
+        = link_to content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true'), '#void', :'data-user-id' => @student_id, class: 'link_send_msg'
 
 %section.block_wrapper.assignment_info
   .title
@@ -71,3 +73,19 @@
         element_selector: '#focu'
       });
   }
+
+  $(function(){
+
+    $(".link_send_msg").on('click', function(event){
+      event.preventDefault();
+
+      $(this).call_fancybox({
+        href: '/new_message_score_student/' + $(this).data().userId,
+        open: true,
+      });
+   
+    });
+
+  });
+
+
