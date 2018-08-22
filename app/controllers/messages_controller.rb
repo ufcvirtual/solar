@@ -237,7 +237,7 @@ class MessagesController < ApplicationController
     authorize! :index, Message, { on: [@allocation_tag_id  = active_tab[:url][:allocation_tag_id]], accepts_general_profile: true } unless active_tab[:url][:allocation_tag_id].nil?
     @message = Message.new
     @message.files.build
-    @unreads = Message.unreads(current_user.id, @allocation_tag_id)
+    #@unreads = Message.unreads(current_user.id, @allocation_tag_id)
 
     unless params[:id].nil?
       users = User.find(params[:id].split(","))
