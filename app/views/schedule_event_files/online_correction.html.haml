@@ -19,8 +19,23 @@
             %a{href: "#"}= t('.clear')
           %li#download
             %a{href: "#"}= t(:download)
+          %li#color
+            %a{href: "#",  onclick: "submenuToggle(event, this)"}= t(".colors")
+            %ul.submenu
+              %li
+                %a#black{href: "#", onclick: "toolChanger(event, this)"}
+                  .black-circle
+                  = t(".black")
+              %li
+                %a#red{href: "#", onclick: "toolChanger(event, this)"}
+                  .red-circle
+                  = t(".red")
+              %li
+                %a#blue{href: "#", onclick: "toolChanger(event, this)"}
+                  .blue-circle
+                  = t(".blue")
           %li#tools
-            %a{href: "#", onclick: "submenuToggle()"}= t(".tools")
+            %a{href: "#", onclick: "submenuToggle(event, this)"}= t(".tools")
             %ul.submenu
               %li
                 %a#hand-tool{href: "#", onclick: "toolChanger(event, this)"}
@@ -56,7 +71,7 @@
       %span.close-button{onclick: 'hideDiv(event, this)'}
         %i.icon-cross.close
       #box-tools-header
-        = t(".tools")
+        = t(".tools") +  " " + t(".colors")
       %ul
         %li
           %a#hand-tool{href: "#void", onclick: "toolChanger(event, this)"}
@@ -78,6 +93,18 @@
           %a#redo{href: "#void", onclick: "redo()"}
             %i.icon-redo2
             = t(".redo")
+        %li
+          %a#black{href: "#void", onclick: "toolChanger(event, this)"}
+            .black-circle
+            = t(".black")
+        %li
+          %a#red{href: "#void", onclick: "toolChanger(event, this)"}
+            .red-circle
+            = t(".red")
+        %li
+          %a#blue{href: "#void", onclick: "toolChanger(event, this)"}
+            .blue-circle
+            = t(".blue")
 
     %main.container
 
@@ -182,6 +209,9 @@
       }
       if(event.ctrlKey && keynum == 89) {
         redo();
+      }
+      if(keynum == 27) {
+        $("#box-tools").hide(150);
       }
     });
 

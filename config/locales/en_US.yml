@@ -3170,6 +3170,10 @@ en_US:
       hand: Hand
       text: Text
       brush: Brush
+      colors: Colors
+      black: Black
+      red: Red
+      blue: Blue
       arrow: Arrow
       saving_file: Saving file.
       undo: Undo

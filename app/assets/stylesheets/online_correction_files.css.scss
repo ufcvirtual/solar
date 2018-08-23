@@ -37,7 +37,7 @@
   }
 }
 
-#user, #tools, #download, #save, #clear {
+#user, #tools, #download, #save, #clear, #color {
   padding-right: 30px;
 }
 
@@ -161,4 +161,25 @@
   text-decoration: none;
   cursor: pointer;
   z-index: 101;
+}
+
+.black-circle, .red-circle, .green-circle, .blue-circle {
+  border: 0;
+  border-radius: 50%;
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  margin-left: 5px;
+}
+
+.black-circle {
+  background-color: $color_black;
+}
+
+.red-circle {
+  background-color: $removed_permission_color;
+}
+
+.blue-circle {
+  background-color: $added_permission_color;
 }

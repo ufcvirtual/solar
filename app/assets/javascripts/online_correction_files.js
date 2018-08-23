@@ -1,4 +1,11 @@
+var colors = {
+  black: "#000000",
+  red: "#FF0000",
+  blue: "#0000FF",
+};
+
 var currentTool = null;
+var currentColor = colors.black;
 var there_is_change_without_save = false;
 var history_to_undo = [];
 var history_for_redo = [];
@@ -21,13 +28,16 @@ function windowCloseHandler(event) {
   }
 }
 
-function submenuToggle(){
-  var left = $("#tools").find("a").offset().left;
-  $("#tools").find(".submenu").css('left', left);
-  $("#tools").find(".submenu").slideToggle(150);
+function submenuToggle(event, element){
+  var id = $(element).closest("li").attr('id');
+  var left = $("#" + id).find("a").offset().left;
+  $("#" + id).find(".submenu").css('left', left);
+  $("#" + id).find(".submenu").slideToggle(150);
 }
 
 function toolChanger(event, element) {
+  var menu_id = $(element).closest(".submenu").closest("li").attr("id");
+
   if (element.id == 'hand-tool') {
     currentTool = 'hand';
   }
@@ -48,8 +58,19 @@ function toolChanger(event, element) {
     redo();
   }
 
-  $("#tools").find(".submenu").slideUp(150);
-  $("#box-tools").hide(150);
+  if (element.id == 'black') {
+    currentColor = colors.black;
+  }
+
+  if (element.id == 'red') {
+    currentColor = colors.red;
+  }
+
+  if (element.id == 'blue') {
+    currentColor = colors.blue;
+  }
+
+  $("#" + menu_id).find(".submenu").slideUp(150);
 }
 
 function getToolSelected() {
@@ -287,7 +308,7 @@ function hideDiv(event, element) {
 
 function canvasBrush(context, clickX, clickY, clickDrag) {
   context.save();
-  context.strokeStyle = "#000000";
+  context.strokeStyle = currentColor;
   context.lineJoin = "round";
   context.lineWidth = 2;
 
@@ -326,7 +347,7 @@ function canvasText(context, clickX, clickY, message) {
 
   context.save();
   context.font = "14px sans-serif";
-  context.fillStyle = "#000000";
+  context.fillStyle = currentColor;
 
   var metrics = context.measureText(message);
   var textWidth = metrics.width;
@@ -363,7 +384,7 @@ function canvasArrow(context, fromX, fromY, toX, toY){
   var headLength = 10;
   var angle = Math.atan2(toY-fromY,toX-fromX);
 
-  context.strokeStyle = "#000000";
+  context.strokeStyle = currentColor;
   context.lineJoin = "round";
   context.lineWidth = 2;
 
