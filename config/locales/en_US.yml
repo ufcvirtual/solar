@@ -1169,8 +1169,8 @@ en_US:
       primary: " primary"
       save_draft: Save draft
       publish: Publish
-      expand: Expand all
-      compress: Compress all
+      expand: Show all answers
+      compress: Hide all answers
     post:
       remove_file_confirm: "Your file will be deleted permanently. Proceed?"
       answer: "Reply"
@@ -1184,7 +1184,7 @@ en_US:
       moved_allocation: "Allocation moved to other class"
       show_posts: "Show Answers"
       hide_posts: "Hide Answers"
-      amount_answers: " hidden posts. To view them, click "
+      amount_answers: " hidden post(s). Click here to show them. "
       to_evaluate: Evaluate/Comment
       grade: '(Grade: %{grade})'
       frequency: '(Frequency: %{wh})'
@@ -1212,6 +1212,8 @@ en_US:
     update:
       updated: "Post was successfully updated"
       not_updated: "Post was not updated"
+      draft: "Draft was successfully updated"
+      not_draft: "Draft was not updated"
     user_posts:
       title: Posts from %{user} at %{discussion}
       message: Post
@@ -3428,11 +3430,15 @@ en_US:
         list: 76
         thread: 84
         discussion: 68
+        compress: 72
+        expand: 83
       name:
         new: "New post [P]"
         list: "Show as list [L]"
         thread: "Show as thread [T]"
         discussion: "Show my discussions [D]"
+        compress: "Hide all answers [H]"
+        expand: "Show all answers [S]"
     scores:
       name:
         exam: "Exams [E]"

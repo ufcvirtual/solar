@@ -1352,8 +1352,8 @@ pt_BR:
       primary: " primárias"
       save_draft: Salvar Rascunho
       publish: Publicar
-      expand: "Expandir todos"
-      compress: "Comprimir todos"
+      expand: "Exibir todas as respostas"
+      compress: "Ocultar todas as respostas"
       files:
         discussion_file_title: Arquivos
         name: Nome
@@ -1371,8 +1371,8 @@ pt_BR:
       new_posts_page: "1 nova postagem no fórum (página "
       moved_allocation: "Alocação transferida para outra turma"
       show_posts: "Mostrar Respostas"
-      hide_posts: "Esconder Respostas"
-      amount_answers: " posts ocultados. Para visualizá-los, clique em "
+      hide_posts: "Ocultar Respostas"
+      amount_answers: " post(s) oculto(s). Clique aqui para visualizá-los."
       to_evaluate: Avaliar/Comentar
       grade: '(Nota: %{grade})'
       frequency: '(Frequência: %{wh}hs)'
@@ -3764,11 +3764,15 @@ pt_BR:
         list: "Ver em Lista [L]"
         thread: "Ver em Árvore [A]"
         discussion: "Ver Minhas Discussões [D]"
+        compress: "Ocultar todas as respostas [O]"
+        expand: "Exibir todas as respostas [E]"
       code:
         new: 80
         list: 76
         thread: 65
         discussion: 68
+        compress: 79
+        expand: 69
     assignment:
       name:
         web: "Nova Webconferência [W]"
