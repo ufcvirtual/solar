@@ -69,7 +69,8 @@ gem 'coffee-rails'
 
 gem 'rest-client'
 
-gem 'rufus-scheduler'
+gem 'et-orbi', '~> 1.0.9'
+gem 'rufus-scheduler', '~> 3.4.2'
 
 #fila de emails
 gem 'delayed_job_active_record'
