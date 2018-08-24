@@ -4,13 +4,14 @@
     .block_user
       .title_user= t('.group')
       = @group.group_name
+      = link_to content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true'), '#void', class: 'link_send_msg'
       %div
       .title_user= t('.participants')
       - participants = @group.users
       - unless participants.empty?
         %ul.participants_list
           - participants.each do |participant|
-            %li
+            %li{:'data-id' => participant.id}
               = participant.name
               - unless @class_participants.include? participant.id
                 %span{:"data-tooltip" => t('.moved_allocation'), :'aria-label' => t(".moved_allocation")}= content_tag :i, nil, class: 'icon-warning moved_allocation' 
@@ -21,9 +22,10 @@
     = image_tag user.user_photo(:forum), alt: t(:mysolar_alt_img_user) + ' ' + user.nick
     .block_user
       .title_user= t('.student')
-      = user.name
-      - if @not_only_student_profile
-        = link_to content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true'), '#void', :'data-user-id' => @student_id, class: 'link_send_msg'
+      %span{:'data-id' => @student_id}
+        = user.name
+        - if @not_only_student_profile
+          = link_to content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true'), '#void', class: 'link_send_msg'
 
 %section.block_wrapper.assignment_info
   .title
@@ -79,9 +81,19 @@
     $(".link_send_msg").on('click', function(event){
       event.preventDefault();
 
+      students_ids = []
+
+      if($(".block_user span").data() != null){
+        students_ids.push($(".block_user span").data().id)
+      }
+
+      $('.participants_list li').each(function(index, element){
+        students_ids.push(element.dataset.id)
+      });
+
       $(this).call_fancybox({
-        href: '/new_message_score_student/' + $(this).data().userId,
-        open: true,
+        href: '/new_message_score_student/' + students_ids.join(","),
+        open: true
       });
    
     });
