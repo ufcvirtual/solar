@@ -4,6 +4,8 @@ class ScheduleEventFile < ActiveRecord::Base
   include FilesHelper
   include SentActivity
 
+  FILESIZE = 26.megabyte
+
   belongs_to :user
   belongs_to :academic_allocation_user, counter_cache: true
 
@@ -21,7 +23,7 @@ class ScheduleEventFile < ActiveRecord::Base
     path: ":rails_root/media/schedule_event/schedule_event_files/:id_:basename.:extension",
     url: "/media/schedule_event/schedule_event_files/:id_:basename.:extension"
 
-  validates_attachment_size :attachment, less_than: 26.megabyte, message: I18n.t('schedule_event_files.error.attachment_file_size_too_big')
+  validates_attachment_size :attachment, less_than: FILESIZE, message: I18n.t('schedule_event_files.error.attachment_file_size_too_big')
   validates_attachment_content_type :attachment, content_type: /(^image\/(jpeg|jpg|gif|png)$)|\Aapplication\/pdf/, message: I18n.t('schedule_event_files.error.wrong_type')
 
   Paperclip.interpolates :normalized_attachment_file_name do |attachment, style|
