@@ -1,37 +1,3 @@
-function validate_file_size(file, max_size, message) {
-  var file_name_path = $(file).val();
-  var file_name = file_name_path.substr( (file_name_path.lastIndexOf('\\')+1) );
-
-  if(file.files[0] != undefined ) {
-    var file_size = file.files[0].size;
-
-    if(file_size > max_size) { // Verifica o tamanho do arquivo
-      $('#file_size').removeClass('invisible');
-      $('#file_size').show();
-      $('.message_file_size').text(message);
-      $('.save_file').attr('disabled', true);
-      focus_element('.message_file_size');
-    } else {
-      $('#file_size').addClass('invisible');
-      $('.save_file').attr('disabled', false);
-      $('#file_size').hide();
-      focus_element_time('.file');
-    }
-
-    var file_size_extension = new Array('Bytes', 'KB', 'MB', 'GB');
-
-    i = 0;
-    while(file_size >= 1000) {
-      file_size /= 1000;
-      i++;
-    }
-
-    var file_size_human_readable = (Math.round(file_size*100)/100) + " " + file_size_extension[i];
-
-    $(".file").html( "#{I18n.t(:send_file_name)}: " + file_name + "<br>" + "#{I18n.t(:send_file_size)}: " + file_size_human_readable );
-  }
-}
-
 function hide_element(event) {
   event.preventDefault();
   $('#file_size').hide();

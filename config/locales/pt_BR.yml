@@ -2407,7 +2407,7 @@ pt_BR:
       summary: "Está tabela contém os arquivos publicos."
     new:
       title: Enviar novo arquivo público
-      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 5MB.
+      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 20MB.
     success:
       new: Arquivo enviado com sucesso
       removed: Arquivo removido com sucesso
