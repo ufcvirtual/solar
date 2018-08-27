@@ -85,6 +85,20 @@ class AdministrationsController < ApplicationController
     render json: {success: false, alert: t('administrations.success.email_not_sent')}
   end
 
+  def reset_session_token_user
+    authorize! :reset_password_user, Administration
+    @user = User.find(params[:id])
+    @user.session_token = nil
+    @user.save!
+
+    render json: {success: true, notice:  t('administrations.success.reset_token')}
+
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    render json: {success: false, alert: t('administrations.success.no_reset_token')}
+  end
+
   ## ALLOCATIONS
 
   def allocations_user

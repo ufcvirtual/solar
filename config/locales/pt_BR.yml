@@ -2521,6 +2521,7 @@ pt_BR:
       cpf: CPF
       synchronize: Sincronizar com Sigaa
       import: Importar dados do Sigaa
+      reset_session_token: Resetar token da sessão
     informations:
       detailed: "Informações Detalhadas"
       personal_data: "Dados Pessoais"
@@ -2554,9 +2555,11 @@ pt_BR:
       title: Gerenciar Perfis
     success:
       email_sent: Email enviado com sucesso
+      reset_token: Session token resetado com sucesso
     error:
       email_not_sent: Não foi possível enviar email
       no_email: É necessário definir um email primeiro.
+      no_reset_token: Não foi possível resetar o session token
     allocation_approval:
       not_specified: Não especificado
       none_pending_allocation: Não há solicitações pendentes

@@ -81,6 +81,7 @@ Solar::Application.routes.draw do
     get "users/:id/allocations", to: "administrations#allocations_user", as: :allocations_admin_user
     get "users/:id/allocations_list", to: "administrations#allocations_user_list", as: :allocations_admin_user_list
     get "users", to: "administrations#users", as: :admin_users
+    put "users/:id/sessiontoken", to: "administrations#reset_session_token_user", as: :reset_session_token_admin_user
 
     get "responsibles/filter", to: "administrations#responsibles", as: :admin_responsibles_filter
     get "responsibles", to: "administrations#responsibles_list", as: :admin_responsibles

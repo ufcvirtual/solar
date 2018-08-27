@@ -2235,6 +2235,7 @@ en_US:
       cpf: CPF
       synchronize: Synchronize with Sigaa
       import: Import data from Sigaa
+      reset_session_token: Reset session token
     informations:
       detailed: "Detailed Information"
       personal_data: "Personal Data"
@@ -2268,9 +2269,11 @@ en_US:
       title: Manage Profiles
     success:
       email_sent: Email sent sucessfully
+      reset_token: Session token reset successfully
     error:
       email_not_sent: Email not sent
       no_email: It's necessary set an email first.
+      no_reset_token: Could not reset session token
     allocation_approval:
       not_specified: Not specified
       none_pending_allocation: There are no pending request
