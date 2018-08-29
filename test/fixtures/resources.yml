@@ -1245,3 +1245,9 @@ res237:
   controller: 'schedule_event_files'
   action: 'online_correction'
   description: 'Correção online de Provas'
+
+res238:
+  id: 238
+  controller: 'administrations'
+  action: 'reset_session_token_user'
+  description: 'Reseta o token da sessão de uma usuário'
