@@ -52,6 +52,10 @@
     $(".btn_send_msg").on('click', function(event){
       event.preventDefault();
 
+      if($(this).is('[disabled]')){
+       return false
+      }
+
       students_ids = []
 
       $('tbody :checkbox:checked').each(function(index, element){
