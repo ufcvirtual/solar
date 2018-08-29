@@ -20,6 +20,8 @@
       - if can? :allocations_user, Administration
         %li= link_to t(:reset_session_token, scope: [:administrations, :users]), "#void", onclick:  "reset_session_token_user(this); return false;", :"data-tooltip" => t(:reset_session_token, scope: [:administrations, :users]), :"data-url" => reset_session_token_admin_user_path(user)
 
+      %li= link_to t(:reset_session_token, scope: [:administrations, :users]), "#void", onclick:  "reset_session_token_user(this); return false;", :"data-tooltip" => t(:reset_session_token, scope: [:administrations, :users]), :"data-url" => reset_session_token_admin_user_path(user)
+
       %li{ class: 'border' }= (label_tag t(:last_accessed, scope: [:administrations, :users]) + ' ' + last_accessed(user.id))
 
   - if @can_change
