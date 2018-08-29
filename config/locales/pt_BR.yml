@@ -1928,6 +1928,7 @@ pt_BR:
       inactive: 'Sua conta ainda não foi ativada.'
       invalid_login: Login inválido.
       invalid_login_si3: Login inválido. Clique em 'Cadastrar' e verifique seu CPF para saber se possui cadastro ou não e, caso cadastrado no SI3, para atualizarmos seus dados cadastrais.
+      invalid_password_si3: A senha não deve possui os caracteres "ẽ, ĩ, ũ", por favor alterar a sua senha no SI3.
       user:
         not_found_in_database: 'Usuário ou senha inválidos.'
     login:

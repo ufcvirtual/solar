@@ -36,6 +36,11 @@ class Devise::LoginController < Devise::SessionsController
 
     return if params[:user].blank?
     user = User.find_by("username = ? OR cpf = ?", params[:user][:login], params[:user][:login])
+    if ((user.integrated && !user.on_blacklist?) && (!params[:user][:password].index(/[ẽĩũ]/).nil?))
+      redirect_to login_path, alert: t('devise.failure.invalid_password_si3')
+    else
+      correct_password = user.valid_password?(params[:user][:password]) unless user.blank?
+    end
     correct_password = user.valid_password?(params[:user][:password]) unless user.blank?
 
     if user.nil?
