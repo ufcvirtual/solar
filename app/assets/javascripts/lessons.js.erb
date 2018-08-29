@@ -152,11 +152,10 @@ function change_lesson(event, link) {
     $('#lesson-selected').empty().html(lesson_selected + '<i aria-hidden="true" class="icon-arrow-down-triangle"></i>');
     open_new_lesson_on_fancybox(lesson_path, lesson_url, $(link).data('draft'));
 
-    if(/.aac|.m4a|.mp4|.m4v|.webm/.test(lesson_path)) {
+    if(/.aac|.m4a|.mp4|.m4v|.webm/.test(lesson_path))
       $(".content").empty().html(video(lesson_path));
-    } else {
+    else
       $(".content").empty().html(iframe(lesson_path));
-    }
 
     hide_lessons();
   }
@@ -168,7 +167,7 @@ function video(url) {
   var html  = '';
 
   html += '<span class="hide">"#{t(:audio_suggestions)}"</span>'
-  html += '<video src=' + url + ' autoplay="false" controls="true" name="audioQuestion" preload="auto" onplay="check(this);" onclick="handleMediaErrorFirefox(this);" onkeypress="return handleEnterKey(event, this);">';
+  html += "<video src='" + url + "' autoplay='false' controls='true' name='audioQuestion' preload='auto' onplay='check(this);' onclick='handleMediaErrorFirefox(this);' onkeypress='return handleEnterKey(event, this);'>";
   html += '<track kind="captions">';
   html += '<track kind="descriptions">';
   html += '</video>';
@@ -177,7 +176,7 @@ function video(url) {
 }
 
 function iframe(url) {
-  return '<iframe id="content_lesson" src=' + url + ' width="100%" height="100%" name="content_lesson" target="_self" frameborder="0" framespacing="0"></iframe>';
+  return "<iframe id='content_lesson' src='" + url + "' width='100%'' height='100%' name='content_lesson' target='_self' frameborder='0' framespacing='0'></iframe>";
 }
 
 function navigation_focus_modules(event, link) {
