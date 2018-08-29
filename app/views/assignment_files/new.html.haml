@@ -45,7 +45,6 @@
     });
 
     $("#focu").on("change", function(){
-      var that = this;
-      validate_file_size(that, 26000000, "#{t('assignment_files.new.attachment_file_size_too_big')}");
+      validate_file_size(this, #{AssignmentFile::FILESIZE}, "#{t('assignment_files.new.attachment_file_size_too_big')}");
     });
   });

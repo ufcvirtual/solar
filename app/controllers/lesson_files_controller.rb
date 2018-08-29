@@ -25,7 +25,7 @@ class LessonFilesController < ApplicationController
   def new
     begin
       @lesson  = Lesson.where(id: params[:lesson_id]).first
-      verify_owner
+      # verify_owner
       allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule').pluck(:allocation_tag_id)
       authorize! :new, Lesson, on: [allocation_tags_ids]
 
@@ -79,7 +79,7 @@ class LessonFilesController < ApplicationController
   def edit
     begin
       @lesson  = Lesson.where(id: params[:lesson_id]).first
-      verify_owner
+      # verify_owner
       allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule')
       .select(:allocation_tag_id).map(&:allocation_tag_id)
       authorize! :new, Lesson, on: [allocation_tags_ids]
@@ -140,7 +140,7 @@ class LessonFilesController < ApplicationController
   def destroy
     begin
       @lesson  = Lesson.where(id: params[:lesson_id]).first
-      verify_owner
+      # verify_owner
       allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule').select(:allocation_tag_id).map(&:allocation_tag_id)
       authorize! :new, Lesson, on: [allocation_tags_ids]
 
@@ -167,7 +167,7 @@ class LessonFilesController < ApplicationController
 
   def extract_files
     @lesson = Lesson.find(params[:lesson_id])
-    verify_owner
+    # verify_owner
     allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule')
       .select(:allocation_tag_id).map(&:allocation_tag_id)
     authorize! :update, Lesson, on: [allocation_tags_ids] # com permissao para editar aula

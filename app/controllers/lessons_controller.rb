@@ -87,11 +87,11 @@ class LessonsController < ApplicationController
         if @lesson.address.include? "&"
           @lesson.address.slice!(@lesson.address.index("&"), @lesson.address.length)
         end
-        
+
         if @lesson.address.include? "https://youtu.be"
           @lesson.address.sub!("https://youtu.be", "https://www.youtube.com").sub!(".com/", ".com/watch?v=")
         end
-      
+
       end
 
 
@@ -141,7 +141,8 @@ class LessonsController < ApplicationController
 
   # GET /lessons/1/edit
   def edit
-    verify_owner(params[:id])
+    # verify_owner(params[:id])
+    @lesson = Lesson.find(params[:id])
     lesson_modules_by_ats(@allocation_tags_ids)
     groups_by_lesson(@lesson)
   end
@@ -149,7 +150,8 @@ class LessonsController < ApplicationController
   # PUT /lessons/1
   # PUT /lessons/1.json
  def update
-    verify_owner(params[:id])
+    # verify_owner(params[:id])
+    @lesson = Lesson.find(params[:id])
     @lesson.update_attributes! lesson_params
 
     render json: { success: true, notice: t('lessons.success.updated') }
@@ -189,7 +191,7 @@ class LessonsController < ApplicationController
     #     format.js { render js: "flash_message('#{msg.first}', 'alert');" }
     #   end
     # end
-    
+
     respond_to do |format|
       if msg.empty?
         format.json { render json: {success: true} }
@@ -198,7 +200,7 @@ class LessonsController < ApplicationController
         format.json { render json: { success: true, msg: msg }}
         format.js
       end
-      
+
     end
   end
 
@@ -223,6 +225,7 @@ class LessonsController < ApplicationController
 
   def download_files
     authorize! :download_files, Lesson, on: params[:allocation_tags_ids]
+    verify_owner(params[:lessons_ids])
 
     if verify_lessons_to_download(params[:lessons_ids], true)
       zip_file_path = compress_file(under_path: @all_files_paths, folders_names: @lessons_names)
@@ -248,7 +251,7 @@ class LessonsController < ApplicationController
   def order
     l1, l2 = Lesson.where(id: ids = [params[:id], params[:change_id]])
 
-    verify_owner(ids)
+    # verify_owner(ids)
     authorize! :update, l1
 
     Lesson.transaction do
@@ -265,8 +268,6 @@ class LessonsController < ApplicationController
   def change_module
     verify_owner(lesson_ids = params[:lessons_ids].split(',') rescue [])
     authorize! :change_module, Lesson, on: params[:allocation_tags_ids]
-
-    verify_owner(lesson_ids)
 
     new_module_id = LessonModule.find(params[:move_to_module]).id rescue nil
 
