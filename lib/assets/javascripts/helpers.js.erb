@@ -761,34 +761,6 @@ function clear_ckeditor(){
   }
 }
 
-function verify_comment_before_finish_evaluation(){
-
-  var content = $('div.ckeditor .cke_contents iframe').contents().find('body').html()
-  if (content != undefined && content != "<p><br></p>" && content != "<br>" && content != ""){
-      $('textarea.ckeditor').html(content)
-
-      if (confirm("<%=I18n.t('comments.list.comment_finish_evaluation_unsaved')%>")){
-
-          $('#comment_form').serialize_and_submit({
-            files: true,
-            prepend_to_list: $(".comments_list"),
-            dont_remove_lightbox: true,
-            outer: 'fancybox-outer',
-            complement_success: function(data){
-              cancel_new_comment();
-              update_tables_with_no_data('.comments_list', '.comments_list > li');
-              if(data.ac_id != undefined)
-                after_evaluate(data.tool, data.score_type, data.ac_id, data.user_id, data, data.group_id)
-              if(!!$('.fancybox-outer').length)
-                flash_message("#{t('comments.success.new')}", "notice", 'fancybox-outer')
-              else
-                flash_message("#{t('comments.success.new')}", "notice")
-            }
-          });
-      }
-  }
-}
-
 function calendar_prev_next_month_accessible(){
   setTimeout(function(){
 
@@ -819,7 +791,6 @@ function calendar_accessible(){
     calendar_prev_next_month_accessible();
 
     $all_days = $(".ui-datepicker-calendar .ui-state-default");
-    console.log($all_days);
 
     $all_days.each(function(item_day){
       var value_day = $(this).text();
