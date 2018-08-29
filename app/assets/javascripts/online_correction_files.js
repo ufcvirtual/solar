@@ -35,7 +35,7 @@ function submenuToggle(event, element){
   $("#" + id).find(".submenu").slideToggle(150);
 }
 
-function toolChanger(event, element) {
+function toolChanger(element) {
   var menu_id = $(element).closest(".submenu").closest("li").attr("id");
 
   if (element.id == 'hand-tool') {
@@ -298,11 +298,7 @@ function insertText(event, element) {
   $(element).closest('.box').remove();
 }
 
-function closeDiv(event, element) {
-  $(element).closest('.box').remove();
-}
-
-function hideDiv(event, element) {
+function hideDiv(element) {
   $(element).closest('div').hide();
 }
 
@@ -376,32 +372,6 @@ function printAt(context, text, x, y, lineHeight, fitWidth) {
     }
   }
   context.fillText(text, x, y);
-}
-
-function canvasArrow(context, fromX, fromY, toX, toY){
-  context.save();
-
-  var headLength = 10;
-  var angle = Math.atan2(toY-fromY,toX-fromX);
-
-  context.strokeStyle = currentColor;
-  context.lineJoin = "round";
-  context.lineWidth = 2;
-
-  context.beginPath();
-
-  // Create line
-  context.moveTo(fromX, fromY);
-  context.lineTo(toX, toY);
-
-  // Create arrow head
-  context.lineTo(toX-headLength*Math.cos(angle-Math.PI/6),toY-headLength*Math.sin(angle-Math.PI/6));
-  context.moveTo(toX, toY);
-  context.lineTo(toX-headLength*Math.cos(angle+Math.PI/6),toY-headLength*Math.sin(angle+Math.PI/6));
-
-  context.closePath();
-  context.stroke();
-  context.restore();
 }
 
 function flash_message(msg, css_class, div_to_show, onclick_function, object) {

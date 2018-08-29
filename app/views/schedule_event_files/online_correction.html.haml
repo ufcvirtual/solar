@@ -23,38 +23,38 @@
             %a{href: "#",  onclick: "submenuToggle(event, this)"}= t(".colors")
             %ul.submenu
               %li
-                %a#black{href: "#", onclick: "toolChanger(event, this)"}
+                %a#black{href: "#", onclick: "toolChanger(this)"}
                   .black-circle
                   = t(".black")
               %li
-                %a#red{href: "#", onclick: "toolChanger(event, this)"}
+                %a#red{href: "#", onclick: "toolChanger(this)"}
                   .red-circle
                   = t(".red")
               %li
-                %a#blue{href: "#", onclick: "toolChanger(event, this)"}
+                %a#blue{href: "#", onclick: "toolChanger(this)"}
                   .blue-circle
                   = t(".blue")
           %li#tools
             %a{href: "#", onclick: "submenuToggle(event, this)"}= t(".tools")
             %ul.submenu
               %li
-                %a#hand-tool{href: "#", onclick: "toolChanger(event, this)"}
+                %a#hand-tool{href: "#", onclick: "toolChanger(this)"}
                   %i.icon-hand
                   = t(".hand")
               %li
-                %a#text-tool{href: "#", onclick: "toolChanger(event, this)"}
+                %a#text-tool{href: "#", onclick: "toolChanger(this)"}
                   %i.icon-write
                   = t(".text")
               %li
-                %a#brush-tool{href: "#", onclick: "toolChanger(event, this)"}
+                %a#brush-tool{href: "#", onclick: "toolChanger(this)"}
                   %i.icon-pencil
                   = t(".brush")
               %li
-                %a#undo{href: "#", onclick: "toolChanger(event, this)"}
+                %a#undo{href: "#", onclick: "toolChanger(this)"}
                   %i.icon-redo
                   = t(".undo")
               %li
-                %a#redo{href: "#", onclick: "toolChanger(event, this)"}
+                %a#redo{href: "#", onclick: "toolChanger(this)"}
                   %i.icon-redo2
                   = t(".redo")
           %li#user
@@ -68,21 +68,21 @@
                 = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: "erase_flash_messages(true)", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
 
     #box-tools
-      %span.close-button{onclick: 'hideDiv(event, this)'}
+      %span.close-button{onclick: 'hideDiv(this)'}
         %i.icon-cross.close
       #box-tools-header
         = t(".tools") +  " " + t(".colors")
       %ul
         %li
-          %a#hand-tool{href: "#void", onclick: "toolChanger(event, this)"}
+          %a#hand-tool{href: "#void", onclick: "toolChanger(this)"}
             %i.icon-hand
             = t(".hand")
         %li
-          %a#text-tool{href: "#void", onclick: "toolChanger(event, this)"}
+          %a#text-tool{href: "#void", onclick: "toolChanger(this)"}
             %i.icon-write
             = t(".text")
         %li
-          %a#brush-tool{href: "#void", onclick: "toolChanger(event, this)"}
+          %a#brush-tool{href: "#void", onclick: "toolChanger(this)"}
             %i.icon-pencil
             = t(".brush")
         %li
@@ -94,15 +94,15 @@
             %i.icon-redo2
             = t(".redo")
         %li
-          %a#black{href: "#void", onclick: "toolChanger(event, this)"}
+          %a#black{href: "#void", onclick: "toolChanger(this)"}
             .black-circle
             = t(".black")
         %li
-          %a#red{href: "#void", onclick: "toolChanger(event, this)"}
+          %a#red{href: "#void", onclick: "toolChanger(this)"}
             .red-circle
             = t(".red")
         %li
-          %a#blue{href: "#void", onclick: "toolChanger(event, this)"}
+          %a#blue{href: "#void", onclick: "toolChanger(this)"}
             .blue-circle
             = t(".blue")
 
@@ -203,15 +203,18 @@
     }
 
     $(document).keydown(function (event) {
-      var keynum  = event.which || event.keyCode;
-      if(event.ctrlKey && keynum == 90) {
-        undo();
-      }
-      if(event.ctrlKey && keynum == 89) {
-        redo();
-      }
-      if(keynum == 27) {
-        $("#box-tools").hide(150);
+      if(!$("input").is(":focus") && !$("textarea").is(":focus")){
+        var keynum  = event.which || event.keyCode;
+
+        if(event.ctrlKey && keynum == 90) {
+          undo();
+        }
+        if(event.ctrlKey && keynum == 89) {
+          redo();
+        }
+        if(keynum == 27) {
+          $("#box-tools").hide(150);
+        }
       }
     });
 
