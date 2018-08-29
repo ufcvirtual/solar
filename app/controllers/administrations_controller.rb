@@ -86,7 +86,7 @@ class AdministrationsController < ApplicationController
   end
 
   def reset_session_token_user
-    authorize! :reset_password_user, Administration
+    authorize! :reset_session_token_user, Administration
     @user = User.find(params[:id])
     @user.session_token = nil
     @user.save!
