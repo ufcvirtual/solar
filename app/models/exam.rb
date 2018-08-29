@@ -62,6 +62,8 @@ class Exam < Event
         acu.recalculate_final_grade(acu.allocation_tag_id)
         send_result_emails(acu, grade.round(2))
       end
+      update_attributes corrected: true
+
       [grade.round(2), wh]
     else
       errors.add(:base, I18n.t('exams.error.not_finished'))
@@ -157,8 +159,6 @@ class Exam < Event
     list_exam = Exam.includes(:schedule).where(query).references(:schedule)
     list_exam.each do |exam|
       exam.recalculate_grades(nil, nil, true)
-      exam.corrected = true
-      exam.save
     end
   end
 
