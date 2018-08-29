@@ -219,7 +219,6 @@ module V1::Contents
         #from acs, copy all acus which doesnt have any access
         from_acus_without_access = AcademicAllocationUser.joins('LEFT JOIN log_actions ON log_actions.academic_allocation_user_id = academic_allocation_users.id').where(academic_allocation_id: web.id).where('log_actions.id IS NULL')
         from_acus_without_access.each do |from_acu_without_access|
-          #ac = AcademicAllocation.joins(:webconference).where(allocation_tag_id: to_at, academic_tool_type: 'Webconference').where("origin_meeting_id = '?' OR origin_meeting_id = ? OR academic_tool_id = ?", web.academic_tool_id, [from_at, web.academic_tool_id].join('_'), web.academic_tool_id).order('id').last
           get_acu(to_ac.id, from_acu_without_access, from_acu_without_access.user_id) #rescue nil
         end
       end
