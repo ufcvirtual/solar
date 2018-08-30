@@ -201,7 +201,6 @@
           $(link).parents('tr').find(data.show_element).parent().removeClass('invisible');
       },
       error: function(data){
-        console.log(data);
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")
           flash_message(data.alert, 'alert');
