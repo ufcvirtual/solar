@@ -144,6 +144,10 @@ function change_lesson(event, link) {
     $(link).closest(".dropdown-menu").find("a").removeClass("selected");
     $(link).addClass("selected");
 
+    if (lesson_path.includes("https://youtu.be")){
+      lesson_path = lesson_path.replace("https://youtu.be", "https://www.youtube.com/embed/")
+    }
+
     var lesson_selected = $(link).html();
     $('#lesson-selected').empty().html(lesson_selected + '<i aria-hidden="true" class="icon-arrow-down-triangle"></i>');
     open_new_lesson_on_fancybox(lesson_path, lesson_url, $(link).data('draft'));
