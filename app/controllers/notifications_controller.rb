@@ -94,7 +94,7 @@ class NotificationsController < ApplicationController
 
   # PUT /notifications/1
   def update
-    raise CanCan::AccessDenied if notification_params[:mandatory_reading] && !@can_mark_as_mandatory
+    raise CanCan::AccessDenied if notification_params[:mandatory_reading] && !@can_mark_as_mandatory && !@notification.mandatory_reading
 
     @notification.schedule.verify_today = true
 
