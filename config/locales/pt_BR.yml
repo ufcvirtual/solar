@@ -1722,6 +1722,11 @@ pt_BR:
       record: Gravação %{number}
       start: Início da gravação
       end: Fim da gravação
+      options: Opções
+      download_podcast: Baixar Podcast
+      download_video: Baixar Vídeo
+      download_chat: Baixar Bate-papo
+      download_slides: Baixar Slides
       warning: '<b>Importante: </b> Para cada ausência prolongada de participantes na webconferência, uma nova gravação é realizada.'
       no_message: Gravações removidas ou vazias ou a webconferência não possui gravações
       remove: Remover gravação
@@ -1739,9 +1744,7 @@ pt_BR:
       resume_total: 'Total de webconferências criadas desde 2014.2 (efetivas):'
       resume_max_access: 'Máximo de acessos únicos a uma webconferência:'
       resume_avg_access: 'Média de acessos únicos nas webconferências (usuários/web):'
-      resume_total_access: 'Total de acessos únicos desde 2014.2:'
-      resume_grade: 'Nota atual do semestre (média geral do feddback):'
-      resume_grade_value: '7,58/10'
+      resume_total_access: 'Total de acessos desde 2014.2 (únicos):'
       title_statistic: 'Estatísticas do Servidor (Gerais)'
       statistic_duration: 'Média de duração das webconferências (minutos):'
       statistic_rec: 'Porcentagem de webconferências gravadas:'
@@ -1751,7 +1754,7 @@ pt_BR:
       statistic_per_server: 'Webconferências por servidor:'
       statistic_per_type: 'Webconferẽncias por tipo (total):'
       statistic_ps_total: 'Total'
-      statistic_ps_rt: 'Webconferências em tempo real (agendadas)'
+      statistic_ps_rt: 'Webconferências em tempo real'
       statistic_ps_rt_access: 'Usuários em tempo real'
       web_title: 'Webconferências (UAB)'
       web_total: 'Total de webconferências criadas e efetivas por semestre:'
@@ -1760,28 +1763,29 @@ pt_BR:
       web_day: 'Webconferências por dia da semana (agrupadas):'
       web_hour: 'Webconferências por hora do dia (agrupadas):'
       web_course: 'Webconferências por curso:'
-      web_offer: 'Webconferências por disciplina:'
-      web_creator: 'Webconferências por criador:'
+      web_offer: 'Webconferências por disciplina (Histórico):'
+      web_creator: 'Webconferências por criador (Histórico):'
       access_title: 'Acessos (UAB)'
+      access_total: 'Total de acessos únicos por semestre:'
       access_course: 'Quantidade de acessos únicos por Curso:'
-      access_offer: 'Quantidade de acessos únicos por disciplina:'
+      access_offer: 'Quantidade de acessos únicos por disciplina (Histórico):'
       access_avg: 'Média de acessos por webconferência efetiva:'
-      historic_title: 'Histórico de mudanças'
+      historic_title: 'Histórico de mudanças nos servidores bigbluebutton'
       historic_d7: '??/??/????'
       historic_t7: 'Implantação do botão de suporte'
       historic_d6: '06/07/2018'
-      historic_t6: 'Implantação da versão 2.0 com html5, novo layout e novo slide default.'
+      historic_t6: 'Implantação da versão 2.0 com html5 (padrão), webrtc obrigatório (áudio, vídeo e compartilhamento de tela), novo layout e novo slide default.'
       historic_d5: '22/05/2017'
       historic_t5: 'Informações básicas de uso da ferramenta'
       historic_d4: '24/04/2017'
-      historic_t4: 'Implantação do https, configuração inicial simplificada e mensagem de boas vindas'
+      historic_t4: 'Implantação do https, webrtc opcional, configuração inicial simplificada e mensagem de boas vindas'
       historic_d3: '16/02/2017'
-      historic_t3: 'Balanceamento de carga com 2 servidores, bbb 1.0'
+      historic_t3: 'Balanceamento de carga com 2 servidores e atualização para a versão 1.0'
       historic_d2: '09/02/2017'
       historic_t2: 'Formulário de feedback'
       historic_d1: '??/??/2014'
-      historic_t1: 'BBB 0.81'
-      feedback_title: 'Feedback - 7737 respostas (22% dos usuários)'
+      historic_t1: 'Implantação da versão 0.81 do bigbluebutton'
+      feedback_title: 'Feedback - 8176 respostas (23% dos acessos)'
       feedback_grade: 'Nota das webconferências (1 à 5):'
       feedback_difficulty: 'Dificuldades na webconferência:'
       feedback_access: 'Local de acesso:'

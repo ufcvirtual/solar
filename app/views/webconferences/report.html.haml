@@ -1,0 +1,697 @@
+= javascript_include_tag "https://www.gstatic.com/charts/loader.js"
+
+.list_designates
+  .block_wrapper.users
+    .block_title
+      %h2= t('.title') 
+	  
+    .block_content.charts
+      .title= t('.title_resume') 
+      %table.resume
+        %tbody
+          %tr
+            %td= t('.resume_max') 
+            %td= @avg_max_total[0][2].to_s
+          %tr
+            %td= t('.resume_avg') 
+            %td= @avg_max_total[0][0].to_s + " (" + @avg_max_total[0][1].to_s + ")"
+          %tr
+            %td= t('.resume_total') 
+            %td= @all.to_s + " (" + @effective.to_s + ")"
+          %tr
+            %td= t('.resume_max_access') 
+            %td= @avg_max_total_access[0][2].to_s
+          %tr
+            %td= t('.resume_avg_access') 
+            %td= @avg_max_total_access[0][0].to_s
+          %tr
+            %td= t('.resume_total_access') 
+            %td= @avg_max_total_access[0][1].to_s + " (" + @sum_total_access.to_s + ")"
+      #chart_per_type{tabindex: 0}
+      .title= t('.title_statistic') 
+      %table.statistics
+        %tbody
+          %tr
+            %td= t('.statistic_duration') 
+            %td= @avg_duration.to_s
+          %tr
+            %td= t('.statistic_rec') 
+            %td= @percent_record + "%"
+          %tr
+            %td= t('.statistic_recording_per_server_1') 
+            %td= @per_server[0][1].to_s
+          %tr
+            %td= t('.statistic_recording_per_server_2') 
+            %td= @per_server[1][1].to_s
+          %tr
+            %td= t('.statistic_shared') 
+            %td= @percent_shared + "%"
+      #chart_per_server{tabindex: 0}
+      #chart_per_server_webs_real_time{tabindex: 0}
+      #chart_per_server_access_real_time{tabindex: 0}
+      .title= t('.web_title') 
+      .title-warning
+        .chart_title
+          = link_to raw(t('.web_total')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_total{tabindex: 0}
+      .title-warning
+        .chart_title
+          = link_to raw(t('.web_12_month')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_per_month{tabindex: 0}
+      .title-warning
+        .chart_title
+          = link_to  raw(t('.web_month')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_per_month_of_year{tabindex: 0}
+      .title-warning
+        .chart_title
+          = link_to raw(t('.web_day')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_per_day_of_week{tabindex: 0}
+      .title-warning
+        .chart_title
+          = link_to raw(t('.web_hour')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_per_hour_of_day{tabindex: 0}  
+      .title-warning
+        .chart_title
+          = link_to raw(t('.web_course')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_total_per_course{tabindex: 0}
+      .title-warning
+        .chart_title
+          = link_to raw(t('.web_offer')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_total_per_offer{tabindex: 0}
+      .title-warning
+        .chart_title
+          = link_to raw(t('.web_creator')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_per_creator{tabindex: 0}
+      .title= t('.access_title')
+      .title-warning
+        .chart_title
+          = link_to raw(t('.access_total')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_access_total{tabindex: 0}
+      .title-warning
+        .chart_title
+          = link_to raw(t('.access_course')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_access_per_course{tabindex: 0}
+      .title-warning
+        .chart_title
+          = link_to raw(t('.access_offer')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_access_per_offer{tabindex: 0}
+      .title-warning
+        .chart_title
+          = link_to raw(t('.access_avg')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_avg_access_per_semester{tabindex: 0}
+      .title= t('.historic_title')
+      %table.historic
+        %tbody
+          %tr
+            %td= t('.historic_d7')
+            %td= t('.historic_t7')
+          %tr
+            %td= t('.historic_d6')
+            %td= t('.historic_t6')
+          %tr
+            %td= t('.historic_d5')
+            %td= t('.historic_t5')
+          %tr
+            %td= t('.historic_d4')
+            %td= t('.historic_t4')
+          %tr
+            %td= t('.historic_d3')
+            %td= t('.historic_t3')
+          %tr
+            %td= t('.historic_d2')
+            %td= t('.historic_t2')
+          %tr
+            %td= t('.historic_d1')
+            %td= t('.historic_t1')
+      .title=  t('.feedback_title')
+      .title-warning
+        .chart_title
+          = link_to raw(t('.feedback_grade')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_grade{tabindex: 0}
+        #chart_grade_avg{tabindex: 0}
+      .title-warning
+        .chart_title
+          = link_to raw(t('.feedback_difficulty')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_difficulties{tabindex: 0}
+        #chart_difficulties_pie{tabindex: 0}
+      .title-warning
+        .chart_title
+          = link_to raw(t('.feedback_access')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_local{tabindex: 0}
+        #chart_local_pie{tabindex: 0}
+      .title-warning
+        .chart_title
+          = link_to raw(t('.feedback_equipament')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_equipment{tabindex: 0}
+        #chart_equipment_pie{tabindex: 0}
+      .title-warning
+        .chart_title
+          = link_to raw(t('.feedback_internet')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_internet_pie{tabindex: 0}
+      .title-warning
+        .chart_title
+          = link_to raw(t('.feedback_html5')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_html5_pie{tabindex: 0}
+      .title-warning
+        .chart_title
+          = link_to raw(t('.feedback_html5_flash')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+          %i.icon-arrow-down-triangle
+          %i.icon-arrow-up-triangle.invisible
+        #chart_html5flash{tabindex: 0}
+
+  .block_wrapper.search
+    = link_to t(:back), preview_webconferences_path, class: "btn"
+
+    .block_content
+      #list_users
+
+
+:javascript
+
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.load('current', {'packages':['bar']});
+
+  google.charts.setOnLoadCallback(drawChart);
+
+
+  function drawChart() {
+
+    var formatter_float = new google.visualization.NumberFormat({ decimalSymbol: ',', groupingSymbol: '.', fractionDigits: 2 });
+    var formatter_integer = new google.visualization.NumberFormat({ decimalSymbol: ',', groupingSymbol: '.', fractionDigits: 0 });
+
+    // Per Type
+    var data1 = JSON.parse('#{@count_per_type.to_json.html_safe}');
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Tipo');
+    data.addColumn('number', 'Total');
+
+    for (var i=0;i<data1.length;i++){ data.addRow([data1[i][0], parseInt(data1[i][1]) ]); }
+
+    var options = { title: "#{t('webconferences.report.statistic_per_type')}", is3D: true };
+
+    formatter_integer.format(data, 1);
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_per_type'));
+    chart.draw(data, options);
+
+    // Total
+    var data1 = JSON.parse('#{@total.to_json.html_safe}');
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Semestre');
+    data.addColumn('number', 'Total');
+    data.addColumn('number', 'Efetivas');
+
+    for (var i=0;i<data1.length;i++){ data.addRow([data1[i][0], parseInt(data1[i][1]), parseInt(data1[i][2]) ]); }
+
+    var options = { legend: { position: "none" }, vAxis : { format: 'decimal' } };
+    
+    formatter_integer.format(data, 1);
+    formatter_integer.format(data, 2);
+
+    var chart = new google.charts.Bar(document.getElementById('chart_total'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+
+    // Per Month
+    var data1 = JSON.parse('#{@per_month.to_json.html_safe}');
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Mês');
+    data.addColumn('number', 'Total');
+
+    for (var i=0;i<data1.length;i++){ data.addRow([data1[i][0], parseInt(data1[i][1])]); }
+
+    var options = { legend: { position: "none" }, vAxis : { format: 'decimal' } };
+
+    formatter_integer.format(data, 1);
+
+    var chart = new google.charts.Bar(document.getElementById('chart_per_month'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+
+    // Per Month of Year
+    var data1 = JSON.parse('#{@per_month_of_year.to_json.html_safe}');
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Mês');
+    data.addColumn('number', 'Total');
+
+    for (var i=0;i<data1.length;i++){ data.addRow([data1[i][2], parseInt(data1[i][1])]); }
+
+    var options = { legend: { position: "none" }, vAxis : { format: 'decimal' } };
+
+    formatter_integer.format(data, 1);
+
+    var chart = new google.charts.Bar(document.getElementById('chart_per_month_of_year'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+
+    // Per Hour of Day
+    var data1 = JSON.parse('#{@per_hour_of_day.to_json.html_safe}');
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Hora');
+    data.addColumn('number', 'Total');
+
+    for (var i=0;i<data1.length;i++){ data.addRow([data1[i][0], parseInt(data1[i][1])]); }
+
+    var options = { legend: { position: "none" }, vAxis : { format: 'decimal' } };
+
+    formatter_integer.format(data, 1);
+
+    var chart = new google.charts.Bar(document.getElementById('chart_per_hour_of_day'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+
+    //Per Day of Week
+    var data1 = JSON.parse('#{@per_day_of_week.to_json.html_safe}');
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Dia');
+    data.addColumn('number', 'Total');
+
+    for (var i=0;i<data1.length;i++){ data.addRow([data1[i][1], parseInt(data1[i][2])]); }
+
+    var options = { legend: { position: "none" }, vAxis : { format: 'decimal' } };
+
+    formatter_integer.format(data, 1);
+
+    var chart = new google.charts.Bar(document.getElementById('chart_per_day_of_week'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+
+    //Per Server - Total
+    var data1 = JSON.parse('#{@per_server.to_json.html_safe}');
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Server');
+    data.addColumn('number', 'Total');
+
+    for (var i=0;i<data1.length;i++){ data.addRow([data1[i][4], parseInt(data1[i][2])]); }
+
+    var options = { title: "#{t('webconferences.report.statistic_per_server')}", is3D: true };
+
+    formatter_integer.format(data, 1);
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_per_server'));
+    chart.draw(data, options);
+
+    //Per Server - webs real time
+    var data1 = JSON.parse('#{@per_server.to_json.html_safe}');
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Server');
+    data.addColumn('number', 'Webconferências');
+
+    for (var i=0;i<data1.length;i++){ data.addRow([data1[i][4], parseInt(data1[i][3])]); }
+
+    var options = { title: "#{t('webconferences.report.statistic_ps_rt')}", is3D: true, sliceVisibilityThreshold:0  };
+
+    formatter_integer.format(data, 1);
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_per_server_webs_real_time'));
+    chart.draw(data, options);
+
+    //Per Server - access real time
+    var data1 = JSON.parse('#{@participantCountPerServer.to_json.html_safe}');
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Server');
+    data.addColumn('number', 'Usuários');
+
+    for (var i=0;i<data1.length;i++){ data.addRow([data1[i][0], parseInt(data1[i][1])]); }
+
+    var options = { title: "#{t('webconferences.report.statistic_ps_rt_access')}", is3D: true, sliceVisibilityThreshold:0 };
+
+    formatter_integer.format(data, 1);
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_per_server_access_real_time'));
+    chart.draw(data, options);
+
+    //TOP CREATORS
+    var data1 = JSON.parse('#{@top_creators.to_json.html_safe}');
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Criador');
+    data.addColumn('number', 'Total');
+
+    for (var i=0;i<data1.length;i++){ data.addRow([data1[i][0], parseInt(data1[i][1])]); }
+
+    var options = { legend: { position: "none" }, bars: 'horizontal' };
+
+    formatter_integer.format(data, 1);
+
+    var chart = new google.charts.Bar(document.getElementById('chart_per_creator'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+
+    // Total per Course
+    var data1 = JSON.parse('#{@total_per_course.to_json.html_safe}');
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Semestre');
+    data.addColumn('number', 'Licenciatura em Matemática');
+    data.addColumn('number', 'Letras Espanhol');
+    data.addColumn('number', 'Letras Inglês');
+    data.addColumn('number', 'Letras Português');
+    data.addColumn('number', 'Licenciatura em Física');
+    data.addColumn('number', 'Bacharelado em Administração');
+    data.addColumn('number', 'Licenciatura em Pedagogia');
+    data.addColumn('number', 'Bacharelado em Gestão Pública');
+    data.addColumn('number', 'Licenciatura em Química');
+
+    for (var i=0;i<data1.length;i++){
+      data.addRow([data1[i][0], parseInt(data1[i][1]), parseInt(data1[i][2]), parseInt(data1[i][3]), parseInt(data1[i][4]), parseInt(data1[i][5]), parseInt(data1[i][6]), parseInt(data1[i][7]), parseInt(data1[i][8]), parseInt(data1[i][9])]);
+    }
+
+    var options = { legend: { position: "bottom", maxLines: 3 }, vAxis : { format: 'decimal' }, seriesType: 'bars' };
+
+    formatter_integer.format(data, 1);
+    formatter_integer.format(data, 2);
+    formatter_integer.format(data, 3);
+    formatter_integer.format(data, 4);
+    formatter_integer.format(data, 5);
+    formatter_integer.format(data, 6);
+    formatter_integer.format(data, 7);
+    formatter_integer.format(data, 8);
+    formatter_integer.format(data, 9);
+
+    var chart = new google.visualization.ComboChart(document.getElementById('chart_total_per_course'));
+    chart.draw(data, options);
+
+    // Total Per Offer
+    var data1 = JSON.parse('#{@total_per_offer.to_json.html_safe}');
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Disciplina');
+    data.addColumn('number', 'Total');
+
+    for (var i=0;i<data1.length;i++){
+      data.addRow([data1[i][1], parseInt(data1[i][0])]);
+    }
+
+    var options = { legend: { position: "none" }, bars: 'horizontal' };
+
+    formatter_integer.format(data, 1);
+
+    var chart = new google.charts.Bar(document.getElementById('chart_total_per_offer'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+
+    // Total Access
+    var data1 = JSON.parse('#{@total_access.to_json.html_safe}');
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Semestre');
+    data.addColumn('number', 'Total');
+
+    for (var i=0;i<data1.length;i++){ data.addRow([data1[i][0], parseInt(data1[i][1]) ]); }
+
+    var options = { legend: { position: "none" }, vAxis : { format: 'decimal' } };
+    
+    formatter_integer.format(data, 1);
+
+    var chart = new google.charts.Bar(document.getElementById('chart_access_total'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+
+     // Access Per Offer
+    var data1 = JSON.parse('#{@access_per_offer.to_json.html_safe}');
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Disciplina');
+    data.addColumn('number', 'Total');
+
+    for (var i=0;i<data1.length;i++){
+      data.addRow([data1[i][1], parseInt(data1[i][0])]);
+    }
+
+    var options = { legend: { position: "none" }, bars: 'horizontal', hAxis : { format: 'decimal' } };
+
+    formatter_integer.format(data, 1);
+
+    var chart = new google.charts.Bar(document.getElementById('chart_access_per_offer'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+
+    // Access per Course
+    var data1 = JSON.parse('#{@access_per_course.to_json.html_safe}');
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Semestre');
+    data.addColumn('number', 'Licenciatura em Matemática');
+    data.addColumn('number', 'Letras Espanhol');
+    data.addColumn('number', 'Letras Inglês');
+    data.addColumn('number', 'Letras Português');
+    data.addColumn('number', 'Licenciatura em Física');
+    data.addColumn('number', 'Bacharelado em Administração');
+    data.addColumn('number', 'Licenciatura em Pedagogia');
+    data.addColumn('number', 'Bacharelado em Gestão Pública');
+    data.addColumn('number', 'Licenciatura em Química');
+
+    for (var i=0;i<data1.length;i++){
+      data.addRow([data1[i][0], parseInt(data1[i][1]), parseInt(data1[i][2]), parseInt(data1[i][3]), parseInt(data1[i][4]), parseInt(data1[i][5]), parseInt(data1[i][6]), parseInt(data1[i][7]), parseInt(data1[i][8]), parseInt(data1[i][9])]);
+    }
+
+    var options = { legend: { position: "bottom", maxLines: 3 }, vAxis : { format: 'decimal' }, seriesType: 'bars' };
+
+    formatter_integer.format(data, 1);
+    formatter_integer.format(data, 2);
+    formatter_integer.format(data, 3);
+    formatter_integer.format(data, 4);
+    formatter_integer.format(data, 5);
+    formatter_integer.format(data, 6);
+    formatter_integer.format(data, 7);
+    formatter_integer.format(data, 8);
+    formatter_integer.format(data, 9);
+
+    var chart = new google.visualization.ComboChart(document.getElementById('chart_access_per_course'));
+    chart.draw(data, options);
+
+    // avg_access_per_semester
+    var data1 = JSON.parse('#{@avg_access_per_semester.to_json.html_safe}');
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Semestre');
+    data.addColumn('number', 'Média');
+
+    for (var i=0;i<data1.length;i++){
+      data.addRow([data1[i][0], parseFloat(data1[i][1])]);
+    }
+
+    var options = { legend: { position: "none" }, vAxis : { format: 'decimal' } };
+
+    formatter_float.format(data, 1);
+
+    var chart = new google.charts.Bar(document.getElementById('chart_avg_access_per_semester'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+
+    // Grade
+   var data = google.visualization.arrayToDataTable([
+     ['Semestre', '1', '2', '3', '4', '5'],
+     ['2017.1', 259, 287, 668, 878, 706],
+     ['2017.2', 372, 270, 587, 800, 738],
+     ['2018.1', 199, 131, 397, 648, 797],
+     ['2018.2', 30, 24, 68, 150, 167]
+    ]);
+
+    var options = { legend: { position: "bottom", maxLines: 3 }, vAxis : { format: 'decimal' }, seriesType: 'bars', series: {5: {type: 'line'} }};
+
+    formatter_integer.format(data, 1);
+    formatter_integer.format(data, 2);
+    formatter_integer.format(data, 3);
+    formatter_integer.format(data, 4);
+    formatter_integer.format(data, 5);
+
+    var chart = new google.visualization.ComboChart(document.getElementById('chart_grade'));
+    chart.draw(data, options);
+
+    var data = google.visualization.arrayToDataTable([
+          ['Semestre', 'Média'],
+          ['2017.1', 3.53],
+          ['2017.2', 3.46],
+          ['2018.1', 3.79],
+          ['2018.2', 3.91]
+        ]);
+
+    var options = { title: 'Média', legend: { position: 'bottom' }, vAxis : { format: 'decimal' } };
+
+    formatter_float.format(data, 1);
+
+    var chart = new google.visualization.LineChart(document.getElementById('chart_grade_avg'));
+    chart.draw(data, options);
+
+    // Difficulties
+    var data = google.visualization.arrayToDataTable([
+     ['Semestre', 'Áudio falhando', 'Conexão caindo', 'Webcam travando', 'Volume baixo', 'Configurações iniciais'],
+     ['2017.1', 1555, 540, 350, 343, 412],
+     ['2017.2', 1474, 574, 277, 277, 262],
+     ['2018.1', 925, 352, 217, 218, 170]
+    ]);
+
+    var options = { legend: { position: "bottom", maxLines: 3 }, vAxis : { format: 'decimal' }, seriesType: 'bars' };
+
+    formatter_integer.format(data, 1);
+    formatter_integer.format(data, 2);
+    formatter_integer.format(data, 3);
+    formatter_integer.format(data, 4);
+    formatter_integer.format(data, 5);
+
+    var chart = new google.visualization.ComboChart(document.getElementById('chart_difficulties'));
+    chart.draw(data, options);
+
+    var data = google.visualization.arrayToDataTable([
+      ['Dificuldade', 'Quantidade'],
+      ['Áudio falhando', 3954],
+      ['Conexão caindo', 1466],
+      ['Webcam travando', 844],
+      ['Volume baixo', 838],
+      ['Configurações iniciais', 844]
+    ]);
+
+    var options = { title: 'Total', is3D: true };
+
+    formatter_integer.format(data, 1);
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_difficulties_pie'));
+    chart.draw(data, options);
+
+    // Local
+    var data = google.visualization.arrayToDataTable([
+     ['Semestre', 'Casa', 'Polo', 'Trabalho', 'Faculdade', 'Lan house', 'Outro'],
+     ['2017.1', 2360, 158, 112, 2, 16, 150],
+     ['2017.2', 2398, 92, 93, 3, 6, 175],
+     ['2018.1', 1903, 31, 77, 1, 8, 152]
+    ]);
+
+    var options = { legend: { position: "bottom", maxLines: 3 }, vAxis : { format: 'decimal' }, seriesType: 'bars' };
+
+    formatter_integer.format(data, 1);
+    formatter_integer.format(data, 2);
+    formatter_integer.format(data, 3);
+    formatter_integer.format(data, 4);
+    formatter_integer.format(data, 5);
+    formatter_integer.format(data, 6);
+
+    var chart = new google.visualization.ComboChart(document.getElementById('chart_local'));
+    chart.draw(data, options);
+
+    var data = google.visualization.arrayToDataTable([
+      ['Local', 'Quantidade'],
+      ['Casa', 6661],
+      ['Polo', 281],
+      ['Trabalho', 282],
+      ['Faculdade', 6],
+      ['Lan house', 30],
+      ['Outro', 477]
+    ]);
+
+    var options = { title: 'Total', is3D: true, sliceVisibilityThreshold: .0 };
+
+    formatter_integer.format(data, 1);
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_local_pie'));
+    chart.draw(data, options);
+
+    //Equipment
+    var data = google.visualization.arrayToDataTable([
+     ['Semestre', 'Notebook', 'Desktop', 'Smartphone', 'Tablet', 'Headphones', 'Fones de ouvido'],
+     ['2017.1', 2007, 707, 2, 0, 166, 477],
+     ['2017.2', 1979, 651, 2, 1, 131, 334],
+     ['2018.1', 1648, 420, 20, 0, 56, 213]
+    ]);
+
+    var options = { legend: { position: "bottom", maxLines: 3 }, vAxis : { format: 'decimal' }, seriesType: 'bars' };
+
+    formatter_integer.format(data, 1);
+    formatter_integer.format(data, 2);
+    formatter_integer.format(data, 3);
+    formatter_integer.format(data, 4);
+    formatter_integer.format(data, 5);
+    formatter_integer.format(data, 6);
+
+    var chart = new google.visualization.ComboChart(document.getElementById('chart_equipment'));
+    chart.draw(data, options);
+
+    var data = google.visualization.arrayToDataTable([
+      ['Equipamento', 'Quantidade'],
+      ['Notebook', 5634],
+      ['Desktop', 1778],
+      ['Smartphone', 24],
+      ['Tablet', 1]
+    ]);
+
+    var options = { title: 'Total', is3D: true, sliceVisibilityThreshold: .0 };
+
+    formatter_integer.format(data, 1);
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_equipment_pie'));
+    chart.draw(data, options);
+
+    // Internet
+    var data = google.visualization.arrayToDataTable([
+      ['Velocidade', 'Quantidade'],
+      ['> 5 Mbps', 286],
+      ['2 <> 5 Mbps', 208],
+      ['<2 Mbps', 75],
+      ['Não sei', 106]
+    ]);
+
+    var options = { title: 'Qual a velocidade de sua internet?', is3D: true, sliceVisibilityThreshold: .0 };
+
+    formatter_integer.format(data, 1);
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_internet_pie'));
+    chart.draw(data, options);
+
+    // HTML5
+    var data = google.visualization.arrayToDataTable([
+      ['Aceitação', 'Quantidade'],
+      ['SIM', 619],
+      ['NÃO', 71]
+    ]);
+
+    var options = { title: 'Gostou da versão em html5?', is3D: true, sliceVisibilityThreshold: .0 };
+
+    formatter_integer.format(data, 1);
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_html5_pie'));
+    chart.draw(data, options);
+
+    //HTML5 X Flash
+    var data = google.visualization.arrayToDataTable([
+     ['Caracteristica', 'HTML5', 'FLASH'],
+     ['Áudio', 517, 75],
+     ['Webcam', 428, 104],
+     ['Conexão', 497, 54],
+     ['Configuração inicial', 442, 86],
+     ['Interface', 478, 75],
+     ['Acesso com o smartphone', 459, 43],
+     ['Facilidade no uso', 493, 81]
+    ]);
+
+    var options = { legend: { }, vAxis : { format: 'decimal' }, seriesType: 'bars' };
+
+    formatter_integer.format(data, 1);
+    formatter_integer.format(data, 2);
+
+    var chart = new google.visualization.ComboChart(document.getElementById('chart_html5flash'));
+    chart.draw(data, options);
+
+  }
+
+
+  
