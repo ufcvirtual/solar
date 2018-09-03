@@ -1,5 +1,5 @@
 $(function(){
-  $('head').append('<meta name="viewport" content="width=device-width, initial-scale=1"/>');
+  
   var countInstanceJsPanel = 0;
 
   jsPanel.globalCallbacks = function (panel) {
@@ -14,7 +14,7 @@ $(function(){
     }
   };
   $("body").on("click",".jspanel",function(e){
-    
+    $('head').append('<meta name="viewport" content="width=device-width, initial-scale=1"/>');
     if(countInstanceJsPanel<3){
       countInstanceJsPanel++;
       e.preventDefault();

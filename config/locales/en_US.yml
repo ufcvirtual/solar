@@ -996,6 +996,8 @@ en_US:
       uncheck_receive_updates: "After saving, any update made at source lesson won't be copied to this lesson."
       public_to_private: "Changing to private, already imported lessons won't be removed. However, won't will receive updates neither will be possible to make new imports from this lesson if not the owner."
       warning: "Source lesson is private, therefore this lesson won't receive updates."
+      responsive: Responsive
+      responsive_tooltip: A responsive lesson will be displayed on mobile devices, however the lesson content should be responsive.
     select_lesson:
       no_lessons: Sem Aulas
     show:

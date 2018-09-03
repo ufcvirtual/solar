@@ -49,6 +49,9 @@
       .privacy
         = f.label t('.privacy'), :'data-tooltip' => t('.privacy_tooltip')
         %span= f.input :privacy, as: :select, collection: [[t('.public'), false], [t('.private'), true]], label: false, include_blank: false, selected: f.object.privacy
+      .responsive
+        = f.label t('.responsive'), :'data-tooltip' => t('.responsive_tooltip')
+        .responsive_input= f.check_box :responsive,  checked: f.object.responsive
 
       - unless @lesson.imported_from.nil?
         .imported
