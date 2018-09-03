@@ -1175,6 +1175,8 @@ pt_BR:
       uncheck_receive_updates: 'Ao salvar, qualquer alteração feita na aula original não irá repercurtir nesta.'
       public_to_private: 'Ao tornar a aula privada, as aulas já importadas não serão removidas. Entretanto, não receberão novas atualizações e nem será possível fazer novas importações a partir desta aula se não o dono.'
       warning: 'A aula original foi tornada privada, portanto esta aula não receberá atualizações daquela.'
+      responsive: Responsivo
+      responsive_tooltip: Uma aula responsiva será exibida nos dispositivos mobile, contudo o conteúdo da aula deve ser responsivo.
     select_lesson:
       no_lessons: Sem Aulas
     show:

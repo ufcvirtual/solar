@@ -265,3 +265,15 @@
     text-decoration: none;
   }
 }
+
+.lesson_responsive{
+  display: inline-block;
+  position: absolute;
+  left: -30px;
+  top: -5px;
+}
+.responsive_input{
+  display: inline-block;
+  position: relative;
+  padding-top: 5px;
+}

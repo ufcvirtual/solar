@@ -114,6 +114,7 @@ class LessonsController < ApplicationController
   def new
     @lesson = Lesson.new lesson_module_id: params[:lesson_module_id]
     @lesson.build_schedule start_date: Date.today
+    @lesson.responsive = true
 
     groups_by_lesson(@lesson)
   end
@@ -459,7 +460,7 @@ class LessonsController < ApplicationController
     end
 
     def lesson_params
-      params.require(:lesson).permit(:name, :description, :type_lesson, :address, :lesson_module_id, :privacy, :receive_updates, schedule_attributes: [:id, :start_date, :end_date])
+      params.require(:lesson).permit(:name, :description, :type_lesson, :address, :lesson_module_id, :privacy, :receive_updates, :responsive, schedule_attributes: [:id, :start_date, :end_date])
     end
 
     def verify_owner(ids)
