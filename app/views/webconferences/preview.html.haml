@@ -9,10 +9,13 @@
       .block_toolbar_left
         = label_tag :search, t('.search'), class: 'title'
         = text_field_tag :search, nil, :'data-column' => 'all', type: :search, class: 'search', placeholder: t('.placeholder'), size: 50
-      - if @can_remove_record
-        .block_toolbar_right
-          %a.btn.delete_record_btn{ href: nil, :'data-dropdown' => "#trash_dropdown", alt: t('.delete_record') }
-            = content_tag(:i, nil, class:'icon-trash')
+      .block_toolbar_right
+        - if @can_see_report
+          %a.btn.delete_record_btn{ href: report_webconferences_path, alt: t('.report'), :"data-tooltip" => t('.report') }
+            = content_tag(:i, nil, class: 'icon-flag small')
+        - if @can_remove_record
+          %a.btn.delete_record_btn{ href: nil, :'data-dropdown' => "#trash_dropdown", alt: t('.delete_record'), :"data-tooltip" => t('.delete_record')  }
+            = content_tag(:i, nil, class: 'icon-trash')
             %i.icon-arrow-down-triangle
           #trash_dropdown.dropdown.dropdown-tip
             %ul.dropdown-menu

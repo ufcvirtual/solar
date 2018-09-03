@@ -122,3 +122,54 @@ table.webconferences{
 .description_webconferences {
   table-layout: fixed;
 }
+
+/*Preview*/
+.block_wrapper.preview_webconferences{
+  .delete_record_btn:first-of-type{
+    margin-right: 5px;
+  }
+}
+
+/*Reports*/
+.block_content.charts{
+  text-align: center;
+  margin-top: 20px;
+  .resume_item{
+    padding: 10px;
+  }
+  .title{
+    font-weight: bold;
+    padding: 10px;
+    background-color: #003e7a;
+    color: white;
+  }
+  .title-warning{
+    margin-bottom: 2px;
+  }
+
+  .resume, .statistics, .historic {
+    display: inline-block;
+    text-align: end;
+    padding: 10px;
+
+    tr{ line-height: 30px; }
+
+    td:nth-child(2){
+      font-size: 15px;
+      font-weight: bold;
+      padding-left: 30px;
+    }
+  }
+
+  #chart_per_server_webs_real_time, #chart_per_server_access_real_time {
+    width: 392px;
+    display: inline-block;
+  }
+
+  #chart_per_server_webs_real_time { float: left; }
+
+  .chart_title{ padding: 10px; }
+
+  .historic { text-align: left; }
+}
+
