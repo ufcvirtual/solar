@@ -1527,6 +1527,11 @@ en_US:
       record: Recording %{number}
       start: Recording's start
       end: Recording's end
+      options: Options
+      download_podcast: Download Podcast
+      download_video: Download Vídeo
+      download_chat: Download Chat
+      download_slides: Download Slides
       warning: '<b>Importat: </b> To each prolonged absence from webconference participants, a new recording is made.'
       no_message: Removed or empty recordings or webconference does not have any recordings
       remove: Remove recording

@@ -625,6 +625,8 @@ Solar::Application.routes.draw do
     collection do
       get :list
       get :preview
+      get :report
+      get :download
 
       put ':tool_id/unbind/group/:id' , to: 'groups#change_tool', type: 'unbind', tool_type: 'Webconference', as: :unbind_group_from
       put ':tool_id/remove/group/:id' , to: 'groups#change_tool', type: 'remove', tool_type: 'Webconference', as: :remove_group_from
