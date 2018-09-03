@@ -3190,6 +3190,7 @@ pt_BR:
     no_subject: "(sem assunto)"
     support: "Atendimento <atendimento@virtual.ufc.br>"
     support_html: "Atendimento &lt;atendimento@virtual.ufc.br&gt;"
+    support_simple: "Atendimento"
     no_mail: sem email
     contacts:
       title: "Seleção de contatos"

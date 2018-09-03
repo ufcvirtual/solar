@@ -2895,6 +2895,7 @@ en_US:
     no_subject: "(no subject)"
     support: "Support <atendimento@virtual.ufc.br>"
     support_html: "Support &lt;atendimento@virtual.ufc.br&gt;"
+    support_simple: "Support"
     no_mail: no email
     contacts:
       title: "Selection of contacts"
