@@ -893,6 +893,9 @@ en_US:
   lesson_without_url: no url defined
   since: Since
   no_end_date: 'On'
+  undefined_initial_file: "Undefined initial file in %{lesson_name}"
+  defined_initial_file: "Initial file %{lesson_address} defined in %{lesson_name}"
+  published_lesson: "Published lesson(s) with success!"
 
   lessons:
     curriculum_unit_not_selected: Subject not selected

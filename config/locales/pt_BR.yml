@@ -1072,6 +1072,9 @@ pt_BR:
   lesson_without_url: sem url definida
   since: A partir de
   no_end_date: Em diante
+  undefined_initial_file: "Um arquivo inicial deve ser definido em %{lesson_name}"
+  defined_initial_file: "Arquivo %{lesson_address} definido como inicial em %{lesson_name}"
+  published_lesson: "Aulas(s) publicada(s) com sucesso!"
 
   lessons:
     curriculum_unit_not_selected: Disciplina não selecionada
