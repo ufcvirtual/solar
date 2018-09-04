@@ -5,7 +5,7 @@ class WebconferencesController < ApplicationController
   include SysLog::Actions
   include Bbb
 
-  layout false, except: [:index, :preview]
+  layout false, except: [:index, :preview, :report]
 
   before_filter :prepare_for_group_selection, only: :index
 
@@ -108,9 +108,10 @@ class WebconferencesController < ApplicationController
   # GET /webconferences/preview
   def preview
     ats = current_user.allocation_tags_ids_with_access_on('preview', 'webconferences', false, true)
-    @webconferences = Webconference.all_by_allocation_tags(ats, { asc: false }).paginate(page: params[:page])
+    @webconferences = Webconference.all_by_allocation_tags(ats, { asc: false }).paginate(page: params[:page], per_page: 30)
     @can_see_access = can? :list_access, Webconference, { on: ats, accepts_general_profile: true }
     @can_remove_record = (can? :manage_record, Webconference, { on: ats, accepts_general_profile: true })
+    @can_see_report = can? :report, Webconference, {on: [CurriculumUnitType.find(2).allocation_tag.id] , accepts_general_profile: true}
   end
 
   # DELETE /webconferences/remove_record/1
@@ -267,6 +268,59 @@ class WebconferencesController < ApplicationController
     error_message = error == CanCan::AccessDenied ? t(:no_permission) : (I18n.translate!("webconferences.error.#{error}", raise: true) rescue t("webconferences.error.removed_record"))
     render text: error_message
     # render_json_error(error, 'webconferences.error')
+  end
+
+  # GET /webconferences/report
+  def report
+    authorize! :report, Webconference, {on: [CurriculumUnitType.find(2).allocation_tag.id] , accepts_general_profile: true}
+
+    Webconference.drop_and_create_table_temporary_webs_and_access_uab
+
+    @count_per_type = Webconference.count_per_type.rows
+    @per_server = Webconference.count_per_server.rows
+    @total = Webconference.count_total_effective.rows
+    @per_month = Webconference.count_last_12_months.rows
+
+    @per_day_of_week = Webconference.group_by_day_of_week.rows
+    @per_hour_of_day = Webconference.group_by_hour_of_day.rows
+    @per_month_of_year = Webconference.group_by_month_of_year.rows
+    @avg_max_total = Webconference.avg_max_total.rows
+
+    @all = @avg_max_total[0][3]
+    @effective = @avg_max_total[0][4]
+
+    @percent_record = ((Webconference.count_rec_shared_duration.rows[0][0].to_f / @all.to_f * 100).round(2)).to_s.gsub!(/\./,",")
+
+    @percent_shared = ((Webconference.count_rec_shared_duration.rows[0][1].to_f / @all.to_f * 100).round(2)).to_s.gsub!(/\./,",")
+    @avg_duration = Webconference.count_rec_shared_duration.rows[0][2]
+    @top_creators = Webconference.top_creators.rows
+    @avg_max_total_access = Webconference.avg_max_total_access.rows
+    @total_access = Webconference.count_total_access.rows
+
+    @sum_total_access = 0
+    @total_access.each { |a| @sum_total_access += a[1].to_i }
+
+    @total_per_course = Webconference.total_per_course.rows
+    @total_per_offer = Webconference.total_per_offer.rows
+    @access_per_offer = Webconference.access_per_offer.rows
+    @access_per_course = Webconference.access_per_course.rows
+    @participantCountPerServer = participantCountPerServer
+    @avg_access_per_semester = Webconference.avg_access_per_semester.rows
+  end
+
+  def download
+    url = URI.parse(params[:url])
+    req = Net::HTTP.new(url.host, url.port)
+    req.use_ssl = true
+    res = req.request_head(url.path)
+    if res.code == "200"
+      data = open( params[:url])
+      send_data data.read, filename: params[:filename], type: params[:type]
+    else
+      head :ok
+    end
+  rescue
+    false
   end
 
   private

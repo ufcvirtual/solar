@@ -142,7 +142,7 @@ module Bbb
   end
 
   def count_servers
-     Timeout::timeout(4) do
+    Timeout::timeout(4) do
       @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
       @config['servers'].count
     end
@@ -213,7 +213,8 @@ module Bbb
     end
 
     return common_recordings
-    return false
+  rescue
+    false
   end
 
   def remove_record(recordId, at=nil)
@@ -229,6 +230,26 @@ module Bbb
   def self.get_recording_url(recording)
     response = recording[:playback][:format]
     response = response.kind_of?(Array) ? response.find {|x| x[:type] == 'presentation'} : response
+    response = URI.parse(response[:url])
+    response.scheme = "https"
+    response.to_s
+  end
+
+  # format: presentation, podcast and video
+  def self.get_recording_url(recording, format)
+    response = recording[:playback][:format]
+    if response.kind_of?(Array)
+      case format
+      when 'video'
+        response = response.find {|x| x[:type] == 'presentation'}
+        url = response[:url][0..26]+"/download/presentation/"+recording[:recordID]+"/"+recording[:recordID]+".mp4"
+        return url.to_s
+      when 'slides'
+      when 'chat'
+      else
+        response = response.find {|x| x[:type] == format}
+      end
+    end
     response = URI.parse(response[:url])
     response.scheme = "https"
     response.to_s
@@ -289,6 +310,29 @@ module Bbb
     response[:participantCount]
   rescue
     0
+  end
+
+  def participantCountPerServer
+    server = 0
+    result = 0
+    count = Array.new
+
+    while (server < count_servers) do
+      api = Bbb.bbb_prepare(server)
+      meetings = api.get_meetings[:meetings].collect{|m| m[:meetingID]}
+
+      if !meetings.empty?
+        meetings.map {|m|
+          response = api.get_meeting_info(m[:meetingID])
+          result += response[:participantCount]
+        }
+      end
+      count[server] = ['BBB ' + (server+1).to_s, result]
+      server += 1
+    end
+    count
+  rescue
+    false
   end
 
 end
