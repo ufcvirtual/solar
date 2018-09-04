@@ -183,25 +183,9 @@ class LessonsController < ApplicationController
     lesson_ids = params[:id].split(',').flatten
     msg = change_lessons_status(lesson_ids, params[:status])
 
-    # respond_to do |format|
-    #   if msg.empty?
-    #     format.json { render json: {success: true} }
-    #     format.js
-    #   else
-    #     format.json { render json: { success: false, msg: msg }, status: :unprocessable_entity }
-    #     format.js { render js: "flash_message('#{msg.first}', 'alert');" }
-    #   end
-    # end
-
     respond_to do |format|
-      if msg.empty?
-        format.json { render json: {success: true} }
-        format.js
-      else
-        format.json { render json: { success: true, msg: msg }}
-        format.js
-      end
-
+      format.json { render json: { success: true, msg: msg }}
+      format.js
     end
   end
 
@@ -369,30 +353,46 @@ class LessonsController < ApplicationController
   private
 
     def change_lessons_status(lesson_ids, new_status)
-      msg = []
-      #msg = {}
+      msg = {}
+      msg[:undefined_initial_file] = []
+      msg[:defined_initial_file] = []
+      msg[:published_lesson] = ""
+
       @lessons = Lesson.where(id: lesson_ids)
       @lessons.each do |lesson|
+        single_file = false
 
-        if Dir.glob(lesson.path(true)+'**/*').select{|f| File.file?(f)}.size == 1
-          single_file = Dir.glob(lesson.path(true)+'**/*').select{|f| File.file?(f)}[0]
-          lesson.address = single_file.sub(lesson.path(true),"")
+        if lesson.is_file? && lesson.address.blank?
+          if Dir.glob(lesson.path(true)+'**/*').select{|f| File.file?(f)}.size == 1
+            single_file = Dir.glob(lesson.path(true)+'**/*').select{|f| File.file?(f)}[0]
+            lesson.address = single_file.sub(lesson.path(true),"")
+            single_file = true
+          end
         end
 
         lesson.status = new_status
-        #msg << lesson.errors[:base] unless lesson.save
 
         if lesson.status == 1
 
-          if lesson.save
-            msg << "Arquivo #{File.basename(lesson.address)} definido como inicial em #{lesson.name}"
-          elsif
-            msg << "Um arquivo inicial deve ser definido em #{lesson.name}"
+          if lesson.is_file?
+            
+            if lesson.address.blank?
+              msg[:undefined_initial_file] << t('undefined_initial_file', lesson_name: lesson.name)
+            
+            elsif single_file
+              msg[:published_lesson] = t('published_lesson')
+              msg[:defined_initial_file] << t('defined_initial_file', lesson_address: File.basename(lesson.address), lesson_name: lesson.name)
+            else
+              msg[:published_lesson] = t('published_lesson')  
+            end
+          
+          else
+            msg[:published_lesson] = t('published_lesson')
           end
-
-        elsif
-          lesson.save
+        
         end
+
+        lesson.save
 
       end
       msg
