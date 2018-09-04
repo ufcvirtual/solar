@@ -724,8 +724,10 @@ en_US:
   date_name: Date
   help: "Help"
   new_window: " (This link will open a new window)"
-  start_menu: "Begin of menu"
-  end_menu: "End of menu"
+  start_menu: "Menu's begin"
+  end_menu: "Menu's end"
+  start_content: "Content's begin"
+  end_content: "Content's end"
   tutorials: "Tutorials"
   context: "Contextual"
   contact: Contact us

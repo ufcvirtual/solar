@@ -885,6 +885,8 @@ pt_BR:
 
   start_menu: "Início do menu"
   end_menu: "Fim do menu"
+  start_content: "Início do conteúdo"
+  end_content: "Fim do conteúdo"
 
   #Submenu de ajuda
   context: "Contextual"
