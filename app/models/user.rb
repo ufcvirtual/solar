@@ -967,8 +967,11 @@ class User < ActiveRecord::Base
   require 'digest/md5'
   def valid_password?(password)
     integrated = integrated? && !on_blacklist?
-    password = password.encode("ISO-8859-1", fallback: 'fallback', undef: :replace, replace: '?') if integrated && selfregistration
-    password = Digest::MD5.hexdigest(password) if integrated && selfregistration
+
+    if integrated && selfregistration
+      password = password.encode("ISO-8859-1", fallback: 'fallback', undef: :replace, replace: '?')
+      password = Digest::MD5.hexdigest(password)
+    end
 
     Devise.secure_compare(Digest::SHA1.hexdigest(password), self.encrypted_password)
   end
