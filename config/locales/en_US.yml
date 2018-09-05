@@ -1661,7 +1661,7 @@ en_US:
       inactive: 'Your account was not activated yet.'
       invalid_login: Invalid username.
       invalid_login_si3: Invalid username. Click on 'Register' to verify your CPF so you can know if you are registered or if don't and, if registered on SI3, so we can update your data.
-      invalid_password_si3: Invalid login. The password should not have the characters ẽĩũ, please change your password on SI3.
+      invalid_password_si3: Password must not have the characters "ẽ, ĩ, ũ". Please change your password on SI3. Any doubt or difficulty, get in touch with atendimento@virtual.ufc.br with this error message.
       user:
         not_found_in_database: 'Username or password invalid.'
     login:
