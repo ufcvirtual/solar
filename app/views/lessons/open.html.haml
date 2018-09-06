@@ -25,7 +25,7 @@
                     - lessons_c = @lesson.lesson_module.lessons_to_open(current_user).map { |l| [l.name, l.id, { :'data-path' => l.path, :'data-draft' => l.is_draft? }] }
                     - lessons_c.each do |lesson|
                       %li{role: 'menuitem'}= link_to lesson[0], '#', {:'data-path' => lesson[2][:'data-path'], :'data-id' => lesson[1], class: (lesson[1] == @lesson.id ? 'selected' : ''), onclick: 'change_lesson(event, this)', onkeydown: 'change_lesson(event, this)', :'data-draft' => lesson[2][:'data-draft']}
-              %span.lesson-file-download{role: 'menubar'}
+              %span.lesson-file-download{role: 'menubar', class: @lesson.is_video? ? '' : 'invisible'}
                 = link_to (content_tag(:i, nil, class: 'icon-download')), @lesson.path + "?download=true", class: 'btn', :'aria-label'=> t('lessons.open.download_file'), :'data-tooltip' => t('lessons.open.download_file')
       - if can?(:change_status, @lesson) || current_user.admin?
         .lesson_status

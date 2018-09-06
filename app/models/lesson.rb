@@ -204,7 +204,7 @@ class Lesson < ActiveRecord::Base #< Event
   end
 
   def is_video?
-    (address.last(4).eql?('.aac') || address.last(4).eql?('.m4a') || address.last(4).eql?('.mp4') || address.last(4).eql?('.m4v') || address.last(5).eql?('.webm'))
+    (address.last(4).eql?('.aac') || address.last(4).eql?('.m4a') || address.last(4).eql?('.mp4') || address.last(4).eql?('.avi') || address.last(5).eql?('.webm') || address.last(4).eql?('.m4v'))
   end
 
   private
