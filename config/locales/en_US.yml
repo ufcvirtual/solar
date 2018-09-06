@@ -3644,11 +3644,6 @@ en_US:
       code:
         window: 65
         analyzer_position: 83
-    schedule_events:
-      name:
-        events_list: "Events List [E]"
-      code:
-        events_list: 69
 
   scores:
     index:
