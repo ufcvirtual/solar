@@ -309,6 +309,7 @@ pt_BR:
         min_final_exam_grade: Nota mínima permitida para AF
         final_exam_passing_grade: Média mínima para aprovação após realização de AF
         has_exam_header: "Cabeçalho para as provas presenciais"
+        header_exam: Cabeçalho padronizado para as provas presenciais (eventos)
       discussion_post:
         content: Conteúdo
       post:
@@ -3355,9 +3356,7 @@ pt_BR:
   schedule_events:
     restrict_events: "Não permitido é permitido acessar os eventos"
     index:
-      events_list: Lista de Eventos
-      individual_events: Eventos individuais
-      group_events: Eventos em grupo
+      events_list: Eventos
     events:
       name: Nome
       data_range: Período
@@ -3392,6 +3391,7 @@ pt_BR:
       created: Evento criado com sucesso.
       updated: Evento atualizado com sucesso.
       deleted: Evento deletado com sucesso.
+      updated_content: Conteúdo da prova atualizado com sucesso. As demais alterações foram ignoradas em virtude deste evento ser integrado a outros sistemas.
     error:
       range_hour_error: deve ser posterior à inicial
       created: Não foi possível criar evento.
@@ -3441,7 +3441,7 @@ pt_BR:
       place: Local
       choose_one: "Selecione um evento"
       choose_at_least_one: "Selecione, ao menos, um evento"
-      integrated_event_edit: 'Este evento possui integração com outras bases de dados e por isso não pode ser editado'
+      integrated_event_edit: 'Este evento possui integração com outras bases de dados e, por isso, todos os campos, exceto o conteúdo, não podem ser editados'
       integrated_events_delete: 'Existem eventos selecionados que não podem ser removidos devido a integração com outras bases de dados'
       print: Imprimir prova
       users: Imprimir prova individual
@@ -3930,12 +3930,12 @@ pt_BR:
         menu_program: 82
         menu_agenda: 71
         menu_bibliography: 66
-        menu_participants: 69
+        menu_participants: 83
         menu_content_edition: 68
         menu_messages: 78
         menu_registration: 85
         menu_home: 73
-        menu_events: 83
+        menu_events: 69
       complement:
         menu_portfolio: " (Trabalhos)"
     comments:
@@ -3950,11 +3950,6 @@ pt_BR:
       code:
         window: 65
         analyzer_position: 83
-    schedule_events:
-      name:
-        events_list: "Lista de Eventos [E]"
-      code:
-        events_list: 69
 
   scores:
     index:

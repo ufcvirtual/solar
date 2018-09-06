@@ -28,9 +28,9 @@
 
       %tbody
         - @events.each do |event|
-          - is_exam = [Presential_Test].include?(event.type_event)
+          - is_exam = Presential_Test == event.type_event.to_i
           - can_delete = event.academic_allocation_users.count.zero?
-          - is_integrated = event.integrated
+          - is_integrated = event.integrated && !is_exam
           %tr.lines{id: "tr_#{event.id}"}
             %td{style: 'text-align:center;'}
               = check_box_tag("c_#{event.id}", event.id, false, {class: "ckb_event", :"data-can-delete" => can_delete, :"data-is-integrated" => is_integrated, :"data-is-exam" => is_exam})

@@ -84,7 +84,7 @@
       - if @user_profiles.include?(schedule_events: :list) && ScheduleEvent.constants.include?("#{@selected}_PERMISSION".to_sym)
         .uc_item
           .event{ :"data-link" => list_schedule_events_path(allocation_tags_ids: @allocation_tags_ids, offer_id: @offer_id) }
-            = link_to content_tag(:i, nil, class: 'icon-publish big'), '#', class: 'btn'
+            = link_to content_tag(:i, nil, class: 'icon-calendar-day big'), '#', class: 'btn'
             = link_to t('.event'), '#'
 
       - if @user_profiles.include?(digital_classes: :list) && DigitalClass.constants.include?("#{@selected}_PERMISSION".to_sym)

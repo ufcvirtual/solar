@@ -15,11 +15,9 @@ class ScheduleEventsController < ApplicationController
   def index
     authorize! :index, ScheduleEvent, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
-    allocation_tag = AllocationTag.find(@allocation_tag_id)
-    @is_student = current_user.is_student?([allocation_tag.id])
+    @is_student = current_user.is_student?([@allocation_tag_id])
     @events = Score.list_tool(current_user.id, @allocation_tag_id, 'schedule_events', false, false, true)
-
-    @can_evaluate = can?(:evaluate, ScheduleEvent, on: [@allocation_tag_id])
+    @can_print = can? :print_presential_test, ScheduleEvent, on: [@allocation_tag_id]
   end
 
   def list
@@ -61,8 +59,10 @@ class ScheduleEventsController < ApplicationController
   def update
     authorize! :edit, ScheduleEvent, on: @schedule_event.academic_allocations.pluck(:allocation_tag_id)
 
-    if @schedule_event.can_change? and @schedule_event.update_attributes(schedule_event_params)
+    if @schedule_event.can_change? && @schedule_event.update_attributes(schedule_event_params)
       render_schedule_event_success_json('updated')
+    elsif Presential_Test == @schedule_event.type_event.to_i && !@schedule_event.can_change? && @schedule_event.update_attributes(content_exam: params[:schedule_event][:content_exam])
+      render_schedule_event_success_json('updated_content')
     else
       render :edit
     end
@@ -76,7 +76,7 @@ class ScheduleEventsController < ApplicationController
     authorize! :destroy, ScheduleEvent, on: @schedule_event.academic_allocations.pluck(:allocation_tag_id)
 
     evaluative = @schedule_event.verify_evaluatives
-    if @schedule_event.can_remove_groups?
+    if @schedule_event.can_remove_groups? && @schedule_event.can_change?
       @schedule_event.destroy
       message = evaluative ? ['warning', t('evaluative_tools.warnings.evaluative')] : ['notice', t(:deleted, scope: [:schedule_events, :success])]
       render json: { success: true, type_message: message.first,  message: message.last }
@@ -114,7 +114,10 @@ class ScheduleEventsController < ApplicationController
     @event = ScheduleEvent.find(params[:id])
     @participants = AllocationTag.get_participants(@allocation_tag_id, { students: true })
     @situation = params[:situation]
-    @group_id = params[:group_id]
+
+    @can_evaluate = can? :evaluate, ScheduleEvent, { on: @allocation_tag_id }
+    @can_print = (can? :print_presential_test, ScheduleEvent, on: [@allocation_tag_id]) && Presential_Test == @event.type_event.to_i
+
     render partial: 'participants'
   end
 
@@ -129,10 +132,10 @@ class ScheduleEventsController < ApplicationController
   end
 
   def print_presential_test
-    authorize! :print_presential_test, ScheduleEvent, on: @allocation_tags_ids = params[:allocation_tags_ids]
+    authorize! :print_presential_test, ScheduleEvent, on: @allocation_tags_ids = (params[:allocation_tags_ids].blank? ? [active_tab[:url][:allocation_tag_id]] : params[:allocation_tags_ids].split(' '))
 
-    allocation_ids = @allocation_tags_ids.split(" ").map { |e| e.to_i  }
-    allocation_tag = AllocationTag.find(allocation_ids.first)
+    allocation_tag = AllocationTag.find(@allocation_tags_ids.first)
+    ats = allocation_tag.related
 
     @course = allocation_tag.get_course
     @event = ScheduleEvent.find(params[:id])
@@ -143,11 +146,13 @@ class ScheduleEventsController < ApplicationController
       student = User.find(params[:student_id])
       curriculum_unit = allocation_tag.get_curriculum_unit
 
-      coordinator = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id = 8", allocation_tag.related, Allocation_Activated).first
+      unless @allocation_tags_ids.size > 1
+        coordinator = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id = 8", ats, Allocation_Activated).first
 
-      profs = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", allocation_tag.related, Allocation_Activated, [2, 17]).distinct
+        profs = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", ats, Allocation_Activated, [2, 17]).distinct
 
-      tutors = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", allocation_tag.related, Allocation_Activated, [3, 4, 18]).distinct
+        tutors = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", ats, Allocation_Activated, [3, 4, 18]).distinct
+      end
 
       normalize_exam_header(html, student, profs, tutors, @event, curriculum_unit, coordinator)
     end
