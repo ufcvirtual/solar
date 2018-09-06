@@ -57,7 +57,12 @@ class ScheduleEventFilesController < ApplicationController
   end
 
   def destroy
+    authorize! :create, ScheduleEventFile, on: [active_tab[:url][:allocation_tag_id]]
+
     @schedule_event_file = ScheduleEventFile.find(params[:id])
+
+    raise CanCan::AccessDenied if @schedule_event_file.user_id != current_user.id
+
     @schedule_event_file.destroy
 
     render json: { success: true, notice: t('schedule_event_files.success.deleted') }

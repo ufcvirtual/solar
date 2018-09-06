@@ -3,8 +3,7 @@
   %h2{align: "center"}= t('.list_name')
   - if show_fields
     %span.block_actions
-      %button.download_folder.btn{"data-tooltip" => t("support_download_folder"), onclick: "javascript:window.location.href='#{zip_download_schedule_event_files_path(event_id: @event.id)}'", type: "button", :value => t("support_download_folder"), :'aria-label' => t("support_download_folder")}
-        %i.icon-install
+      = link_to content_tag(:i, nil, class: 'icon-install'), zip_download_schedule_event_files_path(event_id: @event.id), class: 'btn download_folder', :'aria-label' => t(".download_all"), :"data-tooltip" => t(".download_all")
 - unless @participants.empty?
   %table.tb_list
     %thead
@@ -41,7 +40,7 @@
             %td.center{headers: 'participant-print'}
               = link_to (content_tag(:i, nil, class: 'icon-printer')), "#void", class: 'btn btn_print print_event fancybox.iframe', :"data-link-to-print" => print_presential_test_schedule_events_path(id: @event.id, allocation_tags_ids: @allocation_tag_id, student_id: participant.id), :"data-print-title" => t("schedule_events.list.print"), :"data-tooltip" => t("schedule_events.list.print")
         %tr.file_form
-          %td.center{ colspan: 6 }
+          %td.center{ colspan: 7 }
             .file_form{ class: "new_file-#{participant.id}" }
 - else
   .text_none= t(:itens_not_found)

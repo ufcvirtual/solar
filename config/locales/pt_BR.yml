@@ -3456,6 +3456,7 @@ pt_BR:
       working_hours: Carga Horária
       files: Arquivos
       see_files: Ver arquivos enviados
+      download_all: Download dos arquivos de todos os alunos
     presential_test_participants:
       list_name: Lista de Alunos
       name_studante: Nome
