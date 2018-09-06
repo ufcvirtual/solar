@@ -1063,6 +1063,7 @@ en_US:
       lmodule_menu: " %{lmodule} (Click to change lesson module. A selection lesson modules submenu will be available)"
       lesson_menu: " %{lesson} (Click to change lesson. A selection lesson submenu will be available)"
       download: "Download lesson in PDF file"
+      download_file: "If you can't run the file, click here to download"
   lesson_modules:
     general_of_offer: General
     general_of_group: General of group
