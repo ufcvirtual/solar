@@ -3198,6 +3198,7 @@ pt_BR:
     no_new: "Sem novas mensagens"
     no_subject: "(sem assunto)"
     support: "Atendimento <atendimento@virtual.ufc.br>"
+    support_only_email: "<atendimento@virtual.ufc.br>"
     support_html: "Atendimento &lt;atendimento@virtual.ufc.br&gt;"
     support_simple: "Atendimento"
     no_mail: sem email

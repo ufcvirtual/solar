@@ -134,18 +134,22 @@ class MessagesController < ApplicationController
         @message.sender = current_user
         @message.allocation_tag_id = @allocation_tag_id
 
-        raise "error" if params[:message][:contacts].empty? && params[:support].empty?
-        emails = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
-                      .where("(nmail.message IS NULL OR nmail.message=TRUE)")
-                      .where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
+        raise "error" if params[:message][:contacts].nil? && params[:message][:support].blank?
+        emails = []
+
+        unless params[:message][:contacts].nil?
+          emails = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
+                        .where("(nmail.message IS NULL OR nmail.message=TRUE)")
+                        .where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
+        end
+        
+        emails << params[:message][:support] unless params[:message][:support].blank?
 
         @message.files << original_files if original_files and not original_files.empty?
         @message.save!
-        #Thread.new do
-          #Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files, current_user.email).deliver
-        #end
-        emails << params[:support] unless params[:support].blank?
+        
         Job.send_mass_email(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email)
+        #Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email).deliver
       end
 
       respond_to do |format|
@@ -283,7 +287,7 @@ class MessagesController < ApplicationController
     end
 
     def message_params
-      params.require(:message).permit(:subject, :content, :contacts, files_attributes: :attachment)
+      params.require(:message).permit(:subject, :content, :contacts, :support, files_attributes: :attachment)
     end
 
 end

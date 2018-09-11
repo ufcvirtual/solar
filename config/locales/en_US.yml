@@ -2903,6 +2903,7 @@ en_US:
     no_new: "No new messages"
     no_subject: "(no subject)"
     support: "Support <atendimento@virtual.ufc.br>"
+    support_only_email: "<atendimento@virtual.ufc.br>"
     support_html: "Support &lt;atendimento@virtual.ufc.br&gt;"
     support_simple: "Support"
     no_mail: no email
