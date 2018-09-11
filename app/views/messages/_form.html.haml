@@ -8,7 +8,7 @@
     - else
       - if params[:support].blank?
         = f.input :contacts, as: :hidden, input_html: { value: [@reply_to].flatten.compact.map { |c| c[:id] }.join(', ') }
-    = hidden_field_tag :support, params[:support]
+    = f.input :support, as: :hidden
     = hidden_field_tag :allocation_tag_id, @allocation_tag_id
 
     .block_content
@@ -183,10 +183,6 @@
       href: url,
       open: true
     });
-
-    if($("#message_to").val().indexOf('Atendimento')){
-      $('<div class="contact help"><a data-at="" class="help_link_support" data-selected="true" href="#" onclick="$(this).parent().remove(); return false;">#{I18n.t(".messages.support_html")}</a></div>').appendTo(".contacts-selected");
-    }
     
   }
   $(function(){
