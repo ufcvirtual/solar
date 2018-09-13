@@ -37,7 +37,6 @@ function cancel_new_comment(){
 }
 
 function verify_comment_before_finish_evaluation(){
-
   var content = $('div.ckeditor .cke_contents iframe').contents().find('body').html();
   if (content != undefined && content != "<p><br></p>" && content != "<br>" && content != ""){
       $('textarea.ckeditor').html(content);

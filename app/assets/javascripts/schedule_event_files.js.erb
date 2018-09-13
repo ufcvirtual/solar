@@ -112,6 +112,9 @@ function back_to_participants(link, event) {
   var keynum = event.which || event.keyCode;
   if(keynum == 13 || event.type == 'click') {
     var url = $(link).data("url");
+
+    verify_comment_before_finish_evaluation();
+
     $(link).call_fancybox({
       href: url,
       open: true,

@@ -38,7 +38,7 @@
 
   - if @back_to_participants
     %br
-    = button_tag t(:back), type: 'button', class: 'btn btn_default', onclick: 'back_to_participants(this, event)', :'data-url' => participants_schedule_event_path(@ac.academic_tool_id)
+    = button_tag t(:back), type: 'button', class: 'btn btn_default back', onclick: 'back_to_participants(this, event)', :'data-url' => participants_schedule_event_path(@ac.academic_tool_id)
 
 = javascript_include_tag 'schedule_event_files'
 

@@ -38,7 +38,6 @@
 
 :javascript
   function finish_evaluation(btn){
-
     verify_comment_before_finish_evaluation()
 
     var form = $(btn).parents('form:first');
@@ -56,9 +55,12 @@
 
   $(function(){
 
-    $(".back_chat_history").on("click", function(event){
-      verify_comment_before_finish_evaluation()
-    })
+    $(".back_chat_history").on("click keydown", function(event){
+      event.preventDefault();
+      var keynum = event.which || event.keyCode;
+      if(keynum == 13 || event.type == 'click')
+        verify_comment_before_finish_evaluation()
+    });
 
     $(".back_chat_history").call_fancybox({
       minWidth: '50%',
