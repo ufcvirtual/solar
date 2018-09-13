@@ -746,7 +746,7 @@ class Score # < ActiveRecord::Base
             NULL AS type_tool,
             schedule_events.start_hour,
             schedule_events.end_hour,
-            academic_allocation_users.schedule_event_files_count as count,
+            academic_allocation_users.schedule_event_files_count::text as count,
             0 as count_all,
             schedule_events.place as place,
             schedule_events.type_event::text as type_event,
