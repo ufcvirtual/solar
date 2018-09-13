@@ -36,7 +36,7 @@ class Devise::LoginController < Devise::SessionsController
     @return = 0
 
     return if params[:user].blank?
-    user = User.find_by("username = ? OR cpf = ?", params[:user][:login], params[:user][:login])
+    user = User.where("username = :login OR cpf = :login", login: params[:user][:login]).first
 
     correct_password = user.valid_password?(params[:user][:password]) unless user.blank?
 

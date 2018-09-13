@@ -2000,7 +2000,7 @@ en_US:
       summary: "This table contains the following information: Description of the activity, period that can be performed, situation, whether it is evaluating or not, whether it is an activity that counts frequency or not, grade, hours and comments."
       summary_info: "This table contains the following information: Start date and End date being the period that the student can send his activity, in addition to the situation of the activity and note if it has been corrected."
       summary_descricao: "This table contains a description of the activity to be performed."
-      summary_files: "This table contains the files sent by the teacher / tutor to download."
+      summary_files: "This table contains the files sent by responsibles to download."
       summary_comments: "This table contains comments made about the activity. Comments may have attached files."
       summary_student_files: "This table contains the files sent by the student, with the following information: Name, size, date of sending and who sent the file in addition to the size of the file."
       summary_web: "This table contains the webconferences scheduled by the students, with the following information: Name, period, sitation, if it was recorded and finished."
@@ -3169,7 +3169,7 @@ en_US:
       size: Size
       sent_on: Sent on
       sent_by: Sent by
-      summary_files: Files sent by the tutor
+      summary_files: Files sent by responsibles
       online_correction: Online correction
     summary:
       title: "Files to %{user} at %{tool}"
@@ -3215,6 +3215,8 @@ en_US:
       file_not_saved: It was not possible to save file.
       file_not_cleaned: It was not possible to clean file.
       cant_download: It's not possible to download this(these) file(s)
+      type: "Files can only be sent to events with the following types: Presential Test and Presential Meeting"
+      general_error: "Only image (jpeg/png/gif) or pdf files of 2MB or less can be sent to Presential Tests or Presential Meetings."
 
   agendas:
     dropdown_content:

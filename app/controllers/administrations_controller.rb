@@ -89,10 +89,9 @@ class AdministrationsController < ApplicationController
     authorize! :reset_session_token_user, Administration
     @user = User.find(params[:id])
     @user.session_token = nil
-    @user.save!
+    @user.save(validate: false)
 
     render json: {success: true, notice:  t('administrations.success.reset_token')}
-
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
@@ -105,7 +104,6 @@ class AdministrationsController < ApplicationController
     authorize! :allocations_user, Administration
 
     @user_id = params[:id]
-
     @allocations = list_allocations_user(@user_id, params[:semester_id])
 
     @profiles = @allocations.map(&:profile).flatten.uniq
