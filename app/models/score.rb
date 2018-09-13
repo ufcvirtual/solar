@@ -252,6 +252,7 @@ class Score # < ActiveRecord::Base
 
 
   def self.evaluative_frequency_situation(ats, user_id, group_id, tool_id, tool_type, type_score='evaluative')
+
     evaluated_status = if type_score == 'frequency'
       "WHEN academic_allocation_users.working_hours IS NOT NULL OR academic_allocation_users.comments_count > 0 THEN 'evaluated'"
     else
@@ -365,14 +366,14 @@ class Score # < ActiveRecord::Base
       when 'scheduleevent'
         User.find_by_sql <<-SQL
           SELECT
-          CASE
-              #{evaluated_status}
-              WHEN #{sent_status} THEN 'sent'
-              WHEN current_date<schedules.start_date OR (current_date = schedules.start_date AND current_time<to_timestamp(start_hour, 'HH24:MI:SS')::time)  THEN 'not_started'
-              WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND (start_hour IS NULL OR current_time>=to_timestamp(start_hour, 'HH24:MI:SS')::time AND current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN 'to_send'
-              ELSE
-                'not_sent'
-              END AS situation
+            CASE
+            #{evaluated_status}
+            WHEN #{sent_status} THEN 'sent'
+            WHEN current_date<schedules.start_date OR (current_date = schedules.start_date AND current_time<to_timestamp(start_hour, 'HH24:MI:SS')::time)  THEN 'not_started'
+            WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND (start_hour IS NULL OR current_time>=to_timestamp(start_hour, 'HH24:MI:SS')::time AND current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN 'to_send'
+            ELSE
+              'not_sent'
+            END AS situation
           FROM users
           JOIN allocations ON users.id = allocations.user_id AND allocations.allocation_tag_id IN (#{ats})
           JOIN profiles ON allocations.profile_id = profiles.id
@@ -385,7 +386,7 @@ class Score # < ActiveRecord::Base
       when 'webconference'
         User.find_by_sql <<-SQL
           SELECT
-              CASE
+            CASE
             #{evaluated_status}
             WHEN (#{sent_status} OR ((academic_allocation_users.status IS NULL OR academic_allocation_users.status = 2) AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.id IS NOT NULL))) THEN 'sent'
             WHEN webconferences.initial_time > now() THEN 'not_started'
