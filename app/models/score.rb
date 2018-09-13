@@ -451,7 +451,6 @@ class Score # < ActiveRecord::Base
                 false
               END AS has_info,
             academic_allocation_users.comments_count AS count_comments,
-            NULL::bigint AS schedule_event_files_count,
             eq_disc.name AS eq_name,
             NULL AS group_id,
             NULL AS type_tool,
@@ -529,7 +528,6 @@ class Score # < ActiveRecord::Base
                     false
                   END AS has_info,
                 academic_allocation_users.comments_count AS count_comments,
-                NULL::bigint AS schedule_event_files_count,
                 eq_assig.name AS eq_name,
                 groups.group_id::text AS group_id,
                 assignments.type_assignment::text as type_tool,
@@ -601,7 +599,6 @@ class Score # < ActiveRecord::Base
                   false
                 END AS has_info,
               academic_allocation_users.comments_count AS count_comments,
-              NULL::bigint AS schedule_event_files_count,
               eq_chat.title AS eq_name,
               NULL AS group_id,
               chat_rooms.chat_type::text AS type_tool,
@@ -671,7 +668,6 @@ class Score # < ActiveRecord::Base
             academic_allocation_users.new_after_evaluation,
             NULL::boolean AS has_info,
             NULL::bigint AS count_comments,
-            NULL::bigint AS schedule_event_files_count,
             eq_exam.name AS eq_name,
             NULL AS group_id,
             NULL AS type_tool,
@@ -745,13 +741,12 @@ class Score # < ActiveRecord::Base
                 false
               END AS has_info,
             academic_allocation_users.comments_count AS count_comments,
-            academic_allocation_users.schedule_event_files_count,
             eq_event.title AS eq_name,
             NULL AS group_id,
             NULL AS type_tool,
             schedule_events.start_hour,
             schedule_events.end_hour,
-            NULL as count,
+            academic_allocation_users.schedule_event_files_count as count,
             0 as count_all,
             schedule_events.place as place,
             schedule_events.type_event::text as type_event,
@@ -769,6 +764,7 @@ class Score # < ActiveRecord::Base
               END AS closed,
             CASE
             #{evaluated_status}
+            WHEN #{sent_status} OR academic_allocation_users.status = 1 then 'sent'
             WHEN current_date>schedules.end_date OR (current_date=schedules.end_date AND current_time>to_timestamp(schedule_events.end_hour, 'HH24:MI:SS')::time) THEN 'closed'
             WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND schedule_events.start_hour IS NULL THEN 'started'
             WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND current_time>=to_timestamp(schedule_events.start_hour, 'HH24:MI:SS')::time AND current_time<=to_timestamp(schedule_events.end_hour, 'HH24:MI:SS')::time THEN 'started'
@@ -808,7 +804,6 @@ class Score # < ActiveRecord::Base
                 false
               END AS has_info,
             academic_allocation_users.comments_count AS count_comments,
-            NULL::bigint AS schedule_event_files_count,
             eq_web.title AS eq_name,
             NULL AS group_id,
             webconferences.shared_between_groups::text AS type_tool,
