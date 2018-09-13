@@ -3448,7 +3448,7 @@ pt_BR:
     participants:
       title: Participantes
       student: Alunos
-      list_name: Lista de Alunos
+      list_name: "Lista de Alunos: %{event}"
       name: Nome
       send_file: Enviar Arquivos
       evaluate_comments: Avaliar/Comentar
@@ -3513,11 +3513,12 @@ pt_BR:
       remove: Não foi possível deletar arquivo.
       new: Não foi possível enviar arquivo.
       not_started_up: Não é possível fazer o envio do arquivo. O evento ainda não foi iniciado.
-      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 26MB.
+      attachment_file_size_too_big: "Arquivo muito grande. O tamanho máximo deve ser de até %{file}MB."
       wrong_type: "Tipo de arquivo não permitido (apenas imagens jpeg/png/gif ou pdfs)"
       situation: Não é possível enviar arquivos ainda, pois a atividade não foi iniciada.
       file_not_saved: "Não foi possível salvar o arquivo."
       file_not_cleaned: "Não foi possível limpar o arquivo."
+      cant_download: Não é possível realizar o download deste(s) arquivo(s)
 
   agendas:
     dropdown_content:
