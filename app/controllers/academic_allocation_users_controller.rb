@@ -23,7 +23,7 @@ class AcademicAllocationUsersController < ApplicationController
       end
     end
 
-  rescue => error
+  rescue => errors
     render json: { success: false, alert: errors.join("<br/>") }, status: :unprocessable_entity
   end
 

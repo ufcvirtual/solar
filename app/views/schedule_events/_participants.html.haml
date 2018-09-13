@@ -27,10 +27,10 @@
           %td{headers: 'participant-name'}= participant.name
           - if show_fields
             %td.center{headers: 'participant-send-file'}
-              = link_to content_tag(:i, nil, class: 'icon-plus'), "#void", id: "new_file-#{participant.id}", class: "btn btn_main btn_new_file", onclick: 'new_file(this)', :'data-url' => new_schedule_event_file_path(tool_id: @event.id, tool: 'ScheduleEvent', student_id: participant.id, score_type: 'evaluative', situation: @situation), :"data-tooltip" => t(".send_file"), :'aria-label' => t('.send_file'), onkeydown: 'click_on_keypress(event, this);'
+              = link_to content_tag(:i, nil, class: 'icon-plus'), "#void", id: "new_file-#{participant.id}", class: "btn btn_main btn_new_file", onclick: 'new_file(this)', :'data-url' => new_schedule_event_file_path(tool_id: @event.id, tool: 'ScheduleEvent', student_id: participant.id, score_type: '', situation: @situation), :"data-tooltip" => t(".send_file"), :'aria-label' => t('.send_file'), onkeydown: 'click_on_keypress(event, this);'
           - if @can_evaluate
             %td.center{headers: 'participant-evaluate-comments'}
-              = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: 'open_tool(this)', class: 'btn to_evaluate_schedule_event', :'data-url' => redirect_to_evaluate_scores_path(tool_type: 'ScheduleEvent', ac_id: info[:ac_id], user_id: participant.id, score_type: 'evaluative', situation: @situation, back_to_participants: true), :"data-tooltip" => t(".evaluate_comments"), :'aria-label' => t('.evaluate_comments'), onkeydown: 'click_on_keypress(event, this);'
+              = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: 'open_tool(this)', class: 'btn to_evaluate_schedule_event', :'data-url' => redirect_to_evaluate_scores_path(tool_type: 'ScheduleEvent', ac_id: info[:ac_id], user_id: participant.id, score_type: '', situation: @situation, back_to_participants: true), :"data-tooltip" => t(".evaluate_comments"), :'aria-label' => t('.evaluate_comments'), onkeydown: 'click_on_keypress(event, this);'
           %td.center{headers: 'participant-grade'}= info[:grade] || "-"
           %td.center{headers: 'participant-wh'}= info[:working_hours] || "-"
           - if show_fields
