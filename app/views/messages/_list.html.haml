@@ -28,8 +28,8 @@
                 = content_tag(:i, nil, class: 'icon-paperclip', :'aria-hidden'=>'true')
               .visuallyhidden= message.count_files != 0 ? t('messages.show.at_yes') : t('messages.show.at_no')
             - if 'outbox' == @box
-              - support_contact = message.support.blank? ? "" : ", Atendimento"
-              - message_sent_names = message.sent_to_names.nil? ? "Atendimento" : message.sent_to_names.concat(support_contact)
+              - support_contact = message.support.blank? ? "" : ", #{t('messages.support_simple')}"
+              - message_sent_names = message.sent_to_names.nil? ? "#{t('messages.support_simple')}" : message.sent_to_names.concat(support_contact)
               %td.td_recipient{ :'data-tooltip' => message_sent_names, headers: 'th_sent_to' }= (link_to message_sent_names.truncate(100), msg_path rescue '')
             - else
               %td.td_sender.center{headers: 'th_sent_by'}= link_to message.sent_by_name, msg_path
