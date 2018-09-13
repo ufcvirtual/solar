@@ -521,9 +521,10 @@ Solar::Application.routes.draw do
       delete :delete_online_correction_canvas
     end
     collection do
+      get :can_download
       get :download
       get :zip_download, to: :download, defaults: {zip: true}
-      get :summary , to: 'academic_allocation_users#files_sent', tool: 'ScheduleEvent'
+      get :summary
     end
   end
 
