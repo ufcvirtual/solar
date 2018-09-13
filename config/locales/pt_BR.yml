@@ -3431,7 +3431,7 @@ pt_BR:
       summary_evaluative: "Está tabela contém todos os eventos agendados avaliativas."
       summary_frequency: "Está tabela contém todos os eventos agendados de frequência."
       summary_notevaluative: "Está tabela contém todos os eventos agendados não avaliativas."
-      summary_student_files: "Está tabela contém os arquivos enviados pelo tutor, com as seguintes informações: Nome, tamanho, data de envio e quem envio o arquivo."
+      summary_student_files: "Está tabela contém os arquivos enviados pelos responsáveis, com as seguintes informações: Nome, tamanho, data de envio e quem envio o arquivo."
       none: Nenhum evento cadastrado
       new: Novo evento
       edit: Editar evento
@@ -3474,7 +3474,7 @@ pt_BR:
       size: Tamanho
       sent_on: Enviado em
       sent_by: Enviado por
-      summary_files: Arquivos enviados pelo tutor
+      summary_files: Arquivos enviados pelos responsáveis
       online_correction: Correção online
     summary:
       title: "Arquivos para %{user} em %{tool}"
@@ -3520,6 +3520,8 @@ pt_BR:
       file_not_saved: "Não foi possível salvar o arquivo."
       file_not_cleaned: "Não foi possível limpar o arquivo."
       cant_download: Não é possível realizar o download deste(s) arquivo(s)
+      type: Arquivos podem ser enviados apenas para eventos dos tipos Prova Presencial e Encontro Presencial
+      general_error: "Apenas arquivos de imagens (jpeg/png/gif) ou pdfs de até 2MB devem ser enviados em eventos dos tipos Encontro Presencial ou Prova Presencial."
 
   agendas:
     dropdown_content:

@@ -29,7 +29,7 @@ class ScheduleEventFilesController < ApplicationController
   rescue ActiveRecord::AssociationTypeMismatch
     render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
   rescue ActiveRecord::RecordInvalid
-    render json: { success: false, alert: t('schedule_event_files.error.wrong_type') }, status: :unprocessable_entity
+    render json: { success: false, alert: t('schedule_event_files.error.general_error') }, status: :unprocessable_entity
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
