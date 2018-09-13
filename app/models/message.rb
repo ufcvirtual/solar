@@ -22,7 +22,7 @@ class Message < ActiveRecord::Base
 
   self.per_page = Rails.application.config.items_per_page
 
-  attr_accessor :contacts, :sender
+  attr_accessor :contacts, :sender, :support
 
   def sent_by
     user_messages.where("cast(user_messages.status & #{Message_Filter_Sender} as boolean)").first.user
