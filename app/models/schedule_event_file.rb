@@ -17,6 +17,7 @@ class ScheduleEventFile < ActiveRecord::Base
 
   validates :attachment, presence: true
   validates :academic_allocation_user_id, presence: true
+  validate :verify_type
 
   serialize :file_correction, JSON
 
@@ -32,8 +33,12 @@ class ScheduleEventFile < ActiveRecord::Base
   end
 
   def normalized_attachment_file_name
-    file_name = self.attachment_file_name.gsub( /[^a-zA-Z0-9\.]/, '_').split("#{self.academic_allocation_user.user.cpf}_").join("")
-    "#{self.academic_allocation_user.user.cpf}_#{file_name}"
+    "#{self.academic_allocation_user.user.name.split(' ').join('_')}-#{self.attachment_file_name}".gsub( /[^a-zA-Z0-9_\.\-]/, '')
+  end
+
+  def verify_type
+    event = ScheduleEvent.find(AcademicAllocationUser.find(academic_allocation_user_id).academic_allocation.academic_tool_id)
+    errors.add(:base, 'schedule_event_files.error.type') unless [Presential_Meeting, Presential_Test].include?(event.type_event)
   end
 
   def can_destroy?
