@@ -894,9 +894,6 @@ en_US:
   lesson_without_url: no url defined
   since: Since
   no_end_date: 'On'
-  undefined_initial_file: "Undefined initial file in %{lesson_name}"
-  defined_initial_file: "Initial file %{lesson_address} defined in %{lesson_name}"
-  published_lesson: "Published lesson(s) with success!"
 
   lessons:
     curriculum_unit_not_selected: Subject not selected
@@ -981,7 +978,9 @@ en_US:
       private_lesson: You can't import a private lesson unless you're the owner
       general_message: It was not possible to execute action
       draft_lesson: You can't import a draft lesson
-      blank_address: Must have an URL or main file
+      blank_address: Lesson %{lesson_name} was not published. Must have an URL or initial file
+      undefined_initial_file: "Aula %{lesson_name} was not published. A initial file is necessary."
+      extract_zip: It was not possible to, automatically, extract files from zip of lesson %{lesson_name}.
     success:
       saved_as_draft: Lessons were sucessfully created or saved as draft
       deleted: Lessons were successfully created
@@ -989,6 +988,11 @@ en_US:
       created: Lesson was sucessfully created
       updated: Lesson was sucessfully updated
       imported: Lessons/modules sucessfully imported
+      initial_file: "Initial file %{lesson_address} defined in %{lesson_name}"
+      published: "Lesson(s) published successfully."
+      draft: "Lesson(s) set as draft successfully."
+      some_published: "Other lessons published successfully"
+      extract_zip: Zip files from lesson %{lesson_name} were extracted automatically.
     form:
       cancel: Cancel
       groups: Groups

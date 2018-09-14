@@ -36,9 +36,7 @@ class Lesson < ActiveRecord::Base #< Event
   validates :lesson_module, :schedule, presence: true
   validates :name, :type_lesson, presence: true
   validates :name, length: { maximum: 200 }
-  validates :address, presence: true, if: '!is_draft? && persisted?'
 
-  validate :address_is_ok?
   validate :can_change_privacy?, if: '!new_record? && privacy_changed?'
   validate :can_change_status?, if: '!new_record? && status_changed? && !is_draft?'
 
@@ -200,7 +198,7 @@ class Lesson < ActiveRecord::Base #< Event
   end
 
   def can_change_status?
-    errors.add(:base, I18n.t('lessons.errors.blank_address')) if address.blank?
+    errors.add(:base, I18n.t('lessons.errors.blank_address', lesson_name: name)) if address.blank?
   end
 
   def is_video?

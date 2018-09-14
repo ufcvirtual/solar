@@ -113,21 +113,7 @@
           $.get($('.list_lessons').data('link-list'), function(data){
             $('.list_lessons:first').replaceWith(data);
           });
-          
-          if(data.msg != undefined ){
-
-            if(Object.keys(data.msg).length > 0){
-              if("published_lesson" in data.msg && data.msg["published_lesson"].length > 0){
-                flash_message(data.msg["published_lesson"], 'notice');
-              }
-              if("defined_initial_file" in data.msg && data.msg["defined_initial_file"].length > 0){
-                flash_message("#{I18n.t('published_lesson')}" + " <br />" + data.msg["defined_initial_file"].join("<br />"), 'notice');
-              }
-              if("undefined_initial_file" in data.msg && data.msg["undefined_initial_file"].length > 0){
-                flash_message(data.msg["undefined_initial_file"].join("<br />"), 'warning');
-              }
-            }
-          }
+          flash_message(data.msg, data.type);
         }).error(function(data) {
           if(typeof(module_id) != "undefined"){
             $.get($('.list_lessons').data('link-list'), function(data2){

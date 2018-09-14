@@ -1073,9 +1073,6 @@ pt_BR:
   lesson_without_url: sem url definida
   since: A partir de
   no_end_date: Em diante
-  undefined_initial_file: "Um arquivo inicial deve ser definido em %{lesson_name}"
-  defined_initial_file: "Arquivo %{lesson_address} definido como inicial em %{lesson_name}"
-  published_lesson: "Aulas(s) publicada(s) com sucesso!"
 
   lessons:
     curriculum_unit_not_selected: Disciplina não selecionada
@@ -1160,7 +1157,9 @@ pt_BR:
       private_lesson: Não é possível importar uma aula privada a não ser que você seja o dono
       draft_lesson: Não é possível importar uma aula rascunho
       owner: só pode ser alterada pelo dono
-      blank_address: Deve ter URL ou arquivo principal
+      blank_address: Aula %{lesson_name} não foi publicada. Deve ter URL ou arquivo inicial
+      undefined_initial_file: "Aula %{lesson_name} não foi publicada. Um arquivo inicial deve ser definido."
+      extract_zip: Não foi possível extrair automaticamente os arquivos do zip da aula %{lesson_name}.
     success:
       saved_as_draft: Aulas deletadas ou salvas como rascunho com sucesso.
       deleted: Aulas deletadas com sucesso.
@@ -1168,6 +1167,11 @@ pt_BR:
       created: Aula criada com sucesso.
       updated: Aula atualizada com sucesso.
       imported: Aulas/módulos importados com sucesso.
+      initial_file: "Arquivo %{lesson_address} definido como inicial em %{lesson_name}"
+      published: "Aula(s) publicada(s) com sucesso."
+      draft: Aula(s) definida(s) como rascunho com sucesso.
+      some_published: "Demais aulas publicadas com sucesso."
+      extract_zip: Os arquivos do zip da aula %{lesson_name} foram extraídos automaticamente.
     form:
       cancel: Cancelar
       groups: Turmas
