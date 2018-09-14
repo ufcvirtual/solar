@@ -3202,6 +3202,7 @@ pt_BR:
     support_html: "Atendimento &lt;atendimento@virtual.ufc.br&gt;"
     support_simple: "Atendimento"
     no_mail: sem email
+    send_message: Enviar Mensagem
     contacts:
       title: "Seleção de contatos"
       contacts: "Contatos"

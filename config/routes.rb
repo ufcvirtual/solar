@@ -554,11 +554,12 @@ Solar::Application.routes.draw do
       get "download/file/:file_id", to: "messages#download_files", as: :download_file
 
       get :support_new, to: "messages#new", as: :support_new, support: true
+
+      get "new_message_score_user/:user_ids", to: 'messages#new_score_message_user', as: :new_by_scores
     end
   end
 
-  get "new_message_score_student/:id", to: 'messages#new_score_message_student'
-  get "new_message_score_student/", to: 'messages#new_score_message_student'
+  
 
   # resources :tabs, only: [:show, :create, :destroy]
   get :activate_tab, to: "tabs#show"   , as: :activate_tab

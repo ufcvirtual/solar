@@ -152,9 +152,15 @@ class MessagesController < ApplicationController
         #Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email).deliver
       end
 
-      respond_to do |format|
-        format.html { redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages) }
-        #format.json { render :json => {"msg": "Contato removido com sucesso"} }
+      if params[:scores]=='true'
+        respond_to do |format|
+          format.html { redirect_to :back, notice: t(:mail_sent, scope: :messages) }
+        end
+      else
+        respond_to do |format|
+          format.html { redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages) }
+          #format.json { render :json => {"msg": "Contato removido com sucesso"} }
+        end
       end
 
     rescue => error
@@ -237,18 +243,17 @@ class MessagesController < ApplicationController
     render partial: 'contacts'
   end
 
-  def new_score_message_student
+  def new_score_message_user
     authorize! :index, Message, { on: [@allocation_tag_id  = active_tab[:url][:allocation_tag_id]], accepts_general_profile: true }
     @message = Message.new
     @message.files.build
-
-    unless params[:id].nil?
-      users = User.find(params[:id].split(","))
+    unless params[:user_ids].nil?
+      users = User.find(params[:user_ids].split(","))
       @reply_to_many = users.size > 0 ? users.map{|u| u.to_msg} : nil
 
-      @reply_to = [User.find(params[:id]).to_msg]
+      @reply_to = [User.find(params[:user_ids]).to_msg]
     end
-
+    @scores = true
     render partial: 'form'
   end
 

@@ -2907,6 +2907,7 @@ en_US:
     support_html: "Support &lt;atendimento@virtual.ufc.br&gt;"
     support_simple: "Support"
     no_mail: no email
+    send_message: Send Message
     contacts:
       title: "Selection of contacts"
       contacts: "Contacts"
