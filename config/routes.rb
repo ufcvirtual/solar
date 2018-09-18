@@ -287,6 +287,7 @@ Solar::Application.routes.draw do
       get :academic
       get :content
       get :repositories
+      post :automatic_management
       get :tool_management
       get :discussion_tool_management, tool_name: 'Discussion', to: :tool_management
       get :exam_tool_management, tool_name: 'Exam', to: :tool_management
