@@ -36,7 +36,9 @@
                   = chat.title
                 .description
                   .minimun
-                    = raw(truncate chat.description, length: 200, omission: "#{content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))}")
+                    = raw(truncate chat.description, length: 200)
+                    - if chat.description.size > 200
+                      =content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))
                   .complete.invisible
                     = chat.description
                     = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))

@@ -44,7 +44,7 @@
 
     = hidden_field_tag :allocation_tag_id, @allocation_tag_id
     - unless @group.nil? || (defined?(ignore_tab).nil? ? false : ignore_tab)
-      = hidden_field_tag :group_code,    @group.code
+      = hidden_field_tag :group_code,    @group.get_code_name
       = hidden_field_tag :semester_name, @group.offer.semester.name
       = hidden_field_tag :uc_name,       @group.offer.curriculum_unit.try(:name)
       = hidden_field_tag :course_name,   @group.offer.course.try(:name)
@@ -56,7 +56,7 @@
       - if back
         .back.invisible
           = render 'editions/back_items'
-          
+
       - if @allocation_tag_id.blank?
         - if @contacts.nil?
           %div{ class: "#{list_class}" }
@@ -110,5 +110,5 @@
         }
         element.text(text);
       }, 100);
-    });  
+    });
   });

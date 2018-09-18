@@ -4,10 +4,10 @@
   - if is_curriculum_unit_selected?
     - group_selection = render_group_selection
   %head
-    %meta{content: "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
+    %meta{content: "text/html; charset=utf-8", "http-equiv" => "Content-Type"}
     %title= show_breadcrumb_title
-
     = javascript_include_tag "application"
+
     = javascript_tag '$.fx.off = true;' if Rails.env.test?
     /[if lte IE 9]
       <haml_loud> stylesheet_link_tag "fonts/fonts-ie" </haml_loud>
@@ -90,9 +90,6 @@
         #mysolar_tabs{role: 'menubar'}
           %ul#mysolar_tabs_wrapper= raw render_tabs
           %ul#mysolar_extras
-            %li#mysolar_open_lesson
-              %button.btn.btn_main.disabled{"data-tooltip" => t(:mysolar_open_lesson), name: t(:mysolar_open_lesson), onclick: "javascript:maximize_lesson(this);", type: "button", "data-fancybox-type" => "iframe", :'aria-label' => t(:mysolar_open_lesson_alt, disabled: t(:open_lesson_no_lesson)), disabled: true}
-                %i.icon-class{:'aria-hidden' => 'true'}
             %li#mysolar_open_shortcut
               %a.btn.btn_main#shortcut_accesskey{ href: '#', :"data-dropdown" => "#dropdown_eq_1_2", :'aria-label' => t('scores.info.shortcut'), accesskey: 9, "data-tooltip" => t('scores.info.shortcut')}
                 = t('scores.info.shortcut')
@@ -138,19 +135,17 @@
                   = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: "erase_flash_messages(true, "+@attribute.to_s+")", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
           - name = active_tab[:breadcrumb].last[:name]#.gsub(".", "-") unless active_tab[:breadcrumb].last[:name].nil?
           #breadcrumb= raw show_breadcrumb
-          - if is_curriculum_unit_selected?   
-            #page_title            
+          %a#main_content_accesskey{href: "#void", :'aria-label' => t(:start_content)}
+          - if is_curriculum_unit_selected?
+            #page_title
               - if current_page?(controller: 'lessons', action: 'index')
-                %a#main_content_accesskey{href: "#", :'aria-label' => "Inicio do Conteudo"}
                 %h1{ tabindex: "0", :'aria-label' => t(name, default: name) + t('lessons.index.lesson_number_modules', modules: @lessons_modules.size) }= t(name, default: name)
               - else
-                %a#main_content_accesskey{href: "#", :'aria-label' => "Inicio do Conteudo"}
-                %h1{ tabindex: "0" }=t(name, default: name)              
+                %h1{ tabindex: "0" }=t(name, default: name)
               .block_content_text
                 %span.views#classes{role: 'menubar'}= raw(group_selection)
           - elsif not(in_mysolar?)
             #page_title
-              %a#main_content_accesskey{href: "#", :'aria-label' => "Inicio do Conteudo"}
               %h1{ tabindex: "0" }=t(name, default: name)
         = yield
 
@@ -166,9 +161,8 @@
             #toggle-controlbox
               %a.chat.toggle-online-users{href: "#"}
                 %strong.conn-feedback="Bate-Papo"
-      
-      %a#end_content{href: "#", :'aria-label' => "Fim do Conteudo"}
-        
+
+      %a#end_content{href: "#", :'aria-label' => t(:end_content)}
       %footer
         #footer_push{style: "height:35px"}
         - locales  =  %w(pt_BR en_US)
@@ -198,7 +192,7 @@
     #loading
       %h2=t(:page_loading)
       %div= image_tag('loading.gif')
-
+  = javascript_include_tag 'jspanel'
   :javascript
 
     /**

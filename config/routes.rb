@@ -1,6 +1,6 @@
 Solar::Application.routes.draw do
 
-  devise_for :users, controllers: { registrations: "devise/users", passwords: "devise/users_passwords" }
+  devise_for :users, controllers: { registrations: "devise/users", passwords: "devise/users_passwords", sessions: "devise/login" }
 
   authenticated :user do
     get "/", to: "users#mysolar", as: :solar_home
@@ -8,10 +8,10 @@ Solar::Application.routes.draw do
 
   devise_scope :user do
     get  :login, to: "devise/sessions#new"
-    post :login, to: "devise/sessions#create"
+    post :login, to: "devise/login#create"
     get  :logout, to: "devise/sessions#destroy"
     get "/", to: "devise/sessions#new"
-    resources :sessions, only: [:create]
+    resources :login, only: [:create]
   end
 
   get :home, to: "users#mysolar", as: :home
@@ -81,6 +81,7 @@ Solar::Application.routes.draw do
     get "users/:id/allocations", to: "administrations#allocations_user", as: :allocations_admin_user
     get "users/:id/allocations_list", to: "administrations#allocations_user_list", as: :allocations_admin_user_list
     get "users", to: "administrations#users", as: :admin_users
+    put "users/:id/sessiontoken", to: "administrations#reset_session_token_user", as: :reset_session_token_admin_user
 
     get "responsibles/filter", to: "administrations#responsibles", as: :admin_responsibles_filter
     get "responsibles", to: "administrations#responsibles_list", as: :admin_responsibles
@@ -137,7 +138,7 @@ Solar::Application.routes.draw do
   end
 
   ## groups/:id/discussions
-  resources :groups, except: [:show] do
+  resources :groups do
     resources :discussions, only: [:index] do
       collection do
         get :mobilis_list, to: :index, mobilis: true
@@ -518,17 +519,19 @@ Solar::Application.routes.draw do
     member do
       get :online_correction
       post :save_online_correction_file
+      delete :delete_online_correction_canvas
     end
     collection do
+      get :can_download
       get :download
       get :zip_download, to: :download, defaults: {zip: true}
-      get :summary , to: 'academic_allocation_users#files_sent', tool: 'ScheduleEvent'
+      get :summary
     end
   end
 
   resources :messages, only: [:new, :show, :create, :index] do
     member do
-      put ":box/:new_status", to: "messages#update", as: :change_status, constraints: { box: /(inbox)|(outbox)|(trashbox)/, new_status: /(read)|(unread)|(trash)|(restore)/ }
+      put ":box/:new_status", to: "messages#update", as: :change_status, constraints: { box: /(inbox)|(outbox)|(trashbox)|(box_value)/, new_status: /(read)|(unread)|(trash)|(restore)/ }
 
       get :reply,     to: :reply, type: "reply"
       get :reply_all, to: :reply, type: "reply_all"
@@ -542,19 +545,20 @@ Solar::Application.routes.draw do
       get :inbox,    action: :index, box: "inbox",    as: :inbox
       get :outbox,   action: :index, box: "outbox",   as: :outbox
       get :trashbox, action: :index, box: "trashbox", as: :trashbox
+      get :anybox, action: :index
       get :count_unread
       get :find_users
       get :contacts
       get :search
+      get :pending
 
       get "download/file/:file_id", to: "messages#download_files", as: :download_file
 
       get :support_new, to: "messages#new", as: :support_new, support: true
+
+      get "new_message_score_user/:user_ids", to: 'messages#new_score_message_user', as: :new_by_scores
     end
   end
-
-  get "new_message_score_student/:id", to: 'messages#new_score_message_student'
-  get "new_message_score_student/", to: 'messages#new_score_message_student'
 
   # resources :tabs, only: [:show, :create, :destroy]
   get :activate_tab, to: "tabs#show"   , as: :activate_tab

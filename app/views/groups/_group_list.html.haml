@@ -2,14 +2,23 @@
   %table.tb_list
     %thead
       %tr.lines
-        %th= t(".code")
+        %th.center= t(".code")
+        %th.center= t(".name")
+        %th.center= t(".location")
         - unless hide_edition
-          %th{style: "width: 10%"}= t(".activation")
+          %th.center{style: "width: 10%"}= t(".activation")
     %tbody
       - groups.each do |group|
         %tr.lines{class: (group.status ? "" : "disabled")}
           %td
             = check_box_tag :ckb_group, group.id, false, {class: "ckb_group"}
             = group.code
+          %td.center= group.name
+          %td.center= link_to content_tag(:i, nil, class: 'icon-eye', :'aria-hidden'=>'true'), group_path(group), class: 'show_group', :'data-tooltip' => t('.details'), :'aria-label'=> t('.details_about', name: group.get_code_name) + t('fancybox.open')
           - unless hide_edition
             %td{style: "text-align: center"}= link_to (image_tag "#{(group.status) ? 'released' : 'rejected'}.png"), "#void", class: "change_status_group", :'data-tooltip' => (group.status ?  t(".enabled") :  t(".disabled")), :"data-link-status" => group_path(id: group.id, status: !group.status, multiple: true, offer_id: @offer_id), disabled: !(can? :update, Group)
+
+:javascript
+  $(function(){
+    $(".show_group").call_fancybox();
+  });

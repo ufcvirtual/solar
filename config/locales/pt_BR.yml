@@ -309,6 +309,7 @@ pt_BR:
         min_final_exam_grade: Nota mínima permitida para AF
         final_exam_passing_grade: Média mínima para aprovação após realização de AF
         has_exam_header: "Cabeçalho para as provas presenciais"
+        header_exam: Cabeçalho padronizado para as provas presenciais (eventos)
       discussion_post:
         content: Conteúdo
       post:
@@ -562,7 +563,11 @@ pt_BR:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
         attachment_file_name: Arquivo
-
+        name: 'Nome:'
+      group:
+        code: Código
+        name: Nome
+        location: Localização
     errors:
       uniqueness: "Registro já existe no sistema"
       template:
@@ -597,6 +602,8 @@ pt_BR:
           attributes:
             email:
               not_found: "não encontrado"
+            username:
+              invalid: pode possuir apenas letras, números, " _ ", " . " ou " - ".
             photo_content_type:
               invalid_type: "Por favor, envie apenas arquivos do tipo JPG, GIF ou PNG."
             reset_password_token:
@@ -604,7 +611,7 @@ pt_BR:
         assignment_file:
           attributes:
             attachment_content_type:
-              invalid_type: "Tipo de arquivo inválido."
+              invalid: "Tipo de arquivo inválido."
             attachment_file_name:
               blank: deve ser selecionado
             academic_allocation_user_id:
@@ -684,13 +691,13 @@ pt_BR:
   team: "Equipe"
   forgot_password: "O que fazer se esqueci minha senha? "
   UAB_courses: "‣ Sou aluno ou professor dos cursos da UAB:"
-  answer_UAB_courses: "Dirija-se ao Módulo Acadêmico a fim de recuperar sua senha: <a href='https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do</a>. Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Módulo Acadêmico. Se você não consegue recuperar sua senha no Módulo Acadêmico, favor dirigir-se à secretaria de seu curso."
+  answer_UAB_courses: "Você já realizou seu autocadastro no Sigaa? Se sim, dirija-se ao Sigaa a fim de recuperar sua senha: <a href='https://si3.ufc.br/admin/public/recuperar_senha.jsf' target='_blank'>https://si3.ufc.br/admin/public/recuperar_senha.jsf</a>. Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Sigaa. Se você não consegue recuperar sua senha no Sigaa, favor dirigir-se à secretaria de seu curso.<br/><br/> Se não tiver realizado seu autocadastro, ler <b>O que é o autocadastro no Sigaa? Como posso realizar o autocadastro?</b>"
   tutor: "‣ Não sou aluno nem professor dos cursos da UAB, mas sou tutor ou coordenador:"
-  signin_modulo_academico: "‣ Possuo acesso ao Módulo Acadêmico:"
-  answer_signin_modulo_academico: "Dirija-se ao Módulo Acadêmico a fim de recuperar sua senha: <a href='https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do' target='_blank'> https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do</a> Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Módulo Acadêmico."
-  without_modulo_academico: "‣ Não possuo acesso ao Módulo Acadêmico:"
+  signin_modulo_academico: "‣ Possuo acesso ao Sigaa:"
+  answer_signin_modulo_academico: "Dirija-se ao Sigaa a fim de recuperar sua senha: <a href='https://si3.ufc.br/admin/public/recuperar_senha.jsf' target='_blank'> https://si3.ufc.br/admin/public/recuperar_senha.jsf</a> Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Sigaa."
+  without_modulo_academico: "‣ Não possuo acesso ao Sigaa:"
   answer_without_modulo_academico: "Na tela de login do Solar 2.0 <a href='www.solar.virtual.ufc.br' target='_blank'>(www.solar.virtual.ufc.br)</a>, clique em 'Esqueceu a sua senha?'<br/>Informe o email cadastrado.<br/>Clique em 'Enviar'."
-  received_message: "‣ Recebi a seguinte mensagem me direcionando ao Módulo Acadêmico: 'Para recuperar seus dados de acesso, vá ao endereço: https://www.moduloacademico.ufc.br/moduloacademico':"
+  received_message: "‣ Recebi a seguinte mensagem me direcionando ao Sigaa: 'Para recuperar seus dados de acesso, vá ao endereço: https://si3.ufc.br/sigaa/verTelaLogin.do':"
   answer_received_message: "Entre em contato com o <a href='atendimento@virtual.ufc.br' target='_blank'> atendimento@virtual.ufc.br</a> relatando a situação e aguarde um email para recuperação de senha."
   received_message_instructions: "‣ Recebi a seguinte mensagem: 'Você receberá um email com instruções sobre como resetar sua senha em alguns minutos':"
   answer_received_message_instructions: "Aguarde o email para recuperação de senha."
@@ -701,22 +708,22 @@ pt_BR:
   answer_second_without_UAB_courses: "Acesse a aba 'Cadastrar'. Clique em 'Verificar'. Preencha os campos do cadastro e prossiga até a conclusão do cadastro"
   first_time_solar: "O que fazer para acessar o Solar 2.0 pela primeira vez?"
   student_UAB: "‣ Sou aluno ou professor dos cursos da UAB:"
-  answer_student_UAB: "Utilize o mesmo login e senha do Módulo Acadêmico."
+  answer_student_UAB: "Utilize o mesmo login e senha do Sigaa."
   user_or_password: "‣ Recebi uma mensagem de 'Usuário ou senha inválidos'"
   answer_user_or_password: "Acesse a aba 'Cadastrar'.<br/>Clique em 'Verificar'."
-  received_message_data: "‣ Recebi uma mensagem 'Seus dados de acesso foram importados do Módulo Acadêmico. Para alterar ou recuperar seus dados de acesso, vá ao endereço: https://www.moduloacademico.ufc.br/moduloacademico'."
-  answer_received_message_data: "Seus dados foram importados do Módulo Acadêmico. Utilize o mesmo login e senha do Módulo Acadêmico para efetuar o login no sistema."
+  received_message_data: "‣ Recebi uma mensagem 'Seus dados de acesso foram importados do Sigaa. Para alterar ou recuperar seus dados de acesso, vá ao endereço: https://si3.ufc.br/sigaa/verTelaLogin.do'."
+  answer_received_message_data: "Seus dados foram importados do Sigaa. Utilize o mesmo login e senha do Sigaa para efetuar o login no sistema."
   answer_no_student_UAB: "Tente efetuar o login com os dados prévios do Solar 1.2"
   message_support: "‣ O atendimento me retornou informando que meus dados não podem ser alterados?"
-  answer_message_support: "Acesse o Módulo Acadêmico: <a href='https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do' target='_blank'> https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do</a>. Coloque, no login, o número do seu CPF e, na senha, seu primeiro nome em letras maiúsculas. Após conseguir acesso no Módulo Acadêmico, atualize seus dados, principalmente email, login e senha. Retorne ao Solar 2.0 e, na tela de login, clique em 'Cadastrar' e informe seu cpf. Isto irá atualizar seus dados no Solar 2.0. Após ter seus dados atualizados, acesse o ambiente com o login e senha definidos no Módulo Acadêmico. "
+  answer_message_support: "Acesse o Sigaa: <a href='https://si3.ufc.br/admin/public/recuperar_senha.jsf' target='_blank'> https://si3.ufc.br/admin/public/recuperar_senha.jsf</a>. Coloque, no login, o número do seu CPF e, na senha, seu primeiro nome em letras maiúsculas. Após conseguir acesso no Sigaa, atualize seus dados, principalmente email, login e senha. Retorne ao Solar 2.0 e, na tela de login, clique em 'Cadastrar' e informe seu cpf. Isto irá atualizar seus dados no Solar 2.0. Após ter seus dados atualizados, acesse o ambiente com o login e senha definidos no Sigaa. "
   no_message: "‣ Não recebi nenhuma mensagem:"
   answer_no_message: "Preencha os campos do cadastro e prossiga até a conclusão do cadastro."
   data_wrong: "Meus dados estão incorretos no sistema?"
-  integrated_module: "‣ Sou integrado com o Módulo Acadêmico: "
-  answer_integrated_module: "Após efetuar o login, acesse o menu superior. Clique em seu nome. No submenu, clique em 'Sincronizar com Módulo Acadêmico'. Seus dados serão importados do Módulo Acadêmico."
+  integrated_module: "‣ Sou integrado com o Sigaa: "
+  answer_integrated_module: "Após efetuar o login, acesse o menu superior. Clique em seu nome. No submenu, clique em 'Sincronizar com Sigaa'. Seus dados serão importados do Sigaa."
   persistent_error: "‣ Meus dados continuam errados:"
-  answer_persistent_error: "Acesse o Módulo Acadêmico (<a href='https://www.moduloacademico.ufc.br/moduloacademico/' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico</a>) e atualize seus dados nesse. Retorne ao Solar 2.0 e, novamente, tente 'Sincronizar com Módulo Acadêmico'."
-  no_integrated_module: "‣ Não sou integrado com o Módulo Acadêmico:"
+  answer_persistent_error: "Acesse o Sigaa (<a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>) e atualize seus dados nesse. Retorne ao Solar 2.0 e, novamente, tente 'Sincronizar com Sigaa'."
+  no_integrated_module: "‣ Não sou integrado com o Sigaa:"
   answer_no_integrated_module: "Após efetuar o login, acesse o menu superior. Clique em seu nome. No submenu, clique em 'Editar perfil'. Edite seus dados e clique em 'Confirmar'."
   email_wrong: "‣ Não consigo efetuar o login no sistema e meu email está incorreto:"
   solar_erro: "Meu ambiente está com comportamento de modo estranho?"
@@ -767,12 +774,13 @@ pt_BR:
   form_institution: "Instituição"
   form_special_needs: "Necessidades especiais"
   form_password_confirmation: "Confirmação da senha"
+  form_login_notice: pode possuir apenas letras, números, " _ ", " . " ou " - ".
   form_email_confirmation: "Confirmação do e-mail"
   form_email: "E-mail"
   form_google_play: 'Disponível no Google Play'
   form_google_play2: 'Aplicativo do Solar disponível no Google Play'
   form_apple_store: 'Baixar na App Store'
-  form_apple_play2: 'Aplicativo do Solar disponível no App Store'
+  form_apple_store2: 'Aplicativo do Solar disponível no App Store'
   back_home: "Voltar para Home"
 
   # pagina de cadastro de usuario
@@ -790,6 +798,7 @@ pt_BR:
   verify: "Verificar"
   back: "Voltar"
   save: "Salvar"
+  download: "Baixar"
   continue: "Próximo"
   edit: "Editar"
   show: "Visualizar"
@@ -805,7 +814,7 @@ pt_BR:
 
   # User
   user_error_no_file_sent: Nenhum arquivo enviado
-  user_cannot_login: "Este usuário está bloqueado. Por favor, entre em contato com o administrador."
+  user_cannot_login: "Este usuário está bloqueado. Por favor, entre em contato com o atendimento@virtual.ufc.br."
   signature: "Assinatura do aluno:"
 
   #Meus dados
@@ -877,6 +886,8 @@ pt_BR:
 
   start_menu: "Início do menu"
   end_menu: "Fim do menu"
+  start_content: "Início do conteúdo"
+  end_content: "Fim do conteúdo"
 
   #Submenu de ajuda
   context: "Contextual"
@@ -916,7 +927,7 @@ pt_BR:
   pwd_recovery_subtitle: "Esqueceu a sua senha?"
   change_your_password: "Alterar sua senha"
 
-  pwd_recovery_text: "Para recuperar seu acesso, digite o endereço de e-mail que você usa para acessar a conta do Solar."
+  pwd_recovery_text: "Para recuperar seu acesso, digite seu cpf."
   pwd_recovery_text2: "Nós enviaremos, em instantes, algumas instruções para criação de uma nova senha."
 
   pwd_recovery_email: "Digite seu e-mail"
@@ -972,6 +983,7 @@ pt_BR:
       enrolled: "Matriculado"
       rejected: "Matricula Rejeitada"
       pending: Pendente
+      merged: Aglutinada
       cancelled_rejected: Rejeitadas/Canceladas
       ucs_available: Disciplinas diponíveis
       confirm: "Tem certeza de que deseja cancelar?"
@@ -1004,6 +1016,8 @@ pt_BR:
       semester: Semestre
       group: Turma
     not_defined: Não definido
+    requests:
+      info: Informações
 
   enrollm_request_cancel_message: "Pedido de matrícula cancelado"
   enrollm_cancelled_message: "Matrícula cancelada"
@@ -1076,6 +1090,7 @@ pt_BR:
       summary: Tabela contendo link de acesso às aulas disponíveis e nome em texto das aulas indisponíveis, bem como períodos de acesso e link de acesso às notas de aula para cada aula. Todas as aulas são referentes ao módulo %{module_name}.
       caption: Lista de aulas para o módulo %{module_name}
       number_of_lessons: "%{module_name} possui %{lesson_number} aulas"
+      jspanel_count_window: "Permitido somente 3 janelas"
     list:
       lesson: Aula
       order: Ordem
@@ -1142,7 +1157,9 @@ pt_BR:
       private_lesson: Não é possível importar uma aula privada a não ser que você seja o dono
       draft_lesson: Não é possível importar uma aula rascunho
       owner: só pode ser alterada pelo dono
-      blank_address: Deve ter URL ou arquivo principal
+      blank_address: Aula %{lesson_name} não foi publicada. Deve ter URL ou arquivo inicial
+      undefined_initial_file: "Aula %{lesson_name} não foi publicada. Um arquivo inicial deve ser definido."
+      extract_zip: Não foi possível extrair automaticamente os arquivos do zip da aula %{lesson_name}.
     success:
       saved_as_draft: Aulas deletadas ou salvas como rascunho com sucesso.
       deleted: Aulas deletadas com sucesso.
@@ -1150,6 +1167,11 @@ pt_BR:
       created: Aula criada com sucesso.
       updated: Aula atualizada com sucesso.
       imported: Aulas/módulos importados com sucesso.
+      initial_file: "Arquivo %{lesson_address} definido como inicial em %{lesson_name}"
+      published: "Aula(s) publicada(s) com sucesso."
+      draft: Aula(s) definida(s) como rascunho com sucesso.
+      some_published: "Demais aulas publicadas com sucesso."
+      extract_zip: Os arquivos do zip da aula %{lesson_name} foram extraídos automaticamente.
     form:
       cancel: Cancelar
       groups: Turmas
@@ -1163,6 +1185,8 @@ pt_BR:
       uncheck_receive_updates: 'Ao salvar, qualquer alteração feita na aula original não irá repercurtir nesta.'
       public_to_private: 'Ao tornar a aula privada, as aulas já importadas não serão removidas. Entretanto, não receberão novas atualizações e nem será possível fazer novas importações a partir desta aula se não o dono.'
       warning: 'A aula original foi tornada privada, portanto esta aula não receberá atualizações daquela.'
+      responsive: Responsivo
+      responsive_tooltip: Uma aula responsiva será exibida nos dispositivos mobile, contudo o conteúdo da aula deve ser responsivo.
     select_lesson:
       no_lessons: Sem Aulas
     show:
@@ -1222,6 +1246,8 @@ pt_BR:
       you_are: "Você está em: %{name} "
       lmodule_menu: " %{lmodule} (Clique para alterar o módulo. Um submenu para seleção de módulos ficará disponível)"
       lesson_menu: " %{lesson} (Clique para alterar a aula. Um submenu para seleção de aulas ficará disponível)"
+      download: "Baixar aula em arquivo PDF"
+      download_file: "Caso você não consiga executar o arquivo, click aqui para fazer o download"
 
   lesson_modules:
     general_of_offer: "Geral"
@@ -1339,8 +1365,8 @@ pt_BR:
       primary: " primárias"
       save_draft: Salvar Rascunho
       publish: Publicar
-      expand: "Expandir todos"
-      compress: "Comprimir todos"
+      expand: "Exibir todas as respostas"
+      compress: "Ocultar todas as respostas"
       files:
         discussion_file_title: Arquivos
         name: Nome
@@ -1358,8 +1384,8 @@ pt_BR:
       new_posts_page: "1 nova postagem no fórum (página "
       moved_allocation: "Alocação transferida para outra turma"
       show_posts: "Mostrar Respostas"
-      hide_posts: "Esconder Respostas"
-      amount_answers: " posts ocultados. Para visualizá-los, clique em "
+      hide_posts: "Ocultar Respostas"
+      amount_answers: " post(s) oculto(s). Clique aqui para visualizá-los."
       to_evaluate: Avaliar/Comentar
       grade: '(Nota: %{grade})'
       frequency: '(Frequência: %{wh}hs)'
@@ -1642,6 +1668,7 @@ pt_BR:
       acu: Não é possível remover a gravação ou webconferência, pois há alunos avaliados/com comentários.
     preview:
       delete_record: Remover gravação
+      report: Relatório webconferências (UAB)
       placeholder: Digite qualquer valor a ser buscado na tabela desta página
       search: Busca
       location: Localização
@@ -1664,9 +1691,9 @@ pt_BR:
       access_web_recording: Acessar %{name} da webconferência (abrirá uma nova janela)
       summary: Tabela cujo conteúdo há links de acesso às webconferências, com seus dados de moderação, compartilhamento entre turmas, equivalências, data e horário, nota, frequência, situação, quantidade de usuários online e link para acessar gravação.
       accessibility_title: <b>Acessibilidade (acesso com leitor de tela)</b>
-      accessibility: "<p> Para participar da webconferência utilizando leitores de tela, recomendamos a versão mais recente do navegador <strong>Mozilla Firefox</strong> (com o plugin flash-player atualizado) e os seguintes leitores de tela: <strong>NVDA ou Window-eyes.</strong> </p><p> O carregamento de todos os componentes da ferramenta leva aproximadamente <strong>10 segundos</strong>. Você ouvirá um 'bip' quando tudo estiver pronto. </p>"
+      accessibility: "<p> Para participar da webconferência utilizando leitores de tela, recomendamos a versão mais recente do navegador e os seguintes leitores de tela: <strong><a href='http://docs.bigbluebutton.org/html/html5-accessibility.html#nvda' target='_blank'>NVDA</a> ou <a href='http://docs.bigbluebutton.org/html/html5-accessibility.html#jaws' target='_blank'>JAWS</a>.</strong> </p>"
       information_title: <b>Informações básicas</b>
-      information: "<p> Para participar da webconferência, seu computador deve ter, no mínimo, um processador dual-core com pelo menos 2G de memória, uma conexão de 1 Mbits de download e 0.5 Mbits de upload. Você pode testar sua conexão usando o <a href='http://speedtest.net' target='_blank'>speedtest.net</a>. </p> <p> São recomendadas as últimas versões dos navegadores  <a href='https://www.mozilla.org/pt-BR/firefox/new/' target='_blank'>Firefox</a> ou <a href='https://www.google.com.br/chrome/browser/desktop/' target='_blank'>Chrome</a>. </p> <p> Para ter acesso a webconferência é necessário o plugin <a href='https://get.adobe.com/flashplayer' target='_blank'>flashplayer</a> atualizado. Caso você não tenha instalado o flashplayer no seu computador anteriormente, aparecerá um aviso solicitando a instalação. Ao acessar, permita que o navegador execute o flash. </p> <p> Escolha como você quer entrar na conferência de voz: Somente ouvir ou utilizando o seu microfone. Caso escolha com o uso do microfone, permita que o seu navegador acesse o mesmo e realize o teste de som. </p> <p> Se a webconferência tiver sido gravada, após o encerramento, será possível reassisti-la através do botão 'acessar lista de gravações' na tabela abaixo. </p>"
+      information: "<p> Para participar da webconferência, seu computador deve ter, no mínimo, um processador dual-core com pelo menos 2G de memória, uma conexão de 1 Mbits de download e 0.5 Mbits de upload. Você pode testar sua conexão usando o <a href='http://speedtest.net' target='_blank'>speedtest.net</a>. </p> <p> São recomendadas as últimas versões dos navegadores  <a href='https://www.mozilla.org/pt-BR/firefox/new/' target='_blank'>Firefox</a> ou <a href='https://www.google.com.br/chrome/browser/desktop/' target='_blank'>Chrome</a>. </p> <p> Também é possível acessar utilizando smartphones e tablets Android e dispositivos Apple (a partir do IOS 11). Nos dispositivos android, recomendamos o uso do navegador Firefox. </p> <p> Escolha como você quer entrar na conferência de voz: Somente ouvir ou utilizando o seu microfone. Caso escolha com o uso do microfone, permita que o seu navegador acesse o mesmo e realize o teste de som. </p> <p> Se a webconferência tiver sido gravada, após o encerramento, será possível reassisti-la através do botão 'acessar lista de gravações' na tabela abaixo. </p>"
     list_access:
       no_log: Nenhum participante acessou esta webconferência
       too_old: Esta webconferência ocorreu antes dos acessos começarem a ser gravados
@@ -1699,8 +1726,64 @@ pt_BR:
       evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por acesso. Deste modo, ao avaliar/informar a frequência de um acesso, todos os outros acessos do aluno terão a mesma nota/carga horária.'
       title: Lista de acessos de %{user} a webconferêcia %{webconference_name}
       no_log: Nenhum acesso à esta webconferência
-
-
+    report:
+      title: 'Relatório Webconferências UAB'
+      title_resume: 'Resumo (UAB)'
+      resume_max: 'Máximo de webconferências em um dia (efetivas):'
+      resume_avg: 'Média de webconferências por dia (efetivas):'
+      resume_total: 'Total de webconferências criadas desde 2014.2 (efetivas):'
+      resume_max_access: 'Máximo de acessos únicos a uma webconferência:'
+      resume_avg_access: 'Média de acessos únicos nas webconferências (usuários/web):'
+      resume_total_access: 'Total de acessos únicos desde 2014.2:'
+      resume_grade: 'Nota atual do semestre (média geral do feddback):'
+      resume_grade_value: '7,58/10'
+      title_statistic: 'Estatísticas do Servidor (Gerais)'
+      statistic_duration: 'Média de duração das webconferências (minutos):'
+      statistic_rec: 'Porcentagem de webconferências gravadas:'
+      statistic_recording_per_server_1: 'Horas de gravações (BBB1):'
+      statistic_recording_per_server_2: 'Horas de gravações (BBB2):'
+      statistic_shared: 'Porcentagem de Webconferẽncias compartilhadas entre turmas:'
+      statistic_per_server: 'Webconferências por servidor:'
+      statistic_per_type: 'Webconferẽncias por tipo (total):'
+      statistic_ps_total: 'Total'
+      statistic_ps_rt: 'Webconferências em tempo real (agendadas)'
+      statistic_ps_rt_access: 'Usuários em tempo real'
+      web_title: 'Webconferências (UAB)'
+      web_total: 'Total de webconferências criadas e efetivas por semestre:'
+      web_12_month: 'Total por mês (últimos 12 meses):'
+      web_month: 'Webconferências por mês (agrupadas):'
+      web_day: 'Webconferências por dia da semana (agrupadas):'
+      web_hour: 'Webconferências por hora do dia (agrupadas):'
+      web_course: 'Webconferências por curso:'
+      web_offer: 'Webconferências por disciplina:'
+      web_creator: 'Webconferências por criador:'
+      access_title: 'Acessos (UAB)'
+      access_course: 'Quantidade de acessos únicos por Curso:'
+      access_offer: 'Quantidade de acessos únicos por disciplina:'
+      access_avg: 'Média de acessos por webconferência efetiva:'
+      historic_title: 'Histórico de mudanças'
+      historic_d7: '??/??/????'
+      historic_t7: 'Implantação do botão de suporte'
+      historic_d6: '06/07/2018'
+      historic_t6: 'Implantação da versão 2.0 com html5, novo layout e novo slide default.'
+      historic_d5: '22/05/2017'
+      historic_t5: 'Informações básicas de uso da ferramenta'
+      historic_d4: '24/04/2017'
+      historic_t4: 'Implantação do https, configuração inicial simplificada e mensagem de boas vindas'
+      historic_d3: '16/02/2017'
+      historic_t3: 'Balanceamento de carga com 2 servidores, bbb 1.0'
+      historic_d2: '09/02/2017'
+      historic_t2: 'Formulário de feedback'
+      historic_d1: '??/??/2014'
+      historic_t1: 'BBB 0.81'
+      feedback_title: 'Feedback - 7737 respostas (22% dos usuários)'
+      feedback_grade: 'Nota das webconferências (1 à 5):'
+      feedback_difficulty: 'Dificuldades na webconferência:'
+      feedback_access: 'Local de acesso:'
+      feedback_equipament: 'Equipamento utilizado:'
+      feedback_internet: 'Velocidade da internet:'
+      feedback_html5: 'Aceitação da versão em html5:'
+      feedback_html5_flash: 'HTML5 X Flash:'
   navigation_of: " de "
   navigation_next: "Próxima >"
   navigation_previous: "< Anterior"
@@ -1708,6 +1791,8 @@ pt_BR:
   navigation_last: "Última >>"
   navigation_previous_page: "Ir para página anterior: "
   navigation_next_page: "Ir para próxima página "
+  navigation_first_page: "Ir para a primeira página "
+  navigation_last_page: "Ir para a última página "
   navigation_page: "Página: "
 
   icon_agenda: "Ícone da agenda"
@@ -1854,8 +1939,16 @@ pt_BR:
       invalid_token: 'Invalid authentication token.'
       timeout: 'Sua sessão expirou, por favor faça login novamente para continuar.'
       inactive: 'Sua conta ainda não foi ativada.'
+      invalid_login: Login inválido.
+      invalid_login_si3: Login inválido. Clique em 'Cadastrar' e verifique seu CPF para saber se possui cadastro ou não e, caso cadastrado no SI3, para atualizarmos seus dados cadastrais.
+      invalid_password_si3: A senha do Solar não deve possuir os caracteres "ẽ, ĩ, ũ". Por favor, altere sua senha no SI3. Qualquer dúvida ou dificuldade, entrar em contato com atendimento@virtual.ufc.br com esta mensagem de erro.
       user:
         not_found_in_database: 'Usuário ou senha inválidos.'
+    login:
+      signed_in: 'Login efetuado com sucesso.'
+      signed_out: 'Logout efetuado com sucesso.'
+      user:
+        already_signed_out: Logout efetuado com sucesso
     sessions:
       signed_in: 'Login efetuado com sucesso.'
       signed_out: 'Logout efetuado com sucesso.'
@@ -1866,10 +1959,13 @@ pt_BR:
       confirm_new_password: Confirmar nova senha
       change_my_password: Alterar
       send_instructions: 'Você receberá um email com instruções sobre como resetar sua senha em alguns minutos.'
+      send_instructions_email: 'Um email com instruções sobre como resetar sua senha será enviado para o email %{email}.'
       updated: 'Sua senha foi modificada com sucesso. Você agora está logado.'
       updated_not_active: 'Sua senha foi modificada com sucesso. Você agora está logado.'
       send_paranoid_instructions: "Um link de recuperação de senha será enviado para seu email, caso ele exista em nossa base de dados."
-      ma_request: "Para recuperar seus dados de acesso, vá ao endereço: <a href='https://www.moduloacademico.ufc.br/moduloacademico/' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico</a>."
+      ma_request: "Seus dados foram sincronizados com o SI3. Caso ainda esteja sem acesso, para recuperar seus dados, vá ao endereço: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
+      not_found: Nenhum usuário foi encontrado para o CPF informado. Faça seu cadastro na aba 'Cadastrar'.
+      no_email: Não há nenhum email cadastrado para o CPF informado. Entre em contato com atendimento@virtual.ufc.br informando seu CPF, nome completo, data de nascimento e email a ser cadastrado.
     password:
       change_my_password: Alterar
     passwords:
@@ -1902,13 +1998,13 @@ pt_BR:
         hello: "Olá %{email}!"
         request: "Alguém solicitou um link para alterar sua senha. "
         request_info: "Você pode fazer isso através do link abaixo."
-        request_info_ma: "Como você é um usuário integrado ao Módulo Acadêmico, você deve realizar a recuperação de senha através desse. Para isso, acesse o link abaixo."
+        request_info_ma: "Como você é um usuário integrado ao Sigaa, você deve realizar a recuperação de senha através desse. Para isso, acesse o link abaixo."
         ignore: "Se não foi você quem solicitou este link, por favor ignore este email."
         change: "Sua senha não vai ser modificada enquanto você não acessar o link e criar uma nova."
         username_info: "Seu login é: %{username}."
     users:
       user:
-        ma_login_email_msg: "Não foi possível verificar login e email no módulo acadêmico, portanto seu login e email foram definidos, respectivamente, como seu CPF e um valor inválido e aleatório. Favor redefiní-los."
+        ma_login_email_msg: "Não foi possível verificar login e email no Sigaa, portanto seu login e email foram definidos, respectivamente, como seu CPF e um valor inválido e aleatório. Favor redefiní-los."
         updated: 'Dados atualizados com sucesso.'
         signed_up: 'Bem vindo! Sua conta foi criada com sucesso.'
 
@@ -2014,6 +2110,7 @@ pt_BR:
       enrolled: Matriculado
       cancelled: Cancelado
       rejected: Rejeitado
+      merged: Aglutinado
     manage:
       enrollment_successful_update: Atualizacao realizada com sucesso
       enrollment_unsuccessful_update: Atualizacao nao realizada
@@ -2323,7 +2420,7 @@ pt_BR:
       summary: "Está tabela contém os arquivos publicos."
     new:
       title: Enviar novo arquivo público
-      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 5MB.
+      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 20MB.
     success:
       new: Arquivo enviado com sucesso
       removed: Arquivo removido com sucesso
@@ -2348,6 +2445,10 @@ pt_BR:
       enabled: Ativada
       disabled: Desativada
       activation: Ativação
+      name: Nome
+      location: Localização
+      details: Detalhes
+      details_about: Detalhes sobre a turma %{name}
     groups_tags:
       groups: Turmas
       add: Adicionar
@@ -2385,6 +2486,7 @@ pt_BR:
       cant_add_group: Não é possível adicionar turmas a esta ferramenta.
       cant_unbind: Não é possível desvincular turmas desta ferramenta.
       not_student: Deve ser estudante.
+      blocked: não pode ser alterado em turmas integradas ao Sigaa
     groups_checkboxes:
       select_all: Selecionar todas
       no_groups: "Não há turmas"
@@ -2427,12 +2529,13 @@ pt_BR:
       edit: Editar
       change_password: Alterar senha
       message_not_found: Nenhum usuário encontrado
-      synchronize: Sincronizar com Módulo Acadêmico
-      import: Importar dados do Módulo Acadêmico
       name: Nome
       email: Email
       username: Login
       cpf: CPF
+      synchronize: Sincronizar com Sigaa
+      import: Importar dados do Sigaa
+      reset_session_token: Resetar token da sessão
     informations:
       detailed: "Informações Detalhadas"
       personal_data: "Dados Pessoais"
@@ -2466,8 +2569,11 @@ pt_BR:
       title: Gerenciar Perfis
     success:
       email_sent: Email enviado com sucesso
+      reset_token: Session token resetado com sucesso
     error:
       email_not_sent: Não foi possível enviar email
+      no_email: É necessário definir um email primeiro.
+      no_reset_token: Não foi possível resetar o session token
     allocation_approval:
       not_specified: Não especificado
       none_pending_allocation: Não há solicitações pendentes
@@ -2692,6 +2798,8 @@ pt_BR:
       same_type_af: deve ter o mesmo valor no campo 'Avaliação Final'
       details: Ver descrição
       details_about: Acessar descrição de %{name}
+      errors:
+        offer_period: Oferta já encerrou
     tools:
       expand: Expandir
       compress: Comprimir
@@ -2786,6 +2894,7 @@ pt_BR:
       min_final_exam_grade: Nota mínima permitida para AF
       final_exam_passing_grade: Média mínima para aprovação após realização de AF
       passing_grade: Média mínima para aprovação
+      group_location: Localização da turma
     users:
       message: Enviar mensagem
       public_files: Visualizar arquivos públicos
@@ -3034,26 +3143,26 @@ pt_BR:
       evaluation_info: '<b>Sobre as avaliações:</b> As definições de nota são feitas por aluno e não por mensagem. Deste modo, ao avaliar/informar a frequência de um acesso, todos as outras mensagens do aluno terão a mesma nota/carga horária.'
 
   user_blacklist:
-    add: Desvincular do MA
-    remove: Voltar vínculo com MA
-    cpf_cannot_be_added: 'Não pode ser desvinculado do Módulo Acadêmico.'
+    add: Desvincular do Sigaa
+    remove: Voltar vínculo com Sigaa
+    cpf_cannot_be_added: 'Não pode ser desvinculado do Sigaa.'
     success:
-      created: "CPF '%{cpf}' desvinculado do MA com sucesso."
-      deleted: "CPF '%{cpf}' voltou a ser vinculado ao MA com sucesso."
+      created: "CPF '%{cpf}' desvinculado do Sigaa com sucesso."
+      deleted: "CPF '%{cpf}' voltou a ser vinculado ao Sigaa com sucesso."
     error:
-      created: Erro ao desvincular CPF do MA.
-      deleted: Erro ao retornar vínculo do CPF com o MA.
+      created: Erro ao desvincular CPF do Sigaa.
+      deleted: Erro ao retornar vínculo do CPF com o Sigaa.
     index:
       warning: "<b>Importante:</b> Esses CPFs não necessariamente já estão cadastrados no ambiente."
       cpf_or_name: CPF ou Nome
-      title: CPFs desvinculados do MA
+      title: CPFs desvinculados do Sigaa
       new: Adicionar CPF
       delete: Excluir
       created_at: Adic. Em
       added_by: Adic. Por
       updated_at: Alt. Em
     new:
-      new: Desvincular CPF do MA
+      new: Desvincular CPF do Sigaa
       cpf: CPF
       name: Nome
 
@@ -3093,7 +3202,11 @@ pt_BR:
     no_new: "Sem novas mensagens"
     no_subject: "(sem assunto)"
     support: "Atendimento <atendimento@virtual.ufc.br>"
+    support_only_email: "<atendimento@virtual.ufc.br>"
     support_html: "Atendimento &lt;atendimento@virtual.ufc.br&gt;"
+    support_simple: "Atendimento"
+    no_mail: sem email
+    send_message: Enviar Mensagem
     contacts:
       title: "Seleção de contatos"
       contacts: "Contatos"
@@ -3249,9 +3362,7 @@ pt_BR:
   schedule_events:
     restrict_events: "Não permitido é permitido acessar os eventos"
     index:
-      events_list: Lista de Eventos
-      individual_events: Eventos individuais
-      group_events: Eventos em grupo
+      events_list: Eventos
     events:
       name: Nome
       data_range: Período
@@ -3286,6 +3397,7 @@ pt_BR:
       created: Evento criado com sucesso.
       updated: Evento atualizado com sucesso.
       deleted: Evento deletado com sucesso.
+      updated_content: Conteúdo da prova atualizado com sucesso. As demais alterações foram ignoradas em virtude deste evento ser integrado a outros sistemas.
     error:
       range_hour_error: deve ser posterior à inicial
       created: Não foi possível criar evento.
@@ -3324,7 +3436,7 @@ pt_BR:
       summary_evaluative: "Está tabela contém todos os eventos agendados avaliativas."
       summary_frequency: "Está tabela contém todos os eventos agendados de frequência."
       summary_notevaluative: "Está tabela contém todos os eventos agendados não avaliativas."
-      summary_student_files: "Está tabela contém os arquivos enviados pelo tutor, com as seguintes informações: Nome, tamanho, data de envio e quem envio o arquivo."
+      summary_student_files: "Está tabela contém os arquivos enviados pelos responsáveis, com as seguintes informações: Nome, tamanho, data de envio e quem envio o arquivo."
       none: Nenhum evento cadastrado
       new: Novo evento
       edit: Editar evento
@@ -3335,14 +3447,14 @@ pt_BR:
       place: Local
       choose_one: "Selecione um evento"
       choose_at_least_one: "Selecione, ao menos, um evento"
-      integrated_event_edit: 'Este evento possui integração com outras bases de dados e por isso não pode ser editado'
+      integrated_event_edit: 'Este evento possui integração com outras bases de dados e, por isso, todos os campos, exceto o conteúdo, não podem ser editados'
       integrated_events_delete: 'Existem eventos selecionados que não podem ser removidos devido a integração com outras bases de dados'
       print: Imprimir prova
       users: Imprimir prova individual
     participants:
       title: Participantes
       student: Alunos
-      list_name: Lista de Alunos
+      list_name: "Lista de Alunos: %{event}"
       name: Nome
       send_file: Enviar Arquivos
       evaluate_comments: Avaliar/Comentar
@@ -3350,6 +3462,7 @@ pt_BR:
       working_hours: Carga Horária
       files: Arquivos
       see_files: Ver arquivos enviados
+      download_all: Download dos arquivos de todos os alunos
     presential_test_participants:
       list_name: Lista de Alunos
       name_studante: Nome
@@ -3366,7 +3479,8 @@ pt_BR:
       size: Tamanho
       sent_on: Enviado em
       sent_by: Enviado por
-      summary_files: Arquivos enviados pelo tutor
+      summary_files: Arquivos enviados pelos responsáveis
+      online_correction: Correção online
     summary:
       title: "Arquivos para %{user} em %{tool}"
       name: Nome
@@ -3383,10 +3497,20 @@ pt_BR:
       hand: "Mão"
       text: "Texto"
       brush: "Pincel"
+      colors: "Cores"
+      black: "Preto"
+      red: "Vermelho"
+      blue: "Azul"
       arrow: "Flecha"
       saving_file: "Salvando arquivo."
+      undo: "Desfazer"
+      redo: "Refazer"
+      clear: "Limpar"
+      deleting_canvas: "Limpando arquivo."
+      message_confirm_cleaning: "Está ação não pode ser desfeita. Você tem certeza disso?"
     success:
       file_saved: Arquivo salvo com sucesso.
+      file_cleaned: Arquivo limpo com sucesso.
       created: Arquivo(s) enviado(s) com sucesso(s).
       deleted: Arquivo(s) deletado(s) com sucesso(s).
     error:
@@ -3395,10 +3519,14 @@ pt_BR:
       remove: Não foi possível deletar arquivo.
       new: Não foi possível enviar arquivo.
       not_started_up: Não é possível fazer o envio do arquivo. O evento ainda não foi iniciado.
-      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 26MB.
+      attachment_file_size_too_big: "Arquivo muito grande. O tamanho máximo deve ser de até %{file}MB."
       wrong_type: "Tipo de arquivo não permitido (apenas imagens jpeg/png/gif ou pdfs)"
       situation: Não é possível enviar arquivos ainda, pois a atividade não foi iniciada.
       file_not_saved: "Não foi possível salvar o arquivo."
+      file_not_cleaned: "Não foi possível limpar o arquivo."
+      cant_download: Não é possível realizar o download deste(s) arquivo(s)
+      type: Arquivos podem ser enviados apenas para eventos dos tipos Prova Presencial e Encontro Presencial
+      general_error: "Apenas arquivos de imagens (jpeg/png/gif) ou pdfs de até 2MB devem ser enviados em eventos dos tipos Encontro Presencial ou Prova Presencial."
 
   agendas:
     dropdown_content:
@@ -3465,25 +3593,31 @@ pt_BR:
   users:
     errors:
       ma:
-        already_exists: já em uso no Módulo Acadêmico
-        only_by: pode ser alterado apenas pelo Módulo Acadêmico
-        cant_connect: não pode ser alterado no momento. Conexão incompleta com o Módulo Acadêmico.
-        problem_accessing: Ocorreram problemas ao acessar o Módulo Acadêmico. Favor tentar novamente.
-        login: 'Falha na conexão com o Módulo Acadêmico, utilizando CPF como login. Tente defini-lo novamente.'
-        email: 'Falha na conexão com o Módulo Acadêmico, definindo email como um endereço inválido. Tente defini-lo novamente.'
+        already_exists: já em uso no Sigaa
+        only_by: pode ser alterado apenas pelo Sigaa
+        cant_connect: não pode ser alterado no momento. Conexão incompleta com o Sigaa.
+        problem_accessing: Ocorreram problemas ao acessar o Sigaa. Favor tentar novamente.
+        login: 'Falha na conexão com o Sigaa, utilizando CPF como login. Tente defini-lo novamente.'
+        email: 'Falha na conexão com o Sigaa, definindo email como um endereço inválido. Tente defini-lo novamente.'
         login_email: 'ma_login_email_msg'
-        synchronize: Erro ao sincronizar dados com o Módulo Acadêmico. Favor tentar novamente.
-        error_synchronize: "Não foi possível sincronizar dados com o Módulo Acadêmico pelo(s) seguinte(s) motivo(s): %{errors}. Favor corrigir o(s) problemas(s) relatado(s) em <a href='https://www.moduloacademico.ufc.br/moduloacademico/' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico</a>"
+        synchronize: Erro ao sincronizar dados com o Sigaa. Favor tentar novamente.
+        error_synchronize: "Não foi possível sincronizar dados com o Sigaa pelo(s) seguinte(s) motivo(s): %{errors}. Favor corrigir o(s) problemas(s) relatado(s) em <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>"
+        selfregistration: "Faça seu autocadastro no Sigaa (<a href='https://si3.ufc.br/sigaa/public/cadastro/discente.jsf' target='_blank'>https://si3.ufc.br/sigaa/public/cadastro/discente.jsf</a>). Caso já o tenha feito e já tenha realizado a confirmação de email, verifique seu cpf em 'Cadastrar' ou solicite ao atendimento@virtual.ufc.br para importar seus dados."
+        selfregistration_others: "O usuário precisa fazer seu autocadastro no Sigaa (<a href='https://si3.ufc.br/sigaa/public/cadastro/discente.jsf' target='_blank'>https://si3.ufc.br/sigaa/public/cadastro/discente.jsf</a>). Caso já o tenha feito e já tenha realizado a confirmação de email, verifique se o usuário é passível de ser desvinculado."
+        changed_username: Devido a integração com o SI3 e a conflito com outros usuários, seu login foi alterado para %{new_username}.
       cpf_admin: 'Apenas administradores podem alterar CPF. Para fazer a mudança, entre em contato com o atendimento@virtual.ufc.br informando nome, CPF atual, novo CPF e o motivo para a mudança.'
+      cpf_as_username: 'não pode ser o CPF de outro usuário'
+      multiple_sessions: "Não é possível ficar logado em múltiplos dispositivos ao mesmo tempo."
+      username: "deve ter apenas letras e números."
     notices:
       ma:
-        use_ma_data: "Seus dados de acesso foram importados do Módulo Acadêmico. Para alterar ou recuperar seus dados de acesso, vá ao endereço: <a href='https://www.moduloacademico.ufc.br/moduloacademico/' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico</a>."
+        use_ma_data: "Seus dados de acesso foram importados do Sigaa. Para alterar ou recuperar seus dados de acesso, vá ao endereço: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
         synchronize: Dados sincronizados com sucesso.
     warnings:
       ma:
-        cpf_not_verified: "Não foi possível verificar o CPF no Módulo Acadêmico. Se faz necessário que você, após logado, sincronize seus dados."
-        cpf_not_found: CPF não encontrado no Módulo Acadêmico
-        not_possible_syncrhonize: Não foi possível sincronizar com o Módulo Acadêmico.
+        cpf_not_verified: "Não foi possível verificar o CPF no Sigaa. Se faz necessário que você, após logado, sincronize seus dados."
+        cpf_not_found: CPF não encontrado no Sigaa
+        not_possible_syncrhonize: Não foi possível sincronizar com o Sigaa.
       cpf: "Para alterar seu CPF, entre em contato com o atendimento@virtual.ufc.br informando seu nome, CPF atual, novo CPF e o motivo para a mudança."
     show:
       not_informed: Não informado
@@ -3506,8 +3640,15 @@ pt_BR:
       books: "Livros: "
       phrase: "Frase: "
       site: "Site: "
-      integrated: "Integrado com o Módulo Acadêmico: "
-      blacklist: "Manualmente desvinculado do Módulo Acadêmico: "
+      integrated: "Integrado com o Sigaa: "
+      blacklist: "Manualmente desvinculado do Sigaa: "
+      access_data: "Dados de acesso"
+      selfregistration: "Realizou autocadastro no Sigaa: "
+      username: "Login: "
+      email: "Email: "
+      previous_username: "Login anterior: "
+      previous_email: "Email anterior: "
+      last_access: "Último acesso: "
       y: Sim
       n: Não
     request_profile:
@@ -3551,7 +3692,7 @@ pt_BR:
         updated: Falha ao atualizar as configurações
 
   mysolar:
-    synchronize: Sincronizar com Módulo Acadêmico
+    synchronize: Sincronizar com Sigaa
     profiles: Perfis
     closed_uc: (disciplina encerrada)
     configure: Configurações
@@ -3642,11 +3783,15 @@ pt_BR:
         list: "Ver em Lista [L]"
         thread: "Ver em Árvore [A]"
         discussion: "Ver Minhas Discussões [D]"
+        compress: "Ocultar todas as respostas [O]"
+        expand: "Exibir todas as respostas [E]"
       code:
         new: 80
         list: 76
         thread: 65
         discussion: 68
+        compress: 79
+        expand: 69
     assignment:
       name:
         web: "Nova Webconferência [W]"
@@ -3795,12 +3940,12 @@ pt_BR:
         menu_program: 82
         menu_agenda: 71
         menu_bibliography: 66
-        menu_participants: 69
+        menu_participants: 83
         menu_content_edition: 68
         menu_messages: 78
         menu_registration: 85
         menu_home: 73
-        menu_events: 83
+        menu_events: 69
       complement:
         menu_portfolio: " (Trabalhos)"
     comments:
@@ -3815,11 +3960,6 @@ pt_BR:
       code:
         window: 65
         analyzer_position: 83
-    schedule_events:
-      name:
-        events_list: "Lista de Eventos [E]"
-      code:
-        events_list: 69
 
   scores:
     index:
@@ -3882,6 +4022,7 @@ pt_BR:
       situation4: "- Ao remover as situações dos alunos, todas serão definidas como 'Pendente' ou 'Indefinida' até que sejam definidas novamente."
       situation5: "- Uma vez definida a situação, a cada nova avaliação, carga horária e afins, a situação do aluno será imediatamente atualizada."
       confirm: A última atividade avaliativa ainda não aconteceu. Tem certeza que deseja definir as situações?
+      origin_group: Turma original (aglutinada)
     info:
       assignments: Trabalhos
       date_range: Período
@@ -3971,6 +4112,8 @@ pt_BR:
       hours: Carga Horária Máxima
       info_evaluation: Nota/frequência e comentários
       comments: Comentários
+      origin_group: "<b>Turma original (aglutinada):</b>"
+      origin_group2: "<b>Turma original (aglutinada):</b> %{group}"
     reports:
       general_evaluative: Relatório Acompanhamento - Atividades Avaliativas
       general_frequency: Relatório Acompanhamento - Atividades de Frequência
@@ -4794,6 +4937,7 @@ pt_BR:
       event_evaluative: não pode ser definido, pois eventos do tipo Recesso ou Feriado não podem ser avaliativos.
       event_frequency: não pode ser definido, pois eventos do tipo Recesso ou Feriado não podem ser de frequência.
       same_type_af: deve ter o mesmo valor no campo 'Avaliação Final'
+      offer_period: Oferta já encerrou
     success:
       manage: Atividades gerenciadas com sucesso.
     warnings:
@@ -4830,10 +4974,10 @@ pt_BR:
       whats_solar: 'O que é o Solar?'
       whats_ava: 'O que é um AVA?'
       uab_forgot_login_password: 'Sou aluno ou professor da UAB e não lembro meu login ou senha. O que fazer?'
-      forgot_login_password_ma: 'Não lembro meu login ou senha do Solar, mas tenho acesso ao Módulo Acadêmico. O que fazer?'
-      forgot_login_password_sync1: 'Não lembro meu login ou senha do Solar e também não tenho acesso ao Módulo Acadêmico. O que fazer?'
-      forgot_login_password_sync2: 'Tentei fazer cadastro ou recuperar senha e meus dados foram importados do Módulo Acadêmico, mas não tenho acesso ao Módulo Acadêmico.'
-      forgot_login_password_sync3: 'Tentei recuperar minha senha, mas recebi uma mensagem me direcionando ao Módulo Acadêmico, mas não tenho acesso a ele.  O que devo fazer?'
+      forgot_login_password_ma: 'Não lembro meu login ou senha do Solar, mas tenho cadastro no Sigaa. O que fazer?'
+      forgot_login_password_sync1: 'Não lembro meu login ou senha do Solar e também não tenho cadastro no Sigaa. O que fazer?'
+      forgot_login_password_sync2: 'Tentei fazer cadastro ou recuperar senha e meus dados foram importados do Sigaa, mas não tenho acesso ao Sigaa.'
+      forgot_login_password_sync3: 'Tentei recuperar minha senha, mas recebi uma mensagem me direcionando ao Sigaa, mas não tenho acesso a ele.  O que devo fazer?'
       forgot_login_password: 'Esqueci meu login e/ou senha.'
       recovery_password_email: "Já tenho cadastro no Solar e tentei recuperar minha senha, mas recebi a seguinte mensagem 'E-mail não encontrado'."
       verify_registration: "Não lembro meu login e senha e meu email não foi encontrado. Como descubro se já tenho cadastro no Solar?"
@@ -4867,23 +5011,25 @@ pt_BR:
       idea: "Tenho uma ideia para o Solar, como posso sugerí-la para implementação?"
       error: "Sou responsável por uma disciplina e um portfólio enviado pelo aluno aparece em branco. Pode ser erro do sistema?"
       cant_find_faq: "Não encontrei minha dúvida neste FAQ?"
+      uab_selfregistration: "O que é o autocadastro no Sigaa? Como posso realizar o autocadastro?"
+      email_confirmation: "Realizei meu autocadastro, como faço para utilizar o Solar?"
     answers:
       whats_solar: "O Solar 2.0 é um AVA, ambiente virtual de aprendizagem, desenvolvido pelo Instituto UFC Virtual, da Universidade Federal do Ceará. <br/> Ele é orientado ao professor e ao aluno, possibilitando a publicação de cursos e a interação com eles. Ele foi desenvolvido visando potencializar o aprendizado a partir da relação com a própria interface gráfica do ambiente, de modo que o usuário tenha acesso a várias ferramentas de aprendizagem e compartilhamento de conteúdo.  <br/> O ambiente é apoiado numa filosofia de interação e não de controle."
       whats_ava: "AVAs - Ambientes Virtuais de Aprendizagem são softwares disponíveis online que permitem a realização de cursos via web ou, até mesmo, o auxílio e complemento a cursos presenciais via web."
-      uab_forgot_login_password: "Dirija-se ao Módulo Acadêmico a fim de recuperar sua senha: https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do. <br/> Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Módulo Acadêmico. Se você não consegue recuperar sua senha no Módulo Acadêmico, favor dirigir-se à secretaria de seu curso."
-      forgot_login_password_ma: "Dirija-se ao Módulo Acadêmico a fim de recuperar sua senha: https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Módulo Acadêmico."
+      uab_forgot_login_password: "Você já realizou seu autocadastro no Sigaa? Se sim e caso não se lembre da senha, dirija-se ao Sigaa a fim de recuperar sua senha: <a href='https://si3.ufc.br/admin/public/recuperar_senha.jsf' target='_blank'>https://si3.ufc.br/admin/public/recuperar_senha.jsf</a> <br/> Caso tenha realizado o autocadastro e não se lembre do login, dirija-se ao Sigaa a fim de recuperá-lo: <a href='https://si3.ufc.br/admin/public/recuperar_login.jsf' target='_blank'>https://si3.ufc.br/admin/public/recuperar_login.jsf</a>  <br/> Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Sigaa. Se você não consegue recuperar sua senha no Sigaa, favor dirigir-se à secretaria de seu curso.<br/><br/> Se não tiver realizado seu autocadastro, ler <b>O que é o autocadastro no Sigaa? Como posso realizar o autocadastro?</b>"
+      forgot_login_password_ma: "Caso não se lembre da senha, dirija-se ao Sigaa a fim de recuperar sua senha: <a href='https://si3.ufc.br/admin/public/recuperar_senha.jsf' target='_blank'>https://si3.ufc.br/admin/public/recuperar_senha.jsf</a> <br/> Caso não se lembre do login, dirija-se ao Sigaa a fim de recuperá-lo: <a href='https://si3.ufc.br/admin/public/recuperar_login.jsf' target='_blank'>https://si3.ufc.br/admin/public/recuperar_login.jsf</a> <br/> Após recuperar e alterar sua senha, retorne ao Solar 2.0 e utilize o mesmo login e senha do Sigaa."
       forgot_login_password_sync: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação. Lembre-se de informar seu cpf e email. O atendimento do Solar irá corrigir seus dados e enviará, posteriormente, um email para recuperação de senha."
       forgot_login_password: "Na tela de login do Solar 2.0 (www.solar.virtual.ufc.br):<br/> ‣ Clique em 'Esqueceu a sua senha?' </br> ‣ Informe o email cadastrado. </br> ‣ Clique em 'Enviar'. </br> Você receberá um email com as instruções para gerar uma nova senha."
       recovery_password_email: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação. Lembre-se de informar seu cpf e email. O atendimento do Solar irá corrigir seus dados e enviará, posteriormente, um email para recuperação de senha."
       verify_registration: "Para saber se você já tem cadastro ou não no Solar 2.0, basta acessar a tela inicial e clicar na aba 'Cadastrar'. Nesta aba, você deverá digitar seu cpf e clicar em 'Verificar'. O Solar irá verificar se você já possui ou não cadastro."
-      ma: ‣ Integrado ao Módulo Acadêmico
-      not_ma: ‣ Não integrado ao Módulo Acadêmico
+      ma: ‣ Integrado ao Sigaa
+      not_ma: ‣ Não integrado ao Sigaa
       update_data: "Para alterar seus dados cadastrais, você deve primeiro estar logado no Solar. Após o login, efetuar os seguintes passos: </br> ‣ Clicar no seu nome no topo da tela ao lado do relógio<br/>‣ Clicar em 'Editar Perfil'<br/>‣ Alterar os dados desejados<br/>‣ Clicar em 'Confirmar', botão azul localizado ao fim da tela<br/> Não entendeu? Você pode ver também nosso <a href='https://www.youtube.com/watch?v=cRN-wNAjutk&list=PL79md4kx41yXcTYI6XgnzXyEAAIxL5asx&index=6' target='_blank'>vídeo-tutorial</a>."
-      update_data_ma: "Para alterar seus dados cadastrais, você deve acessar o Módulo Acadêmico e realizar as alterações desejadas.<br/> Alterações de login, senha ou email são enviadas ao Solar automaticamente. Qualquer outra alteração deve ser sincronizada com o Solar. Para isso, após o login, você deve: <br/> ‣ Clicar no seu nome no topo da tela ao lado do relógio<br/> ‣ Clicar em 'Sincronizar com Módulo Acadêmico'"
-      update_data_ma_cant: "Neste caso, seu cadastro no Solar está vinculado ao Módulo Acadêmico."
-      have_access: ‣ Se possuir acesso ao Módulo Acadêmico
-      dont_have_access: ‣ Se não possuir acesso ao Módulo Acadêmico
-      update_data_ma_cant2: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação para que nossa equipe verifique se é possível desvincular seu perfil ou não. Lembre-se de informar seu cpf e email. <br/> Se for possível, o atendimento retornará o contato com uma mensagem positiva; caso contrário, deverá encaminhá-lo ao setor do STI para recuperar seus dados do Módulo Acadêmico."
+      update_data_ma: "Para alterar seus dados cadastrais, você deve acessar o Sigaa e realizar as alterações desejadas.<br/> Alterações de login, senha ou email são enviadas ao Solar automaticamente. Qualquer outra alteração deve ser sincronizada com o Solar. Para isso, após o login, você deve: <br/> ‣ Clicar no seu nome no topo da tela ao lado do relógio<br/> ‣ Clicar em 'Sincronizar com Sigaa'"
+      update_data_ma_cant: "Neste caso, seu cadastro no Solar está vinculado ao Sigaa."
+      have_access: ‣ Se possuir acesso ao Sigaa
+      dont_have_access: ‣ Se não possuir acesso ao Sigaa
+      update_data_ma_cant2: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação para que nossa equipe verifique se é possível desvincular seu perfil ou não. Lembre-se de informar seu cpf e email. <br/> Se for possível, o atendimento retornará o contato com uma mensagem positiva; caso contrário, deverá encaminhá-lo ao setor do STI para recuperar seus dados do Sigaa."
       invalid_token: "Todo email de recuperação de senha do Solar 2.0 fornece um link que permitirá gerar uma nova senha. Entretanto, este link conterá um token que só terá validade por 24h. Se seu token está inválido, você precisa gerar um novo link. Ver 'Esqueci meu login e/ou senha.'"
       how_to_enroll: "Para solicitar matrícula em uma disciplina, é necessário ter cadastro no Solar 2.0, efetuar o login e realizar os seguintes passos: </br> ‣ Acessar o menu lateral esquerdo em 'Matrícula' <br/> ‣ Procurar pela disciplina e curso desejados, lembrando que estarão disponíveis apenas os cursos cujo período de matrícula não foi encerrado. <br/> ‣ Ao localizar a disciplina desejada, clicar em 'Matricular' <br/> Não entendeu? Você pode ver também nosso <a href='https://www.youtube.com/watch?v=35uwbsETkyY&index=1&list=PL79md4kx41yXcTYI6XgnzXyEAAIxL5asx' target='_blank'>vídeo-tutorial</a>. <br/> Sua solicitação está sujeita a aceitação. Portanto, ela primeiro será analisada pelos responsáveis e, em seguida, será aceita ou não. Ao ser aceita, você receberá um email do Solar 2.0."
       pendent_enroll: "As solicitações de matrícula realizadas pelo aluno no Solar 2.0 não são aceitas automaticamente, estando, portanto, sujeitas a aceitação dos responsáveis pela disciplina em questão. No momento em que uma matrícula é aceita, o aluno receberá um email do Solar 2.0 comunicando."
@@ -4910,7 +5056,8 @@ pt_BR:
       idea: "O Solar 2.0 dispõe de um botão de 'Sugestões para o Solar 2.0'. Para acessá-lo, basta realizar o login, que o botão ficará disponível no canto superior direito da tela logo abaixo do relógio. <br/>Lá você poderá enviar sugestões, reclamações e similares."
       error: "O Solar 2.0 não altera dados nem arquivos previamente enviados pelos usuários sem comunicá-los ou sem prévia autorização. Portanto, se o portfolio do aluno está em branco, sugerimos que entre em contato com ele para solicitar um re-envio do arquivo correto."
       cant_find_faq: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação. Lembre-se de informar: <br/> ‣ Nome <br/> ‣ Cpf <br/> ‣ Email<br/> ‣ O maior número de informações sobre o ocorrido. Se possível, imagens (prints de tela) também."
-
+      uab_selfregistration: "Todos os dados que existiam no Módulo Acadêmico, antigo sistema acadêmico utilizado pela UAB, foram transferidos para o Sigaa, sistema acadêmico atual. Isso implica, portanto, na transferência, dentre outros, dos dados cadastrados para cada usuário, aluno ou professor. Entretanto, os dados de acesso não são transferidos para evitar conflitos com os demais usuários previamente existentes no Sigaa. Por este motivo, é necessário que todo usuário que existia no Módulo Acadêmico faça seu autocadastro no Sigaa e, em seguida, confirme seu email, para poder definir seus novos dados de acesso como, por exemplo, login e senha. <br/> <br/> Para realizar seu autocadastro, basta acessar <a href='https://si3.ufc.br/sigaa/public/cadastro/discente.jsf' target='_blank'>https://si3.ufc.br/sigaa/public/cadastro/discente.jsf</a> e informar seu cpf, nome completo e data de nascimento conforme constavam no Módulo Acadêmico e, também, informar email, login e senha. Você pode, se assim quiser, utilizar os mesmos email, login e senha que utilizava no Módulo Acadêmico. Se estes já estiverem em uso por outro usuário ou não atenderem aos novos padrões, o sistema não irá salvar e irá comunicá-lo para escolher novos dados."
+      email_confirmation: "Uma vez feito o autocadastro no SIGAA, você precisa acessar o email informado e clicar no link de confirmação de cadastro. <br/> Caso não tenha recebido o email ou tenha apagado, é possível solicitá-lo novamente através da url <a href='https://si3.ufc.br/admin/public/recuperar_codigo.jsf' target='_blank'>https://si3.ufc.br/admin/public/recuperar_codigo.jsf</a>. <br/>Lembre-se de verificar a caixa de spam!<br/> Uma vez confirmado o cadastro, basta acessar o Solar com o mesmo login e senha definidos no SIGAA."
   ckeditor:
     confirms:
       question: "Deseja excluir os itens em branco?"
@@ -4972,8 +5119,8 @@ pt_BR:
       groups_number: Quantidade de Turmas
       users_number: Quantidade de Usuários Cadastrados
       users_number_active: Quantidade de Usuários Ativos
-      users_number_module_bound: Usuários Vinculados ao MA - Modulo Acadêmico
-      users_number_module_unbound: Usuários Desvinculados ao MA - Modulo Acadêmico
+      users_number_module_bound: Usuários Vinculados ao Sigaa
+      users_number_module_unbound: Usuários Desvinculados ao Sigaa
       disciplines_amount: Quantidade de Disciplinas
       files_portifolio: Quantidade de Arquivos Postados no Portfólio
       number_of_students: Quantidade de alunos ativos matriculados
@@ -5080,6 +5227,10 @@ pt_BR:
     click_to_close: (clique para fechar)
     open: (Abrirá janela modal)
     minimize: "Minimizar janela modal"
+    smallify: "Encolher janela modal"
+    normalize: "Restaurar janela modal"
+    maximize: "Maximizar janela modal"
+    smallifyrev: "Esticar janela modal"
 
   flash_message:
     close: "Fechar aviso"

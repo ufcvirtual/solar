@@ -3,7 +3,7 @@ class LessonFilesController < ApplicationController
   layout false
 
   require 'fileutils' # utilizado na remocao de diretorios, pois o "Dir.rmdir" nao remove diretorios que nao estejam vazios
-  
+
   include LessonFileHelper
   include FilesHelper
 
@@ -25,10 +25,10 @@ class LessonFilesController < ApplicationController
   def new
     begin
       @lesson  = Lesson.where(id: params[:lesson_id]).first
-      verify_owner
+      # verify_owner
       allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule').pluck(:allocation_tag_id)
       authorize! :new, Lesson, on: [allocation_tags_ids]
-    
+
       raise 'error' unless @lesson.verify_files_before_change
 
       lesson_path = @lesson.path(true, false)
@@ -79,7 +79,7 @@ class LessonFilesController < ApplicationController
   def edit
     begin
       @lesson  = Lesson.where(id: params[:lesson_id]).first
-      verify_owner
+      # verify_owner
       allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule')
       .select(:allocation_tag_id).map(&:allocation_tag_id)
       authorize! :new, Lesson, on: [allocation_tags_ids]
@@ -98,7 +98,7 @@ class LessonFilesController < ApplicationController
         if @lesson.address.include?(params[:path])
           path           = get_path_without_last_dir(params[:path])
           # se for elemento localizado na raiz, o resultado de "get_path_without_last_dir" sera "" ou "/", portanto, nestes casos, não deve ser adicionado ao path a ser renomeado
-          renamed_path   = ((path == "/" || path == "") ? [params[:node_name]] : File.join(path, params[:node_name]).split(File::SEPARATOR)) 
+          renamed_path   = ((path == "/" || path == "") ? [params[:node_name]] : File.join(path, params[:node_name]).split(File::SEPARATOR))
           lesson_address = @lesson.address.split(File::SEPARATOR) # quebra o caminho do arquivo inicial da aula
           lesson_address[renamed_path.size-1] = params[:node_name] # altera o elemento renomeado no caminho da aula
           @lesson.update_attribute(:address, File.join(lesson_address))
@@ -140,7 +140,7 @@ class LessonFilesController < ApplicationController
   def destroy
     begin
       @lesson  = Lesson.where(id: params[:lesson_id]).first
-      verify_owner
+      # verify_owner
       allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule').select(:allocation_tag_id).map(&:allocation_tag_id)
       authorize! :new, Lesson, on: [allocation_tags_ids]
 
@@ -167,7 +167,7 @@ class LessonFilesController < ApplicationController
 
   def extract_files
     @lesson = Lesson.find(params[:lesson_id])
-    verify_owner
+    # verify_owner
     allocation_tags_ids = AcademicAllocation.where(academic_tool_id: @lesson.lesson_module_id, academic_tool_type: 'LessonModule')
       .select(:allocation_tag_id).map(&:allocation_tag_id)
     authorize! :update, Lesson, on: [allocation_tags_ids] # com permissao para editar aula

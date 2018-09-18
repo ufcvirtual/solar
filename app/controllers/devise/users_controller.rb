@@ -6,8 +6,7 @@ class Devise::UsersController < Devise::RegistrationsController
     user_cpf       = params[:user][:cpf].delete('.').delete('-')
     resource.cpf   = user_cpf
     resource_saved = resource.save
-    tmp_email      = [user_cpf, YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s]["tmp_email_provider"]].join("@")
-    warning        = I18n.t("users.errors.ma.login_email") if resource.email == tmp_email and resource.username == "#{user_cpf}"
+    warning        = I18n.t("users.errors.ma.login_email") if resource.email.blank? && resource.username == "#{user_cpf}"
 
     yield resource if block_given?
     if resource_saved

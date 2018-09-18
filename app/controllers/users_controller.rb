@@ -25,16 +25,17 @@ class UsersController < ApplicationController
       user_cpf   = params[:cpf].delete(".").delete("-")
       integrated = User::MODULO_ACADEMICO["integrated"]
       user       = User.where("translate(cpf,'.-','') = ?", params[:cpf].gsub(/\D/, '')).first
-
       begin
 
-        if user && integrated # if user exists and system is integrated
+        if user && integrated && !user.on_blacklist? # if user exists and system is integrated
           begin
             user_data = User.connect_and_import_user(user_cpf) # try to import
             raise if user_data.nil? # user don't exist at MA
             user.synchronize(user_data) # synchronize user with new MA data
             if user.errors.any?
               redirect_to login_path, alert: t("users.errors.ma.error_synchronize", errors: user.errors.full_messages.join(', ')).html_safe
+            elsif !user.selfregistration
+              redirect_to login_path, alert: t("users.errors.ma.selfregistration").html_safe
             else
               redirect_to login_path, notice: t("users.notices.ma.use_ma_data").html_safe
             end
@@ -43,19 +44,23 @@ class UsersController < ApplicationController
           end
         elsif user && !(integrated) # if user exists and system isn't integrated
           redirect_to login_path, alert: t(:new_user_cpf_in_use)
+        elsif user && integrated && user.on_blacklist?
+          redirect_to login_path, alert: t(:new_user_cpf_in_use)
         else # if user don't exist
           raise if !(integrated)
           user = User.new cpf: user_cpf
-          user.connect_and_validates_user unless user.on_blacklist? # try to create user with MA data
+          user.synchronize unless user.on_blacklist? # try to create user with MA data
 
           if user.new_record? # doesn't exist at MA
             redirect_to new_user_registration_path(cpf: user_cpf)
+          elsif !user.selfregistration
+            redirect_to login_path, alert: t("users.errors.ma.selfregistration").html_safe
           else # user was imported and registered with MA data
             redirect_to login_path, notice: t("users.notices.ma.use_ma_data").html_safe
           end
         end
 
-      rescue
+      rescue => error
         flash[:warning] = t("users.warnings.ma.cpf_not_verified") if integrated && !(User.new(cpf: user_cpf).on_blacklist?)
         redirect_to new_user_registration_path(cpf: params[:cpf])
       end
@@ -115,11 +120,17 @@ class UsersController < ApplicationController
 
   def remove_photo
     current_user.photo = nil
-    current_user.save
+    current_user.save!
 
     respond_to do |format|
       format.json { render json: {succes: true, notice: t(:remove_photo_msg) } }
       format.html { redirect_to :back, notice: t(:remove_photo_msg) }
+    end
+  rescue
+    errors = current_user.errors.full_messages.join(',')
+    respond_to do |format|
+      format.json { render json: {succes: false, alert: errors }, status: :unprocessable_entity }
+      format.html { redirect_to :back, alert: errors }
     end
   end
 
@@ -131,8 +142,17 @@ class UsersController < ApplicationController
     if synchronizing_result.nil? # user don't exists at MA
       render json: {success: false, message: t("users.warnings.ma.cpf_not_found"), type_message: "warning"}
     elsif synchronizing_result # user synchronized
-      render json: {success: true, message: t("users.notices.ma.synchronize"), type_message: "notice",
+
+      if user.integrated && !user.on_blacklist? && !user.selfregistration
+        if user.id == current_user.id
+          render json: { success: true, message: t("users.errors.ma.selfregistration").html_safe, type_message: 'alert' }
+        else
+          render json: { success: true, message: t("users.errors.ma.selfregistration_others").html_safe, type_message: 'alert' }
+        end
+      else
+        render json: {success: true, message: t("users.notices.ma.synchronize"), type_message: "notice",
         name: user.name, email: user.email, nick: user.nick, username: user.username}
+      end
     else # error
       render json: {success: false, alert: (user.errors.any? ? user.errors.full_messages.join(', ') : t("users.errors.ma.synchronize"))}, status: :unprocessable_entity
     end

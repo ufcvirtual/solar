@@ -12,14 +12,15 @@
     .evaluation_info
       %div{style: 'font-weight: bold; font-size: 12pt'}
         = @user.name
-        - unless @is_student
-          = link_to content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true'),"#" , class: "teste", id: "send_scores_message"
+        - unless @current_user_is_student
+          = link_to content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true'),"#" , id: "send_scores_message", :'data-url' => new_by_scores_messages_path(user_ids: @user.id)
       %div= raw @curriculum_unit.try(:working_hours).nil? ? t('.uc_without_wh') : t('.frequency_uc', wh: @curriculum_unit.try(:working_hours))
       %div
         = raw t('.responsibles')
         - @responsible.each do |resp|
           .participant{:'data-tooltip'=> resp.name + " (" + resp.profile_name + ") "}
             = truncate( [resp.name, " (", resp.profile_name, " )"].join, length: 55, omission: '...' )
+            = link_to content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true'),"#", class: "send_score_message_participants", :'data-url' => new_by_scores_messages_path(user_ids: resp.id)
 
     .scores_menu
       %a.btn.btn_main.tool_dropdown{href: '#', :'data-dropdown' => "#dropdown_menu", onkeydown: 'click_on_keypress(event, this);'}
@@ -168,13 +169,15 @@
       $('ul.dropdown-menu li input[type="checkbox"]#all').click();
     }
 
-    $("#send_scores_message").on('click', function(event){
+    $("#send_scores_message, .send_score_message_participants").on('click', function(event){
       event.preventDefault();
 
+      var url = $(this).data('url');
       $(this).call_fancybox({
-        href: '/new_message_score_student/',
+        href: url,
         open: true,
       });
+
     });
 
 
@@ -199,7 +202,6 @@
           $(link).parents('tr').find(data.show_element).parent().removeClass('invisible');
       },
       error: function(data){
-        console.log(data);
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")
           flash_message(data.alert, 'alert');

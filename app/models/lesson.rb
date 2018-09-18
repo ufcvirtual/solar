@@ -36,9 +36,7 @@ class Lesson < ActiveRecord::Base #< Event
   validates :lesson_module, :schedule, presence: true
   validates :name, :type_lesson, presence: true
   validates :name, length: { maximum: 200 }
-  validates :address, presence: true, if: '!is_draft? && persisted?'
 
-  validate :address_is_ok?
   validate :can_change_privacy?, if: '!new_record? && privacy_changed?'
   validate :can_change_status?, if: '!new_record? && status_changed? && !is_draft?'
 
@@ -125,6 +123,8 @@ class Lesson < ActiveRecord::Base #< Event
 
   def link_path(api: false)
     raise 'not link' unless is_link?
+    address.slice!(address.index("&"), address.length) if address.include?("&")
+    address.sub!("https://youtu.be", "https://www.youtube.com").sub!(".com/", ".com/watch?v=") if address.include? "https://youtu.be"
     return 'http://www.youtube.com/embed/' + address.split('v=')[1].split('&')[0] if !api && address.include?('youtube') && !address.include?('embed') && address.include?('list')
     return 'http://www.youtube.com/embed/' + address.split('v=')[1] if !api && address.include?('youtube') && !address.include?('embed')
     address
@@ -200,11 +200,11 @@ class Lesson < ActiveRecord::Base #< Event
   end
 
   def can_change_status?
-    errors.add(:base, I18n.t('lessons.errors.blank_address')) if address.blank?
+    errors.add(:base, I18n.t('lessons.errors.blank_address', lesson_name: name)) if address.blank?
   end
 
   def is_video?
-    (address.last(4).eql?('.aac') || address.last(4).eql?('.m4a') || address.last(4).eql?('.mp4') || address.last(4).eql?('.m4v') || address.last(5).eql?('.webm'))
+    (address.last(4).eql?('.aac') || address.last(4).eql?('.m4a') || address.last(4).eql?('.mp4') || address.last(4).eql?('.avi') || address.last(5).eql?('.webm') || address.last(4).eql?('.m4v'))
   end
 
   private

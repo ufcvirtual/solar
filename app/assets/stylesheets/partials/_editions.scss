@@ -300,3 +300,9 @@ label[for="all"]{
 .request_profile_form .semester .ui-combobox .ui-autocomplete{
   max-height: 80px;
 }
+
+.list_groups{
+  a.show_group{
+    text-decoration: none;
+  }
+}

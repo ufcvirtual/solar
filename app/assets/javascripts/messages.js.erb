@@ -1,25 +1,3 @@
-function show_reads() {
-  $('.message_read').parents('tr').fadeIn(1).removeClass('fade');
-}
-
-function hide_reads() {
-  $('.message_read').parents('tr').fadeOut(1).addClass('fade');
-}
-
-function show_unreads() {
-  $('.message_unread').parents('tr').fadeIn(1).removeClass('fade');
-}
-
-function hide_unreads() {
-  $('.message_unread').parents('tr').fadeOut(1).addClass('fade');
-}
-
-function show_all() {
-  $('[type=checkbox]').removeAttr('checked');
-  show_reads();
-  show_unreads();
-}
-
 function select_none() {
   $('[type=checkbox]').map(function(){ $(this).attr("checked",false) });
 }
@@ -32,24 +10,30 @@ function change_messages_view(view){
   select_none();
   $('#views-dropdown a').removeClass('selected');
   if($(view).hasClass('all')){
-    show_all();
     $('#views-dropdown a.all').addClass('selected');
-    $(view).parents('.views').find('a.btn').html("<%=I18n.t('messages.index.view_messages', type: I18n.t('messages.select_all'))%>"+" <i aria-hidden='true' class='icon-arrow-down-triangle'></i>")
+    $(view).parents('.views').find('a.btn').html("<%=I18n.t('messages.index.view_messages', type: I18n.t('messages.select_all'))%>"+" <i aria-hidden='true' class='icon-arrow-down-triangle'></i>");
   }else{
     if($(view).hasClass('reads')){
-      hide_unreads();
-      show_reads(); 
       $('#views-dropdown a.reads').addClass('selected');
-      $(view).parents('.views').find('a.btn').html("<%=I18n.t('messages.index.view_messages', type: I18n.t('messages.select_read'))%>"+" <i aria-hidden='true' class='icon-arrow-down-triangle'></i>")
+      $(view).parents('.views').find('a.btn').html("<%=I18n.t('messages.index.view_messages', type: I18n.t('messages.select_read'))%>"+" <i aria-hidden='true' class='icon-arrow-down-triangle'></i>");
     }else{
-      hide_reads();
-      show_unreads();
       $('#views-dropdown a.unreads').addClass('selected');
-      $(view).parents('.views').find('a.btn').html("<%=I18n.t('messages.index.view_messages', type: I18n.t('messages.select_unread'))%>"+" <i aria-hidden='true' class='icon-arrow-down-triangle'></i>")
+      $(view).parents('.views').find('a.btn').html("<%=I18n.t('messages.index.view_messages', type: I18n.t('messages.select_unread'))%>"+" <i aria-hidden='true' class='icon-arrow-down-triangle'></i>");
     }
   }
-  if(!!$('table').length)
-    focus_element($('table'));
-  else
-    focus_element($('.text_none.empty_message'));
-}  
+
+  get_url($(view).data('url').replace('box_value', $('.message_general_div_option_active:first').find('a').prop('id')).replace('subject_value', $('#subject').val()).replace('user_value', $('#user').val()));
+}
+
+function get_url(url){
+  $.get(url.replace('subject_value', $('#subject').val()).replace('user_value', $('#user').val()).replace('search_for_value', $('.views .dropdown ul li a.selected').data('search-for')), null, function(data){
+    $('.messages_list').html(data);
+    if(!!$('table').length){
+      $('#ckb_all').nice_checkbox();
+      focus_element($('table'));
+    }
+    else
+      focus_element($('.text_none.empty_message'));
+  });
+  return false;
+}

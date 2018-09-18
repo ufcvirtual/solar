@@ -7,10 +7,10 @@ class LessonNotesController < ApplicationController
   def index
     if Exam.verify_blocking_content(current_user.id)
       render text: t('exams.restrict')
-    else 
+    else
       @lesson_id    = params[:lesson_id]
       @lesson_notes = current_user.notes(@lesson_id).order(:name)
-    end  
+    end
   end
 
   def show
@@ -30,7 +30,7 @@ class LessonNotesController < ApplicationController
     attributes  = { lesson_id: note_params[:lesson_id], name: note_params[:name], user_id: current_user.id }
 
     @lesson_note = params.include?(:id) ? LessonNote.find(params[:id]) : (current_user.nil? ? LessonNote.new(attributes) : LessonNote.where(attributes).first_or_initialize)
-    
+
     @lesson_note.attributes = lesson_notes_params
     @lesson_note.save!
 
@@ -73,7 +73,7 @@ class LessonNotesController < ApplicationController
 
     name = name.join(' - ')
 
-    pdf = Prawn::Document.new do 
+    pdf = Prawn::Document.new do
       font('Helvetica', size: 8)
 
       fill_color '003E7A'
@@ -82,7 +82,7 @@ class LessonNotesController < ApplicationController
       image File.join(Rails.root.to_s, 'app', 'assets', 'images', 'logo.png'), position: :center, fit: [300, 300]
 
       move_down 50
-      font_size(14){ 
+      font_size(14){
         text  I18n.t('lesson_notes.index.title'), align: :center, color: 'DCA727', style: :bold
         move_down 10
         text info, align: :center
@@ -100,7 +100,7 @@ class LessonNotesController < ApplicationController
         text ActionController::Base.helpers.sanitize(note.description, tags: %w(strong em b i u br)), inline_format: true, color: '000000'
         move_down 50
       end
-    end  
+    end
 
     send_data pdf.render, filename: name = [name, 'pdf'].join('.'), type: 'application/pdf'
   rescue => error

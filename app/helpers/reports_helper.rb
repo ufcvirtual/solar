@@ -9,7 +9,7 @@ module ReportsHelper
       I18n.t('reports.commun_texts.timestamp_info')+" "+time.strftime(I18n.t('time.formats.long'))
   end
 
-  def self.generate_pdf type, ats, user, curriculum_unit, is_student, grade, tool, access, access_count, public_files
+  def self.generate_pdf type, ats, user, curriculum_unit, is_student, grade, tool, access, access_count, public_files, merged_group
     pdf = inicializa_pdf(:landscape)
 
     # Título do pdf
@@ -25,7 +25,7 @@ module ReportsHelper
       pdf.image "#{Rails.root}/app/assets/images/no_image_medium.png", width: 120, height: 110, alt: I18n.t(:mysolar_alt_img_user)
     end
 
-    pdf.bounding_box([125, pdf.cursor + 100], width: 520, height: 110) do
+    pdf.bounding_box([125, pdf.cursor + 100], width: 520, height: 120) do
       pdf.move_down 5
       pdf.text user.name, size: 12, style: :bold, align: :center
       pdf.text "(#{user.nick})", size: 12, style: :bold, align: :center
@@ -39,6 +39,10 @@ module ReportsHelper
         pdf.text strip_htlm_tags(I18n.t('scores.info.frequency_i', wh: (grade.working_hours.blank? ? 0 : grade.working_hours))), align: :center
         unless grade.grade_situation.blank?
           pdf.text strip_htlm_tags(I18n.t('scores.info.situation2', situation: I18n.t("scores.index.#{Allocation.status_name(grade.grade_situation)}"))), align: :center
+        end
+        if merged_group && !grade.origin_group.blank?
+          origin_group = grade.origin_group
+          pdf.text strip_htlm_tags(I18n.t('scores.info.origin_group2', group: origin_group.allocation_tag.info)), align: :center
         end
       end
     end
@@ -221,7 +225,7 @@ module ReportsHelper
     return pdf
   end
 
-  def self.scores_general ats, wh, users, allocation_tag_id, tools, type
+  def self.scores_general ats, wh, users, allocation_tag_id, tools, type, merged_group=false
     pdf = inicializa_pdf(:landscape)
 
     # Título do pdf
@@ -238,7 +242,7 @@ module ReportsHelper
 
     # Criação da tabela
     if type == "summary"
-      table = line_itens_summary pdf, wh, users
+      table = line_itens_summary pdf, wh, users, merged_group
     else
       table = line_itens_general pdf, users, tools
     end
@@ -567,12 +571,14 @@ module ReportsHelper
       pdf.text I18n.t("scores.index.new_after_evaluation")
     end
 
-    def self.line_itens_summary(pdf, wh, users)
+    def self.line_itens_summary(pdf, wh, users, merged_group=false)
       title_frequency = I18n.t('scores.index.frequency') unless wh.blank?
       title_faults = I18n.t('scores.index.faults') unless wh.blank?
 
       # Cabeçalho da tabela
       thead = [I18n.t('scores.index.student'), I18n.t('scores.index.access_to_the_course'), title_frequency, title_faults, I18n.t('scores.index.af_grade'), I18n.t('scores.index.final_grade'), I18n.t('scores.index.situation')]
+
+      thead << I18n.t('scores.index.origin_group')
 
       # Corpo da tabela
       if users.blank?
@@ -584,7 +590,11 @@ module ReportsHelper
           frequency = student.working_hours unless wh.blank?
           faults = wh.to_i - student.working_hours.to_i unless wh.blank?
 
-          [student.name, student.u_logs, frequency, faults, student.af_grade, student.u_grade, I18n.t("scores.index.#{status}")]
+          if merged_group
+            [student.name, student.u_logs, frequency, faults, student.af_grade, student.u_grade, I18n.t("scores.index.#{status}"), (student.origin_group_name == student.origin_group_code) ? student.origin_group_name : "#{student.origin_group_name} (#{student.origin_group_code})"]
+          else
+            [student.name, student.u_logs, frequency, faults, student.af_grade, student.u_grade, I18n.t("scores.index.#{status}")]
+          end
         end
       end
 

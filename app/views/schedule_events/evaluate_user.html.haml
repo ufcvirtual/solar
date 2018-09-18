@@ -38,13 +38,14 @@
 
   - if @back_to_participants
     %br
-    = button_tag t(:back), type: 'button', class: 'btn btn_default', onclick: 'back_to_participants(this, event)', :'data-url' => participants_schedule_event_path(@ac.academic_tool_id)
+    = button_tag t(:back), type: 'button', class: 'btn btn_default back', onclick: 'back_to_participants(this, event)', :'data-url' => participants_schedule_event_path(@ac.academic_tool_id)
 
 = javascript_include_tag 'schedule_event_files'
 
 :javascript
   function finish_evaluation(btn){
     var is_closable = "#{@back_to_participants}";
+    verify_comment_before_finish_evaluation()
     var form = $(btn).parents('form:first');
     $.put(form.attr('action'), form.serialize(), function(data){
       data.dont_close = (is_closable ? is_closable : undefined);

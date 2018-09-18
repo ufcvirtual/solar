@@ -8,6 +8,8 @@ class ChatMessage < ActiveRecord::Base
   has_one :user, through: :allocation
   has_one :chat_room, through: :academic_allocation
 
+  attr_accessor :merge
+
   ### triggers
   # chats are not yet created by activerecord, so this trigger must relate the chatMessage to an ACU.
   # must see if exists acu; if dont, create; if does, change status

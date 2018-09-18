@@ -28,7 +28,7 @@ class AllocationsController < ApplicationController
   # GET /allocations/enrollments
   # GET /allocations/enrollments.json
   def index
-    authorize! :manage_enrolls, Allocation
+    authorize! :index, Allocation
 
     groups = groups_that_user_have_permission.map(&:id)
 
@@ -54,7 +54,7 @@ class AllocationsController < ApplicationController
   # PUT manage_enrolls
   def manage_enrolls
     allocations = Allocation.where(id: params[:id].split(','))
-    authorize! :manage_enrolls, Allocation, on: allocations.pluck(:allocation_tag_id)
+    authorize! :index, Allocation, on: allocations.pluck(:allocation_tag_id)
 
     group, new_status = if params[:multiple].present? && params[:enroll].present?
                           [nil, Allocation_Activated]
@@ -167,7 +167,7 @@ class AllocationsController < ApplicationController
   end
 
   def groups_that_user_have_permission
-    profiles = current_user.profiles_with_access_on('manage_enrolls', 'allocations').map(&:id)
+    profiles = current_user.profiles_with_access_on('index', 'allocations').map(&:id)
     current_user.allocations.where(profile_id: profiles).where('allocation_tag_id IS NOT NULL').map(&:groups).flatten.uniq.compact
   end
 

@@ -1,0 +1,19 @@
+.show_group
+  %h1#lightBoxDialogTitle= t("groups.group_list.details_about", name: @group.name)
+
+  .form-inputs.block_content.show
+    .input
+      = label_tag t("groups.group_list.name"), nil, class: "form_label"
+      %span.label_info= @group.name
+
+    .input
+      = label_tag t("groups.group_list.code"), nil, class: "form_label"
+      %span.label_info= @group.code
+
+    .input
+      = label_tag t("groups.group_list.location"), nil, class: "form_label"
+      %span.label_info= @group.location
+
+    .schedule_dates
+      .right_buttons
+        = button_to_function t("agendas.close"), "jQuery.fancybox.close()", class: "btn btn_default btn_lightbox", type: "button"

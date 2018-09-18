@@ -31,13 +31,14 @@
       align-items: center;
       justify-content: center;
       height: 100%;
-      min-height: 110px;
+      /*min-height: 110px;*/
       margin: 6px;
       position: relative;
       padding: 5px;
       float: left;
       box-shadow: 1px 1px 3px $color_gray;
       width: 215px;
+      padding-bottom: 15%;
 
       -webkit-column-break-inside: avoid; /* will prevent breaking blocks across columns */
       column-break-inside: avoid;

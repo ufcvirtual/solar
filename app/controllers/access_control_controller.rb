@@ -161,11 +161,21 @@ class AccessControlController < ApplicationController
         else
           file_path = File.join(Lesson::FILES_PATH, params[:id], params[:folder], [params[:path], '.', params[:format] || 'pdf'].join)
         end
-        send_file(file_path, { disposition: 'inline' })
+        unless params[:download].blank?
+          send_file(file_path)
+        else
+          send_file(file_path, { disposition: 'inline' })
+        end
+
       else
-        path = lesson.path(true)
-        params[:extension] = path.split('.').last if params[:extension].nil?
-        send_file(path, { disposition: 'inline', type: return_type(params[:extension]) })
+        unless params[:download].blank?
+          file_path = File.join(Lesson::FILES_PATH, params[:id], [params[:file], '.', params[:extension]].join)
+          send_file(file_path)
+        else
+          path = lesson.path(true)
+          params[:extension] = path.split('.').last if params[:extension].nil?
+          send_file(path, { disposition: 'inline', type: return_type(params[:extension]) })
+        end
       end
     else
       user_session[:blocking_content] = nil

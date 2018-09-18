@@ -201,9 +201,13 @@
 
     $(".help_link a").click(function(event){
       if (!$(".contact.help:visible").length){
-        $('<div class="contact help"><a data-at="" data-selected="true" href="#" onclick="$(this).parent().remove(); return false;">#{I18n.t(".messages.support_html")}</a></div>').appendTo(".contacts-selected");
+        $('<div class="contact help"><a data-at="" class="help_link_support" data-selected="true" href="#" onclick="$(this).parent().remove(); return false;">#{I18n.t(".messages.support_html")}</a></div>').appendTo(".contacts-selected");
       }
     });
+
+    if($("#message_support").val().length){
+      $('<div class="contact help"><a data-at="" class="help_link_support" data-selected="true" href="#" onclick="$(this).parent().remove(); return false;">#{I18n.t(".messages.support_html")}</a></div>').appendTo(".contacts-selected");
+    }
 
     // nova msg dentro de uma UC
     if ($('select#uc option:selected').val() != "")
@@ -225,6 +229,18 @@
         user_contact = $(this).text().substring(0, $(this).text().indexOf(">")+1);
         contacts_to_show.push(user_contact);
       }
+
+      if($(this).hasClass("help_link_support")){
+        user_contact = $(this).text().substring(0, $(this).text().indexOf(">")+1);
+        contacts_to_show.push(user_contact);
+        $("#message_support").val(user_contact.substring(user_contact.indexOf("<") + 1, user_contact.length - 1))
+      }
+      else{
+        if($("#message_to").val().indexOf("#{t('messages.support_simple')}")){
+          $('#support').val($('#message_support').val().replace("#{t('messages.support')}", ''))
+        }
+      }
+
     });
 
     $("#message_to").val(contacts_to_show.join(", "));

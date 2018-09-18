@@ -123,3 +123,13 @@ table.tb_allocation .dropdown ul li a{
     background-color: $color_white_base;
   }
 }
+
+.tb_list{
+  tr.allocations{
+    td.all_status{
+      a{
+        text-decoration: none;
+      }
+    }
+  }
+}

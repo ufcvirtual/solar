@@ -6,7 +6,6 @@
 
 .schedule_event_file_form
   = simple_form_for @schedule_event_file, html: { id: 'event_file_form', multipart: true } do |f|
-    %span.form_requirement= t(:required_fields)
 
     .form-inputs.block_content
       = f.hidden_field :academic_allocation_user_id, value: @schedule_event_file.academic_allocation_user_id

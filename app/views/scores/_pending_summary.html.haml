@@ -10,6 +10,15 @@
     %td{headers: 'af_grade'}= student.af_grade
     %td{headers: 'final_grade'}=student.u_grade
     %td{headers: 'situation', class: status}= t("scores.index.#{status}")
+    - if @merged_group
+      %td.main_group{headers: 'main_group'}
+        - unless student.origin_group_name.blank?
+          %a{ href: '#', :"data-dropdown" => "#dropdown_origin_group_#{student.id}" }
+            =(student.origin_group_name == student.origin_group_code) ? student.origin_group_name : "#{student.origin_group_name} (#{student.origin_group_code})"
+            %i.icon-arrow-down-triangle{:'aria-hidden' => true}
+          .dropdown.dropdown-tip{id: "dropdown_origin_group_#{student.id}"}
+            %ul{ class: 'dropdown-menu' }
+              = AllocationTag.find(student.origin_at_id).info
 
 = javascript_include_tag 'tableHeadFixer','tooltip', 'tablesorter', 'scores'
 

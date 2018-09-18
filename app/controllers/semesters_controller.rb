@@ -167,7 +167,6 @@ class SemestersController < ApplicationController
 
             end
             if ['Webconference'].include? al.academic_tool_type
-
               if act.initial_time < param_off_start_date
                 act.initial_time = Time.new(param_off_start_date.year, param_off_start_date.month, param_off_start_date.day, act.initial_time.hour, act.initial_time.min, act.initial_time.sec)
               end

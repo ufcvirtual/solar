@@ -21,7 +21,7 @@ class AcademicAllocation < ActiveRecord::Base
 
   before_save :verify_association_with_allocation_tag, unless: 'allocation_tag_id.blank?'
 
-  before_destroy :move_lessons_to_default, if: :lesson_module?
+  before_destroy :move_lessons_to_default, if: 'lesson_module? && force.blank?'
 
   before_validation :verify_uniqueness
 
@@ -45,7 +45,7 @@ class AcademicAllocation < ActiveRecord::Base
   before_destroy :set_situation_date
   after_destroy :verify_management
 
-  attr_accessor :merge
+  attr_accessor :merge, :force
 
   after_create if: 'verify_tool' do
     AcademicTool.send_email(academic_tool, [self], false)

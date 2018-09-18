@@ -22,7 +22,7 @@
       %tbody.allocations
         = render partial: 'enrollments'
 
-    = link_to content_tag(:i, nil, class: "icon-ellipsis"), enrollments_allocations_path(page: @allocations.next_page, offer_id: params[:offer_id], group_id: params[:group_id], status: params[:status]), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @allocations.next_page
+    = link_to content_tag(:i, nil, class: "icon-ellipsis"), enrollments_allocations_path(page: @allocations.next_page, offer_id: params[:offer_id], group_id: params[:group_id], status: params[:status]), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if !@allocations.blank? && @allocations.next_page
 
 
 = javascript_include_tag 'allocations'

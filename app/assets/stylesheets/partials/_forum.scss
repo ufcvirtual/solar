@@ -301,9 +301,10 @@ div.forum_navigation {
 
 .links_to_hide_and_show {
   float: right;
+  font-weight: normal;
 }
 
-.display_replies_posts_summary, .expand_hide {
+.display_replies_posts_summary {
   display: flex;
   justify-content: center;
   line-height: 2em;
@@ -314,12 +315,16 @@ div.forum_navigation {
   flex-direction: row-reverse;
 }
 
+.display_replies_posts_summary.invisible{
+  display: none;
+}
+
 .clip_area_around_summary {
   min-height: 0px;
 }
 
 .expand_hide {
-  flex-direction: row;
+  display: inline-block;
 }
 
 .remove_file {

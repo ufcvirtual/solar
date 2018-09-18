@@ -1,5 +1,7 @@
 class AssignmentFile < ActiveRecord::Base
 
+  FILESIZE = 26.megabyte
+
   include ControlledDependency
   include SentActivity
 
@@ -20,7 +22,7 @@ class AssignmentFile < ActiveRecord::Base
     path: ":rails_root/media/assignment/sent_assignment_files/:id_:basename.:extension",
     url: "/media/assignment/sent_assignment_files/:id_:basename.:extension"
 
-  validates_attachment_size :attachment, less_than: 26.megabyte, message: ' '
+  validates_attachment_size :attachment, less_than: FILESIZE, message: ' '
   validates_attachment_content_type_in_black_list :attachment
 
   def order

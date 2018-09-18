@@ -408,8 +408,8 @@ $.fn.nice_open_lesson = function(options) {
   var default_options = {
     minHeight: '95%',
     minWidth: '95%',
-    autoScale: true,
-    autoSize: true,
+    autoScale: false,
+    autoSize: false,
     afterShow: function() {
       $("<a class='fancybox-item fancybox-minimize'  title=<%=I18n.t('fancybox.minimize')%> aria-label=<%=I18n.t('fancybox.minimize')%>></a>").appendTo(this.skin).click(minimize_lesson);
 

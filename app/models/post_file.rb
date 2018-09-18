@@ -1,5 +1,7 @@
 class PostFile < ActiveRecord::Base
 
+  FILESIZE = 10.megabyte
+
   self.table_name = "discussion_post_files"
 
   belongs_to :post, foreign_key: "discussion_post_id"
@@ -7,7 +9,7 @@ class PostFile < ActiveRecord::Base
   has_one :user, through: :post
 
   validates :attachment_file_name, presence: true
-  validates_attachment_size :attachment, less_than: 10.megabyte
+  validates_attachment_size :attachment, less_than: FILESIZE
   validates_attachment_content_type_in_black_list :attachment
 
   #validate :can_change?, if: 'merge.nil?'

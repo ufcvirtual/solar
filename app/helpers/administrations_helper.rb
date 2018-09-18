@@ -4,7 +4,7 @@ module AdministrationsHelper
 
   def last_accessed(id)
     last_accessed = LogAccess.find_by_user_id(id)
-    last_accessed.nil? ? " - " : l(last_accessed.created_at.to_date, format: :default).to_s 
+    last_accessed.nil? ? " - " : l(last_accessed.created_at.to_date, format: :default).to_s
   end
 
   def type(allocation_tag)
@@ -38,10 +38,10 @@ module AdministrationsHelper
     unless semester_id.blank?
       where = "related_taggables.semester_id=#{semester_id} OR rt_curric.semester_id=#{semester_id} OR rt_course.semester_id=#{semester_id} OR rt_cut.semester_id=#{semester_id} OR rt_off.semester_id=#{semester_id}"
     else
-      where = "CURRENT_DATE BETWEEN sch_group.start_date AND sch_group.end_date OR CURRENT_DATE BETWEEN sch_curric.start_date AND sch_curric.end_date 
-              OR CURRENT_DATE BETWEEN sch_course.start_date AND sch_course.end_date OR CURRENT_DATE BETWEEN sch_cut.start_date AND sch_cut.end_date OR 
+      where = "CURRENT_DATE BETWEEN sch_group.start_date AND sch_group.end_date OR CURRENT_DATE BETWEEN sch_curric.start_date AND sch_curric.end_date
+              OR CURRENT_DATE BETWEEN sch_course.start_date AND sch_course.end_date OR CURRENT_DATE BETWEEN sch_cut.start_date AND sch_cut.end_date OR
               CURRENT_DATE BETWEEN sch_off.start_date AND sch_off.end_date"
-    end  
+    end
     #@allocations_user = User.find(params[:id]).allocations.joins(:profile).where('NOT cast(profiles.types & ? as boolean)', Profile_Type_Basic).where(query)
     allocations = Allocation.joins(:profile).where('NOT cast(profiles.types & ? as boolean) AND user_id = ?', Profile_Type_Basic, user_id).where(query)
     allocations = allocations.joins('LEFT JOIN allocation_tags ON allocations.allocation_tag_id = allocation_tags.id')
@@ -70,10 +70,10 @@ module AdministrationsHelper
     .joins('LEFT JOIN schedules AS sch_off ON sch_off.id = rt_off.offer_schedule_id')
     .where(where)
     .select("DISTINCT allocations.id, allocations.user_id, allocations.profile_id, allocations.status, allocations.allocation_tag_id, allocations.updated_at,
-            allocations.updated_by_user_id,  CONCAT(curriculum_unit_types.description, cut_cut.description, curric_cut.description, off_cut.description) AS description, 
-            CONCAT(courses.name, c_course.name, c_off.name) AS course_name, CONCAT(curriculum_units.name, curric_curric.name, off_curric.name) AS curric_name,
-            CONCAT(sem_group.name, sem_off.name) AS semester, groups.code AS group_code")  
-  end  
+            allocations.updated_by_user_id,  CONCAT(curriculum_unit_types.description, cut_cut.description, curric_cut.description, off_cut.description) AS description,
+            concat_ws(' - ', CONCAT(courses.code, c_course.code, c_off.code), CONCAT(courses.name, c_course.name, c_off.name)) AS course_name, concat_ws(' - ', CONCAT(curriculum_units.code, curric_curric.code, off_curric.code),CONCAT(curriculum_units.name, curric_curric.name, off_curric.name)) AS curric_name,
+            CONCAT(sem_group.name, sem_off.name) AS semester, CASE WHEN groups.name = groups.code THEN groups.name ELSE concat_ws(' - ', groups.name, groups.code) END AS group_code")
+  end
 
 
 end

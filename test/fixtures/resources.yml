@@ -907,7 +907,7 @@ res180:
 res181:
   id: 181
   controller: 'allocations'
-  action: 'manage_enrolls'
+  action: 'index'
   description: 'Gerenciar matrículas'
 
 res182:
@@ -1214,34 +1214,40 @@ res232:
   id: 232
   controller: 'logs'
   action: 'index'
-  description: '[API]Lista Logs por curso, disciplina e semestre'
+  description: '[API] Lista Logs por curso, disciplina e semestre'
 
 res233:
   id: 233
   controller: 'schedule_events'
   action: 'index'
-  description: 'Menu Eventos das atividades'
+  description: 'Lista de eventos'
 
 res234:
   id: 234
   controller: 'schedule_event_files'
   action: 'create'
-  description: 'Permissão para criar eventos'
+  description: 'Enviar arquivos de eventos'
 
 res235:
   id: 235
   controller: 'schedule_events'
   action: 'list'
-  description: 'Botão de Eventos na edição de conteúdo'
+  description: 'Edição - Lista de eventos'
 
 res236:
   id: 236
   controller: 'schedule_events'
   action: 'print_presential_test'
-  description: 'Botão de imprimir provas presenciais'
+  description: 'Imprimir provas presenciais'
 
 res237:
   id: 237
   controller: 'schedule_event_files'
   action: 'online_correction'
-  description: 'Correção online de Provas'
+  description: 'Correção online de eventos do tipo prova'
+
+res238:
+  id: 238
+  controller: 'administrations'
+  action: 'reset_session_token_user'
+  description: 'Reseta o token da sessão de uma usuário'

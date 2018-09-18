@@ -62,6 +62,8 @@ class Exam < Event
         acu.recalculate_final_grade(acu.allocation_tag_id)
         send_result_emails(acu, grade.round(2))
       end
+      update_attributes corrected: true
+
       [grade.round(2), wh]
     else
       errors.add(:base, I18n.t('exams.error.not_finished'))
@@ -74,11 +76,10 @@ class Exam < Event
 
     if result_email && (configure_mail_exam.nil? || configure_mail_exam)
       # send email with grades if period have already ended
-      subject = I18n.t('exams.result_exam_user.subject', exam: name, at_info: acu.allocation_tag.info, locale: (user.personal_configuration.try(:default_locale) || 'pt_BR'))
+      locale = user.personal_configuration.try(:default_locale)
+      subject = I18n.t('exams.result_exam_user.subject', exam: name, at_info: acu.allocation_tag.info, locale: (locale.blank? ?  'pt_BR' : locale))
       recipients = "#{user.name} <#{user.email}>"
-      Thread.new do
-        Notifier.exam(recipients, subject, self, acu, grade).deliver
-      end
+      Job.send_mass_email_exam([recipients], subject, self, acu, grade)
     end
   end
 
@@ -93,6 +94,7 @@ class Exam < Event
     AcademicAllocationUser.joins(academic_allocation: [exam: :schedule])
             .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id")
             .where(exams: { id: id, status: true }).where(query.join(' AND '), { user_id: user_id })
+            .where("exam_user_attempts.id IS NOT NULL")
             .select("DISTINCT academic_allocation_users.*, academic_allocations.allocation_tag_id")
   end
 
@@ -153,8 +155,8 @@ class Exam < Event
   end
 
   def self.correction_cron
-    query = "schedules.end_date < current_date AND auto_correction = TRUE AND (result_release IS NULL OR result_release <= NOW())"
-    list_exam = Exam.includes(:schedule).where(query)
+    query = "schedules.end_date < current_date AND auto_correction = TRUE AND (result_release IS NULL OR result_release <= NOW()) AND corrected = FALSE"
+    list_exam = Exam.includes(:schedule).where(query).references(:schedule)
     list_exam.each do |exam|
       exam.recalculate_grades(nil, nil, true)
     end

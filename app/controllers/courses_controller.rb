@@ -74,7 +74,7 @@ class CoursesController < ApplicationController
     if @course.destroy
       render_course_success_json('deleted')
     else
-      render json: {success: false, alert: t('courses.error.deleted')}, status: :unprocessable_entity
+      render json: {success: false, alert: (@course.errors.full_messages.any? ? @course.errors.full_messages.join(', ') : t('courses.error.deleted'))}, status: :unprocessable_entity
     end
   rescue => error
     request.format = :json

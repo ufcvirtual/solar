@@ -12,11 +12,6 @@ module V1
           @user = current_user
         end
 
-        # GET /users/1
-        get "/:id", rabl: "users/show" do
-          @user = User.find(params[:id])
-        end
-
         # GET /users/1/photo
         params do
           optional :style, type: String, values: %w(small forum medium), default: 'medium'
@@ -46,17 +41,26 @@ module V1
         post "/" do
           begin
             cpf = params[:cpf].delete('.').delete('-')
+            cpf = cpf.rjust(11, '0')
+
             user_exist = User.where(cpf: cpf).first
             user = user_exist.nil? ? User.new(cpf: cpf) : user_exist
 
-            user.synchronize if user.can_synchronize?
+            user_data = nil
+            if (!User::MODULO_ACADEMICO.nil? && User::MODULO_ACADEMICO['integrated'])
+              user_data = User.connect_and_import_user(cpf) # try to import
+              user.synchronize(user_data) # synchronize user with new MA data
+            end
 
             new_user = (user.new_record? && !user.integrated)
 
-            blacklist = UserBlacklist.where(cpf: cpf).first_or_initialize
-            blacklist.name = params[:name] if blacklist.new_record?
-            can_add_or_exists_blacklist = blacklist.valid? || !blacklist.new_record?
-            blacklist.save if blacklist.new_record? && !user.nil? && user.integrated && can_add_or_exists_blacklist
+            if user_data.blank? || !user.selfregistration
+              blacklist = UserBlacklist.where(cpf: user.cpf).first_or_initialize
+              blacklist.name = params[:name] if blacklist.new_record?
+            end
+            can_add_or_exists_blacklist = !blacklist.nil? && (blacklist.valid? || !blacklist.new_record?)
+
+            blacklist.save if blacklist.new_record? && !user.nil? && user.integrated && can_add_or_exists_blacklist && !user.selfregistration
 
             if new_user || can_add_or_exists_blacklist
               ActiveRecord::Base.transaction do
@@ -101,7 +105,10 @@ module V1
         end
         post "import/:cpf" do
           begin
-            verify_or_create_user(params[:cpf].delete('.').delete('-'), false, params[:only_if_exists])
+            cpf = params[:cpf].delete('.').delete('-')
+            cpf = cpf.rjust(11, '0')
+            verify_or_create_user(cpf, false, params[:only_if_exists], true)
+
             {ok: :ok}
           rescue => error
             raise error
@@ -114,7 +121,9 @@ module V1
         end
         put "unbind/:cpf" do
           begin
-            user_blacklist = UserBlacklist.where(cpf: params[:cpf].delete('.').delete('-')).first_or_initialize
+            cpf = params[:cpf].delete('.').delete('-')
+            cpf = cpf.rjust(11, '0')
+            user_blacklist = UserBlacklist.where(cpf: cpf).first_or_initialize
             user_blacklist.name = params[:name] unless params[:name].blank?
             user_blacklist.save!
             {ok: :ok}
@@ -124,7 +133,10 @@ module V1
         params{requires :cpf, type: String}
         get "verify/:cpf" do
           begin
-            user_blacklist = UserBlacklist.where(cpf: params[:cpf].delete('.').delete('-')).first_or_initialize
+            cpf = params[:cpf].delete('.').delete('-')
+            cpf = cpf.rjust(11, '0')
+
+            user_blacklist = UserBlacklist.where(cpf: cpf).first_or_initialize
             user_blacklist.name = params[:cpf]
             can_add_to_blacklist = (user_blacklist.valid? || !user_blacklist.new_record?)
 
@@ -140,19 +152,21 @@ module V1
         end
         get "validates/:cpf" do
           begin
-            error = 0
-            user = User.where(cpf: params[:cpf]).first_or_initialize
-
             cpf = params[:cpf].delete('.').delete('-')
+            cpf = cpf.rjust(11, '0')
+
+            error = 0
+            user = User.where(cpf: cpf).first
+            user = User.new cpf: cpf if user.blank?
+
             if params[:email].present?
-              error = error | 2 if User.where("lower(email) = ? AND cpf != ?", params[:email].downcase, cpf).any?
+              error = error | 2 if !(!user.new_record? && user.email.try(:downcase) == params[:email].downcase) && User.where("lower(email) = ? AND cpf != ?", params[:email].downcase, cpf).any?
             end
 
             if params[:username].present?
               if User.where("lower(username) = ? AND cpf != ?", params[:username].downcase, cpf).any?
                 error = error | 4
-              elsif (user.username.downcase != params[:username].downcase)
-
+              elsif (user.username.try(:downcase) != params[:username].downcase)
                 user.username = params[:username].downcase
                 user.synchronizing = true
                 user.valid?

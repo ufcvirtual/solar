@@ -1,16 +1,16 @@
 .message_external_div{ :'data-link-list' => messages_path }
-  = render 'header'
   = simple_form_for @message, html: { id: 'form_message_text' } do |f|
 
     - if @original
       = f.input :original, as: :hidden, input_html: { value: @original.id }
     - unless @reply_to_many.blank?
       = f.input :contacts, as: :hidden, input_html: { value: @reply_to_many.map { |c| c[:id] }.join(',') }
-    - else 
+    - else
       - if params[:support].blank?
         = f.input :contacts, as: :hidden, input_html: { value: [@reply_to].flatten.compact.map { |c| c[:id] }.join(', ') }
-    = hidden_field_tag :support, params[:support]
+    = f.input :support, as: :hidden, input_html: { value: params[:support].nil? ? "" : "#{t('messages.support_simple')}"}
     = hidden_field_tag :allocation_tag_id, @allocation_tag_id
+    = hidden_field_tag :scores, @scores
 
     .block_content
       .message_header_new
@@ -67,7 +67,11 @@
     = render partial: 'extra_tools/speech2text', locals: {class_name: 'left', ckeditor: true, div_id: 'message_content', number: '2', field: t('.content_speech')}
     .message_new_action
       = f.submit t(".send"), id: "send_message", class: "btn btn_main", alt: t(".send")
-      = link_to t('.discard'), inbox_messages_path, { class: 'btn btn_caution' }
+      - if @scores
+        = link_to t('.discard'), "#void", onclick: "$.fancybox.close();", class: 'btn btn_caution'
+      - else
+        = link_to t('.discard'), inbox_messages_path, { class: 'btn btn_caution' }
+
 
 = javascript_include_tag 'ckeditor/init', 'messages'
 
@@ -106,7 +110,7 @@
     });
   });
 
-  function focus_editor(){ 
+  function focus_editor(){
     CKEDITOR.instances['message_content'].focus();
   }
 
@@ -164,7 +168,7 @@
         setTimeout(function() {
           $("ul.files_to_send").click();
         }, 100);
-          
+
         $('.remove-file:last').click(function(){
           $(this).closest('.files.file_attached').slideUp().remove();
           $(newfile).closest('.duplicatable_nested_form').slideUp().remove();
@@ -177,13 +181,14 @@
 
     });
   });
-  
+
   function open_contacts_selection(link){
     var url = $(link).data('url').replace('reply_params', $("#message_contacts").val().replace( /\s/g, ""));
     $(link).call_fancybox({
       href: url,
       open: true
     });
+    
   }
   $(function(){
     inputFocuErroMsg();
@@ -191,7 +196,7 @@
 
   function inputFocuErroMsg(){
     if (typeof($(".error")) !== "undefined") {
-      $(".error").each( function(index, value){   
+      $(".error").each( function(index, value){
           var label = $(this).closest('.message_new_text_to').find('label');
           var text = $(label).text()+': '+$(this).text();
           $(label).attr("aria-label", text);
@@ -201,8 +206,8 @@
         if($(lab).length==1){
           $(lab).focus();
         }else{
-            focus_editor(); 
+            focus_editor();
         }
-      }, 300);   
-    }  
+      }, 300);
+    }
   }

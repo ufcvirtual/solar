@@ -4,6 +4,7 @@
 
 @import "modules/variables";
 @import "themes/variables/theme_blue";
+@import "partials/reset";
 @import "partials/base";
 @import "partials/alerts";
 
@@ -36,7 +37,7 @@
   }
 }
 
-#user, #tools, #save {
+#user, #tools, #download, #save, #clear, #color {
   padding-right: 30px;
 }
 
@@ -52,11 +53,6 @@
   margin-right: 7px;
 }
 
-#loading{
-  text-align: center;
-  display: none;
-}
-
 #box-tools {
   display: none;
   position: absolute;
@@ -67,6 +63,10 @@
   line-height: $mysolar_topbar_height;
   text-align: center;
   width: 120px;
+
+  a {
+    color: $color_black;
+  }
 }
 
 #box-tools-header {
@@ -75,6 +75,11 @@
   z-index: 100;
   color: $color_white;
   background-color: $color_main_mysolar;
+}
+
+#saving, #cleaning {
+  text-align: center;
+  display: none;
 }
 
 .submenu {
@@ -122,16 +127,59 @@
   float: left;
 }
 
-.close {
-    color: $color_gray_light;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+.close-button {
+  position: absolute;
+  top: -25px;
+  right: -25px;
+  display: inline-block;
+  border-radius: 50%;
+  background-color: $color_black;
+  height: 36px;
+  width: 36px;
+  border: 0;
+  cursor: pointer;
+  z-index: 100;
 }
 
-.close:hover,
-.close:focus {
-    color: $color_black;
-    text-decoration: none;
-    cursor: pointer;
+.box {
+  height: 100px;
+  width: 260px;
+}
+
+.close-box-text {
+  font-weight: bold;
+}
+
+.close {
+  font-size: 28px;
+  text-align: center;
+  color: $color_white;
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  margin-top: 4px;
+  text-decoration: none;
+  cursor: pointer;
+  z-index: 101;
+}
+
+.black-circle, .red-circle, .green-circle, .blue-circle {
+  border: 0;
+  border-radius: 50%;
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  margin-left: 5px;
+}
+
+.black-circle {
+  background-color: $color_black;
+}
+
+.red-circle {
+  background-color: $removed_permission_color;
+}
+
+.blue-circle {
+  background-color: $added_permission_color;
 }

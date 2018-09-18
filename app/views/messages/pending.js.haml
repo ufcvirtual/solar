@@ -1,0 +1,5 @@
+$('#block_messages_content .messages').append('#{escape_javascript(render partial: "curriculum_units/pending_messages", locals: { messages: @messages })}');
+$('a.load-more-messages').attr('href', '#{pending_messages_path(box: @box, page: @page+1, subject: @subject, user: @user)}');
+
+- if (@min + @limit >= @total)
+  $('a.load-more-messages').remove();

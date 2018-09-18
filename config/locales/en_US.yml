@@ -272,6 +272,7 @@ en_US:
         min_final_exam_grade: Minimum final exam grade allowed
         final_exam_passing_grade: Minimum final grade to approval after final exam
         has_exam_header: Header for presential tests
+        header_exam: Standardized header to presential tests (events)
       discussion_post:
         content: Content
       post:
@@ -497,7 +498,11 @@ en_US:
       discussion_enunciation_file:
         attachment_file_size: "File too large. The maximum size should be up to 5MB."
         attachment_file_name: File
-
+        name: 'Name:'
+      group:
+        code: Code
+        name: Name
+        location: Location
     errors:
       uniqueness: "Record already exists in the system"
       template:
@@ -532,6 +537,8 @@ en_US:
           attributes:
             email:
               not_found: "not found"
+            username:
+              invalid: may have only letters, numbers, " _ ", " . " or " - ".
             photo_content_type:
               invalid_type: "Please send only files of type JPG, GIF or PNG."
             reset_password_token:
@@ -629,6 +636,7 @@ en_US:
   form_institution: "Institution"
   form_special_needs: "Special needs"
   form_password_confirmation: "Password confirmation"
+  form_login_notice: may have only letters, numbers, " _ ", " . " or " - ".
   form_email_confirmation: "E-mail confirmation"
   form_email: "E-mail"
   form_google_play: 'Get it on Google Play'
@@ -650,6 +658,7 @@ en_US:
   verify: "Verify"
   back: "Back"
   save: "Save"
+  download: "Download"
   continue: "Continue"
   edit: "Edit"
   show: "View"
@@ -663,7 +672,7 @@ en_US:
   registration_cancel: "Cancel"
   state_other: "Other"
   user_error_no_file_sent: No file sent
-  user_cannot_login: "This user is blocked. Please, contact the administrator."
+  user_cannot_login: "This user is blocked. Please, contact atendimento@virtual.ufc.br."
   my_data: "My Data"
   my_personal_data: "Personal"
   my_cadastral_data: "Cadastral"
@@ -716,8 +725,10 @@ en_US:
   date_name: Date
   help: "Help"
   new_window: " (This link will open a new window)"
-  start_menu: "Begin of menu"
-  end_menu: "End of menu"
+  start_menu: "Menu's begin"
+  end_menu: "Menu's end"
+  start_content: "Content's begin"
+  end_content: "Content's end"
   tutorials: "Tutorials"
   context: "Contextual"
   contact: Contact us
@@ -741,7 +752,7 @@ en_US:
   pwd_recovery_security: "Security"
   pwd_recovery_subtitle: "Forgot your password?"
   change_your_password: "Change your password"
-  pwd_recovery_text: "To regain access, type your e-mail address that you use to access your Solar account."
+  pwd_recovery_text: "To regain access, type your cpf."
   pwd_recovery_text2: "We will shortly send you some directions to create a new password."
   pwd_recovery_email: "Enter your E-mail"
   pwd_recovery_cpf: "Enter your CPF"
@@ -798,6 +809,7 @@ en_US:
       enrolled: "Enrolled"
       rejected: "Enrollment Rejected"
       pending: Pending
+      merged: Merged
       cancelled_rejected: Rejected/Cancelled
       ucs_available: Subjects Available
       confirm: "Are you sure you want to cancel?"
@@ -830,6 +842,8 @@ en_US:
       semester: Semester
       group: Group
     not_defined: Not defined
+    requests:
+      info: Information
   enrollm_request_cancel_message: "Request for enrollment cancelled"
   enrollm_cancelled_message: "Enrollment cancelled"
   enrollm_not_cancelled_message: "Enrollment not cancelled"
@@ -897,6 +911,7 @@ en_US:
       summary: Table which content includes access links to available lessons and text name of unavailable lessons, also access periods and access links to lesson's notes for each one of them. All lessons are related to lesson module %{module_name}.
       caption: Lesson module %{module_name} lesson's list
       number_of_lessons: "%{module_name} has %{lesson_number} lessons"
+      jspanel_count_window: "Allowed only 3 windows"
     list:
       lesson: Lesson
       order: Order
@@ -963,7 +978,9 @@ en_US:
       private_lesson: You can't import a private lesson unless you're the owner
       general_message: It was not possible to execute action
       draft_lesson: You can't import a draft lesson
-      blank_address: Must have an URL or main file
+      blank_address: Lesson %{lesson_name} was not published. Must have an URL or initial file
+      undefined_initial_file: "Aula %{lesson_name} was not published. A initial file is necessary."
+      extract_zip: It was not possible to, automatically, extract files from zip of lesson %{lesson_name}.
     success:
       saved_as_draft: Lessons were sucessfully created or saved as draft
       deleted: Lessons were successfully created
@@ -971,6 +988,11 @@ en_US:
       created: Lesson was sucessfully created
       updated: Lesson was sucessfully updated
       imported: Lessons/modules sucessfully imported
+      initial_file: "Initial file %{lesson_address} defined in %{lesson_name}"
+      published: "Lesson(s) published successfully."
+      draft: "Lesson(s) set as draft successfully."
+      some_published: "Other lessons published successfully"
+      extract_zip: Zip files from lesson %{lesson_name} were extracted automatically.
     form:
       cancel: Cancel
       groups: Groups
@@ -984,6 +1006,8 @@ en_US:
       uncheck_receive_updates: "After saving, any update made at source lesson won't be copied to this lesson."
       public_to_private: "Changing to private, already imported lessons won't be removed. However, won't will receive updates neither will be possible to make new imports from this lesson if not the owner."
       warning: "Source lesson is private, therefore this lesson won't receive updates."
+      responsive: Responsive
+      responsive_tooltip: A responsive lesson will be displayed on mobile devices, however the lesson content should be responsive.
     select_lesson:
       no_lessons: Sem Aulas
     show:
@@ -1043,6 +1067,8 @@ en_US:
       you_are: "You are at: %{name} "
       lmodule_menu: " %{lmodule} (Click to change lesson module. A selection lesson modules submenu will be available)"
       lesson_menu: " %{lesson} (Click to change lesson. A selection lesson submenu will be available)"
+      download: "Download lesson in PDF file"
+      download_file: "If you can't run the file, click here to download"
   lesson_modules:
     general_of_offer: General
     general_of_group: General of group
@@ -1156,8 +1182,8 @@ en_US:
       primary: " primary"
       save_draft: Save draft
       publish: Publish
-      expand: Expand all
-      compress: Compress all
+      expand: Show all answers
+      compress: Hide all answers
     post:
       remove_file_confirm: "Your file will be deleted permanently. Proceed?"
       answer: "Reply"
@@ -1171,7 +1197,7 @@ en_US:
       moved_allocation: "Allocation moved to other class"
       show_posts: "Show Answers"
       hide_posts: "Hide Answers"
-      amount_answers: " hidden posts. To view them, click "
+      amount_answers: " hidden post(s). Click here to show them. "
       to_evaluate: Evaluate/Comment
       grade: '(Grade: %{grade})'
       frequency: '(Frequency: %{wh})'
@@ -1199,6 +1225,8 @@ en_US:
     update:
       updated: "Post was successfully updated"
       not_updated: "Post was not updated"
+      draft: "Draft was successfully updated"
+      not_draft: "Draft was not updated"
     user_posts:
       title: Posts from %{user} at %{discussion}
       message: Post
@@ -1468,9 +1496,9 @@ en_US:
       access_web_recording: Access %{name} of webconference (will open a new window)
       summary: Table which content has webconference access links, and also information about it such as moderator, group sharing, equivalencies, date and time, working hours, grade, situation, amount of online users and a link to access recordings.
       accessibility_title: <b>Accessibility (screen reader access)</b>
-      accessibility: "<p> To join the webconference using screen readers, we recommend the latest version of the <strong>Mozilla Firefox</strong> (with the updated flash-player plugin) and the following screen readers: <strong>NVDA or Window-eyes.</strong> </p><p> The load of all the components of the tool takes approximately <strong>10 seconds</strong>. You will hear a 'beep' when everything is ready. </p>"
+      accessibility: "<p> To join the webconference using screen readers, we recommend the latest version of the browser and the following screen readers: <strong><a href='http://docs.bigbluebutton.org/html/html5-accessibility.html#nvda' target='_blank'>NVDA</a> ou <a href='http://docs.bigbluebutton.org/html/html5-accessibility.html#jaws' target='_blank'>JAWS</a> .</strong> </p>"
       information_title: <b>Basic information</b>
-      information: "<p> To participate in web conferencing, your computer must have at least a dual-core processor with at least 2G of memory, 1 Mbits download connection and 0.5Mbit upload. You can test your connection using <a href='http://speedtest.net' target='_blank'>speedtest.net</a>. </p> <p> The latest versions of browsers are recommended (<a href='https://www.mozilla.org/pt-BR/firefox/new/' target='_blank'>Firefox</a> or <a href='https://www.google.com.br/chrome/browser/desktop/' target='_blank'>Chrome</a>).</p> <p> To access web conferencing you need the updated <a href='https://get.adobe.com/flashplayer' target='_blank'>flashplayer</a> plugin. If you have not installed the flashplayer on your computer previously, a warning will appear asking you to install it. </p> <p> Choose how you want to join the voice conference: Just listening or using your microphone. Pick up using the microphone, allow your browser to access it and perform the sound test. </p> <p> If the webconference has been saved, after the closing, you can watch it through the 'access recordings list' button in the table below. </p>"
+      information: "<p> To participate in web conferencing, your computer must have at least a dual-core processor with at least 2G of memory, 1 Mbits download connection and 0.5Mbit upload. You can test your connection using <a href='http://speedtest.net' target='_blank'>speedtest.net</a>. </p> <p> The latest versions of browsers are recommended (<a href='https://www.mozilla.org/pt-BR/firefox/new/' target='_blank'>Firefox</a> or <a href='https://www.google.com.br/chrome/browser/desktop/' target='_blank'>Chrome</a>).</p> <p> You can also access using Android smartphones and tablets and Apple devices (from IOS 11). On android devices, we recommend using the Firefox browser. </p> <p> Choose how you want to join the voice conference: Just listening or using your microphone. Pick up using the microphone, allow your browser to access it and perform the sound test. </p> <p> If the webconference has been saved, after the closing, you can watch it through the 'access recordings list' button in the table below. </p>"
     list_access:
       no_log: No participant accessed this webconference
       too_old: This webconference happened before the access start to be saved
@@ -1550,6 +1578,8 @@ en_US:
   hidden_info: Hidden information
   navigation_previous_page: "Page previous: "
   navigation_next_page: "Page next: "
+  navigation_first_page: "First page "
+  navigation_last_page: "Last page "
   navigation_page: "Page: "
 
   menu_dc_lesson: Digital Class
@@ -1635,8 +1665,16 @@ en_US:
       invalid_token: 'Invalid authentication token.'
       timeout: 'Your session expired, please sign in again to continue.'
       inactive: 'Your account was not activated yet.'
+      invalid_login: Invalid username.
+      invalid_login_si3: Invalid username. Click on 'Register' to verify your CPF so you can know if you are registered or if don't and, if registered on SI3, so we can update your data.
+      invalid_password_si3: Password must not have the characters "ẽ, ĩ, ũ". Please change your password on SI3. Any doubt or difficulty, get in touch with atendimento@virtual.ufc.br with this error message.
       user:
         not_found_in_database: 'Username or password invalid.'
+    login:
+      signed_in: 'Signed in successfully.'
+      signed_out: 'Signed out successfully.'
+      user:
+        not_found_in_database: 'Signed out successfully.'
     sessions:
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
@@ -1647,10 +1685,13 @@ en_US:
       confirm_new_password: Confirm new password
       change_my_password: Change
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
+      send_instructions_email: 'An email with instructions about how to set a new password will be send to the following email %{email}.'
       updated: 'Your password was changed successfully. You are now signed in.'
       updated_not_active: 'Your password was changed successfully.'
       send_paranoid_instructions: "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
-      ma_request: "To recover your access data, go to the address: <a href='https://www.moduloacademico.ufc.br/moduloacademico/' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico</a>."
+      ma_request: "Your SI3 data was synchronized. If you still don't have access, to recover your data, go to the address: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
+      not_found: No user was found with informed CPF. Register yourself at 'Sign Up' tab.
+      no_email: There is no email registered to the informed CPF. Contact atendimento@virtual.ufc.br informing your CPF, complete name, birthdate and email to save at the system.
     password:
       change_my_password: Change
     passwords:
@@ -1683,13 +1724,13 @@ en_US:
         hello: "Hello %{email}!"
         request: "Someone has requested a link to change your password."
         request_info: "You can do this through the link below."
-        request_info_ma: "As you are an user integrated with Módulo Acadêmico, you must recover your password through it. To do so, access the link below."
+        request_info_ma: "As you are an user integrated with Sigaa, you must recover your password through it. To do so, access the link below."
         ignore: "If you didn't request this, please ignore this email."
         change: "Your password won't change until you access the link above and create a new one."
         username_info: "Your username is: %{username}."
     users:
       user:
-        ma_login_email_msg: "It wasn't possible to verify username and email at Módulo Acadêmico, thus your username and email were defined, respectively, as your CPF and an invalid and random value. Please redefine them."
+        ma_login_email_msg: "It wasn't possible to verify username and email at Sigaa, thus your username and email were defined, respectively, as your CPF and an invalid and random value. Please redefine them."
         updated: 'You updated your account successfully.'
         signed_up: 'Welcome! You have signed up successfully.'
   support_folder_name: Support Material
@@ -1788,6 +1829,7 @@ en_US:
       enrolled: Enrolled
       cancelled: Cancelled
       rejected: Rejected
+      merged: Merged
     manage:
       enrollment_successful_update: Successful update
       enrollment_unsuccessful_update: Unsuccessful update
@@ -1962,7 +2004,7 @@ en_US:
       summary: "This table contains the following information: Description of the activity, period that can be performed, situation, whether it is evaluating or not, whether it is an activity that counts frequency or not, grade, hours and comments."
       summary_info: "This table contains the following information: Start date and End date being the period that the student can send his activity, in addition to the situation of the activity and note if it has been corrected."
       summary_descricao: "This table contains a description of the activity to be performed."
-      summary_files: "This table contains the files sent by the teacher / tutor to download."
+      summary_files: "This table contains the files sent by responsibles to download."
       summary_comments: "This table contains comments made about the activity. Comments may have attached files."
       summary_student_files: "This table contains the files sent by the student, with the following information: Name, size, date of sending and who sent the file in addition to the size of the file."
       summary_web: "This table contains the webconferences scheduled by the students, with the following information: Name, period, sitation, if it was recorded and finished."
@@ -2121,6 +2163,10 @@ en_US:
       enabled: Enabled
       disabled: Disabled
       activation: Activation
+      name: Name
+      location: Location
+      details: Details
+      details_about: Details about group %{name}
     groups_tags:
       groups: Groups
       add: Add
@@ -2158,6 +2204,7 @@ en_US:
       cant_add_group: Can't add groups to this tool.
       cant_unbind: Can't unbind groups from this tool.
       not_student: Must be student.
+      blocked: can't be changed for groups integrated to Sigaa
     groups_checkboxes:
       select_all: Select all
       no_groups: "There are no groups"
@@ -2198,12 +2245,13 @@ en_US:
       edit: Edit
       change_password: Change password
       message_not_found: No user found
-      synchronize: Synchronize with Módulo Acadêmico
-      import: Import data from Módulo Acadêmico
       name: Name
       email: Email
       username: Username
       cpf: CPF
+      synchronize: Synchronize with Sigaa
+      import: Import data from Sigaa
+      reset_session_token: Reset session token
     informations:
       detailed: "Detailed Information"
       personal_data: "Personal Data"
@@ -2237,8 +2285,11 @@ en_US:
       title: Manage Profiles
     success:
       email_sent: Email sent sucessfully
+      reset_token: Session token reset successfully
     error:
       email_not_sent: Email not sent
+      no_email: It's necessary set an email first.
+      no_reset_token: Could not reset session token
     allocation_approval:
       not_specified: Not specified
       none_pending_allocation: There are no pending request
@@ -2459,6 +2510,8 @@ en_US:
       same_type_af: must have same value at 'Final Exam'
       details: See description
       details_about: Access description about %{name}
+      errors:
+        offer_period: Offer already ended
     tools:
       expand: Expand
       compress: Compress
@@ -2553,6 +2606,7 @@ en_US:
       min_final_exam_grade: Minimum final exam grade allowed
       final_exam_passing_grade: Minimum final grade to approval after final exam
       passing_grade: Minimum final grade to approval
+      group_location: Group's location
     users:
       message: Send message
       public_files: See public files
@@ -2853,7 +2907,11 @@ en_US:
     no_new: "No new messages"
     no_subject: "(no subject)"
     support: "Support <atendimento@virtual.ufc.br>"
+    support_only_email: "<atendimento@virtual.ufc.br>"
     support_html: "Support &lt;atendimento@virtual.ufc.br&gt;"
+    support_simple: "Support"
+    no_mail: no email
+    send_message: Send Message
     contacts:
       title: "Selection of contacts"
       contacts: "Contacts"
@@ -3000,9 +3058,7 @@ en_US:
   schedule_events:
     restrict_events: "Not allowed to access events"
     index:
-      events_list: Events List
-      individual_events: Individual Events
-      group_events: Group Events
+      events_list: Events
     events:
       name: Name
       data_range: Data range
@@ -3037,6 +3093,7 @@ en_US:
       created: Event was successfully created.
       updated: Event was successfully updated.
       deleted: Event was successfully deleted.
+      updated_content: Test's content successfully updated. Any other change was ignored due this event is integrated to others systems.
     error:
       range_hour_error: must be posterior to final hour
       created: Event wasn't created.
@@ -3086,14 +3143,14 @@ en_US:
       place: Place
       choose_one: "Choose a event"
       choose_at_least_one: "Choose at least one event"
-      integrated_event_edit: 'This event has integration with other databases and therefore can not be edited'
+      integrated_event_edit: "This event has integration with other databases and therefore all fieds except it's content can not be edited"
       integrated_events_delete: 'There are selected events that can not be removed due to integration with other databases'
       print: Print exam
       users: Print individual exam
     participants:
       title: Participants
       student: Students
-      list_name: Students List
+      list_name: "Students List: %{event}"
       name: Name
       send_file: Send File
       evaluate_comments: Evaluate/Comments
@@ -3101,6 +3158,7 @@ en_US:
       working_hours: Working Hours
       files: Files
       see_files: See files sent
+      download_all: Download of all student's files
     presential_test_participants:
       list_name: Students List
       name: Name
@@ -3116,7 +3174,8 @@ en_US:
       size: Size
       sent_on: Sent on
       sent_by: Sent by
-      summary_files: Files sent by the tutor
+      summary_files: Files sent by responsibles
+      online_correction: Online correction
     summary:
       title: "Files to %{user} at %{tool}"
       name: Name
@@ -3133,10 +3192,20 @@ en_US:
       hand: Hand
       text: Text
       brush: Brush
+      colors: Colors
+      black: Black
+      red: Red
+      blue: Blue
       arrow: Arrow
       saving_file: Saving file.
+      undo: Undo
+      redo: Redo
+      clear: Clear
+      deleting_canvas: Cleaning file.
+      message_confirm_cleaning: "This action can't be undone. Are you sure?"
     success:
       file_saved: File was successfully saved.
+      file_cleaned: File was successfully cleaned.
       created: File was successfully sent.
       deleted: File was successfully deleted.
     error:
@@ -3145,10 +3214,14 @@ en_US:
       remove: It was not possible to remove file.
       new: It was not possible to send file.
       not_started_up: It was not possible to send file. Event not started yet.
-      attachment_file_size_too_big: File too large. The maximum size should be up to 26MB.
+      attachment_file_size_too_big: "File too large. The maximum size should be up to %{file}MB."
       wrong_type: file type is not allowed (only jpeg/png/gif images or pdfs)
       situation: Can not send files yet, because the activity was not started.
       file_not_saved: It was not possible to save file.
+      file_not_cleaned: It was not possible to clean file.
+      cant_download: It's not possible to download this(these) file(s)
+      type: "Files can only be sent to events with the following types: Presential Test and Presential Meeting"
+      general_error: "Only image (jpeg/png/gif) or pdf files of 2MB or less can be sent to Presential Tests or Presential Meetings."
 
   agendas:
     dropdown_content:
@@ -3213,25 +3286,31 @@ en_US:
   users:
     errors:
       ma:
-        already_exists: already exists on Módulo Acadêmico
-        only_by: can be updated only by Módulo Acadêmico
-        cant_connect: Can't be updated at this moment. Incomplete conection with Módulo Acadêmico.
-        problem_accessing: Problems happened while accessing Módulo Acadêmico. Please try again.
-        login: 'Connection with Módulo Acadêmico has failed, your CPF was used as username. Please try define it again.'
-        email: 'Connection with Módulo Acadêmico has failed, your email was set as an invalid value. Please try define it again.'
+        already_exists: already exists on Sigaa
+        only_by: can be updated only by Sigaa
+        cant_connect: Can't be updated at this moment. Incomplete conection with Sigaa.
+        problem_accessing: Problems happened while accessing Sigaa. Please try again.
+        login: 'Connection with Sigaa has failed, your CPF was used as username. Please try define it again.'
+        email: 'Connection with Sigaa has failed, your email was set as an invalid value. Please try define it again.'
         login_email: 'ma_login_email_msg'
-        synchronize: Error while synchronizing data with Módulo Acadêmico. Please try again.
-        error_synchronize: "It was not possible to synchronize with Módulo Acadêmico because of the following motive(s): %{errors}. Please correct those problems at <a href='https://www.moduloacademico.ufc.br/moduloacademico/' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico</a>"
+        synchronize: Error while synchronizing data with Sigaa. Please try again.
+        error_synchronize: "It was not possible to synchronize with Sigaa because of the following motive(s): %{errors}. Please correct those problems at <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>"
+        selfregistration: "Please do your selfregistration on Sigaa (<a href='https://si3.ufc.br/sigaa/public/cadastro/discente.jsf' target='_blank'>https://si3.ufc.br/sigaa/public/cadastro/discente.jsf</a>). If you've already made it and already confirm your email, verify your cpf on 'Registration' or request to atendimento@virtual.ufc.br to import your data."
+        selfregistration_others: "User need to do his selfregistration on Sigaa (<a href='https://si3.ufc.br/sigaa/public/cadastro/discente.jsf' target='_blank'>https://si3.ufc.br/sigaa/public/cadastro/discente.jsf</a>). If already made it and confirmed email, verify if the user can be unbinded."
+        changed_username: Due to integration with SI3 and conflict with others users, your username was changed to %{new_username}.
       cpf_admin: "Only Administrators can update a CPF. To do so, get in touch with atendimento@virtual.ufc.br informing name, current CPF, new CPF and the reason to change it."
+      cpf_as_username: "can't be another's suser CPF"
+      multiple_sessions: "It's not possible to be logged on multiple devices at same time."
+      username: "must have only letters and numbers."
     notices:
       ma:
-        use_ma_data: "Your access data were imported from Módulo Acadêmico. To change or recover your access data, go to the address: <a href='https://www.moduloacademico.ufc.br/moduloacademico/' target='_blank'>https://www.moduloacademico.ufc.br/moduloacademico</a>."
+        use_ma_data: "Your access data were imported from Sigaa. To change or recover your access data, go to the address: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
         synchronize: Data synchronized successfully.
     warnings:
       ma:
-        cpf_not_verified: "It wasn't possible to verify your CPF at Módulo Acadêmico. After logged in, synchronize your data."
-        cpf_not_found: CPF not found at no Módulo Acadêmico
-        not_possible_syncrhonize: It wasn't possible to syncrhonize with Módulo Acadêmico.
+        cpf_not_verified: "It wasn't possible to verify your CPF at Sigaa. After logged in, synchronize your data."
+        cpf_not_found: CPF not found at no Sigaa
+        not_possible_syncrhonize: It wasn't possible to syncrhonize with Sigaa.
       cpf: "To change your CPF, get in touch with atendimento@virtual.ufc.br informing your name, current CPF, new CPF and the reason to change it."
     show:
       not_informed: Not informed
@@ -3254,8 +3333,15 @@ en_US:
       books: "Books: "
       phrase: "Phrase: "
       site: "Site: "
-      integrated: "Integrated with Módulo Acadêmico: "
+      integrated: "Integrated with Sigaa: "
       blacklist: "Exists at Blacklist: "
+      access_data: "Access Data"
+      username: "Username: "
+      email: "Email: "
+      previous_username: "Previous Username: "
+      previous_email: "Previous Email: "
+      last_access: "Last access: "
+      selfregistration: "Has made his selfregistration at Sigaa: "
       y: 'Yes'
       n: 'No'
     request_profile:
@@ -3299,7 +3385,7 @@ en_US:
         updated: Failed to update settings
 
   mysolar:
-    synchronize: Synchronize with Módulo Acadêmico
+    synchronize: Synchronize with Sigaa
     profiles: Profiles
     closed_uc: (closed subject)
     configure: Settings
@@ -3363,11 +3449,15 @@ en_US:
         list: 76
         thread: 84
         discussion: 68
+        compress: 72
+        expand: 83
       name:
         new: "New post [P]"
         list: "Show as list [L]"
         thread: "Show as thread [T]"
         discussion: "Show my discussions [D]"
+        compress: "Hide all answers [H]"
+        expand: "Show all answers [S]"
     scores:
       name:
         exam: "Exams [E]"
@@ -3564,11 +3654,6 @@ en_US:
       code:
         window: 65
         analyzer_position: 83
-    schedule_events:
-      name:
-        events_list: "Events List [E]"
-      code:
-        events_list: 69
 
   scores:
     index:
@@ -3631,6 +3716,7 @@ en_US:
       situation4: "- By removing sutdent's situations, all will be setted as 'Pending' or 'Undefined' until they're setted again."
       situation5: "- Once situation was defined, at every new evaluation or working hours, student's situation will be immediately updated."
       confirm: Last evaluative activity haven't happened yet. Are you sure that you want to set situations?
+      origin_group: Original group (merged)
     info:
       assignments: Assignments
       date_range: Date range
@@ -3721,6 +3807,8 @@ en_US:
       hours: Maximum Working Hours
       info_evaluation: Grade/Frequency and comments
       comments: Comments
+      origin_group: "<b>Original group (merged):</b>"
+      origin_group2: "<b>Original group (merged):</b> %{group}"
     situation:
       not_started: Not started
       to_answer: To answer
@@ -4540,6 +4628,7 @@ en_US:
       event_frequency: "can't be defined, Reccess or Holiday events can't be frequency."
       same_type: 'Must have same type of equivalency'
       same_type_af: must have same value at 'Final Exam'
+      offer_period: Offer already ended
     success:
       manage: Activities managed successfully.
     warnings:
@@ -4576,10 +4665,10 @@ en_US:
       whats_solar: 'What is Solar?'
       whats_ava: 'What is a LMS?'
       uab_forgot_login_password: "I'm a UAB student or professor and I don't remember my username or password. What should I do?"
-      forgot_login_password_ma: "I don't remember my username or password, but I have access to Módulo Acadêmico. What should I do?"
-      forgot_login_password_sync1: "I can't remember my username or password and also don't have access to Módulo Acadêmico. What should I do?"
-      forgot_login_password_sync2: "I've tryed to register or recover my password, but my data was imported from Módulo Acadêmico and I don't have access to it."
-      forgot_login_password_sync3: "I've tryed recover my password, but I've received a message directing me to Módulo Acadêmico, but I don't have access to it. What should I do?"
+      forgot_login_password_ma: "I don't remember my username or password, but I am registered at Sigaa. What should I do?"
+      forgot_login_password_sync1: "I can't remember my username or password and also I'm not registered at Sigaa. What should I do?"
+      forgot_login_password_sync2: "I've tryed to register or recover my password, but my data was imported from Sigaa and I don't have access to it."
+      forgot_login_password_sync3: "I've tryed recover my password, but I've received a message directing me to Sigaa, but I don't have access to it. What should I do?"
       forgot_login_password: 'Forgot my username and/or password.'
       recovery_password_email: "I already have access to Solar and tryed to recover my password, but I got the following message 'E-mail não encontrado'."
       verify_registration: "I can't remember my username and password and my email was not found. How do I find out if I already have an account at Solar?"
@@ -4613,23 +4702,25 @@ en_US:
       idea: "I got an idea to Solar, how can I suggest it to development?"
       error: "I'm responsible for a subject and a student assignment is blank. Can be a system error?"
       cant_find_faq: "I've not found my doubt at this FAQ."
+      uab_selfregistration: "What's Sigaa's selfregistration? How do I do it?"
+      email_confirmation: "I've made my selfregistration, how do I use Solar?"
     answers:
       whats_solar: "Solar 2.0 is a LMS, learning management system, developed by Virtual UFC Institute (Instituto UFC Virtual), of Federal University of Ceará (Universidade Federal do Ceará). <br/> It is oriented to the teacher and the student, allowing the publication of courses and interaction with them. It was developed to enhance the learning from the relationship with its own graphical user interface environment, so that the user has access to various learning tools and content sharing. <br/> The system is supported by a philosophy of interaction and not of control"
       whats_ava: "LMS - Learning Management Systems are softwares available online which allow the realization of web-courses or even the help and complement of classroom courses by the web."
-      uab_forgot_login_password: "Go to the <a href='https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do' target='_blank'>Módulo Acadêmico</a> to recover your password. <br/> After recovering and updating your password, go back to Solar 2.0 and use the same username and password. If you can't recover your password at Módulo Acadêmico, please Se você não consegue recuperar sua senha no Módulo Acadêmico, please go to your course secretariat."
-      forgot_login_password_ma: "Go to the <a href='https://www.moduloacademico.ufc.br/moduloacademico/guest/recuperarSenhaForm.do' target='_blank'>Módulo Acadêmico</a> to recover your password. After recovering and updating your password, go back to Solar 2.0 and use the same username and password of Módulo Acadêmico."
+      uab_forgot_login_password: "Have you made your selfregistration at Sigaa? If you've answered yes and you forgot your password, go to the <a href='https://si3.ufc.br/admin/public/recuperar_senha.jsf' target='_blank'>Sigaa</a> to recover it. <br/> If you have made your selfregistration and forgot your username, go to <a href='https://si3.ufc.br/admin/public/recuperar_login.jsf' target='_blank'>Sigaa</a> to recover it. <br/> After recovering and updating your password, go back to Solar 2.0 and use the same username and password. If you can't recover your password at Sigaa, please Se você não consegue recuperar sua senha no Sigaa, please go to your course secretariat.<br/><br/> If you haven't made your selfregistration, read <b>What's Sigaa's selfregistration? How do I do it?</b>"
+      forgot_login_password_ma: "If you forgot your password, go to the <a href='https://si3.ufc.br/admin/public/recuperar_senha.jsf' target='_blank'>Sigaa</a> to recover it. <br/> If you forgot your username, go to <a href='https://si3.ufc.br/admin/public/recuperar_login.jsf' target='_blank'>Sigaa</a> to recover it. <br/> After recovering and updating your password, go back to Solar 2.0 and use the same username and password of Sigaa."
       forgot_login_password_sync: "Get in touch with atendimento@virtual.ufc.br explaining your situation. Remember of informing your cpf and email. Solar support will correct your data and will send, after, an email to recover your password."
       forgot_login_password: "At login page of Solar 2.0 (www.solar.virtual.ufc.br):<br/> ‣ Click on 'Forgot your password?' </br> ‣ Type your registred email. </br> Click on 'Send'. </br> You will receive an email with instructions to choose a new password."
       recovery_password_email: "Get in touch with atendimento@virtual.ufc.br explaining your situation. Remember of informing your cpf and email. Solar support will correct your data and will send, after, an email to recover your password."
       verify_registration: "To know if you already exists at Solar 2.0 or not, you just have to access login page and click on tab 'Sign Up'. On this tab, you will have to type your cpf and click on 'Verify'. Solar will check if you already is registred or not."
-      ma: ‣ Integrated to Módulo Acadêmico
-      not_ma: ‣ Not integrated to Módulo Acadêmico
+      ma: ‣ Integrated to Sigaa
+      not_ma: ‣ Not integrated to Sigaa
       update_data: "To change your data, you have first to be loged in at Solar. After login, follow these steps: </br> ‣ Click on your name at the top of the screen besides the clock<br/>‣ Click on 'Change Profile'<br/>‣ Change the data you want<br/>‣ Click on 'Confirma', the blue botton at the bottom of the page<br/> Didn't understand? You can watch our <a href='https://www.youtube.com/watch?v=cRN-wNAjutk&list=PL79md4kx41yXcTYI6XgnzXyEAAIxL5asx&index=6' target='_blank'>video tutorial</a> (portuguese)."
-      update_data_ma: "To change your data, you have to access Módulo Acadêmico and make the wanted changes.<br/> Username, password or email changes are send to Solar automatically. Any other change must be synchronized with Solar. To do so, after logging in, you must: <br/> ‣ Click on your name at the top of the page besides the clock<br/> ‣ Click on 'Synchronize with Módulo Acadêmico'"
-      update_data_ma_cant: "In this case, your registration at Solar is linked to Módulo Acadêmico."
-      have_access: ‣ If you have access to Módulo Acadêmico
-      dont_have_access: ‣ If you don't have access to Módulo Acadêmico
-      update_data_ma_cant2: "Get in touch with atendimento@virtual.ufc.br explaining your situation so our team verify if it's possible to unlink your profile or not. Remember of informing your cpf and email. <br/> If possible, support will respond with a positive message; Otherwise, it will send you to STI so you can recover your Módulo Acadêmico data."
+      update_data_ma: "To change your data, you have to access Sigaa and make the wanted changes.<br/> Username, password or email changes are send to Solar automatically. Any other change must be synchronized with Solar. To do so, after logging in, you must: <br/> ‣ Click on your name at the top of the page besides the clock<br/> ‣ Click on 'Synchronize with Sigaa'"
+      update_data_ma_cant: "In this case, your registration at Solar is linked to Sigaa."
+      have_access: ‣ If you have access to Sigaa
+      dont_have_access: ‣ If you don't have access to Sigaa
+      update_data_ma_cant2: "Get in touch with atendimento@virtual.ufc.br explaining your situation so our team verify if it's possible to unlink your profile or not. Remember of informing your cpf and email. <br/> If possible, support will respond with a positive message; Otherwise, it will send you to STI so you can recover your Sigaa data."
       invalid_token: "Every password recovery email from Solar 2.0 gives you an url which will allow to choose a new password. Therefore, this url contains a token that is only valid for 24 hours.If your token is invalid, you must generate a new url. See 'Forgot my username and/or password.'"
       how_to_enroll: "To enroll at a subject, it's necessary be registered at Solar 2.0, have logged in and follow these steps: </br> ‣ Access left menu at 'Enrollment' <br/> ‣ Search for subject and course wanted, remembering that it will only be available the courses with opened enrollment period. <br/> ‣ After locating wanted subject, click at 'Enroll'<br/> Didn't understand? You can also watch our <a href='https://www.youtube.com/watch?v=35uwbsETkyY&index=1&list=PL79md4kx41yXcTYI6XgnzXyEAAIxL5asx' target='_blank'>video tutorial</a> (portuguese). <br/> Your request will have to be accepted by responsibles. They will first analyse your request and then accept it or not. When accepted, you will receive an email from Solar 2.0."
       pendent_enroll: "Every enrollment request is not accepted automatically. They all have, therefore, to be accepted or not by responsibles of course. At the moment one enrollment is accepted, the student will receive an email letting him know."
@@ -4656,7 +4747,8 @@ en_US:
       idea: "Solar 2.0 have a button for 'Suggestions to Solar 2.0'. So you can access it, you just have to be logged in. The button will be available at the top right corner of the screen.<br/> By clicking it, you can send suggestions, complaints and similar."
       error: "Solar 2.0 doesn't make changes at previously files sent by it's users without informing them or without authorization. Therefore, if student's assignment is blank, we suggest that you get in touch with him and ask him to send again the right file."
       cant_find_faq: "Get in touch with atendimento@virtual.ufc.br explaining your situation. Remember of inform: <br/> ‣ Name <br/> ‣ Cpf <br/> ‣ Email<br/> ‣ The most information you can get about what have happened. If possible, images (print screens) too."
-
+      uab_selfregistration: "All data that used to exist at Modulo Academico, previous academic system used by UAB, were transfered to Sigaa, current academic system. Therefore, were transfered, among others, user's data, student's and teatcher's. However, access data could not be transfered due to avoid conflicts with existing sigaa's users. For this reason, every user that used to exist at Modulo Academico have to do a selfregistration at Sigaa and confirm your email so they can define their new access data such as username and password. <br/> <br/> To do your selfregistration, just access <a href='https://si3.ufc.br/sigaa/public/cadastro/discente.jsf' target='_blank'>https://si3.ufc.br/sigaa/public/cadastro/discente.jsf</a> and type your cpf, complete name and birthdate such as it was registered at Modulo Academico and, also, inform an email, a username and a password. You can, if you want to, use the same email, username and password that you used at Modulo Academico. If they are already in use by another user or doesn't match the new rules, the system will not save and will throw you an error so you can choose new data."
+      email_confirmation: "Once your SIGAA's selfregistration is done, you have to access the informed email and click on the registration's confirmation link. <br/> In case you didn't received the email or have deleted it, is possible to request for it by the following url <a href='https://si3.ufc.br/admin/public/recuperar_codigo.jsf' target='_blank'>https://si3.ufc.br/admin/public/recuperar_codigo.jsf</a>. <br/>Remember of checking the spam box!<br/> Once your registration is confirmed, you can access Solar with the same username and password used at SIGAA."
   ckeditor:
     confirms:
       question: "Do you want to remove the blank items?"
@@ -4717,8 +4809,8 @@ en_US:
       groups_number: Amount of Groups
       users_number: Amount of Registered Users
       users_number_active: Amount of Active Users
-      users_number_module_bound: Users Linked to the MA - Academic Module
-      users_number_module_unbound: Users Unlinked to the MA - Academic Module
+      users_number_module_bound: Users Linked to the Sigaa
+      users_number_module_unbound: Users Unlinked to the Sigaa
       disciplines_amount: Disciplines Amount
       files_portifolio: Assignment files Amount
       number_of_students: Number of active registered students
@@ -4826,6 +4918,10 @@ en_US:
     click_to_close: (click to close)
     open: (Will open modal window)
     minimize: "Minimize modal window"
+    smallify: "Smallify modal window"
+    normalize: "To restore modal window"
+    maximize: "Maximize modal window"
+    smallifyrev: "To stretch modal window"
 
   flash_message:
     close: "Close notification"
