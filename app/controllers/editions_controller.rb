@@ -192,8 +192,10 @@ class EditionsController < ApplicationController
   
         else # atividades que não são eventos
           
-          unless academic_allocation.academic_tool_type == 'LessonModule' && academic_allocation.final_weight == 100 && academic_allocation.max_working_hours.to_i == 1 # LessonModule criado por padrão
-                    
+          unless academic_allocation.academic_tool_type == 'SupportMaterialFile' || academic_allocation.academic_tool_type == 'Bibliography' || academic_allocation.academic_tool_type == 'Notification' ||
+                  (academic_allocation.academic_tool_type == 'LessonModule' && academic_allocation.final_weight == 100 && academic_allocation.max_working_hours.to_i == 1) ||# LessonModule criado por padrão
+                  (academic_allocation.academic_tool_type == 'Exam' && academic_allocation.academic_tool.status == false)
+            
             academic_allocation.evaluative = true
             academic_allocation.final_weight = 40
             academic_allocation.frequency = true
@@ -211,7 +213,7 @@ class EditionsController < ApplicationController
           quantity_used_hours += event.max_working_hours.to_i
         end
       end
-      
+
       remaining_hours = total_hours_of_curriculum_unit - quantity_used_hours
       resto = remaining_hours % quantity_activities rescue 0
       hours_per_activity = remaining_hours / quantity_activities rescue 0
