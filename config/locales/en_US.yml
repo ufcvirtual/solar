@@ -2118,6 +2118,8 @@ en_US:
       imported: Groups and participants imported successfully.
     new:
       new_group_name: New group
+    automatic_split_group_jobs:  Automatic split of group assignment
+    split_group_jobs: "Assignment %{assignment_key} starts today, students without groups were automatically split or inserted into other groups as follows:"
   public_files:
     index:
       title: "Public area of %{name}"
