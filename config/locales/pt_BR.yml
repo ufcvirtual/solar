@@ -4945,6 +4945,8 @@ pt_BR:
       no_frequency_tools: Não há ferramentas de frequência para realizar esta ação.
       changes: 'Atividades gerenciadas com sucesso. Já houve definição de nota e/ou carga horária para alunos em uma ou mais ferramentas. Se uma atividade já havia sido avaliada e não é mais avaliativa, sua nota não será considerada no cálculo da média. O mesmo para a carga horária. Também é importante verificar se as cargas horárias definidas não ultrapassam o novo máximo definido se for o caso.'
       evaluative: Uma ou mais ferramentas removidas eram avaliativas e/ou de frequência. É importante que as configurações de ferramentas avaliativas / frequência sejam re-avaliadas para verificar pesos e cargas horárias.
+    messages:
+      execute_manage_tool: Deseja realizar a gerência automática?
 
   academic_allocation_users:
     errors:

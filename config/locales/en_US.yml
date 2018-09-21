@@ -4636,6 +4636,8 @@ en_US:
       no_frequency_tools: There are no frequency activity to this action.
       changes: "Activities managed successfully. Some tools already have grades and working hours for some students. If an already evaluated activity is no longer evaluative, it's grade no longer will count at student's final grade. The same to working hours. It's also important to check if new maximum working hours are not smaller than already evaluated working hours."
       evaluative: One or more of the removed tools were evaluatives / frequency tools. Is important to check evaluative/frequency activity management to verify weights and working_hours.
+    messages:
+      execute_manage_tool: Run automatic management?
 
   academic_allocation_users:
     errors:
