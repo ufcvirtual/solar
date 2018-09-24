@@ -2400,6 +2400,8 @@ pt_BR:
       imported: Grupos e participantes importados com sucesso.
     new:
       new_group_name: Novo grupo
+    automatic_split_group_jobs:  Divisão automática de trabalhos em grupos
+    split_group_jobs: "O trabalho %{assignment_key} inicia hoje, alunos sem grupos foram dividos ou inseridos em outros grupos de forma automática do seguinte modo:"
   public_files:
     index:
       title: "Área pública de %{name}"

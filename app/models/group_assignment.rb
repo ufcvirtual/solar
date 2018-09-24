@@ -195,7 +195,7 @@ class GroupAssignment < ActiveRecord::Base
           end
 
           unless groups_assignment_division.blank?
-            Notifier.send_mail(responsibles_emails, "Divisão Automática de trabalhos em grupo", email_template(groups_assignment_division), []).deliver
+            Job.send_mail(responsibles_emails, I18n.t("group_assignments.automatic_split_group_jobs"), email_template(groups_assignment_division), []).deliver
           end          
 
         end
@@ -252,7 +252,7 @@ class GroupAssignment < ActiveRecord::Base
 
       assignment_groups.each do |key, value|
         assignment_key = key[-key.length..key.index("_")-1]
-        html = "<p>O trabalho #{assignment_key} inicia hoje, alunos sem grupos foram dividos ou inseridos em outros grupos de forma automática do seguinte modo:</p>"
+        html = "<p> #{I18n.t('group_assignments.automatic_split_group_jobs', assignment_key: assignment_key)} </p>"
 
         value.each do |object|
           html << "<p>#{object.group_name}: "
