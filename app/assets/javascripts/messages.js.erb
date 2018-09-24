@@ -37,3 +37,18 @@ function get_url(url){
   });
   return false;
 }
+
+$(function(){
+
+  $('.save').click(function(){
+    save_values_ckeditor();
+    $('#form_message_text').serialize_and_submit({
+      files: true,
+      outer: 'fancybox-outer',
+      complement_success: function(data){
+        flash_message("<%= I18n.t(:mail_sent, scope: 'messages') %>", "notice");
+      }
+    });
+  });
+
+});
