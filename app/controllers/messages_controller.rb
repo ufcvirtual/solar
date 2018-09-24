@@ -74,6 +74,8 @@ class MessagesController < ApplicationController
 
     @support = params[:support]
 
+    @scores = params[:scores]
+
     render layout: false unless @support || params[:layout]
   end
 
@@ -164,24 +166,28 @@ class MessagesController < ApplicationController
       end
 
     rescue => error
-      unless @allocation_tag_id.nil?
-        allocation_tag      = AllocationTag.find(@allocation_tag_id)
-        @group              = allocation_tag.group
-        @contacts           = User.all_at_allocation_tags(RelatedTaggable.related(group_id: @group.id), Allocation_Activated, true)
+      if params[:scores]=='true'
+        render json: { success: false, alert: @message.errors.full_messages.join(', ') }, status: :unprocessable_entity
       else
-        @contacts = current_user.user_contacts.map(&:user)
-      end
-      @message.files.build
+        unless @allocation_tag_id.nil?
+          allocation_tag      = AllocationTag.find(@allocation_tag_id)
+          @group              = allocation_tag.group
+          @contacts           = User.all_at_allocation_tags(RelatedTaggable.related(group_id: @group.id), Allocation_Activated, true)
+        else
+          @contacts = current_user.user_contacts.map(&:user)
+        end
+        @message.files.build
 
-      @message.errors.each do |attribute, erro|
-        @attribute = attribute
+        @message.errors.each do |attribute, erro|
+          @attribute = attribute
+        end
+        @reply_to = []
+        @reply_to = User.where(id: params[:message][:contacts].split(',')).select("id, (name||' <'||email||'>') as resume")
+        @support = params[:support]
+        
+        #flash.now[:alert] = @message.errors.full_messages.join(', ')
+        render :new
       end
-      @reply_to = []
-      @reply_to = User.where(id: params[:message][:contacts].split(',')).select("id, (name||' <'||email||'>') as resume")
-      @support = params[:support]
-
-      #flash.now[:alert] = @message.errors.full_messages.join(', ')
-      render :new
     end
   end
 
