@@ -165,38 +165,15 @@ class Group < ActiveRecord::Base
     codes_file_uab = ['109']#YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["uab_courses"]["code"]
     code_courses_uab = codes_file_uab.split(";")
 
-    # offers_to_manage = []
     groups_to_manage = []
 
     code_courses_uab.each do |code_course|
 
       course = Course.find_by(code: code_course)
       offers = Offer.where(course_id: course.id) unless course.blank?
-      groups = Group.where(offer_id: offers)
-      
-      # offers.each do |offer|
-        
-      #   acs_offers = AcademicAllocation.where(allocation_tag_id: AllocationTag.where(offer_id: offer).where(group_id: nil)).where(academic_tool_type: 'LessonModule')
+      groups = Group.where(offer_id: offers).where.not(status: false)
 
-      #   acs_offers.each do |academic_allocation_offer|
-      #     academic_tool_offer = academic_allocation_offer.academic_tool
-          
-      #     lessons_offer = Lesson.where(lesson_module_id: academic_tool_offer.id)
-          
-      #     lessons_offer.flatten.each do |lesson_offer|
-            
-      #       if lesson_offer.schedule.start_date <= Date.current && lesson_offer.schedule.start_date >= offer.semester.offer_schedule.start_date
-      #         offers_to_manage << academic_allocation_offer unless offers_to_manage.include? academic_allocation_offer
-      #         break
-      #       end
-            
-      #     end
-          
-      #   end
-
-      # end
-
-      allocation_tags = AllocationTag.where(group_id: groups)
+      allocation_tags = AllocationTag.where("group_id IN (?)", groups.ids).where("managed = ? OR managed = ?", false, nil)
 
       allocation_tags.each do |allocation_tag|
         academic_allocations = AcademicAllocation.where(allocation_tag_id: allocation_tag.id)
@@ -231,14 +208,11 @@ class Group < ActiveRecord::Base
     unless groups_to_manage.blank?
       groups_to_manage.uniq.each do |group|
         verify_management(group.allocation_tag.id)
+        alloc_tag = group.allocation_tag
+        alloc_tag.managed = true
+        alloc_tag.save!
       end
     end
-
-    # unless offers_to_manage.blank?
-    #   offers_to_manage.each do |academic_allocation_offer|
-    #     verify_management(academic_allocation_offer.allocation_tag)
-    #   end
-    # end
 
   end
 
