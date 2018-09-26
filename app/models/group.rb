@@ -162,7 +162,7 @@ class Group < ActiveRecord::Base
   end
 
   def self.management_groups
-    codes_file_uab = ['109']#YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["uab_courses"]["code"]
+    codes_file_uab = YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["uab_courses"]["code"]
     code_courses_uab = codes_file_uab.split(";")
 
     groups_to_manage = []
@@ -208,9 +208,6 @@ class Group < ActiveRecord::Base
     unless groups_to_manage.blank?
       groups_to_manage.uniq.each do |group|
         verify_management(group.allocation_tag.id)
-        alloc_tag = group.allocation_tag
-        alloc_tag.managed = true
-        alloc_tag.save!
       end
     end
 
@@ -309,7 +306,11 @@ class Group < ActiveRecord::Base
         acad_alloc_to_save.each do |acad_alloc|
           acad_alloc.save!
         end
+        
+        at.managed = true
+        at.save!
       end
+
     end   
 
   end
