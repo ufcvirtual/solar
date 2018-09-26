@@ -173,7 +173,7 @@ class Group < ActiveRecord::Base
       offers = Offer.where(course_id: course.id) unless course.blank?
       groups = Group.where(offer_id: offers).where.not(status: false)
 
-      allocation_tags = AllocationTag.where("group_id IN (?)", groups.ids).where("managed = ? OR managed = ?", false, nil)
+      allocation_tags = AllocationTag.where("group_id IN (?)", groups.ids).where("managed = false OR managed IS NULL")
 
       allocation_tags.each do |allocation_tag|
         academic_allocations = AcademicAllocation.where(allocation_tag_id: allocation_tag.id)
