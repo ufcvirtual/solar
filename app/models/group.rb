@@ -162,7 +162,7 @@ class Group < ActiveRecord::Base
   end
 
   def self.management_groups
-    codes_file_uab = ['109']#YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["uab_courses"]["code"]
+    codes_file_uab = YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["uab_courses"]["code"]
     code_courses_uab = codes_file_uab.split(";")
 
     groups_to_manage = []
@@ -173,7 +173,7 @@ class Group < ActiveRecord::Base
       offers = Offer.where(course_id: course.id) unless course.blank?
       groups = Group.where(offer_id: offers).where.not(status: false)
 
-      allocation_tags = AllocationTag.where("group_id IN (?)", groups.ids).where("managed = ? OR managed = ?", false, nil)
+      allocation_tags = AllocationTag.where("group_id IN (?)", groups.ids).where("managed = false OR managed IS NULL")
 
       allocation_tags.each do |allocation_tag|
         academic_allocations = AcademicAllocation.where(allocation_tag_id: allocation_tag.id)
@@ -208,9 +208,6 @@ class Group < ActiveRecord::Base
     unless groups_to_manage.blank?
       groups_to_manage.uniq.each do |group|
         verify_management(group.allocation_tag.id)
-        alloc_tag = group.allocation_tag
-        alloc_tag.managed = true
-        alloc_tag.save!
       end
     end
 
@@ -309,7 +306,11 @@ class Group < ActiveRecord::Base
         acad_alloc_to_save.each do |acad_alloc|
           acad_alloc.save!
         end
+        
+        at.managed = true
+        at.save!
       end
+
     end   
 
   end

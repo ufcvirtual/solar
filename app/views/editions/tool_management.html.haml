@@ -351,9 +351,8 @@
          data: {allocation_tags_ids},
          success: function(resp) {
             if(resp.success){
-              console.log(resp.msg);
               
-              $.get('/editions/tool_management?allocation_tags_ids='+allocation_tags_ids, function(data){
+              $.get('/editions/tool_management?allocation_tags_ids='+allocation_tags_ids.join(" "), function(data){
                   $(".edition_items").html(data);
                   $(".back").removeClass("invisible");
                   loadFocus();
