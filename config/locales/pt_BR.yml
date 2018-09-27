@@ -2181,6 +2181,11 @@ pt_BR:
       body: "Informamos que sua aula %{name} importada de %{from} para %{to} não receberá mais atualizações da aula original por esta ter se tornado privada."
       user: "Caro(a) %{user},"
       subject: '[SOLAR] Aula privada'
+    activities_update:
+      subject: "Alteração do Período da(s) Atividade(s)"
+      change: "<p>Atividade %{activity} - %{activity_name} foi alterada para %{date}</p>"
+      change_to: "<p>Atividade %{activity} - %{activity_name} foi alterada para %{date_start} à %{date_end}</p>"
+      afected_by_date: "Não é possível alterar para a data escolhida, pois atividades já enviadas seriam afetadas. Escolha novas datas."
   assignments:
     restrict_assignment: "Local de trabalho não permitido"
     index:
@@ -2912,6 +2917,7 @@ pt_BR:
       created: Não foi possível criar semestre.
       updated: Não foi possível atualizar semestre.
       deleted: Não foi possível deletar semestre.
+      afected_by_date: "Não é possível alterar para a data escolhida, pois atividades já enviadas seriam afetadas. Escolha novas datas."
     list:
       new: Novo semestre
       edit: Editar Semestre
@@ -2921,6 +2927,7 @@ pt_BR:
       period: Período
       none: Nenhum semestre cadastrado
       choose_one_offer: Selecione uma oferta
+      warning: '<p>Ao alterar o período de um semestre ou oferta, caso a nova data inicial seja superior à data inicial de alguma atividade já cadastrada ou a data final seja inferior, as datas das atividades serão <b>ajustadas automaticamente</b>. Caso alguma atividade já tenha <b>participação de alunos, notas ou comentários ou as webconferências possuam algum acesso, não será permitido alterar</b> as datas de semestres e ofertas.</p>'
     form:
       enable_end_date: Habilitar data final
 
@@ -2935,6 +2942,7 @@ pt_BR:
       deleted: Não foi possível deletar oferta.
       already_exist: já existe uma oferta com os dados informados
       general_message: Não foi possível realizar a ação desejada
+      afected_by_date: "Não é possível alterar para a data escolhida, pois atividades já enviadas seriam afetadas. Escolha novas datas."
     list:
       type: Tipo
       course: Curso

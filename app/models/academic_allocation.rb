@@ -17,6 +17,7 @@ class AcademicAllocation < ActiveRecord::Base
 
   has_many :discussion_posts, class_name: 'Post', dependent: :destroy
   has_many :chat_messages, dependent: :destroy
+  has_many :log_actions, dependent: :destroy
   has_many :chat_participants, inverse_of: :academic_allocation, dependent: :destroy
 
   before_save :verify_association_with_allocation_tag, unless: 'allocation_tag_id.blank?'
@@ -199,6 +200,10 @@ class AcademicAllocation < ActiveRecord::Base
 
   def verify_evaluative
     academic_tool_type.constantize.find(academic_tool_id).verify_evaluatives
+  end
+
+  def schedule
+    academic_tool.respond_to?(:schedule) ? academic_tool.schedule : academic_tool.initial_time.to_date
   end
 
   private

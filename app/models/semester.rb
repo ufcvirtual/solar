@@ -1,4 +1,5 @@
 class Semester < ActiveRecord::Base
+  include OfferSemester
 
   has_many :offers
   has_many :groups, through: :offers
