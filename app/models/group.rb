@@ -176,31 +176,22 @@ class Group < ActiveRecord::Base
       allocation_tags = AllocationTag.where("group_id IN (?)", groups.ids).where("managed = false OR managed IS NULL")
 
       allocation_tags.each do |allocation_tag|
-        academic_allocations = AcademicAllocation.where(allocation_tag_id: allocation_tag.id)
+        academic_allocations = AcademicAllocation.where(allocation_tag_id: allocation_tag.id).where(academic_tool_type: 'LessonModule')
 
         group = allocation_tag.group
         offer = group.offer
-
+          
         academic_allocations.each do |academic_allocation|
           academic_tool = academic_allocation.academic_tool
+            
+          lessons = Lesson.where(lesson_module_id: academic_tool.id).includes(:schedule).where('schedules.start_date <= current_date AND schedules.start_date >= ?', offer.semester.offer_schedule.start_date).references(:schedule)
 
-          if academic_allocation.academic_tool_type == 'LessonModule'
-           
-            lessons = Lesson.where(lesson_module_id: academic_tool.id)
+          unless lessons.blank?
+            groups_to_manage << group
+            break
+          end            
 
-            lessons.flatten.each do |lesson|
-              
-              if lesson.schedule.start_date <= Date.current && lesson.schedule.start_date >= offer.semester.offer_schedule.start_date
-                groups_to_manage << group unless groups_to_manage.include? group
-                break
-              end
-
-            end
-
-          end
-
-        end
-      
+        end     
       end
 
     end
