@@ -222,7 +222,7 @@ class Group < ActiveRecord::Base
     academic_allocations.each do |academic_allocation|
       academic_tool = academic_allocation.academic_tool
 
-      if academic_allocation.academic_tool_type == 'ScheduleEvent' #&& academic_tool.integrated == true
+      if academic_allocation.academic_tool_type == 'ScheduleEvent' && academic_tool.integrated == true
         
         if academic_tool.type_event == Presential_Test # eventos tipo 1 ou 2 chamada
           academic_allocation.evaluative = true
@@ -258,7 +258,7 @@ class Group < ActiveRecord::Base
 
       else # atividades que não são eventos
         
-        unless academic_allocation.academic_tool_type == 'SupportMaterialFile' || academic_allocation.academic_tool_type == 'Bibliography' || academic_allocation.academic_tool_type == 'Notification' ||
+        unless academic_allocation.academic_tool_type == 'SupportMaterialFile' || academic_allocation.academic_tool_type == 'Bibliography' || academic_allocation.academic_tool_type == 'Notification' || academic_allocation.academic_tool_type == 'ScheduleEvent' ||
                 (academic_allocation.academic_tool_type == 'LessonModule' && academic_allocation.final_weight == 100 && academic_allocation.max_working_hours.to_i == 1) ||# LessonModule criado por padrão
                 (academic_allocation.academic_tool_type == 'Exam' && academic_allocation.academic_tool.status == false)
           
