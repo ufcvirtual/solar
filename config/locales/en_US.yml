@@ -1899,6 +1899,11 @@ en_US:
       body: "We inform that your lesson %{name} imported from %{from} to %{to} will not receive any more updates from source lesson due to the fact that source is now private."
       user: "Dear %{user},"
       subject: '[SOLAR] Private lesson'
+    activities_update:
+      subject: "Date range update to activities"
+      change: "<p>Activity %{activity} - %{activity_name} was changed to %{date}</p>"
+      change_to: "<p>Activity %{activity} - %{activity_name} was changed to %{date_start} to %{date_end}</p>"
+      afected_by_date: "It's not possible to change to choosen dates, because Não é possível alterar para a data escolhida, pois atividades já enviadas seriam afetadas. Choose new dates."
 
   assignments:
     restrict_assignment: "This place is not permit to do the assignment"
@@ -2624,6 +2629,7 @@ en_US:
       created: Semester wasn't created.
       updated: Semester wasn't updated.
       deleted: Semester wasn't deleted.
+      afected_by_date: "It's not possible to change to choosen dates, because Não é possível alterar para a data escolhida, pois atividades já enviadas seriam afetadas. Choose new dates."
     list:
       new: New Semester
       edit: Edit Semester
@@ -2633,6 +2639,7 @@ en_US:
       period: Period
       none: No semester registered
       choose_one_offer: Choose an offer
+      warning: "<p>By changing a semester or an offer period, if the new start date is bigger than any activity start date or the new end date be smaller, activities dates will be <b>updated automatically</b>. In case of any activity with <b>student's participations, grades or comments or webconferences with any access, it won't be allowed to update</b> semesters and offers dates.</p>"
     form:
       enable_end_date: Enable end date
   offers:
@@ -2646,6 +2653,7 @@ en_US:
       deleted: Offer wasn't deleted.
       already_exist: already exists an offer with informed data
       general_message: It was not possible to execute action
+      afected_by_date: "It's not possible to change to choosen dates, because Não é possível alterar para a data escolhida, pois atividades já enviadas seriam afetadas. Choose new dates."
     list:
       type: Type
       course: Course

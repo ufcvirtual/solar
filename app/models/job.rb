@@ -33,59 +33,44 @@ class Job
 
   def self.send_mass_email(emails, subject, new_msg_template, files=[], email=nil)
     unless AMOUNT.nil?
-      # Thread.new do
-      #   ActiveRecord::Base.forbid_implicit_checkout_for_thread!
-      #   ActiveRecord::Base.connection_pool.with_connection do
-          emails_in_jobs = emails.in_groups_of(AMOUNT, false).to_a rescue []
+      emails_in_jobs = emails.in_groups_of(AMOUNT, false).to_a rescue []
 
-          emails_in_jobs.each do |e|
-            job = Notifier.delay.send_mail(e, subject, new_msg_template, files, email)
-            job.amount = e.count
-            job.save!
+      emails_in_jobs.each do |e|
+        job = Notifier.delay.send_mail(e, subject, new_msg_template, files, email)
+        job.amount = e.count
+        job.save!
 
-          end
-          Job.job_send_mail
-        end
-    #   end
-    # end
+      end
+      Job.job_send_mail
+    end
   end
 
   def self.send_mass_email_post(emails, subject, post_id, info, discussion_name)
     unless AMOUNT.nil?
-      # Thread.new do
-      #   ActiveRecord::Base.forbid_implicit_checkout_for_thread!
-      #   ActiveRecord::Base.connection_pool.with_connection do
-          emails_in_jobs = emails.in_groups_of(AMOUNT, false).to_a rescue []
+      emails_in_jobs = emails.in_groups_of(AMOUNT, false).to_a rescue []
 
-          emails_in_jobs.each do |e|
-            job = Notifier.delay.post(e, subject, post_id, info, discussion_name)
-            job.amount = e.count
-            job.save!
+      emails_in_jobs.each do |e|
+        job = Notifier.delay.post(e, subject, post_id, info, discussion_name)
+        job.amount = e.count
+        job.save!
 
-          end
-          Job.job_send_mail
-        end
-    #   end
-    # end
+      end
+      Job.job_send_mail
+    end
   end
 
   def self.send_mass_email_exam(emails, subject, exam, acu, grade)
     unless AMOUNT.nil?
-      # Thread.new do
-      #   ActiveRecord::Base.forbid_implicit_checkout_for_thread!
-      #   ActiveRecord::Base.connection_pool.with_connection do
-          emails_in_jobs = emails.in_groups_of(AMOUNT, false).to_a rescue []
+      emails_in_jobs = emails.in_groups_of(AMOUNT, false).to_a rescue []
 
-          emails_in_jobs.each do |e|
-            job = Notifier.delay.exam(e, subject, exam, acu, grade)
-            job.amount = e.count
-            job.save!
+      emails_in_jobs.each do |e|
+        job = Notifier.delay.exam(e, subject, exam, acu, grade)
+        job.amount = e.count
+        job.save!
 
-          end
-          Job.job_send_mail
-        end
-    #   end
-    # end
+      end
+      Job.job_send_mail
+    end
   end
 
   # send email and save a clone at database

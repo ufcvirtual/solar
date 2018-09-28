@@ -23,7 +23,7 @@ class Assignment < Event
 
   validates :name, :enunciation, :type_assignment, presence: true
   validates :name, length: { maximum: 1024 }
-  
+
   validate :verify_date, on: :update, if: 'type_assignment_changed?'
 
   after_save :update_groups, on: :update, if: 'type_assignment_changed?'
