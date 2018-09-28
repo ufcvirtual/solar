@@ -8,7 +8,7 @@
     - else
       - if params[:support].blank?
         = f.input :contacts, as: :hidden, input_html: { value: [@reply_to].flatten.compact.map { |c| c[:id] }.join(', ') }
-    = f.input :support, as: :hidden, input_html: { value: params[:support].nil? ? "" : "#{t('messages.support_simple')}"}
+    = f.input :support, as: :hidden, input_html: { value: params[:support].nil? ? "" : "#{t('messages.support_email')}"}
     = hidden_field_tag :allocation_tag_id, @allocation_tag_id
     = hidden_field_tag :scores, @scores
 
