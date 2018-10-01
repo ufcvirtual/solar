@@ -222,7 +222,7 @@ class Group < ActiveRecord::Base
     academic_allocations.each do |academic_allocation|
       academic_tool = academic_allocation.academic_tool
 
-      if academic_allocation.academic_tool_type == 'ScheduleEvent' && academic_tool.integrated == true
+      if academic_allocation.academic_tool_type == 'ScheduleEvent' && academic_tool.integrated?
         
         if academic_tool.type_event == Presential_Test # eventos tipo 1 ou 2 chamada
           academic_allocation.evaluative = true
