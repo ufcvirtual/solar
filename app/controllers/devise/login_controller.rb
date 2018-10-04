@@ -36,7 +36,7 @@ class Devise::LoginController < Devise::SessionsController
     @return = 0
 
     return if params[:user].blank?
-    user = User.where("username = :login OR cpf = :login", login: params[:user][:login]).first
+    user = User.where("lower(username) = :login OR cpf = :login", login: params[:user][:login].downcase).first
 
     correct_password = user.valid_password?(params[:user][:password]) unless user.blank?
 
@@ -61,11 +61,11 @@ class Devise::LoginController < Devise::SessionsController
         correct_password = user.valid_password?(params[:user][:password])
       elsif (user.integrated && !user.on_blacklist? && !correct_password)
         user.synchronize
-        user = User.find_by_username(params[:user][:login])
+        user = User.where("lower(username) = :login OR cpf = :login", login: params[:user][:login].downcase).first
         correct_password = user.valid_password?(params[:user][:password])
       end
       unless correct_password
-        previous_user = User.where(previous_username: params[:user][:login])
+        previous_user = User.where("lower(previous_username) = :login", login: params[:user][:login].downcase)
         previous_user = previous_user.collect{|puser| puser if puser.valid_password?(params[:user][:password])}
         previous_user = previous_user.compact.first
         unless previous_user.blank?
