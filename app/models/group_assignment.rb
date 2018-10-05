@@ -199,7 +199,7 @@ class GroupAssignment < ActiveRecord::Base
           end
 
           unless groups_assignment_division.blank?
-            Notifier.send_mail(responsibles_emails, I18n.t("group_assignments.automatic_split_group_jobs"), email_template(groups_assignment_division), []).deliver
+            Job.send_mass_email(responsibles_emails, I18n.t("group_assignments.automatic_split_group_jobs"), email_template(groups_assignment_division), [])
           end          
 
         end
@@ -256,7 +256,7 @@ class GroupAssignment < ActiveRecord::Base
 
       assignment_groups.each do |key, value|
         assignment_key = key[-key.length..key.index("_")-1]
-        html = "<p> #{I18n.t('group_assignments.automatic_split_group_jobs', assignment_key: assignment_key)} </p>"
+        html = "<p> #{I18n.t('group_assignments.split_group_jobs', assignment_key: assignment_key)} </p>"
 
         value.each do |object|
           html << "<p>#{object.group_name}: "
