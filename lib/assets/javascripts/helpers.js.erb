@@ -689,3 +689,9 @@ function clear_ckeditor(){
     CKEDITOR.remove(CKEDITOR.instances[name]);
   }
 }
+
+function hide_element(event) {
+  event.preventDefault();
+  $('#file_size').hide();
+  $('#focu').focus();
+}

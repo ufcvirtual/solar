@@ -6,6 +6,7 @@
     - unless @wh.nil?
       %td{headers: 'frequency'}=student.working_hours
       %td{headers: 'faults'}=@wh.to_i - student.working_hours.to_i
+    %td{headers: 'partial_grade'}= student.partial_grade
     %td{headers: 'af_grade'}= student.af_grade
     %td{headers: 'final_grade'}=student.u_grade
     %td{headers: 'situation', class: status}= t("scores.index.#{status}")

@@ -36,8 +36,8 @@ $(function(){
             $(this).hide();
           });
           $(this).toggleClass("required");
-        });  
-      
+        });
+
       }else{
         $(".schedule_event_place").parent().attr('required', true);
         $(".schedule_event_start_hour, .schedule_event_end_hour").attr('required', true);
@@ -56,12 +56,183 @@ $(function(){
       $(".schedule_event_start_hour, .schedule_event_end_hour").hide();
     }
 
+    if($(this).val() == "<%= Presential_Test %>"){
+      $("#with_exam_content").show();
+      $("#without_exam_content").hide();
+
+      $("#steps").removeClass('steps');
+      $("#steps").addClass('steps_print');
+      $('li.print').removeClass('invisible');
+    } else {
+      $("#with_exam_content").hide();
+      $("#without_exam_content").show();
+
+      $("#steps").removeClass('steps_print');
+      $("#steps").addClass('steps');
+      $('li.print').addClass('invisible');
+    }
+
   });
 
-  $('#save').click(function(){
-    $('#event_form:last').serialize_and_submit({
-      replace_list: $(".calendar_schedules")
+  $('.save').click(function(){
+    save_values_ckeditor();
+    $('#event_form').serialize_and_submit({
+      replace_list: div_to_replace
     });
   });
 
+  $(".participants").click(function(){
+    var url = $(this).data("url");
+    $(this).call_fancybox({
+      href: url,
+      open: true,
+    });
+  });
+
+  $("#new_schedule_event").call_fancybox();
+
+  $(".all_schedule_event").nice_checkbox({objects_to_change_status: ['.print_event', '.btn_users'],});
+
+  $('.users_event').click(function() {
+    if ($(this).attr('disabled') == 'disabled'){
+      flash_message("<%= I18n.t(:choose_one, scope: [:schedule_events, :list]) %>", "alert");
+      return false;
+    }
+
+    var events = $('.ckb_event:checked', $(this).parents("div.list_schedule_events"));
+
+    var event_ids = events.map(function() { return this.value; }).get();
+    if (event_ids.length && event_ids.length == 1) {
+      var url_users = $(this).data('link-to-users').replace('event_id', event_ids[0]);
+      $(this).call_fancybox({href : url_users, open: true});
+    }
+
+    return false;
+  });
+
+  $('.print_event').click(function() {
+    if($('.edition').length >= 1){
+      if ($(this).attr('disabled') == 'disabled'){
+        flash_message("<%= I18n.t(:choose_one, scope: [:schedule_events, :list]) %>", "alert");
+        return false;
+      }
+
+      var events = $('.ckb_event:checked', $(this).parents("div.list_schedule_events"));
+      var event_ids = events.map(function() { return this.value; }).get();
+      if (event_ids.length && event_ids.length == 1) {
+        var url_print = $(this).data('link-to-print').replace('event_id', event_ids[0]);
+        $(this).call_fancybox({href : url_print, open: true});
+      }
+    }else
+      $(this).call_fancybox({href : $(this).data('link-to-print'), open: true});
+
+    return false;
+  });
+
+  $('.edit_event').click(function() {
+    if ($(this).attr('disabled') == 'disabled'){
+      flash_message("<%= I18n.t(:choose_one, scope: [:schedule_events, :list]) %>", "alert");
+      return false;
+    }
+
+    var events = $('.ckb_event:checked', $(this).parents("div.list_schedule_events"));
+
+    if ($(events).data('is-integrated')) {
+      flash_message("<%= I18n.t(:integrated_event_edit, scope: [:schedule_events, :list]) %>", "alert");
+      return false;
+    }
+
+    var event_ids = events.map(function() { return this.value; }).get();
+    if (event_ids.length && event_ids.length == 1) {
+      var url_edit = $(this).data('link-to-edit').replace(':id', event_ids);
+      $(this).call_fancybox({href : url_edit, open: true});
+    }
+
+    return false;
+  });
+
+  $('.delete_event').click(function(){
+
+    if ($(this).attr('disabled') == 'disabled'){
+      flash_message("<%= I18n.t(:choose_at_least_one, scope: [:schedule_events, :list]) %>", "alert");
+      return false;
+    }
+
+    var events = $('.ckb_event:checked', $(this).parents("div.list_schedule_events"));
+
+    var can_delete = true;
+    $(events).each(function (index, element) {
+      if ($(element).data('is-integrated')) {
+        flash_message("<%= I18n.t(:integrated_events_delete, scope: [:schedule_events, :list]) %>", "alert");
+        can_delete = false;
+        return false;
+      }
+    });
+
+    if (can_delete) {
+      if (!confirm("<%= I18n.t(:message_confirm) %>"))
+        return false;
+
+      if(!$(this).hasClass('disabled')){
+        var events_ids = events.map(function() { return this.value; }).get();
+
+        if ($(events_ids).length != 0){
+          $.delete($(this).data('link-delete').replace(':id', events_ids), function(data){
+            flash_message(data.notice, 'notice');
+            events.parents('tr').fadeOut().remove();
+
+            $(".btn_edit, .btn_del").attr("disabled", true);
+          }).error(function(data){
+            var data = $.parseJSON(data.responseText);
+            if (typeof(data.alert) != "undefined")
+            flash_message(data.alert, 'alert');
+          })
+        } else {
+          return false;
+        }
+      }
+    }
+  });
+
+  $(".expand, .compress").click(function(){
+    $(this).parent().hide();
+    $($(this).parent().siblings()[0]).show();
+  });
+
 });
+
+function destroy_editor() {
+  if (CKEDITOR.instances['schedule_event_content_exam']) {
+    CKEDITOR.instances['schedule_event_content_exam'].destroy();
+  }
+}
+
+function go_to_send_files(event) {
+  var keynum = event.which || event.keyCode;
+  if(keynum == 13 || event.type == 'click') {
+    $('.step-info').addClass('invisible');
+    $('.step-print').removeClass('invisible');
+
+    $('li.info').removeClass('active');
+    $('#dot-info').removeClass('active');
+    $('li.print').addClass('active');
+    $('#dot-print').addClass('active');
+
+    $.fancybox.update();
+  }
+}
+
+function back_to_info(event){
+  var keynum = event.which || event.keyCode;
+  if(keynum == 13 || event.type == 'click') {
+    $('.step-info').removeClass('invisible');
+    $('.step-print').addClass('invisible');
+
+    $('li.info').addClass('active');
+    $('#dot-info').addClass('active');
+    $('li.print').removeClass('active');
+    $('#dot-print').removeClass('active');
+
+    $.fancybox.update();
+  }
+}

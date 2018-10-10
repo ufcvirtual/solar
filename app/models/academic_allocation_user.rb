@@ -19,6 +19,7 @@ class AcademicAllocationUser < ActiveRecord::Base
   has_many :comments
 
   has_many :assignment_files
+  has_many :schedule_event_files
   has_many :assignment_webconferences
 
   has_many :discussion_posts, class_name: 'Post'
@@ -267,6 +268,8 @@ class AcademicAllocationUser < ActiveRecord::Base
     when 'Webconference'
       LogAction.where(academic_allocation_user_id: id, log_type: 7).delete_all
       self.delete
+    when 'ScheduleEvent'
+      schedule_event_files.delete_all
     else
       self.delete
     end

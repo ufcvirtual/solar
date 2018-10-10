@@ -1,0 +1,47 @@
+- show_fields = [Presential_Meeting, Presential_Test].include?(@event.type_event)
+.block_title
+  %h2{align: "center"}= t('.list_name', event: @event.title)
+  - if show_fields
+    %span.block_actions
+      = link_to content_tag(:i, nil, class: 'icon-install'), '#void', class: 'btn download_folder', :'aria-label' => t(".download_all"), :"data-tooltip" => t(".download_all"), :'data-url' => can_download_schedule_event_files_path(event_id: @event.id)
+- unless @participants.empty?
+  %table.tb_list
+    %thead
+      %tr.lines
+        %th{id: 'participant-name'}= t('.name')
+        - if show_fields && @can_send_file
+          %th.center{id: 'participant-send-file'}= t('.send_file')
+        - if @can_evaluate
+          %th.center{id: 'participant-evaluate-comments'}= t('.evaluate_comments')
+        %th.center{id: 'participant-grade'}= t('.grade')
+        %th.center{id: 'participant-wh'}= t('.working_hours')
+        - if show_fields
+          %th.center{id: 'participant-file'}= t('.files')
+        - if @can_print
+          %th.center{id: 'participant-print'}= t('schedule_events.list.print')
+
+    %tbody
+      - @participants.each do |participant|
+        %tr.lines
+          %td{headers: 'participant-name'}= participant.name
+          - if show_fields && @can_send_file
+            %td.center{headers: 'participant-send-file'}
+              = link_to content_tag(:i, nil, class: 'icon-plus'), "#void", id: "new_file-#{participant.id}", class: "btn btn_main btn_new_file", onclick: 'new_file(this)', :'data-url' => new_schedule_event_file_path(tool_id: @event.id, tool: 'ScheduleEvent', student_id: participant.id, score_type: '', situation: participant.situation), :"data-tooltip" => t(".send_file"), :'aria-label' => t('.send_file'), onkeydown: 'click_on_keypress(event, this);'
+          - if @can_evaluate
+            %td.center{headers: 'participant-evaluate-comments'}
+              = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: 'open_tool(this)', class: 'btn to_evaluate_schedule_event', :'data-url' => redirect_to_evaluate_scores_path(tool_type: 'ScheduleEvent', ac_id: participant.ac_id, user_id: participant.id, score_type: '', situation: participant.situation, back_to_participants: true), :"data-tooltip" => t(".evaluate_comments"), :'aria-label' => t('.evaluate_comments'), onkeydown: 'click_on_keypress(event, this);'
+          %td.center{headers: 'participant-grade'}= participant.grade || "-"
+          %td.center{headers: 'participant-wh'}= participant.working_hours || "-"
+          - if show_fields
+            %td.center.file_amount{headers: 'participant-file'}
+              = link_to (participant.count || 0), "#void", onclick: "open_summary(this); return false", :'data-url' => summary_schedule_event_files_path(ac_id: participant.ac_id, tool_id: @event.id, user_id: participant.id), :'data-tooltip' => t('.see_files'), :'aria-label' => t('.see_files'), onkeydown: 'click_on_keypress(event, this);'
+          - if @can_print
+            %td.center{headers: 'participant-print'}
+              = link_to (content_tag(:i, nil, class: 'icon-printer')), "#void", class: 'btn btn_print print_event fancybox.iframe', :"data-link-to-print" => print_presential_test_schedule_events_path(id: @event.id, allocation_tags_ids: @allocation_tag_id, student_id: participant.id), :"data-print-title" => t("schedule_events.list.print"), :"data-tooltip" => t("schedule_events.list.print")
+        %tr.file_form
+          %td.center{ colspan: 7 }
+            .file_form{ class: "new_file-#{participant.id}" }
+- else
+  .text_none= t(:itens_not_found)
+
+= javascript_include_tag 'tooltip', 'scores', 'schedule_event_files', 'schedule_events'

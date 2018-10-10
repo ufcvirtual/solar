@@ -1,0 +1,60 @@
+- show_fields = [Presential_Meeting, Presential_Test, WebConferenceLesson].include?(@schedule_event.type_event)
+.user_schedule_event
+  %h1#lightBoxDialogTitle= t(".title", user: @user.name, type: @schedule_event.type_name, event: @schedule_event.title)
+  %table.tb_list
+    %thead
+      %tr.lines
+        %th= t(".description")
+        %th.center= t(".date")
+        - unless @schedule_event.start_hour.blank?
+          %th.center= t(".time")
+        -if show_fields
+          %th.center= t(".place")
+    %tbody
+      %tr.lines
+        %td.center= @schedule_event.description
+        %td.center= [l(@schedule_event.schedule.start_date.to_date, format: :datepicker), l(@schedule_event.schedule.end_date.to_date, format: :datepicker)].join(' - ')
+        - unless @schedule_event.start_hour.blank?
+          %td.center= [@schedule_event.start_hour, @schedule_event.end_hour].join(t(".to"))
+        - if show_fields
+          %td.center= @schedule_event.place
+
+  .files
+    = render partial: 'schedule_event_files/list', locals: { files: @acu.try(:schedule_event_files), tool: @schedule_event, tool_type: 'ScheduleEvent', student_id: @student_id }
+
+  .comments
+    = render partial: 'comments/list', locals: { comments: @acu.try(:comments), tool: @schedule_event, tool_type: 'ScheduleEvent' }
+
+  - if @can_evaluate && (@ac.evaluative || @ac.frequency)
+    = simple_form_for :academic_allocation_user, url: evaluate_schedule_event_path(@schedule_event), html: { id: 'academic_allocation_user_grade_form', method: :put } do |f|
+      = f.input :user_id, as: :hidden, input_html: { value: @user.id }
+      = f.input :score_type, as: :hidden,  input_html: { value: @score_type }
+      .form-inputs.block_content
+        .inline
+          = f.input :grade, required: true, as: :float, step: 0.01, label: t(".grade"), input_html: { value: @acu.try(:grade), min:0, max:10 } if @ac.evaluative
+          - if @ac.frequency
+            = f.input :working_hours, required: true, as: :float, label: t(".frequency") + (@ac.frequency_automatic && !@acu.try(:evaluated_by_responsible) ? t("common_between_pages.frequency.automatic") : t("common_between_pages.frequency.defined")), input_html: { value: @acu.try(:working_hours), min:0, max: @ac.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@ac.max_working_hours.to_s ) }
+          %span= link_to t(:save), "#void", onclick: 'finish_evaluation(this)', class: 'btn btn_main'
+
+  - if @back_to_participants
+    %br
+    = button_tag t(:back), type: 'button', class: 'btn btn_default back', onclick: 'back_to_participants(this, event)', :'data-url' => participants_schedule_event_path(@ac.academic_tool_id)
+
+= javascript_include_tag 'schedule_event_files'
+
+:javascript
+  function finish_evaluation(btn){
+    var is_closable = "#{@back_to_participants}";
+    //verify_comment_before_finish_evaluation();
+    var form = $(btn).parents('form:first');
+    $.put(form.attr('action'), form.serialize(), function(data){
+      data.dont_close = (is_closable ? is_closable : undefined);
+      after_evaluate('ScheduleEvent', "#{@score_type}", "#{@ac.id}", "#{@user.id}", data);
+      if(is_closable)
+        flash_message(data.notice, 'notice', 'fancybox-outer');
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert', 'fancybox-outer');
+    });
+  }

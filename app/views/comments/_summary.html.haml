@@ -19,5 +19,9 @@
               = label_tag t(".working_hours"), nil, class: "form_label"
               %span.label_info= @acu.working_hours || raw(t('.no_wh'))
 
+  - if @files.any?
+    .files
+      = render partial: 'schedule_event_files/list', locals: { files: @acu.try(:schedule_event_files), tool: @tool, tool_type: 'ScheduleEvent', student_id: @acu.user_id }
+
   .comments
     = render partial: 'comments/list', locals: { comments: @acu.try(:comments), tool: @tool, tool_type: model_name }

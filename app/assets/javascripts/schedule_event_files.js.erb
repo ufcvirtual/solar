@@ -1,0 +1,124 @@
+$(function(){
+  $('#event_file_form:first').keypress(function(event) { if (event.keyCode == 13) { event.preventDefault(); } }); // prevenir enter
+
+  $('#save').click(function(){
+    var file_amount = $(this).closest('tr.file_form').prev('tr.lines').find('.file_amount').find('a');
+    $(this).closest('form').serialize_and_submit({
+      files: true,
+      prepend_to_list: $("#tb_lf tbody"),
+      dont_remove_lightbox: true,
+      outer: 'fancybox-outer',
+      error_message: '',
+      complement_success: function(data){
+        var count = (data.match(/<tr class='lines'>/g) || []).length;
+        count = parseInt(file_amount.text().trim()) + count;
+        file_amount.text(count);
+        $('#tb_lf').show();
+        $('.btn_new_file').show();
+        $(".event_file_form").html('');
+        if(!!$('.fancybox-outer').length)
+          flash_message("<%= I18n.t('schedule_event_files.success.created') %>", "notice", 'fancybox-outer');
+        else
+          flash_message("<%= I18n.t('schedule_event_files.success.created') %>", "notice");
+      }
+    });
+  });
+
+  $('#files_').change(function(){
+    var files = $(this)[0].files;
+    $.each(files, function(i){
+      $('.files_list').append("<div id='file'>"+files[i].name+" ("+file_size_human_readable(files[i])+")</div>");
+    });
+    validate_file_size(this, "<%=ScheduleEventFile::FILESIZE%>", "<%= I18n.t('schedule_event_files.error.attachment_file_size_too_big', file: (ScheduleEventFile::FILESIZE)/1000/1000) %>");
+  });
+
+  $('.download_folder, .download_file').on('click', function(){
+    $.get($(this).data('url'), function(data){
+      window.location.href = data.url;
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert', 'fancybox-outer');
+    });
+  });
+});
+
+function cancel_files() {
+  if(confirm("<%= I18n.t('schedule_event_files.new.confirm') %>")){
+    $('.btn_new_file').show();
+    cancel_new_files();
+    update_tables_with_no_data();
+  }
+}
+
+function new_file(link) {
+  $(".event_file_form").html('');
+  $(".btn_new_file").show();
+
+  $(link).hide();
+  var form_file = $(link).attr('id');
+
+  $.get($(link).data('url'), function(data){
+    $('.'+form_file).html(data);
+    $("#no_itens_message_file").addClass('hide_message');
+    $.fancybox.update();
+  }).error(function(data){
+    var data = $.parseJSON(data.responseText);
+    if (typeof(data.alert) != "undefined")
+      flash_message(data.alert, 'alert', 'fancybox-outer');
+  });
+}
+
+function add_new_file(){
+  $('#files_').click();
+}
+
+function file_size_human_readable(file) {
+  var file_size = file.size;
+
+  var file_size_extension = new Array('Bytes', 'KB', 'MB', 'GB');
+
+  var count = 0;
+  while(file_size >= 1000) {
+    file_size /= 1000;
+    count++;
+  }
+
+  return (Math.round(file_size*100)/100) + " " + file_size_extension[count];
+}
+
+function delete_file(button){
+  $(button).nice_delete({
+    parent: 'tr.lines',
+    complement_success: function(data) {
+      flash_message(data.notice, "notice", 'fancybox-outer');
+    },
+    error: function(data) {
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert', 'fancybox-outer');
+    },
+  });
+  update_tables_with_no_data();
+}
+
+function cancel_new_files(){
+  $(".event_file_form").html('');
+  $("#new_file").show();
+  return false;
+}
+
+function back_to_participants(link, event) {
+  var keynum = event.which || event.keyCode;
+  if(keynum == 13 || event.type == 'click') {
+    var url = $(link).data("url");
+
+    // verify_comment_before_finish_evaluation();
+
+    $(link).call_fancybox({
+      href: url,
+      open: true,
+    });
+  }
+}
+

@@ -92,6 +92,7 @@ class Exam < Event
     AcademicAllocationUser.joins(academic_allocation: [exam: :schedule])
             .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id")
             .where(exams: { id: id, status: true }).where(query.join(' AND '), { user_id: user_id })
+            .where("exam_user_attempts.id IS NOT NULL")
             .select("DISTINCT academic_allocation_users.*, academic_allocations.allocation_tag_id")
   end
 

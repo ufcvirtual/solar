@@ -238,7 +238,7 @@ class AllocationTag < ActiveRecord::Base
     if scores
       msg_query = Message.get_query('users.id', 'outbox', ats, { ignore_trash: false, ignore_user: true })
 
-      select << 'users.name, COALESCE(posts.count,0) AS u_posts, COALESCE(posts.count_discussions,0) AS discussions, COALESCE(logs.count,0) AS u_logs, COALESCE(sent_msgs.count,0) AS u_sent_msgs, COALESCE(grades.final_grade, 0) AS u_grade, COALESCE(grades.final_exam_grade, 0) AS af_grade, COALESCE(exams.count,0) AS exams, COALESCE(logs_a.count,0) AS webconferences, COALESCE(assignments.count,0) AS assignments, COALESCE(events.count,0) AS schedule_events, COALESCE(chats.count,0) AS chat_rooms, COALESCE(wh.working_hours, 0) AS working_hours, COALESCE(grades.grade_situation, allocations.grade_situation) AS grade_situation, groups.name AS origin_group_name, groups.code AS origin_group_code, groups.id AS origin_group_id, origin_at.id AS origin_at_id'
+      select << 'users.name, COALESCE(posts.count,0) AS u_posts, COALESCE(posts.count_discussions,0) AS discussions, COALESCE(logs.count,0) AS u_logs, COALESCE(sent_msgs.count,0) AS u_sent_msgs, COALESCE(grades.parcial_grade, 0) AS partial_grade, COALESCE(grades.final_grade, 0) AS u_grade, COALESCE(grades.final_exam_grade, 0) AS af_grade, COALESCE(exams.count,0) AS exams, COALESCE(logs_a.count,0) AS webconferences, COALESCE(assignments.count,0) AS assignments, COALESCE(events.count,0) AS schedule_events, COALESCE(chats.count,0) AS chat_rooms, COALESCE(wh.working_hours, 0) AS working_hours, COALESCE(grades.grade_situation, allocations.grade_situation) AS grade_situation, groups.name AS origin_group_name, groups.code AS origin_group_code, groups.id AS origin_group_id, origin_at.id AS origin_at_id'
 
       relations << <<-SQL
         LEFT JOIN (
@@ -313,7 +313,7 @@ class AllocationTag < ActiveRecord::Base
         LEFT JOIN allocation_tags AS origin_at ON groups.id = origin_at.group_id
       SQL
 
-      group << 'posts.count, logs.count, sent_msgs.count, COALESCE(grades.final_grade, 0), COALESCE(grades.final_exam_grade, 0), posts.count_discussions, exams.count, logs_a.count, assignments.count, events.count, chats.count, COALESCE(wh.working_hours, 0), COALESCE(grades.grade_situation, allocations.grade_situation), groups.name, groups.code, groups.id, origin_at.id'
+      group << 'posts.count, logs.count, sent_msgs.count, COALESCE(grades.parcial_grade, 0), COALESCE(grades.final_grade, 0), COALESCE(grades.final_exam_grade, 0), posts.count_discussions, exams.count, logs_a.count, assignments.count, events.count, chats.count, COALESCE(wh.working_hours, 0), COALESCE(grades.grade_situation, allocations.grade_situation), groups.name, groups.code, groups.id, origin_at.id'
     else
       select << "users.*, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name"
     end

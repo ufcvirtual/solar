@@ -133,5 +133,6 @@ end
   gem "compass-rails", "~> 1.1.7"
 # end
 
+gem 'htmlentities'
 # new relic
-#gem 'newrelic_rpm'
+# gem 'newrelic_rpm'
