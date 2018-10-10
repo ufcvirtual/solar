@@ -113,8 +113,6 @@ module V1::Contents
     #   exam.academic_allocation_users.map(&:delete_with_dependents)
     # }
 
-    # AcademicAllocationUser.joins(:academic_allocation).where(academic_allocations: {allocation_tag_id: allocation_tag}).where("academic_allocations.academic_tool_type != 'Exam' AND academic_allocations.academic_tool_type != 'ScheduleEvent'").map(&:delete_with_dependents) # remove todas as ACUs, EXCETO de prova pelos motivos descritos acima
-
     # remove todas as ACUs, EXCETO de prova pelos motivos descritos acima
     AcademicAllocationUser.joins(:academic_allocation).where(academic_allocations: {allocation_tag_id: allocation_tag}).where("academic_allocations.academic_tool_type != 'Exam' AND academic_allocations.academic_tool_type != 'ScheduleEvent'").map { |acu|
       acu.api = true

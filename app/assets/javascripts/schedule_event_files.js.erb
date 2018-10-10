@@ -3,8 +3,8 @@ $(function(){
 
   $('#save').click(function(){
     var link_to_amount_file = $(this).closest('tr.file_form').prev('tr.lines').find('.file_amount').find('a');
-    if (!link_to_amount_file.length) { 
-      let user_id = $("#schedule_event_file_user_id").val(); 
+    if (!link_to_amount_file.length) {
+      let user_id = $("#schedule_event_file_user_id").val();
       link_to_amount_file = $("#"+user_id);
     }
     $(this).closest('form').serialize_and_submit({
