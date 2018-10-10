@@ -52,6 +52,7 @@ class ScheduleEventFile < ActiveRecord::Base
 
   def can_destroy?
     raise 'remove' if !academic_allocation_user.grade.blank? || (academic_allocation.frequency_automatic == true && academic_allocation_user.evaluated_by_responsible == true) || (academic_allocation.frequency_automatic == false && !academic_allocation_user.working_hours.blank?) || academic_allocation_user.comments_count > 0
+    raise 'offer' unless allocation_tag.verify_offer_period
   end
 
   def delete_with_dependents

@@ -3553,7 +3553,7 @@ pt_BR:
       type: Arquivos podem ser enviados apenas para eventos dos tipos Prova Presencial e Encontro Presencial
       general_error: "Apenas arquivos de imagens (jpeg/png/gif) ou pdfs de até 2MB devem ser enviados em eventos dos tipos Encontro Presencial ou Prova Presencial."
       ended: Não é possível enviar arquivos enquanto a atividade não for finalizada.
-      offer: Não é possível enviar arquivos após o término da oferta.
+      offer: Não é possível enviar ou remover arquivos após o término da oferta.
       remove: Não é possível remover arquivos após o envio de nota, frequência ou comentários.
 
   agendas:

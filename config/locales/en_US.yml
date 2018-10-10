@@ -3248,7 +3248,7 @@ en_US:
       type: "Files can only be sent to events with the following types: Presential Test and Presential Meeting"
       general_error: "Only image (jpeg/png/gif) or pdf files of 2MB or less can be sent to Presential Tests or Presential Meetings."
       ended: It's not possible to send files before the end of activity.
-      offer: It's not possible to send files after offer's end.
+      offer: It's not possible to send or remove files after offer's end.
       remove: Não é possível remover arquivos após o envio de nota, frequência ou comentários.
 
   agendas:
