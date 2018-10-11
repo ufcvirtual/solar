@@ -1595,7 +1595,7 @@ en_US:
   menu_activity: Activities
   menu_discussion: Discussions
   menu_portfolio: Portfolio
-  menu_exam: Tests
+  menu_exam: Online Tests
   menu_chat: Chat
   menu_webconference: Webconference
   menu_score_student: Scores
@@ -3619,7 +3619,7 @@ en_US:
         menu_discussion_key: "Shift + D"
         menu_portfolio: "Portfolio (Assignments)"
         menu_portfolio_key: "Shift + A"
-        menu_exam: "Tests (Exams)"
+        menu_exam: "Online Tests (Exams)"
         menu_exam_key: "Shift + T"
         menu_score_student: "Scores"
         menu_score_student_key: "Shift + S"

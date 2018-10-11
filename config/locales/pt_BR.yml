@@ -1859,7 +1859,7 @@ pt_BR:
   menu_activity: Atividades
   menu_discussion: Fórum
   menu_portfolio: Portfolio
-  menu_exam: Prova
+  menu_exam: Prova Online
   menu_chat: Chat
   menu_webconference: Webconferência
   menu_score_student: Acompanhamento
@@ -3926,7 +3926,7 @@ pt_BR:
         menu_discussion_key: "Shift + F"
         menu_portfolio: "Portfolio"
         menu_portfolio_key: "Shift + T"
-        menu_exam: "Prova"
+        menu_exam: "Prova Online"
         menu_exam_key: "Shift + P"
         menu_score_student: "Acompanhamento"
         menu_score_student_key: "Shift + O"
