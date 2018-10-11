@@ -287,7 +287,7 @@ module V1::Contents
       acs.each do |ac_from, ac_to|
         AcademicAllocationUser.where(academic_allocation_id: ac_from.to_i).each do |acu_from|
           acu = AcademicAllocationUser.where(academic_allocation_id: ac_to.to_i, user_id: acu_from.user_id).first_or_initialize
-          acu.attributes = acu_from.attributes.except('id','academic_allocation_id')
+          acu.attributes = acu_from.attributes.except('id','academic_allocation_id', 'schedule_event_files_count')
           acu.merge = true
           acu.save
 
