@@ -93,6 +93,10 @@ class ScheduleEvent < Event
     api || new_record? || !integrated
   end
 
+  def can_add_group?
+    can_change?
+  end
+
   def self.verify_previous(acu_id)
     return false
   end
