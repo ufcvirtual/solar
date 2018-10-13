@@ -7,7 +7,6 @@
     %title= "Solar"
     = yield(:head)
   %body
-    %p= @offer_info
-    %p= @groups_codes
+    %p= [@offer_info, @groups_codes].join(' - ')
     %p= raw t("schedule_events.notifier.content_exam_title", title: @event.title, start_date: @event.schedule.start_date)
     %p{style: "color: #7C7C7C; font-size: 8pt; padding-top: 10px;"}= I18n.t("notifier.dont_reply_message")

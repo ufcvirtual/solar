@@ -18,7 +18,7 @@ class ScheduleEvent < Event
 
   validate :verify_content, if:  Proc.new{|event| [Presential_Test].include?(event.type_event) && content_exam_changed?}, on: :update
 
-  # after_update :notify_content, if: 'content_exam_changed?'
+  after_update :notify_content, if: 'content_exam_changed?'
 
   attr_accessor :api
 
@@ -174,13 +174,13 @@ class ScheduleEvent < Event
   end
 
   def notify_content
-    # emails = User.with_access_on('print_presential_test','schedule_events',allocation_tags.map(&:id), true).map(&:email).compact.uniq
+    emails = User.with_access_on('print_presential_test','schedule_events',allocation_tags.map(&:id), true).map(&:email).compact.uniq
 
-    # if emails.any?
-    #   Thread.new do
-    #     Notifier.notify_exam_content(self, emails, I18n.t('schedule_events.notifier.content_exam')).deliver
-    #   end
-    # end
+    if emails.any?
+      Thread.new do
+        Notifier.notify_exam_content(self, emails, I18n.t('schedule_events.notifier.content_exam')).deliver
+      end
+    end
   end
 
 end
