@@ -14,7 +14,7 @@
     = hidden_field_tag :type, score_type
     %div{ class: 'print_pdf' }
       = f.button :submit, :class => "btn",  value: t('scores.index.print_pdf')
-  = link_to "Enviar Mensagem", "#", class: "btn btn_send_msg", disabled: true
+  = link_to t('messages.send_message'), "#", class: "btn btn_send_msg", disabled: true, :'data-url' => new_by_scores_messages_path(user_ids: ':user_ids')
 
 .parent
   %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('scores.index.list_of_students')  }

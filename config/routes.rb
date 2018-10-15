@@ -287,6 +287,7 @@ Solar::Application.routes.draw do
       get :academic
       get :content
       get :repositories
+      post :automatic_management
       get :tool_management
       get :discussion_tool_management, tool_name: 'Discussion', to: :tool_management
       get :exam_tool_management, tool_name: 'Exam', to: :tool_management
@@ -521,9 +522,10 @@ Solar::Application.routes.draw do
       delete :delete_online_correction_canvas
     end
     collection do
+      get :can_download
       get :download
       get :zip_download, to: :download, defaults: {zip: true}
-      get :summary , to: 'academic_allocation_users#files_sent', tool: 'ScheduleEvent'
+      get :summary
     end
   end
 
@@ -553,11 +555,10 @@ Solar::Application.routes.draw do
       get "download/file/:file_id", to: "messages#download_files", as: :download_file
 
       get :support_new, to: "messages#new", as: :support_new, support: true
+
+      get "new_message_score_user/:user_ids", to: 'messages#new_score_message_user', as: :new_by_scores
     end
   end
-
-  get "new_message_score_student/:id", to: 'messages#new_score_message_student'
-  get "new_message_score_student/", to: 'messages#new_score_message_student'
 
   # resources :tabs, only: [:show, :create, :destroy]
   get :activate_tab, to: "tabs#show"   , as: :activate_tab

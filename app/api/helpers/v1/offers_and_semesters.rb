@@ -6,7 +6,7 @@ module V1::OffersAndSemesters
   end
 
   def get_offer(curriculum_unit_code, course_code, semester)
-    Offer.joins(:semester).where(curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first, 
+    Offer.joins(:semester).where(curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first,
                course_id: Course.where(code: course_code).first, semesters: {name: semester}).first
   end
 
@@ -18,6 +18,7 @@ module V1::OffersAndSemesters
       semester.build_offer_schedule offer_period
       semester.build_enrollment_schedule enrollment_period
       semester.verify_current_date = false # don't validates initial date
+      semester.api = true
       semester.save!
     end
 
@@ -63,6 +64,7 @@ module V1::OffersAndSemesters
     (offer.enrollment_schedule.nil? ? offer.build_enrollment_schedule(enrollment_period) : offer.enrollment_schedule.update_attributes!(enrollment_period)) if params[:enrollment_start].present? or params[:enrollment_end].present?
 
     offer.verify_current_date = false
+    offer.api = true
 
     offer.save!
   end

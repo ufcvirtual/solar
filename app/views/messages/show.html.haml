@@ -30,7 +30,8 @@
       = "#{user.name} <#{user.get_email}>"
     .message_text_to
       .label-show.align-left= t(".to")
-      = sanitize @message.recipients.map { |r| "#{r.nick} &lt;#{r.get_email}&gt;" }.join(', ')
+      - support_contact = @message.support.blank? ? "" : "Atendimento &lt;#{@message.support}&gt;"
+      = sanitize @message.recipients.map { |r| "#{r.nick} &lt;#{r.get_email}&gt;" }.concat([support_contact]).join(', ')
     .message_time
       .label-show.align-left=t('.sent_at')
       =l(@message.created_at, format: :at_date)

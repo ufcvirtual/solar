@@ -43,9 +43,9 @@
       $('tbody :checkbox:checked').each(function(index, element){
         students_ids.push(element.value)
       });
-
+      var url = $(this).data('url').replace(':user_ids', students_ids.join(","));
       $(this).call_fancybox({
-        href: '/new_message_score_student/' + students_ids.join(","),
+        href: url,
         open: true
       });
 

@@ -31,5 +31,10 @@ if (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['run_scheduler'] 
   scheduler.cron '1 0 * * *' do
     GroupAssignment.split_students_in_groups #criação automática de grupos de trabalho
   end
+  
+  #minutos e horas * * * 00:10
+  scheduler.cron '10 0 * * *' do
+    Group.management_groups
+  end
 
 end

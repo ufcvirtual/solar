@@ -1,6 +1,8 @@
 - no_files = @files.nil? || @files.empty? ? true : false
+- can_send_file = can?(:create, ScheduleEventFile, on: [@allocation_tag_id])
+- can_correct = can?(:online_correction, ScheduleEventFile, on: [@allocation_tag_id])
 .user_schedule_event
-  %h1#lightBoxDialogTitle= t(".title", user: current_user.name, tool: (@tool.title rescue @tool.name))
+  %h1#lightBoxDialogTitle= t(".title", user: @acu.user.name, tool: (@tool.title rescue @tool.name))
   %table.tb_list
     %thead
       %tr.lines
@@ -8,14 +10,15 @@
         %th.center{id: "size_file" }= t('.size')
         %th.date_column.center{id: "sent_on_file" }= t('.sent_on')
         %th.date_column.center{id: "sent_by_file" }= t('.sent_by')
-        - if (can?(:online_correction, ScheduleEventFile, on: [@allocation_tag_id]) && @allocation_tag_id.class != Array)
+        - if can_correct
           %th.no_sort.center{id: "correction_file" }= t('.online_correction')
-        - if (can?(:create, ScheduleEventFile, on: [@allocation_tag_id]) && @allocation_tag_id.class != Array)
+        - if can_send_file
           %th.no_sort{id: "delete_file" }
             .visuallyhidden=t("schedule_event_files.file.delete")
     %tbody
-      = render partial: 'schedule_event_files/files', locals: { files: @files }
-  .text_none.empty_message{class: (no_files ? "" : "hide_message")}= t(:itens_not_found)
+      = render partial: 'schedule_event_files/files', locals: { files: @files, can_send_file: can_send_file, can_correct: can_correct }
+  .block_content_text.block_content_text_list.text_none{class: (no_files ? "" : "hide_message")}= t(:itens_not_found)
+
 
 %br
 = button_tag t(:back), type: 'button', class: 'btn btn_default', onclick: 'back_to_participants(this, event)', :'data-url' => participants_schedule_event_path(@tool.id)

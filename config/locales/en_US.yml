@@ -272,6 +272,7 @@ en_US:
         min_final_exam_grade: Minimum final exam grade allowed
         final_exam_passing_grade: Minimum final grade to approval after final exam
         has_exam_header: Header for presential tests
+        header_exam: Standardized header to presential tests (events)
       discussion_post:
         content: Content
       post:
@@ -724,8 +725,10 @@ en_US:
   date_name: Date
   help: "Help"
   new_window: " (This link will open a new window)"
-  start_menu: "Begin of menu"
-  end_menu: "End of menu"
+  start_menu: "Menu's begin"
+  end_menu: "Menu's end"
+  start_content: "Content's begin"
+  end_content: "Content's end"
   tutorials: "Tutorials"
   context: "Contextual"
   contact: Contact us
@@ -975,7 +978,9 @@ en_US:
       private_lesson: You can't import a private lesson unless you're the owner
       general_message: It was not possible to execute action
       draft_lesson: You can't import a draft lesson
-      blank_address: Must have an URL or main file
+      blank_address: Lesson %{lesson_name} was not published. Must have an URL or initial file
+      undefined_initial_file: "Aula %{lesson_name} was not published. A initial file is necessary."
+      extract_zip: It was not possible to, automatically, extract files from zip of lesson %{lesson_name}.
     success:
       saved_as_draft: Lessons were sucessfully created or saved as draft
       deleted: Lessons were successfully created
@@ -983,6 +988,11 @@ en_US:
       created: Lesson was sucessfully created
       updated: Lesson was sucessfully updated
       imported: Lessons/modules sucessfully imported
+      initial_file: "Initial file %{lesson_address} defined in %{lesson_name}"
+      published: "Lesson(s) published successfully."
+      draft: "Lesson(s) set as draft successfully."
+      some_published: "Other lessons published successfully"
+      extract_zip: Zip files from lesson %{lesson_name} were extracted automatically.
     form:
       cancel: Cancel
       groups: Groups
@@ -996,6 +1006,8 @@ en_US:
       uncheck_receive_updates: "After saving, any update made at source lesson won't be copied to this lesson."
       public_to_private: "Changing to private, already imported lessons won't be removed. However, won't will receive updates neither will be possible to make new imports from this lesson if not the owner."
       warning: "Source lesson is private, therefore this lesson won't receive updates."
+      responsive: Responsive
+      responsive_tooltip: A responsive lesson will be displayed on mobile devices, however the lesson content should be responsive.
     select_lesson:
       no_lessons: Sem Aulas
     show:
@@ -1056,6 +1068,7 @@ en_US:
       lmodule_menu: " %{lmodule} (Click to change lesson module. A selection lesson modules submenu will be available)"
       lesson_menu: " %{lesson} (Click to change lesson. A selection lesson submenu will be available)"
       download: "Download lesson in PDF file"
+      download_file: "If you can't run the file, click here to download"
   lesson_modules:
     general_of_offer: General
     general_of_group: General of group
@@ -1659,7 +1672,7 @@ en_US:
       inactive: 'Your account was not activated yet.'
       invalid_login: Invalid username.
       invalid_login_si3: Invalid username. Click on 'Register' to verify your CPF so you can know if you are registered or if don't and, if registered on SI3, so we can update your data.
-      invalid_password_si3: Invalid login. The password should not have the characters ẽĩũ, please change your password on SI3.
+      invalid_password_si3: Password must not have the characters "ẽ, ĩ, ũ". Please change your password on SI3. Any doubt or difficulty, get in touch with atendimento@virtual.ufc.br with this error message.
       user:
         not_found_in_database: 'Username or password invalid.'
     login:
@@ -1891,6 +1904,11 @@ en_US:
       body: "We inform that your lesson %{name} imported from %{from} to %{to} will not receive any more updates from source lesson due to the fact that source is now private."
       user: "Dear %{user},"
       subject: '[SOLAR] Private lesson'
+    activities_update:
+      subject: "Date range update to activities"
+      change: "<p>Activity %{activity} - %{activity_name} was changed to %{date}</p>"
+      change_to: "<p>Activity %{activity} - %{activity_name} was changed to %{date_start} to %{date_end}</p>"
+      afected_by_date: "It's not possible to change to choosen dates, because Não é possível alterar para a data escolhida, pois atividades já enviadas seriam afetadas. Choose new dates."
 
   assignments:
     restrict_assignment: "This place is not permit to do the assignment"
@@ -1996,7 +2014,7 @@ en_US:
       summary: "This table contains the following information: Description of the activity, period that can be performed, situation, whether it is evaluating or not, whether it is an activity that counts frequency or not, grade, hours and comments."
       summary_info: "This table contains the following information: Start date and End date being the period that the student can send his activity, in addition to the situation of the activity and note if it has been corrected."
       summary_descricao: "This table contains a description of the activity to be performed."
-      summary_files: "This table contains the files sent by the teacher / tutor to download."
+      summary_files: "This table contains the files sent by responsibles to download."
       summary_comments: "This table contains comments made about the activity. Comments may have attached files."
       summary_student_files: "This table contains the files sent by the student, with the following information: Name, size, date of sending and who sent the file in addition to the size of the file."
       summary_web: "This table contains the webconferences scheduled by the students, with the following information: Name, period, sitation, if it was recorded and finished."
@@ -2110,6 +2128,8 @@ en_US:
       imported: Groups and participants imported successfully.
     new:
       new_group_name: New group
+    automatic_split_group_jobs:  Automatic split of group assignment
+    split_group_jobs: "Assignment %{assignment_key} starts today, students without groups were automatically split or inserted into other groups as follows:"
   public_files:
     index:
       title: "Public area of %{name}"
@@ -2614,6 +2634,7 @@ en_US:
       created: Semester wasn't created.
       updated: Semester wasn't updated.
       deleted: Semester wasn't deleted.
+      afected_by_date: "It's not possible to change to choosen dates, because Não é possível alterar para a data escolhida, pois atividades já enviadas seriam afetadas. Choose new dates."
     list:
       new: New Semester
       edit: Edit Semester
@@ -2623,6 +2644,7 @@ en_US:
       period: Period
       none: No semester registered
       choose_one_offer: Choose an offer
+      warning: "<p>By changing a semester or an offer period, if the new start date is bigger than any activity start date or the new end date be smaller, activities dates will be <b>updated automatically</b>. In case of any activity with <b>student's participations, grades or comments or webconferences with any access, it won't be allowed to update</b> semesters and offers dates.</p>"
     form:
       enable_end_date: Enable end date
   offers:
@@ -2636,6 +2658,7 @@ en_US:
       deleted: Offer wasn't deleted.
       already_exist: already exists an offer with informed data
       general_message: It was not possible to execute action
+      afected_by_date: "It's not possible to change to choosen dates, because Não é possível alterar para a data escolhida, pois atividades já enviadas seriam afetadas. Choose new dates."
     list:
       type: Type
       course: Course
@@ -2899,8 +2922,12 @@ en_US:
     no_new: "No new messages"
     no_subject: "(no subject)"
     support: "Support <atendimento@virtual.ufc.br>"
+    support_only_email: "<atendimento@virtual.ufc.br>"
+    support_email: "atendimento@virtual.ufc.br"
     support_html: "Support &lt;atendimento@virtual.ufc.br&gt;"
+    support_simple: "Support"
     no_mail: no email
+    send_message: Send Message
     contacts:
       title: "Selection of contacts"
       contacts: "Contacts"
@@ -3047,9 +3074,7 @@ en_US:
   schedule_events:
     restrict_events: "Not allowed to access events"
     index:
-      events_list: Events List
-      individual_events: Individual Events
-      group_events: Group Events
+      events_list: Events
     events:
       name: Name
       data_range: Data range
@@ -3084,6 +3109,7 @@ en_US:
       created: Event was successfully created.
       updated: Event was successfully updated.
       deleted: Event was successfully deleted.
+      updated_content: Test's content successfully updated. Any other change was ignored due this event is integrated to others systems.
     error:
       range_hour_error: must be posterior to final hour
       created: Event wasn't created.
@@ -3133,14 +3159,14 @@ en_US:
       place: Place
       choose_one: "Choose a event"
       choose_at_least_one: "Choose at least one event"
-      integrated_event_edit: 'This event has integration with other databases and therefore can not be edited'
+      integrated_event_edit: "This event has integration with other databases and therefore all fieds except it's content can not be edited"
       integrated_events_delete: 'There are selected events that can not be removed due to integration with other databases'
       print: Print exam
       users: Print individual exam
     participants:
       title: Participants
       student: Students
-      list_name: Students List
+      list_name: "Students List: %{event}"
       name: Name
       send_file: Send File
       evaluate_comments: Evaluate/Comments
@@ -3148,6 +3174,7 @@ en_US:
       working_hours: Working Hours
       files: Files
       see_files: See files sent
+      download_all: Download of all student's files
     presential_test_participants:
       list_name: Students List
       name: Name
@@ -3163,7 +3190,7 @@ en_US:
       size: Size
       sent_on: Sent on
       sent_by: Sent by
-      summary_files: Files sent by the tutor
+      summary_files: Files sent by responsibles
       online_correction: Online correction
     summary:
       title: "Files to %{user} at %{tool}"
@@ -3203,11 +3230,14 @@ en_US:
       remove: It was not possible to remove file.
       new: It was not possible to send file.
       not_started_up: It was not possible to send file. Event not started yet.
-      attachment_file_size_too_big: File too large. The maximum size should be up to 26MB.
+      attachment_file_size_too_big: "File too large. The maximum size should be up to %{file}MB."
       wrong_type: file type is not allowed (only jpeg/png/gif images or pdfs)
       situation: Can not send files yet, because the activity was not started.
       file_not_saved: It was not possible to save file.
       file_not_cleaned: It was not possible to clean file.
+      cant_download: It's not possible to download this(these) file(s)
+      type: "Files can only be sent to events with the following types: Presential Test and Presential Meeting"
+      general_error: "Only image (jpeg/png/gif) or pdf files of 2MB or less can be sent to Presential Tests or Presential Meetings."
 
   agendas:
     dropdown_content:
@@ -3640,11 +3670,6 @@ en_US:
       code:
         window: 65
         analyzer_position: 83
-    schedule_events:
-      name:
-        events_list: "Events List [E]"
-      code:
-        events_list: 69
 
   scores:
     index:
@@ -4627,6 +4652,8 @@ en_US:
       no_frequency_tools: There are no frequency activity to this action.
       changes: "Activities managed successfully. Some tools already have grades and working hours for some students. If an already evaluated activity is no longer evaluative, it's grade no longer will count at student's final grade. The same to working hours. It's also important to check if new maximum working hours are not smaller than already evaluated working hours."
       evaluative: One or more of the removed tools were evaluatives / frequency tools. Is important to check evaluative/frequency activity management to verify weights and working_hours.
+    messages:
+      execute_manage_tool: Run automatic management?
 
   academic_allocation_users:
     errors:

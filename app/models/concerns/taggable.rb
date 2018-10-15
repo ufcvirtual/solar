@@ -15,7 +15,6 @@ module Taggable
     has_many :allocations, through: :allocation_tag
     has_many :users,       through: :allocation_tag
 
-
     attr_accessor :user_id, :api
   end
 
