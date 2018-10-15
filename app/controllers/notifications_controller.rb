@@ -17,12 +17,8 @@ class NotificationsController < ApplicationController
   before_filter only: [:new, :create] do |controller|
     get_groups_by_allocation_tags
     authorize! :create, Notification, {on: @allocation_tags_ids, accepts_general_profile: true}
-  end
-
-
-  before_filter only: [:new, :create] do |controller|
     @can_mark_as_mandatory = current_user.profiles_with_access_on(:mark_as_mandatory, :notifications, (@allocation_tags_ids.split(' ') rescue nil), false, false, true).any?
-   end
+  end
 
   layout false
 
