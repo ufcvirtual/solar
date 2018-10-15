@@ -141,7 +141,7 @@ class LessonsController < ApplicationController
 
   # GET /lessons/1/edit
   def edit
-    verify_owner(params[:id])
+    # verify_owner(params[:id])
     lesson_modules_by_ats(@allocation_tags_ids)
     groups_by_lesson(@lesson)
   end
@@ -149,7 +149,7 @@ class LessonsController < ApplicationController
   # PUT /lessons/1
   # PUT /lessons/1.json
  def update
-    verify_owner(params[:id])
+    # verify_owner(params[:id])
     @lesson.update_attributes! lesson_params
 
     render json: { success: true, notice: t('lessons.success.updated') }
@@ -263,10 +263,11 @@ class LessonsController < ApplicationController
   end
 
   def change_module
-    verify_owner(lesson_ids = params[:lessons_ids].split(',') rescue [])
+    lesson_ids = params[:lessons_ids].split(',') rescue []
+    # verify_owner(lesson_ids = params[:lessons_ids].split(',') rescue [])
     authorize! :change_module, Lesson, on: params[:allocation_tags_ids]
 
-    verify_owner(lesson_ids)
+    # verify_owner(lesson_ids)
 
     new_module_id = LessonModule.find(params[:move_to_module]).id rescue nil
 

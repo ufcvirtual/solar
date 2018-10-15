@@ -5,7 +5,7 @@
     %meta{name:'viewport', content:'width=device-width, initial-scale=1, shrink-to-fit=no'}
     %title= show_breadcrumb_title
     = stylesheet_link_tag "application", "jquery.fancybox3.min", "online_correction_files", "viewer"
-    = javascript_include_tag 'jquery-3.3.1.min', 'jquery.fancybox3.min', 'pdfjs/pdf', 'online_correction_files'
+    = javascript_include_tag 'jquery-3.3.1.min', 'jquery.fancybox3.min', 'pdfjs/pdf', 'online_correction_files' , "jspdf.min"
     = csrf_meta_tag
   %body{oncontextmenu: "return false;"}
     %header#topbar
@@ -15,21 +15,48 @@
         %ul.topbar-options
           %li#save
             %a{href: "#"}= t(:save)
-          %li#tools
-            %a{href: "#", onclick: "submenuToggle()"}= t(".tools")
+          %li#clear
+            %a{href: "#"}= t('.clear')
+          %li#download
+            %a{href: "#"}= t(:download)
+          %li#color
+            %a{href: "#",  onclick: "submenuToggle(event, this)"}= t(".colors")
             %ul.submenu
               %li
-                %a#hand-tool{href: "#", onclick: "toolChanger(event, this)"}
+                %a#black{href: "#", onclick: "toolChanger(this)"}
+                  .black-circle
+                  = t(".black")
+              %li
+                %a#red{href: "#", onclick: "toolChanger(this)"}
+                  .red-circle
+                  = t(".red")
+              %li
+                %a#blue{href: "#", onclick: "toolChanger(this)"}
+                  .blue-circle
+                  = t(".blue")
+          %li#tools
+            %a{href: "#", onclick: "submenuToggle(event, this)"}= t(".tools")
+            %ul.submenu
+              %li
+                %a#hand-tool{href: "#", onclick: "toolChanger(this)"}
                   %i.icon-hand
                   = t(".hand")
               %li
-                %a#text-tool{href: "#", onclick: "toolChanger(event, this)"}
+                %a#text-tool{href: "#", onclick: "toolChanger(this)"}
                   %i.icon-write
                   = t(".text")
               %li
-                %a#brush-tool{href: "#", onclick: "toolChanger(event, this)"}
+                %a#brush-tool{href: "#", onclick: "toolChanger(this)"}
                   %i.icon-pencil
                   = t(".brush")
+              %li
+                %a#undo{href: "#", onclick: "toolChanger(this)"}
+                  %i.icon-redo
+                  = t(".undo")
+              %li
+                %a#redo{href: "#", onclick: "toolChanger(this)"}
+                  %i.icon-redo2
+                  = t(".redo")
           %li#user
             = image_tag current_user.user_photo(:small), alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", :'aria-hidden' => 'true'
             = current_user.nick
@@ -41,26 +68,52 @@
                 = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: "erase_flash_messages(true)", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
 
     #box-tools
+      %span.close-button{onclick: 'hideDiv(this)'}
+        %i.icon-cross.close
       #box-tools-header
-        = t(".tools")
+        = t(".tools") +  " " + t(".colors")
       %ul
         %li
-          %a#hand-tool{href: "#void", onclick: "toolChanger(event, this)"}
+          %a#hand-tool{href: "#void", onclick: "toolChanger(this)"}
             %i.icon-hand
             = t(".hand")
         %li
-          %a#text-tool{href: "#void", onclick: "toolChanger(event, this)"}
+          %a#text-tool{href: "#void", onclick: "toolChanger(this)"}
             %i.icon-write
             = t(".text")
         %li
-          %a#brush-tool{href: "#void", onclick: "toolChanger(event, this)"}
+          %a#brush-tool{href: "#void", onclick: "toolChanger(this)"}
             %i.icon-pencil
             = t(".brush")
+        %li
+          %a#undo{href: "#void", onclick: "undo()"}
+            %i.icon-redo
+            = t(".undo")
+        %li
+          %a#redo{href: "#void", onclick: "redo()"}
+            %i.icon-redo2
+            = t(".redo")
+        %li
+          %a#black{href: "#void", onclick: "toolChanger(this)"}
+            .black-circle
+            = t(".black")
+        %li
+          %a#red{href: "#void", onclick: "toolChanger(this)"}
+            .red-circle
+            = t(".red")
+        %li
+          %a#blue{href: "#void", onclick: "toolChanger(this)"}
+            .blue-circle
+            = t(".blue")
 
     %main.container
 
-    #loading
+    #saving
       %h2= t('.saving_file')
+      %img= image_tag('loading.gif')
+
+    #cleaning
+      %h2= t('.deleting_canvas')
       %img= image_tag('loading.gif')
 
 :javascript
@@ -69,6 +122,53 @@
 
     var url = "#{@file_path}"; // Url to render file
     var editions_by_user = JSON.parse('#{@canvas_data}');
+    var file_name = "#{@file_name}";
+    var message_confirm_cleaning = "#{t('schedule_event_files.online_correction.message_confirm_cleaning')}";
+
+    $("#download > a").click(function(event){
+      var pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'px',
+        format: 'a4',
+      });
+
+      var canvas_in_page = document.querySelector("main").querySelectorAll("canvas");
+
+      canvas_in_page.forEach(function (canvas, index) {
+        var imgData = canvas.toDataURL("image/jpeg", 1.0);
+        pdf.addImage(imgData, 'JPEG', 0 , 0, 450, 630);
+        if(index < canvas_in_page.length-1) {
+          pdf.addPage();
+        }
+      });
+
+      if(file_name.search(".pdf") == -1) {
+        file_name += ".pdf";
+      }
+
+      pdf.save(file_name);
+    });
+
+    $("#clear > a").click(function(event){
+      var delete_canvas = confirm(message_confirm_cleaning);
+      if(delete_canvas) {
+        $.fancybox.open($('#cleaning'));
+        $.ajax({
+          url: "delete_online_correction_canvas",
+          type: "DELETE",
+          beforeSend: function (xhr){
+            var token = $("meta[name='csrf-token']").attr("content");
+            xhr.setRequestHeader("X-CSRF-Token", token);
+          }
+        }).done(function (data) {
+          $.fancybox.close();
+          location.reload(true);
+        }).fail(function(jqXHR, textStatus, data){
+          $.fancybox.close();
+          flash_message(data.alert, 'alert');
+        });
+      }
+    });
 
     $("#save > a").click(function(event){
       var images = {};
@@ -77,16 +177,17 @@
         images[canvas.id] = canvas.toDataURL('image/png');
       });
 
-      salving();
+      $.fancybox.open($('#saving'));
       $.ajax({
         url: "save_online_correction_file",
         data: { imgs: images },
         type: "POST",
         beforeSend: function (xhr){
-          var token =$("meta[name='csrf-token']").attr("content");
+          var token = $("meta[name='csrf-token']").attr("content");
           xhr.setRequestHeader("X-CSRF-Token", token);
         }
       }).done(function (data) {
+        there_is_change_without_save = false;
         $.fancybox.close();
         flash_message(data.notice, 'notice');
       }).fail(function(jqXHR, textStatus, data){
@@ -100,4 +201,22 @@
     } else {
       renderPDF(url, editions_by_user);
     }
+
+    $(document).keydown(function (event) {
+      if(!$("input").is(":focus") && !$("textarea").is(":focus")){
+        var keynum  = event.which || event.keyCode;
+
+        if(event.ctrlKey && keynum == 90) {
+          undo();
+        }
+        if(event.ctrlKey && keynum == 89) {
+          redo();
+        }
+        if(keynum == 27) {
+          $("#box-tools").hide(150);
+        }
+      }
+    });
+
+    window.onbeforeunload = windowCloseHandler;
   });

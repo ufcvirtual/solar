@@ -9,15 +9,15 @@
         - unless @schedule_event.start_hour.blank?
           %th.center= t(".time")
         -if show_fields
-          %th= t(".place")
+          %th.center= t(".place")
     %tbody
       %tr.lines
-        %td= @schedule_event.description
+        %td.center= @schedule_event.description
         %td.center= [l(@schedule_event.schedule.start_date.to_date, format: :datepicker), l(@schedule_event.schedule.end_date.to_date, format: :datepicker)].join(' - ')
         - unless @schedule_event.start_hour.blank?
-          %td= [@schedule_event.start_hour, @schedule_event.end_hour].join(t(".to"))
+          %td.center= [@schedule_event.start_hour, @schedule_event.end_hour].join(t(".to"))
         - if show_fields
-          %td= @schedule_event.place
+          %td.center= @schedule_event.place
 
   .files
     = render partial: 'schedule_event_files/list', locals: { files: @acu.try(:schedule_event_files), tool: @schedule_event, tool_type: 'ScheduleEvent', student_id: @student_id }
@@ -45,7 +45,7 @@
 :javascript
   function finish_evaluation(btn){
     var is_closable = "#{@back_to_participants}";
-    verify_comment_before_finish_evaluation();
+    //verify_comment_before_finish_evaluation();
     var form = $(btn).parents('form:first');
     $.put(form.attr('action'), form.serialize(), function(data){
       data.dont_close = (is_closable ? is_closable : undefined);

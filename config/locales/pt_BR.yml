@@ -44,7 +44,7 @@ pt_BR:
     day_names: [Domingo, Segunda, "Terça", Quarta, Quinta, Sexta, "Sábado"]
     abbr_day_names: [Dom, Seg, Ter, Qua, Qui, Sex, "Sáb"]
     month_names: ['', Janeiro, Fevereiro, "Março", Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro]
-    abbr_month_names: ['', Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez]
+    abbr_month_names: ['', Jan, Fev, Mar ,Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez]
     order:
         - :day
         - :month
@@ -248,6 +248,7 @@ pt_BR:
       comment_file: Arquivo
       email: Email
       supportmaterialfile: Material de Apoio
+      schedule_event_file: Arquivo
     attributes:
       user:
         alternate_email: "E-mail alternativo"
@@ -309,6 +310,7 @@ pt_BR:
         min_final_exam_grade: Nota mínima permitida para AF
         final_exam_passing_grade: Média mínima para aprovação após realização de AF
         has_exam_header: "Cabeçalho para as provas presenciais"
+        header_exam: Cabeçalho padronizado para as provas presenciais (eventos)
       discussion_post:
         content: Conteúdo
       post:
@@ -567,6 +569,10 @@ pt_BR:
         code: Código
         name: Nome
         location: Localização
+      schedule_event_file:
+        attachment_content_type: ""
+        attachment_file_size: ""
+        attachment_file_name: ""
     errors:
       uniqueness: "Registro já existe no sistema"
       template:
@@ -797,6 +803,7 @@ pt_BR:
   verify: "Verificar"
   back: "Voltar"
   save: "Salvar"
+  download: "Baixar"
   continue: "Próximo"
   edit: "Editar"
   show: "Visualizar"
@@ -884,6 +891,8 @@ pt_BR:
 
   start_menu: "Início do menu"
   end_menu: "Fim do menu"
+  start_content: "Início do conteúdo"
+  end_content: "Fim do conteúdo"
 
   #Submenu de ajuda
   context: "Contextual"
@@ -1153,7 +1162,9 @@ pt_BR:
       private_lesson: Não é possível importar uma aula privada a não ser que você seja o dono
       draft_lesson: Não é possível importar uma aula rascunho
       owner: só pode ser alterada pelo dono
-      blank_address: Deve ter URL ou arquivo principal
+      blank_address: Aula %{lesson_name} não foi publicada. Deve ter URL ou arquivo inicial
+      undefined_initial_file: "Aula %{lesson_name} não foi publicada. Um arquivo inicial deve ser definido."
+      extract_zip: Não foi possível extrair automaticamente os arquivos do zip da aula %{lesson_name}.
     success:
       saved_as_draft: Aulas deletadas ou salvas como rascunho com sucesso.
       deleted: Aulas deletadas com sucesso.
@@ -1161,6 +1172,11 @@ pt_BR:
       created: Aula criada com sucesso.
       updated: Aula atualizada com sucesso.
       imported: Aulas/módulos importados com sucesso.
+      initial_file: "Arquivo %{lesson_address} definido como inicial em %{lesson_name}"
+      published: "Aula(s) publicada(s) com sucesso."
+      draft: Aula(s) definida(s) como rascunho com sucesso.
+      some_published: "Demais aulas publicadas com sucesso."
+      extract_zip: Os arquivos do zip da aula %{lesson_name} foram extraídos automaticamente.
     form:
       cancel: Cancelar
       groups: Turmas
@@ -1174,6 +1190,8 @@ pt_BR:
       uncheck_receive_updates: 'Ao salvar, qualquer alteração feita na aula original não irá repercurtir nesta.'
       public_to_private: 'Ao tornar a aula privada, as aulas já importadas não serão removidas. Entretanto, não receberão novas atualizações e nem será possível fazer novas importações a partir desta aula se não o dono.'
       warning: 'A aula original foi tornada privada, portanto esta aula não receberá atualizações daquela.'
+      responsive: Responsivo
+      responsive_tooltip: Uma aula responsiva será exibida nos dispositivos mobile, contudo o conteúdo da aula deve ser responsivo.
     select_lesson:
       no_lessons: Sem Aulas
     show:
@@ -1234,6 +1252,7 @@ pt_BR:
       lmodule_menu: " %{lmodule} (Clique para alterar o módulo. Um submenu para seleção de módulos ficará disponível)"
       lesson_menu: " %{lesson} (Clique para alterar a aula. Um submenu para seleção de aulas ficará disponível)"
       download: "Baixar aula em arquivo PDF"
+      download_file: "Caso você não consiga executar o arquivo, click aqui para fazer o download"
 
   lesson_modules:
     general_of_offer: "Geral"
@@ -1351,8 +1370,8 @@ pt_BR:
       primary: " primárias"
       save_draft: Salvar Rascunho
       publish: Publicar
-      expand: "Expandir todos"
-      compress: "Comprimir todos"
+      expand: "Exibir todas as respostas"
+      compress: "Ocultar todas as respostas"
       files:
         discussion_file_title: Arquivos
         name: Nome
@@ -1370,8 +1389,8 @@ pt_BR:
       new_posts_page: "1 nova postagem no fórum (página "
       moved_allocation: "Alocação transferida para outra turma"
       show_posts: "Mostrar Respostas"
-      hide_posts: "Esconder Respostas"
-      amount_answers: " posts ocultados. Para visualizá-los, clique em "
+      hide_posts: "Ocultar Respostas"
+      amount_answers: " post(s) oculto(s). Clique aqui para visualizá-los."
       to_evaluate: Avaliar/Comentar
       grade: '(Nota: %{grade})'
       frequency: '(Frequência: %{wh}hs)'
@@ -1840,7 +1859,7 @@ pt_BR:
   menu_activity: Atividades
   menu_discussion: Fórum
   menu_portfolio: Portfolio
-  menu_exam: Prova
+  menu_exam: Prova Online
   menu_chat: Chat
   menu_webconference: Webconferência
   menu_score_student: Acompanhamento
@@ -1927,6 +1946,7 @@ pt_BR:
       inactive: 'Sua conta ainda não foi ativada.'
       invalid_login: Login inválido.
       invalid_login_si3: Login inválido. Clique em 'Cadastrar' e verifique seu CPF para saber se possui cadastro ou não e, caso cadastrado no SI3, para atualizarmos seus dados cadastrais.
+      invalid_password_si3: A senha do Solar não deve possuir os caracteres "ẽ, ĩ, ũ". Por favor, altere sua senha no SI3. Qualquer dúvida ou dificuldade, entrar em contato com atendimento@virtual.ufc.br com esta mensagem de erro.
       user:
         not_found_in_database: 'Usuário ou senha inválidos.'
     login:
@@ -2166,6 +2186,11 @@ pt_BR:
       body: "Informamos que sua aula %{name} importada de %{from} para %{to} não receberá mais atualizações da aula original por esta ter se tornado privada."
       user: "Caro(a) %{user},"
       subject: '[SOLAR] Aula privada'
+    activities_update:
+      subject: "Alteração do Período da(s) Atividade(s)"
+      change: "<p>Atividade %{activity} - %{activity_name} foi alterada para %{date}</p>"
+      change_to: "<p>Atividade %{activity} - %{activity_name} foi alterada para %{date_start} à %{date_end}</p>"
+      afected_by_date: "Não é possível alterar para a data escolhida, pois atividades já enviadas seriam afetadas. Escolha novas datas."
   assignments:
     restrict_assignment: "Local de trabalho não permitido"
     index:
@@ -2385,6 +2410,8 @@ pt_BR:
       imported: Grupos e participantes importados com sucesso.
     new:
       new_group_name: Novo grupo
+    automatic_split_group_jobs:  Divisão automática de trabalhos em grupos
+    split_group_jobs: "O trabalho %{assignment_key} inicia hoje, alunos sem grupos foram dividos ou inseridos em outros grupos de forma automática do seguinte modo:"
   public_files:
     index:
       title: "Área pública de %{name}"
@@ -2405,7 +2432,7 @@ pt_BR:
       summary: "Está tabela contém os arquivos publicos."
     new:
       title: Enviar novo arquivo público
-      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 5MB.
+      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 20MB.
     success:
       new: Arquivo enviado com sucesso
       removed: Arquivo removido com sucesso
@@ -2520,6 +2547,7 @@ pt_BR:
       cpf: CPF
       synchronize: Sincronizar com Sigaa
       import: Importar dados do Sigaa
+      reset_session_token: Resetar token da sessão
     informations:
       detailed: "Informações Detalhadas"
       personal_data: "Dados Pessoais"
@@ -2553,9 +2581,11 @@ pt_BR:
       title: Gerenciar Perfis
     success:
       email_sent: Email enviado com sucesso
+      reset_token: Session token resetado com sucesso
     error:
       email_not_sent: Não foi possível enviar email
       no_email: É necessário definir um email primeiro.
+      no_reset_token: Não foi possível resetar o session token
     allocation_approval:
       not_specified: Não especificado
       none_pending_allocation: Não há solicitações pendentes
@@ -2892,6 +2922,7 @@ pt_BR:
       created: Não foi possível criar semestre.
       updated: Não foi possível atualizar semestre.
       deleted: Não foi possível deletar semestre.
+      afected_by_date: "Não é possível alterar para a data escolhida, pois atividades já enviadas seriam afetadas. Escolha novas datas."
     list:
       new: Novo semestre
       edit: Editar Semestre
@@ -2901,6 +2932,7 @@ pt_BR:
       period: Período
       none: Nenhum semestre cadastrado
       choose_one_offer: Selecione uma oferta
+      warning: '<p>Ao alterar o período de um semestre ou oferta, caso a nova data inicial seja superior à data inicial de alguma atividade já cadastrada ou a data final seja inferior, as datas das atividades serão <b>ajustadas automaticamente</b>. Caso alguma atividade já tenha <b>participação de alunos, notas ou comentários ou as webconferências possuam algum acesso, não será permitido alterar</b> as datas de semestres e ofertas.</p>'
     form:
       enable_end_date: Habilitar data final
 
@@ -2915,6 +2947,7 @@ pt_BR:
       deleted: Não foi possível deletar oferta.
       already_exist: já existe uma oferta com os dados informados
       general_message: Não foi possível realizar a ação desejada
+      afected_by_date: "Não é possível alterar para a data escolhida, pois atividades já enviadas seriam afetadas. Escolha novas datas."
     list:
       type: Tipo
       course: Curso
@@ -3184,8 +3217,11 @@ pt_BR:
     no_new: "Sem novas mensagens"
     no_subject: "(sem assunto)"
     support: "Atendimento <atendimento@virtual.ufc.br>"
+    support_only_email: "<atendimento@virtual.ufc.br>"
     support_html: "Atendimento &lt;atendimento@virtual.ufc.br&gt;"
+    support_simple: "Atendimento"
     no_mail: sem email
+    send_message: Enviar Mensagem
     contacts:
       title: "Seleção de contatos"
       contacts: "Contatos"
@@ -3341,9 +3377,7 @@ pt_BR:
   schedule_events:
     restrict_events: "Não permitido é permitido acessar os eventos"
     index:
-      events_list: Lista de Eventos
-      individual_events: Eventos individuais
-      group_events: Eventos em grupo
+      events_list: de Eventos
     events:
       name: Nome
       data_range: Período
@@ -3378,6 +3412,7 @@ pt_BR:
       created: Evento criado com sucesso.
       updated: Evento atualizado com sucesso.
       deleted: Evento deletado com sucesso.
+      updated_content: Conteúdo da prova atualizado com sucesso. As demais alterações foram ignoradas em virtude deste evento ser integrado a outros sistemas.
     error:
       range_hour_error: deve ser posterior à inicial
       created: Não foi possível criar evento.
@@ -3386,6 +3421,8 @@ pt_BR:
       not_student: Deve ser estudante.
       general_message: Não foi possível realizar ação.
       evaluated: Já foi avaliado
+      no_content: Não há conteúdo cadastrado para esta prova.
+      already_started: não pode ser alterado, pois este evento já iniciou
     show:
       title: Título
       type_event: Tipo
@@ -3397,7 +3434,9 @@ pt_BR:
       start_date: Período
       end_date: à
       event_details: Detalhes do evento
-    evaluate_user:
+      datetime: "%{date} de %{start} às %{end}"
+      datetime2: "%{date_start} à %{date_end} de %{start} às %{end}"
+    summarized:
       title: Participação do %{user} em %{event} (%{type})
       description: Descrição
       place: Local
@@ -3416,7 +3455,7 @@ pt_BR:
       summary_evaluative: "Está tabela contém todos os eventos agendados avaliativas."
       summary_frequency: "Está tabela contém todos os eventos agendados de frequência."
       summary_notevaluative: "Está tabela contém todos os eventos agendados não avaliativas."
-      summary_student_files: "Está tabela contém os arquivos enviados pelo tutor, com as seguintes informações: Nome, tamanho, data de envio e quem envio o arquivo."
+      summary_student_files: "Está tabela contém os arquivos enviados pelos responsáveis, com as seguintes informações: Nome, tamanho, data de envio e quem envio o arquivo."
       none: Nenhum evento cadastrado
       new: Novo evento
       edit: Editar evento
@@ -3427,14 +3466,17 @@ pt_BR:
       place: Local
       choose_one: "Selecione um evento"
       choose_at_least_one: "Selecione, ao menos, um evento"
-      integrated_event_edit: 'Este evento possui integração com outras bases de dados e por isso não pode ser editado'
+      integrated_event_edit: 'Este evento possui integração com outras bases de dados e, por isso, todos os campos, exceto o conteúdo, não podem ser editados'
       integrated_events_delete: 'Existem eventos selecionados que não podem ser removidos devido a integração com outras bases de dados'
       print: Imprimir prova
       users: Imprimir prova individual
+      content: Possui conteúdo de prova
+      y: Sim
+      n: Não
     participants:
       title: Participantes
       student: Alunos
-      list_name: Lista de Alunos
+      list_name: "Lista de Alunos: %{event}"
       name: Nome
       send_file: Enviar Arquivos
       evaluate_comments: Avaliar/Comentar
@@ -3442,12 +3484,16 @@ pt_BR:
       working_hours: Carga Horária
       files: Arquivos
       see_files: Ver arquivos enviados
+      download_all: Download dos arquivos de todos os alunos
     presential_test_participants:
       list_name: Lista de Alunos
       name_studante: Nome
       type_exam: Tipo de prova
       print_personal_test: Prova com cabeçalho preenchido
       print_user_test: Imprimir prova de %{student}
+    notifier:
+      content_exam: 'Conteúdo de prova cadastrado ou alterado'
+      content_exam_title: '<p>Um conteúdo de prova foi cadastrado ou alterado para %{title}, cujo início é %{start_date}.</p> <p>A prova está disponível para download no Solar.</p>'
 
   schedule_event_files:
     new:
@@ -3458,7 +3504,8 @@ pt_BR:
       size: Tamanho
       sent_on: Enviado em
       sent_by: Enviado por
-      summary_files: Arquivos enviados pelo tutor
+      summary_files: Arquivos enviados pelos responsáveis
+      online_correction: Correção online
     summary:
       title: "Arquivos para %{user} em %{tool}"
       name: Nome
@@ -3475,22 +3522,40 @@ pt_BR:
       hand: "Mão"
       text: "Texto"
       brush: "Pincel"
+      colors: "Cores"
+      black: "Preto"
+      red: "Vermelho"
+      blue: "Azul"
       arrow: "Flecha"
       saving_file: "Salvando arquivo."
+      undo: "Desfazer"
+      redo: "Refazer"
+      clear: "Limpar"
+      deleting_canvas: "Limpando arquivo."
+      message_confirm_cleaning: "Está ação não pode ser desfeita. Você tem certeza disso?"
     success:
       file_saved: Arquivo salvo com sucesso.
+      file_cleaned: Arquivo limpo com sucesso.
       created: Arquivo(s) enviado(s) com sucesso(s).
       deleted: Arquivo(s) deletado(s) com sucesso(s).
     error:
       download: Não foi possível realizar o download
       date_range_expired: Não foi possível realizar ação. Período encerrado.
-      remove: Não foi possível deletar arquivo.
+      error: Não foi possível deletar arquivo.
       new: Não foi possível enviar arquivo.
       not_started_up: Não é possível fazer o envio do arquivo. O evento ainda não foi iniciado.
-      attachment_file_size_too_big: Arquivo muito grande. O tamanho máximo deve ser de até 26MB.
+      attachment_file_size_too_big: "Arquivo muito grande. O tamanho máximo deve ser de até %{file}MB."
       wrong_type: "Tipo de arquivo não permitido (apenas imagens jpeg/png/gif ou pdfs)"
       situation: Não é possível enviar arquivos ainda, pois a atividade não foi iniciada.
       file_not_saved: "Não foi possível salvar o arquivo."
+      file_not_cleaned: "Não foi possível limpar o arquivo."
+      cant_download: Não é possível realizar o download deste(s) arquivo(s)
+      type: Arquivos podem ser enviados apenas para eventos dos tipos Prova Presencial e Encontro Presencial
+      general_error: "Apenas arquivos de imagens (jpeg/png/gif) ou pdfs de até 2MB devem ser enviados em eventos dos tipos Encontro Presencial ou Prova Presencial."
+      ended: Não é possível enviar arquivos enquanto a atividade não for finalizada.
+      offer: Não é possível enviar ou remover arquivos após o término da oferta.
+      remove: Não é possível remover arquivos após o envio de nota, frequência ou comentários.
+>>>>>>> 6c919c368fb4840096f2cecafbe281f275b55186
 
   agendas:
     dropdown_content:
@@ -3747,11 +3812,15 @@ pt_BR:
         list: "Ver em Lista [L]"
         thread: "Ver em Árvore [A]"
         discussion: "Ver Minhas Discussões [D]"
+        compress: "Ocultar todas as respostas [O]"
+        expand: "Exibir todas as respostas [E]"
       code:
         new: 80
         list: 76
         thread: 65
         discussion: 68
+        compress: 79
+        expand: 69
     assignment:
       name:
         web: "Nova Webconferência [W]"
@@ -3858,7 +3927,7 @@ pt_BR:
         menu_discussion_key: "Shift + F"
         menu_portfolio: "Portfolio"
         menu_portfolio_key: "Shift + T"
-        menu_exam: "Prova"
+        menu_exam: "Prova Online"
         menu_exam_key: "Shift + P"
         menu_score_student: "Acompanhamento"
         menu_score_student_key: "Shift + O"
@@ -3900,12 +3969,12 @@ pt_BR:
         menu_program: 82
         menu_agenda: 71
         menu_bibliography: 66
-        menu_participants: 69
+        menu_participants: 83
         menu_content_edition: 68
         menu_messages: 78
         menu_registration: 85
         menu_home: 73
-        menu_events: 83
+        menu_events: 69
       complement:
         menu_portfolio: " (Trabalhos)"
     comments:
@@ -3961,6 +4030,7 @@ pt_BR:
       not_evaluative: Não Avaliativas
       frequency: Frequência
       final_grade: Média Final
+      partial_grade: Média Parcial
       show_hide_tools: 'Exibir/Ocultar Ferramentas'
       no_data: Nenhum aluno ou ferramentas
       curriculum_unit_working_hours: '(Carga horária da disciplina: %{wh}h/a)'

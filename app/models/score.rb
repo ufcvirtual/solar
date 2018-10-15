@@ -365,7 +365,7 @@ class Score # < ActiveRecord::Base
       when 'scheduleevent'
         User.find_by_sql <<-SQL
           SELECT
-          CASE
+            CASE
               #{evaluated_status}
               WHEN #{sent_status} THEN 'sent'
               WHEN current_date<schedules.start_date OR (current_date = schedules.start_date AND current_time<to_timestamp(start_hour, 'HH24:MI:SS')::time)  THEN 'not_started'
@@ -385,7 +385,7 @@ class Score # < ActiveRecord::Base
       when 'webconference'
         User.find_by_sql <<-SQL
           SELECT
-              CASE
+            CASE
             #{evaluated_status}
             WHEN (#{sent_status} OR ((academic_allocation_users.status IS NULL OR academic_allocation_users.status = 2) AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.id IS NOT NULL))) THEN 'sent'
             WHEN webconferences.initial_time > now() THEN 'not_started'
@@ -751,7 +751,7 @@ class Score # < ActiveRecord::Base
             NULL AS type_tool,
             schedule_events.start_hour,
             schedule_events.end_hour,
-            NULL as count,
+            academic_allocation_users.schedule_event_files_count::text as count,
             0 as count_all,
             schedule_events.place as place,
             schedule_events.type_event::text as type_event,
@@ -769,6 +769,7 @@ class Score # < ActiveRecord::Base
               END AS closed,
             CASE
             #{evaluated_status}
+            WHEN #{sent_status} OR academic_allocation_users.status = 1 then 'sent'
             WHEN current_date>schedules.end_date OR (current_date=schedules.end_date AND current_time>to_timestamp(schedule_events.end_hour, 'HH24:MI:SS')::time) THEN 'closed'
             WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND schedule_events.start_hour IS NULL THEN 'started'
             WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND current_time>=to_timestamp(schedule_events.start_hour, 'HH24:MI:SS')::time AND current_time<=to_timestamp(schedule_events.end_hour, 'HH24:MI:SS')::time THEN 'started'

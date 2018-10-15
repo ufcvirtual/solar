@@ -81,6 +81,7 @@ Solar::Application.routes.draw do
     get "users/:id/allocations", to: "administrations#allocations_user", as: :allocations_admin_user
     get "users/:id/allocations_list", to: "administrations#allocations_user_list", as: :allocations_admin_user_list
     get "users", to: "administrations#users", as: :admin_users
+    put "users/:id/sessiontoken", to: "administrations#reset_session_token_user", as: :reset_session_token_admin_user
 
     get "responsibles/filter", to: "administrations#responsibles", as: :admin_responsibles_filter
     get "responsibles", to: "administrations#responsibles_list", as: :admin_responsibles
@@ -286,6 +287,7 @@ Solar::Application.routes.draw do
       get :academic
       get :content
       get :repositories
+      post :automatic_management
       get :tool_management
       get :discussion_tool_management, tool_name: 'Discussion', to: :tool_management
       get :exam_tool_management, tool_name: 'Exam', to: :tool_management
@@ -499,6 +501,7 @@ Solar::Application.routes.draw do
       get :participants
       get :evaluate_user
       put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'ScheduleEvent', as: :evaluate
+      get :summarized
     end
 
     collection do
@@ -519,9 +522,10 @@ Solar::Application.routes.draw do
       post :save_online_correction_file
     end
     collection do
+      get :can_download
       get :download
       get :zip_download, to: :download, defaults: {zip: true}
-      get :summary , to: 'academic_allocation_users#files_sent', tool: 'ScheduleEvent'
+      get :summary
     end
   end
 
@@ -551,6 +555,8 @@ Solar::Application.routes.draw do
       get "download/file/:file_id", to: "messages#download_files", as: :download_file
 
       get :support_new, to: "messages#new", as: :support_new, support: true
+
+      get "new_message_score_user/:user_ids", to: 'messages#new_score_message_user', as: :new_by_scores
     end
   end
 

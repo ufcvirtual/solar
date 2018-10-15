@@ -84,6 +84,8 @@ function go_to_send_header(event) {
     $('#dot-info').removeClass('active');
     $('li.header').addClass('active');
     $('#dot-header').addClass('active');
+
+    $.fancybox.update();
   }
 }
 
@@ -97,5 +99,7 @@ function back_to_info(event){
     $('#dot-info').addClass('active');
     $('li.header').removeClass('active');
     $('#dot-header').removeClass('active');
+
+    $.fancybox.update();
   }
 }

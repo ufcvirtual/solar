@@ -109,7 +109,7 @@ module V1::Contents
     #   exam.academic_allocation_users.map(&:delete_with_dependents)
     # }
 
-    AcademicAllocationUser.joins(:academic_allocation).where(academic_allocations: {allocation_tag_id: allocation_tag}).where("academic_allocations.academic_tool_type != 'Exam'").map(&:delete_with_dependents) # remove todas as ACUs, EXCETO de prova pelos motivos descritos acima
+    AcademicAllocationUser.joins(:academic_allocation).where(academic_allocations: {allocation_tag_id: allocation_tag}).where("academic_allocations.academic_tool_type != 'Exam' AND academic_allocations.academic_tool_type != 'ScheduleEvent'").map(&:delete_with_dependents) # remove todas as ACUs, EXCETO de prova pelos motivos descritos acima
   end
 
   def copy_file(file_to_copy_path, file_copied_path)
@@ -132,7 +132,6 @@ module V1::Contents
     new_object.created_at = object_to_copy.created_at if object_to_copy.respond_to?(:created_at)
     new_object.updated_at = object_to_copy.updated_at if object_to_copy.respond_to?(:updated_at)
     new_object.merge = true if new_object.respond_to?(:merge) # used so call save without callbacks (before_save, before_create)
-
     if acu && !object_to_copy.academic_allocation_user.blank?
       new_object.academic_allocation_user_id = get_acu(new_object.academic_allocation.id, object_to_copy.academic_allocation_user, (object_to_copy.user_id || object_to_copy.allocation.user_id)) #rescue nil
     end
@@ -278,7 +277,7 @@ module V1::Contents
          all << {from_ac.id.to_s => ac.id}
       end
     end
-    all
+    all.uniq
   end
 
   def replicate_schedule_events(from_academic_allocations, from_at, to_at)
@@ -288,9 +287,13 @@ module V1::Contents
       acs.each do |ac_from, ac_to|
         AcademicAllocationUser.where(academic_allocation_id: ac_from.to_i).each do |acu_from|
           acu = AcademicAllocationUser.where(academic_allocation_id: ac_to.to_i, user_id: acu_from.user_id).first_or_initialize
-          acu.attributes = acu_from.attributes.except('id','academic_allocation_id')
+          acu.attributes = acu_from.attributes.except('id','academic_allocation_id', 'schedule_event_files_count')
           acu.merge = true
           acu.save
+
+          acu.delete_with_dependents
+          copy_objects(acu_from.schedule_event_files, { 'academic_allocation_user_id' => acu.id }, true)
+          copy_objects(acu_from.comments, { 'academic_allocation_user_id' => acu.id }, true, :files)
         end
       end
     end

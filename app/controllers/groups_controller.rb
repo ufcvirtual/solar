@@ -192,7 +192,7 @@ class GroupsController < ApplicationController
     end
 
     def model_by_tool_type(type)
-      type.constantize if ['Discussion', 'LessonModule', 'Assignment', 'ChatRoom', 'SupportMaterialFile', 'Bibliography', 'Notification', 'Webconference', 'Exam'].include?(type)
+      type.constantize if ['Discussion', 'LessonModule', 'Assignment', 'ChatRoom', 'SupportMaterialFile', 'Bibliography', 'Notification', 'Webconference', 'Exam', 'ScheduleEvent'].include?(type)
     end
 
     def update_multiple

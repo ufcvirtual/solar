@@ -47,7 +47,7 @@ module V1::EventsH
           ac.save!
           acs << ac
         end
-        group_events << {name: group.name, id: ac.id, Codigo: group.name}
+        group_events << {name: group.name, Codigo: group.name, id: ac.id}
       end
       AcademicTool.send_email(event, acs, false)
     elsif !existing_ac.nil? && (event.id != update_event.try(:id))

@@ -6,7 +6,6 @@
 
 .schedule_event_file_form
   = simple_form_for @schedule_event_file, html: { id: 'event_file_form', multipart: true } do |f|
-    %span.form_requirement= t(:required_fields)
 
     .form-inputs.block_content
       = f.hidden_field :academic_allocation_user_id, value: @schedule_event_file.academic_allocation_user_id
@@ -23,7 +22,7 @@
           = button_tag t(:cancel), type: 'button', onclick: 'cancel_files()', class: 'btn btn_default btn_lightbox'
           = button_tag t(:save), type: "button", id: "save", class: "btn btn_main btn_lightbox"
 
-= javascript_include_tag 'schedule_event_files', 'assignment_files'
+= javascript_include_tag 'schedule_event_files'
 
 :css
   span.close a {
