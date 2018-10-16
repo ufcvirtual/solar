@@ -17,7 +17,7 @@ module V1
 
               raise "user #{allocation[:cpf]} doesn't exist" if user.blank? || user.id.blank?
 
-              destination = get_destination(allocation[:codDisciplina], allocation[:codGraduacao], allocation[:nomeTurma], (allocation[:periodo].blank? ? allocation[:ano] : "#{allocation[:ano]}.#{allocation[:periodo]}"))
+              destination = get_destination(allocation[:codDisciplina], allocation[:codGraduacao], (allocation[:nomeTurma] || allocation[:codTurma]), (allocation[:periodo].blank? ? allocation[:ano] : "#{allocation[:ano]}.#{allocation[:periodo]}"))
 
               destination.allocate_user(user.id, profile_id)
 
@@ -33,7 +33,7 @@ module V1
             profile_id = get_profile_id(allocation[:perfil])
 
             begin
-              destination = get_destination(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:nome], (group_info[:periodo].blank? ? group_info[:ano] : "#{group_info[:ano]}.#{group_info[:periodo]}"))
+              destination = get_destination(group_info[:codDisciplina], group_info[:codGraduacao], (allocation[:nome] || allocation[:codigo]), (group_info[:periodo].blank? ? group_info[:ano] : "#{group_info[:ano]}.#{group_info[:periodo]}"))
 
               destination.cancel_allocations(user.id, profile_id, nil, {}, true) if destination
               {ok: :ok}

@@ -37,3 +37,15 @@
   }
 
 }
+
+#event_file_form{
+  input[type='file']{
+    display: none;
+  }
+}
+
+.user_schedule_event, .summary{
+  .info.block_wrapper{
+    width: unset;
+  }
+}

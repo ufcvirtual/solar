@@ -367,13 +367,13 @@ class Score # < ActiveRecord::Base
         User.find_by_sql <<-SQL
           SELECT
             CASE
-            #{evaluated_status}
-            WHEN #{sent_status} THEN 'sent'
-            WHEN current_date<schedules.start_date OR (current_date = schedules.start_date AND current_time<to_timestamp(start_hour, 'HH24:MI:SS')::time)  THEN 'not_started'
-            WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND (start_hour IS NULL OR current_time>=to_timestamp(start_hour, 'HH24:MI:SS')::time AND current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN 'to_send'
-            ELSE
-              'not_sent'
-            END AS situation
+              #{evaluated_status}
+              WHEN #{sent_status} THEN 'sent'
+              WHEN current_date<schedules.start_date OR (current_date = schedules.start_date AND current_time<to_timestamp(start_hour, 'HH24:MI:SS')::time)  THEN 'not_started'
+              WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND (start_hour IS NULL OR current_time>=to_timestamp(start_hour, 'HH24:MI:SS')::time AND current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN 'to_send'
+              ELSE
+                'not_sent'
+              END AS situation
           FROM users
           JOIN allocations ON users.id = allocations.user_id AND allocations.allocation_tag_id IN (#{ats})
           JOIN profiles ON allocations.profile_id = profiles.id

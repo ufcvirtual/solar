@@ -238,8 +238,11 @@ class LessonsController < ApplicationController
   end
 
   def change_module
-    verify_owner(lesson_ids = params[:lessons_ids].split(',') rescue [])
+    lesson_ids = params[:lessons_ids].split(',') rescue []
+    # verify_owner(lesson_ids = params[:lessons_ids].split(',') rescue [])
     authorize! :change_module, Lesson, on: params[:allocation_tags_ids]
+
+    # verify_owner(lesson_ids)
 
     new_module_id = LessonModule.find(params[:move_to_module]).id rescue nil
 

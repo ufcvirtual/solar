@@ -68,4 +68,11 @@ class Notifier < ActionMailer::Base
     mail(to: recipients, subject: "[SOLAR] #{subject}")
   end
 
+  def notify_exam_content(event, emails, subject)
+    @offer_info = event.allocation_tags.first.no_group_info rescue ''
+    @groups_codes = event.allocation_tags.map(&:groups).flatten.map(&:code).join(', ') rescue ''
+    @event = event
+    mail(to: emails, subject: "[SOLAR] #{subject}")
+  end
+
 end
