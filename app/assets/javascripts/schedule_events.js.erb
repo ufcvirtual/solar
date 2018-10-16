@@ -71,10 +71,6 @@ $(function(){
       $("#steps").addClass('steps');
       $('li.print').addClass('invisible');
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 6c919c368fb4840096f2cecafbe281f275b55186
   });
 
   $('.save').click(function(){
@@ -94,11 +90,7 @@ $(function(){
 
   $("#new_schedule_event").call_fancybox();
 
-<<<<<<< HEAD
-  $(".all_schedule_event").map(function(){ $(this).nice_checkbox() });
-=======
   $(".all_schedule_event").nice_checkbox({objects_to_change_status: ['.print_event', '.btn_users'],});
->>>>>>> 6c919c368fb4840096f2cecafbe281f275b55186
 
   $('.users_event').click(function() {
     if ($(this).attr('disabled') == 'disabled'){
@@ -118,8 +110,6 @@ $(function(){
   });
 
   $('.print_event').click(function() {
-<<<<<<< HEAD
-=======
     if($('.edition').length >= 1){
       if ($(this).attr('disabled') == 'disabled'){
         flash_message("<%= I18n.t(:choose_one, scope: [:schedule_events, :list]) %>", "alert");
@@ -139,37 +129,6 @@ $(function(){
   });
 
   $('.edit_event').click(function() {
->>>>>>> 6c919c368fb4840096f2cecafbe281f275b55186
-    if ($(this).attr('disabled') == 'disabled'){
-      flash_message("<%= I18n.t(:choose_one, scope: [:schedule_events, :list]) %>", "alert");
-      return false;
-    }
-
-    var events = $('.ckb_event:checked', $(this).parents("div.list_schedule_events"));
-
-<<<<<<< HEAD
-    var event_ids = events.map(function() { return this.value; }).get();
-    if (event_ids.length && event_ids.length == 1) {
-      var url_print = $(this).data('link-to-print').replace('event_id', event_ids[0]);
-      $(this).call_fancybox({href : url_print, open: true});
-=======
-    if ($(events).data('is-integrated')) {
-      flash_message("<%= I18n.t(:integrated_event_edit, scope: [:schedule_events, :list]) %>", "alert");
-      return false;
-    }
-
-    var event_ids = events.map(function() { return this.value; }).get();
-    if (event_ids.length && event_ids.length == 1) {
-      var url_edit = $(this).data('link-to-edit').replace(':id', event_ids);
-      $(this).call_fancybox({href : url_edit, open: true});
->>>>>>> 6c919c368fb4840096f2cecafbe281f275b55186
-    }
-
-    return false;
-  });
-
-<<<<<<< HEAD
-  $('.edit_event').click(function() {
     if ($(this).attr('disabled') == 'disabled'){
       flash_message("<%= I18n.t(:choose_one, scope: [:schedule_events, :list]) %>", "alert");
       return false;
@@ -191,8 +150,6 @@ $(function(){
     return false;
   });
 
-=======
->>>>>>> 6c919c368fb4840096f2cecafbe281f275b55186
   $('.delete_event').click(function(){
 
     if ($(this).attr('disabled') == 'disabled'){

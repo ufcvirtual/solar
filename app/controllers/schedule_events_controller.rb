@@ -76,11 +76,7 @@ class ScheduleEventsController < ApplicationController
     authorize! :destroy, ScheduleEvent, on: @schedule_event.academic_allocations.pluck(:allocation_tag_id)
 
     evaluative = @schedule_event.verify_evaluatives
-<<<<<<< HEAD
-    if @schedule_event.can_remove_groups?
-=======
     if @schedule_event.can_remove_groups? && @schedule_event.can_change?
->>>>>>> 6c919c368fb4840096f2cecafbe281f275b55186
       @schedule_event.destroy
       message = evaluative ? ['warning', t('evaluative_tools.warnings.evaluative')] : ['notice', t(:deleted, scope: [:schedule_events, :success])]
       render json: { success: true, type_message: message.first,  message: message.last }
@@ -97,14 +93,9 @@ class ScheduleEventsController < ApplicationController
     raise CanCan::AccessDenied if params[:user_id].to_i != current_user.id && !AllocationTag.find(@allocation_tag_id).is_observer_or_responsible?(current_user.id)
 
     @schedule_event = ScheduleEvent.find(params[:id])
-<<<<<<< HEAD
-    @ac = @schedule_event.academic_allocations.where(allocation_tag_id: @allocation_tag_id).first
-    @user = User.find(params[:user_id])
-=======
     @ac = (params[:ac_id].blank? ? @schedule_event.academic_allocations.where(allocation_tag_id: @allocation_tag_id).first : AcademicAllocation.find(params[:ac_id]))
 
     @user = User.find((params[:user_id].blank? ? current_user.id : params[:user_id]))
->>>>>>> 6c919c368fb4840096f2cecafbe281f275b55186
     @student_id = params[:user_id]
     @score_type = params[:score_type]
     @situation = params[:situation]

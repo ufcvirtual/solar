@@ -3555,7 +3555,6 @@ pt_BR:
       ended: Não é possível enviar arquivos enquanto a atividade não for finalizada.
       offer: Não é possível enviar ou remover arquivos após o término da oferta.
       remove: Não é possível remover arquivos após o envio de nota, frequência ou comentários.
->>>>>>> 6c919c368fb4840096f2cecafbe281f275b55186
 
   agendas:
     dropdown_content:
