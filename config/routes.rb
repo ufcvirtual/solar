@@ -501,6 +501,7 @@ Solar::Application.routes.draw do
       get :participants
       get :evaluate_user
       put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'ScheduleEvent', as: :evaluate
+      get :summarized
     end
 
     collection do

@@ -36,13 +36,17 @@ class Devise::LoginController < Devise::SessionsController
     @return = 0
 
     return if params[:user].blank?
+<<<<<<< HEAD
     user = User.where("lower(username) = :login OR cpf = :login", login: params[:user][:login].downcase).first
 
+=======
+    user = User.where("lower(username) = :login OR cpf = :login", login: params[:user][:login].try(:downcase)).first
+>>>>>>> 161051143
     correct_password = user.valid_password?(params[:user][:password]) unless user.blank?
 
     if user.nil?
       @return = if !User::MODULO_ACADEMICO.nil?
-        user = User.import_user_by_username(params[:user][:login])
+        user = User.import_user_by_username(params[:user][:login].try(:downcase))
         if user.nil?
           1
         else
@@ -61,18 +65,26 @@ class Devise::LoginController < Devise::SessionsController
         correct_password = user.valid_password?(params[:user][:password])
       elsif (user.integrated && !user.on_blacklist? && !correct_password)
         user.synchronize
+<<<<<<< HEAD
         user = User.where("lower(username) = :login OR cpf = :login", login: params[:user][:login].downcase).first
         correct_password = user.valid_password?(params[:user][:password])
       end
       unless correct_password
         previous_user = User.where("lower(previous_username) = :login", login: params[:user][:login].downcase)
+=======
+        user = User.where("lower(username) = :login OR cpf = :login", login: params[:user][:login].try(:downcase)).first
+        correct_password = user.valid_password?(params[:user][:password])
+      end
+      unless correct_password
+        previous_user = User.where("lower(previous_username) = :login", login: params[:user][:login].try(:downcase))
+>>>>>>> 161051143
         previous_user = previous_user.collect{|puser| puser if puser.valid_password?(params[:user][:password])}
         previous_user = previous_user.compact.first
         unless previous_user.blank?
           @return = 4
           @previous_username = previous_user.username
         else
-          user = User.import_user_by_username(params[:user][:login])
+          user = User.import_user_by_username(params[:user][:login].try(:downcase))
         end
       end
 

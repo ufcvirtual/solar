@@ -217,7 +217,7 @@ class GroupAssignment < ActiveRecord::Base
     end
 
     def unique_group_name
-      groups_with_same_name = GroupAssignment.find_all_by_academic_allocation_id_and_group_name(academic_allocation_id, group_name)
+      groups_with_same_name = GroupAssignment.where(academic_allocation_id: academic_allocation_id, group_name: group_name)
       errors.add(:group_name, I18n.t("group_assignments.error.unique_name")) if (new_record? or group_name_changed?) and groups_with_same_name.size > 0
     end
 

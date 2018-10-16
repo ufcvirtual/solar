@@ -212,6 +212,7 @@ en_US:
       comment_file: File
       email: Email
       supportmaterialfile: Support Material
+      schedule_event_file: Arquivo
     attributes:
       user:
         password: "Password"
@@ -503,6 +504,10 @@ en_US:
         code: Code
         name: Name
         location: Location
+      schedule_event_file:
+        attachment_content_type: ""
+        attachment_file_size: ""
+        attachment_file_name: ""
     errors:
       uniqueness: "Record already exists in the system"
       template:
@@ -1590,7 +1595,7 @@ en_US:
   menu_activity: Activities
   menu_discussion: Discussions
   menu_portfolio: Portfolio
-  menu_exam: Tests
+  menu_exam: Online Tests
   menu_chat: Chat
   menu_webconference: Webconference
   menu_score_student: Scores
@@ -2918,7 +2923,10 @@ en_US:
     no_subject: "(no subject)"
     support: "Support <atendimento@virtual.ufc.br>"
     support_only_email: "<atendimento@virtual.ufc.br>"
+<<<<<<< HEAD
     support_email: "atendimento@virtual.ufc.br"
+=======
+>>>>>>> 161051143
     support_html: "Support &lt;atendimento@virtual.ufc.br&gt;"
     support_simple: "Support"
     no_mail: no email
@@ -3113,6 +3121,8 @@ en_US:
       not_student: Must be student.
       general_message: Can't do action
       evaluated: Already have been evaluated
+      no_content: No content registered to this exam.
+      already_started: can't be updated. This event have already started
     show:
       title: Title
       type_event: Type
@@ -3124,7 +3134,9 @@ en_US:
       start_date: Period
       end_date: To
       event_details: Event's details
-    evaluate_user:
+      datetime: "%{date} %{start} to %{end}"
+      datetime2: "%{date_start} to %{date_end} %{start} to %{end}"
+    summarized:
       title: Participation of %{user} at %{event} (%{type})
       description: Description
       place: Place
@@ -3158,6 +3170,9 @@ en_US:
       integrated_events_delete: 'There are selected events that can not be removed due to integration with other databases'
       print: Print exam
       users: Print individual exam
+      content: Has exam's content
+      y: Yes
+      n: No
     participants:
       title: Participants
       student: Students
@@ -3175,6 +3190,9 @@ en_US:
       name: Name
       print_personal_test: Exam with filled header
       print_user_test: Print %{student} exam
+    notifier:
+      content_exam: 'Exam content registered or updated'
+      content_exam_title: '<p>An exam content was registered or updated to %{title}, which begins at %{start_date}</p> <p>The exam is available to download at Solar.</p>'
 
   schedule_event_files:
     new:
@@ -3222,7 +3240,7 @@ en_US:
     error:
       download: It was not possible to download
       date_range_expired: It was not possible to execute action. Date range expired.
-      remove: It was not possible to remove file.
+      error: It was not possible to remove file.
       new: It was not possible to send file.
       not_started_up: It was not possible to send file. Event not started yet.
       attachment_file_size_too_big: "File too large. The maximum size should be up to %{file}MB."
@@ -3233,6 +3251,12 @@ en_US:
       cant_download: It's not possible to download this(these) file(s)
       type: "Files can only be sent to events with the following types: Presential Test and Presential Meeting"
       general_error: "Only image (jpeg/png/gif) or pdf files of 2MB or less can be sent to Presential Tests or Presential Meetings."
+<<<<<<< HEAD
+=======
+      ended: It's not possible to send files before the end of activity.
+      offer: It's not possible to send or remove files after offer's end.
+      remove: Não é possível remover arquivos após o envio de nota, frequência ou comentários.
+>>>>>>> 161051143
 
   agendas:
     dropdown_content:
@@ -3602,7 +3626,7 @@ en_US:
         menu_discussion_key: "Shift + D"
         menu_portfolio: "Portfolio (Assignments)"
         menu_portfolio_key: "Shift + A"
-        menu_exam: "Tests (Exams)"
+        menu_exam: "Online Tests (Exams)"
         menu_exam_key: "Shift + T"
         menu_score_student: "Scores"
         menu_score_student_key: "Shift + S"
@@ -3701,6 +3725,7 @@ en_US:
       not_evaluative: Not Evaluatives
       frequency: Frequency
       final_grade: Final Grade
+      partial_grade: Partial Grade
       show_hide_tools: 'Show/Hide Tools'
       no_data: No student or tool
       curriculum_unit_working_hours: '(Curriculum Unit working hours: %{wh}w/h)'

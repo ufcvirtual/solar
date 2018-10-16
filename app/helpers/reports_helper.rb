@@ -576,7 +576,7 @@ module ReportsHelper
       title_faults = I18n.t('scores.index.faults') unless wh.blank?
 
       # Cabeçalho da tabela
-      thead = [I18n.t('scores.index.student'), I18n.t('scores.index.access_to_the_course'), title_frequency, title_faults, I18n.t('scores.index.af_grade'), I18n.t('scores.index.final_grade'), I18n.t('scores.index.situation')]
+      thead = [I18n.t('scores.index.student'), I18n.t('scores.index.access_to_the_course'), title_frequency, title_faults, I18n.t('scores.index.partial_grade'), I18n.t('scores.index.af_grade'), I18n.t('scores.index.final_grade'), I18n.t('scores.index.situation')]
 
       thead << I18n.t('scores.index.origin_group')
 
@@ -591,9 +591,9 @@ module ReportsHelper
           faults = wh.to_i - student.working_hours.to_i unless wh.blank?
 
           if merged_group
-            [student.name, student.u_logs, frequency, faults, student.af_grade, student.u_grade, I18n.t("scores.index.#{status}"), (student.origin_group_name == student.origin_group_code) ? student.origin_group_name : "#{student.origin_group_name} (#{student.origin_group_code})"]
+            [student.name, student.u_logs, frequency, faults, student.partial_grade, student.af_grade, student.u_grade, I18n.t("scores.index.#{status}"), (student.origin_group_name == student.origin_group_code) ? student.origin_group_name : "#{student.origin_group_name} (#{student.origin_group_code})"]
           else
-            [student.name, student.u_logs, frequency, faults, student.af_grade, student.u_grade, I18n.t("scores.index.#{status}")]
+            [student.name, student.u_logs, frequency, faults, student.partial_grade, student.af_grade, student.u_grade, I18n.t("scores.index.#{status}")]
           end
         end
       end

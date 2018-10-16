@@ -11,7 +11,10 @@ class NotificationsController < ApplicationController
     get_groups_by_tool(@notification = Notification.find(params[:id]))
     ats = @notification.academic_allocations.pluck(:allocation_tag_id)
     authorize! :update, Notification, {on: ats, accepts_general_profile: true}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 161051143
     @can_mark_as_mandatory = current_user.profiles_with_access_on(:mark_as_mandatory, :notifications, (ats rescue nil), false, false, true).any?
   end
 

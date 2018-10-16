@@ -25,7 +25,6 @@
           %th.center{id: 'event-data-range', style: 'width: 21%'}= t('.data_range')
           %th.center{id: 'event-type', style: 'width: 12%'}= t('.type')
           %th.center{id: 'event-place', style: 'width: 12%'}= t('.place')
-
       %tbody
         - @events.each do |event|
           - is_exam = Presential_Test == event.type_event.to_i
@@ -55,6 +54,8 @@
               = ScheduleEvent.type_name_event(event.type_event.to_i)
             %td.center{headers: 'event-place'}
               = event.place
+            %td.center{headers: 'event-content'}
+              = event.content_exam.blank? ? t('.n') : t('.y')
   - else
     .block_content_text_list.text_none= t(".none")
 

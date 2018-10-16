@@ -47,12 +47,16 @@ module V1::EventsH
           ac.save!
           acs << ac
         end
+<<<<<<< HEAD
         ####################
         alloc_tag = group.allocation_tag
         alloc_tag.managed = false
         alloc_tag.save!
         ######################
         group_events << {name: group.name, id: ac.id, Codigo: group.name}
+=======
+        group_events << {name: group.name, Codigo: group.name, id: ac.id}
+>>>>>>> 161051143
       end
       AcademicTool.send_email(event, acs, false)
     elsif !existing_ac.nil? && (event.id != update_event.try(:id))
