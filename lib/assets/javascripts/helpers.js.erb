@@ -761,8 +761,6 @@ function clear_ckeditor(){
   }
 }
 
-<<<<<<< HEAD
-=======
 function verify_comment_before_finish_evaluation(){
 
   var content = $('div.ckeditor .cke_contents iframe').contents().find('body').html()
@@ -791,7 +789,6 @@ function verify_comment_before_finish_evaluation(){
   }
 }
 
->>>>>>> 161051143
 function calendar_prev_next_month_accessible(){
   setTimeout(function(){
 
@@ -832,15 +829,12 @@ function calendar_accessible(){
 
 }
 
-<<<<<<< HEAD
-=======
 function hide_element(event) {
   event.preventDefault();
   $('#file_size').hide();
   $('#focu').focus();
 }
 
->>>>>>> 161051143
 function validate_file_size(file, max_size, message) {
   var file_name_path = $(file).val();
   var file_name = file_name_path.substr( (file_name_path.lastIndexOf('\\')+1) );
@@ -873,8 +867,4 @@ function validate_file_size(file, max_size, message) {
 
     $(".file").html( "<%=I18n.t(:send_file_name)%>: " + file_name + "<br>" + "<%=I18n.t(:send_file_size)%>: " + file_size_human_readable );
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 161051143

@@ -18,10 +18,6 @@
     %tbody
       = render partial: 'schedule_event_files/files', locals: { files: @files, can_send_file: can_send_file, can_correct: can_correct }
   .block_content_text.block_content_text_list.text_none{class: (no_files ? "" : "hide_message")}= t(:itens_not_found)
-<<<<<<< HEAD
-
-=======
->>>>>>> 161051143
 
 %br
 = button_tag t(:back), type: 'button', class: 'btn btn_default', onclick: 'back_to_participants(this, event)', :'data-url' => participants_schedule_event_path(@tool.id)

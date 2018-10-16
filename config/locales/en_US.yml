@@ -2923,10 +2923,7 @@ en_US:
     no_subject: "(no subject)"
     support: "Support <atendimento@virtual.ufc.br>"
     support_only_email: "<atendimento@virtual.ufc.br>"
-<<<<<<< HEAD
     support_email: "atendimento@virtual.ufc.br"
-=======
->>>>>>> 161051143
     support_html: "Support &lt;atendimento@virtual.ufc.br&gt;"
     support_simple: "Support"
     no_mail: no email
@@ -3251,12 +3248,9 @@ en_US:
       cant_download: It's not possible to download this(these) file(s)
       type: "Files can only be sent to events with the following types: Presential Test and Presential Meeting"
       general_error: "Only image (jpeg/png/gif) or pdf files of 2MB or less can be sent to Presential Tests or Presential Meetings."
-<<<<<<< HEAD
-=======
       ended: It's not possible to send files before the end of activity.
       offer: It's not possible to send or remove files after offer's end.
       remove: Não é possível remover arquivos após o envio de nota, frequência ou comentários.
->>>>>>> 161051143
 
   agendas:
     dropdown_content:

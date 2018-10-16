@@ -42,7 +42,7 @@ class ScheduleEventsController < ApplicationController
     @schedule_event = ScheduleEvent.new schedule_event_params
     @schedule_event.allocation_tag_ids_associations = @allocation_tags_ids.split(" ").flatten
 
-    if @schedule_event.save      
+    if @schedule_event.save
       verify_management
       render_schedule_event_success_json('created')
     else
@@ -118,19 +118,11 @@ class ScheduleEventsController < ApplicationController
   def participants
     raise CanCan::AccessDenied unless AllocationTag.find(@allocation_tag_id = active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id)
     @event = ScheduleEvent.find(params[:id])
-<<<<<<< HEAD
-    @participants = AllocationTag.get_participants(@allocation_tag_id, { students: true })
-    @situation = params[:situation]
-
-    @can_evaluate = can? :evaluate, ScheduleEvent, { on: @allocation_tag_id }
-    @can_print = (can? :print_presential_test, ScheduleEvent, on: [@allocation_tag_id]) && Presential_Test == @event.type_event.to_i
-=======
     @participants = @event.participants(@allocation_tag_id)
 
     @can_evaluate = (can? :evaluate, ScheduleEvent, { on: @allocation_tag_id })
     @can_print = (can? :print_presential_test, ScheduleEvent, on: [@allocation_tag_id]) && Presential_Test == @event.type_event.to_i
     @can_send_file = (can? :create, ScheduleEventFile, on: @allocation_tag_id)
->>>>>>> 161051143
 
     render partial: 'participants'
   end
@@ -145,15 +137,11 @@ class ScheduleEventsController < ApplicationController
   end
 
   def print_presential_test
-<<<<<<< HEAD
-    authorize! :print_presential_test, ScheduleEvent, on: @allocation_tags_ids = (params[:allocation_tags_ids].blank? ? [active_tab[:url][:allocation_tag_id]] : params[:allocation_tags_ids].split(' '))
-=======
     begin
       authorize! :print_presential_test, ScheduleEvent, on: @allocation_tags_ids = (params[:allocation_tags_ids].blank? ? [active_tab[:url][:allocation_tag_id]] : params[:allocation_tags_ids].split(' ')).flatten
     rescue
       authorize! :create, ScheduleEvent, on: @allocation_tags_ids
     end
->>>>>>> 161051143
 
     allocation_tag = AllocationTag.find(@allocation_tags_ids.first)
     ats = allocation_tag.related
@@ -173,17 +161,11 @@ class ScheduleEventsController < ApplicationController
         coordinator = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id = 8", ats, Allocation_Activated).first
 
         profs = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", ats, Allocation_Activated, [2, 17]).distinct
-<<<<<<< HEAD
-
-        tutors = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", ats, Allocation_Activated, [3, 4, 18]).distinct
-      end
-=======
 
         tutors = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", ats, Allocation_Activated, [3, 18]).distinct
       end
 
       student = User.find(params[:student_id]) unless params[:student_id].blank?
->>>>>>> 161051143
 
       normalize_exam_header(html, student, profs, tutors, @event, curriculum_unit, coordinator)
 
@@ -225,11 +207,10 @@ class ScheduleEventsController < ApplicationController
       html.gsub!(/(href|src)=(['"])\/([^\"']*|[^"']*)['"]/i, '\1=\2' + "#{Rails.root}/" + '\3\2')
     end
 
-<<<<<<< HEAD
     def verify_management
       allocation_tag_ids = params[:allocation_tags_ids]
       allocation_tag_ids.split(" ").each do |allocation_tag_id|
-        
+
         unless ScheduleEvent.joins(:academic_allocations).where(type_event: 1, academic_allocations: {allocation_tag_id: allocation_tag_id.to_i}).blank?
           management_activities(allocation_tag_id.to_i)
         end
@@ -240,69 +221,69 @@ class ScheduleEventsController < ApplicationController
 
     def management_activities(allocation_tag_id)
       academic_allocations = AcademicAllocation.where(allocation_tag_id: allocation_tag_id)
-      
+
       at = AllocationTag.find(allocation_tag_id.to_i)
 
       total_hours_of_curriculum_unit = at.group.nil? ? at.offer.curriculum_unit.working_hours : at.group.offer.curriculum_unit.working_hours
       quantity_activities = 0
       quantity_used_hours = 0
-      
+
       acad_alloc_not_event = []
       acad_alloc_event = []
 
       acad_alloc_to_save = []
-  
+
       academic_allocations.each do |academic_allocation|
         academic_tool = academic_allocation.academic_tool
-  
+
         if academic_allocation.academic_tool_type == 'ScheduleEvent' #&& academic_tool.integrated == true
-          
+
           if academic_tool.type_event == Presential_Test # eventos tipo 1 ou 2 chamada
             academic_allocation.evaluative = true
             academic_allocation.final_weight = 60
             academic_allocation.frequency = true
             academic_allocation.max_working_hours = BigDecimal.new(2)
-  
+
             if academic_tool.title == "Prova Presencial: AF - 1ª chamada" || academic_tool.title == "Prova Presencial: AF - 2ª chamada" # se Avaliação Final
               academic_allocation.final_exam = true
               academic_allocation.frequency = false
               academic_allocation.max_working_hours = BigDecimal.new(0)
             end
-  
+
             if academic_tool.title == "Prova Presencial: AP - 2ª chamada" || academic_tool.title == "Prova Presencial: AF - 2ª chamada" # se 2 chamada, então deve ser equivalente a 1 chamada
-                                    
+
               equivalent = ScheduleEvent.joins(:academic_allocations).where(title: academic_tool.title.sub("2", "1"), academic_allocations: {equivalent_academic_allocation_id: nil, allocation_tag_id: allocation_tag_id.to_i})
-              
+
               unless equivalent.blank?
                 academic_allocation.equivalent_academic_allocation_id = equivalent[0].academic_allocations[0].id
                 academic_allocation.max_working_hours = BigDecimal.new(0)
               end
-              
+
             end
-            
+
           end
-          
+
           unless [Presential_Test, Recess, Holiday, Other].include?(academic_tool.type_event) # demais eventos exceto: recesso, feriado e outros
             academic_allocation.frequency = true
             academic_allocation.max_working_hours = BigDecimal.new(2)
           end
 
           acad_alloc_event << academic_allocation
-  
+
         else # atividades que não são eventos
-          
+
           unless academic_allocation.academic_tool_type == 'LessonModule' && academic_allocation.final_weight == 100 && academic_allocation.max_working_hours.to_i == 1 # LessonModule criado por padrão
-                    
+
             academic_allocation.evaluative = true
             academic_allocation.final_weight = 40
             academic_allocation.frequency = true
             quantity_activities += 1
-    
+
             acad_alloc_not_event << academic_allocation
           end
 
         end
-  
+
       end
 
       acad_alloc_event.each do |event|
@@ -310,11 +291,11 @@ class ScheduleEventsController < ApplicationController
           quantity_used_hours += event.max_working_hours.to_i
         end
       end
-      
+
       remaining_hours = total_hours_of_curriculum_unit - quantity_used_hours
       resto = remaining_hours % quantity_activities rescue 0
       hours_per_activity = remaining_hours / quantity_activities rescue 0
-            
+
       acad_alloc_not_event.each{ |ac_all| ac_all.max_working_hours = BigDecimal.new(hours_per_activity)}
 
       if resto != 0
@@ -330,9 +311,7 @@ class ScheduleEventsController < ApplicationController
           end
         end
       end
-    
+
     end
 
-=======
->>>>>>> 161051143
 end

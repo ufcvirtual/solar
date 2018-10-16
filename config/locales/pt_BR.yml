@@ -3218,10 +3218,7 @@ pt_BR:
     no_subject: "(sem assunto)"
     support: "Atendimento <atendimento@virtual.ufc.br>"
     support_only_email: "<atendimento@virtual.ufc.br>"
-<<<<<<< HEAD
     support_email: "atendimento@virtual.ufc.br"
-=======
->>>>>>> 161051143
     support_html: "Atendimento &lt;atendimento@virtual.ufc.br&gt;"
     support_simple: "Atendimento"
     no_mail: sem email
@@ -3381,11 +3378,7 @@ pt_BR:
   schedule_events:
     restrict_events: "Não permitido é permitido acessar os eventos"
     index:
-<<<<<<< HEAD
       events_list: Eventos
-=======
-      events_list: de Eventos
->>>>>>> 161051143
     events:
       name: Nome
       data_range: Período
@@ -3560,12 +3553,9 @@ pt_BR:
       cant_download: Não é possível realizar o download deste(s) arquivo(s)
       type: Arquivos podem ser enviados apenas para eventos dos tipos Prova Presencial e Encontro Presencial
       general_error: "Apenas arquivos de imagens (jpeg/png/gif) ou pdfs de até 2MB devem ser enviados em eventos dos tipos Encontro Presencial ou Prova Presencial."
-<<<<<<< HEAD
-=======
       ended: Não é possível enviar arquivos enquanto a atividade não for finalizada.
       offer: Não é possível enviar ou remover arquivos após o término da oferta.
       remove: Não é possível remover arquivos após o envio de nota, frequência ou comentários.
->>>>>>> 161051143
 
   agendas:
     dropdown_content:

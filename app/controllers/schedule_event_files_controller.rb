@@ -10,21 +10,12 @@ class ScheduleEventFilesController < ApplicationController
   layout false
 
   def new
-<<<<<<< HEAD
-    check_end_offer = Time.new > @ac.allocation_tag.offers.first.end_date
-    check_activity_not_started = Time.new < ScheduleEvent.find(params[:tool_id]).schedule.start_date
-    if check_activity_not_started || check_end_offer
-      render json: { alert: t('schedule_event_files.error.situation') }, status: :unprocessable_entity
-    else
-      academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], params[:student_id], nil, true, nil)
-=======
     at_id = active_tab[:url][:allocation_tag_id]
     event = ScheduleEvent.find(params[:tool_id])
     unless event.can_receive_files?(at_id)
       render json: { alert: t('schedule_event_files.error.ended') }, status: :unprocessable_entity
     else
       academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, at_id, params[:student_id], nil, true, nil)
->>>>>>> 161051143
       @schedule_event_file = ScheduleEventFile.new academic_allocation_user_id: academic_allocation_user.id
     end
   end
@@ -34,15 +25,11 @@ class ScheduleEventFilesController < ApplicationController
 
     errors = create_many.flatten
 
-<<<<<<< HEAD
-    render partial: 'files', locals: { files: @schedule_event_files, disabled: false, can_send_file: can?(:create, ScheduleEventFile, on: [@allocation_tag_id]), can_correct: can?(:online_correction, ScheduleEventFile, on: [@allocation_tag_id])}
-=======
     if errors.blank?
       render partial: 'files', locals: { files: @schedule_event_files, disabled: false, can_send_file: can?(:create, ScheduleEventFile, on: [@allocation_tag_id]), can_correct: can?(:online_correction, ScheduleEventFile, on: [@allocation_tag_id])}
     else
       render json: { success: false, alert: errors.flatten.uniq.join(';') }, status: :unprocessable_entity
     end
->>>>>>> 161051143
   rescue ActiveRecord::AssociationTypeMismatch
     render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
   rescue ActiveRecord::RecordInvalid
@@ -50,15 +37,7 @@ class ScheduleEventFilesController < ApplicationController
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
-<<<<<<< HEAD
-    if error == 'attachment_file_size_too_big'
-      render_json_error(error, 'schedule_event_files.error', nil, t('schedule_event_files.error.attachment_file_size_too_big', file: ScheduleEventFile::FILESIZE))
-    else
-      render_json_error(error, 'schedule_event_files.error', 'new')
-    end
-=======
     render_json_error(error, 'schedule_event_files.error', 'new')
->>>>>>> 161051143
   end
 
   def online_correction
@@ -202,14 +181,8 @@ class ScheduleEventFilesController < ApplicationController
           params[:files].each do |file|
             errors << create_one(schedule_event_file_params.merge!(attachment: file))
           end
-<<<<<<< HEAD
-          @schedule_event_file = nil
-        else
-          raise 'empty'
-=======
         else
           errors << t('schedule_event_files.error.attachment_file_size_too_big', file: ScheduleEventFile::FILESIZE)
->>>>>>> 161051143
         end
       end
       errors

@@ -4,22 +4,14 @@ class ScheduleEventFile < ActiveRecord::Base
   include FilesHelper
   include SentActivity
 
-<<<<<<< HEAD
-  FILESIZE = 2.megabyte
-=======
   FILESIZE = 6.megabyte
->>>>>>> 161051143
 
   belongs_to :user
   belongs_to :academic_allocation_user, counter_cache: true
 
   has_one :academic_allocation, through: :academic_allocation_user, autosave: false
-<<<<<<< HEAD
-  has_one :schedule_event, through: :academic_allocation
-=======
   has_one :allocation_tag, through: :academic_allocation_user
   has_one :schedule_event, through: :academic_allocation_user
->>>>>>> 161051143
 
   before_destroy :can_destroy?
   before_save :replace_attachment_file_name
@@ -27,11 +19,8 @@ class ScheduleEventFile < ActiveRecord::Base
   validates :attachment, presence: true
   validates :academic_allocation_user_id, presence: true
   validate :verify_type
-<<<<<<< HEAD
-=======
 
   validate :verify_dates
->>>>>>> 161051143
 
   serialize :file_correction, JSON
 
@@ -39,11 +28,7 @@ class ScheduleEventFile < ActiveRecord::Base
     path: ":rails_root/media/schedule_event/schedule_event_files/:id_:basename.:extension",
     url: "/media/schedule_event/schedule_event_files/:id_:basename.:extension"
 
-<<<<<<< HEAD
-  validates_attachment_size :attachment, less_than: FILESIZE, message: I18n.t('schedule_event_files.error.attachment_file_size_too_big', file: FILESIZE)
-=======
   validates_attachment_size :attachment, less_than: FILESIZE, message: I18n.t('schedule_event_files.error.attachment_file_size_too_big', file: FILESIZE/1000/1000)
->>>>>>> 161051143
   validates_attachment_content_type :attachment, content_type: /(^image\/(jpeg|jpg|gif|png)$)|\Aapplication\/pdf/, message: I18n.t('schedule_event_files.error.wrong_type')
 
   attr_accessor :merge
@@ -53,15 +38,11 @@ class ScheduleEventFile < ActiveRecord::Base
   end
 
   def normalized_attachment_file_name
-<<<<<<< HEAD
-    "#{self.academic_allocation_user.user.name.split(' ').join('_')}-#{self.attachment_file_name}".gsub( /[^a-zA-Z0-9_\.\-]/, '')
-=======
     if merge
       self.attachment_file_name
     else
       "#{self.academic_allocation_user.user.name.split(' ').join('_')}-#{self.attachment_file_name}".gsub( /[^a-zA-Z0-9_\.\-]/, '')
     end
->>>>>>> 161051143
   end
 
   def verify_type
