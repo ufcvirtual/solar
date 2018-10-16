@@ -152,10 +152,14 @@ function change_lesson(event, link) {
     $('#lesson-selected').empty().html(lesson_selected + '<i aria-hidden="true" class="icon-arrow-down-triangle"></i>');
     open_new_lesson_on_fancybox(lesson_path, lesson_url, $(link).data('draft'));
 
-    if(/.aac|.m4a|.mp4|.m4v|.webm/.test(lesson_path))
+    if(/.aac|.m4a|.mp4|.m4v|.webm|.avi/.test(lesson_path)) {
+      $(".lesson-file-download").show();
       $(".content").empty().html(video(lesson_path));
-    else
+    }
+    else {
+      $(".lesson-file-download").hide();
       $(".content").empty().html(iframe(lesson_path));
+    }
 
     hide_lessons();
   }

@@ -82,19 +82,6 @@ class LessonsController < ApplicationController
       @modules = LessonModule.to_select(at_ids, current_user)
       @lesson  = Lesson.find(params[:id])
 
-      if @lesson.is_link?
-
-        if @lesson.address.include? "&"
-          @lesson.address.slice!(@lesson.address.index("&"), @lesson.address.length)
-        end
-
-        if @lesson.address.include? "https://youtu.be"
-          @lesson.address.sub!("https://youtu.be", "https://www.youtube.com").sub!(".com/", ".com/watch?v=")
-        end
-
-      end
-
-
       render layout: 'lesson'
     end
   rescue => error
@@ -114,6 +101,7 @@ class LessonsController < ApplicationController
   def new
     @lesson = Lesson.new lesson_module_id: params[:lesson_module_id]
     @lesson.build_schedule start_date: Date.today
+    @lesson.responsive = true
 
     groups_by_lesson(@lesson)
   end
@@ -180,27 +168,11 @@ class LessonsController < ApplicationController
     authorize! :change_status, Lesson, { on: @allocation_tags_ids, read: @responsible }
 
     lesson_ids = params[:id].split(',').flatten
-    msg = change_lessons_status(lesson_ids, params[:status])
-
-    # respond_to do |format|
-    #   if msg.empty?
-    #     format.json { render json: {success: true} }
-    #     format.js
-    #   else
-    #     format.json { render json: { success: false, msg: msg }, status: :unprocessable_entity }
-    #     format.js { render js: "flash_message('#{msg.first}', 'alert');" }
-    #   end
-    # end
+    msg, type = change_lessons_status(lesson_ids, params[:status])
 
     respond_to do |format|
-      if msg.empty?
-        format.json { render json: {success: true} }
-        format.js
-      else
-        format.json { render json: { success: true, msg: msg }}
-        format.js
-      end
-
+      format.json { render json: { success: true, msg: msg, type: type }}
+      format.js
     end
   end
 
@@ -266,8 +238,11 @@ class LessonsController < ApplicationController
   end
 
   def change_module
-    verify_owner(lesson_ids = params[:lessons_ids].split(',') rescue [])
+    lesson_ids = params[:lessons_ids].split(',') rescue []
+    # verify_owner(lesson_ids = params[:lessons_ids].split(',') rescue [])
     authorize! :change_module, Lesson, on: params[:allocation_tags_ids]
+
+    # verify_owner(lesson_ids)
 
     new_module_id = LessonModule.find(params[:move_to_module]).id rescue nil
 
@@ -369,32 +344,75 @@ class LessonsController < ApplicationController
 
     def change_lessons_status(lesson_ids, new_status)
       msg = []
-      #msg = {}
+      type = 'notice'
+
       @lessons = Lesson.where(id: lesson_ids)
       @lessons.each do |lesson|
+        initial_file = false
 
-        if Dir.glob(lesson.path(true)+'**/*').select{|f| File.file?(f)}.size == 1
-          single_file = Dir.glob(lesson.path(true)+'**/*').select{|f| File.file?(f)}[0]
-          lesson.address = single_file.sub(lesson.path(true),"")
+        if lesson.is_file? && lesson.address.blank?
+          lesson_files = Dir.glob(lesson.path(true)+'**/*').select{|f| File.file?(f)}
+
+          if lesson_files.size == 1 && !lesson_files[0].include?('.zip')
+            lesson.address = lesson_files[0].sub(lesson.path(true),"")
+            initial_file = true
+          elsif lesson_files.size > 0
+            if lesson_files.size == 1 && lesson_files[0].include?('.zip')
+              result = extract(lesson_files[0], File.dirname(lesson_files[0]))
+              if result === true
+                log(@lesson, "lesson_files [extract file], lesson: #{lesson.id}, #{params[:file]}") rescue nil
+                msg << t('lessons.success.extract_zip', lesson_name: lesson.name)
+              else
+                msg << t('lessons.errors.extract_zip', lesson_name: lesson.name)
+                type = warning
+              end
+            end
+
+            index_files = Dir.glob(lesson.path(true)+'**/index.html').select{|f| File.file?(f)}
+            if index_files.size == 1
+              lesson.address = index_files[0].sub(lesson.path(true),"")
+              initial_file = true
+            elsif index_files.size == 0
+              first_file = Dir.glob(lesson.path(true)+'**/01.html').select{|f| File.file?(f)}
+              if first_file.size == 1
+                lesson.address = first_file[0].sub(lesson.path(true),"")
+                initial_file = true
+              end
+            end
+          end
         end
 
         lesson.status = new_status
-        #msg << lesson.errors[:base] unless lesson.save
+        lesson.save
 
-        if lesson.status == 1
+        if lesson.valid?
+          if lesson.status == Lesson_Approved
+            if lesson.is_file?
+              if lesson.address.blank?
+                msg << t('lessons.errors.undefined_initial_file', lesson_name: lesson.name)
+                type = 'warning'
+              else
+                msg << t('lessons.success.published')
+                msg << t('lessons.success.initial_file', lesson_address: File.basename(lesson.address), lesson_name: lesson.name) if initial_file
+              end # address
+            else
+              msg << t('lessons.success.published')
+            end # file
+          else
+            msg << t('lessons.success.draft')
+          end # status
+        else
+          msg << lesson.errors.full_messages
+          type = 'warning'
+        end # valid
+      end # each
 
-          if lesson.save
-            msg << "Arquivo #{File.basename(lesson.address)} definido como inicial em #{lesson.name}"
-          elsif
-            msg << "Um arquivo inicial deve ser definido em #{lesson.name}"
-          end
-
-        elsif
-          lesson.save
-        end
-
+      if @lessons.size > 1 && 1 < msg.count(t('lessons.success.published')) &&  msg.count(t('lessons.success.published')) < @lessons.size
+        msg.delete(t('lessons.success.published'))
+        msg <<t('lessons.success.some_published')
       end
-      msg
+
+      [msg.uniq.join('<br/>'), type]
     end
 
     def index_interacting_permissions
@@ -459,7 +477,7 @@ class LessonsController < ApplicationController
     end
 
     def lesson_params
-      params.require(:lesson).permit(:name, :description, :type_lesson, :address, :lesson_module_id, :privacy, :receive_updates, schedule_attributes: [:id, :start_date, :end_date])
+      params.require(:lesson).permit(:name, :description, :type_lesson, :address, :lesson_module_id, :privacy, :receive_updates, :responsive, schedule_attributes: [:id, :start_date, :end_date])
     end
 
     def verify_owner(ids)

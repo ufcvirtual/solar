@@ -268,7 +268,7 @@
       .audio {
         display: inline-block;
         a i{
-          margin-bottom: 30px;
+          margin-bottom: 44px;
           display: inline-block;
           vertical-align: middle;
         }
@@ -288,7 +288,7 @@
           margin: 5px 0 5px 0;
           background: $questions_audios_background;
           background: -moz-linear-gradient(to bottom, black, black);
-          padding-bottom: 8px;
+          padding-bottom: 22px;
           //background: -moz-linear-gradient(left, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%);
           height: 32px;
           //width: 56%;
@@ -342,7 +342,7 @@
   }
 
   .question_items{
-    padding: 10px 0px 10px 15px;
+    padding: 0 0px 10px 0;
 
     .item_image{
       border: solid 2px $question_image_border_color;
@@ -411,11 +411,12 @@
       //width: 600px;
       margin-bottom: 10px;
       //background-color: $question_image_legend_background_exams;
+      display: table;
 
       .audio{
-        margin: 5px 0 5px -15px;
-        padding-top: 5px;
-        padding-bottom: 8px;
+        margin: -5px 0 0 -11px;
+        padding-top: 7px;
+        padding-bottom: 15px;
         background-color: $questions_audios_background_exams;
         background: -moz-linear-gradient(to bottom, black, black);
         //background: -moz-linear-gradient(left, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%);
@@ -426,7 +427,7 @@
         left: 0.5%;
         float: left;
         audio{
-          margin-top: -20px;
+          margin-top: -8px;
           display: inline-block;
           vertical-align: middle;
         }
@@ -440,13 +441,13 @@
         padding-top: 13px;
         top: 50%;
         width: 42%;
+        margin-left: 105%;
         a i{
           margin-top: 4px;
           margin-bottom: 4px;
         }
       }
     }
-
     .text{
       color: $color_gray_text;
     }

@@ -9,7 +9,9 @@ class NotificationsController < ApplicationController
 
   before_filter only: [:edit, :update] do |controller|
     get_groups_by_tool(@notification = Notification.find(params[:id]))
-    authorize! :update, Notification, {on: @notification.academic_allocations.pluck(:allocation_tag_id), accepts_general_profile: true}
+    ats = @notification.academic_allocations.pluck(:allocation_tag_id)
+    authorize! :update, Notification, {on: ats, accepts_general_profile: true}
+    @can_mark_as_mandatory = current_user.profiles_with_access_on(:mark_as_mandatory, :notifications, (ats rescue nil), false, false, true).any?
   end
 
   before_filter only: [:new, :create] do |controller|
@@ -18,7 +20,7 @@ class NotificationsController < ApplicationController
   end
 
 
-  before_filter only: [:new, :edit, :create, :update] do |controller|
+  before_filter only: [:new, :create] do |controller|
     @can_mark_as_mandatory = current_user.profiles_with_access_on(:mark_as_mandatory, :notifications, (@allocation_tags_ids.split(' ') rescue nil), false, false, true).any?
    end
 

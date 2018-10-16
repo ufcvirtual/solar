@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im, :get_theme
   after_filter :log_navigation
 
-  before_filter :check_concurrent_session
+  # before_filter :check_concurrent_session
 
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|

@@ -74,6 +74,8 @@ class MessagesController < ApplicationController
 
     @support = params[:support]
 
+    @scores = params[:scores]
+
     render layout: false unless @support || params[:layout]
   end
 
@@ -134,44 +136,58 @@ class MessagesController < ApplicationController
         @message.sender = current_user
         @message.allocation_tag_id = @allocation_tag_id
 
-        raise "error" if params[:message][:contacts].empty? && params[:support].empty?
-        emails = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
-                      .where("(nmail.message IS NULL OR nmail.message=TRUE)")
-                      .where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
+        raise "error" if params[:message][:contacts].nil? && params[:message][:support].blank?
+        emails = []
+
+        unless params[:message][:contacts].nil?
+          emails = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
+                        .where("(nmail.message IS NULL OR nmail.message=TRUE)")
+                        .where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
+        end
+        
+        emails << params[:message][:support] unless params[:message][:support].blank?
 
         @message.files << original_files if original_files and not original_files.empty?
         @message.save!
-        #Thread.new do
-          #Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files, current_user.email).deliver
-        #end
-        emails << params[:support] unless params[:support].blank?
+        
         Job.send_mass_email(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email)
+        #Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email).deliver
       end
 
-      respond_to do |format|
-        format.html { redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages) }
-        #format.json { render :json => {"msg": "Contato removido com sucesso"} }
+      if params[:scores]=='true'
+        respond_to do |format|
+          format.html { redirect_to :back, notice: t(:mail_sent, scope: :messages) }
+        end
+      else
+        respond_to do |format|
+          format.html { redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages) }
+          #format.json { render :json => {"msg": "Contato removido com sucesso"} }
+        end
       end
 
     rescue => error
-      unless @allocation_tag_id.nil?
-        allocation_tag      = AllocationTag.find(@allocation_tag_id)
-        @group              = allocation_tag.group
-        @contacts           = User.all_at_allocation_tags(RelatedTaggable.related(group_id: @group.id), Allocation_Activated, true)
+      if params[:scores]=='true'
+        render json: { success: false, alert: @message.errors.full_messages.join(', ') }, status: :unprocessable_entity
       else
-        @contacts = current_user.user_contacts.map(&:user)
-      end
-      @message.files.build
+        unless @allocation_tag_id.nil?
+          allocation_tag      = AllocationTag.find(@allocation_tag_id)
+          @group              = allocation_tag.group
+          @contacts           = User.all_at_allocation_tags(RelatedTaggable.related(group_id: @group.id), Allocation_Activated, true)
+        else
+          @contacts = current_user.user_contacts.map(&:user)
+        end
+        @message.files.build
 
-      @message.errors.each do |attribute, erro|
-        @attribute = attribute
+        @message.errors.each do |attribute, erro|
+          @attribute = attribute
+        end
+        @reply_to = []
+        @reply_to = User.where(id: params[:message][:contacts].split(',')).select("id, (name||' <'||email||'>') as resume")
+        @support = params[:support]
+        
+        #flash.now[:alert] = @message.errors.full_messages.join(', ')
+        render :new
       end
-      @reply_to = []
-      @reply_to = User.where(id: params[:message][:contacts].split(',')).select("id, (name||' <'||email||'>') as resume")
-      @support = params[:support]
-
-      #flash.now[:alert] = @message.errors.full_messages.join(', ')
-      render :new
     end
   end
 
@@ -233,18 +249,17 @@ class MessagesController < ApplicationController
     render partial: 'contacts'
   end
 
-  def new_score_message_student
+  def new_score_message_user
     authorize! :index, Message, { on: [@allocation_tag_id  = active_tab[:url][:allocation_tag_id]], accepts_general_profile: true }
     @message = Message.new
     @message.files.build
-
-    unless params[:id].nil?
-      users = User.find(params[:id].split(","))
+    unless params[:user_ids].nil?
+      users = User.find(params[:user_ids].split(","))
       @reply_to_many = users.size > 0 ? users.map{|u| u.to_msg} : nil
 
-      @reply_to = [User.find(params[:id]).to_msg]
+      @reply_to = [User.find(params[:user_ids]).to_msg]
     end
-
+    @scores = true
     render partial: 'form'
   end
 
@@ -283,7 +298,7 @@ class MessagesController < ApplicationController
     end
 
     def message_params
-      params.require(:message).permit(:subject, :content, :contacts, files_attributes: :attachment)
+      params.require(:message).permit(:subject, :content, :contacts, :support, files_attributes: :attachment)
     end
 
 end

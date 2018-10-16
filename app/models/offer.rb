@@ -1,5 +1,6 @@
 class Offer < ActiveRecord::Base
   include Taggable
+  include OfferSemester
 
   belongs_to :course
   belongs_to :curriculum_unit
@@ -36,7 +37,7 @@ class Offer < ActiveRecord::Base
 
   after_save :update_digital_class, if: "curriculum_unit_id_changed? || course_id_changed? || semester_id_changed?"
 
-  attr_accessor :type_id, :verify_current_date
+  attr_accessor :type_id, :verify_current_date, :deleted_schedule
 
   def must_be_unique
     equal_offers = Offer.where(course_id: course_id, curriculum_unit_id: curriculum_unit_id, semester_id: semester_id)

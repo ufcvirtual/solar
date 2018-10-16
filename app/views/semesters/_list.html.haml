@@ -2,6 +2,10 @@
 
 = link_to t(".new"), new_semester_path(type_id: type_id), class: " btn btn_default", id: "new_semester", :"data-tooltip" => t(".new")
 
+%p
+  .title-warning
+    = raw t('.warning')
+
 - unless @semesters.empty?
   - @semesters.each do |semester|
     .semester{id: "semester-#{semester.id}"}

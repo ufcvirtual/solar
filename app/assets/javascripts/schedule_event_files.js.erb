@@ -29,7 +29,17 @@ $(function(){
     $.each(files, function(i){
       $('.files_list').append("<div id='file'>"+files[i].name+" ("+file_size_human_readable(files[i])+")</div>");
     });
-    validate_file_size(this, "<%=ScheduleEventFile::FILESIZE%>", "<%= I18n.t('schedule_event_files.error.attachment_file_size_too_big') %>");
+    validate_file_size(this, "<%=ScheduleEventFile::FILESIZE%>", "<%= I18n.t('schedule_event_files.error.attachment_file_size_too_big', file: (ScheduleEventFile::FILESIZE)/1000/1000) %>");
+  });
+
+  $('.download_folder, .download_file').on('click', function(){
+    $.get($(this).data('url'), function(data){
+      window.location.href = data.url;
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert', 'fancybox-outer');
+    });
   });
 });
 
@@ -102,9 +112,13 @@ function back_to_participants(link, event) {
   var keynum = event.which || event.keyCode;
   if(keynum == 13 || event.type == 'click') {
     var url = $(link).data("url");
+
+    verify_comment_before_finish_evaluation();
+
     $(link).call_fancybox({
       href: url,
       open: true,
     });
   }
 }
+

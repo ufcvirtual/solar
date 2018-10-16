@@ -29,4 +29,23 @@
     width: 259px;
   }
 
+  #save_automatically_message{
+    max-width: 400px;
+    display: inline-block;
+    padding-bottom: 1rem;
+    margin-left: 2rem;
+  }
+
+}
+
+#event_file_form{
+  input[type='file']{
+    display: none;
+  }
+}
+
+.user_schedule_event, .summary{
+  .info.block_wrapper{
+    width: unset;
+  }
 }
