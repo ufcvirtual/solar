@@ -134,7 +134,13 @@ class ApplicationController < ActionController::Base
     # verifica se o grupo foi passado e se é um grupo válido
     unless params[:selected_group].present? && !!(allocation_tag_id_group = AllocationTag.find_by_group_id(params[:selected_group]).try(:id))
       allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
-      allocation_tag_id_group = (params[:selected_group] = allocation_tag.group_id).nil? ? RelatedTaggable.where('group_id IN (?)', current_user.groups(nil, Allocation_Activated, nil, nil, active_tab[:url][:id]).pluck(:id)).first.group_at_id : allocation_tag.id
+      params[:selected_group] = allocation_tag.group_id
+      allocation_tag_id_group = if params[:selected_group].blank?
+        profiles_ids = current_user.profiles_with_access_on('show', 'curriculum_units', nil, true)
+        RelatedTaggable.where('group_id IN (?)', current_user.groups(profiles_ids, Allocation_Activated, nil, nil, active_tab[:url][:id]).pluck(:id)).first.group_at_id
+      else
+        allocation_tag.id
+      end
     end
 
     user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group
