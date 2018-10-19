@@ -127,6 +127,7 @@ module V1
               # @groups = load_enrollments[:turmas] #development
               @student_profile  = 1 # Aluno => 1
 
+              @matricula = load_enrollments[:matricula]
 
               @groups = @groups.collect do |group_info|
                 group_info["nome"] = group_info["codigo"] if group_info["nome"].blank?
@@ -138,7 +139,7 @@ module V1
             # POST load/groups/enrollments
             post :enrollments do
               begin
-                create_allocations(@groups.compact, @user, @student_profile)
+                create_allocations(@groups.compact, @user, @student_profile, @matricula)
 
                 raise ActiveRecord::RecordNotFound if @groups.collect{ |r| r[0] }.flatten.include?(nil)
 
