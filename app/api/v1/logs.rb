@@ -70,12 +70,10 @@ module V1
       #   requires :student_id, type: Integer
       #   optional :semester, type: String
       # end
-      # get "students/:student_id", rabl: 'logs/student' do
+      # get "students/:student_id", rabl: 'logs/index' do
 
       #   semester = Semester.where(name: params[:semester]).first
-
       #   user = User.find(params[:student_id])
-
       #   query = params[:semester].blank? ? '' : {allocation_tag_id: semester.offers.map(&:allocation_tag).map(&:related).flatten.uniq}
 
       #   @ats = user.allocations.joins(:profile).where(status: Allocation_Activated).where(query).where("cast(profiles.types & #{Profile_Type_Student} as boolean)").map(&:allocation_tag).map(&:related).flatten.uniq
