@@ -112,7 +112,7 @@ class LogAccess < ActiveRecord::Base
       FROM
         log_actions
       WHERE (log_actions.user_id = #{self.student} AND (log_type=1 OR (log_type=2 AND description LIKE 'message:%')) AND description NOT LIKE 'allocation:%') AND log_actions.allocation_tag_id IN (#{ats.join(',')})
-    ORDER BY datetime;
+    ORDER BY datetime DESC;
     SQL
   end
 
@@ -122,8 +122,10 @@ class LogAccess < ActiveRecord::Base
 
   def self.drop_and_create_table_temporary_logs_navigation_sub(ats, arr_id_student)
     LogAccess.find_by_sql <<-SQL
-        DROP TABLE IF EXISTS temp_logs_nav_sub;
+      DROP TABLE IF EXISTS temp_logs_nav_sub;
+    SQL
 
+    LogAccess.find_by_sql <<-SQL
         CREATE TEMPORARY TABLE temp_logs_nav_sub AS SELECT to_char(lognsub.created_at,'dd/mm/YYYY HH24:MI:SS') AS datetime,
         CASE
           WHEN lognsub.assignment_id IS NOT NULL THEN 'acessou atividade'
@@ -168,8 +170,10 @@ class LogAccess < ActiveRecord::Base
 
   def self.drop_and_create_table_temporary_logs_chat_messages(ats, arr_id_student)
     LogAccess.find_by_sql <<-SQL
-        DROP TABLE IF EXISTS temp_logs_chat_messages;
+      DROP TABLE IF EXISTS temp_logs_chat_messages;
+    SQL
 
+    LogAccess.find_by_sql <<-SQL
         CREATE TEMPORARY TABLE temp_logs_chat_messages AS SELECT to_char(chat_messages.created_at,'dd/mm/YYYY HH24:MI:SS') AS datetime,
         'enviou mensagem no chat'::text AS action,
         chat_rooms.title AS tool,
@@ -186,8 +190,10 @@ class LogAccess < ActiveRecord::Base
 
   def self.drop_and_create_table_temporary_logs_navigation(ats, arr_id_student)
     LogAccess.find_by_sql <<-SQL
-        DROP TABLE IF EXISTS temp_logs_navigation;
+      DROP TABLE IF EXISTS temp_logs_navigation;
+    SQL
 
+    LogAccess.find_by_sql <<-SQL
         CREATE TEMPORARY TABLE temp_logs_navigation AS SELECT to_char(created_at,'dd/mm/YYYY HH24:MI:SS') AS datetime,
         CASE
           WHEN menus.name = 'menu_portfolio' THEN 'Trabalho'
@@ -212,8 +218,10 @@ class LogAccess < ActiveRecord::Base
 
    def self.drop_and_create_table_temporary_logs_access(ats, arr_id_student)
     LogAccess.find_by_sql <<-SQL
-        DROP TABLE IF EXISTS temp_logs_access;
+      DROP TABLE IF EXISTS temp_logs_access;
+    SQL
 
+    LogAccess.find_by_sql <<-SQL
         CREATE TEMPORARY TABLE temp_logs_access AS SELECT to_char(created_at,'dd/mm/YYYY HH24:MI:SS') AS datetime, CASE WHEN log_type=1 THEN 'acessou o Solar' ELSE 'acessou turma' END AS action,  ''::text AS tool, ''::text AS tool_type, log_accesses.user_id
       FROM log_accesses WHERE log_accesses.user_id IN (#{arr_id_student.join(',')}) AND (allocation_tag_id IS NULL OR log_accesses.allocation_tag_id IN (#{ats.join(',')}))
     SQL
@@ -221,8 +229,10 @@ class LogAccess < ActiveRecord::Base
 
   def self.drop_and_create_table_temporary_logs_comments(ats, arr_id_student)
     LogAccess.find_by_sql <<-SQL
-        DROP TABLE IF EXISTS temp_logs_comments;
+      DROP TABLE IF EXISTS temp_logs_comments;
+    SQL
 
+    LogAccess.find_by_sql <<-SQL
         CREATE TEMPORARY TABLE temp_logs_comments AS SELECT to_char(comments.updated_at,'dd/mm/YYYY HH24:MI:SS') AS datetime,
           CASE
           WHEN academic_allocations.academic_tool_type='Assignment'
