@@ -1,5 +1,5 @@
 module V1
-  class Messages < Base
+  class MessagesAPI < Base
 
     guard_all!
 
