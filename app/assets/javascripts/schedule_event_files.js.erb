@@ -2,7 +2,7 @@ $(function(){
   $('#event_file_form:first').keypress(function(event) { if (event.keyCode == 13) { event.preventDefault(); } }); // prevenir enter
 
   $('#save').click(function(){
-    var file_amount = $(this).closest('tr.file_form').prev('tr.lines').find('.file_amount').find('a');
+    var link_to_amount_file = $(this).closest('tr.file_form').prev('tr.lines').find('.file_amount').find('a');
     $(this).closest('form').serialize_and_submit({
       files: true,
       prepend_to_list: $("#tb_lf tbody"),
@@ -10,9 +10,7 @@ $(function(){
       outer: 'fancybox-outer',
       error_message: '',
       complement_success: function(data){
-        var count = (data.match(/<tr class='lines'>/g) || []).length;
-        count = parseInt(file_amount.text().trim()) + count;
-        file_amount.text(count);
+        updates_number_of_files(link_to_amount_file);
         $('#tb_lf').show();
         $('.btn_new_file').show();
         $(".event_file_form").html('');
@@ -63,6 +61,7 @@ function new_file(link) {
     $("#no_itens_message_file").addClass('hide_message');
     $.fancybox.update();
   }).error(function(data){
+    $(link).show();
     var data = $.parseJSON(data.responseText);
     if (typeof(data.alert) != "undefined")
       flash_message(data.alert, 'alert', 'fancybox-outer');
@@ -122,3 +121,9 @@ function back_to_participants(link, event) {
   }
 }
 
+function updates_number_of_files(link_to_files) {
+  $.get($(link_to_files).data('url'), function(data){
+    var count = (data.match(/<tr class='lines'>/g) || []).length - 1;
+    $(link_to_files).text(count);
+  });
+}
