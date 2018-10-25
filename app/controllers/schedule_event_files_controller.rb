@@ -143,6 +143,18 @@ class ScheduleEventFilesController < ApplicationController
     render partial: 'summary'
   end
 
+  def count_user_file
+    @allocation_tag_id = active_tab[:url][:allocation_tag_id]
+    ac_id = (params[:ac_id].blank? ? AcademicAllocation.where(academic_tool_type: 'ScheduleEvent', academic_tool_id: (params[:tool_id]), allocation_tag_id: @allocation_tag_id).first.try(:id) : params[:ac_id])
+
+    user_id = (params[:user_id].blank? ? current_user.id : params[:user_id])
+    @acu = AcademicAllocationUser.find_or_create_one(ac_id, @allocation_tag_id, user_id, params[:group_id], false, nil)
+
+    @files = ScheduleEventFile.where(academic_allocation_user_id: @acu.id)
+
+    render @files
+  end
+
   private
 
     def verify_download
