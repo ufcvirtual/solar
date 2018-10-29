@@ -4,6 +4,6 @@ collection @files
   attributes :attachment
 
   node :url do |f|
-    api_download_messages_url(file_id: f.id)
+    download_file_messages_url(f.id)
   end
 end 

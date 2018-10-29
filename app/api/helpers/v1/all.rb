@@ -6,6 +6,7 @@ module V1::All
   include UsersH
   include EventsH
   include Contents # replicates content of a group
+  include Messages
 
   include General
   include FileDownload

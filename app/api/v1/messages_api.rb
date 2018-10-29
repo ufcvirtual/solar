@@ -32,7 +32,8 @@ module V1
           requires :group_id, type: Integer, desc: 'Group ID.'
         end
 
-        get "/:id" , rabl: 'messages/show' do   
+        get "/:id" , rabl: 'messages/show' do
+          @message = Message.find(params[:id])
         end
       end #segment
 
@@ -85,6 +86,7 @@ module V1
           return type if ['outbox', 'trashbox'].include?(type)
           'inbox'
         end
+
       end #helpers
      
       segment do
@@ -110,22 +112,63 @@ module V1
 
       segment do
       
-        desc 'Remover menagem para lixeira'
-        params do
-          optional :box, type: String, desc: 'Box Type'
+        desc 'Exibir anexos da mensagem'
+        get "/:id/files" , rabl: 'messages/files' do
+          @files = MessageFile.where(message_id: params[:id].to_i)
         end
 
+      end
+
+      segment do
+      
+        desc 'Remover mensagem do inbox para lixeira'
         put "/trash/:id" do
-          Message.transaction do
-            change_message_status(params[:id], 'trash', option_user_box(params[:box]))
+          
+          begin
+            Message.transaction do
+              change_message_status(params[:id].to_i, 'trash', 'inbox')
+            end
           end
+
+        {ok: 'ok'}
         end
 
       end
       
+      segment do
+      
+        desc 'Restaurar menagem da lixeira'
+        put "/restore/:id" do
+          
+          begin
+            Message.transaction do
+              change_message_status(params[:id].to_i, 'restore', 'trashbox')
+            end
+          end
+
+        {ok: 'ok'}
+        end
+
+      end
+      
+      segment do
+      
+        desc 'Marcar mensagem como lida/não lida'
+        put "/:status/:id" do
+          
+          begin
+            Message.transaction do
+              change_message_status(params[:id].to_i, params[:status], 'inbox')
+            end
+          end
+
+        {ok: 'ok'}
+        end
+
+      end
       
 
-    end #namespace all
+    end
 
   end
 end
