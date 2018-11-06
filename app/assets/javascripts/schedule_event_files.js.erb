@@ -55,9 +55,19 @@ $(function(){
           updates_number_of_files(this);
         });
         if(!!$('.fancybox-outer').length)
-          flash_message("<%= I18n.t('schedule_event_files.success.created') %>", "notice", 'fancybox-outer');
+          flash_message(data.notice, "notice", 'fancybox-outer');
         else
-          flash_message("<%= I18n.t('schedule_event_files.success.created') %>", "notice");
+          flash_message(data.notice, "notice");
+      },
+      error: function(data) {
+        var response = JSON.parse(data.responseText);
+        $('.file_amount').find('a').each(function() {
+          updates_number_of_files(this);
+        });
+        if(!!$('.fancybox-outer').length)
+          flash_message(response.alert, "alert", 'fancybox-outer');
+        else
+          flash_message(response.alert, "alert");
       }
     });
   });
