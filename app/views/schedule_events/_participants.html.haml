@@ -1,8 +1,13 @@
 - show_fields = [Presential_Meeting, Presential_Test].include?(@event.type_event)
 .block_title
   %h2{align: "center"}= t('.list_name', event: @event.title)
+  
+  = form_for(:schedule_event_files, url: upload_schedule_event_files_path(tool_id: @event.id, tool: 'ScheduleEvent', allocation_tags_ids: @allocation_tag_id), html: { id: 'file_form', method: :post }) do |f|
+    = f.file_field :files, id: 'fileupload', multiple: true
+
   - if show_fields
     %span.block_actions
+      = link_to content_tag(:i, nil, class: 'icon-plus'), '#void', class: 'btn upload_all', :'aria-label' => t(".upload_all"), :"data-tooltip" => t(".upload_all")
       = link_to content_tag(:i, nil, class: 'icon-install'), '#void', class: 'btn download_folder', :'aria-label' => t(".download_all"), :"data-tooltip" => t(".download_all"), :'data-url' => can_download_schedule_event_files_path(event_id: @event.id)
 - unless @participants.empty?
   %table.tb_list

@@ -526,6 +526,7 @@ Solar::Application.routes.draw do
     collection do
       get :can_download
       get :download
+      post :upload
       get :zip_download, to: :download, defaults: {zip: true}
       get :summary
     end
