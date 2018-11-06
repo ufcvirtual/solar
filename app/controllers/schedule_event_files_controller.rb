@@ -118,6 +118,34 @@ class ScheduleEventFilesController < ApplicationController
     end
   end
 
+  def upload
+    unless params[:schedule_event_files].blank?
+      errors = []
+
+      ac = AcademicAllocation.where("academic_tool_id = ? AND allocation_tag_id = ? AND academic_tool_type = 'ScheduleEvent'" ,params[:tool_id], params[:allocation_tags_ids]).first
+
+      params[:schedule_event_files][:files].each do |file|
+        matricula = file.original_filename.strip.scan(/\d+/).first
+        al = Allocation.where("matricula = ? AND matricula IS NOT NULL", matricula).first
+
+        if al.nil?
+          errors << t('schedule_event_files.error.student_not_found', file_name: file.original_filename)
+        else
+          student_id = al.user_id
+          acu = AcademicAllocationUser.find_or_create_one(ac.id, params[:allocation_tags_ids], student_id)
+
+          errors << create_one({"academic_allocation_user_id" => acu.id, "attachment" => file})
+        end
+      end
+
+      if errors.flatten.empty?
+        render json: { success: true, notice: t('schedule_event_files.success.created') }
+      else
+        render json: { success: false, alert: errors.first }, status: :unprocessable_entity
+      end
+    end
+  end
+
   def delete_online_correction_canvas
     authorize! :online_correction, ScheduleEventFile, on: active_tab[:url][:allocation_tag_id]
     @schedule_event_file = ScheduleEventFile.find(params[:id])

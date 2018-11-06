@@ -39,6 +39,28 @@ $(function(){
         flash_message(data.alert, 'alert', 'fancybox-outer');
     });
   });
+
+  $('.upload_all').on('click', function () {
+    $('#fileupload').click();
+  });
+
+  $('#fileupload').change(function(){
+    $(this).closest('form').serialize_and_submit({
+      files: true,
+      dont_remove_lightbox: true,
+      outer: 'fancybox-outer',
+      error_message: '',
+      complement_success: function(data){
+        $('.file_amount').find('a').each(function() {
+          updates_number_of_files(this);
+        });
+        if(!!$('.fancybox-outer').length)
+          flash_message("<%= I18n.t('schedule_event_files.success.created') %>", "notice", 'fancybox-outer');
+        else
+          flash_message("<%= I18n.t('schedule_event_files.success.created') %>", "notice");
+      }
+    });
+  });
 });
 
 function cancel_files() {

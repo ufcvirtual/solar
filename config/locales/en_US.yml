@@ -3187,6 +3187,7 @@ en_US:
       files: Files
       see_files: See files sent
       download_all: Download of all student's files
+      upload_all: Send class's file
     presential_test_participants:
       list_name: Students List
       name: Name
@@ -3251,6 +3252,8 @@ en_US:
       file_not_saved: It was not possible to save file.
       file_not_cleaned: It was not possible to clean file.
       cant_download: It's not possible to download this(these) file(s)
+      cant_upload: It's not possible to upload this(these) file(s)
+      student_not_found: Verify if the file %{file_name} starts correctly with student enrollment.
       type: "Files can only be sent to events with the following types: Presential Test and Presential Meeting"
       general_error: "Only image (jpeg/png/gif) or pdf files of 2MB or less can be sent to Presential Tests or Presential Meetings."
       ended: It's not possible to send files before the end of activity.
