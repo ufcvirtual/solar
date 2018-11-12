@@ -107,6 +107,18 @@ module V1
       
       end
 
+      segment do
+      
+        desc "Listar Responsáveis"
+        params do
+          requires :allocation_tag_id, type: Integer, desc: "AllocationTagId"
+        end
+        get ":id/responsibles", rabl: 'events/users' do
+          @users =  Allocation.responsibles(params[:allocation_tag_id])
+        end
+      
+      end
+
     end # events
 
   end
