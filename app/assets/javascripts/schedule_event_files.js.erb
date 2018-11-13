@@ -23,11 +23,27 @@ $(function(){
   });
 
   $('#files_').change(function(){
-    var files = $(this)[0].files;
-    $.each(files, function(i){
-      $('.files_list').append("<div id='file'>"+files[i].name+" ("+file_size_human_readable(files[i])+")</div>");
+    var files = Array.from(this.files);
+    var wrong_type = false;
+
+    $(files).each(function(){
+      if (validate_file_type(this)) {
+        $('.files_list').append("<div id='file'>"+this.name+" ("+file_size_human_readable(this)+")</div>");
+      } else {
+        wrong_type = true;
+        if(!!$('.fancybox-outer').length)
+          flash_message("<%= I18n.t('schedule_event_files.error.wrong_type') %>", "alert", 'fancybox-outer');
+        else
+          flash_message("<%= I18n.t('schedule_event_files.error.wrong_type') %>", "alert");
+      }
     });
-    validate_file_size(this, "<%=ScheduleEventFile::FILESIZE%>", "<%= I18n.t('schedule_event_files.error.attachment_file_size_too_big', file: (ScheduleEventFile::FILESIZE)/1000/1000) %>");
+
+    var too_big = validate_file_size(this, "<%=ScheduleEventFile::FILESIZE%>", "<%= I18n.t('schedule_event_files.error.attachment_file_size_too_big', file: (ScheduleEventFile::FILESIZE)/1000/1000) %>");
+
+    if (wrong_type || too_big) {
+      this.value = '';
+      $('.files_list').html('');
+    }
   });
 
   $('.download_folder, .download_file').on('click', function(){
