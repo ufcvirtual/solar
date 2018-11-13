@@ -3253,7 +3253,7 @@ en_US:
       file_not_cleaned: It was not possible to clean file.
       cant_download: It's not possible to download this(these) file(s)
       cant_upload: It's not possible to upload this(these) file(s)
-      student_not_found: Verify if the file %{file_name} starts correctly with student enrollment.
+      student_not_found: Verify if the file %{file_name} starts with student enrollment.
       type: "Files can only be sent to events with the following types: Presential Test and Presential Meeting"
       general_error: "Only image (jpeg/png/gif) or pdf files of 2MB or less can be sent to Presential Tests or Presential Meetings."
       ended: It's not possible to send files before the end of activity.
