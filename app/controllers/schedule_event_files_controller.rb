@@ -141,7 +141,7 @@ class ScheduleEventFilesController < ApplicationController
       if errors.flatten.empty?
         render json: { success: true, notice: t('schedule_event_files.success.created') }
       else
-        render json: { success: false, alert: errors.first }, status: :unprocessable_entity
+        render json: { success: false, alert: errors.flatten.first }, status: :unprocessable_entity
       end
     end
   end
