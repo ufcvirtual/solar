@@ -3490,6 +3490,7 @@ pt_BR:
       files: Arquivos
       see_files: Ver arquivos enviados
       download_all: Download dos arquivos de todos os alunos
+      upload_all: Enviar arquivos da turma
     presential_test_participants:
       list_name: Lista de Alunos
       name_studante: Nome
@@ -3555,6 +3556,8 @@ pt_BR:
       file_not_saved: "Não foi possível salvar o arquivo."
       file_not_cleaned: "Não foi possível limpar o arquivo."
       cant_download: Não é possível realizar o download deste(s) arquivo(s)
+      cant_upload: Não é possível realizar o upload deste(s) arquivo(s)
+      student_not_found: Verifique se o nome do arquivo "%{file_name}" inicia com a matricula do aluno corretamente.
       type: Arquivos podem ser enviados apenas para eventos dos tipos Prova Presencial e Encontro Presencial
       general_error: "Apenas arquivos de imagens (jpeg/png/gif) ou pdfs de até 2MB devem ser enviados em eventos dos tipos Encontro Presencial ou Prova Presencial."
       ended: Não é possível enviar arquivos enquanto a atividade não for finalizada.

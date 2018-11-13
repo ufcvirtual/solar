@@ -835,6 +835,11 @@ function hide_element(event) {
   $('#focu').focus();
 }
 
+function validate_file_type(file) {
+  var file_type = file.name.split(".").slice(-1)[0];
+  return file_type.match(/jpeg|png|gif|pdf/);
+}
+
 function validate_file_size(file, max_size, message) {
   var file_name_path = $(file).val();
   var file_name = file_name_path.substr( (file_name_path.lastIndexOf('\\')+1) );
@@ -866,5 +871,7 @@ function validate_file_size(file, max_size, message) {
     var file_size_human_readable = (Math.round(file_size*100)/100) + " " + file_size_extension[i];
 
     $(".file").html( "<%=I18n.t(:send_file_name)%>: " + file_name + "<br>" + "<%=I18n.t(:send_file_size)%>: " + file_size_human_readable );
+
+    return file.files[0].size > max_size;
   }
 }

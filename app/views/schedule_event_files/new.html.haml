@@ -14,7 +14,7 @@
       .form-inputs.block_content
         .input.string.files
           .file_input
-            = file_field_tag 'files[]', type: :file, multiple: true, :'aria-label' => t(:send_file_to_upload)
+            = file_field_tag 'files[]', type: :file, accept: "image/jpg,image/png,image/jpeg,image/gif,application/pdf", multiple: true, :'aria-label' => t(:send_file_to_upload)
             = button_tag t(:select_files), :type => 'button', :onclick => "add_new_file()", class: 'btn add_files'
           .files_list
 

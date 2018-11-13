@@ -1,7 +1,8 @@
 module V1
   class Events < Base
 
-    before { verify_ip_access_and_guard! }
+    # before { verify_ip_access_and_guard! }
+    guard_all!
 
     namespace :event do
       desc "Edição de ac de evento"
@@ -27,6 +28,13 @@ module V1
     end # event
 
     namespace :events do
+
+      # helpers do
+        
+      #   def schedule_event_file_params
+      #     ActionController::Parameters.new(params).require(:schedule_event_file).permit(:user_id, :academic_allocation_user_id, :attachment, :file_correction)
+      #   end
+      # end
 
       desc "Criação de um ou mais eventos"
       params do
@@ -73,6 +81,43 @@ module V1
           {ok: :ok}
         end
       end # delete :id
+
+      segment do
+      
+        desc "Listar Eventos"
+        params do
+          requires :allocation_tag_id, type: Integer, desc: "AllocationTagId"
+        end
+        get "/", rabl: 'events/list' do
+           @events = ScheduleEvent.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: params[:allocation_tag_id].to_i})
+        end
+      
+      end
+
+      segment do
+      
+        desc "Listar Alunos"
+        params do
+          requires :allocation_tag_id, type: Integer, desc: "AllocationTagId"
+        end
+        get ":id/participants", rabl: 'events/users' do
+          schedule_event = ScheduleEvent.find(params[:id].to_i)
+          @users = schedule_event.participants(params[:allocation_tag_id])
+        end
+      
+      end
+
+      segment do
+      
+        desc "Listar Responsáveis"
+        params do
+          requires :allocation_tag_id, type: Integer, desc: "AllocationTagId"
+        end
+        get ":id/responsibles", rabl: 'events/users' do
+          @users =  Allocation.responsibles(params[:allocation_tag_id])
+        end
+      
+      end
 
     end # events
 

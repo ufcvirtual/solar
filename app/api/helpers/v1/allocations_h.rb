@@ -17,18 +17,20 @@ module V1::AllocationsH
   end
 
   # cancel all previous allocations and create new ones to groups
-  def create_allocations(groups, user, profile_id)
+  def create_allocations(groups, user, profile_id, matricula)
     ActiveRecord::Base.transaction do
       groups.each do |group|
-        group.first.allocate_user(user.id, profile_id, nil, group.last.try(:id))
-        unless group.last.blank?
-          # set or create merged allocation
-          group.last.allocate_user(user.id, profile_id, nil, nil, 5)
-        else
-          # cancel possible previous merges allocations
-          Allocation.where(origin_group_id: group.first.id, user_id: user.id, profile_id: profile_id).each do |al|
-            al.update_attributes origin_group_id: nil
-            al.group.change_allocation_status(user.id, Allocation_Cancelled, nil, {profile_id: profile_id})
+        group.first.allocate_user(user.id, profile_id, nil, group.last.try(:id), Allocation_Activated, matricula)
+        unless group.first.try(:id) == group.last.try(:id)
+          unless group.last.blank?
+            # set or create merged allocation
+            group.last.allocate_user(user.id, profile_id, nil, nil, 5, matricula)
+          else
+            # cancel possible previous merges allocations
+            Allocation.where(origin_group_id: group.first.id, user_id: user.id, profile_id: profile_id).each do |al|
+              al.update_attributes origin_group_id: nil, matricula: matricula
+              al.group.change_allocation_status(user.id, Allocation_Cancelled, nil, {profile_id: profile_id})
+            end
           end
         end
       end

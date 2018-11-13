@@ -2,7 +2,7 @@ $(function(){
   $('#event_file_form:first').keypress(function(event) { if (event.keyCode == 13) { event.preventDefault(); } }); // prevenir enter
 
   $('#save').click(function(){
-    var file_amount = $(this).closest('tr.file_form').prev('tr.lines').find('.file_amount').find('a');
+    var link_to_amount_file = $(this).closest('tr.file_form').prev('tr.lines').find('.file_amount').find('a');
     $(this).closest('form').serialize_and_submit({
       files: true,
       prepend_to_list: $("#tb_lf tbody"),
@@ -10,9 +10,7 @@ $(function(){
       outer: 'fancybox-outer',
       error_message: '',
       complement_success: function(data){
-        var count = (data.match(/<tr class='lines'>/g) || []).length;
-        count = parseInt(file_amount.text().trim()) + count;
-        file_amount.text(count);
+        updates_number_of_files(link_to_amount_file);
         $('#tb_lf').show();
         $('.btn_new_file').show();
         $(".event_file_form").html('');
@@ -25,11 +23,27 @@ $(function(){
   });
 
   $('#files_').change(function(){
-    var files = $(this)[0].files;
-    $.each(files, function(i){
-      $('.files_list').append("<div id='file'>"+files[i].name+" ("+file_size_human_readable(files[i])+")</div>");
+    var files = Array.from(this.files);
+    var wrong_type = false;
+
+    $(files).each(function(){
+      if (validate_file_type(this)) {
+        $('.files_list').append("<div id='file'>"+this.name+" ("+file_size_human_readable(this)+")</div>");
+      } else {
+        wrong_type = true;
+        if(!!$('.fancybox-outer').length)
+          flash_message("<%= I18n.t('schedule_event_files.error.wrong_type') %>", "alert", 'fancybox-outer');
+        else
+          flash_message("<%= I18n.t('schedule_event_files.error.wrong_type') %>", "alert");
+      }
     });
-    validate_file_size(this, "<%=ScheduleEventFile::FILESIZE%>", "<%= I18n.t('schedule_event_files.error.attachment_file_size_too_big', file: (ScheduleEventFile::FILESIZE)/1000/1000) %>");
+
+    var too_big = validate_file_size(this, "<%=ScheduleEventFile::FILESIZE%>", "<%= I18n.t('schedule_event_files.error.attachment_file_size_too_big', file: (ScheduleEventFile::FILESIZE)/1000/1000) %>");
+
+    if (wrong_type || too_big) {
+      this.value = '';
+      $('.files_list').html('');
+    }
   });
 
   $('.download_folder, .download_file').on('click', function(){
@@ -39,6 +53,38 @@ $(function(){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
         flash_message(data.alert, 'alert', 'fancybox-outer');
+    });
+  });
+
+  $('.upload_all').on('click', function () {
+    $('#fileupload').click();
+  });
+
+  $('#fileupload').change(function(){
+    $(this).closest('form').serialize_and_submit({
+      files: true,
+      dont_remove_lightbox: true,
+      outer: 'fancybox-outer',
+      error_message: '',
+      complement_success: function(data){
+        $('.file_amount').find('a').each(function() {
+          updates_number_of_files(this);
+        });
+        if(!!$('.fancybox-outer').length)
+          flash_message(data.notice, "notice", 'fancybox-outer');
+        else
+          flash_message(data.notice, "notice");
+      },
+      error: function(data) {
+        var response = JSON.parse(data.responseText);
+        $('.file_amount').find('a').each(function() {
+          updates_number_of_files(this);
+        });
+        if(!!$('.fancybox-outer').length)
+          flash_message(response.alert, "alert", 'fancybox-outer');
+        else
+          flash_message(response.alert, "alert");
+      }
     });
   });
 });
@@ -63,6 +109,7 @@ function new_file(link) {
     $("#no_itens_message_file").addClass('hide_message');
     $.fancybox.update();
   }).error(function(data){
+    $(link).show();
     var data = $.parseJSON(data.responseText);
     if (typeof(data.alert) != "undefined")
       flash_message(data.alert, 'alert', 'fancybox-outer');
@@ -122,3 +169,9 @@ function back_to_participants(link, event) {
   }
 }
 
+function updates_number_of_files(link_to_files) {
+  $.get($(link_to_files).data('url'), function(data){
+    var count = (data.match(/<tr class='lines'>/g) || []).length - 1;
+    $(link_to_files).text(count);
+  });
+}

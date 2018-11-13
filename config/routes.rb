@@ -518,6 +518,7 @@ Solar::Application.routes.draw do
 
   resources :schedule_event_files, except: [:index, :show] do
     member do
+      get :count_user_file
       get :online_correction
       post :save_online_correction_file
       delete :delete_online_correction_canvas
@@ -525,6 +526,7 @@ Solar::Application.routes.draw do
     collection do
       get :can_download
       get :download
+      post :upload
       get :zip_download, to: :download, defaults: {zip: true}
       get :summary
     end
