@@ -119,6 +119,21 @@ module V1
       
       end
 
+      segment do
+      
+        desc "Enviar arquivo para aluno"
+        post "/send_file" do  
+          academic_allocation = AcademicAllocation.where(allocation_tag_id: params[:allocation_tag_id].to_i).where(academic_tool_id: params[:id].to_i)
+          academic_allocation_user = AcademicAllocationUser.where(academic_allocation_id: academic_allocation[0].id).where(user_id: params[:student_id].to_i)
+          
+          sef = ScheduleEventFile.new({user_id: current_user.id, academic_allocation_user_id: academic_allocation_user[0].id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
+          sef.save!
+
+          {ok: :ok}
+        end
+      
+      end
+
     end # events
 
   end
