@@ -134,6 +134,24 @@ module V1
       
       end
 
+      segment do
+      
+        desc "Ver nota do aluno"
+        params do
+          requires :event_id, type: Integer, desc: "ID do Evento"
+          requires :student_id, type: Integer, desc: "ID do Aluno"
+          requires :allocation_tag_id, type: Integer, desc: "AllocationTagId da Turma"
+        end
+        get ":event_id/grade/:student_id" do
+          schedule_event = ScheduleEvent.find(params[:event_id].to_i)
+          users = schedule_event.participants(params[:allocation_tag_id].to_i)
+          student = users.select{|u| u.id == params[:student_id].to_i}[0]
+
+          {student_id: student.id, student_grade: student.grade}
+        end
+      
+      end
+
     end # events
 
   end
