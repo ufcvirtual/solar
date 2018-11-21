@@ -4052,7 +4052,14 @@ pt_BR:
       situation4: "- Ao remover as situações dos alunos, todas serão definidas como 'Pendente' ou 'Indefinida' até que sejam definidas novamente."
       situation5: "- Uma vez definida a situação, a cada nova avaliação, carga horária e afins, a situação do aluno será imediatamente atualizada."
       confirm: A última atividade avaliativa ainda não aconteceu. Tem certeza que deseja definir as situações?
+      confirm2: Existem atividades enviadas sem nota e/ou carga horária. Tem certeza que deseja definir as bloquear o registro de notas?
       origin_group: Turma original (aglutinada)
+      register_notes_on: Liberar Registro de Notas
+      register_notes_off: Bloquear Registro de Notas
+      msg_register_notes_on: Liberado registro de notas
+      msg_register_notes_off: Bloqueado registro de notas
+      error_msg_register_notes: Erro ao liberar/bloquear registro de notas
+      msg_button_register_off: Registro de notas bloqueada pelo prof. titular
     info:
       assignments: Trabalhos
       date_range: Período

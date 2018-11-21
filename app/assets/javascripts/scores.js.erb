@@ -120,6 +120,8 @@ function set_situation(btn){
   });
 }
 
+
+
 function remove_situation(btn){
   $.put($(btn).data('url'), function(data){
     $('#tabs .summary').click();
@@ -179,3 +181,19 @@ $(function(){
     });
 
 });
+
+function set_register_notes(btn, confirme, button_register){
+  if(confirme==true && button_register==false){
+    if (!confirm("<%=I18n.t('scores.index.confirm2')%>"))
+      return false;
+  }
+  $.put($(btn).data('url'), function(data){
+    $("#tabs ul li").find('a.active').click();
+
+    flash_message(data.notice, 'notice');
+  }).error(function(data){
+    var data = $.parseJSON(data.responseText);
+    if (typeof(data.alert) != "undefined")
+      flash_message(data.alert, 'alert');
+  });
+}
