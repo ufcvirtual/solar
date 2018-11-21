@@ -3754,7 +3754,14 @@ en_US:
       situation4: "- By removing sutdent's situations, all will be setted as 'Pending' or 'Undefined' until they're setted again."
       situation5: "- Once situation was defined, at every new evaluation or working hours, student's situation will be immediately updated."
       confirm: Last evaluative activity haven't happened yet. Are you sure that you want to set situations?
+      confirm2: Existem atividades enviadas sem nota e/ou carga horária. Tem certeza que deseja definir as bloquear o registro de notas?
       origin_group: Original group (merged)
+      register_notes_on: Release Notes Record
+      register_notes_off: Lock Notes Record
+      msg_register_notes_on: Release Notes Record
+      msg_register_notes_off: Locked note log
+      error_msg_register_notes: Error releasing / blocking note log
+      msg_button_register_off: Record of notes blocked by prof. holder
     info:
       assignments: Assignments
       date_range: Date range

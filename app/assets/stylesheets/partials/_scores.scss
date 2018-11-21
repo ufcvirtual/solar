@@ -407,3 +407,8 @@ tbody{
   float: right;
   max-width: 57%;
 }
+
+a.disabled_register_notes{
+  opacity: 0.45;
+  cursor: pointer !important;
+}

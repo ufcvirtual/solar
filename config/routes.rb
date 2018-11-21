@@ -248,6 +248,7 @@ Solar::Application.routes.draw do
       get :reports_pdf
       get :redirect_to_open
       put :set_situation
+      put :set_register_notes
       put :remove_situation
       get :info_summary
     end
