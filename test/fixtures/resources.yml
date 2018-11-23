@@ -1251,3 +1251,9 @@ res238:
   controller: 'administrations'
   action: 'reset_session_token_user'
   description: 'Reseta o token da sessão de uma usuário'
+
+res239:
+  id: 239
+  controller: 'scores'
+  action: 'set_register_notes'
+  description: 'Liberar/Bloquear registro de notas'

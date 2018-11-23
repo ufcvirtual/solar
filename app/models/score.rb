@@ -84,7 +84,8 @@ class Score # < ActiveRecord::Base
         WHEN schedules.end_date >= current_date THEN 'to_send'
         ELSE
           'not_sent'
-        END AS situation
+        END AS situation,
+      schedules.end_date
     FROM users
     JOIN allocations ON users.id = allocations.user_id AND allocations.allocation_tag_id IN (#{ats})
     JOIN profiles ON allocations.profile_id = profiles.id
@@ -117,7 +118,8 @@ class Score # < ActiveRecord::Base
         WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (chat_rooms.start_hour IS NULL OR current_time>to_timestamp(chat_rooms.start_hour, 'HH24:MI:SS')::time ) AND (chat_rooms.end_hour IS NULL OR current_time<=to_timestamp(chat_rooms.end_hour, 'HH24:MI:SS')::time) THEN 'to_send'
         ELSE
           'not_sent'
-        END AS situation
+        END AS situation,
+      schedules.end_date
     FROM users
     JOIN allocations ON users.id = allocations.user_id AND allocations.allocation_tag_id IN (#{ats})
     JOIN profiles ON allocations.profile_id = profiles.id
@@ -147,7 +149,8 @@ class Score # < ActiveRecord::Base
         WHEN schedules.start_date <= current_date AND schedules.end_date >= current_date THEN 'to_send'
         ELSE
           'not_sent'
-        END AS situation
+        END AS situation,
+      schedules.end_date
     FROM users
     JOIN allocations ON users.id = allocations.user_id AND allocations.allocation_tag_id IN (#{ats})
     JOIN profiles ON allocations.profile_id = profiles.id
@@ -177,7 +180,8 @@ class Score # < ActiveRecord::Base
         WHEN ((current_date >= s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time>= to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND current_date <= s.end_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time<=to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) THEN 'to_send'
         ELSE
           'not_sent'
-        END AS situation
+        END AS situation,
+      s.end_date
     FROM users
     JOIN allocations ON users.id = allocations.user_id AND allocations.allocation_tag_id IN (#{ats})
     JOIN profiles ON allocations.profile_id = profiles.id
@@ -206,7 +210,8 @@ class Score # < ActiveRecord::Base
         WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND (start_hour IS NULL OR current_time>=to_timestamp(start_hour, 'HH24:MI:SS')::time AND current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN 'to_send'
         ELSE
           'not_sent'
-        END AS situation
+        END AS situation,
+      schedules.end_date
     FROM users
     JOIN allocations ON users.id = allocations.user_id AND allocations.allocation_tag_id IN (#{ats})
     JOIN profiles ON allocations.profile_id = profiles.id
@@ -235,7 +240,8 @@ class Score # < ActiveRecord::Base
         WHEN webconferences.initial_time + (interval '1 min')*webconferences.duration > now() THEN 'to_send'
         ELSE
           'not_sent'
-        END AS situation
+        END AS situation,
+      (webconferences.initial_time + (interval '1 min')*webconferences.duration) AS end_date
     FROM users
     JOIN allocations ON users.id = allocations.user_id AND allocations.allocation_tag_id IN (#{ats})
     JOIN profiles ON allocations.profile_id = profiles.id
