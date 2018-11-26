@@ -30,6 +30,7 @@ module V1::AllocationsH
             Allocation.where(origin_group_id: group.first.id, user_id: user.id, profile_id: profile_id).each do |al|
               al.update_attributes origin_group_id: nil, matricula: matricula
               al.group.change_allocation_status(user.id, Allocation_Cancelled, nil, {profile_id: profile_id})
+            end
           end
         end
       end
