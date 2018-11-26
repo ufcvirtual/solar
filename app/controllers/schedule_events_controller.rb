@@ -149,6 +149,10 @@ class ScheduleEventsController < ApplicationController
     @course = allocation_tag.get_course
     @event = ScheduleEvent.find(params[:id])
 
+    if @course.has_exam_header && @course.is_uab_course?
+      @course.header_exam = @course.default_header_uab
+    end
+
     if @event.content_exam.blank?
       render text: t("schedule_events.error.no_content")
     else
