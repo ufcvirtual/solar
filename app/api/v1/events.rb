@@ -152,6 +152,23 @@ module V1
       
       end
 
+      segment do
+      
+        desc "Listar Arquivos enviado para o Aluno"
+        params do
+          requires :id, type: Integer, desc: "ID do Evento"
+          requires :student_id, type: Integer, desc: "ID do Aluno"
+          requires :allocation_tag_id, type: Integer, desc: "AllocationTagId da Turma"
+        end
+        get ":id/sent_files/:student_id", rabl: 'events/files' do
+          academic_allocation = AcademicAllocation.where(allocation_tag_id: params[:allocation_tag_id].to_i).where(academic_tool_id: params[:id].to_i)
+          academic_allocation_user = AcademicAllocationUser.where(academic_allocation_id: academic_allocation[0].id).where(user_id: params[:student_id].to_i)
+          
+          @schedule_event_files = ScheduleEventFile.where(academic_allocation_user_id: academic_allocation_user[0].id)
+        end
+      
+      end
+
     end # events
 
   end
