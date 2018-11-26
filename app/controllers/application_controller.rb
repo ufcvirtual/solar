@@ -130,7 +130,7 @@ class ApplicationController < ActionController::Base
   end
 
   def verify_bloq_register_notes
-    @bloq_register_notes = AllocationTag.find(active_tab[:url][:allocation_tag_id]).bloq_register_notes
+    @bloq_register_notes = AllocationTag.find(active_tab[:url][:allocation_tag_id]).bloq_register_notes unless active_tab.nil? || active_tab[:url][:allocation_tag_id].blank?
   end
 
   def get_group_allocation_tag
