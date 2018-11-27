@@ -3,15 +3,15 @@
 
 - children = post.reordered_children(current_user.id, display_mode)
 - editable = ((post.user_id == current_user.id) && (post.children_count == 0 || post.children_drafts_count == post.children_count))
-
+- unread_post =  (!@last_access_date_user.nil? && @last_access_date_user.created_at < post.created_at) ? ' new' : ''
 - files    = post.files
 - evaluate = @can_evaluate || ((post.user_id == current_user.id) && @academic_allocation.try(:evaluative))
 - frequency = @can_evaluate || ((post.user_id == current_user.id) && @academic_allocation.try(:frequency))
-%article._post.forum_post{ border: '0', cellpadding: '0', cellspacing: '0', id: "#{post.id}", class: new_post_class  }
+%article._post.forum_post{ border: '0', cellpadding: '0', cellspacing: '0', id: "#{post.id}", class: new_post_class + unread_post  }
   ._line{class: post_draft}
     ._cell.forum_post_icon
       = (@researcher ? image_tag('no_image.png', size: '40x40') : image_tag(user.user_photo(:forum), size: '40x40', alt: t(:mysolar_alt_img_user) + ' ' + user.nick))
-    ._cell.forum_post_head{class: new_post_class + post_draft}
+    ._cell.forum_post_head{class: new_post_class + post_draft + unread_post}
       .forum_post_author
         .forum_participant_nick{ alt: "#{user.info(:nick, @researcher)}" }
           = user.info(:nick, @researcher)
@@ -41,7 +41,7 @@
   ._line
     ._cell.forum_post_icon
     ._cell.forum_post_content{class: post_draft}
-      .forum_post_wrapper{ class: new_post_class +  post_draft}
+      .forum_post_wrapper{ class: new_post_class +  post_draft + unread_post}
         %span.hide.number_post=post.parent_id
         .forum_post_inner_content
           = sanitize post.content
@@ -56,7 +56,7 @@
               - if post.draft
                 %li= button_tag t('posts.index.publish'), class: "btn btn_main publish_post", :'data-url' => publish_post_path(post), type: :button, onclick: 'publish_post(this)'
               - if (@can_evaluate || @can_comment) && (post.profile.types & Profile_Type_Student) > 0
-                %li= link_to content_tag(:i, nil, class: 'icon-write'), @bloq_register_notes ? "#void" : user_discussion_posts_path(post.discussion.id, post.user_id), class: 'btn '+(@bloq_register_notes ? 'disabled_register_notes' : 'to_evaluate_post'), :"data-tooltip" => (@bloq_register_notes==true ? t("scores.index.msg_button_register_off") : t(".to_evaluate")), :'aria-label' => t('.to_evaluate') + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);', disabled: @bloq_register_notes
+                %li= link_to content_tag(:i, nil, class: 'icon-write'), user_discussion_posts_path(post.discussion.id, post.user_id), class: 'btn to_evaluate_post', :'data-tooltip'=> t('.to_evaluate'), :'aria-label' => t('.to_evaluate') + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
               - if can_interact
                 - if editable
                   %li= button_tag content_tag(:i, nil, class: 'icon-trash'), class: 'btn btn_caution', :'data-url' => discussion_post_path(post.discussion, post), :'data-post' => post.id, :'data-tooltip'=> t('.remove'), :'aria-label'=> t('.remove'), onkeydown: 'click_on_keypress(event, this);', onclick: 'delete_post(this)'

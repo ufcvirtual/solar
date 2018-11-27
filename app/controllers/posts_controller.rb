@@ -18,6 +18,8 @@ class PostsController < ApplicationController
     else
       @discussion, @user = Discussion.find(params[:discussion_id]), current_user
 
+      @last_access_date_user = LogNavigationSub.after_post_discussion_user(@user.id, @discussion.id).first
+
       @academic_allocation = AcademicAllocation.where(academic_tool_id: @discussion.id, academic_tool_type: 'Discussion', allocation_tag_id: [active_tab[:url][:allocation_tag_id], AllocationTag.find_by_offer_id(active_tab[:url][:id]).id]).first
       authorize! :index, Discussion, { on: [@allocation_tags = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.pluck(:id)], read: true }
 

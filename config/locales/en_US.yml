@@ -3854,6 +3854,7 @@ en_US:
       comments: Comments
       origin_group: "<b>Original group (merged):</b>"
       origin_group2: "<b>Original group (merged):</b> %{group}"
+      unread_posts: Unread posts
     situation:
       not_started: Not started
       to_answer: To answer

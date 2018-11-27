@@ -4158,6 +4158,7 @@ pt_BR:
       comments: Comentários
       origin_group: "<b>Turma original (aglutinada):</b>"
       origin_group2: "<b>Turma original (aglutinada):</b> %{group}"
+      unread_posts: Posts não lidos
     reports:
       general_evaluative: Relatório Acompanhamento - Atividades Avaliativas
       general_frequency: Relatório Acompanhamento - Atividades de Frequência
