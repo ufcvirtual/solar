@@ -10,6 +10,7 @@
           %th{style: "width: 20%;", id: "discussions"}= t(:discussions, scope: [:scores, :info])
           %th.center.date{style: "width: 22%;", id: "date_range"}= t(:date_range, scope: [:scores, :info])
           %th.center{style: "width: 2%;", id: "amount"}= t(:amount, scope: [:scores, :info])
+          %th.center{style: "width: 2%;", id: "unread_post"}= t(:unread_posts, scope: [:scores, :info])
           %th.center{style: "width: 15%;", id: "situation"}= t(:situation, :scope => [:scores, :info])
           %th.center{style: "width: 10%;", id: "evaluative"}= t(:evaluative, scope: [:scores, :index])
           %th.center{style: "width: 2%;", id: "frequency"}= t(:frequency, scope: [:scores, :info])
@@ -51,6 +52,7 @@
                     %ul{ class: 'dropdown-menu' }
             %td.center{headers: 'date_range' }= [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(" - ")
             %td.center{headers: 'amount' }= discussion.count_all
+            %td.center{headers: 'unread_post' }= count_post_by_user_discussion(@user.id, discussion.academic_tool_id, discussion.allocation_tag_id)
             - if @is_student
               %td.center{class: "assignment_#{discussion.situation}", headers: 'situation'}= t("scores.situation.#{discussion.situation}")
             - else
@@ -60,7 +62,6 @@
                 %td.center{class: "assignment_opened", headers: 'situation'}= t("scores.situation.opened")
               -else
                 %td.center{class: "assignment_not_started", headers: 'situation'}= t("scores.situation.not_started")
-
             %td.center{headers: 'evaluative' }=raw (discussion.final_exam == true ? t(discussion.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(discussion.evaluative, scope: [:scores, :info]))
             %td.center{headers: 'frequency' }= raw t(discussion.frequency, scope: [:common_between_pages, :frequency], hours: discussion.max_working_hours, automatic: (!@is_student && discussion.frequency_automatic == true ? t("common_between_pages.frequency.automatic").delete('()') : ""))
             - if @is_student
