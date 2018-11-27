@@ -837,7 +837,7 @@ function hide_element(event) {
 
 function validate_file_type(file) {
   var file_type = file.name.split(".").slice(-1)[0];
-  return file_type.match(/jpeg|png|gif|pdf/);
+  return file_type.match(/jpeg|jpg|png|gif|pdf/);
 }
 
 function validate_file_size(file, max_size, message) {
