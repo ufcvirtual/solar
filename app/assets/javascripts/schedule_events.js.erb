@@ -81,14 +81,6 @@ $(function(){
     });
   });
 
-  $(".participants").click(function(){
-    var url = $(this).data("url");
-    $(this).call_fancybox({
-      href: url,
-      open: true,
-    });
-  });
-
   $("#new_schedule_event").call_fancybox();
 
   $(".all_schedule_event").nice_checkbox({objects_to_change_status: ['.print_event', '.btn_users'],});
@@ -200,6 +192,14 @@ $(function(){
   });
 
 });
+
+function open_participants(link) {
+  var url = $(link).data("url");
+  $(link).call_fancybox({
+    href: url,
+    open: true,
+  });
+}
 
 function destroy_editor() {
   if (CKEDITOR.instances['schedule_event_content_exam']) {
