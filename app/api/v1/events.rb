@@ -179,7 +179,7 @@ module V1
         end
         get ":event_id/comments/:student_id", rabl: 'events/comments' do
           schedule_event = ScheduleEvent.find(params[:event_id])
-          ac = schedule_event.academic_allocations.where(allocation_tag_id: 54).first
+          ac = schedule_event.academic_allocations.where(allocation_tag_id: params[:allocation_tag_id].to_i).first
           acu = AcademicAllocationUser.where(academic_allocation_id: ac.id).where(user_id: params[:student_id]).first
 
           @comments = acu.comments
