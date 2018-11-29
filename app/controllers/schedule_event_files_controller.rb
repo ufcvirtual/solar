@@ -121,6 +121,7 @@ class ScheduleEventFilesController < ApplicationController
   def upload
     unless params[:schedule_event_files].blank?
       errors = []
+      count_success = 0
 
       ac = AcademicAllocation.where("academic_tool_id = ? AND allocation_tag_id = ? AND academic_tool_type = 'ScheduleEvent'" ,params[:tool_id], params[:allocation_tags_ids]).first
 
@@ -134,12 +135,15 @@ class ScheduleEventFilesController < ApplicationController
           student_id = al.user_id
           acu = AcademicAllocationUser.find_or_create_one(ac.id, params[:allocation_tags_ids], student_id)
 
-          errors << create_one({"academic_allocation_user_id" => acu.id, "attachment" => file})
+          fail_to_create = create_one({"academic_allocation_user_id" => acu.id, "attachment" => file})
+          fail_to_create.empty? ? count_success += 1 : errors << fail_to_create
         end
       end
 
       if errors.flatten.empty?
-        render json: { success: true, notice: t('schedule_event_files.success.created') }
+        render json: { success: true, type_message: 'notice', message: t('schedule_event_files.success.created') }
+      elsif count_success > 0
+        render json: { success: true, type_message: 'warning', message: t('schedule_event_files.warning.fails', sucess_files: count_success, fail_file: errors.flatten.first) }
       else
         render json: { success: false, alert: errors.flatten.first }, status: :unprocessable_entity
       end

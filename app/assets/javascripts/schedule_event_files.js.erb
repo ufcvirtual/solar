@@ -71,9 +71,9 @@ $(function(){
           updates_number_of_files(this);
         });
         if(!!$('.fancybox-outer').length)
-          flash_message(data.notice, "notice", 'fancybox-outer');
+          flash_message(data.message, data.type_message, 'fancybox-outer');
         else
-          flash_message(data.notice, "notice");
+          flash_message(data.message, data.type_message);
       },
       error: function(data) {
         var response = JSON.parse(data.responseText);

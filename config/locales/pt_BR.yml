@@ -3544,6 +3544,8 @@ pt_BR:
       file_cleaned: Arquivo limpo com sucesso.
       created: Arquivo(s) enviado(s) com sucesso(s).
       deleted: Arquivo(s) deletado(s) com sucesso(s).
+    warning:
+      fails: "Foram enviados %{sucess_files} arquivos. %{fail_file}"
     error:
       download: Não foi possível realizar o download
       date_range_expired: Não foi possível realizar ação. Período encerrado.

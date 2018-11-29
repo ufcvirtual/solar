@@ -3240,6 +3240,8 @@ en_US:
       file_cleaned: File was successfully cleaned.
       created: File was successfully sent.
       deleted: File was successfully deleted.
+    warning:
+      fails: "%{sucess_files} files have been uploaded. %{fail_file}"
     error:
       download: It was not possible to download
       date_range_expired: It was not possible to execute action. Date range expired.
