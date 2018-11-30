@@ -38,10 +38,16 @@ class ScheduleEventFile < ActiveRecord::Base
   end
 
   def normalized_attachment_file_name
-    if merge
-      self.attachment_file_name
-    else
+    # if merge
+    #   self.attachment_file_name
+    # else
+    #   "#{self.academic_allocation_user.user.name.split(' ').join('_')}-#{self.attachment_file_name}".gsub( /[^a-zA-Z0-9_\.\-]/, '')
+    # end
+    
+    if self.id.nil?
       "#{self.academic_allocation_user.user.name.split(' ').join('_')}-#{self.attachment_file_name}".gsub( /[^a-zA-Z0-9_\.\-]/, '')
+    else
+      self.attachment_file_name
     end
   end
 
