@@ -142,8 +142,8 @@
         }
       });
 
-      if(file_name.search(".pdf") == -1) {
-        file_name += ".pdf";
+      if(file_name.split('.').slice(-1).pop().toLowerCase() != "pdf") {
+        file_name = file_name.split('.')[0] + ".pdf";
       }
 
       pdf.save(file_name);
