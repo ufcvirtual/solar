@@ -3110,6 +3110,10 @@ en_US:
       continue: Continue
     print:
       previous: Previous
+      info_accessibility: Accessibility
+      info_contrast: '1. In colored tests observe the contrast between the colors used.'
+      info_text_black: '2. Text should preferably be black.'
+      info_caption_in_picture: '4. Images must have subtitles.'
     success:
       created: Event was successfully created.
       updated: Event was successfully updated.
@@ -3175,6 +3179,8 @@ en_US:
       content: Has exam's content
       y: Yes
       n: No
+      print_acessibility: Print acessibility
+      print_exame_acessibility: Print proof with accessibility
     participants:
       title: Participants
       student: Students

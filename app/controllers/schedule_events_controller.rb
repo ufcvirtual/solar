@@ -148,6 +148,7 @@ class ScheduleEventsController < ApplicationController
 
     @course = allocation_tag.get_course
     @event = ScheduleEvent.find(params[:id])
+    @accessibility =  params[:accessibility]
 
     # if @course.has_exam_header && @course.is_uab_course?
     #   @course.header_exam = @course.default_header_uab

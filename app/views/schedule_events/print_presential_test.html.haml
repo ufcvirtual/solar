@@ -4,7 +4,7 @@
     %meta{charset: 'utf-8'}
     = wicked_pdf_stylesheet_link_tag  "pdf", :media => "all"
     %title=@event.title
-  %body
+  %body{class: (@accessibility=='true' ? 'body' : '')}
     -if @course.has_exam_header
       %header
         = @course.header_exam
@@ -14,8 +14,12 @@
             %span.signature
     %main
       = @event.content_exam
-
+    
 :css
+
+  .body{
+    font-size: 24px;
+  }
   .signature-box {
     margin-top: 30px;
     padding-bottom: 50px;

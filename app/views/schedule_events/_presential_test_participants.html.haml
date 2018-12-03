@@ -8,10 +8,11 @@
         %th.center{id: 'personal-test'}= t('.print_personal_test')
     %tbody
       - @participants.each_with_index do |participant|
+        - accessibility = participant.special_needs=='VISUAL' ? true : false;
         %tr.lines
           %td{headers: 'participant-name'}= participant.name
           %td.center{headers: 'personal-test'}
-            = link_to content_tag(:i, nil, class: 'icon-printer'), print_presential_test_schedule_events_path(id: @event.id, student_id: participant.id, allocation_tags_ids: @allocation_tag_id), target: "_blank", class: "btn btn_main", :"data-print-title" => t(".print_user_test", student: participant.name), :"data-tooltip" => t(".print_user_test", student: participant.name)
+            = link_to content_tag(:i, nil, class: 'icon-printer'), print_presential_test_schedule_events_path(id: @event.id, student_id: participant.id, allocation_tags_ids: @allocation_tag_id, accessibility: accessibility), target: "_blank", class: "btn btn_main", :"data-print-title" => t(".print_user_test", student: participant.name), :"data-tooltip" => t(".print_user_test", student: participant.name)
 - else
   .text_none= t(:itens_not_found)
 
