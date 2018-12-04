@@ -168,6 +168,24 @@ module V1
         end
       
       end
+      
+      segment do
+      
+        desc "Listar comentários do responsável para o Aluno"
+        params do
+          requires :event_id, type: Integer, desc: "ID do Evento"
+          requires :student_id, type: Integer, desc: "ID do Aluno"
+          requires :allocation_tag_id, type: Integer, desc: "AllocationTagId da Turma"
+        end
+        get ":event_id/comments/:student_id", rabl: 'events/comments' do
+          schedule_event = ScheduleEvent.find(params[:event_id])
+          ac = schedule_event.academic_allocations.where(allocation_tag_id: params[:allocation_tag_id].to_i).first
+          acu = AcademicAllocationUser.where(academic_allocation_id: ac.id).where(user_id: params[:student_id]).first
+
+          @comments = acu.comments
+        end
+      
+      end
 
     end # events
 

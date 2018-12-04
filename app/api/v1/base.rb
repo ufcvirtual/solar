@@ -23,6 +23,7 @@ module V1
     mount Webconferences
     mount Logs
     mount MessagesAPI
+    mount Assignments
 
     mount RemoveAfterChanges
   end
