@@ -3,6 +3,7 @@
   %head
     %meta{charset: 'utf-8'}
     = wicked_pdf_stylesheet_link_tag  "pdf", :media => "all"
+    = wicked_pdf_stylesheet_link_tag  "pdf_img", :media => "all" if @accessibility=='true'
     %title=@event.title
   %body{class: (@accessibility=='true' ? 'body' : '')}
     -if @course.has_exam_header

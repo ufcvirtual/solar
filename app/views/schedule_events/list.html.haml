@@ -26,6 +26,7 @@
           %th.center{id: 'event-data-range', style: 'width: 21%'}= t('.data_range')
           %th.center{id: 'event-type', style: 'width: 12%'}= t('.type')
           %th.center{id: 'event-place', style: 'width: 12%'}= t('.place')
+          %th.center
       %tbody
         - @events.each do |event|
           - is_exam = Presential_Test == event.type_event.to_i

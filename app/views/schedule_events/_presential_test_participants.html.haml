@@ -5,14 +5,55 @@
     %thead
       %tr.lines
         %th{id: 'participant-name'}= t('.name_studante')
+        %th.center{id: 'deficiency'}= t('deficiency.deficiency')
         %th.center{id: 'personal-test'}= t('.print_personal_test')
     %tbody
       - @participants.each_with_index do |participant|
-        - accessibility = participant.special_needs=='VISUAL' ? true : false;
+        - accessibility = participant.special_needs=='Baixa visão' ? true : false;
+        - class_css = get_deficiency_class_css(participant.special_needs)
         %tr.lines
-          %td{headers: 'participant-name'}= participant.name
+          %td{headers: 'participant-name'}= participant.name 
+          %td.center{headers: 'deficiency'}
+            %spam{class: class_css}= get_deficiency(participant.special_needs)
           %td.center{headers: 'personal-test'}
             = link_to content_tag(:i, nil, class: 'icon-printer'), print_presential_test_schedule_events_path(id: @event.id, student_id: participant.id, allocation_tags_ids: @allocation_tag_id, accessibility: accessibility), target: "_blank", class: "btn btn_main", :"data-print-title" => t(".print_user_test", student: participant.name), :"data-tooltip" => t(".print_user_test", student: participant.name)
+  .legend
+    = t("deficiency.deficiencys")
+  %ul#scores_notes.legend_score_footer
+    %li.autism
+      %abbr{title: t("deficiency.autism_complete")}= t("deficiency.autism")
+      = t("deficiency.autism_complete")
+    %li.low_vision
+      %abbr{title: t("deficiency.low_vision_complete")}= t("deficiency.low_vision")
+      = t("deficiency.low_vision_complete")
+    %li.blindness
+      %abbr{title: t("deficiency.blindness_complete")}= t("deficiency.blindness")
+      = t("deficiency.blindness_complete")
+    %li.hearing_deficiency
+      %abbr{title: t("deficiency.hearing_deficiency_complete")}= t("deficiency.hearing_deficiency")
+      = t("deficiency.hearing_deficiency_complete")
+    %li.physical_disability
+      %abbr{title: t("deficiency.physical_disability_complete")}= t("deficiency.physical_disability")
+      = t("deficiency.physical_disability_complete")
+    %li.intellectual_deficiency
+      %abbr{title: t("deficiency.intellectual_deficiency_complete")}= t("deficiency.intellectual_deficiency")
+      = t("deficiency.intellectual_deficiency_complete")
+    %li.multiple_disability
+      %abbr{title: t("deficiency.multiple_disability_complete")}= t("deficiency.multiple_disability")
+      = t("deficiency.multiple_disability_complete")
+    %li.deafness
+      %abbr{title: t("deficiency.deafness_complete")}= t("deficiency.deafness")
+      = t("deficiency.deafness_complete")
+    %li.deafblindness
+      %abbr{title: t("deficiency.deafblindness_complete")}= t("deficiency.deafblindness")
+      = t("deficiency.deafblindness_complete")
+    %li.aspergers_syndrome
+      %abbr{title: t("deficiency.aspergers_syndrome_complete")}= t("deficiency.aspergers_syndrome")
+      = t("deficiency.aspergers_syndrome_complete")
+    %li.rett_syndrome
+      %abbr{title: t("deficiency.rett_syndrome_complete")}= t("deficiency.rett_syndrome")
+      = t("deficiency.rett_syndrome_complete")
+
 - else
   .text_none= t(:itens_not_found)
 

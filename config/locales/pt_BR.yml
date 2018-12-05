@@ -3378,6 +3378,34 @@ pt_BR:
       monthAlt: Visualização por mês
       listAlt: Visualização em lista dos próximos eventos
 
+  deficiency: 
+    deficiency: Deficiência
+    deficiencys: Deficiências
+    autism_complete: Autismo
+    low_vision_complete: Baixa visão
+    blindness_complete: Cegueira
+    hearing_deficiency_complete: Deficiência auditiva
+    physical_disability_complete: Deficiência física
+    intellectual_deficiency_complete: Deficiência intelectual
+    multiple_disability_complete: Deficiência múltipla
+    deafness_complete: Surdez
+    deafblindness_complete: Surdocegueira
+    aspergers_syndrome_complete: Síndrome de Asperger
+    rett_syndrome_complete: Síndrome de Rett
+    childhood_disintegrative_disorder_complete: Transtorno desintegrativo de infância
+    autism: AUT
+    low_vision: BVO
+    blindness: CEG
+    hearing_deficiency: DAA
+    physical_disability: DFA
+    intellectual_deficiency: DIL
+    multiple_disability: DMA
+    deafness: SUR
+    deafblindness: SCA
+    aspergers_syndrome: SDA
+    rett_syndrome: SRETT
+    childhood_disintegrative_disorder: TDI
+
   #Eventos da agenda
   schedule_events:
     restrict_events: "Não permitido é permitido acessar os eventos"
