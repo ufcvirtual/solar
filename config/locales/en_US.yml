@@ -3076,6 +3076,35 @@ en_US:
       agendaWeekAlt: View by week
       monthAlt: View by month
       listAlt: View next events list
+
+  deficiency:
+    deficiency: Deficiency
+    deficiencys: Deficiencys
+    autism_complete: Autism
+    low_vision_complete: Low vision
+    blindness_complete: Blindness
+    hearing_deficiency_complete: Hearing Deficiency
+    physical_disability_complete: Physical disability
+    intellectual_deficiency_complete: Intellectual deficiency
+    multiple_disability_complete: Multiple Disability
+    deafness_complete: Deafness
+    deafblindness_complete: Deafblindness
+    aspergers_syndrome_complete: Asperger's syndrome
+    rett_syndrome_complete: Rett Syndrome
+    childhood_disintegrative_disorder_complete: Childhood Disintegrative Disorder
+    autism: AUT
+    low_vision: BVO
+    blindness: CEG
+    hearing_deficiency: DAA
+    physical_disability: DFA
+    intellectual_deficiency: DIL
+    multiple_disability: DMA
+    deafness: SUR
+    deafblindness: SCA
+    aspergers_syndrome: SDA
+    rett_syndrome: SRETT
+    childhood_disintegrative_disorder: TDI
+
   schedule_events:
     restrict_events: "Not allowed to access events"
     index:
@@ -3181,6 +3210,7 @@ en_US:
       n: No
       print_acessibility: Print acessibility
       print_exame_acessibility: Print proof with accessibility
+      has_content: Has content
     participants:
       title: Participants
       student: Students

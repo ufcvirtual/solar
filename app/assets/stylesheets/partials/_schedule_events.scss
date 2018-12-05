@@ -49,3 +49,48 @@
     width: unset;
   }
 }
+
+.autism {
+  color: $color_green_font;
+}
+
+.low_vision {
+  color: $sent_color; // Blue
+}
+
+.blindness {
+  color: $without_group_color; // Reds
+}
+
+.hearing_deficiency {
+  color: $notice_color;
+}
+
+.physical_disability {
+  color: $not_sent_color_font; // Reds
+}
+
+.intellectual_deficiency {
+  color: $color_gray; // Grays
+}
+
+.multiple_disability {
+  color: $color_main; // Blues
+}
+
+.deafness {
+  color: $color_black;
+}
+.deafblindness {
+  color: $color_contrast_text_font;
+}
+.aspergers_syndrome {
+  color: $alert_color;
+}
+.rett_syndrome {
+  color: $btn_border_dark_blue;
+}
+
+.autism, .low_vision, .blindness, .hearing_deficiency, .physical_disability, .intellectual_deficiency, .multiple_disability, .deafness, .deafblindness, .aspergers_syndrome, .rett_syndrome{
+  white-space: nowrap;
+}
