@@ -3210,6 +3210,7 @@ en_US:
       n: No
       print_acessibility: Print acessibility
       print_exame_acessibility: Print proof with accessibility
+      has_content: Has content
     participants:
       title: Participants
       student: Students
