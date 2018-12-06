@@ -56,16 +56,13 @@
         %li
           %span.form_label= f.label "#{t(:form_special_needs)}*"
           %span.for
-            - condition_special_needs = @user.special_needs.blank? && msg_special_needs.blank?
-            = f.radio_button(:has_special_needs, true, checked: !condition_special_needs, onclick: "show_special_needs('#special_needs_line')", disabled: @user.integrated?)
-            = label_tag("has_special_needs", t('special_needs_yes'), class: "form_inner_label")
-            = f.radio_button(:has_special_needs, false, checked: condition_special_needs, onclick: "hide_special_needs('#special_needs_line')", disabled: @user.integrated?)
-            = label_tag("has_special_needs", t('special_needs_no'), class: "form_inner_label")
+            %span.form_field= f.select :special_needs, (@special_needs), {}, {id: 'special_needs', disabled: @user.integrated?, :onchange => "select_special_needs(this);"} 
+            - condition_special_needs = @user.other_special_needs.blank? && msg_special_needs.blank?
         - unless condition_special_needs
           - display_special_needs_line = "display: inline-block;"
         %li#special_needs_line{:style => "#{display_special_needs_line}"}
           %span.form_label= f.label "#{t(:which)}*"
-          %span.form_field= f.text_field :special_needs, size: field_size
+          %span.form_field= f.text_field :other_special_needs, size: field_size, disabled: @user.integrated?, id: 'other_special_needs'
           %td.form_error= msg_special_needs
 
   / Dados de acesso

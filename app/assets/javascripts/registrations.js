@@ -8,6 +8,16 @@ function hide_special_needs(element){
   $(element).slideUp();
 }
 
+function select_special_needs(opc){
+  var option = $(opc).find("option:selected").text();
+  if(option == 'Outra'){
+    show_special_needs('#special_needs_line');
+  }else{
+    hide_special_needs('#special_needs_line');
+    $("#other_special_needs").val("");
+  }
+}
+
 jQuery(function ($) {
 
   if($("#user_has_special_needs_true").attr("checked") == "checked")

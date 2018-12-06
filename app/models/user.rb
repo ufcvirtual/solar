@@ -74,7 +74,7 @@ class User < ActiveRecord::Base
 
   validates :email, confirmation: true, if: "(email_changed? || new_record?) && !(integrated && !on_blacklist?)"
 
-  validates :special_needs, presence: true, if: :has_special_needs?
+  validates :special_needs, presence: true, if: :special_needs?
 
   validates_length_of :address_neighborhood, maximum: 49
   validates_length_of :zipcode, maximum: 9
@@ -131,8 +131,8 @@ class User < ActiveRecord::Base
   ## Permite modificacao dos dados do usuario sem necessidade de informar a senha - para usuarios ja logados
   ## Define o valor de @has_special_needs na edicao de um usuario (update)
   def update_with_password(params={})
-    @has_special_needs = (params[:has_special_needs] == 'true')
-    params.delete(:has_special_needs)
+    @has_special_needs = (params[:special_needs].blank?)
+    #params.delete(:has_special_needs)
     if (params[:password].blank? && params[:current_password].blank? && params[:password_confirmation].blank?)
       params.delete(:current_password)
       self.update_without_password(params)

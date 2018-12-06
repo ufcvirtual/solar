@@ -91,6 +91,11 @@
   color: $btn_border_dark_blue;
 }
 
+.other a{
+  background-color: $blue_warning_background_bkg;
+  text-decoration: none !important;
+}
+
 .autism, .low_vision, .blindness, .hearing_deficiency, .physical_disability, .intellectual_deficiency, .multiple_disability, .deafness, .deafblindness, .aspergers_syndrome, .rett_syndrome{
   white-space: nowrap;
 }

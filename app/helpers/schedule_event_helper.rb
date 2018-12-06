@@ -26,6 +26,8 @@ module ScheduleEventHelper
         I18n.t("deficiency.rett_syndrome")
       when "Transtorno desintegrativo de infância"
         I18n.t("deficiency.childhood_disintegrative_disorder")
+      when "Outra"
+        I18n.t("deficiency.other")
       else
         ""
     end
@@ -57,6 +59,8 @@ module ScheduleEventHelper
         "rett_syndrome"
       when "Transtorno desintegrativo de infância"
         "childhood_disintegrative_disorder"
+      when "Outra"
+        "other"
       else
         nil
     end

@@ -3092,6 +3092,8 @@ en_US:
     aspergers_syndrome_complete: Asperger's syndrome
     rett_syndrome_complete: Rett Syndrome
     childhood_disintegrative_disorder_complete: Childhood Disintegrative Disorder
+    none: None
+    other: Other
     autism: AUT
     low_vision: BVO
     blindness: CEG
