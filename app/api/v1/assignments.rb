@@ -25,7 +25,19 @@ module V1
         acus_groups = AcademicAllocationUser.where('group_assignment_id IS NOT NULL').where(academic_allocation_id: ac.map(&:id))
         @acus = acus_indi.concat(acus_groups)
       end
-      
+
+      desc "Enviar arquivo de trabalho"
+      post "/file" do
+        al = AcademicAllocation.where(allocation_tag_id: params[:allocation_tag_id].to_i).where(academic_tool_id: params[:assignment_id]).first
+        acu = AcademicAllocationUser.where(academic_allocation_id: al.id).first
+
+        af = AssignmentFile.new({academic_allocation_user_id: acu.id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
+        af.user = User.find(params[:user_id].to_i)
+        af.save!
+        
+        {ok: :ok}
+      end      
+
     end
 
   end
