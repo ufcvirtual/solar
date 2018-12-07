@@ -36,7 +36,18 @@ module V1
         af.save!
         
         {ok: :ok}
-      end      
+      end
+      
+      desc "Remover arquivo enviado"
+      params do
+        requires :id, type: Integer
+      end
+      delete "/file/:id" do
+        assignment_file = AssignmentFile.find(params[:id].to_i)
+        assignment_file.destroy
+        
+        {ok: :ok}
+      end
 
     end
 
