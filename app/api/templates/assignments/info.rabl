@@ -4,13 +4,13 @@ node do |acu|
   { 
     id: acu.academic_allocation.academic_tool.id,
     assignment_name: acu.academic_allocation.academic_tool.name,
-    user_id: acu.user.id,
-    user_name: acu.user.name,
+    user_id: acu.user.nil? ? @student.id : acu.user.id,
+    user_name: acu.user.nil? ? @student.name : acu.user.name,
     grade: acu.info[:grade] || 0,
     working_hours: acu.info[:working_hours] || 0,
     date_start: acu.academic_allocation.academic_tool.schedule.start_date,
     date_end: acu.academic_allocation.academic_tool.schedule.end_date,
-    situation: acu.academic_allocation.academic_tool.info(acu.user.id, acu.allocation_tag.id)[:situation]
+    situation: acu.academic_allocation.academic_tool.info((acu.user.nil? ? @student.id : acu.user.id), acu.allocation_tag.id)[:situation]
   }
 end
 
@@ -55,3 +55,10 @@ end
   end
 end
 
+node do |acu|
+  {
+    assignment_type: acu.academic_allocation.academic_tool.type_assignment == 0 ? :Individual : :Group,
+    group_name: acu.group_assignment.nil? ? nil : acu.group_assignment.group_name,
+    group_participans_ids: acu.group_assignment.nil? ? nil : acu.group_assignment.users.map{|user| user.id}
+  }
+end
