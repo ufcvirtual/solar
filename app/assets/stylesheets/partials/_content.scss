@@ -1,9 +1,10 @@
 // CONTEUDO GERAL E BLOCOS
 
 #mysolar_content {
-  padding-left: 5px;
-  width: 785px;
-  padding-right: 10px;
+  // padding-left: 5px;
+  // width: 785px;
+  width: 100%;
+  // padding-right: 10px;
   display: inline-block;
   zoom: 1;
   *display: inline;
@@ -37,6 +38,10 @@
   margin-top: 40px;
   width: 220px;
   float: right;
+}
+
+#subject_info_portlet {
+  display: flex;
 }
 
 /**
@@ -132,7 +137,10 @@ div.block_module, div.block_exam{
 */
 .block_wrapper {
   margin-top: 15px;
-  width: 785px;
+  // width: 785px;
+  width: 98%;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: 15px;
 }
 
@@ -256,9 +264,10 @@ div.block_title {
   background-color: $color_main_light;
   color: $exclusive_font_color;
   font-size: 10pt;
+  box-sizing: border-box;
 
   > block_left {
-    width: 369px;
+    // width: 369px;
     border-right: 1px solid;
     border-right-color: $border_color; /* adicionando a borda divisoria */
   }
@@ -273,9 +282,22 @@ div.block_title {
   }
 }
 
+.block_left {
+  .block_title, .block_content {
+    padding-left: .5em;
+  }
+  .block_content {
+    padding-right: 0.5em;
+  }
+}
+
 .block_left, .block_right { /* largura dos blocos internos */
-  width: 370px;
-  padding: 6px 10px;
+  // width: 370px;
+  // padding: 6px 10px;
+  .block_content {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+  }
 }
 
 .block_content_overflow {

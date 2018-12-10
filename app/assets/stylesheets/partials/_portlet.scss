@@ -26,7 +26,7 @@
 
   table th {
     padding: 6px 6px 4px;
-    color: $color_black_buttons; 
+    color: $color_black_buttons;
   }
   .type, .semester {
     text-align: center;
@@ -45,7 +45,8 @@ table tr.block_title th {
 
 .block_small {
   height: 195px;
-  width: 255px;
+  // width: 255px;
+  width: 98%;
   float: left;
   margin-right: 10px;
   overflow: hidden;
@@ -57,7 +58,8 @@ table tr.block_title th {
   position: relative;
   display: inline-block;
   height: 195px;
-  width: 520px;
+  // width: 520px;
+  width: 98%;
   margin-right: 10px;
 }
 
@@ -264,5 +266,3 @@ table tr.block_title th {
     font-size: 20px;
   }
 }
-
-

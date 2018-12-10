@@ -1,18 +1,19 @@
 / Portlet da Unidade Curricular que exibe as postagens dos fóruns ligados a ela mais recentes.
-.block_small#forum_portlet
-  .block_title
-    %h2{:'data-shortcut'=> t("shortcut.curricular_unit.code.forum"), :'data-shortcut-name'=> t("shortcut.curricular_unit.name.forum"), :'data-shortcut-focus' => 'true'}
-      %i.icon-forum{:'aria-hidden' =>'true'}
-      = t(:curriculum_access_forum)
+.col-xs-12.col-sm-6.col-md-4
+  .block_small#forum_portlet
+    .block_title
+      %h2{:'data-shortcut'=> t("shortcut.curricular_unit.code.forum"), :'data-shortcut-name'=> t("shortcut.curricular_unit.name.forum"), :'data-shortcut-focus' => 'true'}
+        %i.icon-forum{:'aria-hidden' =>'true'}
+        = t(:curriculum_access_forum)
 
-  .block_content#block_forum.portlet
-    - if !(@discussion_posts.nil? || @discussion_posts.empty?)
-      - @discussion_posts.each do |discussion_post|
-        .block_content_line
-          %span.block_content_gray
-            - date = discussion_post.updated_at.to_datetime
-            = l(date, format: (posted_today?(date) ? :today : :not_today))
-          = link_to ( @researcher ? t(:hidden_info) : discussion_post.user.nick ), discussion_posts_path(discussion_post.discussion.id, bread: 'menu_discussion'), {class: 'link_content can-update-menu', 'data-menu-bread' => 'menu_discussion'}
-          = raw truncate((strip_tags discussion_post.content), length: 110, omission: ' (...) ')
-    - else
-      .block_content_text= t(:forum_no_messages)
+    .block_content#block_forum.portlet
+      - if !(@discussion_posts.nil? || @discussion_posts.empty?)
+        - @discussion_posts.each do |discussion_post|
+          .block_content_line
+            %span.block_content_gray
+              - date = discussion_post.updated_at.to_datetime
+              = l(date, format: (posted_today?(date) ? :today : :not_today))
+            = link_to ( @researcher ? t(:hidden_info) : discussion_post.user.nick ), discussion_posts_path(discussion_post.discussion.id, bread: 'menu_discussion'), {class: 'link_content can-update-menu', 'data-menu-bread' => 'menu_discussion'}
+            = raw truncate((strip_tags discussion_post.content), length: 110, omission: ' (...) ')
+      - else
+        .block_content_text= t(:forum_no_messages)

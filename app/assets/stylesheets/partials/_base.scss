@@ -1,15 +1,27 @@
 // Layout Básico
 
-html, body {
+html,
+body {
   height: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
 
 body {
   margin: 0;
-  padding: 0;
+  // padding: 0;
   cursor: default;
   font-family: 'PT Sans', sans-serif;
   height: 100%;
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: 45px;	/* Height of the footer */
   background-color: $body_background;
 }
 
@@ -39,7 +51,7 @@ h1 {
     /*font-weight: bold;*/
     /*font-variant: small-caps;*/
     /*text-transform: capitalize;*/
-    font-size: 12pt;
+    font-size: 1.3em;
     border-bottom-width: 3px;
     border-bottom-style: solid;
     padding-bottom: 2px !important;
@@ -63,9 +75,12 @@ h3 {
 */
 
 #body_wrapper {
-  width: 980px;
+  width: 100%;
+  max-width: 980px;
   margin: 0 auto;
-  min-height: 99.5%;
+  // min-height: 99.5%;
+  height: 100%;
+  min-height: 100%;
   position: relative;
   background-color: $color_white_base;
 }
@@ -96,12 +111,12 @@ a.link_content:visited, .forum_post_attachment_list a:visited {
 }
 
 a.link_content_gray {
-  font-size: 9pt;
+  font-size: .9em;
   text-decoration: underline;
 }
 
 a.menor{
-  font-size: 8pt;
+  font-size: .8em;
   text-decoration: underline;
 }
 
@@ -151,10 +166,22 @@ textarea {
   border-style: solid;
   padding: 5px;
   font-family: 'PT Sans', sans-serif;
-  font-size: 10pt;
+  font-size: 1em;
   color: $color_almost_black_base;
   background-color: $color_white;
   border-color: $border_color_another_gray;
+}
+
+footer {
+  width: 100%;
+  max-width: 980px;
+  clear: both;
+  // position: relative;
+  height: 45px;
+  // min-height: 100%;
+  // margin-top: -45px;
+  bottom: 0;
+  position: absolute;
 }
 
 #footer {
@@ -162,15 +189,13 @@ textarea {
   margin: 0 auto;
   text-align: center;
   padding: 10px 0;
-  width: 980px;
-  bottom: 0;
-  position: absolute;
+  // width: 980px;
   background-color: $body_background;
   color: $color_almost_gray;
 
   &, & a {
     color: $color_almost_gray;
-    font-size: 9pt;
+    font-size: .9em;
   }
   a:hover{
     text-decoration: underline;
@@ -233,7 +258,7 @@ a.disabled{
   color: $disabled_color;
 }
 .current, .fnavigation {
-  font-size: 12px;
+  font-size: 1em;
   text-decoration: underline;
   cursor: pointer;
   padding-left: 5px;
@@ -247,7 +272,7 @@ a.disabled{
 }
 
 .disabled, .message_div_navigation {
-  font-size: 10pt;
+  font-size: 1em;
   text-decoration: none;
   padding-left: 5px;
   padding-right: 5px;
@@ -264,7 +289,7 @@ a.disabled{
 * Breadcrumb - migalha de pão
 */
 #breadcrumb {
-  font-size: 10pt;
+  font-size: .9em;
   margin-bottom: 10px;
   margin-top: 10px;
   color: $color_almost_gray;
@@ -301,7 +326,7 @@ a.disabled{
 
       a {
         color: $current_color_base;
-        font-size: 12px;
+        font-size: 1em;
         text-decoration: none;
       }
     }
