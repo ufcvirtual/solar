@@ -66,4 +66,8 @@ module ScheduleEventHelper
     end
   end
 
+  def pictures_with_abs_path(html)
+    html.gsub!(/(href|src)=(['"])\/([^\"']*|[^"']*)['"]/i, '\1=\2' + "#{Rails.root}/" + '\3\2')
+  end
+
 end

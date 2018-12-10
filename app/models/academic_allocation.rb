@@ -22,13 +22,13 @@ class AcademicAllocation < ActiveRecord::Base
 
   before_save :verify_association_with_allocation_tag, unless: -> {allocation_tag_id.blank?}
 
-  before_destroy :move_lessons_to_default, if: 'lesson_module? && force.blank?'
+  before_destroy :move_lessons_to_default, if: -> {lesson_module? && force.blank?}
 
   before_validation :verify_uniqueness
 
   accepts_nested_attributes_for :chat_participants, allow_destroy: true, reject_if: proc { |attributes| attributes['allocation_id'] == '0' }
 
-  validate :verify_assignment_offer_date_range, if: "assignment? && !(evaluative_changed? || frequency_changed? || final_exam_changed? || equivalent_academic_allocation_id_changed?)"
+  validate :verify_assignment_offer_date_range, if: -> {assignment? && !(evaluative_changed? || frequency_changed? || final_exam_changed? || equivalent_academic_allocation_id_changed?)}
 
   validates :weight, presence: true, numericality: { greater_than: 0,  only_float: true }, if: -> {evaluative? && !final_exam? && equivalent_academic_allocation_id.nil?}
   validates :final_weight, presence: true, numericality: { greater_than: 0,  only_float: true, smaller_than: 100.1 }, if: -> {evaluative? && !final_exam? && equivalent_academic_allocation_id.nil?}

@@ -49,11 +49,11 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :recoverable, :encryptable#, :timeoutable, :validatable
 
   before_save :ensure_authentication_token!, :downcase_username
-  before_save :downcase_email, unless: 'email.blank?'
+  before_save :downcase_email, unless: -> {email.blank?}
   after_save :log_update_user
   after_save :update_digital_class_user, if: -> {(!new_record? && (saved_change_to_name? || saved_change_to_email? || saved_change_to_cpf?) && !digital_class_user_id.nil?)}, on: :update
 
-  before_save :set_previous, if: '(!new_record? && ((username_changed? && !previous_username.blank?) || email_changed? && !previous_email.blank?)) && (!synchronizing)'
+  before_save :set_previous, if: -> {(!new_record? && ((username_changed? && !previous_username.blank?) || email_changed? && !previous_email.blank?)) && (!synchronizing)}
 
   @has_special_needs
 
@@ -79,7 +79,7 @@ class User < ActiveRecord::Base
 
   validates :email, uniqueness: {case_sensitive: false}, unless: Proc.new { |a| (a.integrated && !a.on_blacklist?) || a.email.blank?}
 
-  validates :email, confirmation: true, if: "(email_changed? || new_record?) && !(integrated && !on_blacklist?)"
+  validates :email, confirmation: true, if: -> {(email_changed? || new_record?) && !(integrated && !on_blacklist?)}
 
   validates :special_needs, presence: true, if: :special_needs?
 
@@ -99,7 +99,7 @@ class User < ActiveRecord::Base
   validate :login_differ_from_cpf
   validate :only_admin, if: -> { !new_record? && (saved_change_to_cpf? || saved_change_to_active?) }
 
-  before_save :set_empty_email, if: 'email.blank?'
+  before_save :set_empty_email, if: -> {email.blank?}
 
   # paperclip uses: file_name, content_type, file_size e updated_at
   has_attached_file :photo,
