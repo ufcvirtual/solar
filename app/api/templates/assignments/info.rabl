@@ -18,7 +18,8 @@ child :comments do
   node do |c|
     {
       by: c.user.nick,
-      comment: c.comment
+      comment: c.comment,
+      files: c.files.map{|f| download_comments_url(file_id: f.id)}
     }
   end
 end
