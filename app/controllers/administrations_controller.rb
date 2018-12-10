@@ -72,13 +72,30 @@ class AdministrationsController < ApplicationController
   def reset_password_user
     authorize! :reset_password_user, Administration
     @user = User.find(params[:id])
-    token = @user.send_reset_password_instructions
 
-    render json: {success: true, notice: t('administrations.success.email_sent'), token: token}
+    if @user.email.blank? && ((@user.integrated && @user.on_blacklist?) || !@user.integrated)
+      render json: {success: false, alert: t("administrations.error.no_email").html_safe}, status: :unprocessable_entity
+    else
+      token = @user.get_reset_password_token
+      render json: {success: true, notice: t('administrations.success.email_sent'), token: token}
+    end
   rescue CanCan::AccessDenied
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   rescue
     render json: {success: false, alert: t('administrations.success.email_not_sent')}
+  end
+
+  def reset_session_token_user
+    authorize! :reset_session_token_user, Administration
+    @user = User.find(params[:id])
+    @user.session_token = nil
+    @user.save(validate: false)
+
+    render json: {success: true, notice:  t('administrations.success.reset_token')}
+  rescue CanCan::AccessDenied
+    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  rescue
+    render json: {success: false, alert: t('administrations.success.no_reset_token')}
   end
 
   ## ALLOCATIONS
@@ -87,8 +104,7 @@ class AdministrationsController < ApplicationController
     authorize! :allocations_user, Administration
 
     @user_id = params[:id]
-
-    @allocations = list_allocations_user(@user_id, params[:semester_id])               
+    @allocations = list_allocations_user(@user_id, params[:semester_id])
 
     @profiles = @allocations.map(&:profile).flatten.uniq
     @periods = Semester.all.select('id, name').order('name DESC')#flatten.uniq.sort! {|x,y| y <=> x}
@@ -104,7 +120,7 @@ class AdministrationsController < ApplicationController
     profiles = allocations.map(&:profile).flatten.uniq
 
     render partial: 'allocations_user_list',  locals: { profiles: profiles, allocations: allocations }
-  end  
+  end
 
   def show_allocation
     authorize! :update_allocation, Administration

@@ -5,19 +5,54 @@
 
   #menu_inbox{ class: css_class_inbox, role: 'menuitem' }
     %h2
-      = link_to(inbox_messages_path(bread: :menu_messages), :'aria-label' => t('.inbox_alt', unreads: @unreads), id: "inbox", :'data-shortcut' => t("shortcut.message.code.inbox"), :'data-shortcut-name' => t("shortcut.message.name.inbox")) do
+      = link_to('#void', :'aria-label' => t('.inbox_alt', unreads: @unreads), id: "inbox", :'data-shortcut' => t("shortcut.message.code.inbox"), :'data-shortcut-name' => t("shortcut.message.name.inbox"), :'data-url' => inbox_messages_path(bread: :menu_messages, page: 1, user: 'user_value', subject: 'subject_value', search_for: 'search_for_value')) do
         = content_tag(:i, nil, class: 'icon-inbox', :'aria-hidden' => 'true')
         %span.message_link_menu{:'aria-hidden' => 'true'}= t('.inbox')
         %span#count_msgs_unread.text_alert_message{:'aria-hidden' => 'true'}="(#{@unreads})"
 
   #menu_outbox{ class: css_class_outbox, role: 'menuitem' }
     %h2
-      = link_to(outbox_messages_path(bread: :menu_messages), :'aria-label' => t('.outbox_alt'), id: "outbox", :'data-shortcut' => t("shortcut.message.code.outbox"), :'data-shortcut-name' => t("shortcut.message.name.outbox")) do
+      = link_to('#void', :'aria-label' => t('.outbox_alt'), id: "outbox", :'data-shortcut' => t("shortcut.message.code.outbox"), :'data-shortcut-name' => t("shortcut.message.name.outbox"), :'data-url' => outbox_messages_path(bread: :menu_messages, page: 1, user: 'user_value', subject: 'subject_value', search_for: 'search_for_value')) do
         = content_tag(:i, nil, class: 'icon-outbox', :'aria-hidden' => 'true')
         %span.message_link_menu{:'aria-hidden' => 'true'}= t('.outbox')
 
   #menu_trash{ class: css_class_trash, role: 'menuitem' }
     %h2
-      = link_to(trashbox_messages_path(bread: :menu_messages), :'aria-label' => t('.trashbox'), id: "trashbox", :'data-shortcut' => t("shortcut.message.code.trashbox"), :'data-shortcut-name' => t("shortcut.message.name.trashbox")) do
+      = link_to('#void', :'aria-label' => t('.trashbox'), id: "trashbox", :'data-shortcut' => t("shortcut.message.code.trashbox"), :'data-shortcut-name' => t("shortcut.message.name.trashbox"), :'data-url' => trashbox_messages_path(bread: :menu_messages, page: 1, user: 'user_value', subject: 'subject_value', search_for: 'search_for_value')) do
         = content_tag(:i, nil, class: 'icon-trash', :'aria-hidden' => 'true')
         %span.message_link_menu{:'aria-hidden' => 'true'}= t('.trashbox')
+
+= javascript_include_tag 'messages'
+
+:javascript
+
+  $(function(){
+    $('#outbox, #inbox, #trashbox').on('click', function(){
+      get_url($(this).data('url'));
+      $('.block_white.index').show();
+    });
+
+    $('#outbox').on('click', function(){
+      $('#menu_inbox, #menu_trash').removeClass('message_general_div_option_active').addClass('message_geral_div_option');
+      $('#menu_outbox').addClass('message_general_div_option_active').removeClass('message_geral_div_option');
+      $('.only-inbox').hide();
+      $('.except-trash').show();
+      $('.only-trash').hide();
+    });
+
+    $('#inbox').on('click', function(){
+      $('#menu_outbox, #menu_trash').removeClass('message_general_div_option_active').addClass('message_geral_div_option');
+      $('#menu_inbox').addClass('message_general_div_option_active').removeClass('message_geral_div_option');
+      $('.only-inbox').show();
+      $('.except-trash').show();
+      $('.only-trash').hide();
+    });
+
+    $('#trashbox').on('click', function(){
+      $('#menu_outbox, #menu_inbox').removeClass('message_general_div_option_active').addClass('message_geral_div_option');
+      $('#menu_trash').addClass('message_general_div_option_active').removeClass('message_geral_div_option');
+      $('.only-inbox').hide();
+      $('.except-trash').hide();
+      $('.only-trash').css('display','inline-block');
+    });
+  });

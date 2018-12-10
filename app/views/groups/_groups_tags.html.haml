@@ -3,10 +3,10 @@
 - inside_tab = (user_session[:tabs][:active].to_i != 0)
 
 .groups_tags
-  - if tool.kind_of? Integer 
+  - if tool.kind_of? Integer
     - tool_id = tool
   - else
-    - tool_id = tool.id 
+    - tool_id = tool.id
   - if groups_size <= 5 || paths.nil?
     %span.title= label_tag t('.groups')
     = render 'groups/tags', groups: groups[0..Max_Groups_Shown_Tags], tool: tool, paths: paths
@@ -15,7 +15,7 @@
 
   - unless inside_tab || groups_size == 1 || paths.nil?
     %span.new_groups
-      - unless tool.kind_of? Integer 
+      - unless tool.kind_of? Integer
         = content_tag(:i, nil, class: 'icon icon-cross unbind_groups', :"data-dropdown" => ".unbind_group_dropdown_#{tool_id}", :"data-tooltip" => t('.unbind_groups'))
         %div{id: 'dropdown', class: "dropdown dropdown-tip unbind_group_dropdown_#{tool_id} dropdown-relative"}
           %h1=t('.unbind_groups')
@@ -23,7 +23,7 @@
             %span.select_all_box
               = check_box_tag "all_groups#{tool_id}", :all_groups, false, {:"data-children-names" => "group[unbind_group_id][]"}
               = label_tag "all_groups#{tool_id}", t(".select_all")
-            .no_tags= f.collection_check_boxes :unbind_group_id, groups, :id, :code, {item_wrapper_tag: 'div', item_wrapper_class: 'group_checkbox'}
+            .no_tags= f.collection_check_boxes :unbind_group_id, groups, :id, :get_code_name, {item_wrapper_tag: 'div', item_wrapper_class: 'group_checkbox'}
             = button_tag t(".unbind"), class: 'btn btn_unbind_groups', :"data-link" => paths[:unbind], type: :button, :"data-checkbox" => 'unbind_group_id'
             = button_tag t(".cancel"), class: 'btn btn_cancel_unbind_group', type: :button
 
@@ -39,7 +39,7 @@
             = check_box_tag "all_new_groups#{tool_id}", :all_new_groups, false, {:"data-children-names" => 'group[new_group_id][]'}
             = label_tag "all_new_groups#{tool_id}", t('.select_all')
           - new_groups.each do |new_group|
-            .no_tags= f.collection_check_boxes :new_group_id, new_group, :id, :code, {item_wrapper_tag: 'div', item_wrapper_class: 'group_checkbox'}
+            .no_tags= f.collection_check_boxes :new_group_id, new_group, :id, :get_code_name, {item_wrapper_tag: 'div', item_wrapper_class: 'group_checkbox'}
           = button_tag t(".add"), class: 'btn btn_add_group', :"data-link" => paths[:add], type: :button, :"data-checkbox" => 'new_group_id'
           = button_tag t('.cancel'), class: 'btn btn_cancel_add_group', type: :button
 

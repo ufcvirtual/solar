@@ -17,17 +17,18 @@ class AcademicAllocation < ActiveRecord::Base
 
   has_many :discussion_posts, class_name: 'Post', dependent: :destroy
   has_many :chat_messages, dependent: :destroy
+  has_many :log_actions, dependent: :destroy
   has_many :chat_participants, inverse_of: :academic_allocation, dependent: :destroy
 
   before_save :verify_association_with_allocation_tag, unless: -> {allocation_tag_id.blank?}
 
-  before_destroy :move_lessons_to_default, if: :lesson_module?
+  before_destroy :move_lessons_to_default, if: 'lesson_module? && force.blank?'
 
   before_validation :verify_uniqueness
 
   accepts_nested_attributes_for :chat_participants, allow_destroy: true, reject_if: proc { |attributes| attributes['allocation_id'] == '0' }
 
-  validate :verify_assignment_offer_date_range, if: :assignment?
+  validate :verify_assignment_offer_date_range, if: "assignment? && !(evaluative_changed? || frequency_changed? || final_exam_changed? || equivalent_academic_allocation_id_changed?)"
 
   validates :weight, presence: true, numericality: { greater_than: 0,  only_float: true }, if: -> {evaluative? && !final_exam? && equivalent_academic_allocation_id.nil?}
   validates :final_weight, presence: true, numericality: { greater_than: 0,  only_float: true, smaller_than: 100.1 }, if: -> {evaluative? && !final_exam? && equivalent_academic_allocation_id.nil?}
@@ -45,7 +46,7 @@ class AcademicAllocation < ActiveRecord::Base
   before_destroy :set_situation_date
   after_destroy :verify_management
 
-  attr_accessor :merge
+  attr_accessor :merge, :force
 
   after_create if: -> {verify_tool} do
     AcademicTool.send_email(academic_tool, [self], false)
@@ -201,6 +202,10 @@ class AcademicAllocation < ActiveRecord::Base
     academic_tool_type.constantize.find(academic_tool_id).verify_evaluatives
   end
 
+  def schedule
+    academic_tool.respond_to?(:schedule) ? academic_tool.schedule : academic_tool.initial_time.to_date
+  end
+
   private
 
     ## antes de salvar, verifica se as allocations_tags passadas permitem a ferramenta em questão.
@@ -306,7 +311,6 @@ class AcademicAllocation < ActiveRecord::Base
     end
 
     def set_automatic_frequency
-      self.frequency_automatic = false if academic_tool_type == 'ScheduleEvent'
       self.frequency_automatic = true if academic_tool_type == 'Exam'
       return nil
     end

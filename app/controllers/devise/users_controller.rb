@@ -1,4 +1,5 @@
 class Devise::UsersController < Devise::RegistrationsController
+  before_action :load_deficiencys
 
   def create
     build_resource(sign_up_params)
@@ -6,8 +7,7 @@ class Devise::UsersController < Devise::RegistrationsController
     user_cpf       = params[:user][:cpf].delete('.').delete('-')
     resource.cpf   = user_cpf
     resource_saved = resource.save
-    tmp_email      = [user_cpf, YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s]["tmp_email_provider"]].join("@")
-    warning        = I18n.t("users.errors.ma.login_email") if resource.email == tmp_email and resource.username == "#{user_cpf}"
+    warning        = I18n.t("users.errors.ma.login_email") if resource.email.blank? && resource.username == "#{user_cpf}"
 
     yield resource if block_given?
     if resource_saved
@@ -40,18 +40,35 @@ class Devise::UsersController < Devise::RegistrationsController
 
   private
 
+    def load_deficiencys
+      @special_needs = [[t('deficiency.none'), nil],
+      [t('deficiency.autism_complete'), t('deficiency.autism_complete')], 
+      [t('deficiency.low_vision_complete'), t('deficiency.low_vision_complete')],
+      [t('deficiency.blindness_complete'), t('deficiency.blindness_complete')],
+      [t('deficiency.hearing_deficiency_complete'), t('deficiency.hearing_deficiency_complete')],
+      [t('deficiency.physical_disability_complete'), t('deficiency.physical_disability_complete')],
+      [t('deficiency.intellectual_deficiency_complete'), t('deficiency.intellectual_deficiency_complete')],
+      [t('deficiency.multiple_disability_complete'), t('deficiency.multiple_disability_complete')],
+      [t('deficiency.deafness_complete'), t('deficiency.deafness_complete')],
+      [t('deficiency.deafblindness_complete'), t('deficiency.deafblindness_complete')],
+      [t('deficiency.aspergers_syndrome_complete'), t('deficiency.aspergers_syndrome_complete')],
+      [t('deficiency.rett_syndrome_complete'), t('deficiency.rett_syndrome_complete')],
+      [t('deficiency.childhood_disintegrative_disorder_complete'), t('deficiency.childhood_disintegrative_disorder_complete')],
+      [t('deficiency.other'), t('deficiency.other')]]
+    end
+
     def sign_up_params
       params.require(:user).permit(:username, :email, :email_confirmation, :alternate_email, :password, :password_confirmation,
         :remember_me, :name, :nick, :birthdate, :address, :address_number, :address_complement, :address_neighborhood,
         :zipcode, :country, :state, :city, :telephone, :cell_phone, :institution, :gender, :cpf, :bio, :interests, :music,
-        :movies, :books, :phrase, :site, :photo, :special_needs, :active)
+        :movies, :books, :phrase, :site, :photo, :special_needs, :active, :other_special_needs)
     end
 
     def account_update_params
       params.require(:user).permit(:username, :email, :email_confirmation, :alternate_email, :current_password, :password,
         :password_confirmation, :remember_me, :name, :nick, :birthdate, :address, :address_number, :address_complement,
         :address_neighborhood, :zipcode, :country, :state, :city, :telephone, :cell_phone, :institution, :gender, :cpf,
-        :bio, :interests, :music, :movies, :books, :phrase, :site, :photo, :special_needs, :active)
+        :bio, :interests, :music, :movies, :books, :phrase, :site, :photo, :special_needs, :active, :other_special_needs)
     end
 
 end

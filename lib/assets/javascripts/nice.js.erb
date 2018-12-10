@@ -40,10 +40,17 @@ $.fn.nice_checkbox = function(options) {
     /**
      * Funcoes para habilitar/desabilitar edicao/delecao
      */
+    var enable_users = function() { $(".btn_users", parent_block_div).attr("disabled", false); };
+    var disable_users = function() { $(".btn_users", parent_block_div).attr("disabled", true); };
+    var enable_print = function() { $(".btn_print", parent_block_div).attr("disabled", false); };
+    var disable_print = function() { $(".btn_print", parent_block_div).attr("disabled", true); };
     var enable_edition = function() { $(".btn_edit", parent_block_div).attr("disabled", false); };
     var disable_edition = function() { $(".btn_edit", parent_block_div).attr("disabled", true); };
     var enable_deletion = function() { $(".btn_del", parent_block_div).attr("disabled", false); };
     var disable_deletion = function() { $(".btn_del", parent_block_div).attr("disabled", true); };
+
+    var enable_send_msg = function() { $(".btn_send_msg", $(parent_block_div).parent()).attr("disabled", false); };
+    var disable_send_msg = function() { $(".btn_send_msg", $(parent_block_div).parent()).attr("disabled", true); };
 
     children.click(function(){
       var kid = this;
@@ -54,19 +61,40 @@ $.fn.nice_checkbox = function(options) {
         if (kid.checked) { // filho selecionado
           enable_deletion();
           enable_edition();
-          enable_edition();
-          if (children_checked.length == 0 || children_checked.length > 1)
+          if ($(kid).data("is-exam")) {
+            enable_print();
+            enable_users();
+          }
+
+          if (children_checked.length == 0 || children_checked.length > 1){
             disable_edition();
+            disable_print();
+            disable_users();
+          }
+
+          enable_send_msg();
         } else { // o evento de click tirou selecao do filho
           if (children_checked.length == 0) { // nenhum filho selecionado
             disable_deletion();
             disable_edition();
+            disable_print();
+            disable_users();
+
+            disable_send_msg();
           } else if (children_checked.length == 1) { // apenas um filho selecionado
             enable_deletion();
             enable_edition();
+            enable_print();
+            enable_users();
+
+            enable_send_msg();
           } else if (children_checked.length > 1) { // mais de um filho selecionado
             enable_deletion();
             disable_edition();
+            disable_print();
+            disable_users();
+
+            enable_send_msg();
           }
         }
       } // end if
@@ -105,7 +133,11 @@ $.fn.nice_checkbox = function(options) {
       // o botao de edicao devera ser habilitado apenas para um unico objeto
       var children_checked = $('input:checkbox[name*="' + children_names + '"]:checked:not(".disabled")');
       $(".btn_edit", parent_block_div).attr("disabled", !(children_checked.length == 1));
+      $(".btn_print", parent_block_div).attr("disabled", !(children_checked.length == 1));
+      $(".btn_users", parent_block_div).attr("disabled", !(children_checked.length == 1));
       $(".btn_del", parent_block_div).attr("disabled", !check);
+
+      $(".btn_send_msg", $(parent_block_div).parent()).attr("disabled", !check);
 
       enable_other_elements(children_checked.length);
     }
@@ -357,7 +389,7 @@ $.fn.serialize_and_submit = function(options) {
   setTimeout(function() {
     focuInpuErro();
     loadFocus();
-  }, 700); 
+  }, 700);
   return this;
 }
 
@@ -384,8 +416,8 @@ $.fn.nice_open_lesson = function(options) {
   var default_options = {
     minHeight: '95%',
     minWidth: '95%',
-    autoScale: true,
-    autoSize: true,
+    autoScale: false,
+    autoSize: false,
     afterShow: function() {
       $("<a class='fancybox-item fancybox-minimize'  title=<%=I18n.t('fancybox.minimize')%> aria-label=<%=I18n.t('fancybox.minimize')%>></a>").appendTo(this.skin).click(minimize_lesson);
 

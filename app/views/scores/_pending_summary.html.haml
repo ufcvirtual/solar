@@ -1,14 +1,25 @@
 - @users.each_with_index do |student, idx|
   - status = Allocation.status_name(student.grade_situation)
   %tr.lines
+    %td{style: 'text-align:center;'}= check_box_tag("ckb_student_score_summary", student.id)
     %th.td_student{:'data-tooltip' => student.name, headers: 'student'}= link_to student.name, user_info_scores_path(student.id)
     %td{headers: 'access_to_the_course'}=student.u_logs
     - unless @wh.nil?
       %td{headers: 'frequency'}=student.working_hours
       %td{headers: 'faults'}=@wh.to_i - student.working_hours.to_i
+    %td{headers: 'partial_grade'}= student.partial_grade
     %td{headers: 'af_grade'}= student.af_grade
     %td{headers: 'final_grade'}=student.u_grade
     %td{headers: 'situation', class: status}= t("scores.index.#{status}")
+    - if @merged_group
+      %td.main_group{headers: 'main_group'}
+        - unless student.origin_group_name.blank?
+          %a{ href: '#', :"data-dropdown" => "#dropdown_origin_group_#{student.id}" }
+            =(student.origin_group_name == student.origin_group_code) ? student.origin_group_name : "#{student.origin_group_name} (#{student.origin_group_code})"
+            %i.icon-arrow-down-triangle{:'aria-hidden' => true}
+          .dropdown.dropdown-tip{id: "dropdown_origin_group_#{student.id}"}
+            %ul{ class: 'dropdown-menu' }
+              = AllocationTag.find(student.origin_at_id).info
 
 = javascript_include_tag 'tableHeadFixer','tooltip', 'tablesorter', 'scores'
 

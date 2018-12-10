@@ -280,4 +280,251 @@ class Webconference < ActiveRecord::Base
     urls.flatten
   end
 
+
+  # Inicializa as tabelas temporárias usadas no relatório
+  def self.drop_and_create_table_temporary_webs_and_access_uab
+
+    Webconference.find_by_sql <<-SQL
+      DROP TABLE IF EXISTS temp_web;
+    SQL
+
+    Webconference.find_by_sql <<-SQL
+      DROP TABLE IF EXISTS temp_web_uab;
+    SQL
+
+    Webconference.find_by_sql <<-SQL
+      DROP TABLE IF EXISTS temp_web_uab_access;
+    SQL
+
+    # ac_id | cu_description | server | is_recorded | initial_time
+    Webconference.find_by_sql <<-SQL
+      CREATE TEMPORARY TABLE temp_web AS SELECT distinct ac.id as ac_id, cu.description as cu_description, web.server, web.is_recorded, web.duration, web.shared_between_groups, web.initial_time FROM webconferences as web
+      INNER JOIN academic_allocations AS ac ON ac.academic_tool_id = web.id AND ac.academic_tool_type = 'Webconference'
+      INNER JOIN related_taggables AS rt ON rt.group_at_id = ac.allocation_tag_id OR rt.offer_at_id = ac.allocation_tag_id
+      LEFT JOIN curriculum_unit_types AS cu ON cu.id = rt.curriculum_unit_type_id
+    SQL
+
+    Webconference.find_by_sql <<-SQL
+      CREATE TEMPORARY TABLE temp_web_uab AS SELECT distinct ac.id as ac_id, sem.name AS semester, web.initial_time, web.title, u.name AS creator, co.name AS course_name, cu.name AS cu_name FROM webconferences as web
+      INNER JOIN academic_allocations AS ac ON ac.academic_tool_id = web.id AND ac.academic_tool_type = 'Webconference'
+      INNER JOIN related_taggables AS rt ON rt.group_at_id = ac.allocation_tag_id OR rt.offer_at_id = ac.allocation_tag_id
+      INNER JOIN semesters AS sem ON sem.id = rt.semester_id
+      LEFT JOIN curriculum_units AS cu ON cu.id = rt.curriculum_unit_id
+      LEFT JOIN courses as co ON co.id = rt.course_id
+      INNER JOIN users AS u ON u.id = web.user_id
+      WHERE rt.curriculum_unit_type_id = 2
+    SQL
+
+    Webconference.find_by_sql <<-SQL
+      CREATE TEMPORARY TABLE temp_web_uab_access AS SELECT distinct ac_id as ac_id_access, log.user_id as log_user_id FROM temp_web_uab
+      LEFT JOIN log_actions AS log ON log.academic_allocation_id = ac_id where log.log_type = 7
+    SQL
+  end
+
+  # Retorna quantidade total por tipo ("Curso de Extensao", "Curso de Graduacao a Distancia", "Curso de Graduacao Presencial" e "Curso Livre")
+  def self.count_per_type()
+    sql = "SELECT cu_description, COUNT(DISTINCT ac_id) AS total FROM temp_web
+            GROUP BY cu_description
+            ORDER BY cu_description"
+    AcademicAllocation.connection.select_all(sql)
+  end
+
+  # Retorna quantidade total e efetiva por semestre (UAB)
+  def self.count_total_effective
+    sql = "SELECT * FROM (
+            SELECT semester, COUNT(DISTINCT ac_id) AS total, count(distinct ac_id_access) as efetiva FROM temp_web_uab
+            LEFT JOIN temp_web_uab_access ON temp_web_uab_access.ac_id_access = temp_web_uab.ac_id
+            GROUP BY semester ORDER BY semester desc LIMIT 10
+            ) as result
+          ORDER BY result ASC"
+    AcademicAllocation.connection.select_all(sql)
+  end
+
+  # Retorna quantidade total de acessos únicos por semestre (UAB)
+  def self.count_total_access
+    sql = "SELECT semester, acessos FROM (
+            SELECT COUNT(DISTINCT log_user_id) AS acessos, semester FROM temp_web_uab
+            LEFT JOIN temp_web_uab_access ON temp_web_uab_access.ac_id_access = temp_web_uab.ac_id
+            GROUP BY 2 ORDER BY acessos DESC LIMIT 10
+            ) as result
+          GROUP BY  1, 2"
+    AcademicAllocation.connection.select_all(sql)
+  end
+
+  # Retorna quantidade total nos últimos 12 meses (UAB)
+  def self.count_last_12_months
+    sql = "SELECT to_char(initial_time,'Mon') || ' ' || extract(year from initial_time) as period, count (DISTINCT ac_id), to_char(initial_time,'MM') AS mon, extract(year from initial_time) as year
+            FROM temp_web_uab
+            WHERE initial_time > date_trunc('mon', CURRENT_DATE) - INTERVAL '1 year'
+            GROUP BY 1,3,4
+            ORDER BY year, mon"
+    AcademicAllocation.connection.select_all(sql)
+  end
+
+  # Retorna total agrupado por mês (UAB)
+  def self.group_by_month_of_year
+    sql = "SELECT to_char(initial_time,'MM'), count (DISTINCT ac_id),
+            CASE
+              WHEN (to_char(initial_time,'MM'))= '01' THEN 'Janeiro'
+              WHEN (to_char(initial_time,'MM'))= '02' THEN 'Fevereiro'
+              WHEN (to_char(initial_time,'MM'))= '03' THEN 'Março'
+              WHEN (to_char(initial_time,'MM'))= '04' THEN 'Abril'
+              WHEN (to_char(initial_time,'MM'))= '05' THEN 'Maio'
+              WHEN (to_char(initial_time,'MM'))= '06' THEN 'Junho'
+              WHEN (to_char(initial_time,'MM'))= '07' THEN 'Julho'
+              WHEN (to_char(initial_time,'MM'))= '08' THEN 'Agosto'
+              WHEN (to_char(initial_time,'MM'))= '09' THEN 'Setembro'
+              WHEN (to_char(initial_time,'MM'))= '10' THEN 'Outubro'
+              WHEN (to_char(initial_time,'MM'))= '11' THEN 'Novembro'
+              WHEN (to_char(initial_time,'MM'))= '12' THEN 'Dezembro'
+            ELSE '' END AS mes
+          FROM temp_web_uab
+          GROUP BY 1
+          ORDER BY 1"
+    AcademicAllocation.connection.select_all(sql)
+  end
+
+  # Retorna total agrupado por hora do dia (UAB)
+  def self.group_by_hour_of_day
+    sql = "SELECT  to_char(initial_time,'HH24'), count (DISTINCT ac_id)
+            FROM temp_web_uab
+            GROUP BY 1
+            ORDER BY 1"
+    AcademicAllocation.connection.select_all(sql)
+  end
+
+  # Retorna total agrupado por dia da semana (UAB)
+  def self.group_by_day_of_week
+    sql = "SELECT to_char(initial_time,'ID'),
+              CASE
+              WHEN (to_char(initial_time,'ID'))= '1' THEN 'Segunda'
+              WHEN (to_char(initial_time,'ID'))= '2' THEN 'Terça'
+              WHEN (to_char(initial_time,'ID'))= '3' THEN 'Quarta'
+              WHEN (to_char(initial_time,'ID'))= '4' THEN 'Quinta'
+              WHEN (to_char(initial_time,'ID'))= '5' THEN 'Sexta'
+              WHEN (to_char(initial_time,'ID'))= '6' THEN 'Sábado'
+              WHEN (to_char(initial_time,'ID'))= '7' THEN 'Domingo'
+              ELSE '' END AS semana,
+              COUNT (DISTINCT ac_id)
+          FROM temp_web_uab
+          GROUP BY 1, 2
+          ORDER BY 1"
+    AcademicAllocation.connection.select_all(sql)
+  end
+
+  # Retorna quantidade total por servidor (servidor | qtd de gravações | total | em tempo real | nome)
+  def self.count_per_server
+    sql = "SELECT server, SUM(case when is_recorded = true then duration end)/60 as duration, count (DISTINCT ac_id), count(distinct (case when now() BETWEEN initial_time AND initial_time + INTERVAL '1 min' * duration then ac_id end)) as real, CASE WHEN server=0 THEN 'BBB 1' WHEN server=1 THEN 'BBB 2' ELSE 'Não definido' END
+          FROM temp_web
+          GROUP BY 1
+          ORDER BY 1"
+    AcademicAllocation.connection.select_all(sql)
+  end
+
+  # Retorna quantidade de Gravadas | Compartilhadas | Média de duração
+  def self.count_rec_shared_duration
+    sql = "SELECT COUNT(DISTINCT (CASE WHEN is_recorded = true THEN ac_id END)) AS recorded,
+            COUNT(DISTINCT (CASE WHEN shared_between_groups = true THEN ac_id end)) AS shared,
+            REPLACE( round( AVG(duration),2 )::text, '.', ',' ) AS avg_duration
+            FROM temp_web"
+    AcademicAllocation.connection.select_all(sql)
+  end
+
+  # Retorna média por dia (total) | média por dia (efetivo) | Maximo em um dia | Soma total | Soma efetiva (UAB)
+  def self.avg_max_total
+    sql = "SELECT REPLACE( round( AVG(qtd),2 )::text, '.', ',' ),
+            REPLACE( round( AVG(efetiva),2 )::text, '.', ',' ),
+            MAX(efetiva), SUM(qtd), SUM(efetiva) FROM (
+            SELECT to_char(initial_time, 'DD Mon YYYY') AS DAY, COUNT (DISTINCT ac_id) AS qtd, count(distinct ac_id_access) AS efetiva
+            FROM temp_web_uab
+            LEFT JOIN temp_web_uab_access ON temp_web_uab_access.ac_id_access = temp_web_uab.ac_id
+            GROUP BY 1 ORDER BY 2
+          ) AS result"
+    AcademicAllocation.connection.select_all(sql)
+  end
+
+  # Retorna os 10 maiores criadores (UAB)
+  def self.top_creators
+    sql = "SELECT creator, count (DISTINCT ac_id)
+            FROM temp_web_uab
+            GROUP BY 1
+            ORDER BY 2 DESC LIMIT 10"
+    AcademicAllocation.connection.select_all(sql)
+  end
+
+  # Retorna média de acessos | Total de acessos | Máximo de usuários em uma conferência (UAB)
+  def self.avg_max_total_access
+    sql = "SELECT replace( round( AVG(qtd),2 )::text, '.', ',' ), SUM(qtd), MAX(qtd) FROM (
+              SELECT DISTINCT ac_id AS efetiva, COUNT(ac_id_access) AS qtd, to_char(initial_time, 'DD Mon YYYY'), title FROM temp_web_uab
+              LEFT JOIN temp_web_uab_access ON temp_web_uab_access.ac_id_access = temp_web_uab.ac_id
+              GROUP BY 1,3,4 ORDER BY qtd DESC
+            ) AS result
+          WHERE qtd > 0"
+    AcademicAllocation.connection.select_all(sql)
+  end
+
+  # Retorna total por curso/semestre (UAB)
+  def self.total_per_course
+    sql = "SELECT * FROM (
+            SELECT semester,
+            count(distinct (case when course_name = 'Licenciatura em Matemática' THEN ac_id END)) AS Matematica,
+            count(distinct (case when course_name = 'Letras Espanhol' THEN ac_id END)) AS Espanhol,
+            count(distinct (case when course_name = 'Letras Inglês' THEN ac_id END)) AS Ingles,
+            count(distinct (case when course_name = 'Letras Português' THEN ac_id END)) AS Portugues,
+            count(distinct (case when course_name = 'Licenciatura em Física' THEN ac_id END)) AS Fisica,
+            count(distinct (case when course_name = 'Bacharelado em Administração' THEN ac_id END)) AS Administracao,
+            count(distinct (case when course_name = 'Licenciatura em Pedagogia' THEN ac_id END)) AS Pedagogia,
+            count(distinct (case when course_name = 'Bacharelado em Gestão Pública' THEN ac_id END)) AS Gestao,
+            count(distinct (case when course_name = 'Licenciatura em Química' THEN ac_id END)) AS Quimica FROM temp_web_uab
+            GROUP BY 1 ORDER BY semester DESC LIMIT 4
+            )AS result
+          ORDER BY result ASC"
+    AcademicAllocation.connection.select_all(sql)
+  end
+
+  # Retorna as 10 disciplinas com mais acessos (UAB)
+  def self.access_per_offer
+    sql = "SELECT COUNT(DISTINCT log_user_id) AS acessos, cu_name FROM temp_web_uab
+            LEFT JOIN temp_web_uab_access ON temp_web_uab_access.ac_id_access = temp_web_uab.ac_id
+            GROUP BY 2 Order by acessos DESC LIMIT 10"
+    AcademicAllocation.connection.select_all(sql)
+  end
+
+  # Retorna as 10 disciplinas com mais webconferẽncias (UAB)
+  def self.total_per_offer
+    sql = "SELECT COUNT(DISTINCT ac_id) as qtd, cu_name FROM temp_web_uab
+            GROUP BY 2 Order by qtd desc limit 10"
+    AcademicAllocation.connection.select_all(sql)
+  end
+
+  # Retorna a média de acessos por semeste (UAB)
+  def self.avg_access_per_semester
+    sql = "SELECT semester, ROUND(AVG(access / NULLIF(webs * 1.0, 0)), 2) AS AVG FROM (
+            SELECT DISTINCT ac_id AS efetiva, COUNT(DISTINCT log_user_id) AS access, COUNT(DISTINCT ac_id_access) AS webs, semester FROM temp_web_uab
+            LEFT JOIN temp_web_uab_access ON temp_web_uab_access.ac_id_access = temp_web_uab.ac_id
+            GROUP BY 4,1 ORDER BY 4
+            ) AS result
+          GROUP BY 1"
+    AcademicAllocation.connection.select_all(sql)
+  end
+
+  # Retorna total de acessos por curso/semestre (UAB)
+  def self.access_per_course
+    sql = "SELECT * FROM (
+            SELECT semester,
+            count(distinct (case when course_name = 'Licenciatura em Matemática' then log_user_id end)) as Matematica,
+            count(distinct (case when course_name = 'Letras Espanhol' then log_user_id end)) as Espanhol,
+            count(distinct (case when course_name = 'Letras Inglês' then log_user_id end)) as Ingles,
+            count(distinct (case when course_name = 'Letras Português' then log_user_id end)) as Portugues,
+            count(distinct (case when course_name = 'Licenciatura em Física' then log_user_id end)) as Fisica,
+            count(distinct (case when course_name = 'Bacharelado em Administração' then log_user_id end)) as Administracao,
+            count(distinct (case when course_name = 'Licenciatura em Pedagogia' then log_user_id end)) as Pedagogia,
+            count(distinct (case when course_name = 'Bacharelado em Gestão Pública' then log_user_id end)) as Gestao,
+            count(distinct (case when course_name = 'Licenciatura em Química' then log_user_id end)) as Quimica FROM temp_web_uab
+            LEFT JOIN temp_web_uab_access ON temp_web_uab_access.ac_id_access = temp_web_uab.ac_id
+            GROUP BY 1 ORDER BY semester desc limit 4
+            )as result
+          ORDER BY result ASC"
+    AcademicAllocation.connection.select_all(sql)
+  end
 end

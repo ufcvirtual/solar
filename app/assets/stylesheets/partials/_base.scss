@@ -82,6 +82,10 @@ a, a.menor, a.link_content {
   text-decoration: underline;
 }
 
+.show_notification a.prev, .show_notification a.next{
+  text-decoration: none;
+}
+
 a.link_content, .forum_post_attachment_list a{
   text-decoration: underline;
   color: $color_contrast_text;
@@ -354,4 +358,8 @@ i.noscript{
     word-break: break-word;
     text-align: center;
   }
+}
+.colored{
+  color: red;
+  font-weight: bold;
 }

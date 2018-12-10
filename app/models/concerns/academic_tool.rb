@@ -128,11 +128,11 @@ module AcademicTool
     {date: nil, ac_id: nil}
   end
 
-  def self.send_email(object, acs, verify_type='delete')
-    object.send_email(verify_type, acs)
+  def self.send_email(object, acs, verify_type='delete', old_info=nil)
+    object.send_email(verify_type, acs, old_info)
   end
 
-  def send_email(verify_type='delete', acs=nil)
+  def send_email(verify_type='delete', acs=nil, old_info=nil)
     begin
       ats = (acs.nil? ? academic_allocations : acs).map(&:allocation_tag_id).flatten.uniq
       ats = AllocationTag.where(id: ats).joins('LEFT JOIN groups ON groups.id = allocation_tags.group_id').where("group_id IS NULL OR groups.status = 't'").map(&:id).uniq
@@ -141,30 +141,28 @@ module AcademicTool
     end
     Thread.new do
       ActiveRecord::Base.connection
-        ats.each do |at|
-          emails = User.with_access_on('receive_academic_tool_notification','emails',ats, true).map(&:email).compact.uniq
+        emails = User.with_access_on('receive_academic_tool_notification','emails',ats, true).map(&:email).compact.uniq
 
-          info = AllocationTag.find(ats.first).no_group_info
-          groups = (ats.size > 1 ? ' - ' + Group.joins(:allocation_tag).where(allocation_tags: {id: ats}).map(&:code).join(', ') : '')
-          unless emails.empty?
-            if ((verify_type == 'delete') || (respond_to?(:status_changed?) && (status_changed? && !status)))
-              if (verify_can_destroy)
-                unless self.class.to_s == 'Notification'
-                 template_mail = delete_msg_template(info + groups)
--                subject = I18n.t('editions.mail.subject_delete')
-                end
-              end
-            elsif !verify_type || (respond_to?(:status_changed?) && status_changed? && status)
-              template_mail = new_msg_template(info + groups)
-              subject = I18n.t('editions.mail.subject_new')
-            elsif verify_type
+        info = AllocationTag.find(ats.first).no_group_info
+        groups = (ats.size > 1 ? ' - ' + Group.joins(:allocation_tag).where(allocation_tags: {id: ats}).map(&:code).join(', ') : '')
+        unless emails.empty?
+          if ((verify_type == 'delete') || (respond_to?(:status_changed?) && (status_changed? && !status)))
+            if (verify_can_destroy)
               unless self.class.to_s == 'Notification'
-                template_mail = update_msg_template(info + groups)
-                subject =  I18n.t('editions.mail.subject_update')
+               template_mail = delete_msg_template(info + groups)
+               subject = I18n.t('editions.mail.subject_delete')
               end
             end
-            Job.send_mass_email(emails, subject, template_mail) unless subject.blank?
+          elsif !verify_type || (respond_to?(:status_changed?) && status_changed? && status)
+            template_mail = new_msg_template(info + groups)
+            subject = I18n.t('editions.mail.subject_new')
+          elsif verify_type
+            unless self.class.to_s == 'Notification'
+              template_mail = update_msg_template(info + groups, old_info)
+              subject =  I18n.t('editions.mail.subject_update')
+            end
           end
+          Job.send_mass_email(emails, subject, template_mail) unless subject.blank?
         end
       ActiveRecord::Base.connection.close
     end
@@ -201,7 +199,14 @@ module AcademicTool
       end
     end
 
-    def update_msg_template(info)
+    def update_msg_template(info, old_info=nil)
+      unless old_info.blank?
+        schedule.previous_changes[:start_date] = old_info[:start_date]
+        schedule.previous_changes[:end_date] = old_info[:end_date]
+        start_hour_was = old_info[:start_hour]
+        end_hour_was = old_info[:end_hour]
+      end
+
       if respond_to?(:initial_time)
         changes1 = [initial_time_was, initial_time].compact
         start_date = [changes1.first.strftime("%d/%m/%Y %H:%M"), changes1.last.strftime("%d/%m/%Y %H:%M")]

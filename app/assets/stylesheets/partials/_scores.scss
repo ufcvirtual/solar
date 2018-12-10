@@ -74,15 +74,13 @@ tr#activities{
     }
     th.td_student{
       text-align: left;
-      width: 140px;
-      min-width: 60px;
+      width: 25%;
     }
     th.tool{
       min-width: 20px;
     }
     th#student {
       width: 120px;
-
     }
     th#profile {
       width: 100px;
@@ -92,10 +90,22 @@ tr#activities{
       text-decoration: underline;
     }
     th.access_history, th#public_files,  th#exams{
-      width: 60px;
+      width: 5%;
     }
     th.participation {
       width: 80px;
+    }
+    th#main_group{
+      width: 15%;
+    }
+
+    .dropdown-menu{
+      min-width: auto;
+    }
+    td.main_group{
+      a{
+        text-decoration: none;
+      }
     }
   }
   #assignment_title{
@@ -143,7 +153,7 @@ tr#activities{
 
   .to_send, .to_send a, .final_exam_pending {
     color: $color_main;
-    text-decoration: none; 
+    text-decoration: none;
   }
 
   .without_group {
@@ -221,8 +231,11 @@ table.general{
     padding-bottom: 6%;
     .left{
       float: left;
-      .grade,.frequency, .final_exam_grade, .situation{
+      .grade,.frequency, .final_exam_grade, .situation, .main_group{
         text-align: center;
+      }
+      .main_group a{
+        display: block;
       }
     }
     img{
@@ -290,7 +303,7 @@ tbody{
     color: $color_almost_gray_content;
     cursor: pointer;
     border-top: solid 2px $color_main;
-    
+
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 11px;
@@ -323,7 +336,7 @@ tbody{
     color: $color_almost_gray_content;
     cursor: pointer;
     border-top: solid 2px $color_main;
-    
+
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 11px;
@@ -392,6 +405,11 @@ tbody{
 }
 
 #amount_found{
-  float: right; 
+  float: right;
   max-width: 57%;
+}
+
+a.disabled_register_notes{
+  opacity: 0.45;
+  cursor: pointer !important;
 }

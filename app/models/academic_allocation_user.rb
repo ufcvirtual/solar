@@ -19,6 +19,7 @@ class AcademicAllocationUser < ActiveRecord::Base
   has_many :comments
 
   has_many :assignment_files
+  has_many :schedule_event_files
   has_many :assignment_webconferences
 
   has_many :discussion_posts, class_name: 'Post'
@@ -115,22 +116,32 @@ class AcademicAllocationUser < ActiveRecord::Base
     (user_id.blank? ? group_assignment.group_participants.map(&:user_id) : [user_id])
   end
 
+  def verify_user_allocation_cancel(user_id, allocation_tag_id, last_merge)
+    alloc = Allocation.where(allocation_tag_id: allocation_tag_id, user_id: user_id, status: Allocation_Cancelled).last
+    alloc_not = Allocation.where(allocation_tag_id: allocation_tag_id, user_id: user_id).last
+    !last_merge.nil? && (!alloc.nil? || alloc_not.nil?) ? true : false
+  end
+
   # call after every acu grade change
-  def recalculate_final_grade(allocation_tag_id)
+  def recalculate_final_grade(allocation_tag_id, last_merge=nil)
     get_user.compact.each do |user|
-      allocations = Allocation.includes(:profile).references(:profile).where(user_id: user, status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).lower_related).where('cast(profiles.types & ? as boolean)', Profile_Type_Student)
-      allocation = allocations.where('final_grade IS NOT NULL OR working_hours IS NOT NULL').first || allocations.first
+     
+      unless verify_user_allocation_cancel(user, allocation_tag_id, last_merge)
+        allocations = Allocation.includes(:profile).references(:profile).where(user_id: user, status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).lower_related).where('cast(profiles.types & ? as boolean)', Profile_Type_Student)
+        allocation = allocations.where('final_grade IS NOT NULL OR working_hours IS NOT NULL').first || allocations.first
 
-      allocation.calculate_working_hours
+        allocation.calculate_working_hours
 
-      allocation.calculate_parcial_grade unless academic_allocation.final_exam
-      allocation.calculate_final_exam_grade
+        allocation.calculate_parcial_grade unless academic_allocation.final_exam
+        allocation.calculate_final_exam_grade 
+      end
     end
   end
 
   def self.create_or_update(tool_type, tool_id, allocation_tag_id, user={user_id: nil, group_assignment_id: nil}, evaluation={grade: nil, working_hours: nil})
     ac = AcademicAllocation.where(academic_tool_id: tool_id, academic_tool_type: tool_type, allocation_tag_id: AllocationTag.find(allocation_tag_id).upper_related).first
-
+    allocation_tag = AllocationTag.find(ac.allocation_tag_id)
+    last_merge = Merge.where("(main_group_id = ? OR secundary_group_id = ?) AND type_merge=TRUE", allocation_tag.group_id, allocation_tag.group_id).last
     if user[:group_assignment_id].blank?
       user_id = user[:user_id]
     else
@@ -155,7 +166,7 @@ class AcademicAllocationUser < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         if acu.save
           tool_type.constantize.update_previous(ac.id, user_id, acu.id) if acu.try(:created_at) == acu.try(:updated_at) && !user_id.nil?
-          acu.recalculate_final_grade(ac.allocation_tag_id)
+          acu.recalculate_final_grade(ac.allocation_tag_id, last_merge)
           return {id: acu.id, errors: []}
         else
           return {id: acu.try(:id), errors: acu.errors.full_messages}
@@ -244,6 +255,7 @@ class AcademicAllocationUser < ActiveRecord::Base
 
   def delete_with_dependents
     comments.map(&:delete_with_dependents)
+    schedule_event_files.map(&:delete_with_dependents)
 
     case academic_allocation.academic_tool_type
     when 'Exam'
@@ -267,6 +279,8 @@ class AcademicAllocationUser < ActiveRecord::Base
     when 'Webconference'
       LogAction.where(academic_allocation_user_id: id, log_type: 7).delete_all
       self.delete
+    when 'ScheduleEvent'
+      schedule_event_files.delete_all
     else
       self.delete
     end
@@ -334,6 +348,15 @@ class AcademicAllocationUser < ActiveRecord::Base
       has_files = !files.first.max.nil?
 
       { grade: grade, working_hours: working_hours, comments: comments, has_files: has_files, file_sent_date: (has_files ? I18n.l(files.first.max.to_datetime, format: :normal) : ' - ') }
+    when 'ScheduleEvent'
+      grade, working_hours, comments = try(:grade), try(:working_hours), try(:comments)
+
+      files = ScheduleEventFile.where(academic_allocation_user_id: id)
+
+      has_files = !files.empty?
+      file_amount = files.size
+
+      { grade: grade, working_hours: working_hours, comments: comments, has_files: has_files, file_amount: file_amount, file_sent_date: (has_files ? I18n.l(files.last.updated_at, format: :normal) : ' - ') }
     end
   end
 

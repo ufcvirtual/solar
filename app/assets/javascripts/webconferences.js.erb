@@ -50,6 +50,11 @@ $(function(){
     return false;
   });
 
+  $(".expand, .compress").click(function(){
+    $(this).parent().hide();
+    $($(this).parent().siblings()[0]).show();
+  });
+
   $(".link_new_webconference").not(".disabled").call_fancybox();
 
   $('.delete_webconference').click(function(){
@@ -106,7 +111,7 @@ $(function(){
           flash_message(data.alert, 'alert');
         });
     }
-  });   
+  });
 
   $(".btn_edit").click(function(){
     if ($(this).attr('disabled') == 'disabled'){

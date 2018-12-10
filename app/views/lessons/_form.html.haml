@@ -49,12 +49,15 @@
       .privacy
         = f.label t('.privacy'), :'data-tooltip' => t('.privacy_tooltip')
         %span= f.input :privacy, as: :select, collection: [[t('.public'), false], [t('.private'), true]], label: false, include_blank: false, selected: f.object.privacy
+      .responsive
+        = f.label t('.responsive'), :'data-tooltip' => t('.responsive_tooltip')
+        .responsive_input= f.check_box :responsive,  checked: f.object.responsive
 
       - unless @lesson.imported_from.nil?
         .imported
           = f.label t('.receive_updates'), :'data-tooltip' => t('.receive_updates_tooltip')
           = f.check_box :receive_updates, { checked: f.object.receive_updates }
-            
+
       - if (@lesson_modules.nil? || @lesson.is_link?)
         .url_lesson
           = f.input :address
@@ -101,6 +104,7 @@
       $("form#lesson_form").serialize_and_submit({
         dont_remove_lightbox: file_lesson_page,
         replace_list: $('.list_lessons'),
+        outer: 'fancybox-outer',
         complement_success: function(data){
           if(file_lesson_page) // atualiza conteudo do lightbox para a gerencia de arquivos
             $.fancybox(data);

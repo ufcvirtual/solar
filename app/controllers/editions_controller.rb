@@ -138,6 +138,21 @@ class EditionsController < ApplicationController
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   end
 
+  def automatic_management
+
+    allocation_tag_ids = params[:allocation_tags_ids]
+
+    allocation_tag_ids.each do |allocation_tag_id|      
+      Group.verify_management(allocation_tag_id)
+    end
+   
+    render json: { success: true, msg: 'Atividades Gerenciadas com sucesso!' }
+
+  rescue StandardError => error
+    puts error
+    render json: { success: false, msg: 'Um erro ocorreu, por favor entre em contato com o suporte.' } 
+  end
+
   def tool_management
     @allocation_tags_ids = params[:allocation_tags_ids].split(' ').flatten.map(&:to_i)
     @tool_name = params[:tool_name]
@@ -145,7 +160,6 @@ class EditionsController < ApplicationController
     raise 'only_groups_and_offer' if AllocationTag.where(id: @allocation_tags_ids).where('group_id IS NOT NULL OR offer_id IS NOT NULL').count != @allocation_tags_ids.size
 
     authorize! :tool_management, Edition, { on: @allocation_tags_ids }
-
     @tools = EvaluativeTool.find_tools(@allocation_tags_ids)
     @tools = @tools.group_by { |t| t['academic_tool_type'] }
 

@@ -168,11 +168,15 @@ class Post < ActiveRecord::Base
       locale = configure_mail_post.try(:default_locale) rescue 'pt_BR'
       locale = 'pt_BR' if locale.blank?
       subject = "#{I18n.t('posts.mail.subject', discussion: discussion.name, at_info: at.info, locale: locale)}"
-      Thread.new do
-        Job.send_mass_email_post([parent.user.email], subject, id, at.info, discussion.name)
-      end
-
+      Job.send_mass_email_post([parent.user.email], subject, id, at.info, discussion.name)
     end
+  end
+  
+  def self.count_post_unread_by_user(user_id, discussion_id, allocation_tags)
+    last_access_date_user = LogNavigationSub.after_post_discussion_user(user_id, discussion_id).first
+    where = last_access_date_user.nil? ? "" : "discussion_posts.created_at > '#{last_access_date_user.created_at}'"
+    Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: allocation_tags, academic_tool_id: discussion_id, academic_tool_type: 'Discussion' },  draft: false)
+    .where(where).select("DISTINCT discussion_posts.id").count
   end
 
   private

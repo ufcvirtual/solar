@@ -8,7 +8,7 @@
         %p= t(:pwd_recovery_text)
         %p= t(:pwd_recovery_text2)
         .form-field
-          %input#email_password_recovery{name: "user[email]", placeholder: t(:pwd_recovery_email), size: "30", type: "email", :"aria-label" => t(:pwd_recovery_email)}
+          %input#cpf_password_recovery{name: "user[cpf]", placeholder: t(:cpf_place_holder), size: "11", type: :text, :"aria-label" => t(:cpf_place_holder)}
         #buttons_password_recovery
           %input#give-up.btn_password_recovery.btn_default{onclick: "document.location.href='#{login_path}'", type: "button", value: t(:pwd_recovery_back)}
           = f.submit t(:pwd_recovery_send), class: 'btn_password_recovery solar_button', id: "send"
@@ -16,12 +16,14 @@
 
 :javascript
   $(function(){
+    $("[name='user[cpf]']").mask("999.999.999-99");
+
     if (typeof($("#error_explanation")) !== "undefined") {
       var text = $("#error_explanation").text().trim();
-      $("#email_password_recovery").attr("aria-label", text);
+      $("#cpf_password_recovery").attr("aria-label", text);
     }
     setTimeout(function() {
-      $("#email_password_recovery").focus();
+      $("#cpf_password_recovery").focus();
     }, 250);
 
     $(function(){

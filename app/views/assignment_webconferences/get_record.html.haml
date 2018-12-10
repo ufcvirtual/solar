@@ -1,26 +1,30 @@
 - view_disabled = view_disabled rescue @view_disabled
-.recordings
-  %h1#lightBoxDialogTitle= t("webconferences.get_record.recordings", name: @assignment_webconference.title)
-  .chat_messages
-    .title-warning
-      = raw t('webconferences.get_record.warning')
-    - unless @recordings.empty?
-      %table.tb_list
-        %thead
+%h1#lightBoxDialogTitle= t("webconferences.get_record.recordings", name: @assignment_webconference.title)
+.chat_messages
+  .title-warning
+    = raw t('webconferences.get_record.warning')
+  - unless @recordings.empty?
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th#_access= t('webconferences.get_record.access')
+          %th#_start= t("webconferences.get_record.start")
+          %th#_end= t("webconferences.get_record.end")
+          - if !view_disabled
+            %th#_remove= t("webconferences.get_record.options")
+      %tbody
+        - @recordings.each_with_index do |record, idx|
           %tr.lines
-            %th#_access= t('webconferences.get_record.access')
-            %th#_start= t("webconferences.get_record.start")
-            %th#_end= t("webconferences.get_record.end")
-            - if @can_remove_record && !view_disabled
-              %th#_remove
-        %tbody
-          - @recordings.each_with_index do |record, idx|
-            %tr.lines
-              %td{headers: '_access'}= link_to t('webconferences.get_record.record', number: idx+1), Bbb.get_recording_url(record), target: '_blank', :'aria-label' => t('webconferences.index.access_web_recording', name: t('webconferences.get_record.record', number: idx+1) )
-              %td{headers: '_start'}= l(record[:startTime].to_datetime)
-              %td{headers: '_end'}= l(record[:endTime].to_datetime)
+            %td{headers: '_access'}= link_to t('webconferences.get_record.record', number: idx+1), Bbb.get_recording_url(record, 'presentation'), target: '_blank', :'aria-label' => t('webconferences.index.access_web_recording', name: t('webconferences.get_record.record', number: idx+1) )
+            %td{headers: '_start'}= l(record[:startTime].to_datetime)
+            %td{headers: '_end'}= l(record[:endTime].to_datetime)
+            %td
+              %span= link_to (content_tag(:i, nil, class: 'icon-video-conference')), download_webconferences_path(url: Bbb.get_recording_url(record, 'video'), type: 'application/video', filename: 'video.mp4'), "data-tooltip" => t("webconferences.get_record.download_video"),  :'aria-label' => t("webconferences.get_record.download_video"), class: "btn", target: '_blank'
+              %span= link_to (content_tag(:i, nil, class: 'icon-microphone')), download_webconferences_path(url: Bbb.get_recording_url(record, 'podcast'), type: 'application/audio', filename: 'podcast.ogg'), class: 'btn ', :'data-tooltip' => t('webconferences.get_record.download_podcast'), :'aria-label' => t('webconferences.get_record.download_podcast'), :target => "_blank", class: "btn", target: '_blank'
+              //%span= link_to (content_tag(:i, nil, class: 'icon-text-2')),  download_webconferences_path(url: Bbb.get_recording_url(record, 'slides'), type: 'application/audio', filename: 'slides.zip'), class: 'btn' , :'data-tooltip' => t('webconferences.get_record.download_slides'), :'aria-label' => t('webconferences.get_record.download_slides'), :target => "_blank", class: "btn", target: '_blank'
+              //%span= link_to (content_tag(:i, nil, class: 'icon-chat')),  download_webconferences_path(url: Bbb.get_recording_url(record, 'chat'), type: 'application/audio', filename: 'Batepapo.pdf'), class: 'btn ', :'data-tooltip' => t('webconferences.get_record.download_chat'), :'aria-label' => t('webconferences.get_record.download_chat'), :target => "_blank", class: "btn", target: '_blank'
               - if @can_remove_record && !view_disabled
-                %td{headers: '_remove'}= button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution remove_record', :'data-tooltip' => t('webconferences.get_record.remove'), :'data-url' => remove_record_assignment_webconference_path(id: @assignment_webconference.id, recordID: record[:recordID]), :'aria-label' => t('webconferences.get_record.remove')
+                %span{headers: '_remove'}= button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution remove_record', :'data-tooltip' => t('webconferences.get_record.remove'), :'data-url' => remove_record_assignment_webconference_path(id: @assignment_webconference.id, recordID: record[:recordID]), :'aria-label' => t('webconferences.get_record.remove')
 
     - else
       .block_content_text_list.text_none= t("webconferences.get_record.no_message")

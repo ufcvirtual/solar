@@ -72,14 +72,15 @@ module ApplicationHelper
   ## Renderiza a seleção de turmas
   def render_group_selection(hash_params = nil)
     active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
-    groups = current_user.groups([], Allocation_Activated, nil, nil, active_tab[:url][:id])
+    profiles_ids = current_user.profiles_with_access_on('show', 'curriculum_units', nil, true)
+    groups = current_user.groups(profiles_ids, Allocation_Activated, nil, nil, active_tab[:url][:id])
     # O grupo (turma) a ter seus fóruns exibidos será o grupo selecionado na aba de seleção ('selected_group')
     selected_group_id = AllocationTag.find(active_tab[:url][:allocation_tag_id]).group_id
     # Se o group_select estiver vazio, ou seja, nenhum grupo foi selecionado pelo usuário,
     # o grupo a ter seus fóruns exibidos será o primeiro grupo encontrado para o usuário em questão
     selected_group_id = groups.first.id if selected_group_id.blank?
 
-    active_tab[:breadcrumb].first[:url][:selected_group] = Group.find(selected_group_id).code
+    active_tab[:breadcrumb].first[:url][:selected_group] = Group.find(selected_group_id).get_code_name
     active_tab[:breadcrumb].first[:url][:allocation_tag_id] = active_tab[:url][:allocation_tag_id]
 
     result = ''
@@ -91,13 +92,13 @@ module ApplicationHelper
        result <<  "<ul class='dropdown-menu'>"
       groups.each do |g|
         class_li = selected_group_id==g.id ? 'selected' : 'null';
-        link_groups = link_to g.code, select_group_path(selected_group: g.id), :'aria-label' => t('scores.index.select_group'), :class => class_li
+        link_groups = link_to g.get_code_name, select_group_path(selected_group: g.id), :'aria-label' => t('scores.index.select_group'), :class => class_li
         result << "<li role='menuitem' onclick='focusTitle();'>"+link_groups+"</li>"
       end
       result << "</ul> </div>"
 
     else
-      result = t(:group) << ":&nbsp #{Group.find(selected_group_id).code}"
+      result = t(:group) << ":&nbsp #{Group.find(selected_group_id).get_code_name}"
     end
 
     return result

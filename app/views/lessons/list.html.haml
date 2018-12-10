@@ -98,7 +98,6 @@
 
       var module_id = $(this).data("module-id");
       var url = $(this).data("link-update");
-
       if(typeof(module_id) != "undefined" || $(this)[0].className == "change_lesson_status"){
 
         if ($(this)[0].className != "change_lesson_status"){
@@ -113,10 +112,8 @@
           $.get($('.list_lessons').data('link-list'), function(data){
             $('.list_lessons:first').replaceWith(data);
           });
-          if(data.msg != undefined && data.msg.length > 0){
-            flash_message(data.msg.join("<br />"), 'warning');
-          }
-        }).fail(function(data) {
+          flash_message(data.msg, data.type);
+        }).error(function(data) {
           if(typeof(module_id) != "undefined"){
             $.get($('.list_lessons').data('link-list'), function(data2){
               $('.list_lessons:first').replaceWith(data2);

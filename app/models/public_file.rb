@@ -1,5 +1,7 @@
 class PublicFile < ActiveRecord::Base
 
+  FILESIZE = 20.megabyte
+
   before_destroy :can_remove?
 
   belongs_to :user
@@ -11,7 +13,7 @@ class PublicFile < ActiveRecord::Base
 
   validates :attachment_file_name, presence: true
 
-  validates_attachment_size :attachment, less_than: 20.megabyte, message: ""
+  validates_attachment_size :attachment, less_than: FILESIZE, message: ""
 
   validates_attachment_content_type_in_black_list :attachment
   do_not_validate_attachment_file_type :attachment
@@ -32,7 +34,7 @@ class PublicFile < ActiveRecord::Base
     offer = AllocationTag.find(allocation_tag_id).offers.first
     if offer.end_date < Date.current
       errors.add(:base, I18n.t('public_files.error.offer_end')) if offer.end_date < Date.current
-      raise 'offer_end' 
+      raise 'offer_end'
     end
     if offer.start_date > Date.current
       errors.add(:base, I18n.t('public_files.error.offer_start')) if offer.start_date > Date.current

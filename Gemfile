@@ -4,6 +4,7 @@ ruby "2.3.6"
 
 gem 'rails', '5.1.6'
 gem "rack", "~> 2.0.0"
+#gem "rails", "~> 3.2.16"
 gem "rake", "~> 10.1.1"
 gem "pg", "~> 0.21.0"
 
@@ -68,7 +69,8 @@ gem 'coffee-rails'
 
 gem 'rest-client'
 
-gem 'rufus-scheduler'
+gem 'et-orbi', '~> 1.0.9'
+gem 'rufus-scheduler', '~> 3.4.2'
 
 #fila de emails
 gem 'delayed_job_active_record'
@@ -78,6 +80,7 @@ gem 'activerecord-session_store'
 
 # add these gems to help with the transition:
 #gem 'protected_attributes'
+
 group :development do
   gem "rb-readline", "~> 0.5.1"
   gem "net-ssh", "~> 2.6.8" # dependencia capistrano
@@ -123,12 +126,12 @@ group :test do
   gem "simplecov", require: false # cobertura de testes
 end
 
-
-group :assets do
+#group :assets do
   gem "uglifier", "~> 4.1.10"
   gem "sass-rails", "~> 5.0.7"
   gem "compass-rails", "~> 3.0.2"
-end
+#end
 
+gem 'htmlentities'
 # new relic
-#gem 'newrelic_rpm'
+# gem 'newrelic_rpm'

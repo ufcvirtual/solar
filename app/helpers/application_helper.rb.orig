@@ -236,5 +236,3 @@ module ApplicationHelper
     render json: { success: false, alert: (message.nil? ? error_message : error.message) }, status: :unprocessable_entity
   end
 end
-=======
->>>>>>> 77ad5d636dd089b124d8e3eb39324a3baa1b4a86

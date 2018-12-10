@@ -9,6 +9,7 @@ class Group < ActiveRecord::Base
   has_one :course,               through: :offer
   has_one :semester,             through: :offer
   has_one :curriculum_unit_type, through: :curriculum_unit
+  has_one :main_group, class_name: 'Group', foreign_key: :main_group_id
 
   has_many :academic_allocations, through: :allocation_tag
   has_many :lesson_modules,       through: :academic_allocations, source: :academic_tool, source_type: 'LessonModule'
@@ -22,16 +23,31 @@ class Group < ActiveRecord::Base
   validates :code, :offer_id, presence: true
 
   validate :unique_code_on_offer, unless: -> {offer_id.nil? || code.nil? || !code_changed?}
+  validate :unique_name_on_offer, unless: 'offer_id.nil? || name.blank? || !name_changed?'
+  validate :unique_code_on_offer_by_name, unless: 'offer_id.nil? || code.nil? || !code_changed?'
 
-  validates_length_of :code, maximum: 40
+
+  validates :code, length: { maximum: 40 }
+  validates :name, :location, length: { maximum: 100 }
 
   validates :digital_class_directory_id, uniqueness: true, on: :update, unless: -> {digital_class_directory_id.blank?}
 
-  after_save :update_digital_class, if: -> {saved_change_to_code?}
+  after_save :update_digital_class, if: -> {code_changed?}
+  before_save :set_empty_name, if: 'name.blank?'
+
+  validate :name_mandatory_if_distant, if: 'name.blank?'
+
+  validate :block_fields_if_integrated, if: 'integrated && api.blank?'
 
   def order
    'groups.status, groups.code'
-  end 
+  end
+
+  attr_accessor :api
+
+  def is_merged?
+    Group.where(main_group_id: id).any?
+  end
 
   def code_semester
     "#{code} - #{offer.semester.name}"
@@ -66,7 +82,7 @@ class Group < ActiveRecord::Base
       course: offer.course.try(:name) || '',
       curriculum_unit: offer.curriculum_unit.try(:name) || '',
       semester: offer.semester.name,
-      group: code
+      group: get_code_name
     }
   end
 
@@ -107,24 +123,29 @@ class Group < ActiveRecord::Base
     # if error 400, ja existe la
   end
 
+  def get_code_name
+    # show groups name with code only if uab (distance)
+    (name.blank? || curriculum_unit.blank? || curriculum_unit.curriculum_unit_type_id != 2 || name == code) ? code : "#{name} (#{code})"
+  end
+
   def params_to_directory
     { name: code, discipline: curriculum_unit.code_name, course: course.code_name, tags: [semester.name, curriculum_unit_type.description].join(',') }
   end
 
   def self.get_directory_by_groups(group_id)
     Group.find(group_id).digital_class_directory_id
-  end  
+  end
 
   def self.get_group_from_directory(diretory_id)
     Group.where('digital_class_directory_id = ?', diretory_id)
-  end  
+  end
 
   def self.get_group_from_lesson(lesson)
     directories_ids = []
     lesson['directories'].each do |d|
       directories_ids << d['id']
-    end 
-    groups = Group.where({digital_class_directory_id: directories_ids}) 
+    end
+    groups = Group.where({digital_class_directory_id: directories_ids})
   end
 
   def self.verify_or_create_at_digital_class(groups)
@@ -141,10 +162,188 @@ class Group < ActiveRecord::Base
     SQL
   end
 
+  def self.management_groups
+    codes_file_uab = YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["uab_courses"]["code"]
+    code_courses_uab = codes_file_uab.split(";")
+
+    groups_to_manage = []
+
+    code_courses_uab.each do |code_course|
+
+      course = Course.find_by(code: code_course)
+      offers = Offer.where(course_id: course.id) unless course.blank?
+      groups = Group.where(offer_id: offers).where.not(status: false)
+
+      allocation_tags = AllocationTag.where("group_id IN (?)", groups.ids).where("managed = false OR managed IS NULL")
+
+      allocation_tags.each do |allocation_tag|
+        academic_allocations = AcademicAllocation.where(allocation_tag_id: allocation_tag.id)
+
+        group = allocation_tag.group
+        offer = group.offer
+
+        academic_allocations.each do |academic_allocation|
+          academic_tool = academic_allocation.academic_tool
+
+          if academic_allocation.academic_tool_type == 'LessonModule'
+           
+            lessons = Lesson.where(lesson_module_id: academic_tool.id)
+
+            lessons.flatten.each do |lesson|
+              
+              if lesson.schedule.start_date <= Date.current && lesson.schedule.start_date >= offer.semester.offer_schedule.start_date
+                groups_to_manage << group unless groups_to_manage.include? group
+                break
+              end
+
+            end
+
+          end
+
+        end
+      
+      end
+
+    end
+
+    unless groups_to_manage.blank?
+      groups_to_manage.uniq.each do |group|
+        verify_management(group.allocation_tag.id)
+      end
+    end
+
+  end
+
+  def self.verify_management(allocation_tag_id)
+
+    academic_allocations = AcademicAllocation.where(allocation_tag_id: allocation_tag_id.to_i)
+    
+    at = AllocationTag.find(allocation_tag_id.to_i)
+
+    total_hours_of_curriculum_unit = at.group.nil? ? at.offer.curriculum_unit.working_hours : at.group.offer.curriculum_unit.working_hours
+    quantity_activities = 0
+    quantity_used_hours = 0
+    
+    acad_alloc_not_event = []
+    acad_alloc_event = []
+
+    acad_alloc_to_save = []
+
+    academic_allocations.each do |academic_allocation|
+      academic_tool = academic_allocation.academic_tool
+
+      if academic_allocation.academic_tool_type == 'ScheduleEvent' #&& academic_tool.integrated == true
+        
+        if academic_tool.type_event == Presential_Test # eventos tipo 1 ou 2 chamada
+          academic_allocation.evaluative = true
+          academic_allocation.final_weight = 60
+          academic_allocation.frequency = true
+          academic_allocation.max_working_hours = BigDecimal.new(2)
+
+          if academic_tool.title == "Prova Presencial: AF - 1ª chamada" || academic_tool.title == "Prova Presencial: AF - 2ª chamada" # se Avaliação Final
+            academic_allocation.final_exam = true
+            academic_allocation.frequency = false
+            academic_allocation.max_working_hours = BigDecimal.new(0)
+          end
+
+          if academic_tool.title == "Prova Presencial: AP - 2ª chamada" || academic_tool.title == "Prova Presencial: AF - 2ª chamada" # se 2 chamada, então deve ser equivalente a 1 chamada
+                                  
+            equivalent = ScheduleEvent.joins(:academic_allocations).where(title: academic_tool.title.sub("2", "1"), academic_allocations: {equivalent_academic_allocation_id: nil, allocation_tag_id: allocation_tag_id.to_i})
+            
+            unless equivalent.blank?
+              academic_allocation.equivalent_academic_allocation_id = equivalent[0].academic_allocations[0].id
+              academic_allocation.max_working_hours = BigDecimal.new(0)
+            end
+            
+          end
+          
+        end
+        
+        unless [Presential_Test, Recess, Holiday, Other].include?(academic_tool.type_event) # demais eventos exceto: recesso, feriado e outros
+          academic_allocation.frequency = true
+          academic_allocation.max_working_hours = BigDecimal.new(2)
+        end
+
+        acad_alloc_event << academic_allocation
+
+      else # atividades que não são eventos
+        
+        unless academic_allocation.academic_tool_type == 'SupportMaterialFile' || academic_allocation.academic_tool_type == 'Bibliography' || academic_allocation.academic_tool_type == 'Notification' ||
+                (academic_allocation.academic_tool_type == 'LessonModule' && academic_allocation.final_weight == 100 && academic_allocation.max_working_hours.to_i == 1) ||# LessonModule criado por padrão
+                (academic_allocation.academic_tool_type == 'Exam' && academic_allocation.academic_tool.status == false)
+          
+          academic_allocation.evaluative = true
+          academic_allocation.final_weight = 40
+          academic_allocation.frequency = true
+          quantity_activities += 1
+  
+          acad_alloc_not_event << academic_allocation
+        end
+
+      end
+
+    end
+
+    acad_alloc_event.each do |event|
+      if event.final_exam == false || event.equivalent_academic_allocation_id.nil?
+        quantity_used_hours += event.max_working_hours.to_i
+      end
+    end
+
+    remaining_hours = total_hours_of_curriculum_unit - quantity_used_hours
+    resto = remaining_hours % quantity_activities rescue 0
+    hours_per_activity = remaining_hours / quantity_activities rescue 0
+          
+    acad_alloc_not_event.each{ |ac_all| ac_all.max_working_hours = BigDecimal.new(hours_per_activity)}
+
+    if resto != 0
+      acad_alloc_not_event.last.max_working_hours += BigDecimal.new(resto)
+    end
+
+    acad_alloc_to_save.concat(acad_alloc_event.sort_by!{|all| all.academic_tool.title}).concat(acad_alloc_not_event)
+
+    unless acad_alloc_to_save.blank?
+      ActiveRecord::Base.transaction do
+        acad_alloc_to_save.each do |acad_alloc|
+          acad_alloc.save!
+        end
+        
+        at.managed = true
+        at.save!
+      end
+
+    end   
+
+  end
+
   private
 
-    def unique_code_on_offer
-      errors.add(:code, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) if Group.where(offer_id: offer_id).where("lower(code) = '#{code.downcase}'").any?
+    def unique_code_on_offer_by_name
+      groups = Group.where(offer_id: offer_id)
+      if name.blank?
+        errors.add(:code, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) if groups.where("lower(code) = '#{code.downcase}' AND (name IS NULL OR name = '')").any?
+      else
+        errors.add(:code, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) if groups.where("lower(code) = '#{code.downcase}' AND lower(name) = '#{name.downcase}'").any?
+      end
+    end
+
+    def unique_name_on_offer
+      errors.add(:name, I18n.t(:taken, scope: [:activerecord, :errors, :messages])) if Group.where(offer_id: offer_id).where("lower(name) = '#{name.downcase}'").any?
+    end
+
+    # garantees that name will be nil when blank
+    def set_empty_name
+      self.name = nil
+    end
+
+    def name_mandatory_if_distant
+      errors.add(:name, I18n.t(:blank, scope: [:activerecord, :errors, :messages])) if offer.try(:curriculum_unit).try(:curriculum_unit_type_id) == 2
+    end
+
+    def block_fields_if_integrated
+      errors.add(:name, I18n.t('groups.error.blocked')) if name_changed? && !(name_was.blank? && name.blank?)
+      errors.add(:code, I18n.t('groups.error.blocked')) if code_changed? && !(code_was.blank? && code.blank?)
+      errors.add(:location, I18n.t('groups.error.blocked')) if location_changed? && !(location_was.blank? && location.blank?)
     end
 
 end

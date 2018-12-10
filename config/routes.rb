@@ -1,6 +1,6 @@
 Solar::Application.routes.draw do
 
-  devise_for :users, controllers: { registrations: "devise/users", passwords: "devise/users_passwords" }
+  devise_for :users, controllers: { registrations: "devise/users", passwords: "devise/users_passwords", sessions: "devise/login" }
 
   authenticated :user do
     get "/", to: "users#mysolar", as: :solar_home
@@ -8,10 +8,10 @@ Solar::Application.routes.draw do
 
   devise_scope :user do
     get  :login, to: "devise/sessions#new"
-    post :login, to: "devise/sessions#create"
+    post :login, to: "devise/login#create"
     get  :logout, to: "devise/sessions#destroy"
     get "/", to: "devise/sessions#new"
-    resources :sessions, only: [:create]
+    resources :login, only: [:create]
   end
 
   get :home, to: "users#mysolar", as: :home
@@ -81,6 +81,7 @@ Solar::Application.routes.draw do
     get "users/:id/allocations", to: "administrations#allocations_user", as: :allocations_admin_user
     get "users/:id/allocations_list", to: "administrations#allocations_user_list", as: :allocations_admin_user_list
     get "users", to: "administrations#users", as: :admin_users
+    put "users/:id/sessiontoken", to: "administrations#reset_session_token_user", as: :reset_session_token_admin_user
 
     get "responsibles/filter", to: "administrations#responsibles", as: :admin_responsibles_filter
     get "responsibles", to: "administrations#responsibles_list", as: :admin_responsibles
@@ -137,7 +138,7 @@ Solar::Application.routes.draw do
   end
 
   ## groups/:id/discussions
-  resources :groups, except: [:show] do
+  resources :groups do
     resources :discussions, only: [:index] do
       collection do
         get :mobilis_list, action: :index, mobilis: true
@@ -247,6 +248,7 @@ Solar::Application.routes.draw do
       get :reports_pdf
       get :redirect_to_open
       put :set_situation
+      put :set_register_notes
       put :remove_situation
       get :info_summary
     end
@@ -286,12 +288,14 @@ Solar::Application.routes.draw do
       get :academic
       get :content
       get :repositories
+      post :automatic_management
       get :tool_management
-      get :discussion_tool_management, tool_name: 'Discussion', action: :tool_management
-      get :exam_tool_management, tool_name: 'Exam', action: :tool_management
-      get :assignment_tool_management, tool_name: 'Assignment', action: :tool_management
-      get :chat_tool_management, tool_name: 'ChatRoom', action: :tool_management
-      get :webconference_tool_management, tool_name: 'Webconference', action: :tool_management
+      get :discussion_tool_management, tool_name: 'Discussion', to: :tool_management
+      get :exam_tool_management, tool_name: 'Exam', to: :tool_management
+      get :assignment_tool_management, tool_name: 'Assignment', to: :tool_management
+      get :chat_tool_management, tool_name: 'ChatRoom', to: :tool_management
+      get :webconference_tool_management, tool_name: 'Webconference', to: :tool_management
+      get :schedule_event_tool_management, tool_name: 'ScheduleEvent', to: :tool_management
       put :manage_tools
       get "academic/:curriculum_unit_type_id/courses", to: "editions#courses", as: :academic_courses
       get "academic/:curriculum_unit_type_id/curriculum_units", to: "editions#curriculum_units", as: :academic_uc
@@ -492,17 +496,46 @@ Solar::Application.routes.draw do
     end
   end
 
-  resources :schedule_events, except: [:index] do
+  # resources :schedule_events, except: [:index] do
+  resources :schedule_events do
     member do
+      get :participants
       get :evaluate_user
       put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'ScheduleEvent', as: :evaluate
+      get :summarized
     end
-    get :summary , to: 'academic_allocation_users#summary', tool: 'ScheduleEvent', on: :collection
+
+    collection do
+      get :list
+      get :print_presential_test
+      get :presential_test_participants
+      get :summary , to: 'academic_allocation_users#summary', tool: 'ScheduleEvent'
+      put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: 'unbind', tool_type: 'ScheduleEvent', as: :unbind_group_from
+      put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: 'remove', tool_type: 'ScheduleEvent', as: :remove_group_from
+      put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: 'add'   , tool_type: 'ScheduleEvent', as: :add_group_to
+      get ":tool_id/group/tags"       , to: 'groups#tags'                       , tool_type: 'ScheduleEvent', as: :group_tags_from
+    end
+  end
+
+  resources :schedule_event_files, except: [:index, :show] do
+    member do
+      get :count_user_file
+      get :online_correction
+      post :save_online_correction_file
+      delete :delete_online_correction_canvas
+    end
+    collection do
+      get :can_download
+      get :download
+      post :upload
+      get :zip_download, to: :download, defaults: {zip: true}
+      get :summary
+    end
   end
 
   resources :messages, only: [:new, :show, :create, :index] do
     member do
-      put ":box/:new_status", to: "messages#update", as: :change_status, constraints: { box: /(inbox)|(outbox)|(trashbox)/, new_status: /(read)|(unread)|(trash)|(restore)/ }
+      put ":box/:new_status", to: "messages#update", as: :change_status, constraints: { box: /(inbox)|(outbox)|(trashbox)|(box_value)/, new_status: /(read)|(unread)|(trash)|(restore)/ }
 
       get :reply,     action: :reply, type: "reply"
       get :reply_all, action: :reply, type: "reply_all"
@@ -516,14 +549,18 @@ Solar::Application.routes.draw do
       get :inbox,    action: :index, box: "inbox",    as: :inbox
       get :outbox,   action: :index, box: "outbox",   as: :outbox
       get :trashbox, action: :index, box: "trashbox", as: :trashbox
+      get :anybox, action: :index
       get :count_unread
       get :find_users
       get :contacts
       get :search
+      get :pending
 
       get "download/file/:file_id", to: "messages#download_files", as: :download_file
 
       get :support_new, to: "messages#new", as: :support_new, support: true
+
+      get "new_message_score_user/:user_ids", to: 'messages#new_score_message_user', as: :new_by_scores
     end
   end
 
@@ -591,6 +628,8 @@ Solar::Application.routes.draw do
     collection do
       get :list
       get :preview
+      get :report
+      get :download
 
       put ':tool_id/unbind/group/:id' , to: 'groups#change_tool', type: 'unbind', tool_type: 'Webconference', as: :unbind_group_from
       put ':tool_id/remove/group/:id' , to: 'groups#change_tool', type: 'remove', tool_type: 'Webconference', as: :remove_group_from
@@ -723,6 +762,11 @@ Solar::Application.routes.draw do
   get '/media/questions/images/:file.:extension', to: 'access_control#question_image'
   get '/media/questions/items/:file.:extension', to: 'access_control#question_item'
   get '/media/questions/audios/:file.:extension', to: 'access_control#question_audio'
+
+  get '/media/ckeditor/pictures/:file.:extension', to: 'access_control#ckeditor_pictures'
+  get '/media/ckeditor/attachment_files/:file.:extension', to: 'access_control#ckeditor_attachment_files'
+
+  get '/media/schedule_event/schedule_event_files/:file.:extension', to: 'access_control#online_correction_files', as: 'get_file'
 
   mount Ckeditor::Engine => '/ckeditor'
   ## como a API vai ser menos usada, fica mais rapido para o solar rodar sem precisar montar essas rotas

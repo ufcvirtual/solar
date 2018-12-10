@@ -59,7 +59,173 @@ class GroupAssignment < ActiveRecord::Base
     joins(:group_participants).where(academic_allocation_id: academic_allocation_id, group_participants: {user_id: user_id}).first
   end
 
+  def self.split_students_in_groups
+    assignments_in_group = Assignment.joins(:schedule).where(type_assignment: 1, schedules: {start_date: Date.current})
+    
+    assignments_in_group.each do |assignment_group|
+
+      assignment_group.academic_allocations.each do |academic_allocation|
+        alloc_tag_id = academic_allocation.allocation_tag_id
+
+        students_without_group = academic_allocation.academic_tool.students_without_groups(alloc_tag_id)
+        
+        unless students_without_group.blank?
+          total_quantity_students = academic_allocation.allocation_tag.group.students_participants.count
+          
+          responsibles_emails = User.joins(:allocations, :profiles).where(allocations: {allocation_tag_id: alloc_tag_id}).where(profiles: {types: 2}).uniq.map{|user| user.email}
+          students_ids = students_without_group.pluck(:id).shuffle
+          students_groups = []
+
+          groups_assignment_division = {}
+          Struct.new('Group_Object',:group_name, :students)
+
+          if students_without_group.length == total_quantity_students #se todos os alunos estão sem grupo
+            students_groups = students_ids.in_groups_of(3, false) # divisão em grupos de 3
+            
+             if students_ids.length % 3 == 1 # caso sobrar um estudante sem grupo, inserir no último grupo
+              students_groups[students_groups.length-2] << students_groups[students_groups.length-1][0]
+              students_groups.pop
+             end
+          
+          #Se mais da metade ja possui grupos OU se menos da metade ja possui grupos OU exatamente a metade possui grupo, pegar a média de alunos nesses grupos para dividir os novos grupos.
+          elsif (total_quantity_students - students_without_group.length) > (total_quantity_students / 2) ||
+             (total_quantity_students - students_without_group.length) < (total_quantity_students / 2) ||
+              students_without_group.length == (total_quantity_students / 2)
+            
+            average = calculate_average_students_per_group(academic_allocation.academic_tool.id, alloc_tag_id)
+
+            students_remains_quantity = total_quantity_students % average.to_i
+            
+            if students_remains_quantity == 0 #quantidade exata para formar um grupo
+              students_groups = students_ids.in_groups_of(average.to_i, false)
+
+              if students_ids.length % average.to_i == 1 # caso sobrar um estudante sem grupo, inserir no último grupo
+                students_groups[students_groups.length-2] << students_groups[students_groups.length-1][0]
+                students_groups.pop
+              end
+            end
+
+            if students_remains_quantity != 0 #&& students_ids.length > average.to_i
+              students_groups = students_ids.in_groups_of(average.to_i, false)
+
+              remains = students_groups.pop 
+
+              groups_assignments = GroupAssignment.where(academic_allocation_id: academic_allocation.id)
+
+              if remains.length <= groups_assignments.length #quantidade de alunos sem grupos é igual ou é menor que a quantidade de grupos ja existentes (colocar um em cada grupo)
+                
+                ActiveRecord::Base.transaction do
+  
+                  remains.each_with_index do |student_id, index|
+                    GroupParticipant.create!(group_assignment_id: groups_assignments[index].id, user_id: student_id)
+                    
+                    student_names_per_group = User.where(id: GroupParticipant.where(group_assignment_id: groups_assignments[index].id).map{|gp| gp.user_id}).pluck(:name)                  
+                    struct = Struct::Group_Object.new(groups_assignments[index].group_name, student_names_per_group)
+                    key_assignment = "#{groups_assignments[index].assignment.name}_#{academic_allocation.id}"
+    
+                    groups_assignment_division[key_assignment] ||= []
+                    groups_assignment_division[key_assignment] << struct
+                  end
+  
+                end
+              
+              end
+ 
+              if remains.length > groups_assignments.length #quantidade de alunos restantes sem grupo é maior que a quantidade de grupos ja existentes
+
+                ActiveRecord::Base.transaction do
+                  name_group = "GRUPO #{students_groups.length + 1}"
+
+                  all_groups = GroupAssignment.where(academic_allocation_id: academic_allocation.id)
+                  unless all_groups.blank?
+                    all_group_names = all_groups.map{|g| g.group_name}
+                    if all_group_names.include? name_group
+                      number_group_array = []
+                      all_group_names.each{|gname| number_group_array << gname.split(" ")[1].to_i}                    
+                      name_group = "GRUPO #{number_group_array.max + 1}"
+                    end
+                  end                     
+                  
+                  group_assignment = GroupAssignment.create!(group_name: name_group, academic_allocation_id: academic_allocation.id)
+
+                  remains.each_with_index do |student_id, index|
+                    GroupParticipant.create!(group_assignment_id: group_assignment.id, user_id: student_id)               
+                  end
+
+                  student_names_per_group = User.where(id: GroupParticipant.where(group_assignment_id: group_assignment.id).map{|gp| gp.user_id}).pluck(:name)                  
+                  struct = Struct::Group_Object.new(group_assignment.group_name, student_names_per_group)
+                  key_assignment = "#{group_assignment.assignment.name}_#{academic_allocation.id}"
+  
+                  groups_assignment_division[key_assignment] ||= []
+                  groups_assignment_division[key_assignment] << struct
+                end                
+
+              end
+
+            end
+
+          end
+          
+          students_groups.each_with_index do |groups, index|            
+            student_names_by_group = []
+
+            ActiveRecord::Base.transaction do
+              name_group = "GRUPO #{index+1}"
+
+              all_groups = GroupAssignment.where(academic_allocation_id: academic_allocation.id)
+              unless all_groups.blank?
+                all_group_names = all_groups.map{|g| g.group_name}
+                if all_group_names.include? name_group
+                  number_group_array = []
+                  all_group_names.each{|gname| number_group_array << gname.split(" ")[1].to_i}                    
+                  name_group = "GRUPO #{number_group_array.max + 1}"
+                end
+              end
+
+              group_assignment = GroupAssignment.create!(group_name: name_group, academic_allocation_id: academic_allocation.id)
+              
+              groups.each do |student_id|
+                gp = GroupParticipant.create!(group_assignment_id: group_assignment.id, user_id: student_id)
+                student_names_by_group << gp.user.name
+              end
+              
+              struct = Struct::Group_Object.new(group_assignment.group_name, student_names_by_group)
+              key_assignment = "#{group_assignment.assignment.name}_#{academic_allocation.id}"
+
+              groups_assignment_division[key_assignment] ||= []
+              groups_assignment_division[key_assignment] << struct
+            end
+
+          end
+
+          unless groups_assignment_division.blank?
+            Job.send_mass_email(responsibles_emails, I18n.t("group_assignments.automatic_split_group_jobs"), email_template(groups_assignment_division), [])
+          end          
+
+        end
+
+      end    
+    end
+    
+  end
+  
   private
+
+    def self.calculate_average_students_per_group(academic_tool_id, allocation_tag_id)
+      sql = "SELECT AVG(quantity)
+             FROM(
+                    SELECT DISTINCT gp.group_name, COUNT(gpa) as quantity
+                    FROM group_assignments gp
+                    INNER JOIN academic_allocations al ON al.id = gp.academic_allocation_id
+                    INNER JOIN group_participants gpa ON gpa.group_assignment_id = gp.id
+                    WHERE al.academic_tool_id = #{academic_tool_id}
+                    AND al.allocation_tag_id = #{allocation_tag_id}
+                    GROUP BY gp.group_name
+                ) 
+              AS INNER_QUERY"
+              
+      ActiveRecord::Base.connection.exec_query(sql).rows.flatten[0]
+    end
 
     def unique_group_name
       groups_with_same_name = GroupAssignment.where(academic_allocation_id: academic_allocation_id, group_name: group_name)
@@ -83,6 +249,32 @@ class GroupAssignment < ActiveRecord::Base
       offer = academic_allocation.allocation_tag.offers.first
       raise 'offer_end'  if offer.end_date < Date.current
       # raise 'offer_start' if offer.start_date > Date.current
+    end
+
+    def self.msg_template(assignment_groups)
+      html = ""
+
+      assignment_groups.each do |key, value|
+        assignment_key = key[-key.length..key.index("_")-1]
+        html = "<p> #{I18n.t('group_assignments.split_group_jobs', assignment_key: assignment_key)} </p>"
+
+        value.each do |object|
+          html << "<p>#{object.group_name}: "
+
+          object.students.each do |student_name|
+            html << "#{student_name}, "
+          end
+
+          html = html[0..html.length-3]
+          html << "</p>"
+        end
+
+      end
+      html
+    end
+
+    def self.email_template(assignment_groups)
+      %{#{msg_template(assignment_groups)}}
     end
 
 end

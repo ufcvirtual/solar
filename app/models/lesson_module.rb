@@ -44,7 +44,10 @@ class LessonModule < ActiveRecord::Base
   end
 
   def delete_with_academic_allocations
-    academic_allocations.delete_all
+    academic_allocations.each do |ac|
+      ac.force = true
+      ac.delete
+    end
     self.delete
   end
 

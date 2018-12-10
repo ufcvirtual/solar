@@ -1,0 +1,39 @@
+!!!
+%html
+  %head
+    %meta{charset: 'utf-8'}
+    = wicked_pdf_stylesheet_link_tag  "pdf", :media => "all"
+    = wicked_pdf_stylesheet_link_tag  "pdf_img", :media => "all" if @accessibility=='true'
+    %title=@event.title
+  %body{class: (@accessibility=='true' ? 'body' : '')}
+    -if @course.has_exam_header
+      %header
+        = @course.header_exam
+        - unless params[:student_id].blank?
+          .signature-box
+            %span.completed-by= t(:signature)
+            %span.signature
+    %main
+      = @event.content_exam
+    
+:css
+
+  .body{
+    font-size: 24px;
+  }
+  .signature-box {
+    margin-top: 30px;
+    padding-bottom: 50px;
+  }
+  .completed-by {
+    margin-left: 15%;
+  }
+  .completed-by, .signature {
+    float: left;
+  }
+  .signature {
+    margin: 20px 10px;
+    border-bottom: 1px solid #000;
+    width: 50%;
+    text-align: center;
+  }

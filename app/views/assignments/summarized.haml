@@ -36,6 +36,9 @@
 
 :javascript
   function finish_evaluation(btn){
+
+    verify_comment_before_finish_evaluation()
+
     var form = $(btn).parents('form:first');
     $.put(form.attr('action'), form.serialize(), function(data){
       after_evaluate('Assignment', "#{@score_type}", "#{@ac.id}", "#{@student_id}", data, "#{@group_id}");

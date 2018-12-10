@@ -1,0 +1,64 @@
+.block_wrapper.list_schedule_events{:"data-link-list" => list_schedule_events_path(allocation_tags_ids: @allocation_tags_ids, offer_id: params[:offer_id])}
+  .block_title
+    %h2= t(:event, scope: [:editions, :items])
+    - if can? :tool_management, Edition, {on: @allocation_tags_ids}
+      .tool_managmenet_link= link_to t('editions.evaluative_tools.schedule_event_call'), "#void", onclick: 'call_tool_management(this)', :'data-link' => schedule_event_tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids)
+
+  .block_content_toolbar
+    .block_toolbar_left.btn-group
+      = link_to content_tag(:i, nil, class: 'icon-plus'), new_schedule_event_path(allocation_tags_ids: @allocation_tags_ids), class: "btn btn_main fancybox.ajax", id: "new_schedule_event", :"data-tooltip" => t(".new"), :'aria-label' => t(".new")
+    .block_toolbar_right
+      .btn-group
+        = link_to (content_tag(:i, nil, class: 'icon-users')), "#void", class: 'btn btn_users users_event', :"data-link-to-users" => presential_test_participants_schedule_events_path(id: 'event_id', allocation_tags_ids: @allocation_tags_ids), :"data-users-title" => t(".users"), disabled: true, :"data-tooltip" => t(".users")
+        = link_to (content_tag(:i, nil, class: 'icon-printer')), "#void", class: 'btn btn_print print_event fancybox.iframe', :"data-link-to-print" => print_presential_test_schedule_events_path(id: 'event_id', allocation_tags_ids: @allocation_tags_ids, accessibility: false), :"data-print-title" => t(".print"), disabled: true, :"data-tooltip" => t(".print")
+        = link_to image_tag('accessibility.png', width: '17px', height: '17px'), "#void", class: 'btn btn_print print_event fancybox.iframe', :"data-link-to-print" => print_presential_test_schedule_events_path(id: 'event_id', allocation_tags_ids: @allocation_tags_ids, accessibility: true), :"data-print-title" => t(".print_exame_acessibility"), disabled: true, :"data-tooltip" => t(".print_exame_acessibility")
+        = link_to (content_tag(:i, nil, class: 'icon-edit')), "#void", class: 'btn btn_edit edit_event', :"data-link-to-edit" => edit_schedule_event_path(':id', allocation_tags_ids: @allocation_tags_ids), :"data-edit-title" => t(".edit"), disabled: true, :"data-tooltip" => t(".edit")
+        = link_to (content_tag(:i, nil, class: 'icon-trash')), "#void", class: 'btn btn_del delete_event', :"data-link-delete" => schedule_event_path(':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :"data-tooltip" => t(".delete"), :'aria-label' => t(".delete")
+
+  - unless @events.blank?
+    - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th.center.no_sort{style: 'width: 25px;'}
+            = check_box_tag :all_schedule_event, false, false, :"data-children-names" => "c_", class: "all_schedule_event"
+          %th{id: 'event-title'}= t('.name')
+          %th.center{id: 'event-data-range', style: 'width: 21%'}= t('.data_range')
+          %th.center{id: 'event-type', style: 'width: 12%'}= t('.type')
+          %th.center{id: 'event-place', style: 'width: 12%'}= t('.place')
+          %th.center{id: 'event-exam', style: 'width: 12%'}= t('.has_content')
+      %tbody
+        - @events.each do |event|
+          - is_exam = Presential_Test == event.type_event.to_i
+          - can_delete = event.academic_allocation_users.count.zero?
+          - is_integrated = event.integrated && !is_exam
+          %tr.lines{id: "tr_#{event.id}"}
+            %td{style: 'text-align:center;'}
+              = check_box_tag("c_#{event.id}", event.id, false, {class: "ckb_event", :"data-can-delete" => can_delete, :"data-is-integrated" => is_integrated, :"data-is-exam" => is_exam})
+            %td{headers: 'event-title'}
+              %div
+                .title
+                  = event.title
+                .description
+                  .minimun
+                    - if !event.description.nil?
+                      = event.description.truncate(200)
+                      - if event.description.size > 200
+                        = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))
+                  .complete.invisible
+                    = event.description
+                    = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                .group_label.invisible= render "groups/groups_tags", groups: event.groups, tool: event, all_groups: all_groups, paths: {add: add_group_to_schedule_events_path(id: "param_id", tool_id: event.id), remove: remove_group_from_schedule_events_path(id: "param_id", tool_id: event.id), unbind: unbind_group_from_schedule_events_path(id: "param_id", tool_id: event.id), tags: group_tags_from_schedule_events_path(tool_id: event.id)}
+            %td.center{headers: 'event-data-range'}
+              %div= [l(event.schedule.start_date.to_date, format: :normal), l(event.schedule.end_date.to_date, format: :normal)].join(' - ')
+              %div= [(event.start_hour), (event.end_hour)].join(' - ') unless event.start_hour.blank?
+            %td.center{headers: 'event-type'}
+              = ScheduleEvent.type_name_event(event.type_event.to_i)
+            %td.center{headers: 'event-place'}
+              = event.place
+            %td.center{headers: 'event-exam'}
+              = event.content_exam.blank? ? t('.n') : t('.y')
+  - else
+    .block_content_text_list.text_none= t(".none")
+
+= javascript_include_tag "tablesorter", "tooltip", "schedule_events", "groups_tags", "ckeditor/init"

@@ -49,7 +49,7 @@ module V1
                                .joins('JOIN allocation_tags ON allocation_tags.group_id = groups.id OR allocation_tags.offer_id = offers.id OR allocation_tags.course_id = courses.id OR allocation_tags.curriculum_unit_id = curriculum_units.id OR allocation_tags.curriculum_unit_type_id = curriculum_unit_types.id')
                                .joins("JOIN allocations ON allocations.allocation_tag_id = allocation_tags.id AND allocations.user_id = #{current_user.id}")
                                .where(offer_id: offers)
-                               .select("groups.id, groups.code, semesters.name AS semester_name, curriculum_units.code AS uc_code, curriculum_units.name AS uc_name, courses.code AS course_code, courses.name AS course_name, curriculum_unit_types.description AS type, replace(translate(array_agg(distinct allocations.profile_id)::text,'{}', ''),'\"', '') AS profiles")
+                               .select("groups.id, groups.code, groups.name, semesters.name AS semester_name, curriculum_units.code AS uc_code, curriculum_units.name AS uc_name, courses.code AS course_code, courses.name AS course_name, curriculum_unit_types.description AS type, replace(translate(array_agg(distinct allocations.profile_id)::text,'{}', ''),'\"', '') AS profiles")
                                .group('groups.id, semesters.id, courses.id, offers.id, curriculum_units.id, curriculum_unit_types.id') rescue []
         end
 
@@ -86,10 +86,10 @@ module V1
               end
 
               ActiveRecord::Base.transaction do
-                replicate_content_groups.each do |replicate_content_group_code|
-                  replicate_content_group = get_offer_group(replicate_content_offer, replicate_content_group_code)
-                  receive_content_groups.each do |receive_content_group_code|
-                    receive_content_group = get_offer_group(receive_content_offer, receive_content_group_code)
+                replicate_content_groups.each do |replicate_content_group_name|
+                  replicate_content_group = get_offer_group(replicate_content_offer, replicate_content_group_name)
+                  receive_content_groups.each do |receive_content_group_name|
+                    receive_content_group = get_offer_group(receive_content_offer, receive_content_group_name)
                     replicate_content(replicate_content_group, receive_content_group, params[:type])
                   end
                 end
@@ -131,6 +131,7 @@ module V1
             {
               id: group.id,
               code: group.code,
+              name: group.name,
               offer_id: group.offer_id,
               start_date: offer.start_date,
               end_date: offer.end_date,
@@ -171,6 +172,35 @@ module V1
           @groups = (params[:only_active] ? :active_groups : :groups)
         end
 
+        desc "Todas as turmas por semestre, tipo de curso, curso, disciplina e status da turma - retorna apenas os dados das turma"
+        params do
+          requires :semester, type: String
+          optional :curriculum_unit_type_id, default: 2, type: Integer
+          optional :course_id, :curriculum_unit_id, type: Integer
+          optional :course_code, :curriculum_unit_code, type: String
+          optional :only_active, default: false, type: Boolean
+          exactly_one_of :course_code, :course_id
+          exactly_one_of :curriculum_unit_code, :curriculum_unit_id
+        end
+        get :all_names , rabl: "groups/all_names" do
+          query =  ["semesters.name = :semester"]
+          query << "curriculum_units.curriculum_unit_type_id = :curriculum_unit_type_id"
+          query << if params[:course_id].present?
+           "(courses.id = :course_id)"
+          elsif params[:course_code].present?
+            "(courses.code = :course_code)"
+          end
+          query << if params[:curriculum_unit_id].present?
+           "(curriculum_units.id = :curriculum_unit_id)"
+          elsif params[:curriculum_unit_code].present?
+            "(curriculum_units.code = :curriculum_unit_code)"
+          end
+
+          offer = Offer.joins(:semester, :curriculum_unit, :course).where(query.compact.join(' AND '), params.slice(:semester, :curriculum_unit_type_id, :course_id, :course_code, :curriculum_unit_code, :curriculum_unit_id)).first
+
+          @groups = offer.send(params[:only_active] ? :active_groups : :groups) rescue []
+        end
+
       end # groups
 
       namespace :group do
@@ -186,48 +216,63 @@ module V1
 
           desc "Criação de turma"
           params do
-            requires :code, type: String
+            requires :code, :name, type: String
             optional :offer_id, type: Integer#, values: -> { Offer.all.map(&:id) }
             optional :course_code, :curriculum_unit_code, :semester, type: String
             optional :activate, type: Boolean, default: false
+            optional :location_name, :location_office, type: String
             exactly_one_of :offer_id, :course_code
             exactly_one_of :offer_id, :curriculum_unit_code
             exactly_one_of :offer_id, :semester
           end
           post "/" do
             begin
-              if params[:activate]
-                group = Group.where(group_params(params)).first_or_initialize
-                group.status = true
-                group.save!
-              else
-                group = Group.create! group_params(params)
-              end
+              group = Group.where(offer_id: params[:offer_id], name: params[:name]).first_or_initialize
+
+              group.location = [params[:location_name], params[:location_office]].join(' - ') unless params[:location_name].blank? && params[:location_office].blank?
+              group.code = params[:code]
+              group.status = true if params[:activate]
+              group.integrated = true
+              group.api = true
+
+              group.save!
+
               {id: group.id}
             end
           end
 
           desc "Remove turma"
            params do
-            optional :code, type: String
+            optional :name, :code, type: String
             optional :id, type: Integer
             optional :offer_id, type: Integer
             optional :course_code, :curriculum_unit_code, :semester, type: String
             exactly_one_of :id, :offer_id, :course_code
             exactly_one_of :id, :offer_id, :curriculum_unit_code
             exactly_one_of :id, :offer_id, :semester
-            exactly_one_of :id, :code
+            at_least_one_of :id, :code, :name
+            mutually_exclusive :id, :code
+            mutually_exclusive :id, :name
           end
           delete "/" do
             begin
               unless params[:id].blank?
                 group = Group.find(params[:id])
               else
-                group = Group.where(offer_id: group_params(params)[:offer_id]).where("lower(code) = ?", group_params(params)[:code].downcase).first
+
+                params[:code] = get_group_code(params[:code], params[:name]) unless params[:code].blank? || params[:name].blank?
+
+                group = Group.where(offer_id: params[:offer_id]).where("lower(name) = ?", params[:name].downcase) unless params[:name].blank?
+                group = Group.where(offer_id: params[:offer_id]).where("lower(code) = ?", params[:code].downcase) if group.blank? && !params[:code].blank?
+                raise "more than one group with code #{params[:code]} and name #{params[:name]}" if group.size > 1
+
+                group = group.first
               end
 
               unless group.blank?
+                group.api = true
                 begin
+                  raise 'error' unless group.can_destroy?
                   group.destroy
                 rescue
                   group.status = false
@@ -245,14 +290,19 @@ module V1
         desc "Edição de turma"
         params do
           requires :id, type: Integer#, values: -> { Group.all.map(&:id) }
-          optional :code, type: String
+          optional :name, :location_name, :location_office, :code, type: String
           optional :status, type: Boolean
-          at_least_one_of :code, :status
+          at_least_one_of :code, :status, :location_name, :location_office, :name
         end
         put ":id" do
           begin
             group = Group.find(params[:id])
-            group.update_attributes! group_params(params)
+            params[:location] = [params[:location_name], params[:location_office]].join(' - ') unless params[:location_name].blank? && params[:location_office].blank?
+
+            group.attributes = group_params(params)
+            group.api = true
+            group.save!
+
             group.offer.notify_editors_of_disabled_groups([group]) if params[:status].present? && !(params[:status])
 
             {ok: :ok}
@@ -261,17 +311,21 @@ module V1
 
         desc 'Recuperação de dados dos alunos com relacao a turma'
         params do
-          requires :group_code, :semester, :course_code, :curriculum_unit_code, type: String
+          requires :semester, :course_code, :curriculum_unit_code, type: String
           optional :curriculum_unit_type_id, default: 2
+          optional :group_code, :group_name, type: String
+          at_least_one_of :group_code, :group_name
         end
         get :students_info, rabl: 'groups/students_info' do
           begin
+            query = []
+            query << "lower(groups.code) = '#{params[:group_code].downcase}'" unless params[:group_code].blank?
+            query << "lower(groups.name) = '#{params[:group_name].downcase}'" unless params[:group_name].blank?
             group = Group.joins(offer: [:semester, :course, :curriculum_unit])
-                         .where(code: params[:group_code],
-                            semesters: { name: params[:semester] },
+                         .where(semesters: { name: params[:semester] },
                             curriculum_units: { code: params[:curriculum_unit_code], curriculum_unit_type_id: params[:curriculum_unit_type_id] },
                             courses: { code: params[:course_code] }
-                         ).first
+                         ).where(query.join(' AND ')).first
 
             raise ActiveRecord::RecordNotFound if group.nil?
 
@@ -282,18 +336,21 @@ module V1
 
         desc 'Recuperação de dados da turma'
         params do
-          requires :group_code, :semester, :course_code, :curriculum_unit_code, type: String
+          requires :semester, :course_code, :curriculum_unit_code, type: String
           optional :curriculum_unit_type_id, default: 2
+          optional :group_code, :group_name, type: String
+          at_least_one_of :group_code, :group_name
         end
         get :info, rabl: 'groups/info' do
           begin
-
+            query = []
+            query << "lower(groups.code) = '#{params[:group_code].downcase}'" unless params[:group_code].blank?
+            query << "lower(groups.name) = '#{params[:group_name].downcase}'" unless params[:group_name].blank?
             group = Group.joins(offer: [:semester, :course, :curriculum_unit])
-                         .where(code: params[:group_code],
-                            semesters: { name: params[:semester] },
+                         .where(semesters: { name: params[:semester] },
                             curriculum_units: { code: params[:curriculum_unit_code], curriculum_unit_type_id: params[:curriculum_unit_type_id] },
                             courses: { code: params[:course_code] }
-                         ).first
+                         ).where(query.join(' AND ')).first
 
             raise ActiveRecord::RecordNotFound if group.nil?
             get_group_info(group)
@@ -304,20 +361,25 @@ module V1
 
         desc 'Recuperação de dados do responsavel com relacao a turma'
         params do
-          requires :group_code, :semester, :course_code, :curriculum_unit_code, :cpf, type: String
+          requires :semester, :course_code, :curriculum_unit_code, :cpf, type: String
           optional :curriculum_unit_type_id, default: 2
+          optional :group_code, :group_name, type: String
+          at_least_one_of :group_code, :group_name
         end
         get :responsible_info, rabl: 'groups/responsible_info' do
           begin
             user  = User.find_by_cpf(params[:cpf])
             raise ActiveRecord::RecordNotFound if user.nil?
 
+            query = []
+            query << "lower(groups.code) = '#{params[:group_code].downcase}'" unless params[:group_code].blank?
+            query << "lower(groups.name) = '#{params[:group_name].downcase}'" unless params[:group_name].blank?
+
             group = Group.joins(offer: [:semester, :course, :curriculum_unit])
-                         .where(code: params[:group_code],
-                            semesters: { name: params[:semester] },
+                         .where(semesters: { name: params[:semester] },
                             curriculum_units: { code: params[:curriculum_unit_code], curriculum_unit_type_id: params[:curriculum_unit_type_id] },
                             courses: { code: params[:course_code] }
-                         ).first
+                         ).where(query.join(' AND ')).first
             raise ActiveRecord::RecordNotFound if group.nil?
 
             @allocation_tag_id = group.allocation_tag.id

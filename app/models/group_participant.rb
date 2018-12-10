@@ -19,7 +19,7 @@ class GroupParticipant < ActiveRecord::Base
   def can_destroy?
     if group_assignment.assignment.ended?
       raise 'alone' if group_assignment.group_participants.size == 1
-      ga = GroupAssignment.create(group_name: user.name, academic_allocation_id: group_assignment.academic_allocation_id)
+      ga = GroupAssignment.create(group_name: user.name[0..19], academic_allocation_id: group_assignment.academic_allocation_id)
       raise 'already_exists' if ga.id.blank?
       gp = GroupParticipant.new(group_assignment_id: ga.id, user_id: user.id)
       gp.merge = true

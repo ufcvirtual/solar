@@ -70,7 +70,8 @@
           .analyzer
             = link_to content_tag(:i, nil, class: 'icon-popup', :"data-tooltip" => t('.window_analyzer_home')), "#void", onclick: 'slideDraggable()'
             = link_to t('.analyzer'), "#void", onclick: 'slideDraggable()'
-
+            = link_to content_tag(:i, nil, class: 'icon-clipboard'), "#void", onclick: "manage_automatic_tools(#{@allocation_tags_ids.flatten.uniq})"
+            = link_to "Executar Gerência Automática", "#void", onclick: "manage_automatic_tools(#{@allocation_tags_ids.flatten.uniq})", id: 'automatic_management_link'
 
           - tools_ids = []
           - @tools.collect{|key, value| value}.flatten.each do |tool|
@@ -312,7 +313,7 @@
     if(parent.find("select[id$='equivalent_academic_allocation_id']").val() == '')
       parent.find("input[id$='max_working_hours']").prop('disabled', !value);
 
-    parent.find("input[id$='frequency_automatic']").prop('disabled', (parent.hasClass("ScheduleEvent") || parent.hasClass("Exam")) ? true : !value);
+    parent.find("input[id$='frequency_automatic']").prop('disabled', parent.hasClass("Exam") ? true : !value);
 
     if(!$("#"+$(ckb).prop('id').replace('frequency', 'evaluative')).prop('checked')){
       parent.find("select[id$='equivalent_academic_allocation_id']").prop('disabled', !value);
@@ -336,4 +337,48 @@
       if(!value)
         parent.find("select[id$='equivalent_academic_allocation_id']").val('');
     }
+  }
+
+  function manage_automatic_tools(allocation_tags_ids){
+
+    if(confirm("#{I18n.t('evaluative_tools.messages.execute_manage_tool')}")){
+    
+      loading_page($("#automatic_management_link"))
+
+      $.ajax({
+         url: '/editions/automatic_management',
+         type: 'post',
+         data: {allocation_tags_ids},
+         success: function(resp) {
+            if(resp.success){
+              
+              $.get('/editions/tool_management?allocation_tags_ids='+allocation_tags_ids.join(" "), function(data){
+                  $(".edition_items").html(data);
+                  $(".back").removeClass("invisible");
+                  loadFocus();
+                  $.fancybox.close()
+                  flash_message(resp.msg, 'notice')
+
+                  $(".block_title_exam.block_exam .icons a:first-child").each(function(index,link){hide_or_show(link)})
+          
+              }).error(function(data){
+                  var data = $.parseJSON(data.responseText);
+                  if (typeof(data.alert) != "undefined")
+                    flash_message(data.alert, 'alert');
+              });
+            }
+            else{
+              console.log(resp.msg);
+              $.fancybox.close();
+              flash_message(resp.msg, 'alert');
+            }
+         },
+         error: function( req, status, err ) {
+           console.log("Error: " + status);
+           $.fancybox.close();
+           flash_message("Error: " + status, 'alert');
+         }
+      });
+    }
+    
   }

@@ -4,9 +4,15 @@
   - draft = lesson.is_draft? ? " (#{t(:lesson_test)})" : ''
   - if lesson.closed?
     - if @only_student
-      = (@not_offer_area ? (link_to lesson.name + closed + draft, "#void", onclick: 'open_lesson(this)', :'data-url' => path, class: 'link_content lesson', :'data-fancybox-type' => 'iframe', onkeydown: 'click_on_keypress(event, this);') : link_to(lesson.name + closed, '#', disabled: true, class: 'disabled', :'aria-label' => lesson.name + closed + t(:disabled)))
+      - if lesson.responsive
+        = (@not_offer_area ? (link_to lesson.name + closed + draft, path, class: 'link_content lesson jspanel', :'name' => lesson.name, onkeydown: 'click_on_keypress(event, this);') : link_to(lesson.name + closed, '#', disabled: true, class: 'disabled', :'aria-label' => lesson.name + closed + t(:disabled)))
+      - else
+        = (@not_offer_area ? (link_to lesson.name + closed + draft, "#void", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, onkeydown: 'click_on_keypress(event, this);') : link_to(lesson.name + closed, '#', disabled: true, class: 'disabled', :'aria-label' => lesson.name + closed + t(:disabled)))
     -else
-      = (link_to lesson.name + closed + draft, "#void", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, onkeydown: 'click_on_keypress(event, this);')
+      - if lesson.responsive
+        = (link_to lesson.name + closed + draft, path, class: 'link_content lesson jspanel', :'name' => lesson.name, onkeydown: 'click_on_keypress(event, this);')
+      - else
+        = (link_to lesson.name + closed + draft, "#void", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, onkeydown: 'click_on_keypress(event, this);')
 
   - else
     - unless lesson.address.blank?
@@ -21,11 +27,18 @@
 
       - text << lesson.name
       - text << t('fancybox.open')
+      - if lesson.path.include? ".pdf" and mobile_device?
+        = link_to lesson.name, lesson.path, class: 'link_content lesson', :'aria-label' => t('lessons.open.download'), onkeydown: 'click_on_keypress(event, this);'
+      - else
+        - if lesson.responsive
+          = link_to lesson.name, path, class: 'link_content lesson jspanel', :'aria-label' => text.join(' '), onkeydown: 'click_on_keypress(event, this);', :'name' => lesson.name
+        - else          
+          = link_to lesson.name, "#void", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, :'aria-label' => text.join(' '), onkeydown: 'click_on_keypress(event, this);'
 
-      = link_to lesson.name, "#void", onclick: 'open_lesson(this)', class: 'link_content lesson', :'data-fancybox-type' => 'iframe', :'data-url' => path, :'aria-label' => text.join(' '), onkeydown: 'click_on_keypress(event, this);'
     - else
       = link_to(lesson.name, '#void', disabled: true)
       .test_lesson= "(#{ (lesson.is_file? ? t(:lesson_without_initial_file) : t(:lesson_without_url)) })"
+
 
 %td{ width: '30%', headers: "period_#{lesson.lesson_module_id}" }
   = "#{t(:since)}" if (lesson.schedule.end_date.nil?)
@@ -46,6 +59,9 @@
     - status = [Lesson_Test, Lesson_Approved].delete_if { |v| v == lesson.status }
     = link_to (image_tag "#{lesson.is_draft? ? 'rejected' : 'released'}.png", :'aria-hidden' => 'true'), responsible_change_status_lesson_path(id: lesson.id, status: status, allocation_tags_ids: @allocation_tags_ids), remote: true, method: :put, class: 'change_lesson_status', :'data-tooltip' => (lesson.is_draft? ? t('lessons.index.draft') :  t('lessons.index.released')), :'data-module-id' => lesson.lesson_module_id, :'aria-label' => (lesson.is_draft? ? t('lessons.index.draft_alt', lesson: lesson.name) :  t('lessons.index.released_alt', lesson: lesson.name))
 
+
+
+
 :css
   .list_lessons a.notes{
     text-decoration: none;
@@ -53,6 +69,7 @@
 
 :javascript
   function open_lesson(obj){
+    $('meta[name=viewport]').remove();
     var url = $(obj).data('url');
     $(obj).nice_open_lesson({ href: url });
   }

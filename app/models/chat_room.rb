@@ -87,8 +87,8 @@ class ChatRoom < Event
                .joins("LEFT JOIN allocations students ON allocations.id = students.id AND cast( profiles.types & '#{Profile_Type_Student}' as boolean )")
                .where(academic_allocations: {allocation_tag_id: at_id, academic_tool_id: id, academic_tool_type: 'ChatRoom'})
                .where(user_query)
-               .select("COALESCE(users.id, allocations.user_id) AS u_id, users.name AS user_name, users.nick AS user_nick, profiles.name AS profile_name, text, chat_messages.user_id, chat_messages.created_at, acu.grade AS grade, acu.working_hours AS wh, 
-                 CASE 
+               .select("COALESCE(users.id, allocations.user_id) AS u_id, users.name AS user_name, users.nick AS user_nick, profiles.name AS profile_name, text, chat_messages.user_id, chat_messages.created_at, acu.grade AS grade, acu.working_hours AS wh,
+                 CASE
                  WHEN students.id IS NULL THEN false
                  ELSE true
                  END AS is_student,
@@ -98,7 +98,7 @@ class ChatRoom < Event
 
   def self.update_previous(academic_allocation_id, user_id, academic_allocation_user_id)
     ChatMessage.where(academic_allocation_id: academic_allocation_id, user_id: user_id).update_all academic_allocation_user_id: academic_allocation_user_id
-  end  
+  end
 
   def self.verify_previous(acu_id)
     ChatMessage.where(academic_allocation_user_id: acu_id).any?

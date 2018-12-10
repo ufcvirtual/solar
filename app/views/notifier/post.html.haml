@@ -9,13 +9,11 @@
   %body
     %p
       %b= @info + "(#{I18n.t('activerecord.models.discussion', locale: @locale)}: #{@discussion_name})"
-    %br
     %p= I18n.t('posts.mail.text', locale: @locale)
     %p
       = "#{@post.user.name}:"
       = raw @post.content
 
-    %br
     %br
     %p
       = I18n.t('posts.mail.text_resp', locale: @locale)

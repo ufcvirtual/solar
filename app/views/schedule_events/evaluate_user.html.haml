@@ -19,6 +19,9 @@
         - if show_fields
           %td= @schedule_event.place
 
+  .files
+    = render partial: 'schedule_event_files/list', locals: { files: @acu.try(:schedule_event_files), tool: @schedule_event, tool_type: 'ScheduleEvent', student_id: @student_id }
+
   .comments
     = render partial: 'comments/list', locals: { comments: @acu.try(:comments), tool: @schedule_event, tool_type: 'ScheduleEvent' }
 
@@ -33,11 +36,22 @@
             = f.input :working_hours, required: true, as: :float, label: t(".frequency") + (@ac.frequency_automatic && !@acu.try(:evaluated_by_responsible) ? t("common_between_pages.frequency.automatic") : t("common_between_pages.frequency.defined")), input_html: { value: @acu.try(:working_hours), min:0, max: @ac.max_working_hours, placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@ac.max_working_hours.to_s ) }
           %span= link_to t(:save), "#void", onclick: 'finish_evaluation(this)', class: 'btn btn_main'
 
+  - if @back_to_participants
+    %br
+    = button_tag t(:back), type: 'button', class: 'btn btn_default back', onclick: 'back_to_participants(this, event)', :'data-url' => participants_schedule_event_path(@ac.academic_tool_id)
+
+= javascript_include_tag 'schedule_event_files'
+
 :javascript
   function finish_evaluation(btn){
+    var is_closable = "#{@back_to_participants}";
+    verify_comment_before_finish_evaluation();
     var form = $(btn).parents('form:first');
     $.put(form.attr('action'), form.serialize(), function(data){
+      data.dont_close = (is_closable ? is_closable : undefined);
       after_evaluate('ScheduleEvent', "#{@score_type}", "#{@ac.id}", "#{@user.id}", data);
+      if(is_closable)
+        flash_message(data.notice, 'notice', 'fancybox-outer');
     }).fail(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")

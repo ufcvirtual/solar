@@ -132,6 +132,12 @@ class AssignmentsController < ApplicationController
       @can_evaluate = can?(:evaluate, Assignment, on: [@allocation_tag_id] )
 
       @acu = AcademicAllocationUser.find_one(@ac.id, @student_id, @group_id, false, @can_evaluate)
+
+      allocations = Allocation.where(allocation_tag_id: @allocation_tag_id)
+      all = allocations.select{|a| a.user_id == current_user.id}
+      current_user_profiles = Profile.find(all.map{|a| a.profile_id})
+      @not_only_student_profile = current_user_profiles.any?{ |p| p.types != Profile_Type_Student}
+      
     end
   rescue CanCan::AccessDenied
     redirect_to list_assignments_path, alert: t(:no_permission)

@@ -19,7 +19,9 @@
         = f.label t(:semester)
         #text_as_label= @group.offer.semester.name
 
+      = f.input :name
       = f.input :code
+      = f.input :location
 
       = hidden_field_tag :type_id, @type_id
 

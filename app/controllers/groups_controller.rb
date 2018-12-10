@@ -176,10 +176,15 @@ class GroupsController < ApplicationController
     end
   end
 
+  def show
+    @group = Group.find(params[:id])
+    authorize! :list, Group, on: [@group.offer.allocation_tag.id]
+  end
+
   private
 
     def group_params
-      params.require(:group).permit(:offer_id, :code)
+      params.require(:group).permit(:offer_id, :code, :name, :location)
     end
 
     def map_to_xml_or_json
@@ -187,7 +192,7 @@ class GroupsController < ApplicationController
     end
 
     def model_by_tool_type(type)
-      type.constantize if ['Discussion', 'LessonModule', 'Assignment', 'ChatRoom', 'SupportMaterialFile', 'Bibliography', 'Notification', 'Webconference', 'Exam'].include?(type)
+      type.constantize if ['Discussion', 'LessonModule', 'Assignment', 'ChatRoom', 'SupportMaterialFile', 'Bibliography', 'Notification', 'Webconference', 'Exam', 'ScheduleEvent'].include?(type)
     end
 
     def update_multiple
@@ -209,7 +214,7 @@ class GroupsController < ApplicationController
     def destroy_multiple
       Group.transaction do
         if @groups.map(&:can_destroy?).include?(false)
-          render json: { success: false, alert: t('groups.error.deleted') }, status: :unprocessable_entity
+          render json: { success: false, alert: (@groups.map(&:errors).flatten.map(&:full_messages).flatten.compact.any? ? @groups.map(&:errors).flatten.map(&:full_messages).flatten.uniq.join(', ') : t('groups.error.deleted')) }, status: :unprocessable_entity
         else
           @groups.destroy_all
           render_group_success_json('deleted')

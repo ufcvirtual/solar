@@ -12,10 +12,13 @@ module V1
           put :allocate_user do # Receives user's cpf, group and profile to allocate
             begin
               allocation = params[:allocation]
-              user       = verify_or_create_user(allocation[:cpf])
+              user       = verify_or_create_user(allocation[:cpf], false, false, false, true)
               profile_id = get_profile_id(allocation[:perfil])
 
-              destination = get_destination(allocation[:codDisciplina], allocation[:codGraduacao], allocation[:codTurma], (allocation[:periodo].blank? ? allocation[:ano] : "#{allocation[:ano]}.#{allocation[:periodo]}"))
+              raise "user #{allocation[:cpf]} doesn't exist" if user.blank? || user.id.blank?
+
+              destination = get_destination(allocation[:codDisciplina], allocation[:codGraduacao], (allocation[:nomeTurma] || allocation[:codTurma]), (allocation[:periodo].blank? ? allocation[:ano] : "#{allocation[:ano]}.#{allocation[:periodo]}"))
+
               destination.allocate_user(user.id, profile_id)
 
               {ok: :ok}
@@ -30,9 +33,9 @@ module V1
             profile_id = get_profile_id(allocation[:perfil])
 
             begin
-              destination = get_destination(group_info[:codDisciplina], group_info[:codGraduacao], group_info[:codigo], (group_info[:periodo].blank? ? group_info[:ano] : "#{group_info[:ano]}.#{group_info[:periodo]}"))
-              destination.cancel_allocations(user.id, profile_id, nil, {}, true) if destination
+              destination = get_destination(group_info[:codDisciplina], group_info[:codGraduacao], (group_info[:nome] || group_info[:codigo]), (group_info[:periodo].blank? ? group_info[:ano] : "#{group_info[:ano]}.#{group_info[:periodo]}"))
 
+              destination.cancel_allocations(user.id, profile_id, nil, {}, true) if destination
               {ok: :ok}
             end
           end # block_profile
@@ -80,19 +83,36 @@ module V1
           post "/" do
             load_group    = params[:turmas]
             cpfs          = load_group[:professores]
-            semester_name = load_group[:periodo].blank? ? load_group[:ano] : "#{load_group[:ano]}.#{load_group[:periodo]}"
+            semester_name = load_group[:periodo].blank? ? load_group[:ano] : "#{
+            load_group[:ano]}.#{load_group[:periodo]}"
             offer_period  = { start_date: load_group[:dtInicio].to_date, end_date: (load_group[:dtFim].to_date) }
             course        = Course.find_by_code! load_group[:codGraduacao]
             uc            = CurriculumUnit.find_by_code! load_group[:codDisciplina]
 
             begin
+              group = nil
+              if load_group[:name].blank?
+                load_group[:name] = load_group[:codigo]
+                load_group[:code] = load_group[:codigo]
+              end
+
               ActiveRecord::Base.transaction do
                 semester = verify_or_create_semester(semester_name, offer_period)
                 offer    = verify_or_create_offer(semester, {curriculum_unit_id: uc.id, course_id: course.id}, offer_period)
-                group    = verify_or_create_group({offer_id: offer.id, code: load_group[:codigo]})
+                load_group[:code] = get_group_code(load_group[:code], load_group[:name], load_group[:year].to_i) unless load_group[:name].blank?
 
-                allocate_professors(group, cpfs || [])
+                verify_previous_groups(semester, uc.id, course.id, load_group[:name])
+
+                group    = verify_or_create_group({offer_id: offer.id, code: load_group[:code], name: load_group[:name], location_name: load_group[:location_name], location_office: load_group[:location_office]})
+
               end
+
+              unless load_group[:main_name].blank?
+                main_group = get_group_by_names(load_group[:main_curriculum_unit], load_group[:main_course], load_group[:main_name], load_group[:main_semester], true)
+                group.update_attributes main_group_id: (main_group.blank? ? nil : main_group.id), status: (main_group.blank? ? group.try(:status) : false)
+              end
+
+              allocate_professors(group, cpfs || [])
 
               { ok: :ok }
             end
@@ -103,20 +123,25 @@ module V1
             before do
               load_enrollments = params[:matriculas]
               @user             = verify_or_create_user(load_enrollments[:cpf])
-              @groups           = JSON.parse(load_enrollments[:turmas])
+              @groups           = JSON.parse(load_enrollments[:turmas]) #production
+              # @groups = load_enrollments[:turmas] #development
               @student_profile  = 1 # Aluno => 1
 
-              @groups = @groups.collect do |group_info|
-                get_group_by_codes(group_info["codDisciplina"], group_info["codGraduacao"], group_info["codigo"], (group_info["periodo"].blank? ? group_info["ano"] : "#{group_info["ano"]}.#{group_info["periodo"]}")) unless group_info["codDisciplina"] == 78
-              end # Se cód. graduação for 78, desconsidera (por hora, vem por engano).
+              @matricula = load_enrollments[:matricula]
 
-              raise ActiveRecord::RecordNotFound if @groups.include?(nil)
+              @groups = @groups.collect do |group_info|
+                group_info["nome"] = group_info["codigo"] if group_info["nome"].blank?
+
+                [get_group_by_names(group_info["codDisciplina"], group_info["codGraduacao"], group_info["nome"], (group_info["periodo"].blank? ? group_info["ano"] : "#{group_info["ano"]}.#{group_info["periodo"]}"), true), (group_info["codigoOrigem"].blank? || group_info["codDiscOrigem"].blank?) ? nil : get_group_by_names(group_info["codDiscOrigem"], group_info["codGradOrigem"], group_info["codigoOrigem"], group_info["semestreOrigem"], true)] unless group_info["codDisciplina"] == 78
+              end # Se cód. graduação for 78, desconsidera (por hora, vem por engano).
             end # before
 
             # POST load/groups/enrollments
             post :enrollments do
               begin
-                create_allocations(@groups.compact, @user, @student_profile)
+                create_allocations(@groups.compact, @user, @student_profile, @matricula)
+
+                raise ActiveRecord::RecordNotFound if @groups.collect{ |r| r[0] }.flatten.include?(nil)
 
                 { ok: :ok }
               end
@@ -126,6 +151,8 @@ module V1
             delete :enrollments do
               begin
                 cancel_allocations(@groups.compact, @user, @student_profile)
+
+                raise ActiveRecord::RecordNotFound if @groups.collect{ |r| r[0] }.flatten.include?(nil)
 
                 { ok: :ok }
               end
@@ -147,9 +174,9 @@ module V1
           end
 
           # GET load/groups/enrollments
-          params { requires :codDisciplina, :codGraduacao, :codTurma, :periodo, :ano, type: String }
+          params { requires :codDisciplina, :codGraduacao, :nomeTurma, :periodo, :ano, type: String }
           get :enrollments, rabl: "users/list" do
-            group  = get_group_by_codes(params[:codDisciplina], params[:codGraduacao], params[:codTurma], (params[:periodo].blank? ? params[:ano] : "#{params[:ano]}.#{params[:periodo]}"))
+            group  = get_group_by_names(params[:codDisciplina], params[:codGraduacao], params[:nomeTurma], (params[:periodo].blank? ? params[:ano] : "#{params[:ano]}.#{params[:periodo]}"))
             raise ActiveRecord::RecordNotFound if group.nil?
             begin
               @users = group.students_participants
@@ -184,13 +211,17 @@ module V1
           end
           put "/:id" do
             begin
-              event = ScheduleEvent.find(params[:id])
+              # event = ScheduleEvent.find(params[:id])
+              ac = AcademicAllocation.where(id: params[:id], academic_tool_type: 'ScheduleEvent').first
+              raise ActiveRecord::RecordNotFound if ac.blank?
+              event = ScheduleEvent.find(ac.academic_tool_id)
 
               ActiveRecord::Base.transaction do
                 start_hour, end_hour = params[:HoraInicio].split(":"), params[:HoraFim].split(":")
-                event.schedule.update_attributes! start_date: params[:Data], end_date: params[:Data]
-                event.api = true
-                event.update_attributes! start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":")
+                create_event({event: {date: params[:Data], start: params[:HoraInicio], end: params[:HoraFim], title: event.title, type_event: event.type_event}}, ac.allocation_tag.group.offer.allocation_tag.related, nil, ac, (event.academic_allocations.count == 1 ? event : nil))
+                # event.schedule.update_attributes! start_date: params[:Data], end_date: params[:Data]
+                # event.api = true
+                # event.update_attributes! start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":")
               end
 
               { ok: :ok }
@@ -216,9 +247,11 @@ module V1
             begin
               ActiveRecord::Base.transaction do
                 offer = get_offer(params[:CodigoDisciplina], params[:CodigoCurso], params[:Periodo])
-                params[:Turmas].each do |code|
-                  group_events << create_event1(get_offer_group(offer, code), params[:DataInserida])
-                end
+                group_events = create_event(params, offer.allocation_tag.related, offer)
+                # params[:Turmas].each do |group_name|
+                #   group = get_offer_group(offer, group_name)
+                #   group_events << create_event1(get_offer_group(offer, group_name), params[:DataInserida])
+                # end
               end
 
               group_events
@@ -226,16 +259,28 @@ module V1
 
           end # /
 
-          desc "Remoção de um ou mais eventos"
+          desc "Remoção de um ou mais acs de eventos"
           params { requires :ids, type: String, desc: "Events IDs." }
           delete "/:ids" do
             begin
-              ScheduleEvent.transaction do
-                ScheduleEvent.where(id: params[:ids].split(",")).each do |event|
+              AcademicAllocation.transaction do
+                acs = AcademicAllocation.where(id: params[:ids].split(','), academic_tool_type: 'ScheduleEvent')
+                raise ActiveRecord::RecordNotFound if acs.empty?
+                event = ScheduleEvent.find(acs.first.academic_tool_id)
+
+                if acs.count == event.academic_allocations.count
                   event.api = true
                   raise event.errors.full_messages unless event.destroy
+                else
+                  acs.destroy_all
                 end
               end
+              # ScheduleEvent.transaction do
+              #   ScheduleEvent.where(id: params[:ids].split(",")).each do |event|
+              #     event.api = true
+              #     raise event.errors.full_messages unless event.destroy
+              #   end
+              # end
 
               {ok: :ok}
             end

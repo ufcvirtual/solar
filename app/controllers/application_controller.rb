@@ -26,6 +26,7 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!, except: [:verify_cpf, :api_download, :lesson_media, :tutorials, :privacy_policy, :comment_media] # devise
   before_action :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im, :get_theme
   after_action :log_navigation
+  before_action :verify_bloq_register_notes
   before_action do |controller|
     controller.session['flash'].try(:stringify_keys!)
   end
@@ -86,7 +87,7 @@ class ApplicationController < ActionController::Base
 
   def another_level_breadcrumb
     same_level_for_all = 1 # ultimo nivel, por enquanto o breadcrumb só comporta 3 níveis
-    user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb][same_level_for_all] = { name: params[:bread], url: params } if params[:bread].present?
+    user_session[:tabs][:opened][user_session[:tabs][:active]][:breadcrumb][same_level_for_all] = { name: params[:bread], url: params.except(:page) } if params[:bread].present?
   end
 
   def current_menu_context
@@ -131,13 +132,23 @@ class ApplicationController < ActionController::Base
     @can_select_group = true
   end
 
+  def verify_bloq_register_notes
+    @bloq_register_notes = AllocationTag.find(active_tab[:url][:allocation_tag_id]).bloq_register_notes unless active_tab.nil? || active_tab[:url][:allocation_tag_id].blank?
+  end
+
   def get_group_allocation_tag
      return unless active_tab[:url][:context] == Context_Curriculum_Unit.to_i
 
     # verifica se o grupo foi passado e se é um grupo válido
     unless params[:selected_group].present? && !!(allocation_tag_id_group = AllocationTag.find_by_group_id(params[:selected_group]).try(:id))
       allocation_tag = AllocationTag.find(active_tab[:url][:allocation_tag_id])
-      allocation_tag_id_group = (params[:selected_group] = allocation_tag.group_id).nil? ? RelatedTaggable.where('group_id IN (?)', current_user.groups(nil, Allocation_Activated, nil, nil, active_tab[:url][:id]).pluck(:id)).first.group_at_id : allocation_tag.id
+      params[:selected_group] = allocation_tag.group_id
+      allocation_tag_id_group = if params[:selected_group].blank?
+        profiles_ids = current_user.profiles_with_access_on('show', 'curriculum_units', nil, true)
+        RelatedTaggable.where('group_id IN (?)', current_user.groups(profiles_ids, Allocation_Activated, nil, nil, active_tab[:url][:id]).pluck(:id)).first.group_at_id
+      else
+        allocation_tag.id
+      end
     end
 
     user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group
@@ -390,6 +401,15 @@ class ApplicationController < ActionController::Base
       @user_session_exam = false
       authenticate_user!
       user_session[:blocking_content] = Exam.verify_blocking_content(current_user.try(:id) || User.current.try(:id)) if user_session[:blocking_content].blank?
+    end
+  end
+
+  def check_concurrent_session
+    if !current_user.nil? && !(user_session[:token] == current_user.session_token)
+      sign_out current_user
+      redirect_to login_path, alert: t('users.errors.multiple_sessions')
+    else
+      return true
     end
   end
 

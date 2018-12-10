@@ -5,13 +5,6 @@
       %i.icon-forum
       = @discussion.name
   .block_content
-    .block_content_text= sanitize @discussion.description
-
-  %h2
-    .block_title
-      %i.icon-forum
-      = t('.files.discussion_file_title')
-  .block_content
     .block_content_text
       = sanitize @discussion.description
       %p
@@ -26,13 +19,6 @@
                 = link_to file.attachment_file_name.truncate(30), link, {class: "link_content", :'aria-label'=> t('posts.post.download', file: file.attachment_file_name, size: size)}
                 = size
 
-  - unless @display_mode == 'list'
-    .expand_hide
-      = link_to content_tag(:i, nil, class: 'icon-resize-enlarge', :"data-tooltip" => t('.expand')), "#void", onclick: 'show_all()'
-      .expand_link= link_to t('.expand'), "#void", onclick: 'show_all()'
-      = link_to content_tag(:i, nil, class: 'icon-resize-shrink', :"data-tooltip" => t('.compress')), "#void", onclick: 'hide_all()'
-      .compress_link= link_to t('.compress'), "#void", onclick: 'hide_all()'
-
   .posts
     = content_tag(:i, nil, class: 'icon-pluscircle.png')
     .block_title.forum_navigation
@@ -46,6 +32,12 @@
         - unless @acu.blank?
           - comments = @acu.try(:comments).count rescue 0
           = button_tag content_tag(:i, nil, class: 'icon-comment'), :'data-url' => summary_discussions_path(tool_id: @discussion.id, ac_id: @academic_allocation.id), class: "btn #{comments > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: comments), :'aria-label' => t('comments.summary.count_alt', count: comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.comments.code.title"), :'data-shortcut-name'=> t("shortcut.comments.name.title"), onclick: 'open_summary(this)'
+        - unless @display_mode == 'list'
+          .expand_hide
+            = button_tag(type: 'button', onclick: "javascript:show_all();", class: 'btn', :'data-tooltip' => t('.expand'), :'aria-label'=> t('.expand'), :'data-shortcut' => t("shortcut.discussion.code.expand"), :'data-shortcut-name' => t("shortcut.discussion.name.expand")) do
+              = content_tag(:i, nil, class: 'icon-resize-enlarge')
+            = button_tag(type: 'button', onclick: "javascript:hide_all();", class: 'btn', :'data-tooltip' => t('.compress'), :'aria-label'=> t('.compress'), :'data-shortcut' => t("shortcut.discussion.code.compress"), :'data-shortcut-name' => t("shortcut.discussion.name.compress")) do
+              = content_tag(:i, nil, class: 'icon-resize-shrink')
 
       %span#forum_view_mode
         - class_l = (@display_mode == 'list') ? 'btn_pressed' : 'btn_default'
@@ -362,7 +354,6 @@
 
   });
 
-
   function publish_post(btn){
     $.put($(btn).data('url'), {draft: false}, function(data){
       $.get("#{discussion_post_path(discussion_id: ':discussion_id', id: ':id') }".replace(':discussion_id',data.discussion_id).replace(':id',data.post_id), function(data2){
@@ -381,43 +372,55 @@
   }
 
   function show_all(){
-    var lines = $('.forum_posts_wrapper').find('article').find('._line');
-    var link_show = $('.forum_posts_wrapper').find('article').find('.link-show');
-    var link_hide = $('.forum_posts_wrapper').find('article').find('.link-hide');
-    var icon_up = $('.forum_posts_wrapper').find('article').find('.icon-arrow-up-triangle');
-    var icon_down = $('.forum_posts_wrapper').find('article').find('.icon-arrow-down-triangle');
-
-    lines.show('slow');
-    link_hide.removeClass('invisible');
-    link_show.addClass('invisible');
-    icon_up.removeClass('invisible');
-    icon_down.addClass('invisible');
-
-    $('.forum_posts_wrapper').find('article').find('.display_replies_posts_summary').addClass('invisible');
-    $('.forum_posts_wrapper').find('article').find('.forum_post').removeClass('clip_area_around_summary');
-    $('.forum_posts_wrapper').find('article').find('.display_replies_posts_summary').css('margin', '0');
+    show_or_hide('show_all', $('.forum_posts_wrapper').find('article'));
   }
 
   function hide_all(){
     var posts_ids = "#{posts_to_hide_all}";
     posts_ids = posts_ids.replace(/,|\[|]/g, '').split(" ");
     $(posts_ids).each(function(index, post_id){
-      $("#"+post_id).find('article').find('._line').hide('slow');
-      $("#"+post_id).find('.link-show').removeClass('invisible');
-      $("#"+post_id).find('.link-hide').addClass('invisible');
-      $("#"+post_id).find('.icon-arrow-up-triangle').addClass('invisible');
-      $("#"+post_id).find('.icon-arrow-down-triangle').removeClass('invisible');
-
-      var summary_div = $("#"+post_id).find('.display_replies_posts_summary');
-
-      summary_div.removeClass('invisible');
-      summary_div.css('margin', '20px 0');
-      summary_div.find('li').css('display', 'inline-block').css('padding', '7px 10px');
-
-      var amount_of_children_posts = $("#"+post_id).find('article').length;
-      var link_text_answers = summary_div.find('.amount-answers').first().text().replace(/\d+/g, '');
-
-      summary_div.find('.amount-answers').html(amount_of_children_posts + link_text_answers);
-      $("#"+post_id).find('.forum_post').addClass('clip_area_around_summary');
+      show_or_hide('hide_all', $("#"+post_id));
     });
+  }
+
+  function show_or_hide(type, element){
+    var post = $(element).closest('article');
+
+    if(type == 'hide' || type == 'hide_all'){
+      post.find('._line').slice(2).hide('slow');
+      post.find('.link-show').removeClass('invisible');
+      post.find('.link-hide').addClass('invisible');
+      post.find('.icon-arrow-up-triangle').removeClass('invisible');
+      post.find('.icon-arrow-down-triangle').addClass('invisible');
+      show_summary(element);
+      post.find('.display_replies_posts_summary').removeClass('invisible');
+      if(type == 'hide')
+        post.find('.link-show').first().focus();
+      else
+        focus_element_time($('article').first());
+    }else{
+      post.find('._line').slice(2).show('slow');
+      post.find('.link-show').addClass('invisible');
+      post.find('.link-hide').removeClass('invisible');
+      post.find('.icon-arrow-up-triangle').addClass('invisible');
+      post.find('.icon-arrow-down-triangle').removeClass('invisible');
+      post.find('.display_replies_posts_summary').addClass('invisible');
+      if(type == 'show')
+        focus_element_time(post.find('.link-hide').first());
+      else
+        focus_element_time($('article').first());
+
+    }
+  }
+
+  function show_summary(element) {
+    var summary_div = $(element).closest('article').find('.display_replies_posts_summary');
+    summary_div.find('li').css('display', 'inline-block').css('padding', '7px 10px');
+
+    var amount_of_children_posts = $(element).closest('article').find('article').length;
+
+    var link_text_answers = summary_div.find('.amount-answers').first().text().replace(/\d+/g, '');
+    summary_div.find('.amount-answers').html(amount_of_children_posts + link_text_answers);
+
+    $(element).closest('article').find('.forum_post').addClass('clip_area_around_summary');
   }

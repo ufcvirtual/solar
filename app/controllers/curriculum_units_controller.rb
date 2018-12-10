@@ -12,13 +12,18 @@ class CurriculumUnitsController < ApplicationController
 
   def home
     authorize! :show, CurriculumUnit, { on: @allocation_tags_ids, read: true }
-    @messages = Message.by_box(current_user.id, 'inbox', @allocation_tag_id, { only_unread: true })
+    @page = (params[:page] || 1).to_i
+
+    @messages = Message.by_box(current_user.id, 'inbox', @allocation_tag_id, { only_unread: true, page: @page, ignore_at: true })
+
+    @limit = Rails.application.config.items_per_page
+    @min = (@page * @limit) - @limit
+
     user_profiles     = current_user.resources_by_allocation_tags_ids(@allocation_tags_ids)
     @lessons_modules  = (!user_profiles.include?(lessons: :show) ? [] : LessonModule.to_select(@allocation_tags_ids, current_user))
     @discussion_posts = list_portlet_discussion_posts(@allocation_tags_ids)
     @scheduled_events = (!user_profiles.include?(agendas: :calendar) ? [] : Agenda.events(@allocation_tags_ids, nil, true))
     @researcher = current_user.is_researcher?(@allocation_tags_ids)
-
   end
 
   def index
@@ -30,8 +35,12 @@ class CurriculumUnitsController < ApplicationController
         @course_name      = Course.find(params[:course_id]).name
         @curriculum_units = CurriculumUnit.where(name: @course_name).order(:name)
       else
-        @curriculum_units = CurriculumUnit.joins(:offers).where(curriculum_unit_type_id: @type.id).order(:name)
-        @curriculum_units = @curriculum_units.where(offers: {course_id: params[:course_id]}) unless params[:course_id].blank?
+        unless params[:course_id].blank?
+          @curriculum_units = CurriculumUnit.joins(:offers).where(curriculum_unit_type_id: @type.id).order(:name)
+          @curriculum_units = @curriculum_units.where(offers: {course_id: params[:course_id]})
+        else
+          @curriculum_units = CurriculumUnit.where(curriculum_unit_type_id: @type.id).order(:name)
+        end
       end
 
       render json: { html: render_to_string(partial: 'select_curriculum_unit.html', locals: { curriculum_units: @curriculum_units.distinct! }) }
@@ -121,7 +130,7 @@ class CurriculumUnitsController < ApplicationController
 
     @curriculum_units = CurriculumUnit.where(id: uc_ids)
     if @curriculum_units.destroy_all.map(&:destroyed?).include?(false)
-      render json: {success: false, alert: t('curriculum_units.error.deleted')}, status: :unprocessable_entity
+      render json: {success: false, alert: (@curriculum_units.map(&:errors).flatten.map(&:full_messages).flatten.compact.any? ? @curriculum_units.map(&:errors).flatten.map(&:full_messages).flatten.uniq.join(', ') : t('curriculum_units.error.deleted'))}, status: :unprocessable_entity
     else
       render json: {success: true, notice: t('curriculum_units.success.deleted')}
     end
@@ -136,6 +145,7 @@ class CurriculumUnitsController < ApplicationController
     authorize! :show, CurriculumUnit, on: [@allocation_tag_id]
     @offer = Offer.where(id: RelatedTaggable.where(group_at_id: @allocation_tags_ids).pluck(:offer_id).compact).first
     @course = @offer.course
+    @group = AllocationTag.find(@allocation_tag_id).try(:group)
   end
 
   def participants

@@ -31,7 +31,7 @@ module MessagesHelper
       status & Message_Filter_Restore
     end
 
-    user_message.save
+    user_message.save unless status==1
   end
 
 end

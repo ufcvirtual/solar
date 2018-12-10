@@ -74,7 +74,7 @@ class CoursesController < ApplicationController
     if @course.destroy
       render_course_success_json('deleted')
     else
-      render json: {success: false, alert: t('courses.error.deleted')}, status: :unprocessable_entity
+      render json: {success: false, alert: (@course.errors.full_messages.any? ? @course.errors.full_messages.join(', ') : t('courses.error.deleted'))}, status: :unprocessable_entity
     end
   rescue => error
     request.format = :json
@@ -84,7 +84,7 @@ class CoursesController < ApplicationController
   private
 
     def course_params
-      params.require(:course).permit(:name, :code, :passing_grade, :min_grade_to_final_exam, :min_final_exam_grade, :final_exam_passing_grade, :min_hours)
+      params.require(:course).permit(:name, :code, :passing_grade, :min_grade_to_final_exam, :min_final_exam_grade, :final_exam_passing_grade, :min_hours, :has_exam_header, :header_exam)
     end
 
     def render_course_success_json(method)

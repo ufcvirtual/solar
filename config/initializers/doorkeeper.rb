@@ -13,7 +13,22 @@ Doorkeeper.configure do
 
   resource_owner_from_credentials do |routes|
     u = User.find_for_database_authentication(login: params[:login])
-    u if u && u.valid_password?(params[:password])
+    # u if u && u.valid_password?(params[:password])
+    if u && u.valid_password?(params[:password])
+      u
+    elsif u.nil?
+      u = User.import_user_by_username(params[:login])
+      u if u && u.valid_password?(params[:password])
+    elsif u
+      u.synchronize
+      u = User.find_for_database_authentication(login: params[:login])
+      if u.valid_password?(params[:password])
+        u
+      else
+        u = User.import_user_by_username(params[:login])
+        u if u && u.valid_password?(params[:password])
+      end
+    end
   end
 
   # If you want to restrict access to the web interface for adding oauth authorized applications, you need to declare the block below.

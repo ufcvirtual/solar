@@ -1,5 +1,5 @@
 - filter_number = filter_number rescue nil
-= form.collection_check_boxes :group_id, groups, :id, :code do |ckb|
+= form.collection_check_boxes :group_id, groups, :id, :get_code_name do |ckb|
   - ckb_status = ckb.object.status
   .group_checkbox
     = ckb.check_box(id: ['group_id_', ckb.object.id,filter_number].join(), name: ['group[group_id][]',filter_number].join())

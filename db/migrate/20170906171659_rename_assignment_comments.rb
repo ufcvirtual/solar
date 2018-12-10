@@ -25,6 +25,6 @@ class RenameAssignmentComments < ActiveRecord::Migration[5.0]
     remove_foreign_key :assignment_comments, name: 'comments_user_id_fk'
     add_foreign_key :assignment_comments, :users
 
-    rename_index :assignment_comments, 'comments_pkey', 'assignment_comments_pkey'
+   # rename_index :assignment_comments, 'comments_pkey', 'assignment_comments_pkey'
   end
 end

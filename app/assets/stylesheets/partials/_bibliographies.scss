@@ -14,7 +14,7 @@
     width: 125px;
 }
 
-#bibliography_form, #support_material_form{
+#bibliography_form, #support_material_form, #event_file_form {
   .files{
     width: 500px;
     .error{
@@ -36,7 +36,7 @@
       display: none;
     }
   }
-  
+
 }
 
 table.bibliography {

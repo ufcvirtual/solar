@@ -64,12 +64,14 @@ module V1::Contents
 
       Merge.create! main_group_id: main_group.id, secundary_group_id: secundary_group.id, type_merge: merge
 
+      secundary_group.update_attributes main_group_id: (merge ? main_group.id : nil)
+
       remove_all_content(to_at) unless merge
 
       replicate_discussions(from_academic_allocations, to_at)
       replicate_chats(from_academic_allocations, to_at)
       replicate_assignments(from_academic_allocations, to_at)
-      replicate_webconferences(from_academic_allocations, to_at, from_group.allocation_tag.id)
+      replicate_webconferences(from_academic_allocations, to_at, from_group.allocation_tag.id, merge)
       replicate_exams(from_academic_allocations, to_at)
       replicate_schedule_events(from_academic_allocations, from_group.allocation_tag.id, to_at)
 
@@ -92,6 +94,7 @@ module V1::Contents
       end
       ac.group_assignments.map(&:delete_with_dependents)
     }
+
     AcademicAllocation.where(academic_tool_type: 'ChatRoom', allocation_tag_id: allocation_tag).map{ |ac|
       ac.academic_allocation_users.map(&:delete_with_dependents)
       ac.chat_messages.delete_all
@@ -106,7 +109,7 @@ module V1::Contents
     #   exam.academic_allocation_users.map(&:delete_with_dependents)
     # }
 
-    AcademicAllocationUser.joins(:academic_allocation).where(academic_allocations: {allocation_tag_id: allocation_tag}).where("academic_allocations.academic_tool_type != 'Exam'").map(&:delete_with_dependents) # remove todas as ACUs, EXCETO de prova pelos motivos descritos acima
+    AcademicAllocationUser.joins(:academic_allocation).where(academic_allocations: {allocation_tag_id: allocation_tag}).where("academic_allocations.academic_tool_type != 'Exam' AND academic_allocations.academic_tool_type != 'ScheduleEvent'").map(&:delete_with_dependents) # remove todas as ACUs, EXCETO de prova pelos motivos descritos acima
   end
 
   def copy_file(file_to_copy_path, file_copied_path)
@@ -129,7 +132,6 @@ module V1::Contents
     new_object.created_at = object_to_copy.created_at if object_to_copy.respond_to?(:created_at)
     new_object.updated_at = object_to_copy.updated_at if object_to_copy.respond_to?(:updated_at)
     new_object.merge = true if new_object.respond_to?(:merge) # used so call save without callbacks (before_save, before_create)
-
     if acu && !object_to_copy.academic_allocation_user.blank?
       new_object.academic_allocation_user_id = get_acu(new_object.academic_allocation.id, object_to_copy.academic_allocation_user, (object_to_copy.user_id || object_to_copy.allocation.user_id)) #rescue nil
     end
@@ -201,20 +203,22 @@ module V1::Contents
     copy_academic_allocation_users(AcademicAllocationUser.where(academic_allocation_id: ac_ids), to_at) # copy all sent assignments and dependents
   end
 
-  def replicate_webconferences(from_academic_allocations, to_at, from_at)
+  def replicate_webconferences(from_academic_allocations, to_at, from_at, merge)
     from_webconferences_academic_allocations = from_academic_allocations.where(academic_tool_type: 'Webconference')
     create_missing_tools(from_webconferences_academic_allocations.pluck(:academic_tool_id).uniq, to_at, 'Webconference', :create_copy, from_at)
     from_webconferences_academic_allocations.each do |web|
       to_ac = AcademicAllocation.joins(:webconference).where(allocation_tag_id: to_at, academic_tool_type: 'Webconference').where("origin_meeting_id = '?' OR origin_meeting_id = ? OR academic_tool_id = ?", web.academic_tool_id, [from_at, web.academic_tool_id].join('_'), web.academic_tool_id).order('id').last
+      if !merge && to_ac.blank?
+        web_tmp = Webconference.find(web.academic_tool_id)
+        to_ac = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Webconference').where("academic_tool_id = ?", web_tmp.origin_meeting_id.to_s.split('_').last).order('id').last
+      end
 
       unless to_ac.nil?
         copy_objects(LogAction.where(academic_allocation_id: web.id, log_type: 7), {"academic_allocation_id" => to_ac.id}, false, nil, {}, true)
-
         #from acs, copy all acus which doesnt have any access
         from_acus_without_access = AcademicAllocationUser.joins('LEFT JOIN log_actions ON log_actions.academic_allocation_user_id = academic_allocation_users.id').where(academic_allocation_id: web.id).where('log_actions.id IS NULL')
         from_acus_without_access.each do |from_acu_without_access|
-          ac = AcademicAllocation.joins(:webconference).where(allocation_tag_id: to_at, academic_tool_type: 'Webconference').where("origin_meeting_id = '?' OR origin_meeting_id = ? OR academic_tool_id = ?", web.academic_tool_id, [from_at, web.academic_tool_id].join('_'), web.academic_tool_id).order('id').last
-          get_acu(ac.id, from_acu_without_access, from_acu_without_access.user_id) #rescue nil
+          get_acu(to_ac.id, from_acu_without_access, from_acu_without_access.user_id) #rescue nil
         end
       end
     end
@@ -272,7 +276,7 @@ module V1::Contents
          all << {from_ac.id.to_s => ac.id}
       end
     end
-    all
+    all.uniq
   end
 
   def replicate_schedule_events(from_academic_allocations, from_at, to_at)
@@ -282,9 +286,13 @@ module V1::Contents
       acs.each do |ac_from, ac_to|
         AcademicAllocationUser.where(academic_allocation_id: ac_from.to_i).each do |acu_from|
           acu = AcademicAllocationUser.where(academic_allocation_id: ac_to.to_i, user_id: acu_from.user_id).first_or_initialize
-          acu.attributes = acu_from.attributes.except('id','academic_allocation_id')
+          acu.attributes = acu_from.attributes.except('id','academic_allocation_id', 'schedule_event_files_count')
           acu.merge = true
           acu.save
+
+          acu.delete_with_dependents
+          copy_objects(acu_from.schedule_event_files, { 'academic_allocation_user_id' => acu.id }, true)
+          copy_objects(acu_from.comments, { 'academic_allocation_user_id' => acu.id }, true, :files)
         end
       end
     end

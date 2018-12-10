@@ -14,7 +14,7 @@ child :semester do
 end
 
 child @groups do
-  attributes :id, :code, :status
+  attributes :id, :code, :status, :name
   node :students do |g|
     students = g.students_participants
     {count: students.count, names: (students.map(&:name) rescue [])}

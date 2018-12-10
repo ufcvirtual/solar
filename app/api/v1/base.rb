@@ -22,6 +22,7 @@ module V1
     mount Comments
     mount Webconferences
     mount Logs
+    mount MessagesAPI
 
     mount RemoveAfterChanges
   end

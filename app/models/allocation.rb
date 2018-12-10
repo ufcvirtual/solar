@@ -13,6 +13,7 @@ class Allocation < ActiveRecord::Base
   has_one :offer,                -> { where('offer_id is not null')}, through: :allocation_tag
   has_one :group,                -> { where('group_id is not null')}, through: :allocation_tag
   has_one :curriculum_unit_type, -> { where('curriculum_unit_type_id is not null')}, through: :allocation_tag
+  belongs_to :origin_group, class_name: "Group", foreign_key: :origin_group_id
 
   has_many :chat_rooms
   has_many :chat_messages
@@ -26,10 +27,16 @@ class Allocation < ActiveRecord::Base
   after_save :update_digital_class_members, if: -> {(!new_record? && (saved_change_to_status? || saved_change_to_profile_id?))}, on: :update
   after_save :update_digital_class_user_role, if: -> {(!new_record? && saved_change_to_profile_id?)}, on: :update
 
+
+  after_create :calculate_grade_and_hours
   validate :verify_profile, if: -> {new_record? || profile_id_changed?}
 
   def can_change_group?
     not [Allocation_Cancelled, Allocation_Rejected].include?(status)
+  end
+
+  def merged_to
+    Allocation.where(origin_group_id: group.try(:id)).map(&:allocation_tag).first.try(:info) unless group.blank?
   end
 
   def pending?
@@ -97,7 +104,7 @@ class Allocation < ActiveRecord::Base
     case status
       when Allocation_Pending_Reactivate, Allocation_Pending; "#FF6600"
       when Allocation_Activated; "#006600"
-      when Allocation_Cancelled, Allocation_Rejected; "#FF0000"
+      when Allocation_Cancelled, Allocation_Rejected, Allocation_Merged; "#FF0000"
     end
   end
 
@@ -189,6 +196,8 @@ class Allocation < ActiveRecord::Base
   end
 
   def calculate_final_grade(grade=nil)
+    return true unless profile_id == Profile.student_profile && !allocation_tag.nil?
+
     calculate_parcial_grade
     calculate_final_exam_grade
   end
@@ -239,7 +248,7 @@ class Allocation < ActiveRecord::Base
     course = allocation_tag.get_course
     uc = allocation_tag.get_curriculum_unit
     ats = allocation_tag.related
-    min_hours = (uc.min_hours || course.min_hours)
+    min_hours = (uc.try(:min_hours) || course.try(:min_hours))
 
     # if final_exam rules not defined or (have enough hours and everything is ok)
     if (course.passing_grade.blank? || ((parcial_grade < course.passing_grade && (course.min_grade_to_final_exam.blank? || course.min_grade_to_final_exam <= parcial_grade)) && (course.min_hours.blank? || uc.working_hours.blank? || (min_hours*0.01)*uc.working_hours <= working_hours)))
@@ -283,11 +292,12 @@ class Allocation < ActiveRecord::Base
   end
 
   def set_situation(manually = false)
+    return true unless profile_id == Profile.student_profile && !allocation_tag.nil?
 
     course = allocation_tag.get_course
     uc = allocation_tag.get_curriculum_unit
     date = allocation_tag.situation_date
-    min_hours = (uc.min_hours || course.min_hours)
+    min_hours = (uc.try(:min_hours) || course.try(:min_hours))
 
     if date.blank?
       last_date = AcademicTool.last_date(allocation_tag.id)
@@ -300,12 +310,15 @@ class Allocation < ActiveRecord::Base
     calculate_final_grade if parcial_grade.blank? && (manually || !final_grade.blank?)
     calculate_working_hours if (working_hours.blank? || working_hours == 0) && manually
 
+    has_evaluative_activities = allocation_tag.academic_allocations.where(evaluative: true).any?
+    has_frequency_activities = allocation_tag.academic_allocations.where(frequency: true).any?
+
     # if today should update situation or mannually update and has passing grade or hours defined
-    if ((!date.nil? && Date.today >= date) || manually || allocation_tag.setted_situation) && (has_passing_grade || hours_defined)
+    if ((!date.nil? && Date.today >= date) || manually || allocation_tag.setted_situation) && (has_passing_grade || hours_defined) && (has_evaluative_activities || has_frequency_activities)
       # if hours defined and doesnt have enough hours
-      if (hours_defined && (working_hours.blank? || ((min_hours*0.01)*uc.working_hours > working_hours)))
+      if (hours_defined && (working_hours.blank? || ((min_hours*0.01)*uc.working_hours > working_hours))) && has_frequency_activities
         update_attributes grade_situation: FailedFrequency
-      elsif has_passing_grade
+      elsif has_passing_grade && has_evaluative_activities
         # if parcial grade is already enough
         if (!parcial_grade.blank? && parcial_grade >= course.passing_grade)
           update_attributes grade_situation: Approved
@@ -347,6 +360,9 @@ class Allocation < ActiveRecord::Base
             end # !course.min_grade_to_final_exam.blank? && course.min_grade_to_final_exam > parcial_grade
           end # min_grade_to_final_exam > parcial_grade
         end # parcial_grade >= course.passing_grade
+      # if does not have evaluated activities or setted grade, but do have frequency configuration and activities, approved
+      elsif (hours_defined && has_frequency_activities && (!has_evaluative_activities || !has_passing_grade))
+        update_attributes grade_situation: Approved
       end # has_passing_grade
       allocation_tag.update_attributes setted_situation: true
     elsif (has_passing_grade || hours_defined)
@@ -359,12 +375,13 @@ class Allocation < ActiveRecord::Base
   end
 
   def calculate_working_hours
-    update_attributes working_hours: Allocation.get_working_hours(user_id, allocation_tag)
+    if profile_id == Profile.student_profile && !allocation_tag.nil?
+      update_attributes working_hours: Allocation.get_working_hours(user_id, allocation_tag)
+    end
   end
 
   def self.get_working_hours(user_id, allocation_tag, tool=nil)
     # return 0 if allocation_tag.curriculum_unit.try(:working_hours).nil?
-
     query = tool.blank? ? '' : " AND academic_allocations.academic_tool_type=#{tool}"
     ats = allocation_tag.related.join(',')
     hours = AcademicAllocation.find_by_sql <<-SQL
@@ -406,6 +423,13 @@ class Allocation < ActiveRecord::Base
     when 4; 'failed'
     when 5; 'failed_working_hours'
     when 6; 'undefined'
+    end
+  end
+
+  def calculate_grade_and_hours
+    if profile_id == Profile.student_profile && !allocation_tag.nil?
+      calculate_working_hours
+      calculate_final_grade
     end
   end
 

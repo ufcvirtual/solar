@@ -1,0 +1,51 @@
+$(function(){
+  
+  var countInstanceJsPanel = 0;
+
+  jsPanel.globalCallbacks = function (panel) {
+    if (panel.options.paneltype === 'standard') {
+      panel.titlebar.addEventListener('dblclick', function () {
+        if (panel.status !== 'maximized') {
+          panel.maximize();
+        } else {
+          panel.normalize();
+        }
+      });
+    }
+  };
+  $("body").on("click",".jspanel",function(e){
+    $('head').append('<meta name="viewport" content="width=device-width, initial-scale=1"/>');
+    if(countInstanceJsPanel<3){
+      countInstanceJsPanel++;
+      e.preventDefault();
+      e.target = e.currentTarget;
+      var color = $('#mysolar_topbar_wide_background').css('backgroundColor');
+      jsPanel.create({
+        theme:       color,
+        headerTitle: e.target.name,
+        position: 'center-top',
+        contentSize: {
+            width:  $(window).width() * 0.9,
+            height: $(window).height() * 0.85
+        },
+        contentOverflow: 'hidden',
+        content: '<iframe src='+e.target.href+' focus="true" style="width: 100%; height: 100%;" tabindex="0"></iframe>',
+        closeOnEscape: true,
+        onbeforeclose: function(){
+          give_focus_to_back_jspanel();
+          countInstanceJsPanel--;
+          return true;
+        },
+        callback: panel => {
+          remove_focus_from_back_jspanel();
+          add_description_to_buttons_jspanel();
+          focus_on_jspanel_element();
+          add_events_to_buttons_jspanel(panel);
+        }
+      }); 
+    }else{ 
+      flash_message("<%=I18n.t('lessons.index.jspanel_count_window') %>", "alert");
+      return false;
+    }
+  });
+});

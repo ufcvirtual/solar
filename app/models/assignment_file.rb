@@ -1,5 +1,7 @@
 class AssignmentFile < ActiveRecord::Base
 
+  FILESIZE = 26.megabyte
+
   include ControlledDependency
   include SentActivity
 
@@ -20,7 +22,7 @@ class AssignmentFile < ActiveRecord::Base
   validates :attachment_file_name, presence: true
   validates :academic_allocation_user_id, presence: true
 
-  validates_attachment_size :attachment, less_than: 26.megabyte, message: ' '
+  validates_attachment_size :attachment, less_than: FILESIZE, message: ' '
   validates_attachment_content_type_in_black_list :attachment
   do_not_validate_attachment_file_type :attachment
 

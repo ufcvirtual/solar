@@ -17,6 +17,8 @@
         %li= link_to t('user_blacklist.remove'), "#void", onclick:  "remove_user_from_blacklist(this); return false;", :"data-tooltip" => t('user_blacklist.remove'), :"data-url" => remove_user_from_blacklist_path(user.cpf)
       - else
         %li= link_to t('user_blacklist.add'), "#void", onclick:  "add_user_in_blacklist(this); return false;", :"data-tooltip" => t('user_blacklist.add'), :"data-url" => add_user_blacklist_path(user)
+      - if can? :allocations_user, Administration
+        %li= link_to t(:reset_session_token, scope: [:administrations, :users]), "#void", onclick:  "reset_session_token_user(this); return false;", :"data-tooltip" => t(:reset_session_token, scope: [:administrations, :users]), :"data-url" => reset_session_token_admin_user_path(user)
 
       %li{ class: 'border' }= (label_tag t(:last_accessed, scope: [:administrations, :users]) + ' ' + last_accessed(user.id))
 
