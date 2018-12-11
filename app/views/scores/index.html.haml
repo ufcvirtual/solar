@@ -13,7 +13,7 @@
       %h2{:'data-shortcut'=> t("shortcut.evaluatives.code.responsibles"), :'data-shortcut-name'=> t("shortcut.evaluatives.name.responsibles"), :'data-shortcut-focus' => 'true'}= t(".responsibles")
 
     - unless @responsibles.empty?
-      .tb_list_responsibles
+      .tb_list_responsibles.responsive-table
         %table.tb_list#list_of_responsibles{cellspacing: "0", border: "0", summary: t('.responsibles')}
           %thead
             %tr.lines

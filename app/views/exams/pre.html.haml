@@ -3,33 +3,34 @@
     %h1#name= @exam.name
     #description= raw @exam.description
 
-  %table.tb_list{summary: t('.summary')}
-    %tbody
-      %tr.lines{:"data-tooltip" => t('exams.pre.duration__tooltip')}
-        %th.act_like_td#duration= t("exams.pre.duration")
-        %td{headers: 'duration'}=  (@exam.duration-@total_time/60).to_s + t("exams.pre.min")
-      %tr.lines{:"data-tooltip" => t('exams.pre.questions__tooltip')}
-        %th.act_like_td#questions= t("exams.pre.questions")
-        %td{headers: 'questions'}= @exam.number_questions.to_s
-      %tr.lines{:"data-tooltip" => t('exams.pre.attempts__tooltip')}
-        %th.act_like_td#attempts= t("exams.pre.attempts")
-        %td{headers: 'attempts'}=  @total_attempts.to_s + t("exams.pre.of") +  @exam.attempts.to_s
-      %tr.lines{:"data-tooltip" => t('exams.pre.block__tooltip')}
-        %th.act_like_td#block= t("exams.pre.block")
-        - block_content = @exam.block_content ? t("exams.pre.aw_yes") : t("exams.pre.aw_no")
-        %td{headers: 'block'}= block_content
-      %tr.lines{:"data-tooltip" => t('exams.pre.uninterrupted__tooltip')}
-        %th.act_like_td#uninterrupted= t("exams.pre.uninterrupted")
-        - uninterrupted = @exam.uninterrupted ? t("exams.pre.aw_no") : t("exams.pre.aw_yes")
-        %td{headers: 'uninterrupted'}= uninterrupted
-      %tr.lines{:"data-tooltip" => t('exams.pre.result_release2')}
-        %th.act_like_td#uninterrupted= t("exams.pre.result_release")
-        %td{headers: 'result_release'}= l(@exam.release_date, format: :at_date) 
-  
-  
+  .responsive-table
+    %table.tb_list{summary: t('.summary')}
+      %tbody
+        %tr.lines{:"data-tooltip" => t('exams.pre.duration__tooltip')}
+          %th.act_like_td#duration= t("exams.pre.duration")
+          %td{headers: 'duration'}=  (@exam.duration-@total_time/60).to_s + t("exams.pre.min")
+        %tr.lines{:"data-tooltip" => t('exams.pre.questions__tooltip')}
+          %th.act_like_td#questions= t("exams.pre.questions")
+          %td{headers: 'questions'}= @exam.number_questions.to_s
+        %tr.lines{:"data-tooltip" => t('exams.pre.attempts__tooltip')}
+          %th.act_like_td#attempts= t("exams.pre.attempts")
+          %td{headers: 'attempts'}=  @total_attempts.to_s + t("exams.pre.of") +  @exam.attempts.to_s
+        %tr.lines{:"data-tooltip" => t('exams.pre.block__tooltip')}
+          %th.act_like_td#block= t("exams.pre.block")
+          - block_content = @exam.block_content ? t("exams.pre.aw_yes") : t("exams.pre.aw_no")
+          %td{headers: 'block'}= block_content
+        %tr.lines{:"data-tooltip" => t('exams.pre.uninterrupted__tooltip')}
+          %th.act_like_td#uninterrupted= t("exams.pre.uninterrupted")
+          - uninterrupted = @exam.uninterrupted ? t("exams.pre.aw_no") : t("exams.pre.aw_yes")
+          %td{headers: 'uninterrupted'}= uninterrupted
+        %tr.lines{:"data-tooltip" => t('exams.pre.result_release2')}
+          %th.act_like_td#uninterrupted= t("exams.pre.result_release")
+          %td{headers: 'result_release'}= l(@exam.release_date, format: :at_date) 
+
+
   .correction_info
     .expand_correction
-      =link_to('#void', onclick: 'toggle_text(this);' , onkeydown: 'click_on_keypress(event, this); ') do 
+      =link_to('#void', onclick: 'toggle_text(this);' , onkeydown: 'click_on_keypress(event, this); ') do
         = t('exams.pre.correction_title')
         %i.icon-arrow-down-triangle{:'aria-hidden'=>'true'}
     .correction_text.invisible
@@ -37,7 +38,7 @@
 
   .shortcuts_info
     .expand_shortcut
-      =link_to('#void', onclick: 'toggle_text(this);' , onkeydown: 'click_on_keypress(event, this); ') do 
+      =link_to('#void', onclick: 'toggle_text(this);' , onkeydown: 'click_on_keypress(event, this); ') do
         = t('exams.pre.shortcuts_title')
         %i.icon-arrow-down-triangle{:'aria-hidden'=>'true'}
     %ul.shortcut_text.invisible
@@ -48,7 +49,7 @@
       %li.shortcut= t('shortcut.pagination.name.next')
       %li.shortcut= t('shortcut.pagination.name.previous')
       %li.shortcut= t('shortcut.exam.name.audio')
-  
+
   .notice
     #save= t("exams.pre.alert_save")
     #start= t("exams.pre.alert_start")
@@ -92,14 +93,14 @@
           else
             return resp;
         }
-        else{ 
+        else{
           location.hash = 'reload';
           location.reload();
           window.onbeforeunload = null;
         }
       }
     });
-  
+
   });
 
   function toggle_text(link){

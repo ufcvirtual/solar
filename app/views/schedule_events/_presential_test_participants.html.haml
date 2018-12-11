@@ -1,32 +1,33 @@
 .block_title
   %h2{align: "center"}= t('.list_name')
 - unless @participants.empty?
-  %table.tb_list
-    %thead
-      %tr.lines
-        %th{id: 'participant-name'}= t('.name_studante')
-        %th.center{id: 'deficiency'}= t('deficiency.deficiency')
-        %th.center{id: 'personal-test'}= t('.print_personal_test')
-    %tbody
-      - @participants.each_with_index do |participant|
-        - accessibility = participant.special_needs=='Baixa visão' ? true : false
-        - class_css = get_deficiency_class_css(participant.special_needs)
+  .responsive-table
+    %table.tb_list
+      %thead
         %tr.lines
-          %td{headers: 'participant-name'}= participant.name 
-          %td.center{headers: 'deficiency'}
-            %spam{class: class_css}
-              - if participant.special_needs == 'Outra'
-                %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{participant.id}", onkeydown: 'click_on_keypress(event, this);' }
-                  = participant.special_needs
-                  %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-                .dropdown.dropdown-tip{id: "dropdown_eq_#{participant.id}"}
-                  %ul{ class: 'dropdown-menu' }
-                    = raw participant.other_special_needs 
-              - else
-                = get_deficiency(participant.special_needs)
-            
-          %td.center{headers: 'personal-test'}
-            = link_to content_tag(:i, nil, class: 'icon-printer'), print_presential_test_schedule_events_path(id: @event.id, student_id: participant.id, allocation_tags_ids: @allocation_tag_id, accessibility: accessibility), target: "_blank", class: "btn btn_main", :"data-print-title" => t(".print_user_test", student: participant.name), :"data-tooltip" => t(".print_user_test", student: participant.name)
+          %th{id: 'participant-name'}= t('.name_studante')
+          %th.center{id: 'deficiency'}= t('deficiency.deficiency')
+          %th.center{id: 'personal-test'}= t('.print_personal_test')
+      %tbody
+        - @participants.each_with_index do |participant|
+          - accessibility = participant.special_needs=='Baixa visão' ? true : false
+          - class_css = get_deficiency_class_css(participant.special_needs)
+          %tr.lines
+            %td{headers: 'participant-name'}= participant.name
+            %td.center{headers: 'deficiency'}
+              %spam{class: class_css}
+                - if participant.special_needs == 'Outra'
+                  %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{participant.id}", onkeydown: 'click_on_keypress(event, this);' }
+                    = participant.special_needs
+                    %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
+                  .dropdown.dropdown-tip{id: "dropdown_eq_#{participant.id}"}
+                    %ul{ class: 'dropdown-menu' }
+                      = raw participant.other_special_needs
+                - else
+                  = get_deficiency(participant.special_needs)
+
+            %td.center{headers: 'personal-test'}
+              = link_to content_tag(:i, nil, class: 'icon-printer'), print_presential_test_schedule_events_path(id: @event.id, student_id: participant.id, allocation_tags_ids: @allocation_tag_id, accessibility: accessibility), target: "_blank", class: "btn btn_main", :"data-print-title" => t(".print_user_test", student: participant.name), :"data-tooltip" => t(".print_user_test", student: participant.name)
   .legend
     = t("deficiency.deficiencys")
   %ul#scores_notes.legend_score_footer

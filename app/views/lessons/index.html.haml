@@ -8,16 +8,17 @@
           %span{ :'aria-label' => t('lessons.index.number_of_lessons', module_name: lmodule.name, lesson_number: lmodule.lessons.size) }= lmodule.name
         - if admin_with_groups
           .input.groups_tags= render 'groups/groups_tags', groups: lmodule.groups, tool: lmodule, all_groups: nil, paths: nil
-      %table.tb_list{ summary: t('.summary', module_name: lmodule.name) }
-        %thead
-          %tr.lines
-            %th{id: "name_#{lmodule.id}"}= t('.lesson_table_title')
-            %th.date{id: "period_#{lmodule.id}"}= t('.lesson_table_date')
-            %th.date{id: "notes_#{lmodule.id}"}= t('.lesson_notes')
-            - if @responsible
-              %th.no_sort{id: "accept_#{lmodule.id}"}= t('.acceptance')
-        %tbody
-          - lmodule.lessons_to_open(current_user, true).each do |lesson|
-            %tr.lines{ class: (lesson.closed? && !@only_student) ? 'period_ended' : '', id: "lesson_#{lesson.id}" }= render(lesson)
+      .responsive-table
+        %table.tb_list{ summary: t('.summary', module_name: lmodule.name) }
+          %thead
+            %tr.lines
+              %th{id: "name_#{lmodule.id}"}= t('.lesson_table_title')
+              %th.date{id: "period_#{lmodule.id}"}= t('.lesson_table_date')
+              %th.date{id: "notes_#{lmodule.id}"}= t('.lesson_notes')
+              - if @responsible
+                %th.no_sort{id: "accept_#{lmodule.id}"}= t('.acceptance')
+          %tbody
+            - lmodule.lessons_to_open(current_user, true).each do |lesson|
+              %tr.lines{ class: (lesson.closed? && !@only_student) ? 'period_ended' : '', id: "lesson_#{lesson.id}" }= render(lesson)
   - else
     .block_content.block_content_text= t(:lesson_message)

@@ -1,18 +1,19 @@
 - unless @all_profiles.blank?
-  %table.tb_list.list_profiles{"data-link-list" => profiles_path(list: true)}
-    %thead
-      %tr.lines
-        %th= t(:name)
-        %th{style: "width: 60%"}= t(:description)
-        %th.no_sort{style: 'width: 80px;'}
-    %tbody
-      - @all_profiles.each do |profile|
-        %tr.lines{"data-profile-id" => profile.id, "data-link-delete" => "#{profile_path(profile)}.json"}
-          %td= profile.name
-          %td= profile.description
-          %td.btn-group{style: 'text-align:right'}
-            = link_to content_tag(:i, nil, class: 'icon-key'), "#", "data-tooltip" => t(".permissions"), "data-show-link" => permissions_profile_path(profile), class: "btn show-permissions"
-            = link_to content_tag(:i, nil, class: 'icon-edit'), edit_profile_path(profile), "data-tooltip" => t(".edit"), class: "btn edit-profile"
+  .responsive-table
+    %table.tb_list.list_profiles{"data-link-list" => profiles_path(list: true)}
+      %thead
+        %tr.lines
+          %th= t(:name)
+          %th{style: "width: 60%"}= t(:description)
+          %th.no_sort{style: 'width: 80px;'}
+      %tbody
+        - @all_profiles.each do |profile|
+          %tr.lines{"data-profile-id" => profile.id, "data-link-delete" => "#{profile_path(profile)}.json"}
+            %td= profile.name
+            %td= profile.description
+            %td.btn-group{style: 'text-align:right'}
+              = link_to content_tag(:i, nil, class: 'icon-key'), "#", "data-tooltip" => t(".permissions"), "data-show-link" => permissions_profile_path(profile), class: "btn show-permissions"
+              = link_to content_tag(:i, nil, class: 'icon-edit'), edit_profile_path(profile), "data-tooltip" => t(".edit"), class: "btn edit-profile"
 
 :javascript
 

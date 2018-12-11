@@ -3,26 +3,27 @@
   .title-warning
     = raw t('.warning')
   - unless @recordings.empty?
-    %table.tb_list
-      %thead
-        %tr.lines
-          %th= t('.access')
-          %th= t(".start")
-          %th= t(".end")
-          %th= t(".options")
-      %tbody
-        - @recordings.each_with_index do |record, idx|
+    .responsive-table
+      %table.tb_list
+        %thead
           %tr.lines
-            %td= link_to t('.record', number: idx+1), Bbb.get_recording_url(record, 'presentation'), target: '_blank', :'aria-label' => t('webconferences.index.access_web_recording', name: t('.record', number: idx+1) )
-            %td= l(record[:startTime].to_datetime)
-            %td= l(record[:endTime].to_datetime)
-            %td
-              %span= link_to (content_tag(:i, nil, class: 'icon-video-conference')), download_webconferences_path(url: Bbb.get_recording_url(record, 'video'), type: 'application/video', filename: 'video.mp4'), "data-tooltip" => t(".download_video"),  :'aria-label' => t(".download_video"), class: "btn", target: '_blank'
-              %span= link_to (content_tag(:i, nil, class: 'icon-microphone')), download_webconferences_path(url: Bbb.get_recording_url(record, 'podcast'), type: 'application/audio', filename: 'podcast.ogg'), class: 'btn ', :'data-tooltip' => t('.download_podcast'), :'aria-label' => t('.download_podcast'), :target => "_blank", class: "btn", target: '_blank'
-              //%span= link_to (content_tag(:i, nil, class: 'icon-text-2')),  download_webconferences_path(url: Bbb.get_recording_url(record, 'podcast'), type: 'application/audio', filename: 'podcast.ogg'), class: 'btn' , :'data-tooltip' => t('.download_slides'), :'aria-label' => t('.download_slides'), :target => "_blank", class: "btn", target: '_blank'
-              //%span= link_to (content_tag(:i, nil, class: 'icon-chat')),  download_webconferences_path(url: Bbb.get_recording_url(record, 'podcast'), type: 'application/audio', filename: 'podcast.ogg'), class: 'btn ', :'data-tooltip' => t('.download_chat'), :'aria-label' => t('.download_chat'), :target => "_blank", class: "btn", target: '_blank'
-              - if @can_remove_record
-                %span= button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution remove_record', :'data-tooltip' => t('.remove'), :'aria-label' => t('.remove'), :'data-url' => remove_record_webconference_path(webconference: @webconference.id, at: @at_id, recordID: record[:recordID])
+            %th= t('.access')
+            %th= t(".start")
+            %th= t(".end")
+            %th= t(".options")
+        %tbody
+          - @recordings.each_with_index do |record, idx|
+            %tr.lines
+              %td= link_to t('.record', number: idx+1), Bbb.get_recording_url(record, 'presentation'), target: '_blank', :'aria-label' => t('webconferences.index.access_web_recording', name: t('.record', number: idx+1) )
+              %td= l(record[:startTime].to_datetime)
+              %td= l(record[:endTime].to_datetime)
+              %td
+                %span= link_to (content_tag(:i, nil, class: 'icon-video-conference')), download_webconferences_path(url: Bbb.get_recording_url(record, 'video'), type: 'application/video', filename: 'video.mp4'), "data-tooltip" => t(".download_video"),  :'aria-label' => t(".download_video"), class: "btn", target: '_blank'
+                %span= link_to (content_tag(:i, nil, class: 'icon-microphone')), download_webconferences_path(url: Bbb.get_recording_url(record, 'podcast'), type: 'application/audio', filename: 'podcast.ogg'), class: 'btn ', :'data-tooltip' => t('.download_podcast'), :'aria-label' => t('.download_podcast'), :target => "_blank", class: "btn", target: '_blank'
+                //%span= link_to (content_tag(:i, nil, class: 'icon-text-2')),  download_webconferences_path(url: Bbb.get_recording_url(record, 'podcast'), type: 'application/audio', filename: 'podcast.ogg'), class: 'btn' , :'data-tooltip' => t('.download_slides'), :'aria-label' => t('.download_slides'), :target => "_blank", class: "btn", target: '_blank'
+                //%span= link_to (content_tag(:i, nil, class: 'icon-chat')),  download_webconferences_path(url: Bbb.get_recording_url(record, 'podcast'), type: 'application/audio', filename: 'podcast.ogg'), class: 'btn ', :'data-tooltip' => t('.download_chat'), :'aria-label' => t('.download_chat'), :target => "_blank", class: "btn", target: '_blank'
+                - if @can_remove_record
+                  %span= button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution remove_record', :'data-tooltip' => t('.remove'), :'aria-label' => t('.remove'), :'data-url' => remove_record_webconference_path(webconference: @webconference.id, at: @at_id, recordID: record[:recordID])
   - else
     .block_content_text_list.text_none= t(".no_message")
 
