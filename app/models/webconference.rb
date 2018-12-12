@@ -414,7 +414,7 @@ class Webconference < ActiveRecord::Base
 
   # Retorna quantidade total por servidor (servidor | qtd de gravações | total | em tempo real | nome)
   def self.count_per_server
-    sql = "SELECT server, SUM(case when is_recorded = true then duration end)/60 as duration, count (DISTINCT ac_id), count(distinct (case when now() BETWEEN initial_time AND initial_time + INTERVAL '1 min' * duration then ac_id end)) as real, CASE WHEN server=0 THEN 'BBB 1' WHEN server=1 THEN 'BBB 2' ELSE 'Não definido' END
+    sql = "SELECT server, SUM(case when is_recorded = true then duration end)/60 as duration, count (DISTINCT ac_id), count(distinct (case when now() BETWEEN initial_time AND initial_time + INTERVAL '1 min' * duration then ac_id end)) as real, CASE WHEN server=0 THEN 'BBB 1' WHEN server=1 THEN 'BBB 2' WHEN server=2 THEN 'BBB 3' WHEN server=3 THEN 'BBB 4' WHEN server=4 THEN 'BBB 5' ELSE 'Não definido' END
           FROM temp_web
           GROUP BY 1
           ORDER BY 1"
