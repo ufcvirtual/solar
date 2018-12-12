@@ -1,27 +1,23 @@
 // Layout Básico
 
-html,
-body {
-  height: 100%;
-  box-sizing: border-box;
-}
-
 *,
 *:before,
 *:after {
   box-sizing: inherit;
 }
 
+html,
+body {
+  height: 100%;
+  position: relative;
+}
+
 body {
   margin: 0;
-  // padding: 0;
+  padding: 0;
   cursor: default;
   font-family: 'PT Sans', sans-serif;
   height: 100%;
-  padding-top: 0;
-  padding-left: 0;
-  padding-right: 0;
-  padding-bottom: 45px;	/* Height of the footer */
   background-color: $body_background;
 }
 
@@ -78,9 +74,7 @@ h3 {
   width: 100%;
   max-width: 980px;
   margin: 0 auto;
-  // min-height: 99.5%;
-  height: 100%;
-  min-height: 100%;
+  height: calc(100% - 40px);
   position: relative;
   background-color: $color_white_base;
 }
@@ -173,21 +167,21 @@ textarea {
 }
 
 footer {
+  clear: both;
   width: 100%;
   max-width: 980px;
-  clear: both;
-  // position: relative;
-  position: absolute;
-  height: 45px;
-  bottom: 0;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 #footer {
   overflow: visible;
-  margin: 0 auto;
   text-align: center;
   padding: 10px 0;
-  // width: 980px;
+  position: relative;
+  display: inline-block;
   background-color: $body_background;
   color: $color_almost_gray;
 
