@@ -156,6 +156,7 @@ class AssignmentWebconferencesController < ApplicationController
     raise 'on_going' unless @assignment_webconference.on_going?
 
     url = @assignment_webconference.get_bbb_url(current_user)
+    p url
     URI.parse(url).path
 
     render json: { success: true, url: url }

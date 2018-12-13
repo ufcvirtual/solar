@@ -59,7 +59,7 @@ module Solar
 
     #config.active_record.whitelist_attributes = false
     #config.active_record.raise_in_transactional_callbacks = true
-
+    config.action_view.embed_authenticity_token_in_remote_forms = true
 
     # Enable the asset pipeline
     config.assets.enabled = true
