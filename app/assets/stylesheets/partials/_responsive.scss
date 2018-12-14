@@ -41,6 +41,12 @@
   overflow-x: auto;
 }
 
+.tabs_score {
+  display: flex;
+  justify-content: center;
+  margin-left: 20%;
+}
+
 /* Grid
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
@@ -262,6 +268,20 @@
   #accessibility_top_menu,
   #mysolar_accessibility_submenu {
     display: none !important;
+  }
+
+  #amount_found {
+    float: none;
+    margin: 5px 0;
+    max-width: 100%;
+  }
+
+  .tabs_score {
+    margin-left: 5%;
+  }
+
+  .scores_menu {
+    margin-left: 0 !important;
   }
 }
 
