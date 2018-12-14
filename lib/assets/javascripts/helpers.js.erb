@@ -13,7 +13,7 @@ function showUserPictureUploadForm(url, title){
 function mysolarTopSubmenuToggle(){
   var left = $("#mysolar_top_user_nick").offset().left;
   var origin = $("#mysolar_topbar").offset().left;
-  left -= origin;
+  left -= origin + 100;
   $("#mysolar_top_submenu").css('left', left);
   $("#mysolar_top_submenu").slideToggle(150);
   $('#mysolar_top_submenu_label').toggleClass('mysolar_top_submenu_label_selected');
@@ -23,7 +23,7 @@ function mysolarTopSubmenuToggle(){
 function mysolarTopSubmenuHelpToggle(){
   var left = $("#help_top").offset().left;
   var origin = $("#mysolar_topbar").offset().left;
-  left -= origin;
+  left -= origin + 55;
   $("#mysolar_submenu_help").css('left', left);
   $("#mysolar_submenu_help").slideToggle(150);
   $('#mysolar_top_help').toggleClass('mysolar_top_submenu_label_selected');
