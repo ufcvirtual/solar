@@ -136,7 +136,7 @@
 
 .dropdown.right{
   max-height: 300px;
-  right: -10%;
+  /* right: -10%; */
 }
 
 .dropdown.right ul{

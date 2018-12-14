@@ -159,13 +159,14 @@ div.block_module, div.block_exam{
   word-break: break-word;
   > .block_content_text {
     border: none;
-    font-size: 9pt;
-    padding: 4px 0 0 4px;
+    font-size: 0.8em;
+    // padding: 4px 0 0 4px;
+    padding: 0;
     color: $color_almost_gray;
-    position: absolute;
-    right: 0;
-    bottom: 5px;
-    float: right;
+    // position: absolute;
+    // right: 0;
+    // bottom: 5px;
+    // float: right;
   }
   > .block_content_text:hover, > .block_content_text:hover li {
     color: $color_black;
