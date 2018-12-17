@@ -60,6 +60,6 @@ node do |acu|
   {
     assignment_type: acu.academic_allocation.academic_tool.type_assignment == 0 ? :Individual : :Group,
     group_name: acu.group_assignment.nil? ? nil : acu.group_assignment.group_name,
-    group_participans_ids: acu.group_assignment.nil? ? nil : acu.group_assignment.users.map{|user| user.id}
+    group_participants_ids: acu.group_assignment.nil? ? nil : acu.group_assignment.users.map{|user| user.id}
   }
 end
