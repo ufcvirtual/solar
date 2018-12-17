@@ -15,9 +15,9 @@
     .block_content
       .message_header_new
         .message_new_text_to
-          .label.align-left
+          .label.align-left.no-float-mobile
             = label_tag :message_to, t('.message_to')
-          .input.align-right
+          .input.align-right.no-float-mobile
             - unless @reply_to_many.blank?
               = text_field_tag :message_to, @reply_to_many.map{|u| u[:resume]}.join(', '), disabled: true
             - else
@@ -25,15 +25,15 @@
               = link_to t('.add_contacts'), '#void', :'aria-label' => (t('.add_contacts') + t('fancybox.open')), onkeydown: 'click_on_keypress(event, this);', class: 'message_new_textbox', :'data-url' => contacts_messages_path(allocation_tag_id: @allocation_tag_id, reply_to: 'reply_params'), onclick: 'open_contacts_selection(this);', id: '_add_contacts'
 
         .message_new_text_to
-          .label.align-left= label_tag :subject, t('.subject'), for: 'message_subject', id: 'subject'
-          .input.align-right
+          .label.align-left.no-float-mobile= label_tag :subject, t('.subject'), for: 'message_subject', id: 'subject'
+          .input.align-right.no-float-mobile
             = f.input :subject, label: false, input_html: { class: 'message_new_textbox' }
             = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline', ckeditor: false, div_id: 'message_subject', number: '', field: t('.subject_speech')}
 
         .message_new_upload
 
           #new_message_file
-            .label.align-left= label_tag t('.attach')
+            .label.align-left.no-float-mobile= label_tag t('.attach')
 
             %button#link_upload.btn.btn_default.duplicate_nested_form{ :'data-tooltip' => t('.attach_file'),  :'aria-label' => t('.attach_file') }
               %i.icon-paperclip{:'aria-hidden' => 'true'}
@@ -189,7 +189,7 @@
       href: url,
       open: true
     });
-    
+
   }
   $(function(){
     inputFocuErroMsg();

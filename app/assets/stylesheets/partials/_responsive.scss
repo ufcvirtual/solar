@@ -265,6 +265,7 @@
   #accessibility_top,
   #mysolar_top_logout,
   #server_clock_wrapper,
+  #mysolar_open_shortcut,
   #accessibility_top_menu,
   #mysolar_accessibility_submenu {
     display: none !important;
@@ -276,12 +277,40 @@
     max-width: 100%;
   }
 
+  #link_upload {
+    margin-left: 0 !important;
+  }
+
+  .message_new_textbox {
+    display: block;
+  }
+
+  .message_new_upload {
+    margin-top: 10px;
+  }
+
   .tabs_score {
-    margin-left: 5%;
+    display: inline-block;
+    margin-left: 0;
+    height: 45px;
+    li a {
+      display: inline-block;
+      width: 80px;
+      text-align: center;
+      padding-right: 0;
+    }
   }
 
   .scores_menu {
     margin-left: 0 !important;
+  }
+
+  .padding-checkbox {
+    width: 100%;
+  }
+
+  .no-float-mobile {
+    float: none !important;
   }
 }
 

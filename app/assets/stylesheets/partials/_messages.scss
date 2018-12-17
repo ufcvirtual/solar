@@ -151,7 +151,8 @@ table.tb_list.message_div_list{
     padding-right: 5px;
     border-bottom: solid 1px;
     border-bottom-color: $border_color;
-    min-height: 28px;
+    // min-height: 28px;
+    min-height: 38px;
 
     ul.message_menu_listbox li ul {
       width: 100px;
@@ -170,7 +171,7 @@ table.tb_list.message_div_list{
     background: $color_white_base;
   }
   .block_white.index{
-    height: 38px;
+    // height: 38px;
 
     .align-middle{
       float: left;
