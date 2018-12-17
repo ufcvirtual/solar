@@ -144,7 +144,7 @@ module Bbb
   def count_servers
     Timeout::timeout(4) do
       @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
-      @config['servers'].count
+      @config['servers'].except("bbb-play").count
     end
   rescue
     false
