@@ -8,23 +8,11 @@ function init_chronometer(page_question, total) {
 function save_question(duration) {
   get_duration(duration);
   var frm = $('#responses_form');
-  frm.submit(function (e) {
-      e.preventDefault();
-      $.ajax({
-        type: 'put',
-        url: frm.attr('action'),
-        data: frm.serialize(),
-        success: function (data) {
-        },
-        fail: function (data) {
-        },
-      });
-  }).submit();
+  $.put(frm.attr('action'), frm.serialize());
   
   setTimeout(function() {
     pagination_aria_label();
   }, 400);
-
 }
 
 function finish_exam(duration) {
