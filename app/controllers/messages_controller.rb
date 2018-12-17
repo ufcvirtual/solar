@@ -156,9 +156,7 @@ class MessagesController < ApplicationController
       end
 
       if params[:scores]=='true'
-        respond_to do |format|
-          format.html { redirect_to :back, notice: t(:mail_sent, scope: :messages) }
-        end
+        redirect_back(fallback_location: solar_home_path)
       else
         respond_to do |format|
           format.html { redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages) }
