@@ -10,7 +10,7 @@ function showUserPictureUploadForm(url, title){
   return false;
 }
 
-function mysolarTopSubmenuToggle(){
+function mysolarTopSubmenuToggle() {
   var left = $("#mysolar_top_user_nick").offset().left;
   var origin = $("#mysolar_topbar").offset().left;
   left -= origin + 100;
@@ -18,16 +18,18 @@ function mysolarTopSubmenuToggle(){
   $("#mysolar_top_submenu").slideToggle(150);
   $('#mysolar_top_submenu_label').toggleClass('mysolar_top_submenu_label_selected');
   $('#mysolar_top_submenu_label').toggleClass('mysolar_top_submenu_label_regular');
+  return false;
 }
 
 function mysolarTopSubmenuHelpToggle(){
   var left = $("#help_top").offset().left;
   var origin = $("#mysolar_topbar").offset().left;
-  left -= origin + 55;
+  left -= origin + 46;
   $("#mysolar_submenu_help").css('left', left);
   $("#mysolar_submenu_help").slideToggle(150);
   $('#mysolar_top_help').toggleClass('mysolar_top_submenu_label_selected');
   $('#mysolar_top_help').toggleClass('mysolar_top_submenu_label_regular');
+  return false;
 }
 
 /**
@@ -518,11 +520,12 @@ function click_on_keypress(event, element){
 function mysolarAccessibilitySubmenuToggle(){
   var left = $("#accessibility_top").offset().left;
   var origin = $("#mysolar_topbar").offset().left;
-  left -= origin;
+  left -= origin + 95;
   $("#mysolar_accessibility_submenu").css('left', left);
   $("#mysolar_accessibility_submenu").slideToggle(150);
   $('#accessibility_top_menu').toggleClass('mysolar_top_submenu_label_selected');
   $('#accessibility_top_menu').toggleClass('mysolar_top_submenu_label_regular');
+  return false;
 }
 
 function goToRight(element) {

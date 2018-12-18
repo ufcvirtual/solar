@@ -223,13 +223,17 @@ a.mysolar_top_link {
   vertical-align: top;
 }
 
-#image_user {
+#image_user, #image_accessibility, #image_help {
   /*    vertical-align: text-bottom;*/
   height: 30px;
   width: 30px;
   cursor: pointer;
   float: left;
   margin-right: 7px;
+}
+
+#image_accessibility, #image_help {
+  background-color: $color_white;
 }
 
 /**

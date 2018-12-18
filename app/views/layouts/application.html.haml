@@ -40,14 +40,15 @@
             = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
           %ul#mysolar_top_options
             %li#mysolar_top_submenu_label.mysolar_top_submenu_label_regular.nav_menu
-              = link_to '#void', {onclick: "mysolarTopSubmenuToggle();return false;", class: 'mysolar_top_link nav_item', id: 'mysolar_top_user_nick'} do
+              = link_to '#void', {onclick: "mysolarTopSubmenuToggle()", class: 'mysolar_top_link nav_item', id: 'mysolar_top_user_nick'} do
                 = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", :'aria-hidden' => 'true'
-                = current_user.nick
+                %span#student-name= current_user.nick
             %li#server_clock_wrapper.nav_menu
               %span#server_clock.nav_item{name: "server_clock"}
             %li#accessibility_top_menu.mysolar_top_submenu_label_regular.nav_menu
-              %a#accessibility_top.mysolar_top_link.nav_item{ href: "", onclick: "mysolarAccessibilitySubmenuToggle();return false;", :'aria-label' =>  t(:accessibility_menu)}
-                = t(:accessibility)
+              %a#accessibility_top.mysolar_top_link.nav_item{href: "#void", onclick: "mysolarAccessibilitySubmenuToggle()", :'aria-label' =>  t(:accessibility_menu)}
+                = image_tag 'accessibility-icon2.png', id: "image_accessibility", alt: t(:accessibility), :'aria-hidden' => 'true'
+                %span#accessibility-link= t(:accessibility)
               %ul#mysolar_accessibility_submenu
                 %li.sub_nav_menu= link_to t(:main_content), "#main_content_accesskey", accesskey: "1", class: "sub_nav_item"
                 %li#link_to_menu_accesskey.sub_nav_menu= link_to t(:menu_aside), "#menu_accesskey", accesskey: "2", class: "sub_nav_item"
@@ -61,8 +62,9 @@
                 - if I18n.locale.to_s == 'pt_BR'
                   %li.sub_nav_menu=link_to t(:libras), 'http://www.vlibras.gov.br/', target: '_blank', 'aria-label'=> t(:libras) + t(:new_window), class: "sub_nav_item"
             %li#mysolar_top_help.mysolar_top_submenu_label_regular.nav_menu
-              %a#help_top.mysolar_top_link.nav_item{href: "", onclick: "mysolarTopSubmenuHelpToggle();return false;"}
-                = t(:help)
+              %a#help_top.mysolar_top_link.nav_item{href: "#void", onclick: "mysolarTopSubmenuHelpToggle()"}
+                = image_tag 'help-icon2.png', id: "image_help", alt: t(:help), :'aria-hidden' => 'true'
+                %span#help-link= t(:help)
               %ul#mysolar_submenu_help
                 %li.sub_nav_menu= link_to t(:context), "#", id: 'help_context', class: "sub_nav_item"
                 %li.sub_nav_menu= link_to t('tutorials.menu'), tutorials_path, id: 'my_tutorials', class: "sub_nav_item"
