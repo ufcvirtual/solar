@@ -81,6 +81,17 @@ module V1
         end
       end
 
+      desc "Remover webconference agendada"
+      params do
+        requires :id, type: Integer
+      end
+      delete "/webconference/:id" do
+        awf = AssignmentWebconference.find(params[:id].to_i)
+        awf.destroy
+        
+        {ok: :ok}
+      end
+
     end
 
   end
