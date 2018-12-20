@@ -47,6 +47,10 @@
   margin-left: 20%;
 }
 
+.position_correction {
+  float: right;
+}
+
 /* Grid
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
@@ -268,6 +272,7 @@
   #help-link,
   #server_clock,
   #student-name,
+  #mysolar_extras,
   #mysolar_top_logout,
   #accessibility-link,
   #server_clock_wrapper,
@@ -279,8 +284,12 @@
     display: inline-block;
   }
 
-  #mysolar_extras, #mysolar_top_options {
+  #mysolar_top_options {
     padding: 0;
+  }
+
+  #block_schedule {
+    margin-bottom: 15px;
   }
 
   #amount_found {
@@ -291,6 +300,11 @@
 
   #link_upload {
     margin-left: 0 !important;
+  }
+
+  .block_large {
+    overflow: visible;
+    margin-bottom: 15px;
   }
 
   .block_small {
@@ -313,7 +327,8 @@
       display: inline-block;
       width: 80px;
       text-align: center;
-      padding-right: 0;
+      padding-left: 5px;
+      padding-right: 5px;
     }
   }
 
