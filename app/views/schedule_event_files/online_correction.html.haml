@@ -121,7 +121,9 @@
     if (!canvasSupport()) { return; } // Verify if the browser support HTML5 Canvas
 
     var url = "#{@file_path}"; // Url to render file
-    var editions_by_user = JSON.parse('#{@canvas_data}');
+    var canvas = '#{@canvas_data}'.replace(/&quot;/g, '"');
+    var editions_by_user = JSON.parse(canvas);
+
     var file_name = "#{@file_name}";
     var message_confirm_cleaning = "#{t('schedule_event_files.online_correction.message_confirm_cleaning')}";
 

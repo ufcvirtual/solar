@@ -766,7 +766,7 @@ Solar::Application.routes.draw do
   get '/media/ckeditor/pictures/:file.:extension', to: 'access_control#ckeditor_pictures'
   get '/media/ckeditor/attachment_files/:file.:extension', to: 'access_control#ckeditor_attachment_files'
 
-  get '/media/schedule_event/schedule_event_files/:file.:extension', to: 'access_control#online_correction_files', as: 'get_file'
+  get '/media/schedule_event/schedule_event_files/:file', to: 'access_control#online_correction_files', as: 'get_file'
 
   mount Ckeditor::Engine => '/ckeditor'
   ## como a API vai ser menos usada, fica mais rapido para o solar rodar sem precisar montar essas rotas
