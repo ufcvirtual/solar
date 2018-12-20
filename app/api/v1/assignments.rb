@@ -4,6 +4,14 @@ module V1
     guard_all!
 
     namespace :assignments do
+
+      helpers do
+
+        def assignment_webconference_params
+          ActionController::Parameters.new(params).require(:assignment_webconference).permit(:title, :initial_time, :duration, :is_recorded)
+        end
+
+      end
       
       desc "Listar todos trabalhos da turma"
       params do
@@ -45,6 +53,41 @@ module V1
       delete "/file/:id" do
         assignment_file = AssignmentFile.find(params[:id].to_i)
         assignment_file.destroy
+        
+        {ok: :ok}
+      end
+
+      desc "Agendar webconference de trabalho"
+      params do
+        requires :assignment_webconference, type: Hash do
+          requires :title, type: String
+          requires :initial_time, type: String
+          requires :duration, type: String
+          requires :is_recorded, type: Boolean, default: false
+        end
+      end
+      post "/webconference" do
+        al = AcademicAllocation.where(allocation_tag_id: params[:allocation_tag_id].to_i).where(academic_tool_id: params[:assignment_id]).first
+        acu = AcademicAllocationUser.where(academic_allocation_id: al.id).first
+
+        awf = AssignmentWebconference.new(assignment_webconference_params)
+        awf.academic_allocation_user_id = acu.id
+        awf.api_call = true
+        
+        if awf.save
+          { id: awf.id }
+        else
+          raise awf.errors.full_messages
+        end
+      end
+
+      desc "Remover webconference agendada"
+      params do
+        requires :id, type: Integer
+      end
+      delete "/webconference/:id" do
+        awf = AssignmentWebconference.find(params[:id].to_i)
+        awf.destroy
         
         {ok: :ok}
       end
