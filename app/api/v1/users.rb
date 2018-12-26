@@ -20,6 +20,13 @@ module V1
           user = current_user.id == params[:id].to_i ? current_user : User.find(params[:id])
           send_file(user.photo.path(params[:style]), params[:style])
         end
+        
+        put ":id/photo/" do
+          user = current_user.id == params[:id].to_i ? current_user : User.find(params[:id])
+          user.update_attributes!(photo: ActionDispatch::Http::UploadedFile.new(params[:file]))
+
+          {ok: :ok}
+        end
 
       end # users
 
