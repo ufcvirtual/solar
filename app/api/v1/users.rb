@@ -27,6 +27,19 @@ module V1
 
           {ok: :ok}
         end
+        
+        delete ":id/photo/" do
+          user = current_user.id == params[:id].to_i ? current_user : User.find(params[:id])
+          user.photo = nil
+          user.save!
+
+          {ok: :ok}
+        end
+        
+        get ":id/photo/download" do
+          user = current_user.id == params[:id].to_i ? current_user : User.find(params[:id])
+          {url_download: user.photo.url}
+        end
 
       end # users
 
