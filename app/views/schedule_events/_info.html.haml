@@ -19,7 +19,7 @@
     = f.label :type_event
     %span= label_tag types.index(@schedule_event.type_event), nil, class: "label_right"
 - else
-  = f.input :type_event, collection: types, include_blank: false, required: true, disabled: !can_change
+  = f.input :type_event, collection: types, disabled: !can_change, include_blank: false
 %span{style: show_fields ? "" : "display: none"}
   = f.input :place, maxlength: 250, required: required_fields, disabled: !can_change
 = f.input :description, disabled: !can_change
