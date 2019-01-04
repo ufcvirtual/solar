@@ -65,7 +65,7 @@ class OffersController < ApplicationController
     @type_id =  params[:offer][:type_id].to_i
     @offer   = Offer.find(params[:id])
     optional_authorize(:update)
-    @offer.deleted_schedule = params[:offer][:period_schedule_attributes][:_destroy].to_i == 1
+    @offer.deleted_schedule = params[:offer][:period_schedule_attributes][:_destroy].to_i == 1 || params[:offer][:period_schedule_attributes][:start_date].blank?
 
     if @offer.update_attributes(offer_params)
       render json: { success: true, notice: t(:updated, scope: [:offers, :success]) }
