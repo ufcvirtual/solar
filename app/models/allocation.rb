@@ -29,7 +29,7 @@ class Allocation < ActiveRecord::Base
 
 
   after_create :calculate_grade_and_hours
-  validate :verify_profile, if: -> {new_record? || profile_id_changed?}
+  validate :verify_profile, if: -> {new_record? || saved_change_to_profile_id?}
 
   def can_change_group?
     not [Allocation_Cancelled, Allocation_Rejected].include?(status)

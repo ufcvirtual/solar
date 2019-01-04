@@ -29,7 +29,7 @@ class Question < ActiveRecord::Base
 
   validate :verify_labels, :verify_files
 
-  validate :verify_privacy, if: -> {privacy_changed? && privacy && !new_record?}
+  validate :verify_privacy, if: -> {saved_change_to_privacy? && privacy && !new_record?}
 
   before_destroy :can_destroy?
   before_destroy { question_labels.clear }

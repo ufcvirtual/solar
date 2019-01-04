@@ -19,10 +19,10 @@ class Webconference < ActiveRecord::Base
   validates :title, :description, length: { maximum: 255 }
   validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
 
-  validate :cant_change_date, on: :update, if: -> {initial_time_changed? || duration_changed?}
-  validate :cant_change_shared, on: :update, if: -> {shared_between_groups_changed?}
+  validate :cant_change_date, on: :update, if: -> {saved_change_to_initial_time? || saved_change_to_duration?}
+  validate :cant_change_shared, on: :update, if: -> {saved_change_to_shared_between_groups?}
 
-  validate :verify_quantity, if: -> {!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed? || new_record?) && merge.nil?}
+  validate :verify_quantity, if: -> {!(duration.nil? || initial_time.nil?) && (saved_change_to_initial_time? || saved_change_to_duration? || new_record?) && merge.nil?}
 
   validate :verify_offer, unless: -> {allocation_tag_ids_associations.blank?}
 

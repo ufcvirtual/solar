@@ -40,8 +40,8 @@ class Lesson < ActiveRecord::Base #< Event
   validates :address, presence: true, if: -> {!is_draft? && persisted?}
 
   validate :address_is_ok?
-  validate :can_change_privacy?, if: -> {!new_record? && privacy_changed?}
-  validate :can_change_status?, if: -> {!new_record? && status_changed? && !is_draft?}
+  validate :can_change_privacy?, if: -> {!new_record? && saved_change_to_privacy?}
+  validate :can_change_status?, if: -> {!new_record? && saved_change_to_status? && !is_draft?}
   
   # Na expressao regular os protocolos http, https e ftp podem aparecer somente uma vez ou nao aparecer
   validates_format_of :address, with: /\A((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?\z/ix,

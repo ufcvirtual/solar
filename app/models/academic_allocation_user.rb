@@ -34,7 +34,7 @@ class AcademicAllocationUser < ActiveRecord::Base
   validates :working_hours, numericality: { greater_than_or_equal_to: 0, allow_blank: true }, unless: -> {working_hours.blank?}
   validate :verify_wh, if: -> {!working_hours.blank? && merge.nil?}
   validate :verify_grade, if: -> {!grade.blank? && merge.nil?}
-  validate :verify_offer, :verify_date, if: -> {(working_hours_changed? || grade_changed?) && merge.nil?}
+  validate :verify_offer, :verify_date, if: -> {(saved_change_to_working_hours_changed? || saved_change_to_grade?) && merge.nil?}
   validates :group_assignment_id, presence: true, if: Proc.new { |a| a.try(:assignment).try(:type_assignment) == Assignment_Type_Group }
 
   before_save :if_group_assignment_remove_user_id

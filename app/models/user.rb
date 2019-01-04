@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
   after_save :log_update_user
   after_save :update_digital_class_user, if: -> {(!new_record? && (saved_change_to_name? || saved_change_to_email? || saved_change_to_cpf?) && !digital_class_user_id.nil?)}, on: :update
 
-  before_save :set_previous, if: -> {(!new_record? && ((username_changed? && !previous_username.blank?) || email_changed? && !previous_email.blank?)) && (!synchronizing)}
+  before_save :set_previous, if: -> {(!new_record? && ((saved_change_to_username? && !previous_username.blank?) || saved_change_to_email? && !previous_email.blank?)) && (!synchronizing)}
 
   @has_special_needs
 
@@ -79,7 +79,7 @@ class User < ActiveRecord::Base
 
   validates :email, uniqueness: {case_sensitive: false}, unless: Proc.new { |a| (a.integrated && !a.on_blacklist?) || a.email.blank?}
 
-  validates :email, confirmation: true, if: -> {(email_changed? || new_record?) && !(integrated && !on_blacklist?)}
+  validates :email, confirmation: true, if: -> {(saved_change_to_email? || new_record?) && !(integrated && !on_blacklist?)}
 
   validates :special_needs, presence: true, if: :special_needs?
 
@@ -93,7 +93,7 @@ class User < ActiveRecord::Base
   validates_length_of :email, maximum: 200
 
   validate :integration, if: Proc.new{ |a| !a.new_record? && !a.on_blacklist? && a.integrated? && (a.synchronizing.nil? || !a.synchronizing) }
-  validate :data_integration, if: Proc.new{ |a| (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO["integrated"]) && (a.new_record? || username_changed? || email_changed? || cpf_changed?) && (a.synchronizing.nil? || !a.synchronizing) }
+  validate :data_integration, if: Proc.new{ |a| (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO["integrated"]) && (a.new_record? || saved_change_to_username? || saved_change_to_email? || saved_change_to_cpf?) && (a.synchronizing.nil? || !a.synchronizing) }
 
   validate :unique_cpf, if: -> { saved_change_to_cpf }
   validate :login_differ_from_cpf

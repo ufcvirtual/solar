@@ -28,13 +28,13 @@ class AcademicAllocation < ActiveRecord::Base
 
   accepts_nested_attributes_for :chat_participants, allow_destroy: true, reject_if: proc { |attributes| attributes['allocation_id'] == '0' }
 
-  validate :verify_assignment_offer_date_range, if: -> {assignment? && !(evaluative_changed? || frequency_changed? || final_exam_changed? || equivalent_academic_allocation_id_changed?)}
+  validate :verify_assignment_offer_date_range, if: -> {assignment? && !(saved_change_to_evaluative? || saved_change_to_frequency? || saved_change_to_final_exam? || saved_change_to_equivalent_academic_allocation_id?)}
 
   validates :weight, presence: true, numericality: { greater_than: 0,  only_float: true }, if: -> {evaluative? && !final_exam? && equivalent_academic_allocation_id.nil?}
   validates :final_weight, presence: true, numericality: { greater_than: 0,  only_float: true, smaller_than: 100.1 }, if: -> {evaluative? && !final_exam? && equivalent_academic_allocation_id.nil?}
   validates :max_working_hours, presence: true, numericality: { greater_than: 0,  only_float: true, allow_blank: true }, if: -> {frequency? && !final_exam? && equivalent_academic_allocation_id.nil?}
 
-  validate :verify_equivalents, if: -> {(equivalent_academic_allocation_id_changed? && !equivalent_academic_allocation_id.nil?) || (!equivalent_academic_allocation_id.nil? && (frequency_changed? || evaluative_changed?))}
+  validate :verify_equivalents, if: -> {(saved_change_to_equivalent_academic_allocation_id? && !equivalent_academic_allocation_id.nil?) || (!equivalent_academic_allocation_id.nil? && (saved_change_to_frequency? || saved_change_to_evaluative?))}
   validate :verify_type, if: -> {(evaluative || frequency) && academic_tool_type == 'ScheduleEvent'}
 
   before_save :set_evaluative_params, on: :update, unless: -> {new_record?}
