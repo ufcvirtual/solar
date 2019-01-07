@@ -328,9 +328,9 @@ class User < ActiveRecord::Base
             allocations.status = #{Allocation_Activated}"
 
     sql << " AND " if !allocation_tag_id.blank? || verify_global_profile
-
+    
     query = []
-    query << "(allocations.allocation_tag_id IN (#{allocation_tag_id.join(',')}))" unless allocation_tag_id.blank?
+    query << "(allocations.allocation_tag_id IN (#{allocation_tag_id.join(',')}))" unless allocation_tag_id.blank? || allocation_tag_id.compact.empty?
     query << "(allocations.allocation_tag_id IS NULL)" if verify_global_profile
 
     sql << "( #{query.join(' OR ')} )"  unless query.blank?

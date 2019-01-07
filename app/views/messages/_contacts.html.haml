@@ -71,14 +71,14 @@
       if(u_type == "#{Profile_Type_Student}"){
         var arial_label = "#{t('messages.users.del_stu_alt')}";
 
-        var ul_stu = "<ul class='users_at_students' id='users'><li> <a aria-label='"+"#{t('messages.users.del_stu_alt')}"+"' href='#' id='del_stu' onclick='del_all_students(this); return false;' onkeydown='click_on_keypress(event, this);'><b> "+"#{t("messages.users.add_students")}"+" </b></a><ul class='add_students'>"
+        var ul_stu = "<ul class='users_at_students' id='users'><li> <a aria-label='"+"#{t('messages.users.del_stu_alt')}"+"' href='#' id='del_stu' onclick='del_all_students(this); return false;' onkeydown='click_on_keypress(event, this);'><b> "+"#{raw t("messages.users.add_students")}"+" </b></a><ul class='add_students'>"
         if($(".contacts-selected").children(".users_at_students").length==0){
           $(".contacts-selected").append(ul_stu);
         }
         $('.add_students').append(user);
         hide_add_students_list();
       }else{
-        var ul_res = "<ul class='users_at_responsibles' id='users'><li> <a aria-label='"+"#{t('messages.users.del_res_alt')}"+"' href='#' id='del_res' onclick='del_all_responsibles(this); return false;' onkeydown='click_on_keypress(event, this);'><b>"+"#{t("messages.users.add_responsibles")}"+"</b></a><ul class='add_responsibles'>"
+        var ul_res = "<ul class='users_at_responsibles' id='users'><li> <a aria-label='"+"#{t('messages.users.del_res_alt')}"+"' href='#' id='del_res' onclick='del_all_responsibles(this); return false;' onkeydown='click_on_keypress(event, this);'><b>"+"#{raw t("messages.users.add_responsibles")}"+"</b></a><ul class='add_responsibles'>"
         if($(".contacts-selected").children(".users_at_responsibles").length==0){
           $(".contacts-selected").append(ul_res);
         }
@@ -100,14 +100,14 @@
     if(u_type == "#{Profile_Type_Student}"){
 
       if($(".contacts-list").find(".add_students_list").length==0){
-        var ul_stu = "<ul class='button_add_students_list'><li> <a aria-label='"+"#{t('messages.users.add_stu_alt')}"+"' href='#' id='add_stu' onclick='add_all_students(this); return false;' onkeydown='click_on_keypress(event, this);'><b>"+"#{t("messages.users.add_students")}"+"</b></a><ul class='add_students_list'>";
+        var ul_stu = "<ul class='button_add_students_list'><li> <a aria-label='"+"#{t('messages.users.add_stu_alt')}"+"' href='#' id='add_stu' onclick='add_all_students(this); return false;' onkeydown='click_on_keypress(event, this);'><b>"+"#{raw t("messages.users.add_students")}"+"</b></a><ul class='add_students_list'>";
         $(".contacts-list").append(ul_stu);
       }
       $('.add_students_list').append(user);
       hide_del_students_list();
     }else{
       if($(".contacts-list").find(".add_responsibles_list").length==0){
-        var ul_res = "<ul class='button_add_responsibles_list'><li> <a aria-label='"+"#{t('messages.users.add_res_alt')}"+"' href='#' id='add_res' onclick='add_all_responsibles(this); return false;' onkeydown='click_on_keypress(event, this);'><b>"+"#{t("messages.users.add_responsibles")}"+"</b></a><ul class='add_responsibles_list'>";
+        var ul_res = "<ul class='button_add_responsibles_list'><li> <a aria-label='"+"#{t('messages.users.add_res_alt')}"+"' href='#' id='add_res' onclick='add_all_responsibles(this); return false;' onkeydown='click_on_keypress(event, this);'><b>"+"#{raw t("messages.users.add_responsibles")}"+"</b></a><ul class='add_responsibles_list'>";
         $(".contacts-list").append(ul_res);
       }
       $('.add_responsibles_list').append(user);
@@ -201,7 +201,7 @@
 
     $(".help_link a").click(function(event){
       if (!$(".contact.help:visible").length){
-        $('<div class="contact help"><a data-at="" class="help_link_support" data-selected="true" href="#" onclick="$(this).parent().remove(); return false;">#{I18n.t(".messages.support_html")}</a></div>').appendTo(".contacts-selected");
+        $('<div class="contact help"><a data-at="" class="help_link_support" data-selected="true" href="#" onclick="$(this).parent().remove(); return false;">#{raw I18n.t(".messages.support_html")}</a></div>').appendTo(".contacts-selected");
       }
     });
 
