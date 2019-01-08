@@ -154,6 +154,7 @@ class MessagesController < ApplicationController
         Job.send_mass_email(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email)
         #Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email).deliver
       end
+      
 
       if params[:scores]=='true'
         redirect_back(fallback_location: solar_home_path)
@@ -163,7 +164,14 @@ class MessagesController < ApplicationController
           #format.json { render :json => {"msg": "Contato removido com sucesso"} }
         end
       end
-
+    rescue ActiveRecord::RecordInvalid
+      @message.errors.each do |attribute, erro|
+        @attribute = attribute
+      end
+      @support = params[:message][:support]
+      @reply_to = [{resume: t("messages.support")}] unless params[:message][:support].nil?
+      
+      render :new
     rescue => error
       if params[:scores]=='true'
         render json: { success: false, alert: @message.errors.full_messages.join(', ') }, status: :unprocessable_entity

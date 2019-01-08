@@ -206,7 +206,7 @@
     });
 
     if($("#message_support").val().length){
-      $('<div class="contact help"><a data-at="" class="help_link_support" data-selected="true" href="#" onclick="$(this).parent().remove(); return false;">#{I18n.t(".messages.support_html")}</a></div>').appendTo(".contacts-selected");
+      $('<div class="contact help"><a data-at="" class="help_link_support" data-selected="true" href="#" onclick="$(this).parent().remove(); return false;">#{raw I18n.t(".messages.support_html")}</a></div>').appendTo(".contacts-selected");
     }
 
     // nova msg dentro de uma UC
@@ -237,7 +237,7 @@
       }
       else{
         if($("#message_to").val().indexOf("#{t('messages.support_simple')}")){
-          $('#support').val($('#message_support').val().replace("#{t('messages.support')}", ''))
+          $('#support').val($('#message_support').val().replace("#{raw t('messages.support')}", ''))
         }
       }
 
