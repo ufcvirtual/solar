@@ -290,12 +290,12 @@ Solar::Application.routes.draw do
       get :repositories
       post :automatic_management
       get :tool_management
-      get :discussion_tool_management, tool_name: 'Discussion', to: :tool_management
-      get :exam_tool_management, tool_name: 'Exam', to: :tool_management
-      get :assignment_tool_management, tool_name: 'Assignment', to: :tool_management
-      get :chat_tool_management, tool_name: 'ChatRoom', to: :tool_management
-      get :webconference_tool_management, tool_name: 'Webconference', to: :tool_management
-      get :schedule_event_tool_management, tool_name: 'ScheduleEvent', to: :tool_management
+      get :discussion_tool_management, tool_name: 'Discussion', action: :tool_management
+      get :exam_tool_management, tool_name: 'Exam', action: :tool_management
+      get :assignment_tool_management, tool_name: 'Assignment', action: :tool_management
+      get :chat_tool_management, tool_name: 'ChatRoom', action: :tool_management
+      get :webconference_tool_management, tool_name: 'Webconference', action: :tool_management
+      get :schedule_event_tool_management, tool_name: 'ScheduleEvent', action: :tool_management
       put :manage_tools
       get "academic/:curriculum_unit_type_id/courses", to: "editions#courses", as: :academic_courses
       get "academic/:curriculum_unit_type_id/curriculum_units", to: "editions#curriculum_units", as: :academic_uc
@@ -528,7 +528,7 @@ Solar::Application.routes.draw do
       get :can_download
       get :download
       post :upload
-      get :zip_download, to: :download, defaults: {zip: true}
+      get :zip_download, action: :download, defaults: {zip: true}
       get :summary
     end
   end
