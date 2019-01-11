@@ -160,9 +160,11 @@ td.assignment_without_group a
   .block_user{
     display: inline-block;
     width: 93%;
-    margin-left: 19px;
+    max-width: -moz-available;
+    max-width: -webkit-fill-available;
+    max-width: fill-available;
     margin-top: 1%;
-    padding: 8px 0px 5px 44px;
+    padding: 8px 0px 5px 63px;
   }
 
   .block_user.fancybox{
@@ -223,4 +225,3 @@ td.assignment_without_group a
     }
   }
 }
-
