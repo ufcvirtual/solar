@@ -220,7 +220,7 @@
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 @media not all and (max-width: 576px) {
-  #image_accessibility, #image_help {
+  #image_accessibility, #image_help, #mysolar_tabs_wrapper_with_dropdown {
     display: none;
   }
 
@@ -276,11 +276,12 @@
   #mysolar_top_logout,
   #accessibility-link,
   #server_clock_wrapper,
+  #mysolar_tabs_wrapper,
   #mysolar_open_shortcut {
     display: none !important;
   }
 
-  #image_accessibility, #image_help {
+  #image_accessibility, #image_help, #mysolar_tabs_wrapper_with_dropdown {
     display: inline-block;
   }
 

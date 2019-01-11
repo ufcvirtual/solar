@@ -97,6 +97,35 @@
 
         #mysolar_tabs{role: 'menubar'}
           %ul#mysolar_tabs_wrapper= raw render_tabs
+          %ul#mysolar_tabs_wrapper_with_dropdown
+            - unless user_session[:tabs][:opened].nil?
+              - if user_session[:tabs][:opened]["Home"] && user_session[:tabs][:opened]["Home"][:url][:context] == Context_General
+                %li.mysolar_unit_tab.general_context{:'data-tab-context'=>"#{Context_General}", :'data-tab-id'=>"home", class: user_session[:tabs][:active] == "Home" ? "mysolar_unit_active_tab" : ""}
+                  = link_to user_session[:tabs][:opened]["Home"][:breadcrumb].first[:name], activate_tab_path(id: "Home"), :'aria-label' => t('tabs.access', name: user_session[:tabs][:opened]["Home"][:breadcrumb].first[:name])
+              - if user_session[:tabs][:opened].length > 1
+                - if user_session[:tabs][:opened].length == 2
+                  - link_id = user_session[:tabs][:opened].keys[1]
+                  - link_name = user_session[:tabs][:opened][link_id][:breadcrumb].first[:tab]
+                  %li.mysolar_unit_tab{:'data-tab-context'=>"#{Context_Curriculum_Unit}", :'data-tab-id'=>"#{link_id}", class: user_session[:tabs][:active] != "Home" ? "mysolar_unit_active_tab" : ""}
+                    = link_to(link_name.truncate(30), activate_tab_path(id: link_id), :'aria-label'=>t('tabs.access', name: link_name))
+                    = link_to('',close_tab_path(id: link_id), class: 'tabs_close', id: "#{link_id}", :'aria-label' => t('tabs.close', name: link_name), data: { confirm: t('tabs.close_confirm', name: link_name) })
+                - else
+                  - menu_dropdown_open_id = user_session[:tabs][:active] == "Home" ? user_session[:tabs][:opened].keys[1] : user_session[:tabs][:active]
+                  - menu_dropdown_open_name = user_session[:tabs][:opened][menu_dropdown_open_id][:breadcrumb].first[:tab]
+                  %li.mysolar_unit_tab{:'data-tab-context'=>"#{Context_Curriculum_Unit}", :'data-tab-id'=>"#{menu_dropdown_open_id}", class: user_session[:tabs][:active] != "Home" ? "mysolar_unit_active_tab" : ""}
+                    = link_to(activate_tab_path(id: menu_dropdown_open_id), :'aria-label'=>t('tabs.access', name: menu_dropdown_open_name), :"data-dropdown"=>"#dropdown_tabs") do
+                      = menu_dropdown_open_name.truncate(30)
+                      = content_tag(:i, nil, class: "icon-arrow-down-triangle")
+                    .dropdown.dropdown-tip{id: "dropdown_tabs", style: "display: none;"}
+                      %ul.dropdown-menu
+                        - user_session[:tabs][:opened].each do |id, name|
+                          - next if id == "Home"
+                          - name_tab = name[:breadcrumb].first[:tab]
+                          - active_tab_id = user_session[:tabs][:opened][id][:breadcrumb].first[:url][:id]
+                          %li.mysolar_unit_tab{:'data-tab-context'=>"#{Context_Curriculum_Unit}", :'data-tab-id'=>"#{active_tab_id}"}
+                            = link_to(name_tab.truncate(30), activate_tab_path(id: id), :'aria-label'=>t('tabs.access', name: name_tab), style: "display: inline-block; padding: 0 10px;")
+                            = link_to('',close_tab_path(id: id), class: 'tabs_close', id: "#{active_tab_id}", :'aria-label' => t('tabs.close', name: name_tab), style: "display: inline-block; padding: 0; left: -2px;", data: { confirm: t('tabs.close_confirm', name: name_tab) })
+                          %br
           %ul#mysolar_extras
             %li#mysolar_open_shortcut
               %a.btn.btn_main#shortcut_accesskey{ href: '#', :"data-dropdown" => "#dropdown_eq_1_2", :'aria-label' => t('scores.info.shortcut'), accesskey: 9, "data-tooltip" => t('scores.info.shortcut')}
