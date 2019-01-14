@@ -344,6 +344,27 @@
   .no-float-mobile {
     float: none !important;
   }
+
+  label {
+    display: block;
+  }
+
+  #autocomplete-input-curriculum_unit_type, #autocomplete-input-course, #autocomplete-input-curriculum_unit, #autocomplete-input-semester, #autocomplete-input-contacts_type, [id^='autocomplete-input-'], .ui-combobox {
+    width: 98% !important;
+  }
+
+  #content-div {
+    width: 100% !important;
+  }
+
+  .edition #search {
+    margin-left: 0;
+    float: right;
+  }
+
+  .edition_content {
+    clear: both;
+  }
 }
 
 @media (max-width: 768px){

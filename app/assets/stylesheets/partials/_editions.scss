@@ -74,7 +74,7 @@ fieldset {
 
 .edition .filter .groups{
   @include tags_div;
-  margin-left:20px;
+  margin-left: 28px;
 }
 
 .edition p{
@@ -93,6 +93,7 @@ fieldset {
 
 .offer_groups_options {
   overflow: hidden;
+  display: flex;
 
   .collection_check_boxes {
     color: $color_white;
@@ -109,6 +110,8 @@ label[for="all"]{
 
 .radio_options { // FIXME: nome genérico demais
   float: left;
+  display: inline-flex;
+  align-items: center;
 }
 
 /**
