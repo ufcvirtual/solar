@@ -223,7 +223,7 @@ class ScheduleEventsController < ApplicationController
     end
 
     def management_activities(allocation_tag_id)
-      academic_allocations = AcademicAllocation.where(allocation_tag_id: allocation_tag_id)
+      academic_allocations = AcademicAllocation.where(allocation_tag_id: allocation_tag_id).where("academic_tool_type NOT IN ('SupportMaterialFile', 'Bibliography', 'Notification', 'LessonModule')")
 
       at = AllocationTag.find(allocation_tag_id.to_i)
 
@@ -274,17 +274,12 @@ class ScheduleEventsController < ApplicationController
           acad_alloc_event << academic_allocation
 
         else # atividades que não são eventos
+          academic_allocation.evaluative = true
+          academic_allocation.final_weight = 40
+          academic_allocation.frequency = true
+          quantity_activities += 1
 
-          unless academic_allocation.academic_tool_type == 'LessonModule' && academic_allocation.final_weight == 100 && academic_allocation.max_working_hours.to_i == 1 # LessonModule criado por padrão
-
-            academic_allocation.evaluative = true
-            academic_allocation.final_weight = 40
-            academic_allocation.frequency = true
-            quantity_activities += 1
-
-            acad_alloc_not_event << academic_allocation
-          end
-
+          acad_alloc_not_event << academic_allocation
         end
 
       end
