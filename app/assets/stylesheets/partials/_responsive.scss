@@ -220,8 +220,8 @@
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 @media not all and (max-width: 576px) {
-  #image_accessibility, #image_help, #mysolar_tabs_wrapper_with_dropdown {
-    display: none;
+  #image_accessibility, #image_help, #mysolar_tabs_wrapper_with_dropdown, #mysolar_suggestions_for_mobile {
+    display: none !important;
   }
 
   .open-menu,
@@ -281,7 +281,7 @@
     display: none !important;
   }
 
-  #image_accessibility, #image_help, #mysolar_tabs_wrapper_with_dropdown {
+  #image_accessibility, #image_help, #mysolar_tabs_wrapper_with_dropdown, #mysolar_suggestions_for_mobile {
     display: inline-block;
   }
 

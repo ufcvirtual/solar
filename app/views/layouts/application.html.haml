@@ -231,6 +231,8 @@
             %ul.choice-language-menu
               %li{class: "language pt_BR #{(selected == locales.first) ? 'selected' : ''}"}= link_to 'Português (BR)', url_for(locale: locales.first)
               %li{class: "language en_US #{(selected == locales.last) ? 'selected' : ''}"}= link_to 'English (USA)', url_for(locale: locales.last)
+          %li#mysolar_suggestions_for_mobile
+            = link_to t(:mysolar_suggestions), 'https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ', target: '_blank', :'aria-label' => t(:mysolar_suggestions) + t(:new_window)
 
     #loading
       %h2=t(:page_loading)
