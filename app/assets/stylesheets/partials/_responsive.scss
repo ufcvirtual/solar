@@ -268,16 +268,7 @@
     background: rgba(0, 0, 0, 0.4);
   }
 
-  #logout,
-  #help-link,
-  #server_clock,
-  #student-name,
-  #mysolar_extras,
-  #mysolar_top_logout,
-  #accessibility-link,
-  #server_clock_wrapper,
-  #mysolar_tabs_wrapper,
-  #mysolar_open_shortcut {
+  .dont-show-in-mobile {
     display: none !important;
   }
 

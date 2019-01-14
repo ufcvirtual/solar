@@ -42,13 +42,13 @@
             %li#mysolar_top_submenu_label.mysolar_top_submenu_label_regular.nav_menu
               = link_to '#void', {onclick: "mysolarTopSubmenuToggle()", class: 'mysolar_top_link nav_item', id: 'mysolar_top_user_nick'} do
                 = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", :'aria-hidden' => 'true'
-                %span#student-name= current_user.nick
-            %li#server_clock_wrapper.nav_menu
-              %span#server_clock.nav_item{name: "server_clock"}
+                %span#student-name.dont-show-in-mobile= current_user.nick
+            %li#server_clock_wrapper.nav_menu.dont-show-in-mobile
+              %span#server_clock.nav_item.dont-show-in-mobile{name: "server_clock"}
             %li#accessibility_top_menu.mysolar_top_submenu_label_regular.nav_menu
               %a#accessibility_top.mysolar_top_link.nav_item{href: "#void", onclick: "mysolarAccessibilitySubmenuToggle()", :'aria-label' =>  t(:accessibility_menu)}
                 = image_tag 'accessibility-icon2.png', id: "image_accessibility", alt: t(:accessibility), :'aria-hidden' => 'true'
-                %span#accessibility-link= t(:accessibility)
+                %span#accessibility-link.dont-show-in-mobile= t(:accessibility)
               %ul#mysolar_accessibility_submenu
                 %li.sub_nav_menu= link_to t(:main_content), "#main_content_accesskey", accesskey: "1", class: "sub_nav_item"
                 %li#link_to_menu_accesskey.sub_nav_menu= link_to t(:menu_aside), "#menu_accesskey", accesskey: "2", class: "sub_nav_item"
@@ -64,15 +64,15 @@
             %li#mysolar_top_help.mysolar_top_submenu_label_regular.nav_menu
               %a#help_top.mysolar_top_link.nav_item{href: "#void", onclick: "mysolarTopSubmenuHelpToggle()"}
                 = image_tag 'help-icon2.png', id: "image_help", alt: t(:help), :'aria-hidden' => 'true'
-                %span#help-link= t(:help)
+                %span#help-link.dont-show-in-mobile= t(:help)
               %ul#mysolar_submenu_help
-                %li.sub_nav_menu= link_to t(:context), "#", id: 'help_context', class: "sub_nav_item"
+                %li.sub_nav_menu.dont-show-in-mobile= link_to t(:context), "#", id: 'help_context', class: "sub_nav_item"
                 %li.sub_nav_menu= link_to t('tutorials.menu'), tutorials_path, id: 'my_tutorials', class: "sub_nav_item"
                 %li.sub_nav_menu= link_to t(:login_faq), faq_path, class: "sub_nav_item", :'aria-label' => t(:login_faq)
                 %li.sub_nav_menu= link_to t(:videos), "../../video_tutorials.html", target: "_blank", class: "sub_nav_item", :'aria-label' => t(:videos)+ t(:new_window)
                 %li.sub_nav_menu= link_to t(:contact), support_new_messages_path, class: "sub_nav_item"
-            %li#mysolar_top_logout.nav_menu
-              = link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, id: "logout", class: "mysolar_top_link logout nav_item")
+            %li#mysolar_top_logout.nav_menu.dont-show-in-mobile
+              = link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, id: "logout", class: "mysolar_top_link logout nav_item dont-show-in-mobile")
         / Submenu
         #mysolar_top_submenu
           %div
@@ -96,7 +96,7 @@
           .bar3
 
         #mysolar_tabs{role: 'menubar'}
-          %ul#mysolar_tabs_wrapper= raw render_tabs
+          %ul#mysolar_tabs_wrapper.dont-show-in-mobile= raw render_tabs
           %ul#mysolar_tabs_wrapper_with_dropdown
             - unless user_session[:tabs][:opened].nil?
               - if user_session[:tabs][:opened]["Home"] && user_session[:tabs][:opened]["Home"][:url][:context] == Context_General
@@ -126,8 +126,8 @@
                             = link_to(name_tab.truncate(30), activate_tab_path(id: id), :'aria-label'=>t('tabs.access', name: name_tab), style: "display: inline-block; padding: 0 10px;")
                             = link_to('',close_tab_path(id: id), class: 'tabs_close', id: "#{active_tab_id}", :'aria-label' => t('tabs.close', name: name_tab), style: "display: inline-block; padding: 0; left: -2px;", data: { confirm: t('tabs.close_confirm', name: name_tab) })
                           %br
-          %ul#mysolar_extras
-            %li#mysolar_open_shortcut
+          %ul#mysolar_extras.dont-show-in-mobile
+            %li#mysolar_open_shortcut.dont-show-in-mobile
               %a.btn.btn_main#shortcut_accesskey{ href: '#', :"data-dropdown" => "#dropdown_eq_1_2", :'aria-label' => t('scores.info.shortcut'), accesskey: 9, "data-tooltip" => t('scores.info.shortcut')}
                 = t('scores.info.shortcut')
                 %i.icon-arrow-down-triangle
