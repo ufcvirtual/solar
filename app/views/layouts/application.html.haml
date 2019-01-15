@@ -47,7 +47,7 @@
               %span#server_clock.nav_item.dont-show-in-mobile{name: "server_clock"}
             %li#accessibility_top_menu.mysolar_top_submenu_label_regular.nav_menu
               %a#accessibility_top.mysolar_top_link.nav_item{href: "#void", onclick: "mysolarAccessibilitySubmenuToggle()", :'aria-label' =>  t(:accessibility_menu)}
-                = image_tag 'accessibility-icon2.png', id: "image_accessibility", alt: t(:accessibility), :'aria-hidden' => 'true'
+                = image_tag 'accessibility-icon2.png', id: "image_accessibility", class: "show-only-in-mobile", alt: t(:accessibility), :'aria-hidden' => 'true'
                 %span#accessibility-link.dont-show-in-mobile= t(:accessibility)
               %ul#mysolar_accessibility_submenu
                 %li.sub_nav_menu= link_to t(:main_content), "#main_content_accesskey", accesskey: "1", class: "sub_nav_item"
@@ -63,7 +63,7 @@
                   %li.sub_nav_menu=link_to t(:libras), 'http://www.vlibras.gov.br/', target: '_blank', 'aria-label'=> t(:libras) + t(:new_window), class: "sub_nav_item"
             %li#mysolar_top_help.mysolar_top_submenu_label_regular.nav_menu
               %a#help_top.mysolar_top_link.nav_item{href: "#void", onclick: "mysolarTopSubmenuHelpToggle()"}
-                = image_tag 'help-icon2.png', id: "image_help", alt: t(:help), :'aria-hidden' => 'true'
+                = image_tag 'help-icon2.png', id: "image_help", class: "show-only-in-mobile", alt: t(:help), :'aria-hidden' => 'true'
                 %span#help-link.dont-show-in-mobile= t(:help)
               %ul#mysolar_submenu_help
                 %li.sub_nav_menu.dont-show-in-mobile= link_to t(:context), "#", id: 'help_context', class: "sub_nav_item"
@@ -97,7 +97,7 @@
 
         #mysolar_tabs{role: 'menubar'}
           %ul#mysolar_tabs_wrapper.dont-show-in-mobile= raw render_tabs
-          %ul#mysolar_tabs_wrapper_with_dropdown
+          %ul#mysolar_tabs_wrapper_with_dropdown.show-only-in-mobile
             - unless user_session[:tabs][:opened].nil?
               - if user_session[:tabs][:opened]["Home"] && user_session[:tabs][:opened]["Home"][:url][:context] == Context_General
                 %li.mysolar_unit_tab.general_context{:'data-tab-context'=>"#{Context_General}", :'data-tab-id'=>"home", class: user_session[:tabs][:active] == "Home" ? "mysolar_unit_active_tab" : ""}
@@ -231,7 +231,7 @@
             %ul.choice-language-menu
               %li{class: "language pt_BR #{(selected == locales.first) ? 'selected' : ''}"}= link_to 'Português (BR)', url_for(locale: locales.first)
               %li{class: "language en_US #{(selected == locales.last) ? 'selected' : ''}"}= link_to 'English (USA)', url_for(locale: locales.last)
-          %li#mysolar_suggestions_for_mobile
+          %li.show-only-in-mobile
             = link_to t(:mysolar_suggestions), 'https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ', target: '_blank', :'aria-label' => t(:mysolar_suggestions) + t(:new_window)
 
     #loading

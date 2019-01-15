@@ -9,21 +9,36 @@
         - if @can_see_preview
           = link_to content_tag(:i, nil, class: 'icon-eye', :'data-tooltip' => t('questions.question.preview')), "#void", onclick: 'preview_exam(this)', :'data-url' => preview_exam_path(exam, allocation_tags_ids: @allocation_tags_ids), class: 'preview_exam'
         - unless exam.result_release.blank?
-          %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{exam.id}", :'data-tooltip' => t('exams.list.info_exam'), onkeydown: 'click_on_keypress(event, this);' }
+          %a{ href: '#void', class: "dont-show-in-mobile", :"data-dropdown" => "#dropdown_eq_#{exam.id}", :'data-tooltip' => t('exams.list.info_exam'), onkeydown: 'click_on_keypress(event, this);' }
             %i.icon-info2
           .dropdown.dropdown-tip{ id: "dropdown_eq_#{exam.id}" }
             %ul{ class: 'dropdown-menu' }
               = raw t('exams.list.liberated', datetime: l(exam.result_release, format: :at_date))
         = link_to (content_tag(:i, nil, class: 'icon-edit')), edit_exam_path(exam, allocation_tags_ids: @allocation_tags_ids), class: 'block_title_button edit_exam', :'data-tooltip' => t('exams.list.edit_exam')
         = link_to (content_tag(:i, nil, class: 'icon-trash')), "#void", onclick: 'delete_exam(this)', class: 'block_title_button delete_exam', :'data-link-delete' => exam_path(exam, allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('exams.list.delete_exam'), :"data-parent" => "exam_#{exam.id}"
+        %a{ href: '#void', class: "show-only-in-mobile", :"data-dropdown" => "#dropdown_eq_#{exam.id}", :'data-tooltip' => t('exams.list.info_exam'), onkeydown: 'click_on_keypress(event, this);' }
+          %i.icon-info2
+        .dropdown.dropdown-tip{ id: "dropdown_eq_#{exam.id}" }
+          %ul{ class: 'dropdown-menu' }
+            %li
+              %span.draft{ class: (exam.status ? 'invisible' : '') }
+                = label_tag :draft_exam, t('exams.list.draft_exam')
+            %li
+              - hours = exam.start_hour.blank? ? '' : [exam.start_hour, exam.end_hour].join(t('exams.list.to'))
+              = label_tag t('exams.list.period', dstart: l(exam.schedule.start_date, format: :normal), dend: l(exam.schedule.end_date, format: :normal) , hours: hours)
+            %li
+              = label_tag t('exams.list.amount_questions', added: count, amount: exam.number_questions)
+            - unless exam.result_release.blank?
+              %li
+                = raw t('exams.list.liberated', datetime: l(exam.result_release, format: :at_date))
 
       .right
-        %span.draft{ class: (exam.status ? 'invisible' : '') }
+        %span.draft.dont-show-in-mobile{ class: (exam.status ? 'invisible' : '') }
           = content_tag(:i, nil, class: 'icon-warning')
           = label_tag :draft_exam, t('exams.list.draft_exam')
         - hours = exam.start_hour.blank? ? '' : [exam.start_hour, exam.end_hour].join(t('exams.list.to'))
-        = label_tag  t('exams.list.period', dstart: l(exam.schedule.start_date, format: :normal), dend: l(exam.schedule.end_date, format: :normal) , hours: hours)
-        = label_tag t('exams.list.amount_questions', added: count, amount: exam.number_questions)
+        = label_tag t('exams.list.period', dstart: l(exam.schedule.start_date, format: :normal), dend: l(exam.schedule.end_date, format: :normal) , hours: hours), nil, class: "dont-show-in-mobile"
+        = label_tag t('exams.list.amount_questions', added: count, amount: exam.number_questions), nil, class: "dont-show-in-mobile"
         - if show_buttons
           - if exam.status && exam.ended? && exam.allow_calculate_grade?
             = link_to (t('exams.list.calculate')), "#void", onclick: 'calcule_grade_exam(this)', class: "btn btn_main calculate", :'data-url' => calculate_grade_exam_path(exam, allocation_tags_ids: @allocation_tags_ids)

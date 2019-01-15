@@ -5,18 +5,19 @@
 
     .block_content.allocations_list
       - unless @allocations.blank?
-        %table.tb_list
-          %thead
-            %tr.lines
-              %th= t(:name, scope: 'allocations.designates')
-              %th{style: 'width:80px'}= t(:cpf, scope: 'allocations.designates')
-              %th{style: 'width:200px'}= t(:email, scope: 'allocations.designates')
-              %th{style: 'width:120px'}= t(:profile, scope: 'allocations.designates')
-              %th{style: 'width: 80px'}= t(:designated_by, scope: 'allocations.designates')
-              %th.no_sort
-          %tbody
-            - @allocations.each do |allocation|
-              = render partial: "allocations/show", locals: {allocation: allocation}
+        .responsive-table
+          %table.tb_list
+            %thead
+              %tr.lines
+                %th= t(:name, scope: 'allocations.designates')
+                %th{style: 'width:80px'}= t(:cpf, scope: 'allocations.designates')
+                %th{style: 'width:200px'}= t(:email, scope: 'allocations.designates')
+                %th{style: 'width:120px'}= t(:profile, scope: 'allocations.designates')
+                %th{style: 'width: 80px'}= t(:designated_by, scope: 'allocations.designates')
+                %th.no_sort
+            %tbody
+              - @allocations.each do |allocation|
+                = render partial: "allocations/show", locals: {allocation: allocation}
 
       - else
         .block_content_text_list.text_none= t(:no_allocated_user, scope: 'allocations.designates')

@@ -13,7 +13,6 @@
   }
   .btn {
     text-align: center;
-    padding: 12px;
     border-radius: 10px;
     margin: 0 auto 5px auto;
     display: block;
@@ -94,7 +93,6 @@
 
 @mixin tags_div{
   display: inline-block;
-  width: 300px;
   margin: 5px;
 }
 

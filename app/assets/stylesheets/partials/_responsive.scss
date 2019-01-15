@@ -220,7 +220,7 @@
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 @media not all and (max-width: 576px) {
-  #image_accessibility, #image_help, #mysolar_tabs_wrapper_with_dropdown, #mysolar_suggestions_for_mobile {
+  .show-only-in-mobile {
     display: none !important;
   }
 
@@ -270,6 +270,10 @@
 
   .dont-show-in-mobile {
     display: none !important;
+  }
+
+  .show-only-in-mobile {
+    display: inline-block !important;
   }
 
   #image_accessibility, #image_help, #mysolar_tabs_wrapper_with_dropdown, #mysolar_suggestions_for_mobile {
