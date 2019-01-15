@@ -70,6 +70,12 @@
   margin-top: 2px;
 }
 
+@media (max-width: 576px){
+  #faq .content, #privacy .content{
+    width: 93% !important;
+  }
+}
+
 #faq .content, #privacy .content{
   width: 650px;
 }

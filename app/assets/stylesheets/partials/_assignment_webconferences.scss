@@ -62,9 +62,12 @@
 }
 
 .simple_form.awebconference_form{
-  min-width: 500px;
-  .input.assignment_webconference_title, .input.assignment_webconference_duration, .input.assignment_webconference_initial_time{
-    display: inline-block;
+  // min-width: 500px;
+  .input {
+    display: inline-flex;
+    .assignment_webconference_title, .assignment_webconference_duration, .assignment_webconference_initial_time {
+      margin-right: 10px;
+    }
   }
 }
 
