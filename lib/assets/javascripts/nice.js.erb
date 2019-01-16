@@ -11,7 +11,7 @@ $.fn.nice_checkbox = function(options) {
   if (typeof(options) != "undefined" && typeof(options.parent_div) != "undefined")
     parent_block_div = options.parent_div;
   else{
-    if (!((parent_block_div = $(parent).parents("table").parent()).length))
+    if (!((parent_block_div = $(parent).parents("table").parent().parent()).length))
       parent_block_div = $(parent).parents(":nth-of-type(1)");
   }
 
