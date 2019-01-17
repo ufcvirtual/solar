@@ -29,9 +29,9 @@ module V1
       get "/:student_id/all" , rabl: 'assignments/info' do
         @student = User.find(params[:student_id].to_i)
         ac = AcademicAllocation.where(allocation_tag_id: params[:allocation_tag_id].to_i, academic_tool_type: 'Assignment')
-        acus_indi = AcademicAllocationUser.where(user_id: params[:student_id].to_i).where(academic_allocation_id: ac.map(&:id))
-        acus_groups = AcademicAllocationUser.where('group_assignment_id IS NOT NULL').where(academic_allocation_id: ac.map(&:id))
-        @acus = acus_indi.concat(acus_groups)
+        @acus = AcademicAllocationUser.where("(user_id = ? OR group_assignment_id IS NOT NULL)", params[:student_id].to_i).where(academic_allocation_id: ac.map(&:id))
+        #p acus_groups = AcademicAllocationUser.where('group_assignment_id IS NOT NULL').where(academic_allocation_id: ac.map(&:id))
+        #@acus = acus_indi.to_a.concat(acus_groups.to_a)
       end
 
       desc "Enviar arquivo de trabalho"

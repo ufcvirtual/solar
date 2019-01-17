@@ -76,3 +76,8 @@
 
     curl -i -H 'Accept: application/json' -H 'Authorization: Bearer 67d9b0593611c8758576c8d75ce9f2b5450e2436e0911d331b24703592ddb939' \
       -X GET http://localhost:3000/api/v1/groups/3/support_material_files
+
+
+      http://localhost:3000/api/v1/assignments?allocation_tag_id=3
+
+      http://localhost:3000/api/v1/assignments/8/all?allocation_tag_id=3
