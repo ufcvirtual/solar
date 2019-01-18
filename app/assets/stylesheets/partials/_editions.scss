@@ -74,7 +74,13 @@ fieldset {
 
 .edition .filter .groups{
   @include tags_div;
-  margin-left: 28px;
+}
+
+@media (min-width: 576px) {
+  .edition .filter .groups {
+    width: 300px;
+    margin-left: 28px;
+  }
 }
 
 .edition p{

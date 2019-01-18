@@ -48,7 +48,7 @@
 }
 
 .position_correction {
-  float: right;
+  float: right !important;
 }
 
 /* Grid
@@ -344,7 +344,12 @@
     display: block;
   }
 
-  #autocomplete-input-curriculum_unit_type, #autocomplete-input-course, #autocomplete-input-curriculum_unit, #autocomplete-input-semester, #autocomplete-input-contacts_type, [id^='autocomplete-input-'], .ui-combobox {
+  #autocomplete-input-curriculum_unit_type,
+  #autocomplete-input-course,
+  #autocomplete-input-curriculum_unit,
+  #autocomplete-input-semester,
+  #autocomplete-input-contacts_type,
+  [id^='autocomplete-input-'], .ui-combobox {
     width: 98% !important;
   }
 
@@ -357,8 +362,96 @@
     float: right;
   }
 
-  .edition_content {
+  .edition_content, .bibliography_title {
     clear: both;
+  }
+
+  .bibliography_authors_name,
+  .group_label,
+  .bibliography_address {
+    min-width: 155px !important;
+
+    label {
+      width: 45px !important;
+    }
+  }
+
+  #bibliography_publisher,
+  #bibliography_count_pages,
+  #bibliography_volume,
+  #bibliography_edition,
+  #bibliography_publication_year,
+  #bibliography_fascicle,
+  #bibliography_pages,
+  #bibliography_publication_month,
+  #bibliography_periodicity,
+  #bibliography_issn,
+  #bibliography_periodicity_year_start,
+  #bibliography_periodicity_year_end,
+  #bibliography_subtitle,
+  #bibliography_address,
+  #bibliography_article_periodicity_title,
+  .bibliography_publisher,
+  .bibliography_volume,
+  .bibliography_edition,
+  .bibliography_publication_year,
+  .bibliography_address,
+  .bibliography_count_pages,
+  .bibliography_pages,
+  .bibliography_article_periodicity_title,
+  .bibliography_publication_month,
+  .bibliography_fascicle,
+  .bibliography_periodicity,
+  .bibliography_issn,
+  .bibliography_periodicity_year_start,
+  .bibliography_periodicity_year_end {
+    width: 100% !important;
+    min-width: 155px !important;
+  }
+
+  .bibliography_issn label {
+    width: 35px !important;
+  }
+
+  .bibliography_title label,
+  .bibliography_subtitle label {
+    width: 45px !important;
+  }
+
+  .bibliography_volume label,
+  .bibliography_fascicle label {
+    width: 50px !important;
+  }
+
+  .bibliography_publisher label,
+  .bibliography_edition label {
+    width: 55px !important;
+  }
+
+  .bibliography_article_periodicity_title label,
+  .bibliography_pages label,
+  .bibliography_publication_month label {
+    width: 60px !important;
+  }
+
+  .bibliography_count_pages label,
+  .bibliography_periodicity label {
+    width: 85px !important;
+  }
+
+  #bibliography_additional_information,
+  #bibliography_title,
+  #bibliography_form .files {
+    width: 100%;
+  }
+
+  .duplicate_nested_form {
+    margin-top: 16px;
+  }
+
+  .destroy_duplicate_nested_form {
+    position: relative !important;
+    top: 22px !important;
   }
 }
 
@@ -402,6 +495,9 @@
   }
   .col-sm-5 {
     width: 41.66666667%;
+  }
+  .col-sm-5-75 {
+    width: 47.9166475%;
   }
   .col-sm-4 {
     width: 33.33333333%;
