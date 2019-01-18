@@ -15,9 +15,9 @@
 
   - unless @groups.blank?
     .block_content.groups
-      .block_left.col-xs-12.col-sm-5-75
+      .block_left.col-xs-12.col-sm-5-80
         = render 'group_list', groups: part1, hide_edition: true
-      .block_right.col-xs-12.col-sm-5-75.position_correction
+      .block_right.col-xs-12.col-sm-5-80.position_correction
         = render 'group_list', groups: part2, hide_edition: true
   - else
     .block_content_text_list.text_none= t('.none')
