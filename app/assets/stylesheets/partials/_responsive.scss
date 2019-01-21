@@ -49,6 +49,9 @@
 
 .position_correction {
   float: right !important;
+  .form_requirement {
+    position: relative;
+  }
 }
 
 /* Grid
@@ -414,34 +417,23 @@
     min-width: 155px !important;
   }
 
-  .bibliography_issn label {
-    width: 35px !important;
-  }
-
   .bibliography_title label,
-  .bibliography_subtitle label {
-    width: 45px !important;
-  }
-
+  .bibliography_subtitle label,
+  .bibliography_issn label,
   .bibliography_volume label,
-  .bibliography_fascicle label {
-    width: 50px !important;
-  }
-
+  .bibliography_fascicle label,
   .bibliography_publisher label,
-  .bibliography_edition label {
-    width: 55px !important;
-  }
-
+  .bibliography_edition label,
   .bibliography_article_periodicity_title label,
   .bibliography_pages label,
-  .bibliography_publication_month label {
-    width: 60px !important;
-  }
-
+  .bibliography_publication_month label,
   .bibliography_count_pages label,
-  .bibliography_periodicity label {
-    width: 85px !important;
+  .bibliography_periodicity label,
+  .bibliography_additional_information label,
+  .bibliography_accessed_in label,
+  .bibliography_url label,
+  .bibliography_periodicity_year_start label {
+    text-align: left !important;
   }
 
   #bibliography_additional_information,
