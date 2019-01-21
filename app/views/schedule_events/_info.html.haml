@@ -17,7 +17,7 @@
 - if @schedule_event.persisted?
   .input
     = f.label :type_event
-    %span= label_tag types.index(@schedule_event.type_event), nil, class: "label_right"
+    %span= label_tag types.key(@schedule_event.type_event), nil, class: "label_right"
 - else
   = f.input :type_event, collection: types, disabled: !can_change, include_blank: false
 %span{style: show_fields ? "" : "display: none"}

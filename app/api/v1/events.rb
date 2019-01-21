@@ -12,7 +12,7 @@ module V1
       end
       put "/:id" do
         begin
-          ac = AcademicAllocation.where(id: params[:id], academic_tool_type: 'ScheduleEvent').first
+          ac = AcademicAllocation.where(academic_tool_id: params[:id], academic_tool_type: 'ScheduleEvent').first
           raise ActiveRecord::RecordNotFound if ac.blank?
           event = ScheduleEvent.find(ac.academic_tool_id)
 
@@ -66,7 +66,7 @@ module V1
       delete "/:ids" do
         begin
           AcademicAllocation.transaction do
-            acs = AcademicAllocation.where(id: params[:ids].split(','), academic_tool_type: 'ScheduleEvent')
+            acs = AcademicAllocation.where(academic_tool_id: params[:ids].split(','), academic_tool_type: 'ScheduleEvent')
             raise ActiveRecord::RecordNotFound if acs.empty?
             event = ScheduleEvent.find(acs.first.academic_tool_id)
 
@@ -123,10 +123,10 @@ module V1
       
         desc "Enviar arquivo para aluno"
         post "/send_file" do  
-          academic_allocation = AcademicAllocation.where(allocation_tag_id: params[:allocation_tag_id].to_i).where(academic_tool_id: params[:id].to_i)
-          academic_allocation_user = AcademicAllocationUser.where(academic_allocation_id: academic_allocation[0].id).where(user_id: params[:student_id].to_i)
+          academic_allocation = AcademicAllocation.where(allocation_tag_id: params[:allocation_tag_id].to_i).where("academic_tool_id = ? AND academic_tool_type='ScheduleEvent'", params[:id].to_i).first
+          academic_allocation_user = AcademicAllocationUser.where(academic_allocation_id: academic_allocation.id).where(user_id: params[:student_id].to_i).first
           
-          sef = ScheduleEventFile.new({user_id: current_user.id, academic_allocation_user_id: academic_allocation_user[0].id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
+          sef = ScheduleEventFile.new({user_id: current_user.id, academic_allocation_user_id: academic_allocation_user.id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
           sef.save!
 
           {ok: :ok}
@@ -161,10 +161,10 @@ module V1
           requires :allocation_tag_id, type: Integer, desc: "AllocationTagId da Turma"
         end
         get ":id/sent_files/:student_id", rabl: 'events/files' do
-          academic_allocation = AcademicAllocation.where(allocation_tag_id: params[:allocation_tag_id].to_i).where(academic_tool_id: params[:id].to_i)
-          academic_allocation_user = AcademicAllocationUser.where(academic_allocation_id: academic_allocation[0].id).where(user_id: params[:student_id].to_i)
+          academic_allocation = AcademicAllocation.where(allocation_tag_id: params[:allocation_tag_id].to_i).where("academic_tool_id = ? AND academic_tool_type='ScheduleEvent'",params[:id].to_i).first
+          academic_allocation_user = AcademicAllocationUser.where(academic_allocation_id: academic_allocation.id).where(user_id: params[:student_id].to_i).first
           
-          @schedule_event_files = ScheduleEventFile.where(academic_allocation_user_id: academic_allocation_user[0].id)
+          @schedule_event_files = ScheduleEventFile.where(academic_allocation_user_id: academic_allocation_user.id)
         end
       
       end

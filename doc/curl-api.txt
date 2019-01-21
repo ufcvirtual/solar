@@ -77,7 +77,73 @@
     curl -i -H 'Accept: application/json' -H 'Authorization: Bearer 67d9b0593611c8758576c8d75ce9f2b5450e2436e0911d331b24703592ddb939' \
       -X GET http://localhost:3000/api/v1/groups/3/support_material_files
 
+  ---
+  -- assignments
+  ---
 
-      http://localhost:3000/api/v1/assignments?allocation_tag_id=3
+    curl -i -H 'Accept: application/json' -H 'Authorization: Bearer 67d9b0593611c8758576c8d75ce9f2b5450e2436e0911d331b24703592ddb939' \
+      -X GET  http://localhost:3000/api/v1/assignments?allocation_tag_id=3
 
-      http://localhost:3000/api/v1/assignments/8/all?allocation_tag_id=3
+    curl -i -H 'Accept: application/json' -H 'Authorization: Bearer 67d9b0593611c8758576c8d75ce9f2b5450e2436e0911d331b24703592ddb939' \
+      -X GET  http://localhost:3000/api/v1/assignments/8/all?allocation_tag_id=3
+     
+
+  ---
+  -- webconferences
+  ---
+
+    curl -i -H 'Accept: application/json' -H 'Authorization: Bearer 67d9b0593611c8758576c8d75ce9f2b5450e2436e0911d331b24703592ddb939' \
+      -X GET  http://localhost:3000/api/v1/webconferences/3/
+      
+    curl -i -H 'Accept: application/json' -H 'Authorization: Bearer 67d9b0593611c8758576c8d75ce9f2b5450e2436e0911d331b24703592ddb939' \
+      -X GET  http://localhost:3000/api/v1/webconferences/3/access/4
+
+    curl -i -H 'Accept: application/json' -H 'Authorization: Bearer 67d9b0593611c8758576c8d75ce9f2b5450e2436e0911d331b24703592ddb939' \
+      -X GET  http://localhost:3000/api/v1/webconferences/3/recordings/5 
+
+   
+  ---
+  -- events
+  ---
+
+    curl -i -H 'Accept: application/json' -H 'Authorization: Bearer 67d9b0593611c8758576c8d75ce9f2b5450e2436e0911d331b24703592ddb939' \
+      -X GET  http://localhost:3000/api/v1/events?allocation_tag_id=3  
+
+    curl -i -H 'Accept: application/json' -H 'Authorization: Bearer 67d9b0593611c8758576c8d75ce9f2b5450e2436e0911d331b24703592ddb939' \
+      -X GET  http://localhost:3000/api/v1/events/3/participants?allocation_tag_id=3 
+
+    curl -i -H 'Accept: application/json' -H 'Authorization: Bearer 67d9b0593611c8758576c8d75ce9f2b5450e2436e0911d331b24703592ddb939' \
+      -X GET  http://localhost:3000/api/v1/events/3/responsibles?allocation_tag_id=3
+
+    curl -i -H 'Accept: application/json' -H 'Authorization: Bearer 67d9b0593611c8758576c8d75ce9f2b5450e2436e0911d331b24703592ddb939' \
+      -X GET  http://localhost:3000/api/v1/events/3/grade/1?allocation_tag_id=3 
+
+    curl -i -H 'Accept: application/json' -H 'Authorization: Bearer 67d9b0593611c8758576c8d75ce9f2b5450e2436e0911d331b24703592ddb939' \
+      -X GET  http://localhost:3000/api/v1/events/5/comments/7?allocation_tag_id=3
+
+    curl -i -H 'Accept: application/json' -H 'Authorization: Bearer 67d9b0593611c8758576c8d75ce9f2b5450e2436e0911d331b24703592ddb939' \
+      -X GET  http://localhost:3000/api/v1/events/5/sent_files/7?allocation_tag_id=3  
+
+    -- enviar arquivo para event
+
+    curl -i -H 'Accept: application/json' -H 'Content-Type: application/json' \
+        -H 'Authorization: Bearer be5cddf2975a398ffa1d82f82b849ace2c02decc143013c5b47b3aed6fa430f1' \
+        -X POST http://localhost:3000/api/v1/events/send_file -d '{"allocation_tag_id": 3, "student_id": 1, "file": "teste.pdf", "id": 5}'
+
+    -- create event
+
+      curl -i -H 'Accept: application/json' -H 'Content-Type: application/json' \
+        -H 'Authorization: Bearer be5cddf2975a398ffa1d82f82b849ace2c02decc143013c5b47b3aed6fa430f1' \
+        -X POST http://localhost:3000/api/v1/events/ -d '{"groups[]": "QM-CAU", "course_code": "109"  "curriculum_unit_code": "RM301"  "semester": "2011.1",  "event": {"date": "2019-01-25", "start": "08:00", "end": "12:00",  "type": 6}}'
+
+     -- alterar event  
+      curl -i -H 'Accept: application/json' -H 'Content-Type: application/json' \
+        -H 'Authorization: Bearer be5cddf2975a398ffa1d82f82b849ace2c02decc143013c5b47b3aed6fa430f1' \
+        -X PUT http://localhost:3000/api/v1/event/5 -d '{"date": '2019-01-30' "start": '08:00' "end": '12:00'}'
+
+    -- deletar event 
+      curl -i -H 'Accept: application/json' -H 'Content-Type: application/json' \
+        -H 'Authorization: Bearer be5cddf2975a398ffa1d82f82b849ace2c02decc143013c5b47b3aed6fa430f1' \
+        -X DELETE http://localhost:3000/api/v1/events/44
+      
+     

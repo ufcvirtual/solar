@@ -41,6 +41,8 @@ module V1::EventsH
       acs = []
       params[:groups].each do |group_name|
         group = get_offer_group(offer, group_name)
+        p group_name
+        p offer
         ac = event.academic_allocations.where(allocation_tag_id: group.allocation_tag.id).first_or_initialize
         if ac.new_record?
           ac.merge = true
