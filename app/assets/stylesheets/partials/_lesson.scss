@@ -55,6 +55,10 @@
   background-color: $lesson_area_background;
 }
 
+.block_wrapper.module {
+  width: 100%;
+}
+
 #lesson_header {
   font-size: 12pt;
   font-family: 'PT Sans';

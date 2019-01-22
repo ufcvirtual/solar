@@ -279,6 +279,17 @@
     display: inline-block !important;
   }
 
+  #steps {
+    width: 120px !important;
+    ul {
+      width: 120px !important;
+      li{
+        display: block;
+        width: 120px !important;
+      }
+    }
+  }
+
   #image_accessibility, #image_help, #mysolar_tabs_wrapper_with_dropdown, #mysolar_suggestions_for_mobile {
     display: inline-block;
   }
@@ -365,7 +376,9 @@
     float: right;
   }
 
-  .edition_content, .bibliography_title {
+  .edition_content,
+  .bibliography_title,
+  .nested_exam_ip_reals {
     clear: both;
   }
 
@@ -394,11 +407,18 @@
   #bibliography_subtitle,
   #bibliography_address,
   #bibliography_article_periodicity_title,
+  #assignment_name,
+  #assignment_enunciation,
   #chat_room_title,
   #chat_room_description,
   #webconference_title,
   #webconference_description,
   #webconference_initial_time,
+  #schedule_event_title,
+  #schedule_event_type_event,
+  #schedule_event_place,
+  #schedule_event_description,
+  #support_material_file_title,
   .bibliography_publisher,
   .bibliography_volume,
   .bibliography_edition,
@@ -412,7 +432,19 @@
   .bibliography_periodicity,
   .bibliography_issn,
   .bibliography_periodicity_year_start,
-  .bibliography_periodicity_year_end {
+  .bibliography_periodicity_year_end,
+  .assignment_name,
+  .assignment_enunciation,
+  .chat_room_title,
+  .chat_room_description,
+  .webconference_title,
+  .webconference_description,
+  .webconference_initial_time,
+  .schedule_event_title,
+  .schedule_event_type_event,
+  .schedule_event_place,
+  .schedule_event_description,
+  .support_material_file_title {
     width: 100% !important;
     min-width: 155px !important;
   }
@@ -432,18 +464,80 @@
   .bibliography_additional_information label,
   .bibliography_accessed_in label,
   .bibliography_url label,
-  .bibliography_periodicity_year_start label {
+  .bibliography_periodicity_year_start label,
+  .assignment_name label,
+  .assignment_enunciation label,
+  .assignment_schedule_start_date label,
+  .assignment_schedule_end_date label,
+  .assignment_start_hour label,
+  .assignment_end_hour label,
+  .assignment_type_assignment label,
+  .chat_room_title label,
+  .chat_room_description label,
+  .chat_room_schedule_start_date label,
+  .chat_room_start_hour label,
+  .schedule_event_title label,
+  .schedule_event_type_event label,
+  .schedule_event_place label,
+  .schedule_event_description label,
+  .schedule_event_schedule_start_date label,
+  .schedule_event_start_hour label,
+  .discussion_name label,
+  .discussion_description label,
+  .discussion_schedule_start_date label,
+  .notification_title label,
+  .notification_schedule_start_date label,
+  .support_material_file_title label,
+  .support_material_file_url label,
+  .exam_name label,
+  .exam_description label,
+  .exam_schedule_start_date label,
+  .exam_schedule_end_date label,
+  .exam_start_hour label,
+  .exam_end_hour label,
+  .exam_duration label,
+  .exam_result_release label {
     text-align: left !important;
   }
 
   #bibliography_additional_information,
   #bibliography_title,
-  #bibliography_form .files {
-    width: 100%;
+  #bibliography_form .files,
+  #support_material_form .files,
+  #event_file_form .files,
+  #participants_box,
+  .box {
+    width: 100% !important;
+  }
+
+  .files_list {
+    overflow-y: auto;
   }
 
   .duplicate_nested_form {
     margin-top: 16px;
+  }
+
+  #participants_box {
+    margin-left: 20px !important;
+  }
+
+  #save_automatically_message {
+    margin-left: 0 !important;
+    text-align: justify !important;
+  }
+
+  .schedule_dates .right_form {
+    margin-left: 0px !important;
+  }
+
+  .discussion_description,
+  #until-date {
+    margin: 0 !important;
+  }
+
+  .profile_ckb {
+    margin-left: 5px !important;
   }
 
   .destroy_duplicate_nested_form {
