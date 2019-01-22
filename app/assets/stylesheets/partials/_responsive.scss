@@ -419,6 +419,7 @@
   #schedule_event_place,
   #schedule_event_description,
   #support_material_file_title,
+  #lesson_description,
   .bibliography_publisher,
   .bibliography_volume,
   .bibliography_edition,
@@ -496,8 +497,28 @@
   .exam_start_hour label,
   .exam_end_hour label,
   .exam_duration label,
-  .exam_result_release label {
+  .exam_result_release label,
+  .lesson_module label,
+  .lesson_name label,
+  .lesson_description label,
+  .lesson_schedule_start_date label,
+  .lesson_type label,
+  .privacy label,
+  .responsive label,
+  .lesson_address label {
     text-align: left !important;
+  }
+
+  .responsive,
+  .checkbox_label,
+  .box label,
+  .profiles label {
+    display: inline-flex;
+  }
+
+  #all,
+  .profile_ckb input {
+    min-width: 15px !important;
   }
 
   #bibliography_additional_information,
@@ -536,8 +557,16 @@
     margin: 0 !important;
   }
 
+  #profiles_box {
+    width: 200px !important;
+  }
+
   .profile_ckb {
     margin-left: 5px !important;
+    margin-bottom: 5px !important;
+    input {
+      margin-right: 5px !important;
+    }
   }
 
   .destroy_duplicate_nested_form {

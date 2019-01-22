@@ -371,3 +371,7 @@ input::-moz-focus-inner {
   @include background-image(linear-gradient($btn_orange, darken($btn_orange, 15%)));
   background-repeat: repeat-x;
 }
+
+.left_buttons {
+  float: left;
+}
