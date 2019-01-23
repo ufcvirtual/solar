@@ -281,6 +281,7 @@
 
   #steps {
     width: 120px !important;
+    margin: 20px auto !important;
     ul {
       width: 120px !important;
       li{
@@ -290,7 +291,10 @@
     }
   }
 
-  #image_accessibility, #image_help, #mysolar_tabs_wrapper_with_dropdown, #mysolar_suggestions_for_mobile {
+  #image_accessibility,
+  #image_help,
+  #mysolar_tabs_wrapper_with_dropdown,
+  #mysolar_suggestions_for_mobile {
     display: inline-block;
   }
 
@@ -572,6 +576,10 @@
   .destroy_duplicate_nested_form {
     position: relative !important;
     top: 22px !important;
+  }
+
+  .questions .radio label {
+    display: inline-block;
   }
 }
 
