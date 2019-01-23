@@ -2,7 +2,7 @@
   .search{
     label{
       word-wrap: break-word;
-      max-width: 60px;
+      // max-width: 60px;
       vertical-align: middle;
       margin-right: -3px;
       margin-left: -3px;
@@ -111,7 +111,7 @@
       margin-right: 14px;
     }
   }
-  
+
   .step-images.show, .step-audios.show, .step-info.show{
     visibility: visible;
   }
@@ -255,7 +255,7 @@
         width: 136px;
         display: inline-block;
         text-align: center;
-        
+
         audio{
           max-width: 160px;
           max-height: 30px;
@@ -430,7 +430,7 @@
         .input.string {
           display: inline;
         }
-      }      
+      }
     }
   }
   .add_nested_fields_link{
@@ -449,7 +449,7 @@
       border-bottom: none;
     }
     label{
-      width: 75px;
+      // width: 75px;
       text-align: right;
     }
     label#only_owner{
@@ -553,7 +553,7 @@
         list-style-type: disc;
         padding-left: 10px;
       }
-    }  
+    }
   }
   p:nth-of-type(2), p:first-of-type, span{
     display: inline-block;

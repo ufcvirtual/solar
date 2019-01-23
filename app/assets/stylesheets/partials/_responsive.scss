@@ -581,6 +581,31 @@
   .questions .radio label {
     display: inline-block;
   }
+
+  .import_something.questions {
+    .block_content_toolbar {
+      flex-direction: column;
+      label {
+        text-align: center;
+      }
+      .owner {
+        display: inline-flex;
+        margin-bottom: 10px;
+      }
+      .enum {
+        margin-bottom: 10px;
+      }
+      .author {
+        margin-bottom: 10px;
+      }
+      .hint {
+        margin-bottom: 10px;
+      }
+      .year {
+        margin-bottom: 10px;
+      }
+    }
+  }
 }
 
 @media (max-width: 768px){
