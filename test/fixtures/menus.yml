@@ -240,7 +240,7 @@ admin_digital_class:
   id: 613
   parent_id: 60
   name: menu_admin_digital_class
-  order: 13
+  order: 15
   resource_id: 210
 
 # reports_add
@@ -255,8 +255,15 @@ admin_notifications:
   id: 804
   parent_id: 60
   name: menu_admin_notifications
-  order: 15
+  order: 16
   resource_id: 228
+
+admin_report_webconference:
+  id: 805
+  parent_id: 60
+  name: menu_admin_report_webconference
+  order: 13
+  resource_id: 240
 
 # MENU PAI - 70
 disco_virtual:
