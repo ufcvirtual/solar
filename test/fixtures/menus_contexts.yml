@@ -149,6 +149,10 @@ admin_webconference:
   menu_id: 612
   context_id: 1
 
+admin_report_webconference:
+  menu_id: 805
+  context_id: 1
+
 admin_digital_class:
   menu_id: 613
   context_id: 1

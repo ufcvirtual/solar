@@ -1916,6 +1916,7 @@ pt_BR:
   menu_home: Início
   menu_admin_notifications: Avisos Gerais
   menu_events: "Eventos"
+  menu_admin_report_webconference: Relatório webconferências UAB
 
   # Componente de filtro/busca de allocationTags (places_nav_panel)
   places_nav_panel_course_hint: "Digite o nome do curso ou parte dele"

@@ -1645,6 +1645,7 @@ en_US:
   menu_home: Home
   menu_admin_notifications: General notifications
   menu_events: Events
+  menu_admin_report_webconference: UAB web conferencing report
 
   places_nav_panel_course_hint: "Type the course's name or part of it"
   places_nav_panel_semester_hint: "Type the semester or part of it"

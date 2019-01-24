@@ -1257,3 +1257,9 @@ res239:
   controller: 'scores'
   action: 'set_register_notes'
   description: 'Liberar/Bloquear registro de notas'
+
+res240:
+  id: 240
+  controller: "webconferences"
+  action: "report"
+  description: "Relatório todas as webconferencias"
