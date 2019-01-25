@@ -5,11 +5,11 @@
     background-color: $color_white_base;
   }
 
-  .block_title{
-    span.form_requirement.original_lesson{
-      padding-top: 12px;
-    }
-  }
+  // .block_title{
+  //   span.form_requirement.original_lesson{
+  //     padding-top: 12px;
+  //   }
+  // }
 
   #steps{
     width: 98%;
@@ -85,4 +85,8 @@
     justify-content: space-around;
     align-items: center;
   }
+}
+
+.add_lesson {
+  float: left;
 }

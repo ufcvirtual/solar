@@ -567,6 +567,11 @@
     width: 200px !important;
   }
 
+  .webconference_is_recorded,
+  .webconference_shared_between_groups {
+    display: inline-flex;
+  }
+
   .profile_ckb {
     margin-left: 5px !important;
     margin-bottom: 5px !important;
