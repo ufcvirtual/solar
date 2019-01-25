@@ -286,7 +286,8 @@ class WebconferencesController < ApplicationController
     @per_month_of_year = Webconference.group_by_month_of_year.rows
     @avg_max_total = Webconference.avg_max_total.rows
 
-    @all = @avg_max_total[0][3]
+    @all_uab = @avg_max_total[0][3]
+    @all = Webconference.count_rec_shared_duration.rows[0][3]
     @effective = @avg_max_total[0][4]
 
     @percent_record = ((Webconference.count_rec_shared_duration.rows[0][0].to_f / @all.to_f * 100).round(2)).to_s.gsub!(/\./,",")

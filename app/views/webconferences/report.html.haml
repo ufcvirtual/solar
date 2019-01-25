@@ -11,13 +11,13 @@
         %tbody
           %tr
             %td= t('.resume_max') 
-            %td= @avg_max_total[0][2].to_s
+            %td= @avg_max_total[0][2].to_s + " (" + @avg_max_total[0][5].to_s + ")"
           %tr
             %td= t('.resume_avg') 
             %td= @avg_max_total[0][0].to_s + " (" + @avg_max_total[0][1].to_s + ")"
           %tr
             %td= t('.resume_total') 
-            %td= @all.to_s + " (" + @effective.to_s + ")"
+            %td= @all_uab.to_s + " (" + @effective.to_s + ")"
           %tr
             %td= t('.resume_max_access') 
             %td= @avg_max_total_access[0][2].to_s
