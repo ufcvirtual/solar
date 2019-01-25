@@ -5,6 +5,7 @@
     - if (f.object.new_record? || img.object.persisted? || @count == count_images + 1)
       - @count += 1
       .duplicatable_nested_form
+        = img.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
         .upload-preview
           - if img.object.image.blank?
             %img{ src: '' }
@@ -15,7 +16,6 @@
           = link_to t('.add_image'), "#void", onclick: 'add_file(this)', class: 'btn btn_main add_file'
 
         .info
-          = img.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash')
           = img.input :legend
           = img.input :img_alt
           = img.label t('.alt_desc'), class: 'alt'
@@ -30,4 +30,3 @@
   function add_file(btn){
     $(btn).parent().find('input.file').click();
   }
-

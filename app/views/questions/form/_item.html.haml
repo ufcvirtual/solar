@@ -19,45 +19,46 @@
           .label= i.label :description
           .desc
             = i.input :description, label: false, class: 'ckeditor'
-          .comment_area{ class: i.object.comment.blank? ? 'hide' : 'comment_item' , :style=>"display:none;"}
-            = i.input :comment, as: :text, label: t('questions.form.items.comment')
-          .image.hide{:style=>"display:none;"}
-            .upload-preview
-              - if i.object.item_image_file_name.blank?
-                %img{ src: '' }
-              - else
-                %img{ src: i.object.item_image.as_json, id: 'image_item' }
+          .items_wrap
+            .comment_area{ class: i.object.comment.blank? ? 'hide' : 'comment_item' , :style=>"display:none;"}
+              = i.input :comment, as: :text, label: t('questions.form.items.comment')
+            .image.hide{:style=>"display:none;"}
+              .upload-preview
+                - if i.object.item_image_file_name.blank?
+                  %img{ src: '' }
+                - else
+                  %img{ src: i.object.item_image.as_json, id: 'image_item' }
 
-              = i.input :item_image, as: :file, label: false
-              - if i.object.item_image_file_name
-                = link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: "remove_file_item(this, 'img')", :'data-url' => remove_image_item_exam_question_path(i.object, question_id: i.object.question.id)
-                = link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: 'remove_file_item_tmp(this, "img")', class: 'trash-tmp', style: 'display: none'
-              - else
-                = link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: 'remove_file_item_tmp(this, "img")'
+                = i.input :item_image, as: :file, label: false
+                - if i.object.item_image_file_name
+                  = link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: "remove_file_item(this, 'img')", :'data-url' => remove_image_item_exam_question_path(i.object, question_id: i.object.question.id)
+                  = link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: 'remove_file_item_tmp(this, "img")', class: 'trash-tmp', style: 'display: none'
+                - else
+                  = link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: 'remove_file_item_tmp(this, "img")'
 
-              = link_to t('questions.form.items.add_image'), "#void", onclick: 'add_file(this)', class: 'btn btn_main add_file'
+                = link_to t('questions.form.items.add_image'), "#void", onclick: 'add_file(this)', class: 'btn btn_main add_file'
 
-            .info
-              = i.input :img_alt, label: t('questions.form.items.alt')
-              = i.label t('questions.form.items.alt_desc'), class: 'alt'
-          .audio.hide{:style=>"display:none;"}
-            .upload-preview
-              - if i.object.item_audio_file_name.blank?
-                %audio{ src: '' }
-              - else
-                %audio{ src: i.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', id: 'audio_item'}
-                  %p= t("errors.messages.audio")
-              = i.input :item_audio, as: :file, label: false
-              - if i.object.item_audio_file_name
-                = link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: 'remove_file_item(this, "audio")', :'data-url' => remove_audio_item_exam_question_path(i.object, question_id: i.object.question.id)
-                = link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: "remove_file_item_tmp(this, 'audio')", class: 'trash-tmp', style: 'display: none'
-              - else
-                = link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: "remove_file_item_tmp(this, 'audio')"
+              .info
+                = i.input :img_alt, label: t('questions.form.items.alt')
+                = i.label t('questions.form.items.alt_desc'), class: 'alt'
+            .audio.hide{:style=>"display:none;"}
+              .upload-preview
+                - if i.object.item_audio_file_name.blank?
+                  %audio{ src: '' }
+                - else
+                  %audio{ src: i.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', id: 'audio_item'}
+                    %p= t("errors.messages.audio")
+                = i.input :item_audio, as: :file, label: false
+                - if i.object.item_audio_file_name
+                  = link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: 'remove_file_item(this, "audio")', :'data-url' => remove_audio_item_exam_question_path(i.object, question_id: i.object.question.id)
+                  = link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: "remove_file_item_tmp(this, 'audio')", class: 'trash-tmp', style: 'display: none'
+                - else
+                  = link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: "remove_file_item_tmp(this, 'audio')"
 
-              = link_to t('questions.form.items.add_audio'), "#void", onclick: 'add_file(this)', class: 'btn btn_main add_file'
-            .info
-              = i.input :audio_description, as: :text, label: t('questions.form.items.audio_description')
-              = i.label t('questions.form.audio.aud_desc'), class: 'alt'
+                = link_to t('questions.form.items.add_audio'), "#void", onclick: 'add_file(this)', class: 'btn btn_main add_file'
+              .info
+                = i.input :audio_description, as: :text, label: t('questions.form.items.audio_description')
+                = i.label t('questions.form.audio.aud_desc'), class: 'alt'
     -else
       - count += 1
 
@@ -79,7 +80,7 @@
         config.extraPlugins = 'eqneditor,oembed';
         config.resize_enabled = false;
         config.height = '80px';
-        config.width = '500px';
+        config.width = '100%';
         config.autoParagraph = false;
         config.pasteFromWord_inlineImages = false;
     };
@@ -135,7 +136,7 @@
       $(link).next().show();
 
       remove_file_item_tmp($(link), type);
-      
+
     }).error(function(data){
       var response = $.parseJSON(data.responseText);
       if (typeof(response.alert) != "undefined")

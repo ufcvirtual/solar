@@ -509,7 +509,9 @@
   .lesson_type label,
   .privacy label,
   .responsive label,
-  .lesson_address label {
+  .lesson_address label,
+  .question_type label,
+  .labels label {
     text-align: left !important;
   }
 
@@ -582,6 +584,11 @@
     display: inline-block;
   }
 
+  .exam_question_score {
+    display: block !important;
+    margin-top: 10px;
+  }
+
   .import_something.questions {
     .block_content_toolbar {
       flex-direction: column;
@@ -603,6 +610,53 @@
       }
       .year {
         margin-bottom: 10px;
+      }
+    }
+  }
+
+  #associated_radio div {
+    display: inline-flex !important;
+    input {
+      margin-left: 0 !important;
+    }
+    label {
+      display: inline !important;
+    }
+  }
+
+  #images .info {
+    text-align: left;
+  }
+
+  #audios .upload-preview {
+    audio{
+      max-width: 160px;
+    }
+  }
+
+  .items_wrap {
+    flex-direction: column !important;
+    .audio {
+      .upload-preview {
+        audio {
+          max-width: 160px;
+        }
+      }
+      .info .input {
+        width: 100% !important;
+      }
+    }
+    .image {
+      .info {
+        .input {
+          width: 100% !important;
+          input {
+            width: 100% !important;
+          }
+        }
+        label.alt {
+          display: inline !important;
+        }
       }
     }
   }

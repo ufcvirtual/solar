@@ -77,7 +77,7 @@
     resize: none;
   }
   #cke_exam_question_question_attributes_enunciation, #cke_question_attributes_enunciation{
-    display: inline-block;
+    display: block;
   }
   #steps{
     width: 390px;
@@ -130,7 +130,16 @@
       color: $color_main;
       display: inline-block;
     }
-    width: 343px;
+    .desc {
+      width: 100%;
+    }
+    .items_wrap {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+    // width: 343px;
     display: inline-block;
     padding-top: 10px;
     input.string{
@@ -159,7 +168,7 @@
     }
 
     .duplicatable_nested_form {
-      width: 515px;
+      // width: 515px;
       border-style: solid;
       border-color: #e8e8e8;
       border-radius: 20px;
@@ -193,7 +202,7 @@
       height: 30px;
     }
     textarea{
-      width: 270px;
+      // width: 270px;
       height: 80px;
     }
 /* .duplicatable_nested_form{
@@ -206,42 +215,54 @@
       input[type='file'], .input.file{
         display: none;
       }
+
+      text-align: center;
+      width: 100%;
+
       .upload-preview{
-        width: 136px;
+        // width: 136px;
         display: inline-block;
-        text-align: center;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
         img{
-          max-width: 130px;
-          max-height: 130px;
+          max-width: 200px;
+          max-height: 200px;
         }
         .add_file{
-          margin-left: -30px;
-          display: inline;
+          // margin-left: -30px;
+          // display: inline;
+          width: 150px;
+          display: block;
         }
         i.icon-trash {
           float: right;
         }
       }
       input[type='text']{
-        width: 316px;
+        // width: 316px;
         margin-top: 5px;
       }
       .info{
-        display: inline-block;
+        // display: inline-block;
         vertical-align: top;
         input{
           margin-top: 5px;
-          width: 280px;
+          // width: 280px;
         }
         textarea{
-          width: 271px;
+          // width: 271px;
           height: 90px;
         }
         label.alt{
-          text-align: left;
-          margin-top: -5px;
-          margin-left: 80px;
-          width: 281px;
+          text-align: center;
+          // margin-top: -5px;
+          // margin-left: 80px;
+          width: 150px;
+        }
+        .input label {
+          width: 20px;
         }
       }
     }
@@ -252,29 +273,45 @@
         display: none;
       }
       .upload-preview{
-        width: 136px;
-        display: inline-block;
-        text-align: center;
+        // width: 136px;
+        // display: inline-block;
+        // text-align: center;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
         audio{
-          max-width: 160px;
-          max-height: 30px;
+          // max-width: 160px;
+          // max-height: 30px;
           vertical-align: middle;
+
         }
         .add_file{
-          margin-left: -30px;
-          display: inline;
+          // margin-left: -30px;
+          // display: inline;
+          display: block;
+          width: 150px;
+          margin-bottom: 10px;
         }
         i.icon-trash {
           float: right;
+          margin-bottom: 10px;
         }
       }
       input[type='text']{
-        width: 316px;
+        width: 100%;
         margin-top: 5px;
       }
       .info{
-        display: inline-block;
+        // display: inline-block;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
         vertical-align: top;
         input{
           margin-top: 5px;
@@ -283,19 +320,28 @@
         input{
           width: 271px;
         }
+        .input label {
+          display: inline;
+        }
+        .input textarea {
+          width: 100%;
+        }
         label.alt{
-          text-align: left;
+          width: 100%;
           margin-top: -5px;
-          margin-left: 80px;
-          width: 281px;
+          text-align: center;
+          // margin-left: 80px;
+          // width: 281px;
         }
       }
     }
     .comment_area{
       display: inline-block;
+      width: 100%;
       textarea{
-        width: 409px;
-        height: 30px;
+        // width: 409px;
+        width: 100%;
+        // height: 30px;
       }
     }
   }
@@ -310,42 +356,50 @@
 
       .remove_nested_fields_link{
         margin-right: 10px;
+        float: right;
       }
 
       .input.text.optional{
         margin-top: 10px;
 
-        textarea { width: 300px; }
+        // textarea { width: 300px; }
       }
     }
     textarea{
       height: 60px;
     }
     input[type='text']{
-      width: 294px;
+      // width: 294px;
       margin-top: 5px;
     }
     .info{
-      text-align: right;
+      // text-align: right;
       display: inline-block;
       vertical-align: top;
+      text-align: center;
       input{
         margin-top: 5px;
       }
       label.alt{
-        width: 300px;
-        text-align: left;
-        margin-top: -5px;
+        // width: 300px;
+        // text-align: left;
+        // margin-top: -5px;
+        display: inline;
       }
     }
     input[type='file'], .input.file{
       display: none;
     }
     .upload-preview{
-      width: 190px;
-      display: inline-block;
+      // width: 190px;
+      // display: inline-block;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
       text-align: center;
-      margin-left: 24px;
+      // margin-left: 24px;
       img{
         max-width: 200px;
         max-height: 200px;
@@ -366,6 +420,7 @@
       text-align: center;
 
       .remove_nested_fields_link{
+        float: right;
         margin-right: 10px;
       }
 
@@ -374,38 +429,40 @@
       }
     }
     textarea{
-      width: 300px;
-      height: 30px;
+      width: 85%;
+      height: 60px;
     }
     input[type='text']{
-      width: 294px;
+      // width: 294px;
       margin-top: 5px;
     }
     .info{
-      text-align: right;
+      // text-align: right;
       display: inline-block;
       vertical-align: top;
       input{
         margin-top: 5px;
       }
-      label.alt{
-        width: 300px;
-        text-align: left;
-        margin-top: -5px;
+      label.alt,
+      .exam_question_question_question_audios_audio_description label {
+        // width: 300px;
+        // text-align: left;
+        // margin-top: -5px;
+        display: inline;
       }
     }
     input[type='file'], .input.file{
       display: none;
     }
     .upload-preview{
-      width: 190px;
-      display: inline-block;
+      // width: 190px;
+      // display: inline-block;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       text-align: center;
-      margin-left: 24px;
-      audio{
-        max-width: 160px;
-        max-height: 30px;
-      }
+      // margin-left: 24px;
       .add_file{
         margin: 4px;
         margin-bottom: 20px;
@@ -640,11 +697,12 @@
       //display: flex;
       //flex-direction: column;
       display: inline-block;
-      width:300px;
+      // width:300px;
 
       align-content: top;
       label{
-        width: 200px;
+        // width: 200px;
+        display: inline;
         line-height: 2em;
       }
       input{

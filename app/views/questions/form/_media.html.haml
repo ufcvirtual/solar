@@ -5,7 +5,7 @@
   .visuallyhidden= label_tag :img_alt, '', id: 'exam_question_question_question_images_image_content_type'
   .visuallyhidden= label_tag :img_alt, '', id: 'question_question_images_img_alt', onfocus: 'sendFocusAudioError("question_question_images_attributes_", "_img_alt", 6)', tabindex: '0'
   .visuallyhidden= label_tag :img_alt, '', id: 'question_question_images_image_content_type'
-  
+
   = render partial: 'questions/form/image', locals: { f: f, eq: nil }
   .input.string
     = f.add_nested_fields_link :question_images, t('.add_more_images'), class: 'btn'
@@ -33,7 +33,7 @@
       - checked = f.object.checked_option(@exam_question.exam_id) ? false : true
 
     #associated_radio
-      = f.collection_radio_buttons :question_text_id, [[true, t('questions.form.text.import')], [false, t('questions.form.text.new')]], :first, :last, checked: checked, disabled: disabled, boolean_style: :inline, item_wrapper_tag: false
+      = f.collection_radio_buttons :question_text_id, [[true, t('questions.form.text.import')], [false, t('questions.form.text.new')]], :first, :last, checked: checked, disabled: disabled, boolean_style: :inline, item_wrapper_tag: 'div'
 
     = render partial: 'questions/form/text', locals: { f: f, eq: nil }
 
@@ -45,10 +45,10 @@
 :javascript
 
   $(function(){
-    
+
     if("#{checked}"!='false')
       $('#text').hide();
-    else  
+    else
       $('#import').hide();
 
     $('#exam_question_question_attributes_question_text_id_false').on('click', function(){
@@ -58,6 +58,6 @@
     $('#exam_question_question_attributes_question_text_id_true').on('click', function(){
       $('#text').hide();
       $('#import').show();
-    });  
+    });
 
-  })    
+  })
