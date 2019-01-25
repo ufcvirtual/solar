@@ -425,17 +425,18 @@ class Webconference < ActiveRecord::Base
   def self.count_rec_shared_duration
     sql = "SELECT COUNT(DISTINCT (CASE WHEN is_recorded = true THEN ac_id END)) AS recorded,
             COUNT(DISTINCT (CASE WHEN shared_between_groups = true THEN ac_id end)) AS shared,
-            REPLACE( round( AVG(duration),2 )::text, '.', ',' ) AS avg_duration
+            REPLACE( round( AVG(duration),2 )::text, '.', ',' ) AS avg_duration,
+            COUNT(temp_web) as total
             FROM temp_web"
     AcademicAllocation.connection.select_all(sql)
   end
 
   # Retorna média por dia (total) | média por dia (efetivo) | Maximo em um dia | Soma total | Soma efetiva (UAB)
   def self.avg_max_total
-    sql = "SELECT REPLACE( round( AVG(qtd),2 )::text, '.', ',' ),
-            REPLACE( round( AVG(efetiva),2 )::text, '.', ',' ),
-            MAX(efetiva), SUM(qtd), SUM(efetiva) FROM (
-            SELECT to_char(initial_time, 'DD Mon YYYY') AS DAY, COUNT (DISTINCT ac_id) AS qtd, count(distinct ac_id_access) AS efetiva
+    sql = "SELECT REPLACE( round( AVG(qtd),2 )::text, '.', ',' ) as avg_day_total,
+            REPLACE( round( AVG(effective),2 )::text, '.', ',' ) as avg_day_effective,
+            MAX(effective) as maximo_dia_efetiva, SUM(qtd) as total_uab, SUM(effective) as total_effective, MAX(qtd) as max_day FROM (
+            SELECT to_char(initial_time, 'DD Mon YYYY') AS DAY, COUNT (DISTINCT ac_id) AS qtd, count(distinct ac_id_access) AS effective
             FROM temp_web_uab
             LEFT JOIN temp_web_uab_access ON temp_web_uab_access.ac_id_access = temp_web_uab.ac_id
             GROUP BY 1 ORDER BY 2
