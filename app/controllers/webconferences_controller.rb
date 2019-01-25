@@ -280,6 +280,7 @@ class WebconferencesController < ApplicationController
     @per_server = Webconference.count_per_server.rows
     @total = Webconference.count_total_effective.rows
     @per_month = Webconference.count_last_12_months.rows
+    @schedules_per_month = Webconference.count_next_6_months.rows
 
     @per_day_of_week = Webconference.group_by_day_of_week.rows
     @per_hour_of_day = Webconference.group_by_hour_of_day.rows

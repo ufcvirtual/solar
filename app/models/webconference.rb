@@ -361,6 +361,16 @@ class Webconference < ActiveRecord::Base
     AcademicAllocation.connection.select_all(sql)
   end
 
+  # Retorna a quantidade total de webconferências (UAB) agendadas para os próximos 6 meses
+  def self.count_next_6_months
+    sql = "SELECT to_char(initial_time,'Mon') || ' ' || extract(year from initial_time) as period, coalesce(COUNT(DISTINCT ac_id),0), to_char(initial_time,'MM') AS mon, extract(year from initial_time) as year
+            FROM temp_web_uab
+            WHERE initial_time > CURRENT_DATE + INTERVAL '6 months'
+            GROUP BY 1,3,4
+            ORDER BY year, mon"
+    AcademicAllocation.connection.select_all(sql)
+  end
+
   # Retorna total agrupado por mês (UAB)
   def self.group_by_month_of_year
     sql = "SELECT to_char(initial_time,'MM'), count (DISTINCT ac_id),
