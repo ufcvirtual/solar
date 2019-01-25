@@ -234,4 +234,6 @@ class Assignment < Event
   def self.update_previous(ac_id, users_ids, acu_id)
     return false
   end
+
 end
+
