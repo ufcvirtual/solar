@@ -1746,7 +1746,7 @@ pt_BR:
       resume_avg_access: 'Média de acessos únicos nas webconferências (usuários/web):'
       resume_total_access: 'Total de acessos desde 2014.2 (únicos):'
       title_statistic: 'Estatísticas do Servidor (Gerais)'
-      statistic_duration: 'Média de duração das webconferências (minutos):'
+      statistic_duration: 'Média de duração das webconferências:'
       statistic_rec: 'Porcentagem de webconferências gravadas:'
       statistic_recording_per_server_1: 'Horas de gravações (BBB1):'
       statistic_recording_per_server_2: 'Horas de gravações (BBB2):'

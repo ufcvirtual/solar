@@ -40,7 +40,7 @@
         %tbody
           %tr
             %td= t('.statistic_duration') 
-            %td= @avg_duration.to_s
+            %td= Time.at(@avg_duration.to_f*60).utc.strftime("%H:%M:%S")
           %tr
             %td= t('.statistic_rec') 
             %td= @percent_record + "%"

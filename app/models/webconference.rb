@@ -435,7 +435,7 @@ class Webconference < ActiveRecord::Base
   def self.count_rec_shared_duration
     sql = "SELECT COUNT(DISTINCT (CASE WHEN is_recorded = true THEN ac_id END)) AS recorded,
             COUNT(DISTINCT (CASE WHEN shared_between_groups = true THEN ac_id end)) AS shared,
-            REPLACE( round( AVG(duration),2 )::text, '.', ',' ) AS avg_duration,
+            round( AVG(duration),2 ) AS avg_duration,
             COUNT(temp_web) as total
             FROM temp_web"
     AcademicAllocation.connection.select_all(sql)
