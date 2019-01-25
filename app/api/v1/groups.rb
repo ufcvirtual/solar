@@ -53,7 +53,29 @@ module V1
                                .group('groups.id, semesters.id, courses.id, offers.id, curriculum_units.id, curriculum_unit_types.id') rescue []
         end
 
-      end # user
+      end # namespace user
+
+      before { guard! }
+
+      desc 'Retorna participantes da turma'
+      params do
+        requires :id, type: Integer
+      end
+      get 'group/:id/participants', rabl: "groups/participants" do
+        group = Group.find(params[:id])
+        begin
+          authorize! :show, CurriculumUnit, on: group.allocation_tag.id
+        rescue
+          raise CanCan::AccessDenied
+        end
+
+        ats = group.allocation_tag.related
+
+        @responsibles = AllocationTag.get_participants(ats, {responsibles: true})
+        @students = AllocationTag.get_participants(ats, {students: true})
+
+        @users = @responsibles + @students
+      end
 
     end # segment
 
