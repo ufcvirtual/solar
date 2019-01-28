@@ -3,7 +3,7 @@
 %td= user.username
 %td= user.cpf
 %td= user.status
-%td{style: 'text-align:right'}
+%td{style: 'text-align:left; display: inline-flex;'}
   %a{class: "info_list btn", :"data-dropdown"=>"#info-dropdown#{user.id}" }= content_tag(:i, nil, class: 'icon-info') + content_tag(:i, nil, class: 'icon-arrow-down-triangle')
   .dropdown.dropdown-tip{ class: 'info_list', id: "info-dropdown#{user.id}" }
     %ul{ class: 'dropdown-menu' }

@@ -279,6 +279,12 @@
     display: inline-block !important;
   }
 
+  table.tb_list {
+    td, tr.lines th.act_like_td {
+      word-break: keep-all !important;
+    }
+  }
+
   #steps {
     width: 120px !important;
     margin: 20px auto !important;
