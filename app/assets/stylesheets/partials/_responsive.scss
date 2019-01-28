@@ -280,7 +280,13 @@
   }
 
   table.tb_list {
-    td, tr.lines th.act_like_td {
+    tbody, td, tr.lines th.act_like_td, a {
+      word-break: keep-all !important;
+    }
+  }
+
+  table.user-courses tbody.offers {
+    .offer, .open-edx-class {
       word-break: keep-all !important;
     }
   }
