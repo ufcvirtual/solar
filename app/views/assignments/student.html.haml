@@ -4,7 +4,7 @@
     .block_user
       .title_user= t('.group')
       = @group.group_name
-      = link_to content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true'), '#void', class: 'link_send_msg'
+      = link_to content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true'), '#void', class: 'link_send_msg', :'data-url' => new_by_scores_messages_path(user_ids: ':user_ids')
       %div
       .title_user= t('.participants')
       - participants = @group.users
@@ -25,7 +25,7 @@
       %span{:'data-id' => @student_id}
         = user.name
         - if @not_only_student_profile
-          = link_to content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true'), '#void', class: 'link_send_msg'
+          = link_to content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true'), '#void', class: 'link_send_msg', :'data-url' => new_by_scores_messages_path(user_ids: ':user_ids')
 
 %section.block_wrapper.assignment_info
   .title
