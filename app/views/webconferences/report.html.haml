@@ -3,30 +3,31 @@
 .list_designates
   .block_wrapper.users
     .block_title
-      %h2= t('.title') 
-	  
+      %h2= t('.title')
+
     .block_content.charts
-      .title= t('.title_resume') 
-      %table.resume
-        %tbody
-          %tr
-            %td= t('.resume_max') 
-            %td= @avg_max_total[0][5].to_s + " (" + @avg_max_total[0][2].to_s + ")"
-          %tr
-            %td= t('.resume_avg') 
-            %td= @avg_max_total[0][0].to_s + " (" + @avg_max_total[0][1].to_s + ")"
-          %tr
-            %td= t('.resume_total') 
-            %td= @all_uab.to_s + " (" + @effective.to_s + ")"
-          %tr
-            %td= t('.resume_max_access') 
-            %td= @avg_max_total_access[0][2].to_s
-          %tr
-            %td= t('.resume_avg_access') 
-            %td= @avg_max_total_access[0][0].to_s
-          %tr
-            %td= t('.resume_total_access') 
-            %td= @avg_max_total_access[0][1].to_s + " (" + @sum_total_access.to_s + ")"
+      .title= t('.title_resume')
+      .responsive-table
+        %table.resume
+          %tbody
+            %tr
+              %td= t('.resume_max')
+              %td= @avg_max_total[0][5].to_s + " (" + @avg_max_total[0][2].to_s + ")"
+            %tr
+              %td= t('.resume_avg')
+              %td= @avg_max_total[0][0].to_s + " (" + @avg_max_total[0][1].to_s + ")"
+            %tr
+              %td= t('.resume_total')
+              %td= @all_uab.to_s + " (" + @effective.to_s + ")"
+            %tr
+              %td= t('.resume_max_access')
+              %td= @avg_max_total_access[0][2].to_s
+            %tr
+              %td= t('.resume_avg_access')
+              %td= @avg_max_total_access[0][0].to_s
+            %tr
+              %td= t('.resume_total_access')
+              %td= @avg_max_total_access[0][1].to_s + " (" + @sum_total_access.to_s + ")"
       #chart_per_type{tabindex: 0}
       - if !@schedules_per_month.empty?
         .title-warning
@@ -35,23 +36,26 @@
             %i.icon-arrow-down-triangle
             %i.icon-arrow-up-triangle.invisible
           #chart_scheduled_per_month{tabindex: 0}
-      .title= t('.title_statistic') 
-      %table.statistics
-        %tbody
-          %tr
-            %td= t('.statistic_duration') 
-            %td= Time.at(@avg_duration.to_f*60).utc.strftime("%H:%M:%S")
-          %tr
-            %td= t('.statistic_rec') 
-            %td= @percent_record + "%"
-          %tr
-            %td= t('.statistic_shared') 
-            %td= @percent_shared + "%"
+      .title= t('.title_statistic')
+      .responsive-table
+        %table.statistics
+          %tbody
+            %tr
+              %td= t('.statistic_duration')
+              %td= Time.at(@avg_duration.to_f*60).utc.strftime("%H:%M:%S")
+            %tr
+              %td= t('.statistic_rec')
+              %td= @percent_record + "%"
+            %tr
+              %td= t('.statistic_shared')
+              %td= @percent_shared + "%"
       #chart_per_server_recordings{tabindex: 0}
       #chart_per_server{tabindex: 0}
-      #chart_per_server_webs_real_time{tabindex: 0}
-      #chart_per_server_access_real_time{tabindex: 0}
-      .title= t('.web_title') 
+      .responsive-table
+        #chart_per_server_webs_real_time{tabindex: 0}
+      .responsive-table
+        #chart_per_server_access_real_time{tabindex: 0}
+      .title= t('.web_title')
       .title-warning
         .chart_title
           = link_to raw(t('.web_total')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
@@ -81,7 +85,7 @@
           = link_to raw(t('.web_hour')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
           %i.icon-arrow-down-triangle
           %i.icon-arrow-up-triangle.invisible
-        #chart_per_hour_of_day{tabindex: 0}  
+        #chart_per_hour_of_day{tabindex: 0}
       .title-warning
         .chart_title
           = link_to raw(t('.web_course')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
@@ -126,35 +130,36 @@
           %i.icon-arrow-up-triangle.invisible
         #chart_avg_access_per_semester{tabindex: 0}
       .title= t('.historic_title')
-      %table.historic
-        %tbody
-          %tr
-            %td= t('.historic_d9')
-            %td= t('.historic_t9')
-          %tr
-            %td= t('.historic_d8')
-            %td= t('.historic_t8')
-          %tr
-            %td= t('.historic_d7')
-            %td= t('.historic_t7')
-          %tr
-            %td= t('.historic_d6')
-            %td= t('.historic_t6')
-          %tr
-            %td= t('.historic_d5')
-            %td= t('.historic_t5')
-          %tr
-            %td= t('.historic_d4')
-            %td= t('.historic_t4')
-          %tr
-            %td= t('.historic_d3')
-            %td= t('.historic_t3')
-          %tr
-            %td= t('.historic_d2')
-            %td= t('.historic_t2')
-          %tr
-            %td= t('.historic_d1')
-            %td= t('.historic_t1')
+      .responsive-table
+        %table.historic
+          %tbody
+            %tr
+              %td= t('.historic_d9')
+              %td= t('.historic_t9')
+            %tr
+              %td= t('.historic_d8')
+              %td= t('.historic_t8')
+            %tr
+              %td= t('.historic_d7')
+              %td= t('.historic_t7')
+            %tr
+              %td= t('.historic_d6')
+              %td= t('.historic_t6')
+            %tr
+              %td= t('.historic_d5')
+              %td= t('.historic_t5')
+            %tr
+              %td= t('.historic_d4')
+              %td= t('.historic_t4')
+            %tr
+              %td= t('.historic_d3')
+              %td= t('.historic_t3')
+            %tr
+              %td= t('.historic_d2')
+              %td= t('.historic_t2')
+            %tr
+              %td= t('.historic_d1')
+              %td= t('.historic_t1')
       .title=  t('.feedback_title')
       .title-warning
         .chart_title
@@ -266,7 +271,7 @@
     for (var i=0;i<data1.length;i++){ data.addRow([data1[i][0], parseInt(data1[i][1]), parseInt(data1[i][2]) ]); }
 
     var options = { legend: { position: "none" }, vAxis : { format: 'decimal' } };
-    
+
     formatter_integer.format(data, 1);
     formatter_integer.format(data, 2);
 
@@ -467,7 +472,7 @@
     for (var i=0;i<data1.length;i++){ data.addRow([data1[i][0], parseInt(data1[i][1]) ]); }
 
     var options = { legend: { position: "none" }, vAxis : { format: 'decimal' } };
-    
+
     formatter_integer.format(data, 1);
 
     var chart = new google.charts.Bar(document.getElementById('chart_access_total'));
@@ -736,6 +741,3 @@
     chart.draw(data, options);
 
   }
-
-
-  

@@ -78,10 +78,13 @@ table.tb_allocation .dropdown ul li a{
   margin-bottom: 15px;
 }
 
-.responsibles_list .block_content_toolbar{
-  padding: 0;
-  input#search{
-    margin-left: 0;
+.responsibles_list {
+  width: 100%;
+  .block_content_toolbar{
+    padding: 0;
+    input#search{
+      margin-left: 0;
+    }
   }
 }
 
