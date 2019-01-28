@@ -594,27 +594,29 @@
     margin-top: 10px;
   }
 
-  .import_something.questions {
-    .block_content_toolbar {
-      flex-direction: column;
-      label {
-        text-align: center;
-      }
-      .owner {
-        display: inline-flex;
-        margin-bottom: 10px;
-      }
-      .enum {
-        margin-bottom: 10px;
-      }
-      .author {
-        margin-bottom: 10px;
-      }
-      .hint {
-        margin-bottom: 10px;
-      }
-      .year {
-        margin-bottom: 10px;
+  .import_something.questions, .questions, [class^='list_questions_exam_'] {
+    .search {
+      .block_content_toolbar {
+        flex-direction: column;
+        label {
+          text-align: center;
+        }
+        .owner {
+          display: inline-flex;
+          margin-bottom: 10px;
+        }
+        .enum {
+          margin-bottom: 10px;
+        }
+        .author {
+          margin-bottom: 10px;
+        }
+        .hint {
+          margin-bottom: 10px;
+        }
+        .year {
+          margin-bottom: 10px;
+        }
       }
     }
   }

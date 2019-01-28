@@ -8,6 +8,6 @@
   - else
     - img_url = item.item_image.url
     - img_url.gsub!('_original.', '.')
-    = image_tag img_url,  alt: item.img_alt, :'aria-label' => t('exams.open.image', alt: item.img_alt), size: "150x150"
+    = image_tag img_url,  alt: item.img_alt, :'aria-label' => t('exams.open.image', alt: item.img_alt)
 - else
   - t('exams.open.image_item', alt: item.img_alt, item: arr_alf[num_question])

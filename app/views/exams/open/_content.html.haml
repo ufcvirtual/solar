@@ -42,7 +42,7 @@
                 - else
                   - img_url = q_image.image.url
                   - img_url.gsub!('_original.', '.')
-                  = image_tag img_url,  alt: q_image.img_alt, :'aria-label' => t('exams.open.image', alt: q_image.img_alt) + (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend)), size: "350x350"
+                  = image_tag img_url,  alt: q_image.img_alt, :'aria-label' => t('exams.open.image', alt: q_image.img_alt) + (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend))
                 - unless q_image.legend.blank?
                   .legend{:'aria-hidden' => 'true'}= q_image.legend
               - else
