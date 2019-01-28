@@ -28,12 +28,19 @@
             %td= t('.resume_total_access') 
             %td= @avg_max_total_access[0][1].to_s + " (" + @sum_total_access.to_s + ")"
       #chart_per_type{tabindex: 0}
+      - if !@schedules_per_month.empty?
+        .title-warning
+          .chart_title
+            = link_to raw(t('.web_next_6_month')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+            %i.icon-arrow-down-triangle
+            %i.icon-arrow-up-triangle.invisible
+          #chart_scheduled_per_month{tabindex: 0}
       .title= t('.title_statistic') 
       %table.statistics
         %tbody
           %tr
             %td= t('.statistic_duration') 
-            %td= @avg_duration.to_s
+            %td= Time.at(@avg_duration.to_f*60).utc.strftime("%H:%M:%S")
           %tr
             %td= t('.statistic_rec') 
             %td= @percent_record + "%"
@@ -230,6 +237,24 @@
 
     var chart = new google.visualization.PieChart(document.getElementById('chart_per_type'));
     chart.draw(data, options);
+
+    // Schedules Per Month
+    if (#{@schedules_per_month} != 0) {
+      console.log (#{@schedules_per_month}.length === 0)
+      var data1 = JSON.parse('#{@schedules_per_month.to_json.html_safe}');
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Mês');
+      data.addColumn('number', 'Agendamentos');
+
+      for (var i=0;i<data1.length;i++){ data.addRow([data1[i][0], parseInt(data1[i][1])]); }
+
+      var options = { legend: { position: "none" }, vAxis : { format: 'decimal' } };
+
+      formatter_integer.format(data, 1);
+
+      var chart = new google.charts.Bar(document.getElementById('chart_scheduled_per_month'));
+      chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
 
     // Total
     var data1 = JSON.parse('#{@total.to_json.html_safe}');
