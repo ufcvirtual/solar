@@ -695,6 +695,11 @@
     }
   }
 
+  .form_user_content label,
+  .form_user_for_mobile label {
+    text-align: left;
+  }
+
   .form_field input[type="text"],
   .form_user_content textarea {
     width: 100%;
