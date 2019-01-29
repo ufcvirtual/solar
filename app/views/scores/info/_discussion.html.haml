@@ -1,7 +1,8 @@
 %section.discussion
   .block_title
     %h2= t(:discussions, :scope => [:scores, :info])
-    = render partial: 'scores/info/tabs', locals: {tool: 'discussion'}
+    .tabs_score
+      = render partial: 'scores/info/tabs', locals: {tool: 'discussion'}
 
   .block_content
     .tools.show.evaluative#evaluative_discussion

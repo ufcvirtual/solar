@@ -1,7 +1,8 @@
 %section.chat_room
   .block_title
     %h2= t(:chats, scope: [:scores, :info])
-    = render partial: 'scores/info/tabs', locals: {tool: 'chat'}
+    .tabs_score
+      = render partial: 'scores/info/tabs', locals: {tool: 'chat'}
 
   .block_content
     .tools.evaluative.show#evaluative_chat

@@ -1,7 +1,8 @@
 %section.schedule_event
   .block_title
     %h2= t(:schedule_event, :scope => [:scores, :info])
-    = render partial: 'scores/info/tabs', locals: {tool: 'schedule_event'}
+    .tabs_score
+      = render partial: 'scores/info/tabs', locals: {tool: 'schedule_event'}
 
   .block_content
     .tools.show.evaluative#evaluative_schedule_event

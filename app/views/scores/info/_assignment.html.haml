@@ -1,7 +1,8 @@
 %section.assignment
   .block_title
     %h2= t(:assignments, :scope => [:scores, :info])
-    = render partial: 'scores/info/tabs', locals: {tool: 'assignment'}
+    .tabs_score
+      = render partial: 'scores/info/tabs', locals: {tool: 'assignment'}
 
   .block_content
     .tools.show.evaluative#evaluative_assignment
