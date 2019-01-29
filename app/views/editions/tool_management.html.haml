@@ -3,7 +3,7 @@
 
   %a{ onkeydown: 'click_on_keypress(event, this);', :'data-shortcut' => t("shortcut.editions.code.analyzer_position"), :'data-shortcut-name' => t("shortcut.editions.name.analyzer_position"), :'data-shortcut-shift' => 'true', class: 'hidden analyzer_position'}
 
-  .ui-widget-content{ id: 'draggable', :'data-tooltip' => t(".draggable_info")}
+  .ui-widget-content{ id: 'draggable', class: 'dont-show-in-mobile', :'data-tooltip' => t(".draggable_info")}
     %a{ href: '#void', :'aria-label' => t('.window_analyzer_home'), :title => t('.window_analyzer_home'), class: 'close_draggable', id: 'draggable_open_window'}
     .ui-widget-content_title
       %h2= t('.draggable_title')
@@ -67,7 +67,7 @@
 
             = link_to content_tag(:i, nil, class: 'icon-clipboard', :"data-tooltip" => t('.default_final_weight')), "#void", onclick: 'set_final_weight()'
             .weight_link= link_to t('.default_final_weight'), "#void", onclick: 'set_final_weight()'
-          .analyzer
+          .analyzer.dont-show-in-mobile
             = link_to content_tag(:i, nil, class: 'icon-popup', :"data-tooltip" => t('.window_analyzer_home')), "#void", onclick: 'slideDraggable()'
             = link_to t('.analyzer'), "#void", onclick: 'slideDraggable()'
             = link_to content_tag(:i, nil, class: 'icon-clipboard'), "#void", onclick: "manage_automatic_tools(#{@allocation_tags_ids.flatten.uniq})"
@@ -342,7 +342,7 @@
   function manage_automatic_tools(allocation_tags_ids){
 
     if(confirm("#{I18n.t('evaluative_tools.messages.execute_manage_tool')}")){
-    
+
       loading_page($("#automatic_management_link"))
 
       $.ajax({
@@ -351,7 +351,7 @@
          data: {allocation_tags_ids},
          success: function(resp) {
             if(resp.success){
-              
+
               $.get('/editions/tool_management?allocation_tags_ids='+allocation_tags_ids.join(" "), function(data){
                   $(".edition_items").html(data);
                   $(".back").removeClass("invisible");
@@ -360,7 +360,7 @@
                   flash_message(resp.msg, 'notice')
 
                   $(".block_title_exam.block_exam .icons a:first-child").each(function(index,link){hide_or_show(link)})
-          
+
               }).error(function(data){
                   var data = $.parseJSON(data.responseText);
                   if (typeof(data.alert) != "undefined")
@@ -380,5 +380,5 @@
          }
       });
     }
-    
+
   }
