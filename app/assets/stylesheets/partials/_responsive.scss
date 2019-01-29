@@ -680,6 +680,35 @@
       }
     }
   }
+
+  .radio_theme label {
+    display: inline-flex;
+  }
+
+  .personal_configuration_message label,
+  .personal_configuration_post label,
+  .personal_configuration_exam label,
+  .personal_configuration_academic_tool label {
+    text-align: justify;
+    input {
+      min-width: 40px !important;
+    }
+  }
+
+  .form_field input[type="text"],
+  .form_user_content textarea {
+    width: 100%;
+    min-width: 150px;
+  }
+
+  .request_profile {
+    width: 100% !important;
+    min-width: 250px;
+  }
+
+  .offer_groups_options {
+      overflow-x: auto;
+  }
 }
 
 @media (max-width: 768px){
