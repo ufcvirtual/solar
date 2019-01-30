@@ -2934,6 +2934,8 @@ en_US:
     support_simple: "Support"
     no_mail: no email
     send_message: Send Message
+    next: Next
+    previous: Previous
     contacts:
       title: "Selection of contacts"
       contacts: "Contacts"

@@ -22,6 +22,7 @@ class MessagesController < ApplicationController
     options.merge!(option_search_for(params[:search_for]))
 
     @messages = Message.by_box(current_user.id, @box, allocation_tag_id, options, search)
+    @message_ids =  Message.by_box(current_user.id, @box, allocation_tag_id, options, search, 100, 0).map{|m|m.id}
 
     @limit = Rails.application.config.items_per_page
     @min = (@page * @limit) - @limit
@@ -57,6 +58,7 @@ class MessagesController < ApplicationController
     options.merge!(option_search_for(params[:search_for]))
 
     @messages = Message.by_box(current_user.id, @box, active_tab[:url][:allocation_tag_id], options, { user: params[:user], subject: params[:subject] })
+    @message_ids = Message.by_box(current_user.id, @box, active_tab[:url][:allocation_tag_id], options, { user: params[:user], subject: params[:subject] }, 100, 0).map{|m|m.id}
 
     @limit = Rails.application.config.items_per_page
     @min = (@page * @limit) - @limit
@@ -81,6 +83,11 @@ class MessagesController < ApplicationController
 
   def show
     @message = Message.find(params[:id])
+    @message_ids = params[:ids]
+    ids = params[:ids].to_a.split(params[:id])
+    @next_message_id = ids[0].empty? ? nil : ids[0].last
+    @previous_message_id = ids[1].empty? ? nil : ids[1].shift
+    
     sent_by_responsible = @message.allocation_tag.is_responsible?(@message.sent_by.id) unless @message.allocation_tag_id.blank?
     LogAction.create(log_type: LogAction::TYPE[:update], user_id: current_user.id, ip: get_remote_ip, description: "message: #{@message.id} read message from #{sent_by_responsible ? 'responsible' : 'other'}", allocation_tag_id: @message.allocation_tag_id) rescue nil
     change_message_status(@message.id, "read", @box = params[:box] || "inbox")

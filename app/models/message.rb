@@ -62,10 +62,10 @@ class Message < ActiveRecord::Base
     query.join(' AND ')
   end
 
-  def self.by_box(user_id, box='inbox', allocation_tags_ids=[], options={ ignore_trash: true, only_unread: false, only_read: false, ignore_user: false, page: 1, ignore_at: false }, search={})
+  def self.by_box(user_id, box='inbox', allocation_tags_ids=[], options={ ignore_trash: true, only_unread: false, only_read: false, ignore_user: false, page: 1, ignore_at: false }, search={}, limit=nil, offset=nil)
     um_query = Message.get_query(user_id, box, allocation_tags_ids, options.except(:ignore_at))
-    limit = Rails.application.config.items_per_page.to_i
-    offset = ((options[:page] || 1) * limit) - limit.to_i
+    limit = Rails.application.config.items_per_page.to_i if limit.nil?
+    offset = ((options[:page] || 1) * limit) - limit.to_i if offset.nil?
 
     UserMessage.find_by_sql <<-SQL
       DROP TABLE IF EXISTS temp_user_messages;

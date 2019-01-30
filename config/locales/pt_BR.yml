@@ -3237,6 +3237,8 @@ pt_BR:
     support_simple: "Atendimento"
     no_mail: sem email
     send_message: Enviar Mensagem
+    next: Próxima
+    previous: Anterior
     contacts:
       title: "Seleção de contatos"
       contacts: "Contatos"
