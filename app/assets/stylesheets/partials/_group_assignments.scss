@@ -15,6 +15,15 @@
   }
 }
 
+.group-assignment-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.fix-display {
+  display: inline-block;
+}
+
 td.icon > a {
   text-decoration: none;
 }

@@ -1,6 +1,7 @@
 .group_assignments.header.title{:"data-score" => @score_type}
+  .position_correction
+    %span.form_requirement= t(".warning")
   %h1= t(".title", name: @assignment.name)
-  %span.form_requirement= t(".warning")
 
 .shortcut_groups
   .title-warning
@@ -13,7 +14,7 @@
       %p= t("shortcut.assignment.name.participants")
       %p= t("shortcut.assignment.name.students_without_group")
 
-.block_wrapper.label_display
+.block_wrapper.label_display.group-assignment-content
   .groups_column.first_column.of_three
     .block_title
       %h2{:'data-shortcut'=> t("shortcut.assignment.code.group_assignments"), :'data-shortcut-focus' => 'true'}= t(".groups")
@@ -23,7 +24,7 @@
     .labels
       - @groups.each do |group|
         - evaluated = group.evaluated?
-        .label{class: (evaluated ? "disabled" : ""), :"data-group-id" => group.id, :"data-message" => (evaluated ? t(".already_evaluated") : ""), :"data-url" => participants_group_assignment_path(group.id)}
+        .label.fix-display{class: (evaluated ? "disabled" : ""), :"data-group-id" => group.id, :"data-message" => (evaluated ? t(".already_evaluated") : ""), :"data-url" => participants_group_assignment_path(group.id)}
           = render partial: "group", locals: {group: group}
 
   .participants_column.middle_column
