@@ -15,7 +15,7 @@
             %th#date.center= t('messages.show.date2')
         %tbody
           - @messages.each do |message|
-            - msg_path = message_path(id: message.id, box: @box)
+            - msg_path = message_path(id: message.id, box: @box, ids: @message_ids)
             %tr.message_line{ class: (message == @messages.last) ? 'no_border' : '' }
               %td.message_line_check{headers: 'th_ckb_all'}
                 = check_box_tag 'checkbox_message', message.id, checked = false, { class: 'selected_messages', :"data-message-id" => message.id, :'aria-label' => t('messages.index.select_message'), id: "ckb_#{message.id}", :'aria-labelledby' => 'th_select_msgs'  }
