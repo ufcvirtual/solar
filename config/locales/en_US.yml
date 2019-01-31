@@ -3276,6 +3276,7 @@ en_US:
       clear: Clear
       deleting_canvas: Cleaning file.
       message_confirm_cleaning: "This action can't be undone. Are you sure?"
+      insert_button: "Write text"
     success:
       file_saved: File was successfully saved.
       file_cleaned: File was successfully cleaned.

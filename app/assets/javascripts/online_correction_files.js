@@ -205,13 +205,15 @@ function write(canvas, context) {
 
       if (getToolSelected() == 'text') {
         var box_text = $("<div class='box'>").css({"position": "absolute", "top": mouseY, "left": mouseX});
-        var close_button = $("<div onclick='insertText(event, this)'>").addClass("close-button");
+        var close_button = $("<div onclick='closeBox(event, this)'>").addClass("close-button");
         var close_text = $("<span>").addClass("close").addClass("close-box-text").html("&times;");
         var input_textarea = $("<textarea class='box-text'>").css({'height':'100px', 'width':'250px'});
+        var insert_buuton = $("<button onclick='insertText(event, this)'>").addClass("btn").addClass("btn_main").html(insert_button_name);
 
         $(close_button).append(close_text);
         $(box_text).append(close_button);
         $(box_text).append(input_textarea);
+        $(box_text).append(insert_buuton);
 
         $(canvas).closest('div').append(box_text);
         saveState(canvas);
@@ -285,12 +287,16 @@ function drawScreen(context, clickX, clickY, clickDrag, currentTool, message){
   }
 }
 
+function closeBox(event, element) {
+  $(element).closest('.box').remove();
+}
+
 function insertText(event, element) {
   var message = $(element).siblings("textarea").val();
   var canvas = $(element).closest(".box").siblings("canvas")[0];
   var context = canvas.getContext('2d');
-  var positionX = event.pageX - $(canvas).offset().left - $(element).position().left;
-  var positionY = event.pageY - $(canvas).offset().top - $(element).position().top;
+  var positionX = $(element).offset().left - $(canvas).offset().left - $(element).position().left;
+  var positionY = $(element).offset().top - $(canvas).offset().top - $(element).position().top;
   var tool = getToolSelected();
 
   drawScreen(context, positionX, positionY, false, tool, message);

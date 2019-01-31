@@ -192,3 +192,30 @@ main {
 .blue-circle {
   background-color: $added_permission_color;
 }
+
+.btn {
+  display: inline-block;
+  padding: 4px 6px;
+  margin: 0;
+  font-size: 11px; /* original: 14px */
+  line-height: 18px; /* original: 20px */
+  text-decoration: none !important;
+  color: $font_color;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba($color_white, 0.75);
+  vertical-align: middle;
+  cursor: pointer;
+  background-color: $color_white; /* Old browsers */
+  background-image: linear-gradient($color_white, darken($color_white,7%)); /* CSS3 */
+  background-repeat: repeat-x;
+  border: 1px solid $language_border_color;
+  border-color: rgba($color_black, 0.1) rgba($color_black, 0.1) rgba($color_black, 0.25);
+  border-bottom-color: $btn_border_botton_color;
+}
+
+.btn_main {
+    color: $color_white_base;
+    text-shadow: 0 -1px 0 rgba($color_black, 0.25);
+    background: $btn_main_color; /* Old browsers */
+    background-image: linear-gradient($btn_main_color, darken($btn_main_color, 15%)); /* CSS3 */
+}

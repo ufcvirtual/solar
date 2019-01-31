@@ -3390,7 +3390,7 @@ pt_BR:
       monthAlt: Visualização por mês
       listAlt: Visualização em lista dos próximos eventos
 
-  deficiency: 
+  deficiency:
     deficiency: Deficiência
     deficiencys: Deficiências
     autism_complete: Autismo
@@ -3589,6 +3589,7 @@ pt_BR:
       clear: "Limpar"
       deleting_canvas: "Limpando arquivo."
       message_confirm_cleaning: "Está ação não pode ser desfeita. Você tem certeza disso?"
+      insert_button: "Escrever texto"
     success:
       file_saved: Arquivo salvo com sucesso.
       file_cleaned: Arquivo limpo com sucesso.
