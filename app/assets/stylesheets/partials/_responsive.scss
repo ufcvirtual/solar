@@ -706,6 +706,17 @@
   .offer_groups_options {
       overflow-x: auto;
   }
+
+  .group-assignment-content {
+    flex-direction: column !important;
+
+    .first_column,
+    .middle_column,
+    .last_column {
+      width: 100% !important;
+      margin: 10px 0 !important;
+    }
+  }
 }
 
 @media (max-width: 768px){
