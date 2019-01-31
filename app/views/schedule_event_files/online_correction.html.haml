@@ -7,54 +7,54 @@
     = stylesheet_link_tag "application", "jquery.fancybox3.min", "online_correction_files", "viewer"
     = javascript_include_tag 'jquery-3.3.1.min', 'jquery.fancybox3.min', 'pdfjs/pdf', 'online_correction_files' , "jspdf.min"
     = csrf_meta_tag
-  %body{oncontextmenu: "return false;"}
+  %body
     %header#topbar
       .container-topbar
         .solar-logo
           = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
         %ul.topbar-options
           %li#save
-            %a{href: "#"}= t(:save)
+            %a{href: "#void"}= t(:save)
           %li#clear
-            %a{href: "#"}= t('.clear')
+            %a{href: "#void"}= t('.clear')
           %li#download
-            %a{href: "#"}= t(:download)
+            %a{href: "#void"}= t(:download)
           %li#color
-            %a{href: "#",  onclick: "submenuToggle(event, this)"}= t(".colors")
+            %a{href: "#void",  onclick: "submenuToggle(event, this)"}= t(".colors")
             %ul.submenu
               %li
-                %a#black{href: "#", onclick: "toolChanger(this)"}
+                %a#black{href: "#void", onclick: "toolChanger(this)"}
                   .black-circle
                   = t(".black")
               %li
-                %a#red{href: "#", onclick: "toolChanger(this)"}
+                %a#red{href: "#void", onclick: "toolChanger(this)"}
                   .red-circle
                   = t(".red")
               %li
-                %a#blue{href: "#", onclick: "toolChanger(this)"}
+                %a#blue{href: "#void", onclick: "toolChanger(this)"}
                   .blue-circle
                   = t(".blue")
           %li#tools
-            %a{href: "#", onclick: "submenuToggle(event, this)"}= t(".tools")
+            %a{href: "#void", onclick: "submenuToggle(event, this)"}= t(".tools")
             %ul.submenu
               %li
-                %a#hand-tool{href: "#", onclick: "toolChanger(this)"}
+                %a#hand-tool{href: "#void", onclick: "toolChanger(this)"}
                   %i.icon-hand
                   = t(".hand")
               %li
-                %a#text-tool{href: "#", onclick: "toolChanger(this)"}
+                %a#text-tool{href: "#void", onclick: "toolChanger(this)"}
                   %i.icon-write
                   = t(".text")
               %li
-                %a#brush-tool{href: "#", onclick: "toolChanger(this)"}
+                %a#brush-tool{href: "#void", onclick: "toolChanger(this)"}
                   %i.icon-pencil
                   = t(".brush")
               %li
-                %a#undo{href: "#", onclick: "toolChanger(this)"}
+                %a#undo{href: "#void", onclick: "toolChanger(this)"}
                   %i.icon-redo
                   = t(".undo")
               %li
-                %a#redo{href: "#", onclick: "toolChanger(this)"}
+                %a#redo{href: "#void", onclick: "toolChanger(this)"}
                   %i.icon-redo2
                   = t(".redo")
           %li#user
@@ -67,7 +67,7 @@
                 = content_tag(:span, msg, id: "flash_message_span")
                 = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: "erase_flash_messages(true)", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
 
-    #box-tools
+    -# #box-tools
       %span.close-button{onclick: 'hideDiv(this)'}
         %i.icon-cross.close
       #box-tools-header
@@ -106,7 +106,8 @@
             .blue-circle
             = t(".blue")
 
-    %main.container
+    %main
+      .container
 
     #saving
       %h2= t('.saving_file')
@@ -132,7 +133,7 @@
         format: 'a4',
       });
 
-      var canvas_in_page = document.querySelector("main").querySelectorAll("canvas");
+      var canvas_in_page = document.querySelector(".container").querySelectorAll("canvas");
 
       canvas_in_page.forEach(function (canvas, index) {
         var imgData = canvas.toDataURL("image/jpeg", 1.0);
@@ -173,7 +174,7 @@
     $("#save > a").click(function(event){
       var images = {};
 
-      $("main").find("canvas").each(function(index, canvas){
+      $(".container").find("canvas").each(function(index, canvas){
         images[canvas.id] = canvas.toDataURL('image/png');
       });
 

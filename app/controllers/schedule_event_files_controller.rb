@@ -87,18 +87,7 @@ class ScheduleEventFilesController < ApplicationController
     render json: { success: false, alert: t('schedule_event_files.error.cant_download') }, status: :unprocessable_entity
   end
 
-  def can_download
-    verify_download
-
-    if !@is_observer_or_responsible && @owner && Exam.verify_blocking_content(current_user.id)
-      redirect_to schedule_events_path, alert: t('schedule_events.restrict_events')
-    else
-      render json: { success: true, url: (params[:id].blank? ? zip_download_schedule_event_files_path(event_id: @event.id) : download_schedule_event_files_path(event_id: @event.id, id: params[:id]) ) }
-    end
-  rescue => error
-    render json: { success: false, alert: t('schedule_event_files.error.cant_download') }, status: :unprocessable_entity
-  end
-
+  # require 'stringio'
   def download
     verify_download
 
@@ -108,12 +97,26 @@ class ScheduleEventFilesController < ApplicationController
       if params[:zip].present?
         schedule_event_files = ScheduleEventFile.get_all_event_files(params[:event_id])
         path_zip = compress_file({ files: schedule_event_files, table_column_name: 'attachment_file_name', name_zip_file: @event.title })
+        download_file(:back, path_zip, file_name)
       else
-        path_zip  = @file.attachment.path
-        file_name = @file.attachment_file_name
-      end
+        if @file.file_correction
+          pdf = Prawn::Document.new
+          @file.file_correction.each do |key, value|
+            temp_file = Tempfile.new('image', encoding: 'ascii-8bit')
+            image_base64 = value.gsub("data:image/png;base64,", "")
+            temp_file.write Base64.decode64(image_base64)
 
-      download_file(:back, path_zip, file_name)
+            pdf.image temp_file, at: [0, pdf.cursor], width: 500
+            pdf.start_new_page
+          end
+
+          send_data pdf.render, filename: @file.attachment_file_name, type: 'application/pdf'
+        else
+          path_zip  = @file.attachment.path
+          file_name = @file.attachment_file_name
+          download_file(:back, path_zip, file_name)
+        end
+      end
     end
   end
 

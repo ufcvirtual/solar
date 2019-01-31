@@ -78,12 +78,12 @@ function getToolSelected() {
 }
 
 function renderImage(url, editions_by_user) {
-  var container = document.querySelector("main");
+  var container = document.querySelector(".container");
 
   var div = document.createElement("div"); // Create div where the page will be rendered
   div.setAttribute("id", "page-1"); // Set id attribute with page-pdf_page_number format
   div.setAttribute("style", "position: relative"); // This will keep positions of child elements as per our needs
-  container.appendChild(div); // Append div within main#container
+  container.appendChild(div); // Append div within main.container
 
   var canvas = document.createElement("canvas"); // Create a new Canvas element
   canvas.setAttribute('id', "canvas-1"); // Set ID for the Canvas element
@@ -98,7 +98,7 @@ function renderImage(url, editions_by_user) {
     canvas.getContext('2d').drawImage(img, 0, 0);
   };
 
-  $("canvas").mouseover(function(event){
+  $("canvas").on("mouseover", function(event){
     var canvasID = "#" + $(this).attr('id');
 
     var canvas = document.querySelector(canvasID);
@@ -110,8 +110,8 @@ function renderImage(url, editions_by_user) {
 
 function renderPDF(url, editions_by_user) {
   PDFJS.getDocument(url).then(function(pdf){
-    // Get main#container and cache it for later use
-    var container = document.querySelector("main");
+    // Get main.container and cache it for later use
+    var container = document.querySelector(".container");
 
     // Loop from 1 to total_number_of_pages in PDF document
     for (var i = 1; i <= pdf.numPages; i++) {
@@ -123,7 +123,7 @@ function renderPDF(url, editions_by_user) {
         var div = document.createElement("div"); // Create div where the page will be rendered
         div.setAttribute("id", "page-" + (page.pageIndex + 1)); // Set id attribute with page-pdf_page_number format
         div.setAttribute("style", "position: relative"); // This will keep positions of child elements as per our needs
-        container.appendChild(div); // Append div within main#container
+        container.appendChild(div); // Append div within main.container
 
         var canvas = document.createElement("canvas"); // Create a new Canvas element
         canvas.setAttribute('id', "canvas-" + (page.pageIndex + 1)); // Set ID for the Canvas element
@@ -143,7 +143,7 @@ function renderPDF(url, editions_by_user) {
         page.render(renderContext)
         .then(function(){
           if(editions_by_user != null){
-            $("main").find("canvas").each(function(index, canvas){
+            $(".container").find("canvas").each(function(index, canvas){
               var img = new Image();
               img.src = editions_by_user[canvas.id];
 
@@ -225,11 +225,11 @@ function write(canvas, context) {
       }
     }
 
-    if (keynum == 3) { // Right mouse button is pressed
-      var toolsBox = document.querySelector("#box-tools");
-      $(toolsBox).css({"top": mouseY + $(canvas).offset().top, "left": mouseX + $(canvas).offset().left}).show();
-      dragElement(toolsBox);
-    }
+    // if (keynum == 3) { // Right mouse button is pressed
+    //   var toolsBox = document.querySelector("#box-tools");
+    //   $(toolsBox).css({"top": mouseY + $(canvas).offset().top, "left": mouseX + $(canvas).offset().left}).show();
+    //   dragElement(toolsBox);
+    // }
   };
 
   canvas.onmousemove = function(event){
