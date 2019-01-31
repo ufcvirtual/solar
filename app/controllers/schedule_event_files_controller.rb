@@ -110,7 +110,7 @@ class ScheduleEventFilesController < ApplicationController
             pdf.start_new_page
           end
 
-          file_name = @file.attachment_file_name.split('.').last != 'pdf' ? @file.attachment_file_name.gsub(/jpg|jpeg|png/, ".pdf") : @file.attachment_file_name
+          file_name = @file.attachment_file_name.split('.').last != 'pdf' ? @file.attachment_file_name.gsub(/jpg|jpeg|png/, "pdf") : @file.attachment_file_name
 
           send_data pdf.render, filename: file_name, type: 'application/pdf'
         else
