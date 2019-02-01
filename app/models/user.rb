@@ -476,7 +476,7 @@ class User < ActiveRecord::Base
       end
       can_add_to_blacklist = !blacklist.nil? && (blacklist.valid? || !blacklist.new_record?)
       new_password         = nil
-      group = Group.joins(:allocation_tag).where(allocation_tags: {id: ats}).where("lower(code) = ?", row['Turma'].downcase).first if (row.include?('Turma') && !row['Turma'].blank? && !ats.blank?)
+      group = Group.joins(:allocation_tag).where(allocation_tags: {id: ats}).where("lower(name) = ?", row['Turma'].downcase).first if (row.include?('Turma') && !row['Turma'].blank? && !ats.blank?)
 
       if !user.integrated || can_add_to_blacklist
         blacklist.save if !blacklist.nil? && blacklist.new_record? && user.integrated && can_add_to_blacklist
