@@ -2936,6 +2936,8 @@ en_US:
     send_message: Send Message
     next: Next
     previous: Previous
+    next_msg: Next Message
+    previous_msg: Previous Message
     contacts:
       title: "Selection of contacts"
       contacts: "Contacts"

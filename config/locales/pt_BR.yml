@@ -3239,6 +3239,8 @@ pt_BR:
     send_message: Enviar Mensagem
     next: Próxima
     previous: Anterior
+    next_msg: Próxima Mensagem
+    previous_msg: Mensagem Anterior
     contacts:
       title: "Seleção de contatos"
       contacts: "Contatos"

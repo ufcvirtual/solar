@@ -4,8 +4,10 @@
   .block_content.messages
     .align-right
       %ul
-        %li= link_to content_tag(:i, nil, class: 'icon-arrow-left-thin', :"aria-hidden" => 'true'), message_path(id: @previous_message_id, box: @box, ids: @message_ids), class: 'btn', 'data-tooltip' => t(:previous, scope: :messages), :'aria-label'=> t("messages.previous") unless @previous_message_id.nil?
-        %li= link_to content_tag(:i, nil, class: 'icon-arrow-right-thin', :"aria-hidden" => 'true'), message_path(id: @next_message_id, box: @box, ids: @message_ids), class: 'btn', 'data-tooltip' => t(:next, scope: :messages), :'aria-label'=> t("messages.next") unless @next_message_id.nil?
+        - unless @previous_message_id.nil?
+          %li= link_to content_tag(:i, nil, class: 'icon-arrow-left-thin', :"aria-hidden" => 'true'), message_path(id: @previous_message_id, box: @box, ids: @message_ids), class: 'btn', 'data-tooltip' => t(:previous, scope: :messages), :'aria-label'=> t("messages.previous_msg")
+        - unless @next_message_id.nil?
+          %li= link_to content_tag(:i, nil, class: 'icon-arrow-right-thin', :"aria-hidden" => 'true'), message_path(id: @next_message_id, box: @box, ids: @message_ids), class: 'btn', 'data-tooltip' => t(:next, scope: :messages), :'aria-label'=> t("messages.next_msg")
 
         %li= link_to content_tag(:i, nil, class: 'icon-plus', :"aria-hidden" => 'true'), '#void', class: 'btn', id: "button_new_msg", 'data-tooltip' => t(:new, scope: :messages), :'aria-label'=> t("messages.new"), :'data-url' => new_message_path
 
