@@ -981,3 +981,18 @@ i.noscript{
 .clear {
   clear: both;
 }
+
+@media (max-width: 576px){
+  .contact,
+  .contact2,
+  #register,
+  #register-steps {
+    width: 100%;
+  }
+
+  .form-panel label {
+    text-align: left;
+    display: block;
+    width: 260px;
+  }
+}
