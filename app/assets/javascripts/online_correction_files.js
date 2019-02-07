@@ -357,7 +357,7 @@ function canvasText(context, clickX, clickY, message) {
   var xPosition = clickX;
   var yPosition = clickY;
 
-  printAt(context, message, xPosition, yPosition, 15, 250);
+  printAt(context, message, xPosition+2, yPosition+5, 15, 250);
   context.restore();
 }
 
