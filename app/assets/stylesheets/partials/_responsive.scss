@@ -717,6 +717,11 @@
       margin: 10px 0 !important;
     }
   }
+
+  .class-position {
+    float: none;
+    position: static;
+  }
 }
 
 @media (max-width: 768px){
