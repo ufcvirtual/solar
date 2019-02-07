@@ -748,7 +748,7 @@ class User < ActiveRecord::Base
   end
 
   def self.user_ma_attributes(user_data)
-    data = { name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == 'M'), cell_phone: user_data[17], nick: (user_data[7].nil? ? ([user_data[2].split(' ')[0], user_data[2].split(' ')[1]].join(' ')) : user_data[7]), telephone: user_data[18], special_needs: ((user_data[19].blank? || user_data[19].downcase == 'nenhuma') ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13], address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]), email: user_data[8], integrated: true }
+    data = { name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == 'M'), cell_phone: user_data[17], nick: (user_data[7].nil? ? ([user_data[2].split(' ')[0], user_data[2].split(' ')[1]].join(' ')) : user_data[7]), telephone: user_data[18], special_needs: ((user_data[19].blank? || user_data[19].downcase == 'nenhuma') ? nil : User.special_needs_code(user_data[19])), address: user_data[10], address_number: user_data[11], zipcode: user_data[13], address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]), email: user_data[8], integrated: true }
 
     if !user_data[6].blank?
       data.merge!({password: user_data[6]})
@@ -1046,6 +1046,40 @@ class User < ActiveRecord::Base
     # garantees that email will be nil when blank
     def set_empty_email
       self.email = nil
+    end
+
+    def self.special_needs_code(special_needs)
+      case special_needs
+        when t('deficiency.autism_complete')
+          "1"
+        when t('deficiency.low_vision_complete')
+          "2"
+        when t('deficiency.blindness_complete')
+          "3"
+        when t('deficiency.hearing_deficiency_complete')
+          "4"
+        when t('deficiency.physical_disability_complete')
+          "5"
+        when t('deficiency.intellectual_deficiency_complete')
+          "6"
+        when t('deficiency.multiple_disability_complete')
+          "7"
+        when t('deficiency.deafness_complete')
+          "8"
+        when t('deficiency.deafblindness_complete')
+          "9"
+        when t('deficiency.aspergers_syndrome_complete')
+          "10"
+        when t('deficiency.rett_syndrome_complete')
+          "11"
+        when t('deficiency.childhood_disintegrative_disorder_complete')
+          "12"
+        when t('deficiency.other')
+          "13"
+        else
+          nil
+
+      end
     end
 
 end

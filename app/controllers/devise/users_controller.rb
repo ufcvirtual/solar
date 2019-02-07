@@ -42,19 +42,19 @@ class Devise::UsersController < Devise::RegistrationsController
 
     def load_deficiencys
       @special_needs = [[t('deficiency.none'), nil],
-      [t('deficiency.autism_complete'), t('deficiency.autism_complete')], 
-      [t('deficiency.low_vision_complete'), t('deficiency.low_vision_complete')],
-      [t('deficiency.blindness_complete'), t('deficiency.blindness_complete')],
-      [t('deficiency.hearing_deficiency_complete'), t('deficiency.hearing_deficiency_complete')],
-      [t('deficiency.physical_disability_complete'), t('deficiency.physical_disability_complete')],
-      [t('deficiency.intellectual_deficiency_complete'), t('deficiency.intellectual_deficiency_complete')],
-      [t('deficiency.multiple_disability_complete'), t('deficiency.multiple_disability_complete')],
-      [t('deficiency.deafness_complete'), t('deficiency.deafness_complete')],
-      [t('deficiency.deafblindness_complete'), t('deficiency.deafblindness_complete')],
-      [t('deficiency.aspergers_syndrome_complete'), t('deficiency.aspergers_syndrome_complete')],
-      [t('deficiency.rett_syndrome_complete'), t('deficiency.rett_syndrome_complete')],
-      [t('deficiency.childhood_disintegrative_disorder_complete'), t('deficiency.childhood_disintegrative_disorder_complete')],
-      [t('deficiency.other'), t('deficiency.other')]]
+      [t('deficiency.autism_complete'), t('deficiency.code.autism')], 
+      [t('deficiency.low_vision_complete'), t('deficiency.code.low_vision')],
+      [t('deficiency.blindness_complete'), t('deficiency.code.blindness')],
+      [t('deficiency.hearing_deficiency_complete'), t('deficiency.code.hearing_deficiency')],
+      [t('deficiency.physical_disability_complete'), t('deficiency.code.physical_disability')],
+      [t('deficiency.intellectual_deficiency_complete'), t('deficiency.code.intellectual_deficiency')],
+      [t('deficiency.multiple_disability_complete'), t('deficiency.code.multiple_disability')],
+      [t('deficiency.deafness_complete'), t('deficiency.code.deafness')],
+      [t('deficiency.deafblindness_complete'), t('deficiency.code.deafblindness')],
+      [t('deficiency.aspergers_syndrome_complete'), t('deficiency.code.aspergers_syndrome')],
+      [t('deficiency.rett_syndrome_complete'), t('deficiency.code.rett_syndrome')],
+      [t('deficiency.childhood_disintegrative_disorder_complete'), t('deficiency.code.childhood_disintegrative_disorder')],
+      [t('deficiency.other'), t('deficiency.code.other')]]
     end
 
     def sign_up_params
