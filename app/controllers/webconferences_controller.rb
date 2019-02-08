@@ -278,6 +278,7 @@ class WebconferencesController < ApplicationController
 
     @count_per_type = Webconference.count_per_type.rows
     @per_server = Webconference.count_per_server.rows
+    @empty_servers = @per_server.select {|x| x[3] == "0"}.count == @per_server.count
     @total = Webconference.count_total_effective.rows
     @per_month = Webconference.count_last_12_months.rows
     @schedules_per_month = Webconference.count_next_6_months.rows
