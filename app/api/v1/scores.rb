@@ -119,11 +119,10 @@ module V1
 
         discussion = Discussion.find(params[:discussion_id])
         academic_allocation = discussion.academic_allocations.where(allocation_tag_id: @at.id).first
-        alluser = AcademicAllocationUser.find_one(academic_allocation.id, params[:user_id], nil, false)
-        comments = alluser.comments
+        all_user = AcademicAllocationUser.find_one(academic_allocation.id, params[:user_id], nil, false)
 
-        Struct.new('PostsAndComments',:posts, :comments)
-        @struct = Struct::PostsAndComments.new(posts, comments)
+        Struct.new('PostsScores',:posts, :all_user)
+        @posts_scores = Struct::PostsScores.new(posts, all_user)
       end
 
     end # namespace
