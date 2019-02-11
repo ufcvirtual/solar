@@ -1764,6 +1764,7 @@ pt_BR:
       web_total: 'Total de webconferências criadas e efetivas por semestre:'
       web_12_month: 'Total (últimos 12 meses):'
       web_next_6_month: 'Agendamentos (próximos 6 meses):'
+      web_real_time: 'Webconferências/Usuários em Tempo Real'
       web_month: 'Webconferências por mês (agrupadas):'
       web_day: 'Webconferências por dia da semana (agrupadas):'
       web_hour: 'Webconferências por hora do dia (agrupadas):'
@@ -1795,13 +1796,13 @@ pt_BR:
       historic_d1: '28/03/2014'
       historic_t1: 'Implantação da versão 0.81 do bigbluebutton'
       feedback_title: 'Feedback - 9391 respostas'
-      feedback_grade: 'Nota das webconferências (1 à 5):'
+      feedback_grade: 'Notas das webconferências (1 à 5):'
       feedback_difficulty: 'Dificuldades na webconferência:'
       feedback_access: 'Local de acesso:'
       feedback_equipament: 'Equipamento utilizado:'
       feedback_internet: 'Velocidade da internet:'
-      feedback_html5: 'Aceitação da versão em html5:'
-      feedback_html5_flash: 'HTML5 X Flash:'
+      feedback_html5: 'Aceitação da versão em HTML5:'
+      feedback_html5_flash: 'Comparativo entre as versões HTML5 e Flash:'
   navigation_of: " de "
   navigation_next: "Próxima >"
   navigation_previous: "< Anterior"
@@ -3421,6 +3422,20 @@ pt_BR:
     aspergers_syndrome: SDA
     rett_syndrome: SRETT
     childhood_disintegrative_disorder: TDI
+    code:
+      autism: 1
+      low_vision: 2
+      blindness: 3
+      hearing_deficiency: 4
+      physical_disability: 5
+      intellectual_deficiency: 6
+      multiple_disability: 7
+      deafness: 8
+      deafblindness: 9
+      aspergers_syndrome: 10
+      rett_syndrome: 11
+      childhood_disintegrative_disorder: 12
+      other: 13
 
   #Eventos da agenda
   schedule_events:

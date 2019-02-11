@@ -277,6 +277,14 @@
     display: inline-block !important;
   }
 
+  .fancybox-wrap {
+    min-width: 280px !important;
+  }
+
+  .fancybox-inner {
+    width: 100% !important;
+  }
+
   table.tb_list {
     tbody, td, tr.lines th.act_like_td, a {
       word-break: keep-all !important;
@@ -643,6 +651,12 @@
   #audios .upload-preview {
     audio{
       max-width: 160px;
+    }
+  }
+
+  .audio.legend {
+    .audio audio {
+      max-width: 200px;
     }
   }
 

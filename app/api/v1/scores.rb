@@ -99,6 +99,32 @@ module V1
         }
 
       end # get
+      
+      params do
+          requires :id, type: Integer, desc: 'ID da turma'
+          optional :list, type: String, default: 'all'#, values: ['general_view', 'all', 'evaluative', 'frequency', 'not_evaluative']
+        end
+      get ':id/scores/summary', rabl: 'scores/summary' do
+        @users = AllocationTag.get_participants(@at.id, { students: true }, true)
+        @wh = AllocationTag.find(@at.id).get_curriculum_unit.try(:working_hours)
+      end
+      
+      params do
+          requires :id, type: Integer, desc: 'ID da Turma'
+          requires :discussion_id, type: Integer, desc: 'ID do Fórum'
+          requires :user_id, type: Integer, desc: 'ID da Aluno'
+        end
+      get ':id/scores/discussion/:discussion_id/info', rabl: 'scores/discussion' do
+        posts = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: @at.id, academic_tool_id: params[:discussion_id], academic_tool_type: 'Discussion' }, user_id: params[:user_id], draft: false).order('updated_at DESC')
+
+        discussion = Discussion.find(params[:discussion_id])
+        academic_allocation = discussion.academic_allocations.where(allocation_tag_id: @at.id).first
+        alluser = AcademicAllocationUser.find_one(academic_allocation.id, params[:user_id], nil, false)
+        comments = alluser.comments
+
+        Struct.new('PostsAndComments',:posts, :comments)
+        @struct = Struct::PostsAndComments.new(posts, comments)
+      end
 
     end # namespace
 
