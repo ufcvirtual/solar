@@ -1050,31 +1050,31 @@ class User < ActiveRecord::Base
 
     def self.special_needs_code(special_needs)
       case special_needs
-        when t('deficiency.autism_complete')
+        when I18n.t('deficiency.autism_complete')
           "1"
-        when t('deficiency.low_vision_complete')
+        when I18n.t('deficiency.low_vision_complete')
           "2"
-        when t('deficiency.blindness_complete')
+        when I18n.t('deficiency.blindness_complete')
           "3"
-        when t('deficiency.hearing_deficiency_complete')
+        when I18n.t('deficiency.hearing_deficiency_complete')
           "4"
-        when t('deficiency.physical_disability_complete')
+        when I18n.t('deficiency.physical_disability_complete')
           "5"
-        when t('deficiency.intellectual_deficiency_complete')
+        when I18n.t('deficiency.intellectual_deficiency_complete')
           "6"
-        when t('deficiency.multiple_disability_complete')
+        when I18n.t('deficiency.multiple_disability_complete')
           "7"
-        when t('deficiency.deafness_complete')
+        when I18n.t('deficiency.deafness_complete')
           "8"
-        when t('deficiency.deafblindness_complete')
+        when I18n.t('deficiency.deafblindness_complete')
           "9"
-        when t('deficiency.aspergers_syndrome_complete')
+        when I18n.t('deficiency.aspergers_syndrome_complete')
           "10"
-        when t('deficiency.rett_syndrome_complete')
+        when I18n.t('deficiency.rett_syndrome_complete')
           "11"
-        when t('deficiency.childhood_disintegrative_disorder_complete')
+        when I18n.t('deficiency.childhood_disintegrative_disorder_complete')
           "12"
-        when t('deficiency.other')
+        when I18n.t('deficiency.other')
           "13"
         else
           nil
