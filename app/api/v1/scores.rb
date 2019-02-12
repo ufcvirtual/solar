@@ -124,6 +124,16 @@ module V1
         Struct.new('PostsScores',:posts, :all_user)
         @posts_scores = Struct::PostsScores.new(posts, all_user)
       end
+      
+      params do
+          requires :id, type: Integer, desc: 'ID da Turma'
+          requires :assignment_id, type: Integer, desc: 'ID do Trabalho'
+          requires :user_id, type: Integer, desc: 'ID da Aluno'
+        end
+      get ':id/scores/assignment/:assignment_id/info', rabl: 'scores/assignment' do
+        ac = AcademicAllocation.where(academic_tool_id: params[:assignment_id], allocation_tag_id: @at.id, academic_tool_type: 'Assignment').first
+        @acu = AcademicAllocationUser.where(academic_allocation_id: ac.id).where(user_id: params[:user_id]).first
+      end
 
     end # namespace
 
