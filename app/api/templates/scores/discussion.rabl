@@ -1,11 +1,11 @@
-object @struct
+object @posts_scores
 
 child :posts => :posts do
   attributes :content, :created_at
 end
 
-child :comments do
-  node do |c|
+node :comments do
+  @posts_scores.all_user.comments.map do |c|
     {
       comment: c.comment,
       by: c.user.name
@@ -13,3 +13,6 @@ child :comments do
   end
 end
 
+child :all_user => :scores do
+  attributes :grade, :working_hours
+end
