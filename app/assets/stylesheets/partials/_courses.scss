@@ -3,6 +3,10 @@
     display: none;
   }
 
+  .autocomplete_header {
+    display: inline-flex;
+  }
+
   .ckb{
     margin-bottom: 20px;
     .input.boolean{

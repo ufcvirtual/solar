@@ -3045,6 +3045,16 @@ pt_BR:
       cancel: Cancelar
       info: Informações
       exam_header: Cabeçalho para as Provas
+      use_autocomplete_header: Usar preenchimento automatico de cabeçalho
+      about_autocomplete: Informações sobre o preenchimento automático
+      info_autocomplete: "O sistema irá preencher automaticamente apenas os seguintes cabeçalhos, se presentes:"
+      course_name: "Curso:"
+      curriculum_unit_name: "Disciplina:"
+      test_name: "Prova:"
+      date: "Data:"
+      place: "Polo:"
+      student_name: "Nome do(a) aluno(a):"
+      enrollment: "Matrícula:"
     info:
       has_header: "Cabeçalho padronizado para as provas"
       not_has_header: "Não há cabeçalho padronizado para as provas"

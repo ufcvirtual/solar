@@ -2745,6 +2745,16 @@ en_US:
       cancel: Cancel
       info: Information
       exam_header: Exam Headers
+      use_autocomplete_header: Use system header's autocomplete
+      about_autocomplete: About autocomplete
+      info_autocomplete: "The system will automatically fill only the following headings, if present:"
+      course_name: "Curso:"
+      curriculum_unit_name: "Disciplina:"
+      test_name: "Prova:"
+      date: "Data:"
+      place: "Polo:"
+      student_name: "Nome do(a) aluno(a):"
+      enrollment: "Matrícula:"
     info:
       has_header: Standardized header for tests
       not_has_header: No standardized header for tests

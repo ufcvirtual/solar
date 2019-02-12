@@ -376,9 +376,12 @@ i.noscript{
     text-align: center;
   }
 }
-.colored{
-  color: red;
+.colored {
+  color: $removed_permission_color;
   font-weight: bold;
+  p {
+    color: $color_black;
+  }
 }
 
 #body_wrapper .col-sm-10{

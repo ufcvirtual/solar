@@ -159,21 +159,23 @@ class ScheduleEventsController < ApplicationController
     else
       html = HTMLEntities.new.decode render_to_string("print_presential_test.html.haml", formats: [:html], layout: false)
 
-      unless @allocation_tags_ids.size > 1
-        coord_profiles = (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['coord_profiles'] rescue nil)
-        coord = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", ats, Allocation_Activated, coord_profiles.split(',')).first unless coord_profiles.blank?
+      if @course.use_autocomplete_header
+        unless @allocation_tags_ids.size > 1
+          coord_profiles = (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['coord_profiles'] rescue nil)
+          coord = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", ats, Allocation_Activated, coord_profiles.split(',')).first unless coord_profiles.blank?
 
-        prof_profiles = (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['prof_profiles'] rescue nil)
-        profs = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", ats, Allocation_Activated, prof_profiles.split(',')).distinct unless prof_profiles.blank?
+          prof_profiles = (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['prof_profiles'] rescue nil)
+          profs = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", ats, Allocation_Activated, prof_profiles.split(',')).distinct unless prof_profiles.blank?
 
-        tutor_profiles = (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['tutor_profiles'] rescue nil)
-        tutors = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", ats, Allocation_Activated, tutor_profiles.split(',')).distinct unless tutor_profiles.blank?
+          tutor_profiles = (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['tutor_profiles'] rescue nil)
+          tutors = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", ats, Allocation_Activated, tutor_profiles.split(',')).distinct unless tutor_profiles.blank?
+        end
+
+        student = User.find(params[:student_id]) unless params[:student_id].blank?
+        matricula = Allocation.where(user_id: params[:student_id], allocation_tag_id: @allocation_tags_ids.first, status: 1).first.matricula unless params[:student_id].blank?
+
+        normalize_exam_header(html, student, matricula, profs, tutors, @event, allocation_tag.get_curriculum_unit, @course.name, coord)
       end
-
-      student = User.find(params[:student_id]) unless params[:student_id].blank?
-      matricula = Allocation.where(user_id: params[:student_id], allocation_tag_id: @allocation_tags_ids.first, status: 1).first.matricula unless params[:student_id].blank?
-
-      normalize_exam_header(html, student, matricula, profs, tutors, @event, allocation_tag.get_curriculum_unit, @course.name, coord)
 
       pictures_with_abs_path html
 

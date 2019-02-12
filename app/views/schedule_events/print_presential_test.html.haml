@@ -9,13 +9,13 @@
     -if @course.has_exam_header
       %header
         = @course.header_exam
-        - unless params[:student_id].blank?
+        - if !params[:student_id].blank? && @course.use_autocomplete_header
           .signature-box
             %span.completed-by= t(:signature)
             %span.signature
     %main
       = @event.content_exam
-    
+
 :css
 
   .body{

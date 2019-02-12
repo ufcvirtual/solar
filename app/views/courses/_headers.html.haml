@@ -1,4 +1,21 @@
-= f.input :header_exam, as: :ckeditor
+.autocomplete_header
+  = f.check_box :use_autocomplete_header
+  = t('courses.form.use_autocomplete_header')
+
+%fieldset.colored
+  %legend= t('courses.form.about_autocomplete')
+  %p= t('courses.form.info_autocomplete')
+  %ol{type: '1'}
+    %li= t('courses.form.course_name')
+    %li= t('courses.form.curriculum_unit_name')
+    %li= t('courses.form.test_name')
+    %li= t('courses.form.date')
+    %li= t('courses.form.place')
+    %li= t('courses.form.student_name')
+    %li= t('courses.form.enrollment')
+
+.desc
+  = f.input :header_exam, as: :ckeditor
 
 .right_buttons
   = button_tag t(:back), :type => 'button', :onclick => "back_to_info(event)", class: 'btn btn_default btn_lightbox', onkeypress: 'back_to_info(event)', alt: t(:back)
