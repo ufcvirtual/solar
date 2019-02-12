@@ -437,6 +437,18 @@
   #support_material_file_title,
   #lesson_description,
   #profile_description,
+  #course_code,
+  #course_name,
+  #course_passing_grade,
+  #course_min_hours,
+  #course_min_grade_to_final_exam,
+  #course_min_final_exam_grade,
+  #course_final_exam_passing_grade,
+  #curriculum_unit_code,
+  #curriculum_unit_resume,
+  #curriculum_unit_objectives,
+  #curriculum_unit_syllabus,
+  #curriculum_unit_prerequisites,
   .bibliography_publisher,
   .bibliography_volume,
   .bibliography_edition,
@@ -462,7 +474,19 @@
   .schedule_event_type_event,
   .schedule_event_place,
   .schedule_event_description,
-  .support_material_file_title {
+  .support_material_file_title,
+  .course_code,
+  .course_name,
+  .course_passing_grade,
+  .course_min_hours,
+  .course_min_grade_to_final_exam,
+  .course_min_final_exam_grade,
+  .course_final_exam_passing_grade,
+  .curriculum_unit_code,
+  .curriculum_unit_resume,
+  .curriculum_unit_objectives,
+  .curriculum_unit_syllabus,
+  .curriculum_unit_prerequisites {
     width: 100% !important;
     min-width: 155px !important;
   }
@@ -524,8 +548,32 @@
   .responsive label,
   .lesson_address label,
   .question_type label,
-  .labels label {
+  .labels label,
+  .course_code label,
+  .course_name label,
+  .course_passing_grade label,
+  .course_min_hours label,
+  .course_min_grade_to_final_exam label,
+  .course_min_final_exam_grade label,
+  .course_final_exam_passing_grade label {
     text-align: left !important;
+  }
+
+  #course_form label {
+    display: inline;
+  }
+
+  #offer_form,
+  #semester_form,
+  #curriculum_unit_form,
+  #group_form {
+    label {
+      text-align: left;
+    }
+    .period_date{
+      display: inline-flex;
+      margin-left: 0;
+    }
   }
 
   .responsive,
