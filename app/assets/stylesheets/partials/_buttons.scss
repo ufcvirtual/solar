@@ -16,6 +16,11 @@ input::-moz-focus-inner {
 }
 
 .btn, .btn_caution {
+    *:before,
+    *:after {
+      box-sizing: content-box;
+    }
+    box-sizing: content-box;
     display: inline-block;
     *display: inline;
     padding: 4px 6px;
