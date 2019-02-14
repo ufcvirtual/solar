@@ -134,6 +134,25 @@ module V1
         ac = AcademicAllocation.where(academic_tool_id: params[:assignment_id], allocation_tag_id: @at.id, academic_tool_type: 'Assignment').first
         @acu = AcademicAllocationUser.where(academic_allocation_id: ac.id).where(user_id: params[:user_id]).first
       end
+      
+      params do
+          requires :id, type: Integer, desc: 'ID da Turma'
+          requires :webconference_id, type: Integer, desc: 'ID da Webconferência'
+          requires :user_id, type: Integer, desc: 'ID da Aluno'
+        end
+      get ':id/scores/webconference/:webconference_id/info', rabl: 'scores/webconference' do
+        webconference = Webconference.find(params[:webconference_id])
+
+        academic_allocations_ids = (webconference.shared_between_groups ? webconference.academic_allocations.map(&:id) : webconference.academic_allocations.where(allocation_tag_id: @at.id).first.try(:id))
+        ats = AllocationTag.where(id: @at.id).map(&:related)
+        logs = webconference.get_access(academic_allocations_ids, ats, {user_id: params[:user_id]})
+        acs = AcademicAllocation.where(id: academic_allocations_ids)
+        academic_allocation = acs.where(allocation_tag_id: @at.id).first
+        acu = AcademicAllocationUser.find_one(academic_allocation.id, params[:user_id], nil, false)
+
+        Struct.new('WebScores',:logs, :acu)
+        @webconference_scores = Struct::WebScores.new(logs, acu)
+      end
 
     end # namespace
 
