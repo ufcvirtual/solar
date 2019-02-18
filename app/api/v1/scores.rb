@@ -156,6 +156,21 @@ module V1
 
       params do
         requires :id, type: Integer, desc: 'ID da Turma'
+        requires :chat_id, type: Integer, desc: 'ID do Chat'
+        requires :user_id, type: Integer, desc: 'ID da Aluno'
+      end
+      get ':id/scores/chat/:chat_id/info', rabl: 'scores/chat' do
+        chat_room = ChatRoom.find(params[:chat_id])
+        messages = chat_room.get_messages(@at.id, {user_id: params[:user_id]} )
+        academic_allocation = chat_room.academic_allocations.where(allocation_tag_id: @at.id).first
+        acu = AcademicAllocationUser.find_one(academic_allocation.id, params[:user_id],nil, false)
+
+        Struct.new('ChatScores',:messages, :acu)
+        @chat_scores = Struct::ChatScores.new(messages, acu)
+      end
+
+      params do
+        requires :id, type: Integer, desc: 'ID da Turma'
         requires :academic_allocation_user_id, type: Integer, desc: 'ID da AcademicAllocationUser'
         requires :comment, type: String
       end
