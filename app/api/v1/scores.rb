@@ -154,6 +154,18 @@ module V1
         @webconference_scores = Struct::WebScores.new(logs, acu)
       end
 
+      params do
+        requires :id, type: Integer, desc: 'ID da Turma'
+        requires :academic_allocation_user_id, type: Integer, desc: 'ID da AcademicAllocationUser'
+        requires :comment, type: String
+      end
+    post ':id/scores/comment/:academic_allocation_user_id' do
+      comment = Comment.new(academic_allocation_user_id: params[:academic_allocation_user_id], comment: params[:comment], user_id: current_user)
+      comment.save!
+
+      {ok: 'ok'}
+    end
+
     end # namespace
 
   end
