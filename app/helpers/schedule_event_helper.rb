@@ -1,65 +1,65 @@
 module ScheduleEventHelper
 
-  def get_deficiency(deficiency)
-    case deficiency
-      when "Autismo"
+  def get_deficiency(deficiency_code)
+    case deficiency_code
+      when 1
         I18n.t("deficiency.autism")
-      when "Baixa visão"
+      when 2
         I18n.t("deficiency.low_vision")
-      when "Cegueira"
+      when 3
         I18n.t("deficiency.blindness")
-      when "Deficiência auditiva"
+      when 4
         I18n.t("deficiency.hearing_deficiency")
-      when "Deficiência física"
+      when 5
         I18n.t("deficiency.physical_disability")
-      when "Deficiência intelectual"
+      when 6
         I18n.t("deficiency.intellectual_deficiency")
-      when "Deficiência múltipla"
+      when 7
         I18n.t("deficiency.multiple_disability")
-      when "Surdez"
+      when 8
         I18n.t("deficiency.deafness")
-      when "Surdocegueira"
+      when 9
         I18n.t("deficiency.deafblindness")
-      when "Síndrome de Asperger"
+      when 10
         I18n.t("deficiency.aspergers_syndrome")
-      when "Síndrome de Rett"
+      when 11
         I18n.t("deficiency.rett_syndrome")
-      when "Transtorno desintegrativo de infância"
+      when 12
         I18n.t("deficiency.childhood_disintegrative_disorder")
-      when "Outra"
+      when 13
         I18n.t("deficiency.other")
       else
         ""
     end
   end
 
-  def get_deficiency_class_css(deficiency)
-    case deficiency
-      when "Autismo"
+  def get_deficiency_class_css(deficiency_code)
+    case deficiency_code
+      when 1
         "autism"
-      when "Baixa visão"
+      when 2
         "low_vision"
-      when "Cegueira"
+      when 3
         "blindness"
-      when "Deficiência auditiva"
+      when 4
         "hearing_deficiency"
-      when "Deficiência física"
+      when 5
         "physical_disability"
-      when "Deficiência intelectual"
+      when 6
         "intellectual_deficiency"
-      when "Deficiência múltipla"
+      when 7
         "multiple_disability"
-      when "Surdez"
+      when 8
         "deafness"
-      when "Surdocegueira"
+      when 9
         "deafblindness"
-      when "Síndrome de Asperger"
+      when 10
         "aspergers_syndrome"
-      when "Síndrome de Rett"
+      when 11
         "rett_syndrome"
-      when "Transtorno desintegrativo de infância"
+      when 12
         "childhood_disintegrative_disorder"
-      when "Outra"
+      when 13
         "other"
       else
         nil

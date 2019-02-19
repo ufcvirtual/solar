@@ -28,7 +28,6 @@
             %tr
               %td= t('.resume_total_access')
               %td= @avg_max_total_access[0][1].to_s + " (" + @sum_total_access.to_s + ")"
-      #chart_per_type{tabindex: 0}
       - if !@schedules_per_month.empty?
         .title-warning
           .chart_title
@@ -49,12 +48,17 @@
             %tr
               %td= t('.statistic_shared')
               %td= @percent_shared + "%"
+      #chart_per_type{tabindex: 0}
       #chart_per_server_recordings{tabindex: 0}
       #chart_per_server{tabindex: 0}
-      .responsive-table
-        #chart_per_server_webs_real_time{tabindex: 0}
-      .responsive-table
-        #chart_per_server_access_real_time{tabindex: 0}
+      - if !@empty_servers
+        .title-warning
+          .chart_title
+            = link_to raw(t('.web_real_time')), "#void", onclick: "hide_or_show_info(this);", onkeydown: 'click_on_keypress(event, this);'
+            %i.icon-arrow-down-triangle
+            %i.icon-arrow-up-triangle.invisible
+          #chart_per_server_webs_real_time{tabindex: 0}
+          #chart_per_server_access_real_time{tabindex: 0}
       .title= t('.web_title')
       .title-warning
         .chart_title
@@ -369,34 +373,36 @@
     chart.draw(data, options);
 
     //Per Server - webs real time
-    var data1 = JSON.parse('#{@per_server.to_json.html_safe}');
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Server');
-    data.addColumn('number', 'Webconferências');
+    if (!#{@empty_servers}) {
+      var data1 = JSON.parse('#{@per_server.to_json.html_safe}');
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Server');
+      data.addColumn('number', 'Webconferências');
 
-    for (var i=0;i<data1.length;i++){ data.addRow([data1[i][4], parseInt(data1[i][3])]); }
+      for (var i=0;i<data1.length;i++){ data.addRow([data1[i][4], parseInt(data1[i][3])]); }
 
-    var options = { title: "#{t('webconferences.report.statistic_ps_rt')}", is3D: true, sliceVisibilityThreshold:0  };
+      var options = { title: "#{t('webconferences.report.statistic_ps_rt')}", is3D: true, sliceVisibilityThreshold:0  };
 
-    formatter_integer.format(data, 1);
+      formatter_integer.format(data, 1);
 
-    var chart = new google.visualization.PieChart(document.getElementById('chart_per_server_webs_real_time'));
-    chart.draw(data, options);
+      var chart = new google.visualization.PieChart(document.getElementById('chart_per_server_webs_real_time'));
+      chart.draw(data, options);
 
     //Per Server - access real time
-    var data1 = JSON.parse('#{@participantCountPerServer.to_json.html_safe}');
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Server');
-    data.addColumn('number', 'Usuários');
+      var data1 = JSON.parse('#{@participantCountPerServer.to_json.html_safe}');
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Server');
+      data.addColumn('number', 'Usuários');
 
-    for (var i=0;i<data1.length;i++){ data.addRow([data1[i][0], parseInt(data1[i][1])]); }
+      for (var i=0;i<data1.length;i++){ data.addRow([data1[i][0], parseInt(data1[i][1])]); }
 
-    var options = { title: "#{t('webconferences.report.statistic_ps_rt_access')}", is3D: true, sliceVisibilityThreshold:0 };
+      var options = { title: "#{t('webconferences.report.statistic_ps_rt_access')}", is3D: true, sliceVisibilityThreshold:0 };
 
-    formatter_integer.format(data, 1);
+      formatter_integer.format(data, 1);
 
-    var chart = new google.visualization.PieChart(document.getElementById('chart_per_server_access_real_time'));
-    chart.draw(data, options);
+      var chart = new google.visualization.PieChart(document.getElementById('chart_per_server_access_real_time'));
+      chart.draw(data, options);
+    }
 
     //TOP CREATORS
     var data1 = JSON.parse('#{@top_creators.to_json.html_safe}');
@@ -713,7 +719,7 @@
       ['NÃO', 202]
     ]);
 
-    var options = { title: 'Gostou da versão em html5?', is3D: true, sliceVisibilityThreshold: .0 };
+    var options = { title: 'Você gostou da nova versão da webconferência?', is3D: true, sliceVisibilityThreshold: .0 };
 
     formatter_integer.format(data, 1);
 
@@ -732,7 +738,7 @@
      ['Facilidade no uso', 1053, 176]
     ]);
 
-    var options = { legend: { }, vAxis : { format: 'decimal' }, seriesType: 'bars' };
+    var options = { title: 'Escolha o que você gostou na nova versão ou o que preferia da versão antiga', legend: { }, vAxis : { format: 'decimal' }, seriesType: 'bars' };
 
     formatter_integer.format(data, 1);
     formatter_integer.format(data, 2);
