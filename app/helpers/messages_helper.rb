@@ -18,7 +18,6 @@ module MessagesHelper
 
     user_message = UserMessage.where(query.join(" AND ")).first
     raise CanCan::AccessDenied unless user_message
-
     status = user_message.status.to_i
     user_message.status = case new_status
     when "read"

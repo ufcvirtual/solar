@@ -513,7 +513,7 @@ class User < ActiveRecord::Base
 
       if user.save
         log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
-        imported << {user: user, group: group, group_name: row['Turma']}
+        imported << {user: user, group: group, group_name: row['Turma'].to_s}
         user.notify_user(new_password)
       else
         if user.errors[:username].blank? || (user.integrated && !can_add_to_blacklist) # if no error with username happens or cant unbind user from modulo

@@ -1,9 +1,9 @@
 collection @files
 
 @files.each do |file|
-  attributes :attachment
+  attributes id: :id, attachment_file_name: :name, attachment_content_type: :content_type, attachment_file_size: :size, attachment_updated_at: :updated_at
 
   node :url do |f|
-    download_file_messages_url(f.id)
+    api_download_messages_url(f.id)
   end
-end 
+end

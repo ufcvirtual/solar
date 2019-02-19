@@ -1,5 +1,11 @@
-collection @messages
+object false
 
-@messages.each do |message|
-  extends 'messages/show', locals: {message: message}
-end 
+node(:total) { @total }
+node(:pages_amount) { @pages_amount }
+
+child @messages => :messages do
+  @messages.each do |message|
+    extends 'messages/show', locals: {message: message}
+  end
+end
+
