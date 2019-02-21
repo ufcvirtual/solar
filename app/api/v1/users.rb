@@ -14,31 +14,22 @@ module V1
 
         # GET /users/1/photo
         params do
+          requires :group_id, type: Integer
           optional :style, type: String, values: %w(small forum medium), default: 'medium'
         end
         get "/:id/photo" do
-          user = current_user.id == params[:id].to_i ? current_user : User.find(params[:id])
-          send_file(user.photo.path(params[:style]), params[:style])
-        end
-        
-        put ":id/photo/" do
-          user = current_user.id == params[:id].to_i ? current_user : User.find(params[:id])
-          user.update_attributes!(photo: ActionDispatch::Http::UploadedFile.new(params[:file]))
 
-          {ok: :ok}
-        end
-        
-        delete ":id/photo/" do
-          user = current_user.id == params[:id].to_i ? current_user : User.find(params[:id])
-          user.photo = nil
-          user.save!
+          @group = Group.find(params[:group_id])
+          user = User.find(params[:id])
 
-          {ok: :ok}
-        end
-        
-        get ":id/photo/download" do
-          user = current_user.id == params[:id].to_i ? current_user : User.find(params[:id])
-          {url_download: user.photo.url}
+          raise CanCan::AccessDenied if current_user.profiles_with_access_on(:show, :curriculum_units, @group.allocation_tag.related, true).blank?
+          raise CanCan::AccessDenied if current_user.id != user.id && user.profiles_with_access_on(:show, :curriculum_units, @group.allocation_tag.related, true).blank?
+
+          if user.photo.path(params[:style]).blank?
+            send_file("#{Rails.root}/app/assets/images/no_image_#{params[:style]}.png", params[:style])
+          else
+            send_file(user.photo.path(params[:style]), params[:style])
+          end
         end
 
       end # users
@@ -199,6 +190,36 @@ module V1
         end
 
       end # user
+
+      segment do
+        before { guard! }
+
+        namespace :user do
+          put :photo do
+            current_user.update_attributes!(photo: ActionDispatch::Http::UploadedFile.new(params[:file]))
+
+            {ok: :ok}
+          end
+
+          delete :photo do
+            current_user.photo = nil
+            current_user.save!
+
+            {ok: :ok}
+          end
+
+          params do
+            optional :style, type: String, values: %w(small forum medium), default: 'medium'
+          end
+          get :photo do
+            if current_user.photo.path(params[:style]).blank?
+              send_file("#{Rails.root}/app/assets/images/no_image_#{params[:style]}.png", params[:style])
+            else
+              send_file(current_user.photo.path(params[:style]), params[:style])
+            end
+          end
+        end
+      end
 
       namespace :profiles do
 
