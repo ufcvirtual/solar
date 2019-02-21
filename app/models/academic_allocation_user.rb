@@ -117,7 +117,7 @@ class AcademicAllocationUser < ActiveRecord::Base
   end
 
   def verify_user_allocation_cancel(user_id, allocation_tag_id, last_merge)
-    alloc = Allocation.where(allocation_tag_id: allocation_tag_id, user_id: user_id, status: Allocation_Cancelled).last
+    alloc = Allocation.where(allocation_tag_id: allocation_tag_id, user_id: user_id, status: Allocation_Merged).last
     alloc_not = Allocation.where(allocation_tag_id: allocation_tag_id, user_id: user_id).last
     !last_merge.nil? && (!alloc.nil? || alloc_not.nil?) ? true : false
   end
@@ -125,7 +125,7 @@ class AcademicAllocationUser < ActiveRecord::Base
   # call after every acu grade change
   def recalculate_final_grade(allocation_tag_id, last_merge=nil)
     get_user.compact.each do |user|
-     
+
       unless verify_user_allocation_cancel(user, allocation_tag_id, last_merge)
         allocations = Allocation.includes(:profile).references(:profile).where(user_id: user, status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).lower_related).where('cast(profiles.types & ? as boolean)', Profile_Type_Student)
         allocation = allocations.where('final_grade IS NOT NULL OR working_hours IS NOT NULL').first || allocations.first
@@ -133,7 +133,7 @@ class AcademicAllocationUser < ActiveRecord::Base
         allocation.calculate_working_hours
 
         allocation.calculate_parcial_grade unless academic_allocation.final_exam
-        allocation.calculate_final_exam_grade 
+        allocation.calculate_final_exam_grade
       end
     end
   end
