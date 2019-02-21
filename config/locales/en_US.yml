@@ -248,6 +248,7 @@ en_US:
         photo_content_type: "Invalid file type"
         photo_file_size: "File too large. The maximum size of your photo should be up to 700KB."
         reset_password_token: "Reset password token"
+        other_special_needs: "Which *"
       curriculum_unit:
         name: Name
         code: Code

@@ -285,6 +285,7 @@ pt_BR:
         photo_content_type: "Tipo de arquivo inválido."
         photo_file_size: "Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB."
         reset_password_token: "Token de recuperação de senha"
+        other_special_needs: "Qual *"
       curriculum_unit:
         name: Nome
         code: Código

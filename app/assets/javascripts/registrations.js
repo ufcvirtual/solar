@@ -9,8 +9,8 @@ function hide_special_needs(element){
 }
 
 function select_special_needs(opc){
-  var option = $(opc).find("option:selected").text();
-  if(option == 'Outra'){
+  var option = $(opc).find("option:selected").val();
+  if(option == 13){
     show_special_needs('#special_needs_line');
   }else{
     hide_special_needs('#special_needs_line');
