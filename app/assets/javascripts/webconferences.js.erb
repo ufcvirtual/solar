@@ -128,3 +128,127 @@ $(function(){
   $(".all_webconferences").nice_checkbox();
 });
 
+
+
+/* #######################################################
+                      REPORTS
+####################################################### */
+
+// Datepicker
+$('#txt_deployment').datepicker();
+
+var editChangeLogId = null;
+
+// Fill table with data
+function populateTable() {
+
+  var tableContent = ''; // Empty content string
+
+  // jQuery AJAX call for JSON
+  $.getJSON( '/change_logs/?type=Webconference', function( data ) {
+
+    // For each item in our JSON, add a table row and cells to the content string
+    $.each(data, function(){
+      tableContent += '<tr class="lines">';
+      tableContent += '<td id="deployment_date">' + (this.deployment == null ? "<%=I18n.t(:changelog_pending, scope: 'webconferences.report')%>" : convertDate(this.deployment) ) + '</td>';
+      tableContent += '<td>' + this.description + '</td>';
+      tableContent += '<td><div class="btn-group"><a href="#" class="linkEditChangeLog btn" data-id="' + this.id + '"><i class="icon-edit"></i></a>';
+      tableContent += '<a href="#" class="linkDeleteChangeLog btn" data-id="' + this.id + '"><i class="icon-trash"></i></a></div></td>';
+      tableContent += '</tr>';
+  });
+
+    $('#changeLog').html(tableContent); // Inject the whole content string into our existing HTML table
+  });
+};
+
+function deleteChangeLog(event) {
+
+  event.preventDefault();
+
+  // Check and make sure they really want to delete
+  if (!confirm("<%=I18n.t(:message_confirm)%>"))
+    return false;
+
+  // If they did, do our delete
+  $.ajax({
+    type: 'DELETE',
+    url: '/change_logs/' + $(this).data('id')
+  }).done(function( response ) {
+    populateTable(); //response is the object that was deleted because that's what we returned in the destroy controller method
+    editChangeLogId = null; //set id to null
+  });
+};
+
+function saveChangeLog(event) {
+  event.preventDefault();
+
+  var chglog = {
+    'deployment': $('#txt_deployment').val(),
+    'description': $('#txt_description').val(),
+    'academic_tool_type': 'Webconference'
+  };
+
+  var chglogFormatted = {
+    'change_log' : chglog
+  };
+
+  if (editChangeLogId == null) { // New
+    $.ajax({
+      type: 'POST',
+      data: chglogFormatted,
+      url: '/change_logs',
+      dataType: 'JSON'
+    }).done(function( response ) {
+
+    populateTable(); // Update the table
+
+    $('input').val(''); //erase input
+
+    }).fail(function( jqXHR, textStatus ) {
+      alert(jqXHR.responseText);
+    });
+  }
+  else { // Edit
+    $.ajax({
+      type: 'PUT',
+      data: chglogFormatted,
+      url: '/change_logs/' + editChangeLogId,
+      dataType: 'JSON'
+    }).done(function( response ) {
+
+      populateTable(); // Update the table
+
+      $('input').val(''); //erase input
+
+      editChangeLogId = null; //set id to null
+
+    }).fail(function( jqXHR, textStatus ) {
+      alert(jqXHR.responseText);
+    });
+  }
+};
+
+function editChangeLog(event) {
+  event.preventDefault(); // Prevent Link from Firing
+
+  var thisId = $(this).data('id'); // Retrieve the id from the link
+
+  $.getJSON('/change_logs/' + thisId).done(function(data) {
+
+    //Populate Edit Form
+    $('#txt_deployment').val(convertDate(data.deployment));
+    $('#txt_description').val(data.description);
+
+    editChangeLogId = data.id;
+   })
+}
+
+populateTable(); // Populate the user table on initial page load
+
+$('#saveChangeLogButton').on('click', saveChangeLog); // Save link click
+$('#changeLog').on('click', '.linkDeleteChangeLog', deleteChangeLog); // Delete link click
+$('#changeLog').on('click', '.linkEditChangeLog', editChangeLog); // Show Edit Form
+
+function convertDate(date) {
+  if (date != null) { return new Date(date.replace(/-/, '/').replace(/-/, '/')).toLocaleDateString(); }
+}

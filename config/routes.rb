@@ -739,6 +739,7 @@ Solar::Application.routes.draw do
     end
   end
 
+  resources :change_logs, except: [:new, :edit]
 
   resources :savs, only: :index, defaults: { format: 'json' }
 
