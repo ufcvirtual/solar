@@ -3,6 +3,8 @@ class MessagesController < ApplicationController
   include MessagesHelper
   include SysLog::Actions
 
+  doorkeeper_for :api_download
+
   before_filter :prepare_for_group_selection, only: [:index]
 
   ## [inbox, outbox, trashbox]
@@ -87,7 +89,7 @@ class MessagesController < ApplicationController
     ids = params[:ids].to_a.split(params[:id])
     @next_message_id = ids[0].empty? ? nil : ids[0].last
     @previous_message_id = ids[1].empty? ? nil : ids[1].shift
-    
+
     sent_by_responsible = @message.allocation_tag.is_responsible?(@message.sent_by.id) unless @message.allocation_tag_id.blank?
     LogAction.create(log_type: LogAction::TYPE[:update], user_id: current_user.id, ip: get_remote_ip, description: "message: #{@message.id} read message from #{sent_by_responsible ? 'responsible' : 'other'}", allocation_tag_id: @message.allocation_tag_id) rescue nil
     change_message_status(@message.id, "read", @box = params[:box] || "inbox")
@@ -151,12 +153,12 @@ class MessagesController < ApplicationController
                         .where("(nmail.message IS NULL OR nmail.message=TRUE)")
                         .where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
         end
-        
+
         emails << params[:message][:support] unless params[:message][:support].blank?
 
         @message.files << original_files if original_files and not original_files.empty?
         @message.save!
-        
+
         Job.send_mass_email(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email)
         #Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email).deliver
       end
@@ -191,7 +193,7 @@ class MessagesController < ApplicationController
         @reply_to = []
         @reply_to = User.where(id: params[:message][:contacts].split(',')).select("id, (name||' <'||email||'>') as resume")
         @support = params[:support]
-        
+
         #flash.now[:alert] = @message.errors.full_messages.join(', ')
         render :new
       end
@@ -219,6 +221,25 @@ class MessagesController < ApplicationController
     raise CanCan::AccessDenied unless file.message.user_has_permission?(current_user.id)
 
     download_file(inbox_messages_path, file.attachment.path, file.attachment_file_name)
+  end
+
+  def api_download
+    api_guard_with_access_token_or_authenticate
+    file = MessageFile.find(params[:file_id])
+
+    raise CanCan::AccessDenied unless file.message.user_has_permission?(current_user.id)
+
+    begin
+      download_file(nil, file.attachment.path, file.attachment_file_name)
+    rescue
+      raise 'file not found'
+    end
+  rescue ActiveRecord::RecordNotFound => error
+    Rails.logger.info "[API] [ERROR] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [404] message: #{error}"
+    render json: {success: false, status: :not_found, error: error}
+  rescue => error
+    Rails.logger.info "[API] [ERROR] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [404] message: #{error}"
+    render json: {success: false, status: :unprocessable_entity, error: error}
   end
 
   def find_users

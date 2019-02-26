@@ -33,5 +33,23 @@ module V1::Messages
 
     user_message.save unless status==1
   end
-  
+
+  def read_message(message)
+    user_message = message.user_messages.where(user_id: current_user.id).where("NOT(cast(user_messages.status & #{Message_Filter_Sender} as boolean))").first
+    raise CanCan::AccessDenied unless user_message
+    user_message.status = (user_message.status | Message_Filter_Read)
+    user_message.save unless status==1
+  end
+
+  def new_msg_template(at, msg)
+    system_label = !at.nil?
+
+    %{
+      <b>#{I18n.t(:mail_header, scope: :messages)} #{current_user.to_msg[:resume]}</b><br/>
+      #{msg.labels(current_user.id, system_label) if system_label}<br/>
+      ________________________________________________________________________<br/><br/>
+      #{msg.content}
+    }
+  end
+
 end

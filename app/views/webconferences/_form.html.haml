@@ -6,6 +6,11 @@
   .form-inputs.block_content.webconference
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
+    - if f.object.persisted? && !@webconference.can_change?
+      #save_automatically_message
+        %span#attention_message
+          =t(:integrated_webconference, scope: [:webconferences, :form])
+
     = f.input :title, input_html: {size: 50}
     = f.input :description, input_html: {size: 50}
     = f.input :initial_time, as: :string, label: t('assignment_webconferences.form.date_label'), placeholder: t('assignment_webconferences.form.date_placeholder'), :'aria-label' => t('assignment_webconferences.form.date_aria_label'), input_html: {value: (l(f.object.initial_time, format: :mask_with_time_form) rescue ''), size: 50}

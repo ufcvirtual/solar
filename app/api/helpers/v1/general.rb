@@ -78,4 +78,8 @@ module V1::General
     return nil
   end
 
+  def get_remote_ip
+    request.headers['HTTP_CLIENT_IP'] || env['REMOTE_ADDR']
+  end
+
 end

@@ -86,6 +86,7 @@ module Bbb
   def cant_change_date
     if (initial_time_was && duration_was)
       errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.date")) if (Time.now > (initial_time_was+duration_was.minutes))
+      errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.cant_edit_date")) if self.integrated && self.date_changed
     end
   end
 

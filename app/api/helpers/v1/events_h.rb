@@ -25,16 +25,35 @@ module V1::EventsH
     start_hour, end_hour = params[:event][:start].split(':'), params[:event][:end].split(':')
     group_events = []
 
-    event = ScheduleEvent.joins(:schedule, :academic_allocations).where(schedules: { start_date: params[:event][:date], end_date: params[:event][:date] }, title: event_info[:title], type_event: event_info[:type], place: 'Polo', start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":"), integrated: true, academic_allocations: { allocation_tag_id: ats } ).first_or_initialize
+    initial_time = "#{params[:event][:date]} #{[start_hour[0], start_hour[1]].join(":")}"
+    initial_time_minutes = start_hour[0].to_i * 60 + start_hour[1].to_i
+    end_time_minutes = end_hour[0].to_i * 60 + end_hour[1].to_i
+    duration = end_time_minutes - initial_time_minutes < 0 ? 24*60 - initial_time_minutes + end_time_minutes : end_time_minutes - initial_time_minutes
+
+    if event_info[:type] != 5
+      event = ScheduleEvent.joins(:schedule, :academic_allocations).where(schedules: { start_date: params[:event][:date], end_date: params[:event][:date] }, title: event_info[:title], type_event: event_info[:type], place: 'Polo', start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":"), integrated: true, academic_allocations: { allocation_tag_id: ats } ).first_or_initialize
+    else
+      event = Webconference.joins(:academic_allocations).where(initial_time: initial_time, title: event_info[:title], duration: duration, integrated: true, academic_allocations: { allocation_tag_id: ats } ).first_or_initialize
+    end
 
     if event.new_record? && update_event.blank?
-      schedule = Schedule.create! start_date: params[:event][:date], end_date: params[:event][:date]
-      event.schedule_id = schedule.id
-      event.save!
+      if event_info[:type] != 5
+        schedule = Schedule.create! start_date: params[:event][:date], end_date: params[:event][:date]
+        event.schedule_id = schedule.id
+        event.save!
+      else
+        event.moderator = current_user unless current_user.nil?
+        event.save!
+      end
     elsif event.new_record? && !update_event.blank? && !existing_ac.blank?
       event = update_event
-      event.schedule.update_attributes! start_date: params[:event][:date], end_date: params[:event][:date]
-      event.update_attributes! start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":")
+
+      if event_info[:type] != 5
+        event.schedule.update_attributes! start_date: params[:event][:date], end_date: params[:event][:date]
+        event.update_attributes! start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":")
+      else
+        event.update_attributes! initial_time: initial_time, duration: duration
+      end
     end
 
     if params[:groups].present?

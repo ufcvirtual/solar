@@ -134,36 +134,20 @@
           %i.icon-arrow-up-triangle.invisible
         #chart_avg_access_per_semester{tabindex: 0}
       .title= t('.historic_title')
+      .block_content_toolbar
+        %label= t(".changelog_deployment")
+        = text_field_tag "txt_deployment"
+        %label= t(".changelog_description")
+        = text_field_tag "txt_description"
+        = button_tag t(".changelog_save"), type: :button, class: "btn btn_main", id: "saveChangeLogButton"
       .responsive-table
-        %table.historic
-          %tbody
-            %tr
-              %td= t('.historic_d9')
-              %td= t('.historic_t9')
-            %tr
-              %td= t('.historic_d8')
-              %td= t('.historic_t8')
-            %tr
-              %td= t('.historic_d7')
-              %td= t('.historic_t7')
-            %tr
-              %td= t('.historic_d6')
-              %td= t('.historic_t6')
-            %tr
-              %td= t('.historic_d5')
-              %td= t('.historic_t5')
-            %tr
-              %td= t('.historic_d4')
-              %td= t('.historic_t4')
-            %tr
-              %td= t('.historic_d3')
-              %td= t('.historic_t3')
-            %tr
-              %td= t('.historic_d2')
-              %td= t('.historic_t2')
-            %tr
-              %td= t('.historic_d1')
-              %td= t('.historic_t1')
+        %table.tb_list.historic
+          %thead
+            %tr.title
+              %th= t(".changelog_deployment")
+              %th= t(".changelog_description")
+              %th= t(".changelog_options")
+          %tbody#changeLog
       .title=  t('.feedback_title')
       .title-warning
         .chart_title
@@ -215,17 +199,16 @@
   .block_wrapper.search
     = link_to t(:back), preview_webconferences_path, class: "btn"
 
-    .block_content
-      #list_users
-
+= javascript_include_tag 'webconferences'
 
 :javascript
+
+  $("#txt_deployment").mask("#{I18n.t('date.formats.mask')}");
 
   google.charts.load('current', {'packages':['corechart']});
   google.charts.load('current', {'packages':['bar']});
 
   google.charts.setOnLoadCallback(drawChart);
-
 
   function drawChart() {
 
@@ -705,7 +688,7 @@
       ['Não sei', 267]
     ]);
 
-    var options = { title: 'Qual a velocidade de sua internet?', is3D: true, sliceVisibilityThreshold: .0 };
+    var options = { title: "#{I18n.t('webconferences.report.feedback_internet_title')}", is3D: true, sliceVisibilityThreshold: .0 };
 
     formatter_integer.format(data, 1);
 
@@ -719,7 +702,7 @@
       ['NÃO', 202]
     ]);
 
-    var options = { title: 'Você gostou da nova versão da webconferência?', is3D: true, sliceVisibilityThreshold: .0 };
+    var options = { title: "#{I18n.t('webconferences.report.feedback_html5_title')}", is3D: true, sliceVisibilityThreshold: .0 };
 
     formatter_integer.format(data, 1);
 
@@ -738,7 +721,7 @@
      ['Facilidade no uso', 1053, 176]
     ]);
 
-    var options = { title: 'Escolha o que você gostou na nova versão ou o que preferia da versão antiga', legend: { }, vAxis : { format: 'decimal' }, seriesType: 'bars' };
+    var options = { title: "#{I18n.t('webconferences.report.feedback_html5_flash_title')}", legend: { }, vAxis : { format: 'decimal' }, seriesType: 'bars' };
 
     formatter_integer.format(data, 1);
     formatter_integer.format(data, 2);

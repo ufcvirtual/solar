@@ -285,6 +285,7 @@ pt_BR:
         photo_content_type: "Tipo de arquivo inválido."
         photo_file_size: "Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB."
         reset_password_token: "Token de recuperação de senha"
+        other_special_needs: "Qual *"
       curriculum_unit:
         name: Nome
         code: Código
@@ -1607,6 +1608,7 @@ pt_BR:
       new: "Nova Webconferência"
       edit: "Editar Webconferência"
       minutes: " minutos"
+      integrated_webconference: Esta webconferência possui integração com outras bases de dados e, por isso, o seu dia não pode ser modificado, apenas o horário do campo de edição de data pode ser alterado.
     list:
       webconferences: "Webconferências"
       name: Nome
@@ -1671,6 +1673,7 @@ pt_BR:
       removed_record: Gravação removida ou vazia
       copy: Não é possível remover a gravação desta webconferência, pois ela é uma cópia. É necessário remover a gravação da webconferência original.
       acu: Não é possível remover a gravação ou webconferência, pois há alunos avaliados/com comentários.
+      cant_edit_date: Apenas o dia não pode ser alterado.
     preview:
       delete_record: Remover gravação
       report: Relatório webconferências (UAB)
@@ -1777,32 +1780,26 @@ pt_BR:
       access_offer: 'Quantidade de acessos únicos por disciplina (Histórico):'
       access_avg: 'Média de acessos por webconferência efetiva:'
       historic_title: 'Histórico de mudanças nos servidores bigbluebutton'
-      historic_d9: '??/??/????'
-      historic_t9: 'Implantação do botão de suporte'
-      historic_d8: '12/11/2018'
-      historic_t8: 'Implantação do quarto e quinto servidor (bbb4 e bbb5)'
-      historic_d7: '03/10/2018'
-      historic_t7: 'Implantação do terceiro servidor (bbb3)'
-      historic_d6: '06/07/2018'
-      historic_t6: 'Implantação da versão 2.0 com html5 (padrão), webrtc obrigatório (áudio, vídeo e compartilhamento de tela), novo layout e novo slide default.'
-      historic_d5: '22/05/2017'
-      historic_t5: 'Informações básicas de uso da ferramenta'
-      historic_d4: '24/04/2017'
-      historic_t4: 'Implantação do https, webrtc opcional, configuração inicial simplificada e mensagem de boas vindas'
-      historic_d3: '16/02/2017'
-      historic_t3: 'Balanceamento de carga com 2 servidores e atualização para a versão 1.0'
-      historic_d2: '09/02/2017'
-      historic_t2: 'Formulário de feedback'
-      historic_d1: '28/03/2014'
-      historic_t1: 'Implantação da versão 0.81 do bigbluebutton'
       feedback_title: 'Feedback - 9391 respostas'
       feedback_grade: 'Notas das webconferências (1 à 5):'
       feedback_difficulty: 'Dificuldades na webconferência:'
       feedback_access: 'Local de acesso:'
       feedback_equipament: 'Equipamento utilizado:'
       feedback_internet: 'Velocidade da internet:'
+      feedback_internet_title: 'Qual a velocidade de sua internet?'
       feedback_html5: 'Aceitação da versão em HTML5:'
+      feedback_html5_title: 'Você gostou da nova versão da webconferência?'
       feedback_html5_flash: 'Comparativo entre as versões HTML5 e Flash:'
+      feedback_html5_flash_title: 'Escolha o que você gostou na nova versão ou o que preferia da versão antiga'
+      changelog_deployment: 'Data de implantação'
+      changelog_description: 'Descrição'
+      changelog_options: 'Opções'
+      changelog_pending: 'Pendente'
+      changelog_edit: 'Editar'
+      changelog_delete: 'Excluir'
+      changelog_save: 'Salvar'
+      changelog_pending: 'Pendente'
+      changelog_confirm: 'Tem certeza que deseja apagar esse registro?'
   navigation_of: " de "
   navigation_next: "Próxima >"
   navigation_previous: "< Anterior"

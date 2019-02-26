@@ -248,6 +248,7 @@ en_US:
         photo_content_type: "Invalid file type"
         photo_file_size: "File too large. The maximum size of your photo should be up to 700KB."
         reset_password_token: "Reset password token"
+        other_special_needs: "Which *"
       curriculum_unit:
         name: Name
         code: Code
@@ -1414,6 +1415,7 @@ en_US:
       new: "New Webconference"
       edit: "Edit Webconference"
       minutes: " minutes"
+      integrated_webconference: This webconference has integration with other databases and, therefore, your day can not be modified, only the time of the date editing field can be changed.
     list:
       webconferences: "Webconferences"
       name: Name
@@ -1477,6 +1479,7 @@ en_US:
       removed_record: Removed or empty record
       copy: It's not possible to remove this webconference record. This webconferenceis a copy. It's necessary to remove original webconference's record.
       acu: It's not possible to remove this webconferences or its record. There are evaluated students or with comments.
+      cant_edit_date: Only the day can not be changed.
     preview:
       delete_record: Remove record
       placeholder: Type any value to be searched at the table of this page

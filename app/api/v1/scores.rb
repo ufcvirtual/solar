@@ -124,6 +124,62 @@ module V1
         Struct.new('PostsScores',:posts, :all_user)
         @posts_scores = Struct::PostsScores.new(posts, all_user)
       end
+      
+      params do
+          requires :id, type: Integer, desc: 'ID da Turma'
+          requires :assignment_id, type: Integer, desc: 'ID do Trabalho'
+          requires :user_id, type: Integer, desc: 'ID da Aluno'
+        end
+      get ':id/scores/assignment/:assignment_id/info', rabl: 'scores/assignment' do
+        ac = AcademicAllocation.where(academic_tool_id: params[:assignment_id], allocation_tag_id: @at.id, academic_tool_type: 'Assignment').first
+        @acu = AcademicAllocationUser.where(academic_allocation_id: ac.id).where(user_id: params[:user_id]).first
+      end
+      
+      params do
+          requires :id, type: Integer, desc: 'ID da Turma'
+          requires :webconference_id, type: Integer, desc: 'ID da Webconferência'
+          requires :user_id, type: Integer, desc: 'ID da Aluno'
+        end
+      get ':id/scores/webconference/:webconference_id/info', rabl: 'scores/webconference' do
+        webconference = Webconference.find(params[:webconference_id])
+
+        academic_allocations_ids = (webconference.shared_between_groups ? webconference.academic_allocations.map(&:id) : webconference.academic_allocations.where(allocation_tag_id: @at.id).first.try(:id))
+        ats = AllocationTag.where(id: @at.id).map(&:related)
+        logs = webconference.get_access(academic_allocations_ids, ats, {user_id: params[:user_id]})
+        acs = AcademicAllocation.where(id: academic_allocations_ids)
+        academic_allocation = acs.where(allocation_tag_id: @at.id).first
+        acu = AcademicAllocationUser.find_one(academic_allocation.id, params[:user_id], nil, false)
+
+        Struct.new('WebScores',:logs, :acu)
+        @webconference_scores = Struct::WebScores.new(logs, acu)
+      end
+
+      params do
+        requires :id, type: Integer, desc: 'ID da Turma'
+        requires :chat_id, type: Integer, desc: 'ID do Chat'
+        requires :user_id, type: Integer, desc: 'ID da Aluno'
+      end
+      get ':id/scores/chat/:chat_id/info', rabl: 'scores/chat' do
+        chat_room = ChatRoom.find(params[:chat_id])
+        messages = chat_room.get_messages(@at.id, {user_id: params[:user_id]} )
+        academic_allocation = chat_room.academic_allocations.where(allocation_tag_id: @at.id).first
+        acu = AcademicAllocationUser.find_one(academic_allocation.id, params[:user_id],nil, false)
+
+        Struct.new('ChatScores',:messages, :acu)
+        @chat_scores = Struct::ChatScores.new(messages, acu)
+      end
+
+      params do
+        requires :id, type: Integer, desc: 'ID da Turma'
+        requires :academic_allocation_user_id, type: Integer, desc: 'ID da AcademicAllocationUser'
+        requires :comment, type: String
+      end
+    post ':id/scores/comment/:academic_allocation_user_id' do
+      comment = Comment.new(academic_allocation_user_id: params[:academic_allocation_user_id], comment: params[:comment], user_id: current_user)
+      comment.save!
+
+      {ok: 'ok'}
+    end
 
     end # namespace
 

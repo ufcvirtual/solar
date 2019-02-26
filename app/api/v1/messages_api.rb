@@ -5,68 +5,139 @@ module V1
 
     namespace :message do
 
+      segment do
+
+        desc 'Exibir mensagem'
+        get "/:id", rabl: 'messages/show' do
+          @message = Message.find(params[:id])
+
+          sent_by_responsible = @message.allocation_tag.is_responsible?(@message.sent_by.id) unless @message.allocation_tag_id.blank?
+          read_message(@message)
+          LogAction.create(log_type: LogAction::TYPE[:update], user_id: current_user.id, ip: get_remote_ip, description: "message: #{@message.id} read message from #{sent_by_responsible ? 'responsible' : 'other'}", allocation_tag_id: @message.allocation_tag_id) rescue nil
+        end
+
+        desc 'Compor Mensagem'
+        params do
+          requires :group_id, type: Integer
+          optional :files, type: Array
+          requires :message, type: Hash do
+            requires :content, type: String
+            requires :subject, type: String
+            requires :contacts, type: String
+          end
+        end
+        post '/' do
+          ActiveRecord::Base.transaction do
+            raise 'group mandatory' if params[:group_id].blank?
+            @group = Group.find(params[:group_id])
+
+            raise CanCan::AccessDenied if current_user.profiles_with_access_on(:index, :messages, @group.allocation_tag.related, true).blank? # unauthorized
+            raise 'content mandatory' if params[:message][:content].blank?
+            raise 'subject mandatory' if params[:message][:subject].blank?
+            raise 'contacts mandatory' if params[:message][:contacts].blank?
+
+            @message = Message.new(params[:message])
+            @message.sender = current_user
+            @message.allocation_tag_id = @group.allocation_tag.id
+
+            [params[:files]].flatten.each do |file|
+              @message.files.new({ attachment: ActionDispatch::Http::UploadedFile.new(file) })
+            end # each
+
+            emails = []
+            unless params[:message][:contacts].nil?
+              emails = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
+                            .where("(nmail.message IS NULL OR nmail.message=TRUE)")
+                            .where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
+            end
+
+            if @message.save
+              Job.send_mass_email(emails, @message.subject, new_msg_template(@group.allocation_tag, @message), @message.files.to_a, current_user.email)
+
+              { id: @message.id }
+            else
+              raise @message.errors.full_messages
+            end
+          end # transaction
+
+        end #end post
+      end #segment
+
       helpers do
         # return a @message object
         def verify_user_permission_and_set_obj(permission) # permission = [:index, :create, ...]
-          #@message = Message.find(params[:id])
-          @group = Group.find(params[:group_id])
-          @profile_id = current_user.profiles_with_access_on(permission, :messages, @group.allocation_tag.related, true).first
-
-          raise ActiveRecord::RecordNotFound if @profile_id.nil? || !(current_user.groups([@profile_id], Allocation_Activated).include?(@group))
+          @group = params[:group_id].blank? ? nil : Group.find(params[:group_id])
+          @allocation_tag_related = @group.nil? ? nil : @group.allocation_tag.related
+          @profile_id = current_user.profiles_with_access_on(permission, :messages, @allocation_tag_related, true).first
+          raise CanCan::AccessDenied if @profile_id.nil? || current_user.groups([@profile_id], Allocation_Activated).blank?
         end
 
-        def message_params
-          ActionController::Parameters.new(params).require(:message).permit(:content, :id, :subject, :contacts)
+        def option_user_box(type)
+          return type if ['outbox', 'trashbox'].include?(type)
+          'inbox'
         end
 
       end #helpers
 
       segment do
+
         before do
           verify_user_permission_and_set_obj(:index)
-        end # before
+        end
 
-        # messages/10
-        desc 'Exibir mensagem'
+        desc 'Listar todas as mensagens'
         params do
-          requires :group_id, type: Integer, desc: 'Group ID.'
+          optional :group_id, type: Integer, desc: 'Group ID.'
+          optional :box, type: String, desc: 'Box Type'
+          optional :page, type: Integer, desc: 'Page', default: 1
+        end #params
+
+        get '/', rabl: 'messages/list' do
+          @box = option_user_box(params[:box])
+          @allocation_tag_id = params[:group_id].blank? ? [] : Group.find(params[:group_id]).allocation_tag.id
+          page = (params[:page] || 1).to_i
+          @messages = Message.by_box(current_user.id, @box, @allocation_tag_id, {page: page, ignore_at: true})
+
+          limit = Rails.application.config.items_per_page
+          @total = @messages.try(:first).total_messages rescue 0
+          @pages_amount = (@total/limit).ceil.to_i + 1
         end
 
-        get "/:id" , rabl: 'messages/show' do
-          @message = Message.find(params[:id])
-        end
-      end #segment
-
-      segment do
-
-        # CREATE 
-        desc 'Compor Mensagem'
+        desc 'Exibir anexos da mensagem'
         params do
-          requires :message, type: Hash do
-            requires :content, type: String
-            requires :subject, type: String
-            requires :contacts, type: String
-            optional :parent_id, type: Integer
-            optional :draft, type: Boolean, default: false
-          end
+          requires :id, type: Integer
+        end
+        get "/:id/files" , rabl: 'messages/files' do
+          @files = MessageFile.where(message_id: params[:id].to_i)
         end
 
-        post '/' do
+        desc 'Remover mensagem do inbox para lixeira'
+        params do
+          requires :id, type: Integer
+        end
+        delete ":id" do
+          change_message_status(params[:id].to_i, 'trash', 'inbox')
+          {ok: 'ok'}
+        end
 
-          @group = Group.find(params[:group_id])
-          
-          raise CanCan::AccessDenied if current_user.profiles_with_access_on(:index, :messages, @group.allocation_tag.related, true).blank? # unauthorized
+        desc 'Marcar mensagem como lida/não lida/restaurar'
+        params do
+          requires :status, type: Symbol, values: [:read, :restore, :unread]
+          requires :id, type: Integer
+        end
+        put "/:status/:id" do
+          change_message_status(params[:id].to_i, params[:status].to_s, (params[:status] == :restore ? 'trashbox' : 'inbox'))
+          {ok: 'ok'}
+        end
 
-          @message = Message.new(message_params)
-          @message.sender = current_user
+        desc 'Recuperar lista de possíveis contatos'
+        params do
+          requires :group_id, type: Integer
+        end
+        get '/:group_id/contacts', rabl: 'messages/contacts' do
+          @contacts = User.all_at_allocation_tags(@allocation_tag_related, Allocation_Activated, true)
+        end
 
-          if @message.save
-            { id: @message.id }
-          else
-            raise @message.errors.full_messages
-          end
-
-        end #end post
       end #segment
 
     end #namespace message
@@ -88,85 +159,32 @@ module V1
         end
 
       end #helpers
-     
+
       segment do
 
         before do
-          verify_user_permission_and_set_obj(:index)
+          # verify_user_permission_and_set_obj(:index)
         end
 
         desc 'Listar todas as mensagens'
         params do
           optional :group_id, type: Integer, desc: 'Group ID.'
           optional :box, type: String, desc: 'Box Type'
-          optional :limit, type: Integer, desc: 'Messages limit.', default: Rails.application.config.items_per_page.to_i
           optional :page, type: Integer, desc: 'Page', default: 1
         end #params
-        
-        get :all, rabl: 'messages/list' do
+
+        get '/', rabl: 'messages/list' do
           @box = option_user_box(params[:box])
           @allocation_tag_id = params[:group_id].blank? ? [] : Group.find(params[:group_id]).allocation_tag.id
-          @messages = Message.by_box(current_user.id, @box, @allocation_tag_id)
-        end
-      end
+          page = (params[:page] || 1).to_i
+          @messages = Message.by_box(current_user.id, @box, @allocation_tag_id, {page: page, ignore_at: true})
 
-      segment do
-      
-        desc 'Exibir anexos da mensagem'
-        get "/:id/files" , rabl: 'messages/files' do
-          @files = MessageFile.where(message_id: params[:id].to_i)
+          limit = Rails.application.config.items_per_page
+          @total = @messages.try(:first).total_messages rescue 0
+          @pages_amount = (@total/limit).ceil.to_i + 1
         end
 
-      end
-
-      segment do
-      
-        desc 'Remover mensagem do inbox para lixeira'
-        put "/trash/:id" do
-          
-          begin
-            Message.transaction do
-              change_message_status(params[:id].to_i, 'trash', 'inbox')
-            end
-          end
-
-        {ok: 'ok'}
-        end
-
-      end
-      
-      segment do
-      
-        desc 'Restaurar menagem da lixeira'
-        put "/restore/:id" do
-          
-          begin
-            Message.transaction do
-              change_message_status(params[:id].to_i, 'restore', 'trashbox')
-            end
-          end
-
-        {ok: 'ok'}
-        end
-
-      end
-      
-      segment do
-      
-        desc 'Marcar mensagem como lida/não lida'
-        put "/:status/:id" do
-          
-          begin
-            Message.transaction do
-              change_message_status(params[:id].to_i, params[:status], 'inbox')
-            end
-          end
-
-        {ok: 'ok'}
-        end
-
-      end
-      
+      end #segment
 
     end
 

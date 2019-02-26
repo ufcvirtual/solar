@@ -7,6 +7,12 @@ form{
     width: initial;
     max-width: 100px;
   }
+  #save_automatically_message{
+    max-width: 400px;
+    display: inline-block;
+    padding-bottom: 1rem;
+    margin-left: 2rem;
+  }
 }
 
 .preview_webconferences{
@@ -134,7 +140,10 @@ table.webconferences{
   }
 }
 
-/*Reports*/
+/* #######################################################
+                      REPORTS
+####################################################### */
+
 .block_content.charts{
   text-align: center;
   margin-top: 20px;
@@ -167,5 +176,19 @@ table.webconferences{
 
   .chart_title{ padding: 10px; }
 
-  .historic { text-align: left; }
+  .historic {
+    text-align: center;
+    td:nth-child(2){ text-align: left; }
+    .title th { text-align: center;}
+    tr {line-height: normal; }
+    .add input { width: -webkit-fill-available; }
+    .add input, button { margin: 20px 0 10px 0; }
+  }
+
+  .block_content_toolbar {
+    padding: 20px 0 15px 0;
+    #txt_deployment { max-width: 100px; text-align: center; margin: 2px; }
+    #txt_description { min-width: 350px; margin: 2px; }
+    #saveChangeLogButton { min-width: 100px; margin: 5px;}
+  }
 }
