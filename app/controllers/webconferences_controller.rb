@@ -74,6 +74,7 @@ class WebconferencesController < ApplicationController
   def update
     authorize! :update, Webconference, on: @webconference.academic_allocations.pluck(:allocation_tag_id)
 
+    @webconference.date_changed = webconference_params[:initial_time].strip.split(" ").first != @webconference.initial_time.strftime('%F').split("-").reverse.join("/")
     @webconference.update_attributes!(webconference_params)
 
     render json: { success: true, notice: t(:updated, scope: [:webconferences, :success]) }
@@ -91,6 +92,7 @@ class WebconferencesController < ApplicationController
   def destroy
     @webconferences = Webconference.where(id: params[:id].split(',').flatten)
     authorize! :destroy, Webconference, on: @webconferences.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
+    raise t('schedule_events.list.integrated_events_delete') unless @webconferences.all? { |conference| conference.can_change? }
 
     evaluative = @webconferences.map(&:verify_evaluatives).include?(true)
     Webconference.transaction do

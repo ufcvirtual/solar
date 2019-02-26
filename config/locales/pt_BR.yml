@@ -1608,6 +1608,7 @@ pt_BR:
       new: "Nova Webconferência"
       edit: "Editar Webconferência"
       minutes: " minutos"
+      integrated_webconference: Esta webconferência possui integração com outras bases de dados e, por isso, o seu dia não pode ser modificado, apenas o horário do campo de edição de data pode ser alterado.
     list:
       webconferences: "Webconferências"
       name: Nome
@@ -1672,6 +1673,7 @@ pt_BR:
       removed_record: Gravação removida ou vazia
       copy: Não é possível remover a gravação desta webconferência, pois ela é uma cópia. É necessário remover a gravação da webconferência original.
       acu: Não é possível remover a gravação ou webconferência, pois há alunos avaliados/com comentários.
+      cant_edit_date: Apenas o dia não pode ser alterado.
     preview:
       delete_record: Remover gravação
       report: Relatório webconferências (UAB)

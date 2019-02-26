@@ -12,13 +12,13 @@ module V1
       end
       put "/:id" do
         begin
-          ac = AcademicAllocation.where(id: params[:id], academic_tool_type: 'ScheduleEvent').first
+          ac = AcademicAllocation.find(params[:id])
           raise ActiveRecord::RecordNotFound if ac.blank?
-          event = ScheduleEvent.find(ac.academic_tool_id)
+          event =  ac.academic_tool_type == 'ScheduleEvent' ? ScheduleEvent.find(ac.academic_tool_id) : Webconference.find(ac.academic_tool_id)
 
           ActiveRecord::Base.transaction do
-            start_hour, end_hour = params[:start].split(":"), params[:end].split(":")
-            create_event({event: {date: params[:date], start: params[:start], end: params[:end], title: event.title, type_event: event.type_event}}, ac.allocation_tag.group.offer.allocation_tag.related, nil, ac, (event.academic_allocations.count == 1 ? event : nil))
+            # start_hour, end_hour = params[:start].split(":"), params[:end].split(":")
+            create_event({event: {date: params[:date], start: params[:start], end: params[:end], title: event.title, type_event: (ac.academic_tool_type == 'ScheduleEvent' ? event.type_event : 6)}}, ac.allocation_tag.group.offer.allocation_tag.related, nil, ac, (event.academic_allocations.count == 1 ? event : nil))
 
             {id: ac.id}
           end
@@ -30,7 +30,7 @@ module V1
     namespace :events do
 
       # helpers do
-        
+
       #   def schedule_event_file_params
       #     ActionController::Parameters.new(params).require(:schedule_event_file).permit(:user_id, :academic_allocation_user_id, :attachment, :file_correction)
       #   end
@@ -66,9 +66,9 @@ module V1
       delete "/:ids" do
         begin
           AcademicAllocation.transaction do
-            acs = AcademicAllocation.where(id: params[:ids].split(','), academic_tool_type: 'ScheduleEvent')
+            acs = AcademicAllocation.where(id: params[:ids].split(','))
             raise ActiveRecord::RecordNotFound if acs.empty?
-            event = ScheduleEvent.find(acs.first.academic_tool_id)
+            event =  acs.first.academic_tool_type == 'ScheduleEvent' ? ScheduleEvent.find(acs.first.academic_tool_id) : Webconference.find(acs.first.academic_tool_id)
 
             if acs.count == event.academic_allocations.count
               event.api = true
@@ -83,7 +83,7 @@ module V1
       end # delete :id
 
       segment do
-      
+
         desc "Listar Eventos"
         params do
           requires :allocation_tag_id, type: Integer, desc: "AllocationTagId"
@@ -91,11 +91,11 @@ module V1
         get "/", rabl: 'events/list' do
            @events = ScheduleEvent.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: params[:allocation_tag_id].to_i})
         end
-      
+
       end
 
       segment do
-      
+
         desc "Listar Alunos"
         params do
           requires :allocation_tag_id, type: Integer, desc: "AllocationTagId"
@@ -104,11 +104,11 @@ module V1
           schedule_event = ScheduleEvent.find(params[:id].to_i)
           @users = schedule_event.participants(params[:allocation_tag_id])
         end
-      
+
       end
 
       segment do
-      
+
         desc "Listar Responsáveis"
         params do
           requires :allocation_tag_id, type: Integer, desc: "AllocationTagId"
@@ -116,26 +116,26 @@ module V1
         get ":id/responsibles", rabl: 'events/users' do
           @users =  Allocation.responsibles(params[:allocation_tag_id])
         end
-      
+
       end
 
       segment do
-      
+
         desc "Enviar arquivo para aluno"
-        post "/send_file" do  
+        post "/send_file" do
           academic_allocation = AcademicAllocation.where(allocation_tag_id: params[:allocation_tag_id].to_i).where(academic_tool_id: params[:id].to_i)
           academic_allocation_user = AcademicAllocationUser.where(academic_allocation_id: academic_allocation[0].id).where(user_id: params[:student_id].to_i)
-          
+
           sef = ScheduleEventFile.new({user_id: current_user.id, academic_allocation_user_id: academic_allocation_user[0].id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
           sef.save!
 
           {ok: :ok}
         end
-      
+
       end
 
       segment do
-      
+
         desc "Ver nota do aluno"
         params do
           requires :event_id, type: Integer, desc: "ID do Evento"
@@ -149,11 +149,11 @@ module V1
 
           {student_id: student.id, student_grade: student.grade}
         end
-      
+
       end
 
       segment do
-      
+
         desc "Listar Arquivos enviado para o Aluno"
         params do
           requires :id, type: Integer, desc: "ID do Evento"
@@ -163,14 +163,14 @@ module V1
         get ":id/sent_files/:student_id", rabl: 'events/files' do
           academic_allocation = AcademicAllocation.where(allocation_tag_id: params[:allocation_tag_id].to_i).where(academic_tool_id: params[:id].to_i)
           academic_allocation_user = AcademicAllocationUser.where(academic_allocation_id: academic_allocation[0].id).where(user_id: params[:student_id].to_i)
-          
+
           @schedule_event_files = ScheduleEventFile.where(academic_allocation_user_id: academic_allocation_user[0].id)
         end
-      
+
       end
-      
+
       segment do
-      
+
         desc "Listar comentários do responsável para o Aluno"
         params do
           requires :event_id, type: Integer, desc: "ID do Evento"
@@ -184,7 +184,7 @@ module V1
 
           @comments = acu.comments
         end
-      
+
       end
 
     end # events

@@ -26,6 +26,10 @@ class Webconference < ActiveRecord::Base
 
   validate :verify_offer, unless: 'allocation_tag_ids_associations.blank?'
 
+  before_destroy :can_change?
+
+  attr_accessor :api, :date_changed
+
   def link_to_join(user, at_id = nil, url = false)
     ((on_going? && bbb_online? && have_permission?(user, at_id.to_i)) ? (url ? bbb_join(user, at_id) : ActionController::Base.helpers.link_to((title rescue name), bbb_join(user, at_id), target: '_blank')) : (title rescue name))
   end
@@ -102,6 +106,10 @@ class Webconference < ActiveRecord::Base
     offer = web.offers.first
     offer = web.groups.first.offer if offer.blank?
     offer.allocation_tag.info
+  end
+
+  def can_change?
+    api || new_record? || !integrated
   end
 
   def groups_codes
