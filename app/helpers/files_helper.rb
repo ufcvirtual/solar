@@ -99,6 +99,8 @@ module FilesHelper
     Zip::File.open(path_zip_file) do |zipfile|
       zipfile.each do |f|
         f_path = File.join(destination, f.name)
+        f_path = f_path.force_encoding('iso-8859-1').encode('utf-8')
+        normalize_file_path(f_path)
         FileUtils.mkdir_p(File.dirname(f_path))
         zipfile.extract(f, f_path) unless File.exist?(f_path)
       end # each
@@ -127,6 +129,22 @@ module FilesHelper
         end # each
       end
       tree.delete_if { |k,v| v.empty? }
+    end
+
+    def normalize_file_path(file_path)
+      file_path.gsub!(/[áàâãä]/, "a")
+      file_path.gsub!(/[ÁÀÂÃÄ]/, "A")
+      file_path.gsub!(/[éèê]/, "e")
+      file_path.gsub!(/[ÉÈÊ]/, "E")
+      file_path.gsub!(/[íì]/, "i")
+      file_path.gsub!(/[ÍÌ]/, "I")
+      file_path.gsub!(/[óòôõö]/, "o")
+      file_path.gsub!(/[ÓÒÔÕÖ]/, "O")
+      file_path.gsub!(/[úùü]/, "u")
+      file_path.gsub!(/[ÚÙÜ]/, "U")
+      file_path.gsub!(/ç/, "c")
+      file_path.gsub!(/Ç/, "C")
+      file_path.gsub!(/[^0-9A-Za-z\/\-_\. ]/, '')
     end
 
 end

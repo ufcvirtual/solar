@@ -1307,6 +1307,7 @@ pt_BR:
       attention_message: 'Atenção:'
       save_automatically_message: ' todas as alterações são salvas automaticamente.'
       send_file: Enviar arquivo
+      warning_files_name: "Por favor, remover os acentos dos arquivos."
     destination_folder_error: Uma pasta de destino deve ser selecionada
     move_error: Não foi possível mover
     at_least_one: "Selecione, ao menos, um item para %{to}"
