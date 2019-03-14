@@ -127,6 +127,15 @@
     });
 
     $('#save').click(function(){
+      var today = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+      var parts =  $("#assignment_start_date").val().split('/');
+      var start_date = new Date(parts[2], parts[1] - 1, parts[0]).toJSON().slice(0,10).replace(/-/g,'/');
+      var tipo = $("#assignment_type_assignment option:selected" ).val();
+      if(today==start_date && tipo==1){
+        if (!confirm("#{I18n.t(:confirm_create_group_assignment_in_today)}"))
+          return false;
+      }
+
       $('#assignment_form:last').serialize_and_submit({
         files: true,
         outer: 'fancybox-outer',

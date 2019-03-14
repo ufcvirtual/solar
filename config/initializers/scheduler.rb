@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'rufus-scheduler'
 
-if (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['run_scheduler'] rescue false)
+#if (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['run_scheduler'] rescue false)
 
   scheduler = Rufus::Scheduler.new
 
@@ -28,7 +28,7 @@ if (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['run_scheduler'] 
   end
 
   #minutos e horas * * * 00:01
-  scheduler.cron '1 0 * * *' do
+  scheduler.cron '17 09 * * *' do
     GroupAssignment.split_students_in_groups #criação automática de grupos de trabalho
   end
   
@@ -37,4 +37,4 @@ if (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['run_scheduler'] 
     Group.management_groups
   end
 
-end
+#end

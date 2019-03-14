@@ -1846,6 +1846,7 @@ pt_BR:
   to_send: A enviar
   without_group: Sem Grupo
   not_corrected: Não Corrigido
+  confirm_create_group_assignment_in_today: "O trabalho está iniciado hoje, por esse motivo os alunos serão alocados em grupos automaticamente."
 
   # Assignment Comments
   comment_error_delete_file: Erro ao tentar excluir arquivo
