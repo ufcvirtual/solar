@@ -130,18 +130,15 @@ class GroupAssignment < ActiveRecord::Base
       students_ids = students_without_group.pluck(:id).shuffle
       groups_assignment_division = {}
       if students_without_group.length == total_quantity_students #se todos os alunos estão sem grupo
-        students_groups = students_ids.in_groups_of(3, false) # divisão em grupos de 3
+        students_groups = GroupAssignment.split_students_in_groups_of_standard_number(3, students_groups, students_ids)
         
-         if students_ids.length % 3 == 1 # caso sobrar um estudante sem grupo, inserir no último grupo
-          students_groups[students_groups.length-2] << students_groups[students_groups.length-1][0]
-          students_groups.pop
-         end
       #Se mais da metade ja possui grupos OU se menos da metade ja possui grupos OU exatamente a metade possui grupo, pegar a média de alunos nesses grupos para dividir os novos grupos.
       elsif (total_quantity_students - students_without_group.length) >= (total_quantity_students / 2) ||
          (total_quantity_students - students_without_group.length) <= (total_quantity_students / 2) ||
           students_without_group.length == (total_quantity_students / 2)
    
-        average = calculate_average_students_per_group(academic_allocation.academic_tool.id, alloc_tag_id)
+        average = calculate_average_students_per_group(academic_allocation.academic_tool.id, alloc_tag_id)        
+
         students_remains_quantity = total_quantity_students % average.to_i
         students_groups = students_ids.in_groups_of(average.to_i, false)
         
@@ -151,6 +148,11 @@ class GroupAssignment < ActiveRecord::Base
             students_groups[students_groups.length-2] << students_groups[students_groups.length-1][0]
             students_groups.pop
           end
+
+          if average.to_i == 1
+            students_groups = GroupAssignment.split_students_in_groups_of_standard_number(3, students_groups, students_ids)
+          end
+
         else #&& students_ids.length > average.to_i
           remains = students_groups.pop 
           groups_assignments = GroupAssignment.where(academic_allocation_id: academic_allocation.id)
@@ -166,7 +168,18 @@ class GroupAssignment < ActiveRecord::Base
         end
       end
       return groups_assignment_division, students_groups
-    end 
+    end
+
+    def self.split_students_in_groups_of_standard_number(standard_number = 3, students_groups, students_ids)
+      students_groups = students_ids.in_groups_of(standard_number, false) # divisão em grupos de 3
+        
+      if students_ids.length % standard_number == 1 # caso sobrar um estudante sem grupo, inserir no último grupo
+        students_groups[students_groups.length-2] << students_groups[students_groups.length-1][0]
+        students_groups.pop
+      end
+
+      students_groups
+    end
 
     def self.add_number_students_without_groups_is_equal_to_or_less_than_the_number_existing_groups(groups_assignment_division, groups_assignments, academic_allocation, remains)
       ActiveRecord::Base.transaction do
