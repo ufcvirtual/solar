@@ -28,7 +28,7 @@ require 'rufus-scheduler'
   end
 
   #minutos e horas * * * 00:01
-  scheduler.cron '17 09 * * *' do
+  scheduler.cron '06 14 * * *' do
     GroupAssignment.split_students_in_groups #criação automática de grupos de trabalho
   end
   

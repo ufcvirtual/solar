@@ -114,7 +114,7 @@ class GroupAssignment < ActiveRecord::Base
           
           struct = Struct::Group_Object.new(group_assignment.group_name, student_names_by_group)
           key_assignment = "#{group_assignment.assignment.name}_#{academic_allocation.id}"
-          p groups_assignment_division
+   
           groups_assignment_division[key_assignment] ||= []
           groups_assignment_division[key_assignment] << struct
         end
@@ -180,8 +180,8 @@ class GroupAssignment < ActiveRecord::Base
           groups_assignment_division[key_assignment] ||= []
           groups_assignment_division[key_assignment] << struct
         end
-
       end
+      return groups_assignment_division
     end
 
     def self.remaining_students_without_group(groups_assignment_division, academic_allocation, remains, students_groups)
@@ -211,6 +211,7 @@ class GroupAssignment < ActiveRecord::Base
         groups_assignment_division[key_assignment] ||= []
         groups_assignment_division[key_assignment] << struct
       end
+      return groups_assignment_division
     end
 
     def self.calculate_average_students_per_group(academic_tool_id, allocation_tag_id)
@@ -255,7 +256,7 @@ class GroupAssignment < ActiveRecord::Base
 
     def self.msg_template(assignment_groups)
       html = ""
-      p assignment_groups
+     
       assignment_groups.each do |key, value|
         assignment_key = key[-key.length..key.index("_")-1]
         html = "<p> #{I18n.t('group_assignments.split_group_jobs', assignment_key: assignment_key)} </p>"
