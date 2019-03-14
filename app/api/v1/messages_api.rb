@@ -77,6 +77,17 @@ module V1
           'inbox'
         end
 
+        def reply_msg_template(original)
+          %{
+            <br/><br/>----------------------------------------<br/>
+            #{t(:from, scope: [:messages, :show])} #{original.sent_by.to_msg[:resume]}<br/>
+            #{t(:date, scope: [:messages, :show])} #{l(original.created_at, format: :clock)}<br/>
+            #{t(:subject, scope: [:messages, :show])} #{original.subject}<br/>
+            #{t(:to, scope: [:messages, :show])} #{original.users.map(&:to_msg).map{ |c| c[:resume] }.join(',')}<br/>
+            #{original.content}
+          }
+        end
+
       end #helpers
 
       segment do
@@ -136,6 +147,47 @@ module V1
         end
         get '/:group_id/contacts', rabl: 'messages/contacts' do
           @contacts = User.all_at_allocation_tags(@allocation_tag_related, Allocation_Activated, true)
+        end
+        
+        desc 'Responder/Responder Todos/Encaminhar mensagem'
+        params do
+          requires :id, type: Integer
+          requires :group_id, type: Integer, desc: 'Group ID.'
+          requires :message_type, type: Symbol, values: [:reply, :reply_all, :forward]
+        end
+        post '/:message_type' do
+          @original = Message.find(params[:id])
+
+          @allocation_tag_id = Group.find(params[:group_id]).allocation_tag.id
+
+          @message = Message.new subject: @original.subject
+          @message.files.build
+
+          @message.content = reply_msg_template(@original)
+
+          unless @allocation_tag_id.nil?
+            allocation_tag      = AllocationTag.find(@allocation_tag_id)
+            @group              = allocation_tag.group
+            @contacts           = User.all_at_allocation_tags(allocation_tag.related, Allocation_Activated, true)
+          else
+            @contacts = current_user.user_contacts.map(&:user)
+          end
+
+          #@files = @original.files
+
+          @reply_to = []
+          case params[:type]
+            when "reply"
+              @reply_to = [@original.sent_by.to_msg]
+              @message.subject = "#{t(:reply, scope: [:messages, :subject])} #{@message.subject}"
+            when "reply_all"
+              @reply_to = @original.users.uniq.map(&:to_msg)
+              @message.subject = "#{t(:reply, scope: [:messages, :subject])} #{@message.subject}"
+            when "forward"
+              # sem contato default
+              @message.subject = "#{t(:forward, scope: [:messages, :subject])} #{@message.subject}"
+          end
+
         end
 
       end #segment
