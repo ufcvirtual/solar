@@ -131,12 +131,14 @@ class GroupAssignment < ActiveRecord::Base
       groups_assignment_division = {}
       if students_without_group.length == total_quantity_students #se todos os alunos estão sem grupo
         students_groups = GroupAssignment.split_students_in_groups_of_standard_number(3, students_groups, students_ids)
-        
+
       #Se mais da metade ja possui grupos OU se menos da metade ja possui grupos OU exatamente a metade possui grupo, pegar a média de alunos nesses grupos para dividir os novos grupos.
       elsif (total_quantity_students - students_without_group.length) >= (total_quantity_students / 2) ||
          (total_quantity_students - students_without_group.length) <= (total_quantity_students / 2) ||
           students_without_group.length == (total_quantity_students / 2)
    
+        groups_assignments = GroupAssignment.where(academic_allocation_id: academic_allocation.id)
+        
         average = calculate_average_students_per_group(academic_allocation.academic_tool.id, alloc_tag_id)        
 
         students_remains_quantity = total_quantity_students % average.to_i
@@ -150,12 +152,30 @@ class GroupAssignment < ActiveRecord::Base
           end
 
           if average.to_i == 1
+            
+            quantity_students_per_assignment = GroupParticipant.select("group_assignment_id")
+                                                .where(group_assignment_id: GroupAssignment.where(academic_allocation_id: academic_allocation.id).map{|ga| ga.id})
+                                                .group(:group_assignment_id)
+                                                .count
+            
+            group_participants_ids_to_remove = quantity_students_per_assignment.select{|key, value| value == 1 }
+            
+            unless group_participants_ids_to_remove.blank?
+              ActiveRecord::Base.transaction do
+                group_participants_ids_to_remove.each do |key, value|
+                  ga = GroupAssignment.find(key)
+                  students_ids << ga.group_participants[0].user_id
+                  GroupParticipant.find(ga.group_participants[0].id).destroy
+                  ga.destroy
+                end
+              end
+            end
+            
             students_groups = GroupAssignment.split_students_in_groups_of_standard_number(3, students_groups, students_ids)
           end
 
         else #&& students_ids.length > average.to_i
           remains = students_groups.pop 
-          groups_assignments = GroupAssignment.where(academic_allocation_id: academic_allocation.id)
 
           if remains.length <= groups_assignments.length #quantidade de alunos sem grupos é igual ou é menor que a quantidade de grupos ja existentes (colocar um em cada grupo)
             groups_assignment_division = GroupAssignment.add_number_students_without_groups_is_equal_to_or_less_than_the_number_existing_groups(groups_assignment_division, groups_assignments, academic_allocation, remains)
