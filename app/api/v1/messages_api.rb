@@ -184,6 +184,12 @@ module V1
             message.sender = current_user
             message.files = original.files unless original.files.empty?
 
+            unless params[:files].blank?
+              [params[:files]].flatten.each do |file|
+                message.files.new({ attachment: ActionDispatch::Http::UploadedFile.new(file) })
+              end
+            end
+
             reply_to = []
             case params[:message_type]
               when :reply
