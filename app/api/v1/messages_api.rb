@@ -190,6 +190,11 @@ module V1
                 reply_to << original.sent_by.email
                 message.contacts = [original.sent_by]
                 message.subject = "#{I18n.t(:reply, scope: [:messages, :subject])} #{original.subject}"
+              when :reply_all
+                reply_to << original.sent_by.email
+                reply_to.concat(original.recipients.map(&:email)).uniq!
+                message.contacts = original.recipients.concat([original.sent_by])
+                message.subject = "#{I18n.t(:reply, scope: [:messages, :subject])} #{original.subject}"
             end
 
             if message.save!
