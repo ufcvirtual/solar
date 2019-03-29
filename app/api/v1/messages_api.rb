@@ -195,6 +195,16 @@ module V1
                 reply_to.concat(original.recipients.map(&:email)).uniq!
                 message.contacts = original.recipients.concat([original.sent_by])
                 message.subject = "#{I18n.t(:reply, scope: [:messages, :subject])} #{original.subject}"
+              when :forward
+                raise 'contacts mandatory' if params[:message][:contacts].blank?
+                
+                users = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
+                            .where("(nmail.message IS NULL OR nmail.message=TRUE)")
+                            .where(id: params[:message][:contacts].split(','))
+                
+                message.contacts = users
+                reply_to = users.pluck(:email).flatten.compact.uniq                
+                message.subject = "#{I18n.t(:forward, scope: [:messages, :subject])} #{original.subject}"
             end
 
             if message.save!
