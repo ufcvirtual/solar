@@ -22,7 +22,7 @@ class Message < ActiveRecord::Base
 
   self.per_page = Rails.application.config.items_per_page
 
-  attr_accessor :contacts, :sender
+  attr_accessor :contacts, :sender, :api
 
   def sent_by
     user_messages.where("cast(user_messages.status & #{Message_Filter_Sender} as boolean)").first.user
@@ -173,7 +173,12 @@ class Message < ActiveRecord::Base
 
     def set_sender_and_recipients
       users = [{user: sender, status: Message_Filter_Sender}]
-      users << contacts.split(",").map {|u| {user_id: u, status: Message_Filter_Receiver}} unless contacts.blank?
+      if api
+        users << contacts.map {|u| {user_id: u.id, status: Message_Filter_Receiver}} unless contacts.blank?
+        users.flatten!
+      else
+        users << contacts.split(",").map {|u| {user_id: u, status: Message_Filter_Receiver}} unless contacts.blank?
+      end
 
       self.user_messages.build users
     end

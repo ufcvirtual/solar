@@ -80,11 +80,22 @@ module V1
         def reply_msg_template(original)
           %{
             <br/><br/>----------------------------------------<br/>
-            #{t(:from, scope: [:messages, :show])} #{original.sent_by.to_msg[:resume]}<br/>
-            #{t(:date, scope: [:messages, :show])} #{l(original.created_at, format: :clock)}<br/>
-            #{t(:subject, scope: [:messages, :show])} #{original.subject}<br/>
-            #{t(:to, scope: [:messages, :show])} #{original.users.map(&:to_msg).map{ |c| c[:resume] }.join(',')}<br/>
+            #{I18n.t(:from, scope: [:messages, :show])} #{original.sent_by.to_msg[:resume]}<br/>
+            #{I18n.t(:date, scope: [:messages, :show])} #{I18n.l(original.created_at, format: :clock)}<br/>
+            #{I18n.t(:subject, scope: [:messages, :show])} #{original.subject}<br/>
+            #{I18n.t(:to, scope: [:messages, :show])} #{original.users.map(&:to_msg).map{ |c| c[:resume] }.join(',')}<br/>
             #{original.content}
+          }
+        end
+
+        def new_msg_template(allocation_tag_id, message)
+          system_label = not(allocation_tag_id.nil?)
+
+          %{
+            <b>#{I18n.t(:mail_header, scope: :messages)} #{current_user.to_msg[:resume]}</b><br/>
+            #{message.labels(current_user.id, system_label) if system_label}<br/>
+            ________________________________________________________________________<br/><br/>
+            #{message.content}
           }
         end
 
@@ -149,43 +160,45 @@ module V1
           @contacts = User.all_at_allocation_tags(@allocation_tag_related, Allocation_Activated, true)
         end
         
-        desc 'Responder/Responder Todos/Encaminhar mensagem'
+        desc 'Responder/Encaminhar mensagem'
         params do
           requires :id, type: Integer
-          requires :group_id, type: Integer, desc: 'Group ID.'
+          requires :group_id, type: Integer
           requires :message_type, type: Symbol, values: [:reply, :reply_all, :forward]
+          optional :files, type: Array
+          requires :message, type: Hash do
+            requires :content, type: String
+            optional :contacts, type: String # only message_type: forward
+          end
         end
         post '/:message_type' do
-          @original = Message.find(params[:id])
+          ActiveRecord::Base.transaction do
+            original = Message.find(params[:id])
+            allocation_tag_id = Group.find(params[:group_id]).allocation_tag.id
 
-          @allocation_tag_id = Group.find(params[:group_id]).allocation_tag.id
+            message = Message.new
+            message.api = true
+            message.allocation_tag_id = allocation_tag_id
+            message.content = reply_msg_template(original)
+            message.content.insert(0, "#{params[:message][:content]} ")
+            message.sender = current_user
+            message.files = original.files unless original.files.empty?
 
-          @message = Message.new subject: @original.subject
-          @message.files.build
+            reply_to = []
+            case params[:message_type]
+              when :reply
+                reply_to << original.sent_by.email
+                message.contacts = [original.sent_by]
+                message.subject = "#{I18n.t(:reply, scope: [:messages, :subject])} #{original.subject}"
+            end
 
-          @message.content = reply_msg_template(@original)
+            if message.save!
+              Job.send_mass_email(reply_to, message.subject, new_msg_template(allocation_tag_id, message), message.files.to_a, current_user.email)
+              {id: message.id}
+            else
+              raise message.errors.full_messages
+            end
 
-          unless @allocation_tag_id.nil?
-            allocation_tag      = AllocationTag.find(@allocation_tag_id)
-            @group              = allocation_tag.group
-            @contacts           = User.all_at_allocation_tags(allocation_tag.related, Allocation_Activated, true)
-          else
-            @contacts = current_user.user_contacts.map(&:user)
-          end
-
-          #@files = @original.files
-
-          @reply_to = []
-          case params[:type]
-            when "reply"
-              @reply_to = [@original.sent_by.to_msg]
-              @message.subject = "#{t(:reply, scope: [:messages, :subject])} #{@message.subject}"
-            when "reply_all"
-              @reply_to = @original.users.uniq.map(&:to_msg)
-              @message.subject = "#{t(:reply, scope: [:messages, :subject])} #{@message.subject}"
-            when "forward"
-              # sem contato default
-              @message.subject = "#{t(:forward, scope: [:messages, :subject])} #{@message.subject}"
           end
 
         end
