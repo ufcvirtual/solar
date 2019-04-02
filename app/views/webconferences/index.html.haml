@@ -42,9 +42,9 @@
                 - else
                   .title= link_to webconference.title, '#void', {disabled: true, class: 'disabled', :'aria-label' => t('.access_web', web: webconference.title) + t(:disabled)}
                 .description
-                  .enunciation_slice= webconference.description.truncate(180)
+                  .enunciation_slice= webconference.description.truncate(180) unless webconference.description.blank?
                   .enunciation_complete= webconference.description
-                  - if webconference.description.size > 180
+                  - if !webconference.description.blank? && webconference.description.size > 180
                     .more_or_less
                       %a.enunciation_more.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label'=> t('.more', web: webconference.title) }= t('assignments.list.more')
                       %a.enunciation_less.link_content{ href: '#', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t('.less', web: webconference.title) }= t('assignments.list.less')
