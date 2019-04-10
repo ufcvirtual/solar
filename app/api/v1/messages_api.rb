@@ -28,35 +28,37 @@ module V1
         end
         post '/' do
           ActiveRecord::Base.transaction do
-            raise 'group mandatory' if params[:group_id].blank?
-            @group = Group.find(params[:group_id])
+            begin
+              raise 'group mandatory' if params[:group_id].blank?
+              @group = Group.find(params[:group_id])
 
-            raise CanCan::AccessDenied if current_user.profiles_with_access_on(:index, :messages, @group.allocation_tag.related, true).blank? # unauthorized
-            raise 'content mandatory' if params[:message][:content].blank?
-            raise 'subject mandatory' if params[:message][:subject].blank?
-            raise 'contacts mandatory' if params[:message][:contacts].blank?
+              raise CanCan::AccessDenied if current_user.profiles_with_access_on(:index, :messages, @group.allocation_tag.related, true).blank? # unauthorized
+              raise 'content mandatory' if params[:message][:content].blank?
+              raise 'subject mandatory' if params[:message][:subject].blank?
+              raise 'contacts mandatory' if params[:message][:contacts].blank?
 
-            @message = Message.new(params[:message])
-            @message.sender = current_user
-            @message.allocation_tag_id = @group.allocation_tag.id
+              @message = Message.new(params[:message])
+              @message.sender = current_user
+              @message.allocation_tag_id = @group.allocation_tag.id
 
-            [params[:files]].flatten.each do |file|
-              @message.files.new({ attachment: ActionDispatch::Http::UploadedFile.new(file) })
-            end # each
+              [params[:files]].flatten.each do |file|
+                @message.files.new({ attachment: ActionDispatch::Http::UploadedFile.new(file) })
+              end # each
 
-            emails = []
-            unless params[:message][:contacts].nil?
-              emails = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
-                            .where("(nmail.message IS NULL OR nmail.message=TRUE)")
-                            .where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
-            end
+              emails = []
+              unless params[:message][:contacts].nil?
+                emails = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
+                              .where("(nmail.message IS NULL OR nmail.message=TRUE)")
+                              .where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
+              end
 
-            if @message.save
-              Job.send_mass_email(emails, @message.subject, new_msg_template(@group.allocation_tag, @message), @message.files.to_a, current_user.email)
+              if @message.save
+                Job.send_mass_email(emails, @message.subject, new_msg_template(@group.allocation_tag, @message), @message.files.to_a, current_user.email)
+                { id: @message.id }
+              end
 
-              { id: @message.id }
-            else
-              raise @message.errors.full_messages
+            rescue RuntimeError => erro
+              {erro: erro.message}
             end
           end # transaction
 
