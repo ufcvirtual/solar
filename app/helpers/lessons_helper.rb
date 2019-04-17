@@ -14,4 +14,12 @@ module LessonsHelper
 	  end
 	end
 
+	def get_audio(lesson_id, main=nil)
+		if main.nil?
+			LessonAudio.where(lesson_id: lesson_id)
+		else
+			LessonAudio.where(lesson_id: lesson_id, main: true).first
+		end	
+	end
+
 end

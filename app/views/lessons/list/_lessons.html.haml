@@ -8,6 +8,7 @@
       %th.center.no_sort= t('lessons.list.availability')
       %th.center.no_sort{ style: 'width: 5%' }= t('.privacy')
       %th.center.no_sort= t('lessons.list.acceptance')
+      %th.center.no_sort= t('lessons.index.download_audio')
   %tbody
     - lessons.each_with_index do |lesson, idxl|
       %tr.lines{ lesson_name: lesson.name, lesson_id: lesson.id, lesson_order: lesson.order, lesson_status: lesson.status }
@@ -46,3 +47,6 @@
         %td.center{ style: 'width: 70px' }
           - new_status, l_img, l_t = lesson.is_draft? ? [Lesson_Approved, 'rejected.png', t('lessons.list.draft')] : [Lesson_Test, 'released.png', t('lessons.list.released')]
           = link_to image_tag(l_img), '#void', class: 'change_lesson_status', :"data-link-update" => change_status_lesson_path(id: lesson.id, status: new_status, allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => l_t, :"data-module-id" => lesson_module.id
+        %td.center{ style: 'width: 70px' }
+          - audio = get_audio(lesson.id, true)
+          = link_to (content_tag(:i, nil, class: 'icon-download')), download_audios_lesson_path(id: lesson.id, allocation_tags_ids: @allocation_tags_ids), class: 'btn' unless audio.nil?

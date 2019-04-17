@@ -15,6 +15,7 @@ class Lesson < ActiveRecord::Base #< Event
   has_many :offers, through: :allocation_tags
   has_many :notes, class_name: 'LessonNote', foreign_key: 'lesson_id', dependent: :destroy
   has_many :imported_to, class_name: 'Lesson', foreign_key: 'imported_from_id'
+  has_many :lesson_audios, class_name: 'LessonAudio', dependent: :destroy
 
   before_create :set_order
 

@@ -325,6 +325,8 @@ Solar::Application.routes.draw do
       put :change_module
       get :edition, action: :open, defaults: { edition: true }
       get :open
+      post :generate_audio
+      get :download_audios
     end
     collection do
       get 'open_module/:lesson_module_id', action: :open_module, as: :open_module
@@ -745,6 +747,8 @@ Solar::Application.routes.draw do
 
   get '/media/lessons/:id/:file(.:extension)', to: 'access_control#lesson_media', index: true
   get '/media/lessons/:id/:folder/*path',    to: 'access_control#lesson_media', index: false
+
+  get '/media/lessons/:id/audios/:file(.:extension)', to: 'access_control#lesson_media', index: false
 
   get '/media/users/:user_id/photos/:style.:extension', to: 'access_control#users'
 

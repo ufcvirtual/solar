@@ -78,6 +78,9 @@ gem 'delayed_job'
 
 gem 'activerecord-session_store'
 
+gem 'google-cloud-text_to_speech', '~> 0.2.0'
+gem 'google-cloud-storage', '~> 0.20.0'
+
 # add these gems to help with the transition:
 #gem 'protected_attributes'
 

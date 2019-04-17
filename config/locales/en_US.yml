@@ -923,6 +923,7 @@ en_US:
       caption: Lesson module %{module_name} lesson's list
       number_of_lessons: "%{module_name} has %{lesson_number} lessons"
       jspanel_count_window: "Allowed only 3 windows"
+      download_audio: Download audio
     list:
       lesson: Lesson
       order: Order

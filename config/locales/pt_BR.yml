@@ -1123,6 +1123,7 @@ pt_BR:
       caption: Lista de aulas para o módulo %{module_name}
       number_of_lessons: "%{module_name} possui %{lesson_number} aulas"
       jspanel_count_window: "Permitido somente 3 janelas"
+      download_audio: Baixar áudio
     list:
       lesson: Aula
       order: Ordem

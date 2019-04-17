@@ -51,6 +51,7 @@ config/sav.yml
 config/sav.deploy.yml
 config/newrelic.yml
 config/digital_class.yml
+config/CP-2-b73f6567d35e.json
 sink.sh
 commit.sh
 sink_master.sh

@@ -82,6 +82,10 @@ class LessonsController < ApplicationController
       at_ids = (params[:allocation_tags_ids].present? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
       @modules = LessonModule.to_select(at_ids, current_user)
       @lesson  = Lesson.find(params[:id])
+      lessonaudio = LessonAudio.where(lesson_id: @lesson.id, main: true).first
+      @path_audio = lessonaudio.audio.url.gsub(':lesson_id',  @lesson.id.to_s) unless lessonaudio.nil?
+      @count_text_month = LessonAudio.count_text_month
+      @text_available = 4000000-@count_text_month
 
       render layout: 'lesson'
     end
@@ -202,6 +206,26 @@ class LessonsController < ApplicationController
 
     if verify_lessons_to_download(params[:lessons_ids], true)
       zip_file_path = compress_file(under_path: @all_files_paths, folders_names: @lessons_names)
+
+      if zip_file_path
+        redirect = request.referer.nil? ? home_url(only_path: false) : request.referer
+        download_file(redirect, zip_file_path, File.basename(zip_file_path))
+      else
+        redirect_to redirect, alert: t(:file_error_nonexistent_file)
+      end
+    else
+      head :ok
+    end
+  end
+
+  def download_audios
+    authorize! :download_files, Lesson, on: params[:allocation_tags_ids]
+    verify_owner(params[:id])
+    lesson = Lesson.find(params[:id])
+    audios_paths = get_audio(lesson.id)
+    unless audios_paths.empty?
+      #zip_file_path = compress_file(under_path: audios_paths, folders_names: names)
+      zip_file_path = compress_file({ files: audios_paths, table_column_name: 'audio_file_name', audio: true, name_zip_file: lesson.name})
 
       if zip_file_path
         redirect = request.referer.nil? ? home_url(only_path: false) : request.referer
@@ -340,6 +364,34 @@ class LessonsController < ApplicationController
     authorize! :import, Lesson, { on: @lesson.allocation_tags.map(&:id).flatten, any: true }
     render partial: 'lessons/open/content'
   end
+
+  def generate_audio
+    @lesson = Lesson.find(params[:id])
+    texts = params[:text]
+    name_lesson = @lesson.name.gsub( /[^a-zA-Z0-9_\.]/, '_')
+    array_path = Array.new
+    path_audio_lesson_last = File.expand_path File.join("#{Rails.root}", 'media', "lessons/#{@lesson.id.to_s}/audios/#{name_lesson}.mp3")
+    directory = File.join("#{Rails.root}", 'media', "lessons/#{@lesson.id.to_s}/audios/")
+    Dir.mkdir(directory) unless File.exists?(directory)
+    count = 0
+
+    texts.each do |key, text|
+      name_topico = text[0].strip 
+      text_topico = text[1].strip
+      count += text_topico.to_s.length
+      path = LessonAudio.text_to_speech(name_topico, text_topico, @lesson.id)
+      array_path.push(path)
+    end
+    LessonAudio.concatenate_audio(array_path, path_audio_lesson_last)
+    lessonaudio = LessonAudio.new({lesson_id: @lesson.id, count_text: count, main: true}) 
+    lessonaudio.audio = File.new(path_audio_lesson_last) 
+    lessonaudio.audio.save                          
+    lessonaudio.save!
+
+    render json: { success: true, msg: t('lessons.success.imported'), path: lessonaudio.audio.url.gsub(':lesson_id',  @lesson.id.to_s) }
+  rescue => error
+    render json: { success: false, msg: error.message }, status: :unprocessable_entity
+  end  
 
   private
 
