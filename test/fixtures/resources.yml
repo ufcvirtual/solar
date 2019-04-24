@@ -1263,3 +1263,9 @@ res239:
   controller: 'scores'
   action: 'set_register_notes'
   description: 'Liberar/Bloquear registro de notas'
+
+res240:
+  id: 240
+  controller: 'lessons'
+  action: 'generate_audio'
+  description: 'Gerar áudio das aulas'

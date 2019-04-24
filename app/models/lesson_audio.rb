@@ -19,6 +19,10 @@ class LessonAudio < ActiveRecord::Base
       .select('DISTINCT lesson_audios.id, lesson_audios.audio_file_name, lesson_audios.audio_content_type, lesson_audios.audio_file_size, lesson_audios.audio_updated_at, count_text, main')
   end
 
+  Paperclip.interpolates :lesson_id do |attachment, style|
+    attachment.instance.lesson_id
+  end
+
   Paperclip.interpolates :normalized_audio_file_name do |attachment, style|
     attachment.instance.normalized_audio_file_name
   end
@@ -30,12 +34,6 @@ class LessonAudio < ActiveRecord::Base
     audio_name_2 = audio_name.to_sentence(two_words_connector: '_')
    "#{audio_name_2.gsub( /[^a-zA-Z0-9_\.]/, '_')}.#{extension}"
   end
-
-  def self.normalized_text(text)
-    name_2 = text.to_sentence(two_words_connector: '_')
-    name_2.gsub( /[^a-zA-Z0-9_\.]/, '_')
-  end  
-
 
   def self.text_to_speech(text_topico, text, lesson_id, language)
     name_topico = text_topico.gsub( /[^a-zA-Z0-9_\.]/, '_')

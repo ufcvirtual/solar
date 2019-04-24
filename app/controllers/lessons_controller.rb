@@ -368,6 +368,8 @@ class LessonsController < ApplicationController
   end
 
   def generate_audio
+    authorize! :generate_audio, Lesson, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
+
     @lesson = Lesson.find(params[:id])
     texts = params[:text]
     language = params[:language]
@@ -381,7 +383,7 @@ class LessonsController < ApplicationController
     lessonaudio = LessonAudio.new({lesson_id: @lesson.id, count_text: count_text, main: true}) 
     raise lessonaudio.errors.full_messages.join(', ') unless lessonaudio.valid?
   
-    LessonAudio.where(lesson_id: @lesson.id).update_all(status: false)
+    LessonAudio.where(lesson_id: @lesson.id, status: true).update_all(status: false)
     name_lesson = @lesson.name.gsub( /[^a-zA-Z0-9_\.]/, '_')
     array_path = Array.new
     path_audio_lesson_last = File.expand_path File.join("#{Rails.root}", 'media', "lessons/#{@lesson.id.to_s}/audios/#{name_lesson}.mp3")
@@ -394,12 +396,11 @@ class LessonsController < ApplicationController
       array_path.push(path)
     end
     LessonAudio.concatenate_audio(array_path, path_audio_lesson_last)
-
     lessonaudio.audio = File.new(path_audio_lesson_last) 
     lessonaudio.audio.save                          
     lessonaudio.save!
 
-    render json: { success: true, msg: t('lessons.open.message_audio_success'), path: lessonaudio.audio.url.gsub(':lesson_id',  @lesson.id.to_s) }
+    render json: { success: true, msg: t('lessons.open.message_audio_success'), path: lessonaudio.audio.url }
 
   rescue => error
     render json: { success: false, alert: lessonaudio.errors.full_messages.join(', ')}, status: :unprocessable_entity

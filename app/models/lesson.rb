@@ -211,6 +211,17 @@ class Lesson < ActiveRecord::Base #< Event
     (address.last(4).eql?('.aac') || address.last(4).eql?('.m4a') || address.last(4).eql?('.mp4') || address.last(4).eql?('.avi') || address.last(5).eql?('.webm') || address.last(4).eql?('.m4v'))
   end
 
+  def clone_audio_to_another_lesson(lesson_id)
+    audioslesson = LessonAudio.where(lesson_id: self.id, status: true)
+    audioslesson.each do |lessonaudio|
+      new_audiolesson = lessonaudio.dup
+      new_audiolesson.lesson_id = lesson_id
+      new_audiolesson.count_text = 0
+      new_audiolesson.audio = lessonaudio.audio
+      new_audiolesson.save!
+    end
+  end  
+
   private
 
     def can_destroy?

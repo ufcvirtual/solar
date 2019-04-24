@@ -227,7 +227,6 @@ GEM
       grpc (>= 1.7.2, < 2.0)
       rly (~> 0.2.3)
     google-protobuf (3.7.1)
-    google-protobuf (3.7.1-x86_64-linux)
     googleapis-common-protos (1.3.9)
       google-protobuf (~> 3.0)
       googleapis-common-protos-types (~> 1.0)
@@ -254,9 +253,6 @@ GEM
       rabl
       tilt
     grpc (1.19.0)
-      google-protobuf (~> 3.1)
-      googleapis-common-protos-types (~> 1.0.0)
-    grpc (1.19.0-x86_64-linux)
       google-protobuf (~> 3.1)
       googleapis-common-protos-types (~> 1.0.0)
     gyoku (1.3.1)
