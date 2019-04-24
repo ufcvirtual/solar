@@ -1,7 +1,7 @@
 module AllocationsHelper
 
   def status_hash(enroll = true)
-    { Allocation_Pending_Reactivate => t("allocations.status.pending_reactivate"),
+    { #Allocation_Pending_Reactivate => t("allocations.status.pending_reactivate"),
       Allocation_Pending            => t("allocations.status.pending"),
       Allocation_Activated          => (enroll ? t("allocations.status.enrolled") : t("allocations.status.activated")),
       Allocation_Cancelled          => t("allocations.status.cancelled"),
