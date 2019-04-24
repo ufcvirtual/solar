@@ -16,9 +16,9 @@ module LessonsHelper
 
 	def get_audio(lesson_id, main=nil)
 		if main.nil?
-			LessonAudio.where(lesson_id: lesson_id)
+			LessonAudio.where(lesson_id: lesson_id,  status: true)
 		else
-			LessonAudio.where(lesson_id: lesson_id, main: true).first
+			LessonAudio.where(lesson_id: lesson_id, main: true,  status: true).first
 		end	
 	end
 

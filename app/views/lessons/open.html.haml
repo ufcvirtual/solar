@@ -27,11 +27,14 @@
                       %li{role: 'menuitem'}= link_to lesson[0], '#', {:'data-path' => lesson[2][:'data-path'], :'data-id' => lesson[1], class: (lesson[1] == @lesson.id ? 'selected' : ''), onclick: 'change_lesson(event, this)', onkeydown: 'change_lesson(event, this)', :'data-draft' => lesson[2][:'data-draft']}
               %span.lesson-file-download{role: 'menubar', class: @lesson.is_video? ? '' : 'invisible'}
                 = link_to (content_tag(:i, nil, class: 'icon-download')), @lesson.path + "?download=true", class: 'btn', :'aria-label'=> t('lessons.open.download_file'), :'data-tooltip' => t('lessons.open.download_file')
-              = select_tag "Idioma", options_for_select(['', ['PORTUGUÊS', 'pt-BR'], ['ESPANHOL', 'esp']], selected: 'pt-BR'), include_blank: false
-              = link_to (content_tag(:i, nil, class: 'icon-music3')), '#', onclick: 'send_text_lesson(this)', :'data-url' => generate_audio_lesson_path(@lesson.id), :'aria-label'=> 'Gerar Áudio', :'data-tooltip' => 'Gerar Áudio'
-              %audio{ src: @path_audio, autoplay: false, controls: "controls", type: "audio/mpeg", name: 'audio_lesson', id: 'audio_lesson', preload: true}
-              %span="Usado: "+@count_text_month.to_s
-              %span="Disponível: "+@text_available.to_s
+              
+              -if(!@path_audio.nil? || (can?(:change_status, @lesson) || current_user.admin?))
+                %audio{ src: @path_audio, autoplay: false, controls: "controls", type: "audio/mpeg", name: 'audio_lesson', id: 'audio_lesson', preload: 'auto'}
+              - if can?(:change_status, @lesson) || current_user.admin?
+                = select_tag "Idioma", options_for_select(['', ['Português', 'pt-BR'], ['Espanhol', 'es-ES'], ['Inglês US', 'en-US']], selected: 'pt-BR'), include_blank: false, id: 'language_option'
+                = link_to (content_tag(:i, nil, class: 'icon-music3')) + t('lessons.open.generate_audio'), '#', onclick: 'send_text_lesson(this)', :'data-url' => generate_audio_lesson_path(@lesson.id), :'aria-label'=>  t('lessons.open.generate_audio'), :'data-tooltip' =>  t('lessons.open.generate_audio'), id: "generate_audio"
+                %span=t('lessons.open.used', count: @count_text_month.to_s)
+                %span=t('lessons.open.available', count: @text_available.to_s)
 
       - if can?(:change_status, @lesson) || current_user.admin?
         .lesson_status
@@ -51,6 +54,10 @@
     - else
       %iframe#content_lesson{ title: @lesson.name, src: @lesson.path, width: '100%', height: '100%', name: 'content_lesson', target: '_self', frameborder: 0, framespacing: 0 }
 
+  #saving
+    %h2= t('lessons.open.text_generate_audio')
+    %img= image_tag('loading.gif')
+
 = javascript_include_tag 'lessons', 'audios'
 
 :javascript
@@ -60,12 +67,12 @@
   var lesson_text;
   var array_topicos_missing = new Array();
 
-  $(function(){
-    setTimeout(function() {
-      var audio = document.querySelector('audio');
-      audio.controlsList.remove('nodownload');
 
+  $(function(){
+    
+    setTimeout(function() {
       let menu = $("#content_lesson").contents().find("md-sidenav").find(".navigation").last();
+     
       menu.find("li").each(function(i, li) {
         array_topicos.push(new Array($(li).text().trim()));
       });
@@ -75,7 +82,7 @@
           load_text();
         },1000); 
       });
-    },3000);
+    }, 3000);
 
     function load_text(){
       let topico = $("#content_lesson").contents().find("#content").text().trim();
@@ -94,7 +101,7 @@
       }
     }
 
-    document.domain = "#{YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['domain']}";
+    //document.domain = "#{YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['domain']}";
     $(document).on("keydown", function(event){
       var keynum = event.which || event.keyCode;
 

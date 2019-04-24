@@ -228,39 +228,47 @@ function navigation_focus_lessons(event, link) {
 function send_text_lesson(obj){
   var url = $(obj).data('url');
   if(check_if_text_is_complete()==true){
+    language = $("#language_option option:selected").val();
+    $.fancybox.open($('#saving'));
     $.ajax({
       type: "POST",
       url: url,
       data: {
           timestamp: (new Date()).getTime(),
           text: array_topicos,
+          language: language,
           authenticity_token: $('meta[name="csrf-token"]').attr('content')
       },
       success: function (data) {
         $("#audio_lesson").attr("src", data.path);
-        //flash_message(data.msg, 'notice');
+        $.fancybox.close();
+        flash_message(data.msg, 'notice');
       },
       error: function(data) {
-        var data = $.parseJSON(data.msg);
+        $.fancybox.close();
+        var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")
           flash_message(data.alert, 'alert');
       }
     });
-    //console.log(lesson_text);
   }else{
-    alert("Texto está incompleto faltam os seguintes tópicos: "+ array_topicos_missing.join(', '));
+    alert('<%= I18n.t(:missing_topics, :scope => [:lessons, :open]) %>'+ array_topicos_missing.join(', '));
   }
 }
  function check_if_text_is_complete(){
   let text_is_complete = true;
-  for (var i in array_topicos) {
-    if(array_topicos[i].length==1){ 
-      let idx = array_topicos_missing.indexOf(array_topicos[i][0]);
-      if(idx==-1){
-        array_topicos_missing.push(array_topicos[i][0]);
+  if(array_topicos.length>0){
+    for (var i in array_topicos) {
+      if(array_topicos[i].length==1){ 
+        let idx = array_topicos_missing.indexOf(array_topicos[i][0]);
+        if(idx==-1){
+          array_topicos_missing.push(array_topicos[i][0]);
+        }
+        text_is_complete = false;
       }
-      text_is_complete = false;
     }
+  }else{
+    text_is_complete = false;
   }
   return text_is_complete;
 }

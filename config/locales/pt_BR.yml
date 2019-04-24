@@ -583,6 +583,9 @@ pt_BR:
         attachment_content_type: ""
         attachment_file_size: ""
         attachment_file_name: ""
+      lesson_audio:
+        count_text: ""
+
     errors:
       uniqueness: "Registro já existe no sistema"
       template:
@@ -1193,6 +1196,8 @@ pt_BR:
       blank_address: Aula %{lesson_name} não foi publicada. Deve ter URL ou arquivo inicial
       undefined_initial_file: "Aula %{lesson_name} não foi publicada. Um arquivo inicial deve ser definido."
       extract_zip: Não foi possível extrair automaticamente os arquivos do zip da aula %{lesson_name}.
+      limit_count_text: "Não foi possível gerar o audio limite excedido, disponível %{available}, a aula possuí %{count} caracteres."
+
     success:
       saved_as_draft: Aulas deletadas ou salvas como rascunho com sucesso.
       deleted: Aulas deletadas com sucesso.
@@ -1281,6 +1286,12 @@ pt_BR:
       lesson_menu: " %{lesson} (Clique para alterar a aula. Um submenu para seleção de aulas ficará disponível)"
       download: "Baixar aula em arquivo PDF"
       download_file: "Caso você não consiga executar o arquivo, click aqui para fazer o download"
+      message_audio_success: "Áudio da aula gerado com sucesso."
+      missing_topics: 'Texto está incompleto faltam os seguintes tópicos: '
+      generate_audio: Gerar audio
+      used: "Usado: (%{count})"
+      available: "Disponível: (%{count})"
+      text_generate_audio: Gerando áudios
 
   lesson_modules:
     general_of_offer: "Geral"

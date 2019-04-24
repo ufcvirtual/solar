@@ -76,16 +76,18 @@ class LessonsController < ApplicationController
     if Exam.verify_blocking_content(current_user.id)
       render plain: t('exams.restrict')
     else
-     authorize! :show, Lesson, { on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true }
+      authorize! :show, Lesson, { on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true }
       user_session[:lessons] << params[:id].to_i unless user_session[:lessons].include?(params[:id].to_i)
+      max = (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['text_to_speech']['max'] rescue nil)
 
       at_ids = (params[:allocation_tags_ids].present? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
       @modules = LessonModule.to_select(at_ids, current_user)
       @lesson  = Lesson.find(params[:id])
-      lessonaudio = LessonAudio.where(lesson_id: @lesson.id, main: true).first
-      @path_audio = lessonaudio.audio.url.gsub(':lesson_id',  @lesson.id.to_s) unless lessonaudio.nil?
+      lessonaudio = LessonAudio.where(lesson_id: @lesson.id, main: true,  status: true).first
+      @path_audio = lessonaudio.audio.url.gsub(':lesson_id',  @lesson.id.to_s) if !lessonaudio.nil? && File.exist?(lessonaudio.audio.path.gsub(':lesson_id',  @lesson.id.to_s))
+
       @count_text_month = LessonAudio.count_text_month
-      @text_available = 4000000-@count_text_month
+      @text_available = max - @count_text_month
 
       render layout: 'lesson'
     end
@@ -368,29 +370,39 @@ class LessonsController < ApplicationController
   def generate_audio
     @lesson = Lesson.find(params[:id])
     texts = params[:text]
+    language = params[:language]
+    count_text = 0
+
+    texts.each do |key, text|
+      text_topico = text[1].strip
+      count_text += text_topico.to_s.length
+    end
+
+    lessonaudio = LessonAudio.new({lesson_id: @lesson.id, count_text: count_text, main: true}) 
+    raise lessonaudio.errors.full_messages.join(', ') unless lessonaudio.valid?
+  
+    LessonAudio.where(lesson_id: @lesson.id).update_all(status: false)
     name_lesson = @lesson.name.gsub( /[^a-zA-Z0-9_\.]/, '_')
     array_path = Array.new
     path_audio_lesson_last = File.expand_path File.join("#{Rails.root}", 'media', "lessons/#{@lesson.id.to_s}/audios/#{name_lesson}.mp3")
     directory = File.join("#{Rails.root}", 'media', "lessons/#{@lesson.id.to_s}/audios/")
     Dir.mkdir(directory) unless File.exists?(directory)
-    count = 0
-
     texts.each do |key, text|
       name_topico = text[0].strip 
       text_topico = text[1].strip
-      count += text_topico.to_s.length
-      path = LessonAudio.text_to_speech(name_topico, text_topico, @lesson.id)
+      path = LessonAudio.text_to_speech(name_topico, text_topico, @lesson.id, language)
       array_path.push(path)
     end
     LessonAudio.concatenate_audio(array_path, path_audio_lesson_last)
-    lessonaudio = LessonAudio.new({lesson_id: @lesson.id, count_text: count, main: true}) 
+
     lessonaudio.audio = File.new(path_audio_lesson_last) 
     lessonaudio.audio.save                          
     lessonaudio.save!
 
-    render json: { success: true, msg: t('lessons.success.imported'), path: lessonaudio.audio.url.gsub(':lesson_id',  @lesson.id.to_s) }
+    render json: { success: true, msg: t('lessons.open.message_audio_success'), path: lessonaudio.audio.url.gsub(':lesson_id',  @lesson.id.to_s) }
+
   rescue => error
-    render json: { success: false, msg: error.message }, status: :unprocessable_entity
+    render json: { success: false, alert: lessonaudio.errors.full_messages.join(', ')}, status: :unprocessable_entity
   end  
 
   private

@@ -993,6 +993,7 @@ en_US:
       blank_address: Lesson %{lesson_name} was not published. Must have an URL or initial file
       undefined_initial_file: "Aula %{lesson_name} was not published. A initial file is necessary."
       extract_zip: It was not possible to, automatically, extract files from zip of lesson %{lesson_name}.
+      limit_count_text: "Could not generate audio limit exceeded, available %{available}, class has %{count} characters."
     success:
       saved_as_draft: Lessons were sucessfully created or saved as draft
       deleted: Lessons were successfully created
@@ -1081,6 +1082,12 @@ en_US:
       lesson_menu: " %{lesson} (Click to change lesson. A selection lesson submenu will be available)"
       download: "Download lesson in PDF file"
       download_file: "If you can't run the file, click here to download"
+      message_audio_success: "Class audio successfully generated."
+      missing_topics: 'Text is incomplete The following topics are missing: '
+      generate_audio: Generate audio
+      used: Used
+      available: Available
+      text_generate_audio: Generating Audios
   lesson_modules:
     general_of_offer: General
     general_of_group: General of group
