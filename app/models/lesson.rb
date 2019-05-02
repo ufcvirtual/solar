@@ -213,6 +213,7 @@ class Lesson < ActiveRecord::Base #< Event
 
   def clone_audio_to_another_lesson(lesson_id)
     audioslesson = LessonAudio.where(lesson_id: self.id, status: true)
+    LessonAudio.where(lesson_id: lesson_id, status: true).update_all(status: false)
     audioslesson.each do |lessonaudio|
       new_audiolesson = lessonaudio.dup
       new_audiolesson.lesson_id = lesson_id
@@ -220,7 +221,11 @@ class Lesson < ActiveRecord::Base #< Event
       new_audiolesson.audio = lessonaudio.audio
       new_audiolesson.save!
     end
-  end  
+  end 
+
+  def contains_audio?
+    LessonAudio.where(lesson_id: self.id, status: true) ? true : false
+  end 
 
   private
 

@@ -994,6 +994,7 @@ en_US:
       undefined_initial_file: "Aula %{lesson_name} was not published. A initial file is necessary."
       extract_zip: It was not possible to, automatically, extract files from zip of lesson %{lesson_name}.
       limit_count_text: "Could not generate audio limit exceeded, available %{available}, class has %{count} characters."
+      export_empty: Select lesson to export audio.
     success:
       saved_as_draft: Lessons were sucessfully created or saved as draft
       deleted: Lessons were successfully created
@@ -1082,12 +1083,30 @@ en_US:
       lesson_menu: " %{lesson} (Click to change lesson. A selection lesson submenu will be available)"
       download: "Download lesson in PDF file"
       download_file: "If you can't run the file, click here to download"
-      message_audio_success: "Class audio successfully generated."
       missing_topics: 'Text is incomplete The following topics are missing: '
       generate_audio: Generate audio
       used: Used
       available: Available
       text_generate_audio: Generating Audios
+    export:
+      error: Lesson is not of the file type and / or it does not have valid audios 
+      message_audio_success: "Lesson audio successfully generated."
+      button: Export audios
+      lesson:
+        preview: Preview lesson
+      list:
+        name: Name
+        preview: Preview
+        type: Type
+        preview_tooltip: Preview lesson
+        conclude: Conclude
+        no_lesson: No lesson
+      steps:
+        title: Lesson audio export
+        choose: Choose lesson
+        conclude: Conclude
+        back: Back
+        original_lesson: '** about source lesson'
   lesson_modules:
     general_of_offer: General
     general_of_group: General of group
@@ -1109,6 +1128,7 @@ en_US:
       general_message: It was not possible to execute action.
       import_empty: Select lessons to import.
       import_schedule: 'Start date is mandatory and must be smaller than end date, which are optional'
+
   lesson_files:
     root: Root
     delete_confirm: Are you sure you want to delete the selected items?

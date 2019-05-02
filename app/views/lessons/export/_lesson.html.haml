@@ -1,0 +1,40 @@
+- @lessons.each do |lesson|
+  %tr.lines{ :'data-id' => lesson.id }
+    %td.icon
+      .lesson_arrows
+        .lesson_arrow_up= link_to image_tag('lesson/up_arrow.png'), "#", onclick: 'up(this)'
+        .lesson_arrow_down= link_to image_tag('lesson/down_arrow.png'), "#", onclick: 'down(this)'
+    %td= lesson.lesson_module.name
+    %td= lesson.name
+    %td= (lesson.is_file? ? t('lessons.list.file_type') : t('lessons.list.link_type'))
+    %td= lesson.lesson_module.allocation_tag_info
+    %td.start= text_field_tag "start_date_#{lesson.id}"
+    %td.end= text_field_tag "end_date_#{lesson.id}"
+    %td= check_box_tag "receive_updates_#{lesson.id}", true, false
+    %td= link_to content_tag(:i, nil, class: 'icon-eye'), "#void", onclick: 'open_lesson(this);', :'data-tooltip' => t('lessons.export.list.preview_tooltip')
+    %td.icon= link_to content_tag(:i, nil, class: 'icon-trash'), "#void", onclick: 'remove_lesson(this);', :'data-tooltip' => t('lessons.export.conclude.delete')
+
+= javascript_include_tag 'tooltip'
+
+:javascript
+  $(function(){
+    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
+    $('[id^="start_date_"]').each(function(){ $(this).datepicker();});
+    $('[id^="end_date_"]').each(function(){ $(this).datepicker();});
+    $('[id^="start_date_"], [id^="end_date_"]').datepicker($.extend({}, options));
+  });
+
+  function remove_lesson(icon){
+    var tr = $(icon).parents('tr');
+    enable_previous_selected_lessons(tr.data('id'));
+    tr.remove();
+    if(!$('tbody.lessons_to_export tr:visible').length)
+      $('tbody.lessons_to_export tr.text_none').show();
+  }
+
+  function enable_previous_selected_lessons(id){
+    var tr = $('.list_lessons_export tr[data-id='+id+']');
+    if(!!tr.length)
+      $(tr).removeClass('disabled').find('input:input').prop('disabled', false).removeClass('disabled');
+  }
+

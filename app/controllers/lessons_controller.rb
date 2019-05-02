@@ -399,12 +399,59 @@ class LessonsController < ApplicationController
     lessonaudio.audio = File.new(path_audio_lesson_last) 
     lessonaudio.audio.save                          
     lessonaudio.save!
-
     render json: { success: true, msg: t('lessons.open.message_audio_success'), path: lessonaudio.audio.url }
-
   rescue => error
     render json: { success: false, alert: lessonaudio.errors.full_messages.join(', ')}, status: :unprocessable_entity
+  end 
+
+  def verify_contains_audio
+    @lesson = Lesson.find(params[:id])
+    if(@lesson.is_file? && @lesson.contains_audio?)
+      render json: { success: true, msg: 'true' }
+    else
+      render json: { success: false, alert: t('lessons.export.error') }, status: :unprocessable_entity
+    end
   end  
+
+  def export_steps
+    @lesson = Lesson.find(params[:id])
+    if(@lesson.is_file? && @lesson.contains_audio?)
+      @lesson_id = @lesson.id
+      @ats   = params[:allocation_tags_ids]
+      @types = CurriculumUnitType.all
+      @lesson_module_id = params[:lesson_module_id]
+      render partial: 'lessons/export/steps'
+    else
+      render json: { success: false, alert: t('lessons.export.error') }, status: :unprocessable_entity
+    end
+  end
+
+  def export_preview
+    @lesson = Lesson.find(params[:id])
+    authorize! :import, Lesson, { on: @lesson.allocation_tags.map(&:id).flatten, any: true }
+    render partial: 'lessons/open/content'
+  end
+
+    def export_list
+    allocation_tags = AllocationTag.get_by_params(params)
+    @selected, @allocation_tags_ids = allocation_tags[:selected], allocation_tags[:allocation_tags]
+    authorize! :import, Lesson, { on: @allocation_tags_ids }
+    @lesson_id = Lesson.find(params[:lesson_id]).id
+    @lmodules = LessonModule.by_ats(@allocation_tags_ids.split(' ').flatten)
+    render partial: 'lessons/export/list'
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
+  rescue => error
+    render_json_error(error, 'lessons.errors')
+  end
+
+  def export_lessonaudio
+    @lesson = Lesson.find(params[:id])
+    @lesson.clone_audio_to_another_lesson(params[:lesson_id])
+    render json: { success: true, msg: t('lessons.export.message_audio_success') }
+  rescue => error
+    render json: { success: false, alert: @lesson.errors.full_messages.join(', ')}, status: :unprocessable_entity
+  end 
 
   private
 

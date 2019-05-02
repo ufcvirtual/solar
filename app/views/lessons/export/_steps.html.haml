@@ -1,0 +1,57 @@
+.export_something.lessons
+  .flash_message_wrapper
+  .block_title
+    %h2
+      %i.icon-book2
+      = t('.title')
+    %span.form_requirement.original_lesson= t('.original_lesson')
+  .block_content
+    
+    #steps
+      %ul
+        %li.active
+          = t('.choose')
+          .dot.active#dot-choose-lessons
+
+    .step-list
+      = render partial: 'lessons/export/filter', locals: { types: @types, lesson_id: @lesson_id }
+      .right_buttons
+        = link_to t('.conclude'), "#void", onclick: 'clone_audio_lesson('+@lesson_id.to_s+')', class: 'btn btn_main conclude', alt: t('.conclude')
+
+    .step-preview
+      .content-preview
+      .right_buttons
+        = link_to t('.back'), "#void", onclick: 'back()', class: 'btn btn_back', alt: t('.back')
+
+   
+
+:javascript
+  $('.step-preview').hide();
+  function back(){
+    $('.step-preview').hide('slide', { direction: 'left' }, 500);
+    $('.step-list').show('slide', { direction: 'left' }, 500);
+    $('#steps li:first').addClass('active');
+    $('#steps li:first .dot').addClass('active');
+    $('#steps li:last').removeClass('active');
+    $('#steps li:last .dot').removeClass('active');
+  }
+
+  function slideBack(){
+    $('.step-preview').hide('slide', { direction: 'left' }, 500);
+    if($('#steps li:last').hasClass('active')){
+      $('.step-list').hide('slide', { direction: 'left' }, 500);
+    }else{
+      $('.step-list').show('slide', { direction: 'left' }, 500);
+    }
+  }
+
+  function open_lesson(icon){
+    $.get("#{export_preview_lessons_path}", { id: $(icon).parents('tr').data('id') }, function(data){
+      $('.step-list').hide('slide', { direction: 'left' }, 500);
+      $('.step-conclude').hide('slide', { direction: 'left' }, 500);
+      $('.step-preview .content-preview').html(data);
+      $('.step-preview').show('slide', { direction: 'left' }, 500);
+    });
+  }
+
+  
