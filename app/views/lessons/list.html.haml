@@ -231,7 +231,7 @@
         $.get(url_get.replace(':id', id), function(data) { 
           
           url = $(obj).data("link-to-export").replace(':id', id);
-          $(obj).call_fancybox({href : url, width: '700pox', height: 'auto', open: true});
+          $(obj).call_fancybox({href : url, open: true, minHeight: '800px', minWidth: '780px'});
           return false;
 
         }).fail(function(data){

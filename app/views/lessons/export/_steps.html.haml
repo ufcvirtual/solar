@@ -19,7 +19,7 @@
         = link_to t('.conclude'), "#void", onclick: 'clone_audio_lesson('+@lesson_id.to_s+')', class: 'btn btn_main conclude', alt: t('.conclude')
 
     .step-preview
-      .content-preview
+      .content-preview-audio
       .right_buttons
         = link_to t('.back'), "#void", onclick: 'back()', class: 'btn btn_back', alt: t('.back')
 
@@ -49,7 +49,7 @@
     $.get("#{export_preview_lessons_path}", { id: $(icon).parents('tr').data('id') }, function(data){
       $('.step-list').hide('slide', { direction: 'left' }, 500);
       $('.step-conclude').hide('slide', { direction: 'left' }, 500);
-      $('.step-preview .content-preview').html(data);
+      $('.step-preview .content-preview-audio').html(data);
       $('.step-preview').show('slide', { direction: 'left' }, 500);
     });
   }
