@@ -224,7 +224,7 @@ class Lesson < ActiveRecord::Base #< Event
   end 
 
   def contains_audio?
-    LessonAudio.where(lesson_id: self.id, status: true) ? true : false
+    LessonAudio.where(lesson_id: self.id, status: true).count > 0 ? true : false
   end 
 
   private

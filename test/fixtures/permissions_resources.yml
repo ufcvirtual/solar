@@ -2545,10 +2545,6 @@ email4:
 
 api1:
   profile_id: 27
-<<<<<<< HEAD
-  resource_id: 233
-  per_id: false
-=======
   resource_id: 232
   per_id: false
 

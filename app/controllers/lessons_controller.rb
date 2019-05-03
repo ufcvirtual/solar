@@ -226,7 +226,6 @@ class LessonsController < ApplicationController
     lesson = Lesson.find(params[:id])
     audios_paths = get_audio(lesson.id)
     unless audios_paths.empty?
-      #zip_file_path = compress_file(under_path: audios_paths, folders_names: names)
       zip_file_path = compress_file({ files: audios_paths, table_column_name: 'audio_file_name', audio: true, name_zip_file: lesson.name})
 
       if zip_file_path
@@ -368,9 +367,9 @@ class LessonsController < ApplicationController
   end
 
   def generate_audio
-    authorize! :generate_audio, Lesson, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
-
     @lesson = Lesson.find(params[:id])
+    authorize! :generate_audio, Lesson, { on: @lesson.allocation_tags.map(&:id).flatten, any: true}
+
     texts = params[:text]
     language = params[:language]
     count_text = 0
@@ -399,43 +398,55 @@ class LessonsController < ApplicationController
     lessonaudio.audio = File.new(path_audio_lesson_last) 
     lessonaudio.audio.save                          
     lessonaudio.save!
-    render json: { success: true, msg: t('lessons.open.message_audio_success'), path: lessonaudio.audio.url }
+    render json: { success: true, msg: t('lessons.export.message_audio_success'), path: lessonaudio.audio.url }
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
     render json: { success: false, alert: lessonaudio.errors.full_messages.join(', ')}, status: :unprocessable_entity
   end 
 
   def verify_contains_audio
     @lesson = Lesson.find(params[:id])
+    authorize! :generate_audio, Lesson, { on: @lesson.allocation_tags.map(&:id).flatten, any: true}
     if(@lesson.is_file? && @lesson.contains_audio?)
       render json: { success: true, msg: 'true' }
     else
       render json: { success: false, alert: t('lessons.export.error') }, status: :unprocessable_entity
     end
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   end  
 
   def export_steps
+    @ats   = params[:allocation_tags_ids]
+    authorize! :generate_audio, Lesson, on: params[:allocation_tags_ids]
     @lesson = Lesson.find(params[:id])
     if(@lesson.is_file? && @lesson.contains_audio?)
       @lesson_id = @lesson.id
-      @ats   = params[:allocation_tags_ids]
       @types = CurriculumUnitType.all
       @lesson_module_id = params[:lesson_module_id]
       render partial: 'lessons/export/steps'
     else
       render json: { success: false, alert: t('lessons.export.error') }, status: :unprocessable_entity
     end
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   end
 
   def export_preview
     @lesson = Lesson.find(params[:id])
+    authorize! :generate_audio, Lesson, { on: @lesson.allocation_tags.map(&:id).flatten, any: true}
     authorize! :import, Lesson, { on: @lesson.allocation_tags.map(&:id).flatten, any: true }
     render partial: 'lessons/open/content'
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   end
 
-    def export_list
+  def export_list
     allocation_tags = AllocationTag.get_by_params(params)
     @selected, @allocation_tags_ids = allocation_tags[:selected], allocation_tags[:allocation_tags]
-    authorize! :import, Lesson, { on: @allocation_tags_ids }
+    authorize! :generate_audio, Lesson, { on: @allocation_tags_ids, any: true }
+
     @lesson_id = Lesson.find(params[:lesson_id]).id
     @lmodules = LessonModule.by_ats(@allocation_tags_ids.split(' ').flatten)
     render partial: 'lessons/export/list'
@@ -447,8 +458,13 @@ class LessonsController < ApplicationController
 
   def export_lessonaudio
     @lesson = Lesson.find(params[:id])
+    @lesson_import = Lesson.find(params[:lesson_id])
+    authorize! :generate_audio, Lesson, { on: @lesson.allocation_tags.map(&:id).flatten, any: true}
+    authorize! :generate_audio, Lesson, { on: @lesson_import.allocation_tags.map(&:id).flatten, any: true}
     @lesson.clone_audio_to_another_lesson(params[:lesson_id])
     render json: { success: true, msg: t('lessons.export.message_audio_success') }
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue => error
     render json: { success: false, alert: @lesson.errors.full_messages.join(', ')}, status: :unprocessable_entity
   end 
