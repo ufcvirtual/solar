@@ -1,4 +1,5 @@
 class Comment < ActiveRecord::Base
+  include APILog
 
   #default_scope order: 'updated_at DESC'
 
@@ -13,7 +14,7 @@ class Comment < ActiveRecord::Base
 
   has_one :academic_allocation, through: :academic_allocation_user
   has_one :allocation_tag, through: :academic_allocation
-  
+
   has_one :assignment, through: :academic_allocation_user
 
   has_many :files, class_name: 'CommentFile', dependent: :delete_all

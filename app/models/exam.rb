@@ -2,6 +2,7 @@ class Exam < Event
   include AcademicTool
   include EvaluativeTool
   include Controlled
+  include APILog
 
   GREATER, AVERAGE, LAST = 0, 1, 2
   OFFER_PERMISSION, GROUP_PERMISSION = true, true

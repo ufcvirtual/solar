@@ -2,6 +2,7 @@ class Discussion < Event
   include AcademicTool
   include EvaluativeTool
   include FilesHelper
+  include APILog
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 

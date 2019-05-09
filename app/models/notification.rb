@@ -1,6 +1,7 @@
 class Notification < ActiveRecord::Base
   include AcademicTool
   include FilesHelper
+  include APILog
 
   GROUP_PERMISSION = OFFER_PERMISSION = CURRICULUM_UNIT_PERMISSION = COURSE_PERMISSION = CURRICULUM_UNIT_TYPE_PERMISSION = true
 

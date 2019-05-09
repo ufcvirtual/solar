@@ -1,6 +1,7 @@
 class ScheduleEvent < Event
   include AcademicTool
   include EvaluativeTool
+  include APILog
 
   COURSE_PERMISSION = CURRICULUM_UNIT_PERMISSION = GROUP_PERMISSION = OFFER_PERMISSION = true
 
@@ -19,8 +20,6 @@ class ScheduleEvent < Event
   validate :verify_content, if:  Proc.new{|event| [Presential_Test].include?(event.type_event) && content_exam_changed?}, on: :update
 
   after_update :notify_content, if: 'content_exam_changed?'
-
-  attr_accessor :api
 
   def verify_hours
     errors.add(:end_hour, I18n.t(:range_hour_error, scope: [:schedule_events, :error])) if end_hour.rjust(5, '0') < start_hour.rjust(5, '0')

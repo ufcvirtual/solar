@@ -1,4 +1,5 @@
 class LessonNote < ActiveRecord::Base
+  include APILog
 
   belongs_to :lesson
   belongs_to :user

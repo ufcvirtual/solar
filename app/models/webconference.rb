@@ -5,6 +5,7 @@ class Webconference < ActiveRecord::Base
   include Bbb
   include AcademicTool
   include EvaluativeTool
+  include APILog
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 
@@ -28,7 +29,7 @@ class Webconference < ActiveRecord::Base
 
   before_destroy :can_change?
 
-  attr_accessor :api, :date_changed
+  attr_accessor :date_changed
 
   def link_to_join(user, at_id = nil, url = false)
     ((on_going? && bbb_online? && have_permission?(user, at_id.to_i)) ? (url ? bbb_join(user, at_id) : ActionController::Base.helpers.link_to((title rescue name), bbb_join(user, at_id), target: '_blank')) : (title rescue name))

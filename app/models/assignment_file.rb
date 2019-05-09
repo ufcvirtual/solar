@@ -4,6 +4,7 @@ class AssignmentFile < ActiveRecord::Base
 
   include ControlledDependency
   include SentActivity
+  include APILog
 
   belongs_to :user
   belongs_to :academic_allocation_user

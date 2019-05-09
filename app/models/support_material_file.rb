@@ -1,6 +1,7 @@
 class SupportMaterialFile < ActiveRecord::Base
   include AcademicTool
   include FilesHelper
+  include APILog
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 
@@ -74,6 +75,6 @@ class SupportMaterialFile < ActiveRecord::Base
   end
 
   def self.verify_file_type(name)
-    (name.last(4).eql?('.aac') || name.last(4).eql?('.m4a') || name.last(4).eql?('.mp4') || name.last(4).eql?('.m4v') || name.last(5).eql?('.webm')) 
+    (name.last(4).eql?('.aac') || name.last(4).eql?('.m4a') || name.last(4).eql?('.mp4') || name.last(4).eql?('.m4v') || name.last(5).eql?('.webm'))
   end
 end

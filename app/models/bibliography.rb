@@ -1,6 +1,7 @@
 class Bibliography < ActiveRecord::Base
   include AcademicTool
   include FilesHelper
+  include APILog
 
   GROUP_PERMISSION = OFFER_PERMISSION = CURRICULUM_UNIT_PERMISSION = true
 

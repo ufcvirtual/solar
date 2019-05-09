@@ -3,6 +3,7 @@ class ScheduleEventFile < ActiveRecord::Base
   include AcademicTool
   include FilesHelper
   include SentActivity
+  include APILog
 
   FILESIZE = 6.megabyte
 
@@ -43,7 +44,7 @@ class ScheduleEventFile < ActiveRecord::Base
     # else
     #   "#{self.academic_allocation_user.user.name.split(' ').join('_')}-#{self.attachment_file_name}".gsub( /[^a-zA-Z0-9_\.\-]/, '')
     # end
-    
+
     if self.id.nil?
       "#{self.academic_allocation_user.user.name.split(' ').join('_')}-#{self.attachment_file_name}".gsub( /[^a-zA-Z0-9_\.\-]/, '')
     else

@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
-
   include PersonCpf
+  include APILog
 
   def ability
     @ability ||= Ability.new(self)

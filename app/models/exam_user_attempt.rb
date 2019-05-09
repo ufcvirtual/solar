@@ -1,5 +1,5 @@
 class ExamUserAttempt < ActiveRecord::Base
-
+  include APILog
   include ControlledDependency
 
   belongs_to :academic_allocation_user

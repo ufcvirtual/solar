@@ -39,10 +39,13 @@ module V1
             @message = Message.new(params[:message])
             @message.sender = current_user
             @message.allocation_tag_id = @group.allocation_tag.id
+            @message.api = true
 
-            [params[:files]].flatten.each do |file|
-              @message.files.new({ attachment: ActionDispatch::Http::UploadedFile.new(file) })
-            end # each
+            unless params[:files].blank?
+              [params[:files]].flatten.each do |file|
+                @message.files.new({ attachment: ActionDispatch::Http::UploadedFile.new(file) })
+              end # each
+            end
 
             emails = []
             unless params[:message][:contacts].nil?

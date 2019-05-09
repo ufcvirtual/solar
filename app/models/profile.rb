@@ -1,4 +1,5 @@
 class Profile < ActiveRecord::Base
+  include APILog
 
   has_many :users, through: :allocations
   has_many :allocations, dependent: :restrict_with_error

@@ -1,5 +1,6 @@
 class ApplicationAPI < Grape::API
   include APIGuard
+  include APILogInfo
 
   format :json
   formatter :json, Grape::Formatter::Rabl

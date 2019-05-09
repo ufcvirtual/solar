@@ -1,5 +1,6 @@
 class Post < ActiveRecord::Base
   include SentActivity
+  include APILog
 
   self.table_name = 'discussion_posts'
 
@@ -171,7 +172,7 @@ class Post < ActiveRecord::Base
       Job.send_mass_email_post([parent.user.email], subject, id, at.info, discussion.name)
     end
   end
-  
+
   def self.count_post_unread_by_user(user_id, discussion_id, allocation_tags)
     last_access_date_user = LogNavigationSub.after_post_discussion_user(user_id, discussion_id).first
     where = last_access_date_user.nil? ? "" : "discussion_posts.created_at > '#{last_access_date_user.created_at}'"
