@@ -1,6 +1,7 @@
 class Offer < ActiveRecord::Base
   include Taggable
   include OfferSemester
+  include APILog
 
   belongs_to :course
   belongs_to :curriculum_unit

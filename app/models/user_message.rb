@@ -1,4 +1,5 @@
 class UserMessage < ActiveRecord::Base
+  include APILog
 
   belongs_to :user
   belongs_to :message

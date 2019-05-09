@@ -1,4 +1,5 @@
 class Allocation < ActiveRecord::Base
+  include APILog
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
   Pending, FinalExamPending, Approved, FinalExamApproved, Failed, FailedFrequency, Undefined = 0, 1, 2, 3, 4, 5, 6

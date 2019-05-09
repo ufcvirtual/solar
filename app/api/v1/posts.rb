@@ -151,6 +151,7 @@ module V1
         @post.profile_id = @profile_id
         @post.academic_allocation_id = academic_allocation.id
         @post.academic_allocation_user_id = acu.try(:id)
+        @post.api = true
         User.current = current_user
 
         if @post.save
@@ -181,6 +182,7 @@ module V1
           raise CanCan::AccessDenied unless post.discussion.user_can_interact?(current_user.id)
 
           post_params[:content] = CGI::escapeHTML(post_params[:content]) unless post_params[:content].blank?
+          post.api = true
 
           if post.update_attributes post_params
             { id: post.id }
@@ -208,6 +210,7 @@ module V1
         ids = []
         [params[:file]].flatten.each do |file|
           post_attachment = PostFile.new({ discussion_post_id: post.id, attachment: ActionDispatch::Http::UploadedFile.new(file) })
+          post_attachment.api = true
           # post_attachment = post.files.build(attachment: ActionDispatch::Http::UploadedFile.new(file))
           ids << post_attachment.id if post_attachment.save
         end # each
@@ -233,7 +236,9 @@ module V1
       delete ':id' do
         User.current = current_user
         raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
-        current_user.discussion_posts.find(params[:id]).destroy # user posts
+        user_posts = current_user.discussion_posts.find(params[:id])
+        user_posts.api = true
+        user_posts.destroy # user posts
       end
 
       desc 'Delete a file of a post.'
@@ -243,6 +248,7 @@ module V1
         User.current = current_user
         raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
         raise ActiveRecord::RecordNotFound unless current_user.discussion_post_ids.include?(pfile.discussion_post_id) # user files
+        pfile.api = true
         pfile.destroy
       end
 

@@ -376,7 +376,7 @@ class ExamsController < ApplicationController
       raise 'not_corrected' if @acu.blank? || @acu.grade.blank?
       raise 'no_attempt' if @last_attempt.blank?
       raise 'result_release_date' unless @exam.allow_calculate_grade?
-      exam.recalculate_grades(@user, @allocation_tag_id, true) if @acu.exam_user_attempts.where(grade: nil).any?
+      @exam.recalculate_grades(@user, @allocation_tag_id, true) if @acu.exam_user_attempts.where(grade: nil).any?
     elsif  @user != current_user.id
       raise CanCan::AccessDenied
     end

@@ -3,7 +3,7 @@ module V1
 
     before { verify_ip_access_and_guard! }
 
-    namespace :courses do 
+    namespace :courses do
       desc "Todos os cursos por tipo e semestre"
       params do
         requires :semester, type: String
@@ -14,12 +14,16 @@ module V1
       end
     end # courses
 
-    namespace :course do 
+    namespace :course do
       desc "Criação de curso"
       params { requires :name, :code, type: String }
       post "/" do
         begin
-          course = Course.create! course_params(params)
+          # course = Course.create! course_params(params)
+          course = Course.new course_params(params)
+          course.api = true
+          course.save!
+
           {id: course.id}
         end
       end
@@ -32,7 +36,11 @@ module V1
       end
       put ":id" do
         begin
-          Course.find(params[:id]).update_attributes! course_params(params)
+          # Course.find(params[:id]).update_attributes! course_params(params)
+          course = Course.find(params[:id])
+          course.api = true
+          course.update_attributes! course_params(params)
+
           {ok: :ok}
         end
       end

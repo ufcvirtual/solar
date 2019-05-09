@@ -19,6 +19,7 @@ module V1
 
               destination = get_destination(allocation[:codDisciplina], allocation[:codGraduacao], (allocation[:nomeTurma] || allocation[:codTurma]), (allocation[:periodo].blank? ? allocation[:ano] : "#{allocation[:ano]}.#{allocation[:periodo]}"))
 
+              destination.api = true if destination.respond_to?(:api)
               destination.allocate_user(user.id, profile_id)
 
               {ok: :ok}
@@ -35,6 +36,7 @@ module V1
             begin
               destination = get_destination(group_info[:codDisciplina], group_info[:codGraduacao], (group_info[:nome] || group_info[:codigo]), (group_info[:periodo].blank? ? group_info[:ano] : "#{group_info[:ano]}.#{group_info[:periodo]}"))
 
+              destination.api = true if destination.respond_to?(:api)
               destination.cancel_allocations(user.id, profile_id, nil, {}, true) if destination
               {ok: :ok}
             end
@@ -51,6 +53,7 @@ module V1
 
             begin
               User.where(cpf: cpf_editores).each do |user|
+                uc.api = true
                 uc.allocate_user(user.id, 5)
               end
 
@@ -109,6 +112,7 @@ module V1
 
               unless load_group[:main_name].blank?
                 main_group = get_group_by_names(load_group[:main_curriculum_unit], load_group[:main_course], load_group[:main_name], load_group[:main_semester], true)
+                group.api = true
                 group.update_attributes main_group_id: (main_group.blank? ? nil : main_group.id), status: (main_group.blank? ? group.try(:status) : false)
               end
 
@@ -191,6 +195,7 @@ module V1
           post "/" do
             begin
               user = User.new cpf: params[:cpf]
+              user.api = true
               ma_response = user.connect_and_validates_user
               raise ActiveRecord::RecordNotFound if ma_response.nil? # nao existe no MA
               { ok: :ok }
@@ -272,6 +277,7 @@ module V1
                   event.api = true
                   raise event.errors.full_messages unless event.destroy
                 else
+                  acs.each { |ac| ac.api = true  }
                   acs.destroy_all
                 end
               end

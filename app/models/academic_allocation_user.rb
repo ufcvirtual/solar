@@ -1,4 +1,5 @@
 class AcademicAllocationUser < ActiveRecord::Base
+  include APILog
 
   belongs_to :academic_allocation
   belongs_to :user
@@ -116,20 +117,20 @@ class AcademicAllocationUser < ActiveRecord::Base
     (user_id.blank? ? group_assignment.group_participants.map(&:user_id) : [user_id])
   end
 
-  def verify_user_allocation_cancel(user_id, allocation_tag_id, last_merge)
-    alloc = Allocation.where(allocation_tag_id: allocation_tag_id, user_id: user_id, status: Allocation_Merged).last
-    alloc_not = Allocation.where(allocation_tag_id: allocation_tag_id, user_id: user_id).last
-    !last_merge.nil? && (!alloc.nil? || alloc_not.nil?) ? true : false
-  end
+  # def verify_user_allocation_cancel(user_id, allocation_tag_id, last_merge)
+  #   alloc = Allocation.where(allocation_tag_id: allocation_tag_id, user_id: user_id, status: Allocation_Merged).last
+  #   alloc_not = Allocation.where(allocation_tag_id: allocation_tag_id, user_id: user_id).last
+  #   !last_merge.nil? && (!alloc.nil? || alloc_not.nil?) ? true : false
+  # end
 
   # call after every acu grade change
-  def recalculate_final_grade(allocation_tag_id, last_merge=nil)
+  def recalculate_final_grade(allocation_tag_id)
     get_user.compact.each do |user|
 
-      unless verify_user_allocation_cancel(user, allocation_tag_id, last_merge)
-        allocations = Allocation.includes(:profile).references(:profile).where(user_id: user, status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).lower_related).where('cast(profiles.types & ? as boolean)', Profile_Type_Student)
-        allocation = allocations.where('final_grade IS NOT NULL OR working_hours IS NOT NULL').first || allocations.first
-
+      #unless verify_user_allocation_cancel(user, allocation_tag_id, last_merge)
+      allocations = Allocation.includes(:profile).references(:profile).where(user_id: user, status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).lower_related).where('cast(profiles.types & ? as boolean)', Profile_Type_Student)
+      allocation = allocations.where('final_grade IS NOT NULL OR working_hours IS NOT NULL').first || allocations.first
+      unless allocation.nil?
         allocation.calculate_working_hours
 
         allocation.calculate_parcial_grade unless academic_allocation.final_exam
@@ -141,7 +142,7 @@ class AcademicAllocationUser < ActiveRecord::Base
   def self.create_or_update(tool_type, tool_id, allocation_tag_id, user={user_id: nil, group_assignment_id: nil}, evaluation={grade: nil, working_hours: nil})
     ac = AcademicAllocation.where(academic_tool_id: tool_id, academic_tool_type: tool_type, allocation_tag_id: AllocationTag.find(allocation_tag_id).upper_related).first
     allocation_tag = AllocationTag.find(ac.allocation_tag_id)
-    last_merge = Merge.where("(main_group_id = ? OR secundary_group_id = ?) AND type_merge=TRUE", allocation_tag.group_id, allocation_tag.group_id).last
+    #last_merge = Merge.where("(main_group_id = ? OR secundary_group_id = ?) AND type_merge=TRUE", allocation_tag.group_id, allocation_tag.group_id).last
     if user[:group_assignment_id].blank?
       user_id = user[:user_id]
     else
@@ -166,7 +167,7 @@ class AcademicAllocationUser < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         if acu.save
           tool_type.constantize.update_previous(ac.id, user_id, acu.id) if acu.try(:created_at) == acu.try(:updated_at) && !user_id.nil?
-          acu.recalculate_final_grade(ac.allocation_tag_id, last_merge)
+          acu.recalculate_final_grade(ac.allocation_tag_id)
           return {id: acu.id, errors: []}
         else
           return {id: acu.try(:id), errors: acu.errors.full_messages}

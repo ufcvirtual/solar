@@ -40,15 +40,18 @@ module V1::EventsH
       if event_info[:type] != 5
         schedule = Schedule.create! start_date: params[:event][:date], end_date: params[:event][:date]
         event.schedule_id = schedule.id
+        event.api = true
         event.save!
       else
         event.moderator = current_user unless current_user.nil?
+        event.api = true
         event.save!
       end
     elsif event.new_record? && !update_event.blank? && !existing_ac.blank?
       event = update_event
+      event.api = true
 
-      if event_info[:type] != 5
+      if event.try(:type_event) && event_info[:type] != 5
         event.schedule.update_attributes! start_date: params[:event][:date], end_date: params[:event][:date]
         event.update_attributes! start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":")
       else
@@ -63,6 +66,7 @@ module V1::EventsH
         ac = event.academic_allocations.where(allocation_tag_id: group.allocation_tag.id).first_or_initialize
         if ac.new_record?
           ac.merge = true
+          ac.api = true
           ac.save!
           acs << ac
         end

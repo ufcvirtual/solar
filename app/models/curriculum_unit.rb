@@ -1,5 +1,6 @@
 class CurriculumUnit < ActiveRecord::Base
   include Taggable
+  include APILog
 
   belongs_to :curriculum_unit_type
 

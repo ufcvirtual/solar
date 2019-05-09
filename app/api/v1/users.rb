@@ -60,6 +60,7 @@ module V1
             user_data = nil
             if (!User::MODULO_ACADEMICO.nil? && User::MODULO_ACADEMICO['integrated'])
               user_data = User.connect_and_import_user(cpf) # try to import
+              user.api = true
               user.synchronize(user_data) # synchronize user with new MA data
             end
 
@@ -90,6 +91,7 @@ module V1
                   user.username = user.email.split('@')[0][0..19] unless user.valid?
                 end
 
+                user.api = true
                 user.save!
 
                 Thread.new do
@@ -136,6 +138,7 @@ module V1
             cpf = cpf.rjust(11, '0')
             user_blacklist = UserBlacklist.where(cpf: cpf).first_or_initialize
             user_blacklist.name = params[:name] unless params[:name].blank?
+            user_blacklist.api = true
             user_blacklist.save!
             {ok: :ok}
           end
@@ -196,6 +199,7 @@ module V1
 
         namespace :user do
           put :photo do
+            current_user.api = true
             current_user.update_attributes!(photo: ActionDispatch::Http::UploadedFile.new(params[:file]))
 
             {ok: :ok}
@@ -203,6 +207,7 @@ module V1
 
           delete :photo do
             current_user.photo = nil
+            current_user.api = true
             current_user.save!
 
             {ok: :ok}

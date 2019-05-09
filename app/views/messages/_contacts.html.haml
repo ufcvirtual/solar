@@ -45,6 +45,7 @@
 :javascript
 
   function add_contact(link, append, html, u_name, u_email, u_perfil, u_type){
+    u_name = u_name.replace("'", "");
     var msg_arial_label = "#{t('messages.users.user_remove_alt', name: 'u_name', email: 'u_email')}".replace(/u_name/g, u_name).replace('u_email', u_email);
 
     var user = "<li class='contact li_contacts'><a aria-label='"+msg_arial_label+"' data-at='"+$(link).data('at')+"' data-user-id='"+$(link).data("user-id")+"' data-user-type='"+$(link).data("user-types")+"' href='#' onclick='remove_contact(this, \""+u_name+"\", \""+u_email+"\", \""+u_perfil+"\", \""+u_type+"\"); return false;'>"+$(link).html()+"</a></li>";

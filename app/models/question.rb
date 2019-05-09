@@ -1,5 +1,5 @@
 class Question < ActiveRecord::Base
-
+  include APILog
   include FilesHelper
 
   UNIQUE, MULTIPLE, TRUE_FALSE = 0, 1, 2
@@ -218,7 +218,7 @@ class Question < ActiveRecord::Base
 
   def can_change_status?
     raise 'permission' unless owner?
-    raise 'in_use'     if exams.any? && status # if in use and already published
+    raise 'in_use'     if exams.any? && status && !owner?# if in use and already published
     validate_items
   end
 

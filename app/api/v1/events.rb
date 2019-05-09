@@ -127,6 +127,7 @@ module V1
           academic_allocation_user = AcademicAllocationUser.where(academic_allocation_id: academic_allocation[0].id).where(user_id: params[:student_id].to_i)
 
           sef = ScheduleEventFile.new({user_id: current_user.id, academic_allocation_user_id: academic_allocation_user[0].id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
+          sef.api = true
           sef.save!
 
           {ok: :ok}

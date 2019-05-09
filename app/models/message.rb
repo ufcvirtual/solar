@@ -1,4 +1,5 @@
 class Message < ActiveRecord::Base
+  include APILog
 
   belongs_to :allocation_tag
   has_one :group, through: :allocation_tag

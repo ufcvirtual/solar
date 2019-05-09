@@ -28,37 +28,38 @@ module V1
         end
         post '/' do
           ActiveRecord::Base.transaction do
-            begin
-              raise 'group mandatory' if params[:group_id].blank?
-              @group = Group.find(params[:group_id])
+            raise 'group mandatory' if params[:group_id].blank?
+            @group = Group.find(params[:group_id])
 
-              raise CanCan::AccessDenied if current_user.profiles_with_access_on(:index, :messages, @group.allocation_tag.related, true).blank? # unauthorized
-              raise 'content mandatory' if params[:message][:content].blank?
-              raise 'subject mandatory' if params[:message][:subject].blank?
-              raise 'contacts mandatory' if params[:message][:contacts].blank?
+            raise CanCan::AccessDenied if current_user.profiles_with_access_on(:index, :messages, @group.allocation_tag.related, true).blank? # unauthorized
+            raise 'content mandatory' if params[:message][:content].blank?
+            raise 'subject mandatory' if params[:message][:subject].blank?
+            raise 'contacts mandatory' if params[:message][:contacts].blank?
 
-              @message = Message.new(params[:message])
-              @message.sender = current_user
-              @message.allocation_tag_id = @group.allocation_tag.id
+            @message = Message.new(params[:message])
+            @message.sender = current_user
+            @message.allocation_tag_id = @group.allocation_tag.id
+            @message.api = true
 
+            unless params[:files].blank?
               [params[:files]].flatten.each do |file|
                 @message.files.new({ attachment: ActionDispatch::Http::UploadedFile.new(file) })
               end # each
+            end
 
-              emails = []
-              unless params[:message][:contacts].nil?
-                emails = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
-                              .where("(nmail.message IS NULL OR nmail.message=TRUE)")
-                              .where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
-              end
+            emails = []
+            unless params[:message][:contacts].nil?
+              emails = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
+                            .where("(nmail.message IS NULL OR nmail.message=TRUE)")
+                            .where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
+            end
 
-              if @message.save
-                Job.send_mass_email(emails, @message.subject, new_msg_template(@group.allocation_tag, @message), @message.files.to_a, current_user.email)
-                { id: @message.id }
-              end
+            if @message.save
+              Job.send_mass_email(emails, @message.subject, new_msg_template(@group.allocation_tag, @message), @message.files.to_a, current_user.email)
 
-            rescue RuntimeError => erro
-              {erro: erro.message}
+              { id: @message.id }
+            else
+              raise @message.errors.full_messages
             end
           end # transaction
 
@@ -161,7 +162,7 @@ module V1
         get '/:group_id/contacts', rabl: 'messages/contacts' do
           @contacts = User.all_at_allocation_tags(@allocation_tag_related, Allocation_Activated, true)
         end
-        
+
         desc 'Responder/Encaminhar mensagem'
         params do
           requires :id, type: Integer
@@ -205,13 +206,13 @@ module V1
                 message.subject = "#{I18n.t(:reply, scope: [:messages, :subject])} #{original.subject}"
               when :forward
                 raise 'contacts mandatory' if params[:message][:contacts].blank?
-                
+
                 users = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
                             .where("(nmail.message IS NULL OR nmail.message=TRUE)")
                             .where(id: params[:message][:contacts].split(','))
-                
+
                 message.contacts = users
-                reply_to = users.pluck(:email).flatten.compact.uniq                
+                reply_to = users.pluck(:email).flatten.compact.uniq
                 message.subject = "#{I18n.t(:forward, scope: [:messages, :subject])} #{original.subject}"
             end
 
