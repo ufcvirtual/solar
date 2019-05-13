@@ -79,14 +79,14 @@ module ApplicationHelper
     # Se o group_select estiver vazio, ou seja, nenhum grupo foi selecionado pelo usuário,
     # o grupo a ter seus fóruns exibidos será o primeiro grupo encontrado para o usuário em questão
     selected_group_id = groups.first.id if selected_group_id.blank?
-
-    active_tab[:breadcrumb].first[:url][:selected_group] = Group.find(selected_group_id).get_code_name
+    group = Group.find(selected_group_id)
+    active_tab[:breadcrumb].first[:url][:selected_group] = group.id
     active_tab[:breadcrumb].first[:url][:allocation_tag_id] = active_tab[:url][:allocation_tag_id]
 
     result = ''
     if (groups.length > 1 && @can_select_group)
        result = "#{t(:group)}: "
-       result << "<a class='btn btn_dropdown' href='#' data-dropdown= '#group-options-dropdown'> #{active_tab[:breadcrumb].first[:url][:selected_group]}"
+       result << "<a class='btn btn_dropdown' href='#' data-dropdown= '#group-options-dropdown'> #{group.get_code_name}"
        result << "<i class='icon-arrow-down-triangle' aria-hidden='true'></i> </a>"
        result << "<div class='dropdown dropdown-tip right' id='group-options-dropdown'>"
        result <<  "<ul class='dropdown-menu'>"
