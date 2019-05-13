@@ -1,5 +1,6 @@
 require 'fileutils'
 class Lesson < ActiveRecord::Base #< Event
+  include APILog
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 

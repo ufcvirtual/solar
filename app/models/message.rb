@@ -1,4 +1,5 @@
 class Message < ActiveRecord::Base
+  include APILog
 
   belongs_to :allocation_tag
   has_one :group, through: :allocation_tag
@@ -11,6 +12,8 @@ class Message < ActiveRecord::Base
 
   before_save proc { |record| record.subject = I18n.t(:no_subject, scope: :messages) if record.subject == '' }
   before_save :set_sender_and_recipients, if: 'sender'
+  
+  validate :recipients_in_same_group?#, on: :create
 
   scope :by_user, ->(user_id) { joins(:user_messages).where(user_messages: { user_id: user_id }) }
 
@@ -169,6 +172,25 @@ class Message < ActiveRecord::Base
     user_messages.where(user_id: user_id).count > 0
   end
 
+  def recipients_in_same_group?
+    us = []
+    message_contacts = User.where(id: self.contacts)
+    
+    message_contacts.each do |u|
+      allocation = u.allocations.find{|all| all.allocation_tag_id == self.allocation_tag_id}
+
+      u.allocation_tags.each do |at|
+        if !allocation.nil? && allocation.status == Allocation_Activated && at.id == self.allocation_tag_id
+          us << u          
+        end
+      end
+
+      raise 'Contact not allowed' if us.blank?
+      us = []
+    end
+
+  end
+  
   private
 
     def set_sender_and_recipients
@@ -182,5 +204,6 @@ class Message < ActiveRecord::Base
 
       self.user_messages.build users
     end
+
 
 end

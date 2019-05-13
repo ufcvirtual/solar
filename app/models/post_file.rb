@@ -1,4 +1,5 @@
 class PostFile < ActiveRecord::Base
+  include APILog
 
   FILESIZE = 10.megabyte
 

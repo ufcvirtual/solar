@@ -1,5 +1,6 @@
 class Group < ActiveRecord::Base
   include Taggable
+  include APILog
 
   #default_scope order: 'groups.status, groups.code'
 
@@ -41,8 +42,6 @@ class Group < ActiveRecord::Base
   def order
    'groups.status, groups.code'
   end
-
-  attr_accessor :api
 
   def is_merged?
     Group.where(main_group_id: id).any?
@@ -185,11 +184,11 @@ class Group < ActiveRecord::Base
           academic_tool = academic_allocation.academic_tool
 
           if academic_allocation.academic_tool_type == 'LessonModule'
-           
+
             lessons = Lesson.where(lesson_module_id: academic_tool.id)
 
             lessons.flatten.each do |lesson|
-              
+
               if lesson.schedule.start_date <= Date.current && lesson.schedule.start_date >= offer.semester.offer_schedule.start_date
                 groups_to_manage << group unless groups_to_manage.include? group
                 break
@@ -200,7 +199,7 @@ class Group < ActiveRecord::Base
           end
 
         end
-      
+
       end
 
     end
@@ -216,13 +215,13 @@ class Group < ActiveRecord::Base
   def self.verify_management(allocation_tag_id)
 
     academic_allocations = AcademicAllocation.where(allocation_tag_id: allocation_tag_id.to_i)
-    
+
     at = AllocationTag.find(allocation_tag_id.to_i)
 
     total_hours_of_curriculum_unit = at.group.nil? ? at.offer.curriculum_unit.working_hours : at.group.offer.curriculum_unit.working_hours
     quantity_activities = 0
     quantity_used_hours = 0
-    
+
     acad_alloc_not_event = []
     acad_alloc_event = []
 
@@ -232,7 +231,7 @@ class Group < ActiveRecord::Base
       academic_tool = academic_allocation.academic_tool
 
       if academic_allocation.academic_tool_type == 'ScheduleEvent' #&& academic_tool.integrated == true
-        
+
         if academic_tool.type_event == Presential_Test # eventos tipo 1 ou 2 chamada
           academic_allocation.evaluative = true
           academic_allocation.final_weight = 60
@@ -246,18 +245,18 @@ class Group < ActiveRecord::Base
           end
 
           if academic_tool.title == "Prova Presencial: AP - 2ª chamada" || academic_tool.title == "Prova Presencial: AF - 2ª chamada" # se 2 chamada, então deve ser equivalente a 1 chamada
-                                  
+
             equivalent = ScheduleEvent.joins(:academic_allocations).where(title: academic_tool.title.sub("2", "1"), academic_allocations: {equivalent_academic_allocation_id: nil, allocation_tag_id: allocation_tag_id.to_i})
-            
+
             unless equivalent.blank?
               academic_allocation.equivalent_academic_allocation_id = equivalent[0].academic_allocations[0].id
               academic_allocation.max_working_hours = BigDecimal.new(0)
             end
-            
+
           end
-          
+
         end
-        
+
         unless [Presential_Test, Recess, Holiday, Other].include?(academic_tool.type_event) # demais eventos exceto: recesso, feriado e outros
           academic_allocation.frequency = true
           academic_allocation.max_working_hours = BigDecimal.new(2)
@@ -266,16 +265,16 @@ class Group < ActiveRecord::Base
         acad_alloc_event << academic_allocation
 
       else # atividades que não são eventos
-        
+
         unless academic_allocation.academic_tool_type == 'SupportMaterialFile' || academic_allocation.academic_tool_type == 'Bibliography' || academic_allocation.academic_tool_type == 'Notification' ||
                 (academic_allocation.academic_tool_type == 'LessonModule' && academic_allocation.final_weight == 100 && academic_allocation.max_working_hours.to_i == 1) ||# LessonModule criado por padrão
                 (academic_allocation.academic_tool_type == 'Exam' && academic_allocation.academic_tool.status == false)
-          
+
           academic_allocation.evaluative = true
           academic_allocation.final_weight = 40
           academic_allocation.frequency = true
           quantity_activities += 1
-  
+
           acad_alloc_not_event << academic_allocation
         end
 
@@ -292,7 +291,7 @@ class Group < ActiveRecord::Base
     remaining_hours = total_hours_of_curriculum_unit - quantity_used_hours
     resto = remaining_hours % quantity_activities rescue 0
     hours_per_activity = remaining_hours / quantity_activities rescue 0
-          
+
     acad_alloc_not_event.each{ |ac_all| ac_all.max_working_hours = BigDecimal.new(hours_per_activity)}
 
     if resto != 0
@@ -306,12 +305,12 @@ class Group < ActiveRecord::Base
         acad_alloc_to_save.each do |acad_alloc|
           acad_alloc.save!
         end
-        
+
         at.managed = true
         at.save!
       end
 
-    end   
+    end
 
   end
 

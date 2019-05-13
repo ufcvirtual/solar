@@ -1,4 +1,5 @@
 class AssignmentEnunciationFile < ActiveRecord::Base
+  include APILog
 
   #default_scope order: 'attachment_updated_at DESC'
 

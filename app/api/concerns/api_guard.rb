@@ -66,6 +66,7 @@ module APIGuard
 
         when Oauth2::AccessTokenValidationService::VALID
           @current_user = User.find(access_token.resource_owner_id) rescue nil
+          APILog.current_user = @current_user
         end
       end
     end

@@ -3,6 +3,7 @@ module V1::CurriculumUnitsAndCourses
   def verify_or_create_curriculum_unit(attributes)
     uc = CurriculumUnit.where(code: attributes[:code]).first_or_initialize
     uc.attributes = curriculum_unit_params(ActiveSupport::HashWithIndifferentAccess.new(uc.attributes.merge!(attributes)), true).except('id')
+    uc.api = true
     uc.save!
     uc
   end

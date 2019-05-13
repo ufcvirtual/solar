@@ -1,4 +1,5 @@
 class Allocation < ActiveRecord::Base
+  include APILog
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
   Pending, FinalExamPending, Approved, FinalExamApproved, Failed, FailedFrequency, Undefined = 0, 1, 2, 3, 4, 5, 6
@@ -72,7 +73,8 @@ class Allocation < ActiveRecord::Base
   def request_reactivate!
     al_offer = offer || group.offer
     raise 'off_period' unless Date.today.between?(al_offer.enrollment_period[0], al_offer.enrollment_period[1])
-    self.status = Allocation_Pending_Reactivate
+    # self.status = Allocation_Pending_Reactivate
+    self.status = Allocation_Pending
     self.save!
   end
 

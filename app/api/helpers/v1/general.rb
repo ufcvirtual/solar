@@ -36,6 +36,7 @@ module V1::General
     return user if user.selfregistration && !import
 
     if user.can_synchronize?  && (!ignore_synchronize || user.new_record?)
+      user.api = true
       import = user.synchronize
       return user if(import.blank? && !user.new_record?)
       raise user.errors.full_messages.join(', ') unless import || user.errors.empty?

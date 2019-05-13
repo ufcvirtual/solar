@@ -31,14 +31,20 @@ module V1::Messages
       status & Message_Filter_Restore
     end
 
-    user_message.save unless status==1
+    unless status==1
+      user_message.api = true
+      user_message.save
+    end
   end
 
   def read_message(message)
     user_message = message.user_messages.where(user_id: current_user.id).where("NOT(cast(user_messages.status & #{Message_Filter_Sender} as boolean))").first
     raise CanCan::AccessDenied unless user_message
     user_message.status = (user_message.status | Message_Filter_Read)
-    user_message.save unless status==1
+    unless status==1
+      user_message.api = true
+      user_message.save
+    end
   end
 
   def new_msg_template(at, msg)

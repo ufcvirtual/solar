@@ -1,4 +1,6 @@
 class GroupParticipant < ActiveRecord::Base
+  include APILog
+  
   belongs_to :group_assignment
   belongs_to :user
 

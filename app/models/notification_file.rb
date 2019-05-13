@@ -1,4 +1,5 @@
 class NotificationFile < ActiveRecord::Base
+  include APILog
 
   #default_scope order: 'file_updated_at DESC'
 
@@ -24,7 +25,7 @@ class NotificationFile < ActiveRecord::Base
 
   def verify_end_date
     if notification.ended?
-      errors.add(:file_file_name, I18n.t('notifications.error.ended_file')) 
+      errors.add(:file_file_name, I18n.t('notifications.error.ended_file'))
       raise 'ended'
     end
   end

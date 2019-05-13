@@ -39,10 +39,13 @@ module V1
             @message = Message.new(params[:message])
             @message.sender = current_user
             @message.allocation_tag_id = @group.allocation_tag.id
+            @message.api = true
 
-            [params[:files]].flatten.each do |file|
-              @message.files.new({ attachment: ActionDispatch::Http::UploadedFile.new(file) })
-            end # each
+            unless params[:files].blank?
+              [params[:files]].flatten.each do |file|
+                @message.files.new({ attachment: ActionDispatch::Http::UploadedFile.new(file) })
+              end # each
+            end
 
             emails = []
             unless params[:message][:contacts].nil?
@@ -159,7 +162,7 @@ module V1
         get '/:group_id/contacts', rabl: 'messages/contacts' do
           @contacts = User.all_at_allocation_tags(@allocation_tag_related, Allocation_Activated, true)
         end
-        
+
         desc 'Responder/Encaminhar mensagem'
         params do
           requires :id, type: Integer
@@ -203,13 +206,13 @@ module V1
                 message.subject = "#{I18n.t(:reply, scope: [:messages, :subject])} #{original.subject}"
               when :forward
                 raise 'contacts mandatory' if params[:message][:contacts].blank?
-                
+
                 users = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
                             .where("(nmail.message IS NULL OR nmail.message=TRUE)")
                             .where(id: params[:message][:contacts].split(','))
-                
+
                 message.contacts = users
-                reply_to = users.pluck(:email).flatten.compact.uniq                
+                reply_to = users.pluck(:email).flatten.compact.uniq
                 message.subject = "#{I18n.t(:forward, scope: [:messages, :subject])} #{original.subject}"
             end
 
