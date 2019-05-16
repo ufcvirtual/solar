@@ -231,9 +231,15 @@ class Question < ActiveRecord::Base
   end
 
   def can_see?(boolean=false)
-    result = !privacy || owners?
+    result = !privacy || owners? || have_access?
     raise 'permission' unless boolean || result
     result
+  end
+
+  def have_access?
+    return false if User.current.try(:id).blank?
+    ats = exams.map(&:allocation_tags).flatten.map(&:id).compact.uniq
+    return User.current.profiles_with_access_on('show', 'questions', ats, true, false, true).any?
   end
 
   def can_change?
