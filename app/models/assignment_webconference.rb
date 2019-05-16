@@ -5,6 +5,7 @@ class AssignmentWebconference < ActiveRecord::Base
   include Bbb
   include ControlledDependency
   include SentActivity
+  include APILog
 
   belongs_to :academic_allocation_user
 

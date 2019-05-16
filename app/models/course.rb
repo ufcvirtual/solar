@@ -1,5 +1,6 @@
 class Course < ActiveRecord::Base
   include Taggable
+  include APILog
 
   has_many :offers
   has_many :groups,                -> { uniq }, through: :offers

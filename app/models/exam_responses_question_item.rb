@@ -1,4 +1,6 @@
 class ExamResponsesQuestionItem < ActiveRecord::Base
+  include APILog
+  
   belongs_to :exam_response
   belongs_to :question_item
 
@@ -8,7 +10,7 @@ class ExamResponsesQuestionItem < ActiveRecord::Base
 
   def order
     'id'
-   end 
+   end
 
   def comment
     question_item.comment

@@ -44,7 +44,10 @@ module V1
         post "/" do
           begin
             uc = unless params[:update_if_exists]
-              CurriculumUnit.create! curriculum_unit_params(params, true)
+              # CurriculumUnit.create! curriculum_unit_params(params, true)
+              new_uc = CurriculumUnit.new curriculum_unit_params(params, true)
+              new_uc.api = true
+              new_uc.save!
             else
               verify_or_create_curriculum_unit params
             end
@@ -62,7 +65,11 @@ module V1
         end
         put ":id" do
           begin
-            CurriculumUnit.find(params[:id]).update_attributes! curriculum_unit_params(params)
+            # CurriculumUnit.find(params[:id]).update_attributes! curriculum_unit_params(params)
+            uc = CurriculumUnit.find(params[:id])
+            uc.api = true
+            uc.update_attributes! curriculum_unit_params(params)
+
             {ok: :ok}
           end
         end

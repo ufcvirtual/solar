@@ -1,5 +1,5 @@
 class Question < ActiveRecord::Base
-
+  include APILog
   include FilesHelper
 
   UNIQUE, MULTIPLE, TRUE_FALSE = 0, 1, 2

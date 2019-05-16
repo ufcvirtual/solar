@@ -20,6 +20,7 @@ module V1::Contents
         new_acu.comments_count = from_acu.comments_count
         new_acu.evaluated_by_responsible = from_acu.evaluated_by_responsible
         new_acu.merge = true
+        new_acu.api = true
         new_acu.save
       end
 
@@ -80,7 +81,7 @@ module V1::Contents
         replicate_public_files(from_at, to_at)
       end
 
-      LogAction.create(log_type: LogAction::TYPE[:create], user_id: 0, ip: request.headers['HTTP_CLIENT_IP'], description: "merge: transfering content from #{from_group.allocation_tag.info} to #{to_group.allocation_tag.info}, merge type: #{merge}") rescue nil
+      LogAction.create(log_type: LogAction::TYPE[:create], user_id: nil, ip: request.headers['HTTP_CLIENT_IP'], description: "merge: transfering content from #{from_group.allocation_tag.info} to #{to_group.allocation_tag.info}, merge type: #{merge}") rescue nil
     end
   end
 
@@ -89,6 +90,7 @@ module V1::Contents
     AcademicAllocation.where(academic_tool_type: 'Discussion', allocation_tag_id: allocation_tag).map{ |ac| ac.discussion_posts.map(&:delete_with_dependents) }
     AcademicAllocation.where(academic_tool_type: 'Assignment', allocation_tag_id: allocation_tag).map{ |ac|
       ac.academic_allocation_users.map do |acu|
+        acu.api = true
         acu.merge = true
         acu.delete_with_dependents
       end
@@ -96,10 +98,12 @@ module V1::Contents
     }
 
     AcademicAllocation.where(academic_tool_type: 'ChatRoom', allocation_tag_id: allocation_tag).map{ |ac|
+      ac.api = true
       ac.academic_allocation_users.map(&:delete_with_dependents)
       ac.chat_messages.delete_all
     }
     AcademicAllocation.where(academic_tool_type: 'Webconference', allocation_tag_id: allocation_tag).map{ |ac|
+      ac.api = true
       ac.academic_allocation_users.map(&:delete_with_dependents)
       LogAction.where(academic_allocation_id: ac.id, log_type: 7).delete_all
     }
@@ -109,7 +113,13 @@ module V1::Contents
     #   exam.academic_allocation_users.map(&:delete_with_dependents)
     # }
 
-    AcademicAllocationUser.joins(:academic_allocation).where(academic_allocations: {allocation_tag_id: allocation_tag}).where("academic_allocations.academic_tool_type != 'Exam' AND academic_allocations.academic_tool_type != 'ScheduleEvent'").map(&:delete_with_dependents) # remove todas as ACUs, EXCETO de prova pelos motivos descritos acima
+    # AcademicAllocationUser.joins(:academic_allocation).where(academic_allocations: {allocation_tag_id: allocation_tag}).where("academic_allocations.academic_tool_type != 'Exam' AND academic_allocations.academic_tool_type != 'ScheduleEvent'").map(&:delete_with_dependents) # remove todas as ACUs, EXCETO de prova pelos motivos descritos acima
+
+    # remove todas as ACUs, EXCETO de prova pelos motivos descritos acima
+    AcademicAllocationUser.joins(:academic_allocation).where(academic_allocations: {allocation_tag_id: allocation_tag}).where("academic_allocations.academic_tool_type != 'Exam' AND academic_allocations.academic_tool_type != 'ScheduleEvent'").map { |acu|
+      acu.api = true
+      acu.delete_with_dependents
+    }
   end
 
   def copy_file(file_to_copy_path, file_copied_path)
@@ -132,6 +142,7 @@ module V1::Contents
     new_object.created_at = object_to_copy.created_at if object_to_copy.respond_to?(:created_at)
     new_object.updated_at = object_to_copy.updated_at if object_to_copy.respond_to?(:updated_at)
     new_object.merge = true if new_object.respond_to?(:merge) # used so call save without callbacks (before_save, before_create)
+    new_object.api = true if new_object.respond_to?(:api)
     if acu && !object_to_copy.academic_allocation_user.blank?
       new_object.academic_allocation_user_id = get_acu(new_object.academic_allocation.id, object_to_copy.academic_allocation_user, (object_to_copy.user_id || object_to_copy.allocation.user_id)) #rescue nil
     end
@@ -152,6 +163,7 @@ module V1::Contents
       if call_method.nil?
         ac = AcademicAllocation.new(allocation_tag_id: to_at, academic_tool_type: type, academic_tool_id: missing_tool_id)
         ac.merge = true
+        ac.api = true
         ac.save
       else
         type.constantize.find(missing_tool_id).send(call_method, to_at, from_at)
@@ -264,7 +276,11 @@ module V1::Contents
         if ac_name_and_date.nil?
           ac_name = acs.joins("JOIN schedule_events ON schedule_events.id = academic_allocations.academic_tool_id AND academic_tool_type = 'ScheduleEvent'").where(schedule_events: {title: event.title, type_event: event.type_event}).first
           if ac_name.nil?
-            new_ac = AcademicAllocation.create(allocation_tag_id: to_at, academic_tool_type: from_ac.academic_tool_type, academic_tool_id: from_ac.academic_tool_id)
+            # new_ac = AcademicAllocation.create(allocation_tag_id: to_at, academic_tool_type: from_ac.academic_tool_type, academic_tool_id: from_ac.academic_tool_id)
+            new_ac = AcademicAllocation.new(allocation_tag_id: to_at, academic_tool_type: from_ac.academic_tool_type, academic_tool_id: from_ac.academic_tool_id)
+            new_ac.api = true
+            new_ac.save
+
             all << {from_ac.id.to_s => new_ac.id}
           else
             all << {from_ac.id.to_s => ac_name.id}
@@ -288,6 +304,7 @@ module V1::Contents
           acu = AcademicAllocationUser.where(academic_allocation_id: ac_to.to_i, user_id: acu_from.user_id).first_or_initialize
           acu.attributes = acu_from.attributes.except('id','academic_allocation_id', 'schedule_event_files_count')
           acu.merge = true
+          acu.api = true
           acu.save
 
           acu.delete_with_dependents

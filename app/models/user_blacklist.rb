@@ -1,5 +1,6 @@
 class UserBlacklist < ActiveRecord::Base
   include PersonCpf
+  include APILog
 
   #default_scope order: 'name ASC'
 

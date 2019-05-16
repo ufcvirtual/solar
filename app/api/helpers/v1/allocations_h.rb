@@ -12,6 +12,7 @@ module V1::AllocationsH
         Rails.logger.info "[API] [WARNING] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [404] message: Não foi possível cadastrar o professor de cpf #{cpf} - SI3 não enviou os dados"
       end
 
+      group.api = true
       group.allocate_user(professor.id, 17)
     end
   end
@@ -20,6 +21,7 @@ module V1::AllocationsH
   def create_allocations(groups, user, profile_id, matricula)
     ActiveRecord::Base.transaction do
       groups.each do |group|
+        group.api = true
         group.first.allocate_user(user.id, profile_id, nil, group.last.try(:id), Allocation_Activated, matricula)
         unless group.first.try(:id) == group.last.try(:id)
           unless group.last.blank?
@@ -28,6 +30,7 @@ module V1::AllocationsH
           else
             # cancel possible previous merges allocations
             Allocation.where(origin_group_id: group.first.id, user_id: user.id, profile_id: profile_id).each do |al|
+              al.pi = true
               al.update_attributes origin_group_id: nil, matricula: matricula
               al.group.change_allocation_status(user.id, Allocation_Cancelled, nil, {profile_id: profile_id})
             end
@@ -40,10 +43,12 @@ module V1::AllocationsH
   def cancel_allocations(groups, user, profile_id)
     ActiveRecord::Base.transaction do
       groups.each do |group|
+        group.api = true
         # cancel all users previous allocations as profile_id
         group.first.change_allocation_status(user.id, 2, nil, {profile_id: profile_id, origin_group_id: group.last.try(:id), create_if_dont_exists: true})
 
         Allocation.where(origin_group_id: group.first.id, user_id: user.id, profile_id: profile_id).each do |al|
+          al.api = true
           al.group.change_allocation_status(user.id, Allocation_Cancelled, nil, {profile_id: profile_id})
         end
       end
@@ -87,8 +92,12 @@ module V1::AllocationsH
       if(user.try(:id).blank? && params[:profile_id] != 4)
         Rails.logger.info "[API] [WARNING] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [404] message: Não foi possível cadastrar o usuário de cpf #{user.try(:cpf)} - SI3 não enviou os dados"
       end
-      user.cancel_allocations(params[:profile_id]) if params[:remove_user_previous_allocations]
+      if params[:remove_user_previous_allocations]
+        user.api = true
+        user.cancel_allocations(params[:profile_id])
+      end
       [objects].flatten.map do |object|
+        object.api = true
         if cancel
           object.cancel_allocations(user.id, params[:profile_id], nil, {}, raise_error)
         else

@@ -3,6 +3,7 @@ class Assignment < Event
   include FilesHelper
   include EvaluativeTool
   include Controlled
+  include APILog
 
   GROUP_PERMISSION = true
 

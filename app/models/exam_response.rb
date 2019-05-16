@@ -1,12 +1,12 @@
 class ExamResponse < ActiveRecord::Base
-
+  include APILog
   include ControlledDependency
 
   belongs_to :exam_user_attempt
   belongs_to :question
   has_many :exam_responses_question_items, dependent: :destroy
   has_many :question_items, through: :exam_responses_question_items
-  
+
   has_one :academic_allocation_user, through: :exam_user_attempt
   has_one :user    , through: :academic_allocation_user
 

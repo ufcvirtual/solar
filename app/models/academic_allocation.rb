@@ -1,4 +1,5 @@
 class AcademicAllocation < ActiveRecord::Base
+  include APILog
 
   belongs_to :academic_tool, polymorphic: true
   belongs_to :allocation_tag

@@ -1,5 +1,6 @@
 class LessonModule < ActiveRecord::Base
   include AcademicTool
+  include APILog
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 

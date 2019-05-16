@@ -1,4 +1,5 @@
 class ExamQuestion < ActiveRecord::Base
+  include APILog
 
   belongs_to :exam
   belongs_to :question

@@ -89,7 +89,7 @@ module V1
           users = Score.evaluative_frequency(@ats.join(','), params[:list])
           users = users.group_by{|user| user["user_name"]}
         end
-        
+
         tools = ( @ats.empty? ? [] : EvaluativeTool.count_tools(@ats.join(',')) )
 
         {
@@ -99,7 +99,7 @@ module V1
         }
 
       end # get
-      
+
       params do
           requires :id, type: Integer, desc: 'ID da turma'
           optional :list, type: String, default: 'all'#, values: ['general_view', 'all', 'evaluative', 'frequency', 'not_evaluative']
@@ -108,7 +108,7 @@ module V1
         @users = AllocationTag.get_participants(@at.id, { students: true }, true)
         @wh = AllocationTag.find(@at.id).get_curriculum_unit.try(:working_hours)
       end
-      
+
       params do
           requires :id, type: Integer, desc: 'ID da Turma'
           requires :discussion_id, type: Integer, desc: 'ID do Fórum'
@@ -124,7 +124,7 @@ module V1
         Struct.new('PostsScores',:posts, :all_user)
         @posts_scores = Struct::PostsScores.new(posts, all_user)
       end
-      
+
       params do
           requires :id, type: Integer, desc: 'ID da Turma'
           requires :assignment_id, type: Integer, desc: 'ID do Trabalho'
@@ -134,7 +134,7 @@ module V1
         ac = AcademicAllocation.where(academic_tool_id: params[:assignment_id], allocation_tag_id: @at.id, academic_tool_type: 'Assignment').first
         @acu = AcademicAllocationUser.where(academic_allocation_id: ac.id).where(user_id: params[:user_id]).first
       end
-      
+
       params do
           requires :id, type: Integer, desc: 'ID da Turma'
           requires :webconference_id, type: Integer, desc: 'ID da Webconferência'
@@ -176,6 +176,7 @@ module V1
       end
     post ':id/scores/comment/:academic_allocation_user_id' do
       comment = Comment.new(academic_allocation_user_id: params[:academic_allocation_user_id], comment: params[:comment], user_id: current_user)
+      comment.api = true
       comment.save!
 
       {ok: 'ok'}

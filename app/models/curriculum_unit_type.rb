@@ -1,5 +1,6 @@
 class CurriculumUnitType < ActiveRecord::Base
   include Taggable
+  include APILog
 
   has_many :curriculum_units
   has_many :offers,  -> { uniq }, through: :curriculum_units

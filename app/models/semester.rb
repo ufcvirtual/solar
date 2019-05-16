@@ -1,5 +1,6 @@
 class Semester < ActiveRecord::Base
   include OfferSemester
+  include APILog
 
   has_many :offers
   has_many :groups, through: :offers

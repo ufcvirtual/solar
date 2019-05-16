@@ -12,7 +12,7 @@ module V1
         end
 
       end
-      
+
       desc "Listar todos trabalhos da turma"
       params do
         requires :allocation_tag_id, type: Integer
@@ -41,19 +41,21 @@ module V1
 
         af = AssignmentFile.new({academic_allocation_user_id: acu.id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
         af.user = User.find(params[:user_id].to_i)
+        af.api = true
         af.save!
-        
+
         {ok: :ok}
       end
-      
+
       desc "Remover arquivo enviado"
       params do
         requires :id, type: Integer
       end
       delete "/file/:id" do
         assignment_file = AssignmentFile.find(params[:id].to_i)
+        assignment_file.api = true
         assignment_file.destroy
-        
+
         {ok: :ok}
       end
 
@@ -73,7 +75,8 @@ module V1
         awf = AssignmentWebconference.new(assignment_webconference_params)
         awf.academic_allocation_user_id = acu.id
         awf.api_call = true
-        
+        awf.api = true
+
         if awf.save
           { id: awf.id }
         else
@@ -87,8 +90,9 @@ module V1
       end
       delete "/webconference/:id" do
         awf = AssignmentWebconference.find(params[:id].to_i)
+        awf.api = true
         awf.destroy
-        
+
         {ok: :ok}
       end
 

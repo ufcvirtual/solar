@@ -1,4 +1,5 @@
 class AcademicAllocationUser < ActiveRecord::Base
+  include APILog
 
   belongs_to :academic_allocation
   belongs_to :user

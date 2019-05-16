@@ -1,5 +1,6 @@
 class ChatMessage < ActiveRecord::Base
   include SentActivity
+  include APILog
 
   belongs_to :academic_allocation, -> { where academic_tool_type: 'ChatRoom' }
   belongs_to :allocation
