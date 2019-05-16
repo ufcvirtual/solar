@@ -14,6 +14,7 @@ class Score # < ActiveRecord::Base
   end
 
   def self.list_tool(user_id, at_id, tool='all', evaluative=false, frequency=false, all=false, others=false, type=nil)
+
     evaluated_status = if frequency
       "WHEN academic_allocation_users.working_hours IS NOT NULL OR academic_allocation_users.comments_count > 0 THEN 'evaluated'"
     elsif !all
@@ -31,6 +32,7 @@ class Score # < ActiveRecord::Base
     end
 
     ats_ids = AllocationTag.find(at_id).related
+
     wq = "AND academic_allocations.evaluative=true " if evaluative
     wq = "AND academic_allocations.frequency=true "  if frequency
     wq = "AND academic_allocations.evaluative=false" if !evaluative && !frequency
@@ -64,7 +66,7 @@ class Score # < ActiveRecord::Base
           ''
          end
 
-  User.find_by_sql <<-SQL
+    User.find_by_sql <<-SQL
     SELECT
       academic_allocations.id,
       academic_allocations.allocation_tag_id,
@@ -427,8 +429,8 @@ class Score # < ActiveRecord::Base
   end
 
   private
-
     def self.get_query(tools, ats, user_id, wq, sent_status='', evaluated_status='', others=false, type=nil)
+
       ats_query = ats.blank? ? '' : "AND academic_allocations.allocation_tag_id IN (#{ats})"
 
       query = []
@@ -436,7 +438,13 @@ class Score # < ActiveRecord::Base
       tools.each do |tool|
         query << case tool
         when 'discussions'
-          "(SELECT DISTINCT
+          "
+          (
+            WITH posts AS (
+              SELECT DISTINCT discussion_posts.id id, academic_allocation_id, user_id
+              FROM discussion_posts LEFT JOIN academic_allocations ON academic_allocations.id = discussion_posts.academic_allocation_id AND academic_allocations.academic_tool_type='Discussion'
+              WHERE discussion_posts.draft=false AND academic_allocations.allocation_tag_id IN (#{ats}))
+           SELECT DISTINCT
             academic_allocations.id,
             academic_allocations.allocation_tag_id,
             academic_allocations.academic_tool_id,
@@ -463,8 +471,8 @@ class Score # < ActiveRecord::Base
             NULL AS type_tool,
             '' AS start_hour,
             '' AS end_hour,
-            (SELECT COUNT(id) FROM discussion_posts WHERE discussion_posts.academic_allocation_id = academic_allocations.id AND user_id = #{user_id} AND discussion_posts.draft=false)::text AS count,
-            (SELECT COUNT(id) FROM discussion_posts WHERE discussion_posts.academic_allocation_id = academic_allocations.id AND discussion_posts.draft=false) AS count_all,
+            (SELECT COUNT(id) FROM posts WHERE posts.academic_allocation_id = academic_allocations.id AND user_id = #{user_id})::text AS count,
+            (SELECT COUNT(id) FROM posts WHERE posts.academic_allocation_id = academic_allocations.id) AS count_all,
             NULL as moderator,
             NULL as duration,
             NULL as server,
@@ -495,7 +503,7 @@ class Score # < ActiveRecord::Base
           LEFT JOIN discussions eq_disc ON eq_disc.id = eq_ac.academic_tool_id AND eq_ac.academic_tool_type = 'Discussion'
           WHERE
             academic_allocations.academic_tool_id = discussions.id AND academic_allocations.academic_tool_type='Discussion' AND discussions.schedule_id=s.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats})
-          GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, discussion_posts.id, discussions.name,  s.start_date,  s.end_date, discussions.description, new_after_evaluation, academic_allocation_users.grade,  academic_allocation_users.working_hours, academic_allocation_users.user_id, academic_allocations.evaluative, academic_allocations.frequency, eq_disc.name, academic_allocation_users.id
+          GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, discussion_posts.id, discussions.name,  s.start_date,  s.end_date, discussions.description, new_after_evaluation, academic_allocation_users.grade,  academic_allocation_users.working_hours, academic_allocation_users.user_id, academic_allocations.evaluative, academic_allocations.frequency, academic_allocations.frequency_automatic, academic_allocations.max_working_hours, academic_allocations.final_exam, eq_disc.name, academic_allocation_users.id
           )"
 
         when 'assignments'
@@ -512,6 +520,18 @@ class Score # < ActiveRecord::Base
                 JOIN group_assignments ON group_assignments.id = group_participants.group_assignment_id
                 JOIN academic_allocations ac ON ac.allocation_tag_id IN (#{ats}) AND ac.academic_tool_type = 'Assignment' AND ac.id = group_assignments.academic_allocation_id
                 WHERE user_id = #{user_id}
+              ),
+              assign_file AS (
+                SELECT count(assignment_files.id) count, academic_allocation_user_id 
+                FROM assignment_files LEFT JOIN academic_allocation_users ON academic_allocation_users.id = assignment_files.academic_allocation_user_id
+                LEFT JOIN academic_allocations ON academic_allocations.id = academic_allocation_users.academic_allocation_id AND academic_allocations.academic_tool_type='Assignment'
+                WHERE allocation_tag_id IN (13940,13939,460,795,2490) GROUP BY academic_allocation_user_id
+              ),
+              assign_web AS (
+                SELECT count(assignment_webconferences.id) count, academic_allocation_user_id 
+                FROM assignment_webconferences LEFT JOIN academic_allocation_users ON academic_allocation_users.id = assignment_webconferences.academic_allocation_user_id
+                LEFT JOIN academic_allocations ON academic_allocations.id = academic_allocation_users.academic_allocation_id AND academic_allocations.academic_tool_type='Assignment'
+                WHERE allocation_tag_id IN (13940,13939,460,795,2490) GROUP BY academic_allocation_user_id
               )
               SELECT DISTINCT
                 academic_allocations.id,
@@ -540,7 +560,7 @@ class Score # < ActiveRecord::Base
                 assignments.type_assignment::text as type_tool,
                 assignments.start_hour AS start_hour,
                 assignments.end_hour AS end_hour,
-                ((select count(assignment_files.id) FROM assignment_files WHERE assignment_files.academic_allocation_user_id = academic_allocation_users.id) + (select count(assignment_webconferences.id) FROM assignment_webconferences WHERE assignment_webconferences.academic_allocation_user_id = academic_allocation_users.id))::text AS count,
+                ((select count FROM assign_file WHERE assign_file.academic_allocation_user_id = academic_allocation_users.id) + (select count FROM assign_web WHERE assign_web.academic_allocation_user_id = academic_allocation_users.id))::text AS count,
                 academic_allocation_users.comments_count AS count_all,
                 NULL as moderator,
                 NULL as duration,
@@ -576,7 +596,7 @@ class Score # < ActiveRecord::Base
               WHERE
                 academic_allocations.academic_tool_id = assignments.id AND academic_allocations.academic_tool_type='Assignment' AND assignments.schedule_id=schedules.id #{wq} #{type} AND academic_allocations.allocation_tag_id IN (#{ats}) AND
                 (academic_allocation_users.id IS NULL OR (academic_allocation_users.user_id = #{user_id} OR (academic_allocation_users.group_assignment_id = groups.group_id AND assignments.type_assignment = #{Assignment_Type_Group}) OR (groups.group_id IS NULL AND assignments.type_assignment = #{Assignment_Type_Group})) OR (academic_allocation_users.user_id IS NULL AND academic_allocation_users.group_assignment_id IS NULL))
-              GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, assignments.name, schedules.start_date, schedules.end_date, assignments.enunciation, new_after_evaluation, academic_allocation_users.grade, academic_allocation_users.working_hours, academic_allocation_users.user_id, assignments.start_hour, assignments.end_hour, academic_allocations.evaluative, academic_allocations.frequency, eq_assig.name, groups.group_id, assignments.type_assignment, academic_allocation_users.id, assignment_webconferences.id, assignment_files.attachment_updated_at
+              GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, assignments.name, schedules.start_date, schedules.end_date, assignments.enunciation, new_after_evaluation, academic_allocation_users.grade, academic_allocation_users.working_hours, academic_allocation_users.user_id, assignments.start_hour, assignments.end_hour, academic_allocations.evaluative, academic_allocations.frequency, academic_allocations.frequency_automatic, academic_allocations.max_working_hours, academic_allocations.final_exam, eq_assig.name, groups.group_id, assignments.type_assignment, academic_allocation_users.id, assignment_webconferences.id, assignment_files.attachment_updated_at
           )"
         when 'chat_rooms'
           others =  if others
@@ -584,7 +604,16 @@ class Score # < ActiveRecord::Base
                     else
                       "((cast(profiles.types & #{Profile_Type_Student} as boolean) AND (chat_rooms.chat_type = 0 OR chat_participants.id IS NOT NULL)) OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)"
                     end
-          "( SELECT DISTINCT
+          "( 
+          WITH temp_chat AS (
+                SELECT COUNT(chat_messages.id), chat_messages.academic_allocation_id
+                FROM chat_messages
+                LEFT JOIN allocations ON allocations.user_id = 54235 AND allocations.allocation_tag_id IN (13940,13939,460,795,2490)
+                WHERE message_type = 1 AND chat_messages.allocation_id = allocations.id
+                GROUP BY chat_messages.academic_allocation_id
+          )
+
+          SELECT DISTINCT
               academic_allocations.id,
               academic_allocations.allocation_tag_id,
               academic_allocations.academic_tool_id,
@@ -640,24 +669,25 @@ class Score # < ActiveRecord::Base
             FROM chat_rooms, schedules, academic_allocations
             LEFT JOIN allocations ON allocations.user_id = #{user_id} AND allocations.allocation_tag_id IN (#{ats})
             LEFT JOIN profiles ON profiles.id = allocations.profile_id
-            LEFT JOIN(
-              SELECT COUNT(chat_messages.id), chat_messages.academic_allocation_id
-              FROM chat_messages
-              LEFT JOIN allocations ON allocations.user_id = #{user_id} AND allocations.allocation_tag_id IN (#{ats})
-              WHERE message_type = 1 AND chat_messages.allocation_id = allocations.id
-              GROUP BY chat_messages.academic_allocation_id
-            ) chat_messages ON chat_messages.academic_allocation_id = academic_allocations.id
+            LEFT JOIN(SELECT * FROM temp_chat) chat_messages ON chat_messages.academic_allocation_id = academic_allocations.id
             LEFT JOIN academic_allocation_users ON academic_allocations.id =  academic_allocation_users.academic_allocation_id AND academic_allocation_users.user_id = #{user_id}
             LEFT JOIN chat_participants ON chat_participants.academic_allocation_id = academic_allocations.id AND chat_participants.allocation_id = allocations.id
             LEFT JOIN academic_allocations eq_ac ON eq_ac.id = academic_allocations.equivalent_academic_allocation_id
             LEFT JOIN chat_rooms eq_chat ON eq_chat.id = eq_ac.academic_tool_id AND eq_ac.academic_tool_type = 'ChatRoom'
             WHERE
               academic_allocations.academic_tool_id = chat_rooms.id AND academic_allocations.academic_tool_type='ChatRoom' AND chat_rooms.schedule_id=schedules.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats}) AND (#{others} ))
-            GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, chat_rooms.title, schedules.start_date, schedules.end_date, chat_rooms.start_hour, chat_rooms.end_hour, chat_rooms.description, new_after_evaluation, academic_allocation_users.grade, academic_allocation_users.working_hours, academic_allocation_users.user_id, academic_allocations.evaluative, academic_allocations.frequency, eq_chat.title, chat_rooms.chat_type, academic_allocation_users.id, chat_messages.count
+            GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, chat_rooms.title, schedules.start_date, schedules.end_date, chat_rooms.start_hour, chat_rooms.end_hour, chat_rooms.description, new_after_evaluation, academic_allocation_users.grade, academic_allocation_users.working_hours, academic_allocation_users.user_id, academic_allocations.evaluative, academic_allocations.frequency, academic_allocations.frequency_automatic, academic_allocations.max_working_hours, academic_allocations.final_exam, eq_chat.title, chat_rooms.chat_type, academic_allocation_users.id, chat_messages.count
             )"
 
         when 'exams'
-          "(SELECT DISTINCT
+          "(
+          WITH temp_exams AS (
+            SELECT COUNT(exam_user_attempts.id), acu.academic_allocation_id AS ac_id 
+               FROM exam_user_attempts LEFT JOIN academic_allocation_users acu ON exam_user_attempts.academic_allocation_user_id = acu.id 
+               LEFT JOIN academic_allocations ON acu.academic_allocation_id = academic_allocations.id AND academic_allocations.academic_tool_type='Exam'
+               WHERE acu.user_id = 54235 AND academic_allocations.allocation_tag_id IN (13940,13939,460,795,2490) GROUP BY acu.academic_allocation_id
+          )
+          SELECT DISTINCT
             academic_allocations.id,
             academic_allocations.allocation_tag_id,
             academic_allocations.academic_tool_id,
@@ -719,10 +749,10 @@ class Score # < ActiveRecord::Base
             LEFT JOIN exam_responses ON exam_responses.exam_user_attempt_id = exam_user_attempts.id
             LEFT JOIN academic_allocations eq_ac ON eq_ac.id = academic_allocations.equivalent_academic_allocation_id
             LEFT JOIN exams eq_exam ON eq_exam.id = eq_ac.academic_tool_id AND eq_ac.academic_tool_type = 'Exam'
-            LEFT JOIN ( (SELECT COUNT(exam_user_attempts.id), acu.academic_allocation_id AS ac_id FROM exam_user_attempts LEFT JOIN academic_allocation_users acu ON exam_user_attempts.academic_allocation_user_id = acu.id WHERE acu.user_id = #{user_id} GROUP BY acu.academic_allocation_id)) user_attempts ON user_attempts.ac_id = academic_allocations.id
+            LEFT JOIN (SELECT * FROM temp_exams) user_attempts ON user_attempts.ac_id = academic_allocations.id
           WHERE
             academic_allocations.academic_tool_id = exams.id AND academic_allocations.academic_tool_type='Exam' AND exams.schedule_id=s.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats}) AND exams.status = 't'
-          GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, exams.name, s.start_date, s.end_date, exams.description, new_after_evaluation, academic_allocation_users.grade, academic_allocation_users.working_hours, academic_allocation_users.user_id, exams.start_hour, exams.end_hour, exam_responses.id, exams.attempts, eq_exam.name, exams.duration, academic_allocations.evaluative, academic_allocations.frequency, user_attempts.count, last_attempt.complete, exams.uninterrupted, exams.result_release
+          GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, exams.name, s.start_date, s.end_date, exams.description, new_after_evaluation, academic_allocation_users.grade, academic_allocation_users.working_hours, academic_allocation_users.user_id, exams.start_hour, exams.end_hour, exam_responses.id, exams.attempts, eq_exam.name, exams.duration, academic_allocations.evaluative, academic_allocations.frequency, academic_allocations.frequency_automatic, academic_allocations.max_working_hours, academic_allocations.final_exam, user_attempts.count, last_attempt.complete, exams.uninterrupted, exams.result_release
           ) "
 
         when 'schedule_events'
@@ -785,7 +815,7 @@ class Score # < ActiveRecord::Base
           LEFT JOIN schedule_events eq_event ON eq_event.id = eq_ac.academic_tool_id AND eq_ac.academic_tool_type = 'ScheduleEvent'
           WHERE
             academic_allocations.academic_tool_id = schedule_events.id AND academic_allocations.academic_tool_type='ScheduleEvent' AND schedule_events.schedule_id=schedules.id #{wq} AND academic_allocations.allocation_tag_id IN (#{ats})
-          GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, schedule_events.title,  schedules.start_date, schedules.end_date, schedule_events.start_hour, schedule_events.end_hour, schedule_events.description, new_after_evaluation, academic_allocation_users.grade,  academic_allocation_users.working_hours, academic_allocation_users.user_id, academic_allocations.evaluative, academic_allocations.frequency, eq_event.title, academic_allocation_users.id, schedule_events.place, schedule_events.type_event
+          GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, schedule_events.title,  schedules.start_date, schedules.end_date, schedule_events.start_hour, schedule_events.end_hour, schedule_events.description, new_after_evaluation, academic_allocation_users.grade,  academic_allocation_users.working_hours, academic_allocation_users.user_id, academic_allocations.evaluative, academic_allocations.frequency, academic_allocations.frequency_automatic, academic_allocations.max_working_hours, academic_allocations.final_exam, eq_event.title, academic_allocation_users.id, schedule_events.place, schedule_events.type_event
           )"
 
         when 'webconferences'
@@ -849,7 +879,7 @@ class Score # < ActiveRecord::Base
           LEFT JOIN webconferences eq_web ON eq_web.id = eq_ac.academic_tool_id AND eq_ac.academic_tool_type = 'Webconference'
           WHERE
             academic_allocations.academic_tool_id = webconferences.id AND academic_allocations.academic_tool_type='Webconference' #{wq} #{ats_query}
-          GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, webconferences.title,  webconferences.initial_time, webconferences.duration, webconferences.description, new_after_evaluation, academic_allocation_users.grade,  academic_allocation_users.working_hours, academic_allocation_users.user_id, academic_allocations.evaluative, academic_allocations.frequency, eq_web.title, webconferences.shared_between_groups, academic_allocation_users.id, webconferences.user_id, webconferences.server, log_actions.id
+          GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, webconferences.title,  webconferences.initial_time, webconferences.duration, webconferences.description, new_after_evaluation, academic_allocation_users.grade,  academic_allocation_users.working_hours, academic_allocation_users.user_id, academic_allocations.evaluative, academic_allocations.frequency, academic_allocations.frequency_automatic, academic_allocations.max_working_hours, academic_allocations.final_exam, eq_web.title, webconferences.shared_between_groups, academic_allocation_users.id, webconferences.user_id, webconferences.server, log_actions.id
           )"
 
         end
