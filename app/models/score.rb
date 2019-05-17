@@ -525,13 +525,13 @@ class Score # < ActiveRecord::Base
                 SELECT count(assignment_files.id) count, academic_allocation_user_id 
                 FROM assignment_files LEFT JOIN academic_allocation_users ON academic_allocation_users.id = assignment_files.academic_allocation_user_id
                 LEFT JOIN academic_allocations ON academic_allocations.id = academic_allocation_users.academic_allocation_id AND academic_allocations.academic_tool_type='Assignment'
-                WHERE allocation_tag_id IN (13940,13939,460,795,2490) GROUP BY academic_allocation_user_id
+                WHERE allocation_tag_id IN (#{ats}) GROUP BY academic_allocation_user_id
               ),
               assign_web AS (
                 SELECT count(assignment_webconferences.id) count, academic_allocation_user_id 
                 FROM assignment_webconferences LEFT JOIN academic_allocation_users ON academic_allocation_users.id = assignment_webconferences.academic_allocation_user_id
                 LEFT JOIN academic_allocations ON academic_allocations.id = academic_allocation_users.academic_allocation_id AND academic_allocations.academic_tool_type='Assignment'
-                WHERE allocation_tag_id IN (13940,13939,460,795,2490) GROUP BY academic_allocation_user_id
+                WHERE allocation_tag_id IN (#{ats}) GROUP BY academic_allocation_user_id
               )
               SELECT DISTINCT
                 academic_allocations.id,
@@ -608,7 +608,7 @@ class Score # < ActiveRecord::Base
           WITH temp_chat AS (
                 SELECT COUNT(chat_messages.id), chat_messages.academic_allocation_id
                 FROM chat_messages
-                LEFT JOIN allocations ON allocations.user_id = 54235 AND allocations.allocation_tag_id IN (13940,13939,460,795,2490)
+                LEFT JOIN allocations ON allocations.user_id = 54235 AND allocations.allocation_tag_id IN (#{ats})
                 WHERE message_type = 1 AND chat_messages.allocation_id = allocations.id
                 GROUP BY chat_messages.academic_allocation_id
           )
@@ -685,7 +685,7 @@ class Score # < ActiveRecord::Base
             SELECT COUNT(exam_user_attempts.id), acu.academic_allocation_id AS ac_id 
                FROM exam_user_attempts LEFT JOIN academic_allocation_users acu ON exam_user_attempts.academic_allocation_user_id = acu.id 
                LEFT JOIN academic_allocations ON acu.academic_allocation_id = academic_allocations.id AND academic_allocations.academic_tool_type='Exam'
-               WHERE acu.user_id = 54235 AND academic_allocations.allocation_tag_id IN (13940,13939,460,795,2490) GROUP BY acu.academic_allocation_id
+               WHERE acu.user_id = 54235 AND academic_allocations.allocation_tag_id IN (#{ats}) GROUP BY acu.academic_allocation_id
           )
           SELECT DISTINCT
             academic_allocations.id,
