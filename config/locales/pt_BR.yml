@@ -2122,6 +2122,7 @@ pt_BR:
       manage_status: Status
       manage_options: Opções
       enroll_selected: Matricular Selecionados
+      reject_selected: Rejeitar Selecionados
     status:
       pending: Pendente
       pending_reactivate: Reat. Pendente
@@ -2134,6 +2135,7 @@ pt_BR:
       enrollment_successful_update: Atualizacao realizada com sucesso
       enrollment_unsuccessful_update: Atualizacao nao realizada
       not_same_status: Selecione apenas registros com o mesmo status
+      reject_confirm: Deseja rejeitar matrícula dos selecionados?
     edit:
       students: Alunos
       group: Turma
