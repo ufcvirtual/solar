@@ -2,7 +2,7 @@ jQuery(function($){
 
   $("#all_allocations").nice_checkbox();
 
-  $('.btn_enroll_selected').click(function() {
+  $('.btn_enroll_selected, .btn_reject_selected').click(function() {
     var ch = $('.cbx_value:checked');
 
     if (ch.length == 0) { // nenhum selecionado
@@ -15,6 +15,11 @@ jQuery(function($){
           return;
         }
       }
+    }
+
+    if ($(this).data("reject") != undefined && $(this).data("reject") == true){
+      if (!confirm("<%= I18n.t('allocations.manage.reject_confirm') %>"))
+        return false;
     }
 
     var sel = new Array();
@@ -32,6 +37,7 @@ jQuery(function($){
       data: {
         "multiple": "yes",
         "enroll": "all",
+        "reject": $(this).data("reject") != undefined ? $(this).data("reject") : false
       },
       success: function(data) {
         var trs_checked = $('.cbx_value:checked').closest('tr.lines');
