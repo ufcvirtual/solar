@@ -7,95 +7,136 @@ module V1
 
       helpers do
 
+        def verify_user_permission_on_assignments_and_set_obj(permission, controler) # permission = [:index, :create, ...]
+          raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
+          @group      = Group.find(params[:group_id])
+          @group.allocation_tag.related
+          @profile_id = current_user.profiles_with_access_on(permission, controler, @group.allocation_tag.related, true).first
+          raise CanCan::AccessDenied if @profile_id.nil? || !(current_user.groups([@profile_id], Allocation_Activated).include?(@group))
+        end
+
+        def is_responsible(permission,  controler) 
+          verify_user_permission_on_assignments_and_set_obj(permission, controler)
+
+          raise  CanCan::AccessDenied unless current_user.id == params[:student_id].to_i || AllocationTag.find(@group.allocation_tag.id).is_observer_or_responsible?(current_user.id)
+        end
+
         def assignment_webconference_params
           ActionController::Parameters.new(params).require(:assignment_webconference).permit(:title, :initial_time, :duration, :is_recorded)
         end
 
       end
+      segment do
+        before do
+          verify_user_permission_on_assignments_and_set_obj(:list, :assignments)
+        end # befor
 
-      desc "Listar todos trabalhos da turma"
-      params do
-        requires :allocation_tag_id, type: Integer
-      end
-      get "/" , rabl: 'assignments/list' do
-        @assignments = Assignment.joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: params[:allocation_tag_id].to_i})
-      end
-
-      desc "Listar todas as informações de trabalhos do aluno"
-      params do
-        requires :student_id, type: Integer
-        requires :allocation_tag_id, type: Integer
-      end
-      get "/:student_id/all" , rabl: 'assignments/info' do
-        @student = User.find(params[:student_id].to_i)
-        ac = AcademicAllocation.where(allocation_tag_id: params[:allocation_tag_id].to_i, academic_tool_type: 'Assignment')
-        acus_indi = AcademicAllocationUser.where(user_id: params[:student_id].to_i).where(academic_allocation_id: ac.map(&:id))
-        acus_groups = AcademicAllocationUser.where('group_assignment_id IS NOT NULL').where(academic_allocation_id: ac.map(&:id))
-        @acus = acus_indi.concat(acus_groups)
-      end
-
-      desc "Enviar arquivo de trabalho"
-      post "/file" do
-        al = AcademicAllocation.where(allocation_tag_id: params[:allocation_tag_id].to_i).where(academic_tool_id: params[:assignment_id]).first
-        acu = AcademicAllocationUser.where(academic_allocation_id: al.id).first
-
-        af = AssignmentFile.new({academic_allocation_user_id: acu.id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
-        af.user = User.find(params[:user_id].to_i)
-        af.api = true
-        af.save!
-
-        {ok: :ok}
-      end
-
-      desc "Remover arquivo enviado"
-      params do
-        requires :id, type: Integer
-      end
-      delete "/file/:id" do
-        assignment_file = AssignmentFile.find(params[:id].to_i)
-        assignment_file.api = true
-        assignment_file.destroy
-
-        {ok: :ok}
-      end
-
-      desc "Agendar webconference de trabalho"
-      params do
-        requires :assignment_webconference, type: Hash do
-          requires :title, type: String
-          requires :initial_time, type: String
-          requires :duration, type: String
-          requires :is_recorded, type: Boolean, default: false
+        desc "Listar todos trabalhos da turma"
+        params do
+          requires :group_id, type: Integer
+        end
+        get "/" , rabl: 'assignments/list' do
+          @assignments = Assignment.joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: @group.allocation_tag.id})
         end
       end
-      post "/webconference" do
-        al = AcademicAllocation.where(allocation_tag_id: params[:allocation_tag_id].to_i).where(academic_tool_id: params[:assignment_id]).first
-        acu = AcademicAllocationUser.where(academic_allocation_id: al.id).first
+      segment do
+        before do
+          is_responsible(:list, :assignments)
+        end # befor
 
-        awf = AssignmentWebconference.new(assignment_webconference_params)
-        awf.academic_allocation_user_id = acu.id
-        awf.api_call = true
-        awf.api = true
-
-        if awf.save
-          { id: awf.id }
-        else
-          raise awf.errors.full_messages
+        desc "Listar todas as informações de trabalhos do aluno"
+        params do
+          requires :student_id, type: Integer
+          requires :group_id, type: Integer
+        end
+        get "/:student_id/all" , rabl: 'assignments/info' do
+          @student = User.find(params[:student_id].to_i)
+          ac = AcademicAllocation.where(allocation_tag_id: @group.allocation_tag.id, academic_tool_type: 'Assignment')
+          acus_indi = AcademicAllocationUser.where(user_id: @student.id).where(academic_allocation_id: ac.map(&:id))
+          acus_groups = AcademicAllocationUser.where('group_assignment_id IS NOT NULL').where(academic_allocation_id: ac.map(&:id))
+          @acus = acus_indi.concat(acus_groups)
         end
       end
 
-      desc "Remover webconference agendada"
-      params do
-        requires :id, type: Integer
-      end
-      delete "/webconference/:id" do
-        awf = AssignmentWebconference.find(params[:id].to_i)
-        awf.api = true
-        awf.destroy
+      segment do
+        before do
+          verify_user_permission_on_assignments_and_set_obj(:show, :assignments)
+        end
+        desc "Enviar arquivo de trabalho"
+        params do
+          requires :assignment_id, type: Integer
+          requires :group_id, type: Integer
+        end
+        post "/file" do
+          aloc = AcademicAllocation.where(allocation_tag_id: @group.allocation_tag.id, academic_tool_id: params[:assignment_id], academic_tool_type: 'Assignment').first
+          acu = AcademicAllocationUser.where(academic_allocation_id: aloc.id).first
 
-        {ok: :ok}
-      end
+          af = AssignmentFile.new({academic_allocation_user_id: acu.id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
+          af.user = current_user
+          af.api = true
+          af.save!
 
+          {ok: :ok}
+        end
+
+        desc "Remover arquivo enviado"
+        params do
+          requires :id, type: Integer
+          requires :group_id, type: Integer
+        end
+        delete "/file/:id" do
+          assignment_file = AssignmentFile.find(params[:id].to_i)
+          raise CanCan::AccessDenied if (assignment_file.user_id != current_user.id)
+          assignment_file.api = true
+          assignment_file.destroy
+
+          {ok: :ok}
+        end
+      end
+      segment do
+        before do
+          verify_user_permission_on_assignments_and_set_obj(:create, :assignment_webconferences)
+        end
+        desc "Agendar webconference de trabalho"
+        params do
+          requires :group_id, type: Integer
+          requires :assignment_id, type: Integer
+          requires :assignment_webconference, type: Hash do
+            requires :title, type: String
+            requires :initial_time, type: String
+            requires :duration, type: String
+            requires :is_recorded, type: Boolean, default: false
+          end
+        end
+        post "/webconference" do
+          aloc = AcademicAllocation.where(allocation_tag_id: @group.allocation_tag.id, academic_tool_id: params[:assignment_id], academic_tool_type: 'Assignment').first
+          acu = AcademicAllocationUser.where(academic_allocation_id: aloc.id).first
+     
+          awf = AssignmentWebconference.new(assignment_webconference_params)
+          awf.academic_allocation_user_id = acu.id
+          awf.api = true
+
+          if awf.save
+            { id: awf.id }
+          else
+            raise awf.errors.full_messages
+          end
+        end
+
+        desc "Remover webconference agendada"
+        params do
+          requires :group_id, type: Integer
+          requires :id, type: Integer
+        end
+        delete "/webconference/:id" do
+          awf = AssignmentWebconference.find(params[:id].to_i)
+          raise CanCan::AccessDenied unless awf.owner(current_user.id)
+          awf.api = true
+          awf.destroy
+
+          {ok: :ok}
+        end
+      end
     end
 
   end

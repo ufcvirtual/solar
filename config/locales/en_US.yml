@@ -1838,6 +1838,7 @@ en_US:
       manage_status: Status
       manage_options: Options
       enroll_selected: Enroll Selected
+      reject_selected: Reject Selected
     status:
       pending: Pending
       pending_reactivate: Pending React.
@@ -1850,6 +1851,7 @@ en_US:
       enrollment_successful_update: Successful update
       enrollment_unsuccessful_update: Unsuccessful update
       not_same_status: Select only items with the same status
+      reject_confirm: Do you want to reject selected enrollments?
     edit:
       students: Students
       group: Group

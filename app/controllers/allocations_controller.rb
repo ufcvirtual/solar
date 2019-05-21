@@ -55,9 +55,9 @@ class AllocationsController < ApplicationController
   def manage_enrolls
     allocations = Allocation.where(id: params[:id].split(','))
     authorize! :index, Allocation, on: allocations.pluck(:allocation_tag_id)
-
+    
     group, new_status = if params[:multiple].present? && params[:enroll].present?
-                          [nil, Allocation_Activated]
+                          params[:reject].present? ? [nil, Allocation_Rejected] : [nil, Allocation_Activated]
                         else
                           [Group.find_by_id(params[:allocation][:group_id]), params[:allocation][:status].to_i]
                         end
