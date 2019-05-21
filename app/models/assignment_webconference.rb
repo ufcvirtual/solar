@@ -1,7 +1,5 @@
 class AssignmentWebconference < ActiveRecord::Base
 
-  attr_accessor :api_call
-
   include Bbb
   include ControlledDependency
   include SentActivity
@@ -30,7 +28,7 @@ class AssignmentWebconference < ActiveRecord::Base
   validates :academic_allocation_user_id, presence: true
 
   def can_change?
-    raise CanCan::AccessDenied unless api_call? || is_owner?
+    raise CanCan::AccessDenied unless api || is_owner?
     raise 'date_range'         unless assignment.in_time?
   end
 
@@ -120,10 +118,6 @@ class AssignmentWebconference < ActiveRecord::Base
 
     errors.add(:initial_time, I18n.t('assignments.error.not_range_webconference')) unless (initial_time.between?(startt,endt) && time_webconference.between?(startt,endt))
     errors.add(:initial_time,  I18n.t('assignments.error.invalid_datetime')) if !(initial_time.blank?) && (initial_time < Date.current)
-  end
-
-  def api_call?(value = false)
-    @api_call = @api_call ? @api_call : value
   end
 
 end
