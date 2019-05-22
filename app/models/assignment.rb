@@ -99,6 +99,15 @@ class Assignment < Event
 
   end
 
+  def comments_by_user(user_id)
+    return [] if user_id.blank?
+    acu = AcademicAllocationUser.joins('LEFT JOIN group_participants ON academic_allocation_users.group_assignment_id = group_participants.group_assignment_id ')
+              .where("(group_participants.user_id = #{user_id} OR academic_allocation_users.user_id = #{user_id})")
+              .where(academic_allocation_id: academic_allocations.map(&:id)).first
+    return [] if acu.blank?
+    acu.comments
+  end
+
   def situation(has_files, has_group, grade = nil, working_hours = nil, has_comments=[])
     case
     when !started? then 'not_started'

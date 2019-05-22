@@ -10,6 +10,7 @@ module V1
         def verify_user_permission_on_assignments_and_set_obj(permission, controler) # permission = [:index, :create, ...]
           raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
           @group      = Group.find(params[:group_id])
+          @at = AllocationTag.find_by_group_id(@group.id)
           @group.allocation_tag.related
           @profile_id = current_user.profiles_with_access_on(permission, controler, @group.allocation_tag.related, true).first
           raise CanCan::AccessDenied if @profile_id.nil? || !(current_user.groups([@profile_id], Allocation_Activated).include?(@group))
@@ -18,7 +19,7 @@ module V1
         def is_responsible(permission,  controler) 
           verify_user_permission_on_assignments_and_set_obj(permission, controler)
 
-          raise  CanCan::AccessDenied unless current_user.id == params[:student_id].to_i || AllocationTag.find(@group.allocation_tag.id).is_observer_or_responsible?(current_user.id)
+          raise  CanCan::AccessDenied unless current_user.id == params[:student_id].to_i || AllocationTag.find(@at.id).is_observer_or_responsible?(current_user.id)
         end
 
         def assignment_webconference_params
@@ -36,7 +37,8 @@ module V1
           requires :group_id, type: Integer
         end
         get "/" , rabl: 'assignments/list' do
-          @assignments = Assignment.joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: @group.allocation_tag.id})
+          @is_student = current_user.is_student?([@at.id])
+          @assignments = Assignment.joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: @at.id})
         end
       end
       segment do
@@ -51,7 +53,7 @@ module V1
         end
         get "/:student_id/all" , rabl: 'assignments/info' do
           @student = User.find(params[:student_id].to_i)
-          ac = AcademicAllocation.where(allocation_tag_id: @group.allocation_tag.id, academic_tool_type: 'Assignment')
+          ac = AcademicAllocation.where(allocation_tag_id: @at.id, academic_tool_type: 'Assignment')
           acus_indi = AcademicAllocationUser.where(user_id: @student.id).where(academic_allocation_id: ac.map(&:id))
           acus_groups = AcademicAllocationUser.where('group_assignment_id IS NOT NULL').where(academic_allocation_id: ac.map(&:id))
           @acus = acus_indi.concat(acus_groups)
@@ -68,7 +70,7 @@ module V1
           requires :group_id, type: Integer
         end
         post "/file" do
-          aloc = AcademicAllocation.where(allocation_tag_id: @group.allocation_tag.id, academic_tool_id: params[:assignment_id], academic_tool_type: 'Assignment').first
+          aloc = AcademicAllocation.where(allocation_tag_id: @at.id, academic_tool_id: params[:assignment_id], academic_tool_type: 'Assignment').first
           acu = AcademicAllocationUser.where(academic_allocation_id: aloc.id).first
 
           af = AssignmentFile.new({academic_allocation_user_id: acu.id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
@@ -109,7 +111,7 @@ module V1
           end
         end
         post "/webconference" do
-          aloc = AcademicAllocation.where(allocation_tag_id: @group.allocation_tag.id, academic_tool_id: params[:assignment_id], academic_tool_type: 'Assignment').first
+          aloc = AcademicAllocation.where(allocation_tag_id: @at.id, academic_tool_id: params[:assignment_id], academic_tool_type: 'Assignment').first
           acu = AcademicAllocationUser.where(academic_allocation_id: aloc.id).first
      
           awf = AssignmentWebconference.new(assignment_webconference_params)
