@@ -130,8 +130,8 @@ class ScheduleEventFilesController < ApplicationController
       ac = AcademicAllocation.where("academic_tool_id = ? AND allocation_tag_id = ? AND academic_tool_type = 'ScheduleEvent'" ,params[:tool_id], params[:allocation_tags_ids]).first
 
       params[:schedule_event_files][:files].each do |file|
-        matricula = file.original_filename.strip.scan(/\d+/).first
-        al = Allocation.where("matricula = ? AND matricula IS NOT NULL", matricula).first
+        enrollment = file.original_filename.strip.scan(/\d+/).first
+        al = Allocation.where("enrollment = ? AND enrollment IS NOT NULL", enrollment).first
 
         if al.nil?
           errors << t('schedule_event_files.error.student_not_found', file_name: file.original_filename)
