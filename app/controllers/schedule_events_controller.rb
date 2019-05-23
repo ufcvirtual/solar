@@ -171,9 +171,9 @@ class ScheduleEventsController < ApplicationController
       end
 
       student = User.find(params[:student_id]) unless params[:student_id].blank?
-      matricula = Allocation.where(user_id: params[:student_id], allocation_tag_id: @allocation_tags_ids.first, status: 1).first.matricula unless params[:student_id].blank?
+      enrollment = Allocation.where(user_id: params[:student_id], allocation_tag_id: @allocation_tags_ids.first, status: 1).first.enrollment unless params[:student_id].blank?
 
-      normalize_exam_header(html, student, matricula, profs, tutors, @event, allocation_tag.get_curriculum_unit, @course.name, coord)
+      normalize_exam_header(html, student, enrollment, profs, tutors, @event, allocation_tag.get_curriculum_unit, @course.name, coord)
 
       pictures_with_abs_path html
 
@@ -196,12 +196,12 @@ class ScheduleEventsController < ApplicationController
       html.sub!(pattern, name)
     end
 
-    def normalize_exam_header(html, student, matricula, profs, tutors, event, curriculum_unit, course_name, coord)
+    def normalize_exam_header(html, student, enrollment, profs, tutors, event, curriculum_unit, course_name, coord)
       fill_field_info html, /curso:(\s*\n*\t*(&nbsp;)*)_*/i, "Curso: <b>#{course_name}</b>" unless course_name.blank?
       fill_field_info html, /disciplina:(\s*\n*\t*(&nbsp;)*)_*/i, "Disciplina: <b>#{curriculum_unit.code} - #{curriculum_unit.name}</b>" unless curriculum_unit.nil?
       # fill_field_info html, /(coordenador\(a\)(\s*\n*\t*(&nbsp;)*)do(\s*\n*\t*(&nbsp;)*)curso:|coordenador\(a\)(\s*\n*\t*(&nbsp;)*)da(\s*\n*\t*(&nbsp;)*)curso:|coordenador:(\s*\n*\t*(&nbsp;)*)coordenador\(a\)(\s*\n*\t*(&nbsp;)*)de(\s*\n*\t*(&nbsp;)*)curso:)/i, "Coordenador(a) do curso: #{coord.name}<br>" unless coord.nil?
       fill_field_info html, /(nome(\s*\n*\t*(&nbsp;)*)do\(a\)(\s*\n*\t*(&nbsp;)*)aluno\(a\):(\s*\n*\t*(&nbsp;)*)|nome(\s*\n*\t*(&nbsp;)*)do(\s*\n*\t*(&nbsp;)*)aluno:|aluno:)_*/i, "Nome do(a) aluno(a): <b>#{student.name}</b>" unless student.nil?
-      fill_field_info html, /(matricula:(\s*\n*\t*(&nbsp;)*)|matrícula:(\s*\n*\t*(&nbsp;)*))_*/i, "Matrícula: <b>#{matricula}</b>" unless matricula.blank?
+      fill_field_info html, /(matricula:(\s*\n*\t*(&nbsp;)*)|matrícula:(\s*\n*\t*(&nbsp;)*))_*/i, "Matrícula: <b>#{enrollment}</b>" unless enrollment.blank?
       unless event.blank?
         fill_field_info html, /prova:(\s*\n*\t*(&nbsp;)*)_*/i, "Prova: <b>#{event.title}</b>"
         fill_field_info html, /data:(\s*\n*\t*(&nbsp;)*)_*/i, "Data: <b>#{event.get_date}</b>"
