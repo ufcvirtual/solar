@@ -70,15 +70,20 @@ module V1
           requires :group_id, type: Integer
         end
         post "/file" do
+          assignment = Assignment.find(params[:assignment_id])
           aloc = AcademicAllocation.where(allocation_tag_id: @at.id, academic_tool_id: params[:assignment_id], academic_tool_type: 'Assignment').first
-          acu = AcademicAllocationUser.where(academic_allocation_id: aloc.id).first
+          group_id = assignment.type_assignment.to_i == Assignment_Type_Individual ? nil : GroupAssignment.by_user_id(current_user.id, aloc.id).id
+          acu = AcademicAllocationUser.find_or_create_one(aloc.id, @at.id, current_user.id, group_id, true, nil)
 
           af = AssignmentFile.new({academic_allocation_user_id: acu.id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
           af.user = current_user
           af.api = true
-          af.save!
 
-          {ok: :ok}
+          if af.save!
+            { id: af.id }
+          else
+            raise af.errors.full_messages.join(', ')
+          end
         end
 
         desc "Remover arquivo enviado"
@@ -111,8 +116,10 @@ module V1
           end
         end
         post "/webconference" do
+          assignment = Assignment.find(params[:assignment_id])
           aloc = AcademicAllocation.where(allocation_tag_id: @at.id, academic_tool_id: params[:assignment_id], academic_tool_type: 'Assignment').first
-          acu = AcademicAllocationUser.where(academic_allocation_id: aloc.id).first
+          group_id = assignment.type_assignment.to_i == Assignment_Type_Individual ? nil : GroupAssignment.by_user_id(current_user.id, aloc.id).id
+          acu = AcademicAllocationUser.find_or_create_one(aloc.id, @at.id, current_user.id, group_id, true, nil)
      
           awf = AssignmentWebconference.new(assignment_webconference_params)
           awf.academic_allocation_user_id = acu.id
@@ -121,7 +128,7 @@ module V1
           if awf.save
             { id: awf.id }
           else
-            raise awf.errors.full_messages
+            raise awf.errors.full_messages.join(', ')
           end
         end
 
