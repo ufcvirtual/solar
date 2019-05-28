@@ -37,10 +37,27 @@ module V1
           requires :group_id, type: Integer
         end
         get "/" , rabl: 'assignments/list' do
-          @is_student = current_user.is_student?([@at.id])
+          @is_student  = !@at.is_observer_or_responsible?(current_user.id)
           @assignments = Assignment.joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: @at.id})
         end
       end
+
+      segment do
+        before do
+          is_responsible(:list, :assignments)
+        end # befor
+
+        desc "Listar todas as informações de trabalhos do aluno"
+        params do
+          requires :assignment_id, type: Integer
+          requires :group_id, type: Integer
+        end
+        get "/:assignment_id/participants" , rabl: 'assignments/index' do
+          @assignment = Assignment.find(params[:assignment_id].to_i)
+          @objects =  @assignment.type_assignment.to_i == Assignment_Type_Individual ? AllocationTag.get_participants(@at.id, { students: true }) : @assignment.groups_assignments(@at.id)
+        end
+      end
+
       segment do
         before do
           is_responsible(:list, :assignments)
