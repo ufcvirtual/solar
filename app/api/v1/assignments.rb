@@ -37,10 +37,27 @@ module V1
           requires :group_id, type: Integer
         end
         get "/" , rabl: 'assignments/list' do
-          @is_student = current_user.is_student?([@at.id])
+          @is_student  = !@at.is_observer_or_responsible?(current_user.id)
           @assignments = Assignment.joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: @at.id})
         end
       end
+
+      segment do
+        before do
+          is_responsible(:list, :assignments)
+        end # befor
+
+        desc "Listar todas as informações de trabalhos do aluno"
+        params do
+          requires :assignment_id, type: Integer
+          requires :group_id, type: Integer
+        end
+        get "/:assignment_id/participants" , rabl: 'assignments/index' do
+          @assignment = Assignment.find(params[:assignment_id].to_i)
+          @objects =  @assignment.type_assignment.to_i == Assignment_Type_Individual ? AllocationTag.get_participants(@at.id, { students: true }) : @assignment.groups_assignments(@at.id)
+        end
+      end
+
       segment do
         before do
           is_responsible(:list, :assignments)
@@ -70,15 +87,20 @@ module V1
           requires :group_id, type: Integer
         end
         post "/file" do
+          assignment = Assignment.find(params[:assignment_id])
           aloc = AcademicAllocation.where(allocation_tag_id: @at.id, academic_tool_id: params[:assignment_id], academic_tool_type: 'Assignment').first
-          acu = AcademicAllocationUser.where(academic_allocation_id: aloc.id).first
+          group_id = assignment.type_assignment.to_i == Assignment_Type_Individual ? nil : GroupAssignment.by_user_id(current_user.id, aloc.id).id
+          acu = AcademicAllocationUser.find_or_create_one(aloc.id, @at.id, current_user.id, group_id, true, nil)
 
           af = AssignmentFile.new({academic_allocation_user_id: acu.id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
           af.user = current_user
           af.api = true
-          af.save!
 
-          {ok: :ok}
+          if af.save!
+            { id: af.id }
+          else
+            raise af.errors.full_messages.join(', ')
+          end
         end
 
         desc "Remover arquivo enviado"
@@ -111,8 +133,10 @@ module V1
           end
         end
         post "/webconference" do
+          assignment = Assignment.find(params[:assignment_id])
           aloc = AcademicAllocation.where(allocation_tag_id: @at.id, academic_tool_id: params[:assignment_id], academic_tool_type: 'Assignment').first
-          acu = AcademicAllocationUser.where(academic_allocation_id: aloc.id).first
+          group_id = assignment.type_assignment.to_i == Assignment_Type_Individual ? nil : GroupAssignment.by_user_id(current_user.id, aloc.id).id
+          acu = AcademicAllocationUser.find_or_create_one(aloc.id, @at.id, current_user.id, group_id, true, nil)
      
           awf = AssignmentWebconference.new(assignment_webconference_params)
           awf.academic_allocation_user_id = acu.id
@@ -121,7 +145,7 @@ module V1
           if awf.save
             { id: awf.id }
           else
-            raise awf.errors.full_messages
+            raise awf.errors.full_messages.join(', ')
           end
         end
 

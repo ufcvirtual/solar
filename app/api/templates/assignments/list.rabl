@@ -7,6 +7,14 @@ attributes :id, :name, :enunciation, :start_hour, :end_hour, :controlled
   node(:type_assignment) { |assign| assign.type_assignment == 0 ? :individual : :group}
   node(:start_date) { |assign| assign.schedule.start_date}
   node(:end_date) { |assign| assign.schedule.end_date}
+  node :enunciation_files do |assign|
+    assign.enunciation_files.map do |file|
+      {
+        file_name: file.attachment_file_name,
+        url: download_assignments_url(id: file.id)
+      }
+    end
+  end
 
   if @is_student
 	  node(:grade) { |assign| assign.info(current_user.id, @at.id)[:grade] || 0 }
@@ -22,5 +30,7 @@ attributes :id, :name, :enunciation, :start_hour, :end_hour, :controlled
 		    }
 		  end
 		}
+	else
+		node(:students) { |assign|  "/api/v1/assignments/#{assign.id}/participants/?group_id=#{@group.id}"}
 	end
 end
