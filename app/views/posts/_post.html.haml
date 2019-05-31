@@ -3,7 +3,8 @@
 
 - children = post.reordered_children(current_user.id, display_mode)
 - editable = ((post.user_id == current_user.id) && (post.children_count == 0 || post.children_drafts_count == post.children_count))
-- unread_post =  (!@last_access_date_user.nil? && @last_access_date_user.created_at < post.created_at) ? ' new' : ''
+- unread_post =  class_css_post_unread(@ual, post)
+
 - files    = post.files
 - evaluate = @can_evaluate || ((post.user_id == current_user.id) && @academic_allocation.try(:evaluative))
 - frequency = @can_evaluate || ((post.user_id == current_user.id) && @academic_allocation.try(:frequency))

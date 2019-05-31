@@ -1,11 +1,12 @@
 class PostsController < ApplicationController
   require "em-websocket"
-
+  include PostsHelper
   include SysLog::Actions
 
   # before_filter :authenticate_user!
   before_filter :prepare_for_pagination
   before_filter :set_current_user, only: [:destroy, :create, :update, :publish, :post_files]
+  after_filter  :update_ual, only: [:create, :update, :publish, :show, :post_files, :destroy]
 
   load_and_authorize_resource except: [:index, :user_posts, :create, :show, :evaluate, :publish, :post_files]
 
@@ -18,10 +19,9 @@ class PostsController < ApplicationController
     else
       @discussion, @user = Discussion.find(params[:discussion_id]), current_user
 
-      @last_access_date_user = LogNavigationSub.after_post_discussion_user(@user.id, @discussion.id).first
-
       @academic_allocation = AcademicAllocation.where(academic_tool_id: @discussion.id, academic_tool_type: 'Discussion', allocation_tag_id: [active_tab[:url][:allocation_tag_id], AllocationTag.find_by_offer_id(active_tab[:url][:id]).id]).first
       authorize! :index, Discussion, { on: [@allocation_tags = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.pluck(:id)], read: true }
+      @ual = UserAccessLast.find_or_create_or_update_one(@academic_allocation.id, current_user.id, true)
 
       @researcher = current_user.is_researcher?(AllocationTag.where(id: @allocation_tags).map(&:related).flatten.uniq)
       @class_participants = AllocationTag.get_participants(active_tab[:url][:allocation_tag_id], { all: true }).map(&:id)
@@ -140,6 +140,7 @@ class PostsController < ApplicationController
   def publish
     @post = Post.find(params[:id])
     @post.update_attributes draft: false
+
     render json: { success: true, post_id: @post.id, discussion_id: @post.discussion.id, content: @post.content, ac_id: @post.academic_allocation_id, parent_id: @post.parent_id }, status: :ok
   rescue => error
     render_json_error(error, 'discussions.error')
@@ -147,18 +148,18 @@ class PostsController < ApplicationController
 
   ## GET /discussions/:id/posts/1
   def show
-    post = Post.find(params[:id])
-    post = post.grandparent(level = 1) if params[:grandparent] == "true"
+    @post = Post.find(params[:id])
+    @post = post.grandparent(level = 1) if params[:grandparent] == "true"
 
     allocation_tag_id = active_tab[:url][:allocation_tag_id]
-    can_interact = post.discussion.user_can_interact?(current_user.id)
+    can_interact = @post.discussion.user_can_interact?(current_user.id)
     can_post = can?(:create, Post, on: [allocation_tag_id])
     @can_evaluate = (can? :evaluate, Discussion, {on: [@allocation_tags]})
 
     @researcher = (params[:researcher] == "true" or params[:researcher] == true)
     @class_participants = AllocationTag.get_participants(allocation_tag_id, { all: true }).map(&:id)
 
-    render partial: 'post', locals: { post: post, display_mode: nil, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: (params[:new_post] ? params[:id] : nil) }
+    render partial: 'post', locals: { post: @post, display_mode: nil, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: (params[:new_post] ? params[:id] : nil) }
   end
 
   ## DELETE /posts/1
@@ -174,13 +175,13 @@ class PostsController < ApplicationController
 
   # render files to update a post
   def post_files
-    post = Post.find(params[:id])
-    post.can_change?
+    @post = Post.find(params[:id])
+    @post.can_change?
     respond_to do |format|
-      format.json { render json: post.files }
+      format.json { render json: @post.files }
     end
   rescue
-    render json: { alert: post.errors.full_messages.join('; ') }, status: :unprocessable_entity
+    render json: { alert: @post.errors.full_messages.join('; ') }, status: :unprocessable_entity
   end
 
   private
