@@ -153,7 +153,7 @@ class Allocation < ActiveRecord::Base
   end
 
   def self.enrollments(args = {})
-    joins(allocation_tag: {group: :offer}, user: {}).where(query_for_enrollments(args), args).order("users.name")
+    joins(allocation_tag: [ {group: [offer: [ {semester: :enrollment_schedule} ] ] } ], user: {}).where(query_for_enrollments(args), args).order("users.name")
   end
 
   def self.pending
@@ -440,7 +440,15 @@ class Allocation < ActiveRecord::Base
       if args.any?
         query << "groups.offer_id = :offer_id" if args[:offer_id].present?
         query << "groups.id IN (:group_id)" if args[:group_id].present?
-        query << "allocations.status = :status" if args[:status].present?
+
+        if args[:status].present?
+          query << "allocations.status = :status"
+
+          if args[:status] == Allocation_Pending
+            query << "((current_date >= schedules.start_date OR schedules.start_date IS NULL) AND (current_date <= schedules.end_date OR schedules.end_date IS NULL))"
+          end
+
+        end
 
         if args[:user_search].present?
           user_search = [args[:user_search].split(" ").compact.join("%"), "%"].join
