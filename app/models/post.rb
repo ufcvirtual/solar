@@ -173,10 +173,12 @@ class Post < ActiveRecord::Base
     end
   end
 
-  def self.count_post_unread_by_user(user_id, discussion_id, allocation_tags)
-    last_access_date_user = LogNavigationSub.after_post_discussion_user(user_id, discussion_id).first
-    where = last_access_date_user.nil? ? "" : "discussion_posts.created_at > '#{last_access_date_user.created_at}'"
-    Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: allocation_tags, academic_tool_id: discussion_id, academic_tool_type: 'Discussion' },  draft: false)
+  def self.count_post_unread_by_user(user_id, discussion_id, allocation_tag_ids)
+    old_post_date =  YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["posts"]["old_post_date"]
+    academic_allocation = AcademicAllocation.where(academic_tool_id: discussion_id, academic_tool_type: 'Discussion', allocation_tag_id: allocation_tag_ids).first
+    ual = UserAccessLast.find_or_create_or_update_one(academic_allocation.id, user_id, false)
+    where = ual.date_last_access.nil? ? "discussion_posts.created_at > '#{old_post_date}'" : "discussion_posts.created_at > '#{ual.date_last_access}'"
+    Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: allocation_tag_ids, academic_tool_id: discussion_id, academic_tool_type: 'Discussion' },  draft: false)
     .where(where).select("DISTINCT discussion_posts.id").count
   end
 

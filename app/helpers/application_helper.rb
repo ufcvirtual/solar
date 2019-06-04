@@ -118,4 +118,17 @@ module ApplicationHelper
     render json: { success: false, alert: (message.nil? ? error_message : error.message) }, status: :unprocessable_entity
   end
 
+  def class_css_post_unread(ual, post)
+    old_posts_date =  YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["posts"]["old_post_date"]
+    if current_user.id == post.user_id || old_posts_date > post.created_at
+        class_css = ' '
+    elsif ual.nil? 
+      class_css = ' new'
+    elsif ual.date_last_access.nil? || ual.date_last_access < post.created_at
+      class_css = ' new'
+    else
+      class_css = ' '
+    end
+  end
+
 end

@@ -34,6 +34,7 @@ class User < ActiveRecord::Base
   has_many :assignment_files
   has_many :questions
   has_many :academic_allocation_users
+  has_many :user_access_lasts
   has_many :chat_messages
   has_many :public_files
   has_many :user_contacts, foreign_key: 'user_related_id'
