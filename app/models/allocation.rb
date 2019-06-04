@@ -443,9 +443,12 @@ class Allocation < ActiveRecord::Base
 
         if args[:status].present?
           query << "allocations.status = :status"
-
-          if args[:status] == Allocation_Pending
+          if args[:status] == Allocation_Pending && !args[:pending_old]
             query << "((current_date >= schedules.start_date OR schedules.start_date IS NULL) AND (current_date <= schedules.end_date OR schedules.end_date IS NULL))"
+          end
+          
+          if args[:pending_old]
+            query << "schedules.end_date < current_date" 
           end
 
         end
