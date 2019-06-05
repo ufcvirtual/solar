@@ -6,7 +6,8 @@ module AllocationsHelper
       Allocation_Activated          => (enroll ? t("allocations.status.enrolled") : t("allocations.status.activated")),
       Allocation_Cancelled          => t("allocations.status.cancelled"),
       Allocation_Rejected           => t("allocations.status.rejected"),
-      Allocation_Merged             => t("allocations.status.merged") }
+      Allocation_Merged             => t("allocations.status.merged") ,
+      Allocation_Pending_Old        => t("allocations.status.old")}
   end
 
   def name_of(status, enroll = true)

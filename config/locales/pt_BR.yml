@@ -2131,6 +2131,7 @@ pt_BR:
       cancelled: Cancelado
       rejected: Rejeitado
       merged: Aglutinado
+      old: Pendentes Antigos
     manage:
       enrollment_successful_update: Atualizacao realizada com sucesso
       enrollment_unsuccessful_update: Atualizacao nao realizada

@@ -1847,6 +1847,7 @@ en_US:
       cancelled: Cancelled
       rejected: Rejected
       merged: Merged
+      old: Pending Old
     manage:
       enrollment_successful_update: Successful update
       enrollment_unsuccessful_update: Unsuccessful update

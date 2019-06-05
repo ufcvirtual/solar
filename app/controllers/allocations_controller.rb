@@ -33,10 +33,11 @@ class AllocationsController < ApplicationController
     groups = groups_that_user_have_permission.map(&:id)
 
     @allocations = []
-    @status = params[:status] || 0 # pendentes
+    @status = params[:status].to_i == Allocation_Pending_Old ? Allocation_Pending : params[:status].to_i || Allocation_Pending
+    
+    pending_old = params[:status].to_i == Allocation_Pending_Old ? true : false
 
-    @allocations = Allocation.enrollments(status: @status, group_id: groups, user_search: params[:user_search]).paginate(page: params[:page]) if groups.any?
-
+    @allocations = Allocation.enrollments(status: @status, group_id: groups, user_search: params[:user_search], pending_old: pending_old).paginate(page: params[:page]) if groups.any?
     render partial: 'enrollments', layout: false if params[:filter]
   end
 
