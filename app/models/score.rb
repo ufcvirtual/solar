@@ -13,6 +13,33 @@ class Score # < ActiveRecord::Base
     [history_access, public_files, count_access]
   end
 
+  def self.check_open_activity_without_note(ats)
+    activity_not_evaluated = false
+    activity_open = false
+
+    scores_ev = Score.evaluative_frequency(ats, 'evaluative')
+    scores_ev.each do |s|
+      if s.end_date < Date.today && s.grade.nil?
+        activity_not_evaluated = true
+      end
+      if s.end_date > Date.today
+        activity_open = true
+      end
+    end
+    if activity_not_evaluated==false || activity_open == false
+      scores_fr = Score.evaluative_frequency(ats, 'frequency')
+      scores_fr.each do |s|
+        if s.end_date < Date.today && s.wh.nil?
+          activity_not_evaluated = true
+        end
+        if s.end_date > Date.today
+          activity_open = true
+        end
+      end
+    end
+    [activity_not_evaluated, activity_open]
+  end
+
   def self.list_tool(user_id, at_id, tool='all', evaluative=false, frequency=false, all=false, others=false, type=nil)
     evaluated_status = if frequency
       "WHEN academic_allocation_users.working_hours IS NOT NULL OR academic_allocation_users.comments_count > 0 THEN 'evaluated'"

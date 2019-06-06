@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user!, except: [:verify_cpf, :api_download, :lesson_media, :tutorials, :privacy_policy, :comment_media] # devise
   before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im, :get_theme
   after_filter :log_navigation
-  before_filter :verify_bloq_register_notes
+  before_filter :verify_block_register_notes
 
   # before_filter :check_concurrent_session
 
@@ -129,8 +129,8 @@ class ApplicationController < ActionController::Base
     @can_select_group = true
   end
 
-  def verify_bloq_register_notes
-    @bloq_register_notes = AllocationTag.find(active_tab[:url][:allocation_tag_id]).bloq_register_notes unless active_tab.nil? || active_tab[:url][:allocation_tag_id].blank?
+  def verify_block_register_notes
+    @block_register_notes = AllocationTag.find(active_tab[:url][:allocation_tag_id]).block_register_notes unless active_tab.nil? || active_tab[:url][:allocation_tag_id].blank?
   end
 
   def get_group_allocation_tag

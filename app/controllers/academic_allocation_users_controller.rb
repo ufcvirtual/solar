@@ -5,27 +5,21 @@ class AcademicAllocationUsersController < ApplicationController
   def evaluate
     authorize! :evaluate, params[:tool].constantize, on: [at_id = active_tab[:url][:allocation_tag_id]]
 
-    allocation_tag = AllocationTag.find(at_id)
-    if allocation_tag.bloq_register_notes == true
-      render json: { success: false, alert: t("scores.index.msg_button_register_off") }, status: :unprocessable_entity
-    else  
+    result = AcademicAllocationUser.create_or_update(params[:tool], params[:id], at_id, {user_id: acu_params[:user_id], group_assignment_id: acu_params[:group_id]}, {grade: acu_params[:grade], working_hours: acu_params[:working_hours]})
+    if params[:tool] == Exam
+      Exam.find(params[:id]).recalculate_grades(acu_params[:user_id]) rescue nil
+    end
+    @academic_allocation_user = AcademicAllocationUser.where(id: result[:id]).first
+    errors = result[:errors]
+    score = Score.evaluative_frequency_situation(at_id, acu_params[:user_id], acu_params[:group_id], params[:id], params[:tool].downcase, acu_params[:score_type]).first.situation
 
-      result = AcademicAllocationUser.create_or_update(params[:tool], params[:id], at_id, {user_id: acu_params[:user_id], group_assignment_id: acu_params[:group_id]}, {grade: acu_params[:grade], working_hours: acu_params[:working_hours]})
-      if params[:tool] == Exam
-        Exam.find(params[:id]).recalculate_grades(acu_params[:user_id]) rescue nil
-      end
-      @academic_allocation_user = AcademicAllocationUser.where(id: result[:id]).first
-      errors = result[:errors]
-      score = Score.evaluative_frequency_situation(at_id, acu_params[:user_id], acu_params[:group_id], params[:id], params[:tool].downcase, acu_params[:score_type]).first.situation
-
-      if errors.any?
-        render json: { success: false, alert: errors.join("<br/>") }, status: :unprocessable_entity
+    if errors.any?
+      render json: { success: false, alert: errors.join("<br/>") }, status: :unprocessable_entity
+    else
+      if !@academic_allocation_user.academic_allocation.try(:equivalent_academic_allocation_id).blank? && AcademicAllocationUser.where(academic_allocation_id: @academic_allocation_user.academic_allocation.equivalent_academic_allocation_id, user_id: @academic_allocation_user.user_id).any?
+        render json: { success: true, warning: t('academic_allocation_users.warning.equivalency_evaluated'), situation: t("scores.index.#{score}"), class_td: score, situation_complete: t(score.to_sym) }
       else
-        if !@academic_allocation_user.academic_allocation.try(:equivalent_academic_allocation_id).blank? && AcademicAllocationUser.where(academic_allocation_id: @academic_allocation_user.academic_allocation.equivalent_academic_allocation_id, user_id: @academic_allocation_user.user_id).any?
-          render json: { success: true, warning: t('academic_allocation_users.warning.equivalency_evaluated'), situation: t("scores.index.#{score}"), class_td: score, situation_complete: t(score.to_sym) }
-        else
-          render json: { success: true, notice: t('academic_allocation_users.success.evaluated'), situation: t("scores.index.#{score}"), class_td: score, situation_complete: t(score.to_sym) }
-        end
+        render json: { success: true, notice: t('academic_allocation_users.success.evaluated'), situation: t("scores.index.#{score}"), class_td: score, situation_complete: t(score.to_sym) }
       end
     end
   rescue => errors

@@ -29,7 +29,7 @@
                 %td{headers:'evaluate'}
 
                   - if log.is_student == true 
-                    = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: @bloq_register_notes ? '' : 'evaluate_web(this)', :'data-url' => user_access_webconference_path(@webconference, user_id: log.user_id, back:true), disabled: @bloq_register_notes, class: 'btn evaluate', :"data-tooltip" => (@bloq_register_notes ? t("scores.index.msg_button_register_off") : t('.evaluate'))
+                    = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: 'evaluate_web(this)', :'data-url' => user_access_webconference_path(@webconference, user_id: log.user_id, back:true),  class: 'btn evaluate', :"data-tooltip" => t('.evaluate')
               %td.profile{headers:'profile'}= '(' + log.profile_name + ')'
               %td.user{headers:'user'}= (@researcher ? t(:hidden_info) : log.user_name)
               %td{headers:'group'}= AllocationTag.find(log.at_id).info

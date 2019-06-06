@@ -182,8 +182,8 @@ $(function(){
 
 });
 
-function set_register_notes(btn, confirme, button_register){
-  if(confirme==true && button_register==false){
+function set_register_notes(btn, activity_not_evaluated, button_register){
+  if(activity_not_evaluated==true && button_register==false){
     if (!confirm("<%=I18n.t('scores.index.confirm2')%>"))
       return false;
   }
