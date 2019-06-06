@@ -179,7 +179,16 @@ class EditionsController < ApplicationController
     allocation_tags = AllocationTag.where(id: allocation_tags_ids)
     authorize! :tool_management, Edition, { on: allocation_tags_ids }
 
+    groups = Group.joins(:allocation_tag).where(allocation_tags: { id: allocation_tags_ids })
+    groups_block_register_notes = []
+    groups.each do |g|
+      if g.allocation_tag.block_register_notes
+        groups_block_register_notes << g.name
+      end 
+    end
+    
     errors = []
+    errors << t('editions.tool_management.groups_block_register_notes_error', groups: groups_block_register_notes.join(', ')) if groups_block_register_notes.count > 0
 
     at = allocation_tags.where('group_id IS NOT NULL OR offer_id IS NOT NULL')
 

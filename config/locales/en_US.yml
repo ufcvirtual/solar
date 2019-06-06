@@ -2569,6 +2569,7 @@ en_US:
       rule_final_exam_passing_grade: "<div> 10) <b>Minimum final grade to approval after final exam: %{final_exam_passing_grade}</b></div>"
       rule_window_analyzer: "<div> 11) The <b>Analyzer</b> is a tool that allows you to execute correctly activities configurations. By pressing shortcut 'A' or clicking on 'Analyzer' link, a window will show up. It will show the calculation, at real time, of groups <b>final weight</b> and  <b>working hours</b>. In way that will be easier to identify which groups are with final weight 100 and working hours equal to the informed on these instructions. The green text  ilustrates that the calculation is OK and the red text shows that there are something wrong with the calculation: there are more or less hours or final weight. When everything is green or when all final weight are 100 and the working hours are the same as showned at these instructions, click on 'Finish'</div>"
       groups_block_register_notes: "<div> 12) The class (s): <b> %{groups}</b> are with the blocked note register.</div>"
+      groups_block_register_notes_error: "The class (s): <b> %{groups}</b> are with the blocked note register."
       expand: Expand all
       compress: Compress all
       share_wh: Share working/hours

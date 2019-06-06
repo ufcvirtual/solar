@@ -426,7 +426,6 @@ class ScoresController < ApplicationController
     allocation_tag = AllocationTag.find(allocation_tag_id)
     activity_not_evaluated, activity_open =  Score.check_open_activity_without_note(allocation_tag.related.join(','))
 
-
     raise "date" if activity_open && allocation_tag.block_register_notes==false
 
     allocation_tag.block_register_notes = allocation_tag.block_register_notes==true ? false : true
