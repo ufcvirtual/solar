@@ -1,0 +1,236 @@
+- groups = (!@selected.nil? && @selected == 'GROUP')
+.block_wrapper.list_tool_items_import{ :"data-link-list" => import_tool_items_list_editions_path(allocation_tags_ids: @allocation_tags_ids) }
+  -# -  unless @tools.empty? && @support_materials.empty? && @bibliographies.empty?
+  -  unless (@tools.nil? || @tools.empty?) && (@support_materials.nil? || @support_materials.empty?) && (@bibliographies.nil? || @bibliographies.empty?)
+    - @tools.each do |items|
+      - next if items[0].eql? 'Exam'
+      %div.block_title.import_editions_title
+        %h2
+          - tools_items = items[1]
+          - tool_type = items[0]
+          .icons
+            = link_to content_tag(:i, nil, class: 'invisible icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), "##{tool_type}", onclick: 'hide_or_show(this)'
+            = link_to content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), "##{tool_type}", onclick: 'hide_or_show(this)'
+            = link_to t(tool_type.tableize.singularize, scope: [:activerecord, :models]), "##{tool_type}", onclick: 'hide_or_show(this)'
+      - unless @tools.nil? || @tools.empty?
+        .responsive-table{class: 'invisible'}
+          %table.tb_list
+            %thead
+              %tr.lines
+                %th.center.no_sort{style: 'width: 25px;'}
+                  = check_box_tag "all_tool_items_#{tool_type}", false, false, class: "all_tool_items"
+                %th{id: 'tool-title'}= t('.name')
+                %th.center{id: 'tool-data-range', style: 'width: 21%;'}= tool_type == "Webconference" ? t('.initial_date') : t('.data_range')
+                - if tool_type == "Assignment"
+                  %th.center{id: 'tool-type-assignment'}= t(".type")
+                  %th.center{id: 'tool-answers'}= t(".answers")
+                  %th.center{id: 'tool-controlled'}= t(".controlled")
+                - if tool_type == "ScheduleEvent"
+                  %th.center{id: 'tool-type-event'}= t('.type')
+                  %th.center{id: 'tool-place'}= t('.place')
+                  %th.center{id: 'tool-content-exam'}= t('.has_content')
+                - if tool_type == "Webconference"
+                  %th.center{id: 'tool-duration'}= t('.duration')
+                  %th.center{id: 'tool-recorded'}= t('.recorded')
+                  %th.center{id: 'tool-shared-between-groups'}= t('.shared_between_groups')
+            %tbody.tools_to_import
+              - tools_items.each do |tool|
+                - next if tool.academic_tool.respond_to?(:integrated) && tool.academic_tool.integrated
+                %tr.lines{ :'data-id' => tool.id, :'data-type' => tool.academic_tool_type }
+                  %td= check_box_tag("cbx_tool_#{tool.id}", tool.id, false, { class: 'cbx_value' })
+                  %td{headers: 'tool-title'}
+                    = tool.tool_name
+                    - if tool.academic_tool.respond_to?(:description) || tool.academic_tool.respond_to?(:enunciation)
+                      .description
+                        - description = tool.academic_tool.respond_to?(:description) ? tool.academic_tool.description : tool.academic_tool.enunciation
+                        - if description.size > 180
+                          .enunciation_slice= description.slice(0..180) << '...'
+                          .enunciation_complete= description
+                          .more_or_less
+                            %a.enunciation_more.link_content{ href: '#void' }= t('assignments.list.more')
+                            %a.enunciation_less.link_content{ href: '#void' }= t('assignments.list.less')
+                        - else
+                          = description
+                  - if tool.respond_to?(:academic_tool_type) && !tool.webconference?
+                    %td.center.not-checked{headers: 'tool-data-range'}
+                      %div= [l(tool.schedule.start_date.to_date, format: :normal), l(tool.schedule.end_date.to_date, format: :normal)].join(' - ') unless tool.schedule.blank?
+                      %div= [(tool.start_hour), (tool.end_hour)].join(' - ') unless tool.start_hour.blank?
+                  - if tool.respond_to?(:academic_tool_type) && (tool.schedule_event? || tool.assignment? || tool.chat_room? || tool.discussion? || tool.webconference?)
+                    - @new_tool = tool.academic_tool.dup
+                    = simple_form_for @new_tool, html: {id: "new_tool_form_#{tool.id}"} do |f|
+                      - if tool.webconference?
+                        %td.center.in-checked{headers: 'tool-data-range', style: 'display: none;'}
+                          .webconference_date.center
+                            = f.input :initial_time, as: :string, label: t('assignment_webconferences.form.date_label'), placeholder: t('assignment_webconferences.form.date_placeholder'), :'aria-label' => t('assignment_webconferences.form.date_aria_label'), input_html: {value: (l(f.object.initial_time, format: :mask_with_time_form) rescue ''), size: 50}
+                        %td.center.in-checked{headers: 'tool-duration', style: 'display: none;'}
+                          = f.input :duration, hint: t('.minutes')
+                      - else
+                        %td.center.in-checked{headers: 'tool-data-range', style: 'display: none;'}
+                          .schedule_dates
+                            .data-range
+                              = f.input :start_date, as: :string, label: t(:start_date), input_html: {id: 'start_date', value: l(@new_tool.schedule.start_date.try(:to_date) || Date.today, format: :datepicker)}
+                              = f.input :end_date, as: :string, label: t(:end_date), input_html: {id: 'end_date', value: l(@new_tool.schedule.end_date.try(:to_date) || Date.today, format: :datepicker)}
+                            - unless tool.discussion?
+                              .hour-range
+                                = f.input :start_hour, input_html: {id: 'start_hour', size: 10}
+                                = f.input :end_hour, input_html: {id: 'end_hour', size: 10}
+                  - if tool.respond_to?(:academic_tool_type) && tool.assignment?
+                    %td.center{headers: 'tool-type-event'}
+                      %div.title= t(((tool.academic_tool.type_assignment.to_i == Assignment_Type_Individual) ? ".individual" : ".group"))
+                    %td.center{headers: 'tool-answers'}
+                      %div= tool.academic_tool.academic_allocation_users.count.zero? ? t('.n') : t('.y')
+                    %td.center{headers: 'tool-controlled'}
+                      %div= tool.academic_tool.controlled ? t('.y') : t('.n')
+                  - if tool.respond_to?(:academic_tool_type) && tool.schedule_event?
+                    %td.center{headers: 'tool-type-event'}
+                      = ScheduleEvent.type_name_event(tool.academic_tool.type_event.to_i)
+                    %td.center{headers: 'tool-place'}
+                      = tool.academic_tool.place
+                    %td.center{headers: 'tool-content-exam'}
+                      = tool.academic_tool.content_exam.blank? ? t('.n') : t('.y')
+                  - if tool.respond_to?(:academic_tool_type) && tool.webconference?
+                    %td.center.not-checked{headers: 'tool-data-range'}
+                      %div= l(tool.academic_tool.initial_time, format: :at_date)
+                    %td.center.not-checked{headers: 'tool-duration'}
+                      %div= tool.academic_tool.duration
+                    %td.center{headers: 'tool-recorded' }= (tool.academic_tool.is_recorded ? t('.y') : t('.n'))
+                    %td.center{headers: 'tool-shared-between-groups' }= (tool.academic_tool.shared_between_groups ? t('.y') : t('.n'))
+      - else
+        .block_content_text_list.text_none= t('.none')
+
+    - unless @support_materials.nil?
+      .block_title.import_editions_title
+        %h2
+          .icons
+            = link_to content_tag(:i, nil, class: 'invisible icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), "#SupportMaterialFile", onclick: 'hide_or_show(this)'
+            = link_to content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), "#SupportMaterialFile", onclick: 'hide_or_show(this)'
+            = link_to t("SupportMaterialFile".tableize.singularize, scope: [:activerecord, :models]), "#SupportMaterialFile", onclick: 'hide_or_show(this)'
+      - unless @support_materials.empty?
+        .responsive-table{class: 'invisible'}
+          %table.tb_list
+            %thead
+              %tr.lines
+                %th.center.no_sort{style: 'width: 25px;'}
+                  = check_box_tag :all_support_material, false, false, class: "all_tool_items"
+                %th.center= t(".title")
+                %th= t(".name")
+                %th.center.date= t(".date")
+                %th.center= t(".type")
+
+            %tbody
+              - @support_materials.each do |material|
+                - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
+                %tr.lines{:'data-id' => material.id, :'data-type' => "SupportMaterialFile"}
+                  %td.center
+                    = check_box_tag("cbx_material_#{material.id}", material.id, false, {class: "cbx_value", :'data-is-link' => (material.material_type == Material_Type_Link)})
+                  %td.center{style: 'max-width: 400px; overflow: hidden; word-wrap: break-word'}= material.title
+                  %td
+                    %div
+                      - if material.is_link?
+                        %span= image_tag('icon_file_link.png')
+                        %span= link_to material.name, material.name, target: '_blank'
+                      - else
+                        %span= image_tag(icon_attachment(material.name))
+                        %span= link_to material.name, download_support_material_file_path(id: material.id)
+                  %td.center
+                    %div= l(material.attachment_updated_at, format: :normal)
+                  %td.center
+                    %div= (material.is_link?) ? t(".link") : t(".file")
+      - else
+        .block_content_text_list.text_none= t('.none')
+
+    - unless @bibliographies.nil?
+      .block_title.import_editions_title
+        %h2
+          .icons
+            = link_to content_tag(:i, nil, class: 'invisible icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')), "#Bibliography", onclick: 'hide_or_show(this)'
+            = link_to content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')), "#Bibliography", onclick: 'hide_or_show(this)'
+            = link_to t("Bibliography".tableize.singularize, scope: [:activerecord, :models]), "#Bibliography", onclick: 'hide_or_show(this)'
+      - unless @bibliographies.empty?
+        .responsive-table{class: 'invisible'}
+          %table.tb_list
+            %thead
+              %tr.lines
+                %th.center.no_sort{style: 'width: 25px;'}
+                  = check_box_tag :all_bibliographies, false, false, class: "all_tool_items"
+                %th= t('.item')
+                %th.center= t(".type")
+
+            %tbody
+              - @bibliographies.each do |bibliography|
+                %tr.lines{:'data-id' => bibliography.id, :'data-type' => "Bibliography"}
+                  %td.center
+                    = check_box_tag("cbx_material_#{bibliography.id}", bibliography.id, false, { class: "cbx_value", :'data-file' => bibliography.is_file? })
+                  %td
+                    %div
+                      .description
+                      - resume = bibliography.resume
+                      - if bibliography.is_file?
+                        = link_to image_tag(icon_attachment(bibliography.attachment_file_name)), download_bibliography_path(bibliography), class: 'file_icon'
+                        = link_to resume, download_bibliography_path(bibliography), class: 'file_icon'
+                      - else
+                        = raw resume
+                  %td.center{style: 'width: 20%;'}
+                    = bibliography.type
+      - else
+        .block_content_text_list.text_none= t('.none')
+  - else
+    .block_content.block_content_text= t('.none')
+
+= javascript_include_tag 'tooltip'
+
+:javascript
+
+  $(function(){
+    $(".enunciation_more").click(function(){
+      $(this).css("display", "none");
+      $(this).closest(".description").find(".enunciation_slice").css("display", "none");
+      $(this).next().css("display", "block");
+      $(this).closest(".description").find(".enunciation_complete").css("display", "block");
+      focus_element($(this).closest(".enunciation_complete"));
+      return false;
+    });
+
+    $(".enunciation_less").click(function(){
+      $(this).css("display", "none");
+      $(this).closest(".description").find(".enunciation_slice").css("display", "block");
+      $(this).prev().css("display", "block");
+      $(this).closest(".description").find(".enunciation_complete").css("display", "none");
+      focus_element($(this).closest(".enunciation_slice"));
+      return false;
+    });
+
+    $('.cbx_value').click(function(){
+      if($(this).is(':checked')) {
+        $(this).closest('.lines').find('.in-checked').show();
+        $(this).closest('.lines').find('.not-checked').hide();
+      } else {
+        if( $(this).closest('.tb_list').find('.all_tool_items').is(':checked') ) { $(this).closest('.tb_list').find('.all_tool_items').prop('checked', false); }
+        $(this).closest('.lines').find('.not-checked').show();
+        $(this).closest('.lines').find('.in-checked').hide();
+      }
+    });
+
+    $('.all_tool_items').click(function(){
+      if($(this).is(':checked')) {
+        $(this).closest('table').find('.cbx_value').each(function(){
+          if(!$(this).is(':checked')) {
+            $(this).click();
+          }
+        });
+      } else {
+        $(this).closest('table').find('.cbx_value').each(function(){
+          if($(this).is(':checked')) {
+            $(this).click();
+          }
+        });
+      }
+    });
+  });
+
+  function hide_or_show(icon){
+    var div = $(icon).closest('.block_title');
+    div.next().slideToggle();
+    div.find('.icon-arrow-down-triangle').toggleClass('invisible');
+    div.find('.icon-arrow-up-triangle').toggleClass('invisible');
+  }

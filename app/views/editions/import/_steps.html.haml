@@ -1,0 +1,36 @@
+.import_something.lessons
+  .flash_message_wrapper
+  .block_title
+    %h2
+      %i.icon-book2
+      = t('.title')
+    .position_correction
+      %span.form_requirement= t(:required_fields)
+  .block_content
+    = render partial: 'editions/import/filter', locals: { types: @types }
+    .right_buttons
+      = link_to t('.conclude'), "#void", onclick: 'import_selected_tools()', class: 'btn btn_main', alt: t('.conclude')
+
+:javascript
+  function import_selected_tools(){
+    var tools_to_import = [];
+
+    $('.cbx_value').each(function(index, element){
+      if($(element).is(':checked')) {
+        var tr = $(element).closest('.lines');
+        data = [$(tr).data('type'), $(tr).data('id'), $(tr).find('#start_date').val(), $(tr).find('#end_date').val(), $(tr).find('#start_hour').val(), $(tr).find('#end_hour').val(), $(tr).find('#webconference_initial_time').val(), $(tr).find('#webconference_duration').val()].join(',');
+        tools_to_import.push(data);
+      }
+    });
+
+    $.put("#{import_editions_path}", {tools_imported: tools_to_import.join(';')}, function(data){
+      $.fancybox.close();
+      setTimeout(function() {
+        flash_message(data.notice, 'notice');
+      }, 1000);
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
+    });
+  }

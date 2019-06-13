@@ -178,6 +178,22 @@ class AcademicAllocation < ActiveRecord::Base
     academic_tool_type.eql? 'Webconference'
   end
 
+  def schedule_event?
+    academic_tool_type.eql? 'ScheduleEvent'
+  end
+
+  def chat_room?
+    academic_tool_type.eql? 'ChatRoom'
+  end
+
+  def discussion?
+    academic_tool_type.eql? 'Discussion'
+  end
+
+  def exam?
+    academic_tool_type.eql? 'Exam'
+  end
+
   def copy_group_assignments(to_ac_id, user, ip) # user e IP serão usados no LOG
     ActiveRecord::Base.transaction do
       group_assignments.each do |group|

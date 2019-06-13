@@ -1,6 +1,8 @@
 .edition_items
+  .tool_management.import_items= link_to t('.import_tool_items'), "#void", onclick: 'import_tool_items(this)', :'data-url' => import_tool_items_editions_path(allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('.import_tool_items'), class: 'title_link'
+
   - if @user_profiles.include?(editions: :tool_management) && (@selected == 'GROUP' || @selected == 'OFFER')
-    .tool_management{ :"data-link" => tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids) }
+    .tool_management.tool-management-last-item{ :"data-link" => tool_management_editions_path(allocation_tags_ids: @allocation_tags_ids) }
       = link_to t('.tool_management'), '#' , :'data-tooltip' => t('.tool_management'), class: 'title_link'
 
   %fieldset#uc_informations
@@ -100,20 +102,28 @@
 
 :javascript
 
+  function import_tool_items(link){
+    var url = $(link).data('url');
+    $(link).call_fancybox({href: url, open: true, minHeight: '80%', minWidth: '90%'});
+  }
+
   $(document).ready(function(){
 
     $(".uc_item .import_user").call_fancybox({href: $(".uc_item .import_user").data("link")});
 
     $(".edition_items a").not(".disabled").click(function(){
-      $.get($($(this).parent()).data("link"), function(data){
-        $(".edition_items").html(data);
-        $(".back").removeClass("invisible");
-        loadFocus();
-      }).error(function(data){
-        var data = $.parseJSON(data.responseText);
-        if (typeof(data.alert) != "undefined")
-          flash_message(data.alert, 'alert');
-      });
+      if(!$(this).parent().hasClass('import_items')) {
+        $.get($($(this).parent()).data("link"), function(data){
+          $(".edition_items").html(data);
+          $(".back").removeClass("invisible");
+          loadFocus();
+        }).error(function(data){
+          var data = $.parseJSON(data.responseText);
+          if (typeof(data.alert) != "undefined")
+            flash_message(data.alert, 'alert');
+        });
+      }
+
       return false;
     });
 

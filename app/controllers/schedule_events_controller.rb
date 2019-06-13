@@ -73,12 +73,15 @@ class ScheduleEventsController < ApplicationController
   end
 
   def destroy
-    @schedule_event = ScheduleEvent.find(params[:id])
-    authorize! :destroy, ScheduleEvent, on: @schedule_event.academic_allocations.pluck(:allocation_tag_id)
+    @schedule_events = ScheduleEvent.where(id: params[:id].split(',').flatten)
+    authorize! :destroy, ScheduleEvent, on: @schedule_events.map(&:academic_allocations).flatten.map(&:allocation_tag_id).flatten
 
-    evaluative = @schedule_event.verify_evaluatives
-    if @schedule_event.can_remove_groups? && @schedule_event.can_change?
-      @schedule_event.destroy
+    evaluative = @schedule_events.map(&:verify_evaluatives).include?(true)
+    if @schedule_events.map(&:can_remove_groups?).include?(true) && @schedule_events.map(&:can_change?).include?(true)
+      ScheduleEvent.transaction do
+        @schedule_events.destroy_all
+      end
+
       message = evaluative ? ['warning', t('evaluative_tools.warnings.evaluative')] : ['notice', t(:deleted, scope: [:schedule_events, :success])]
       render json: { success: true, type_message: message.first,  message: message.last }
     else
@@ -171,10 +174,11 @@ class ScheduleEventsController < ApplicationController
           tutors = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", ats, Allocation_Activated, tutor_profiles.split(',')).distinct unless tutor_profiles.blank?
         end
 
-      student = User.find(params[:student_id]) unless params[:student_id].blank?
-      enrollment = Allocation.where(user_id: params[:student_id], allocation_tag_id: @allocation_tags_ids.first, status: 1).first.enrollment unless params[:student_id].blank?
+        student = User.find(params[:student_id]) unless params[:student_id].blank?
+        enrollment = Allocation.where(user_id: params[:student_id], allocation_tag_id: @allocation_tags_ids.first, status: 1).first.enrollment unless params[:student_id].blank?
 
-      normalize_exam_header(html, student, enrollment, profs, tutors, @event, allocation_tag.get_curriculum_unit, @course.name, coord)
+        normalize_exam_header(html, student, enrollment, profs, tutors, @event, allocation_tag.get_curriculum_unit, @course.name, coord)
+      end
 
       pictures_with_abs_path html
 

@@ -41,6 +41,7 @@ pt_BR:
       mask_with_time: "99/99/9999 99:99"
       mask_with_time_form: "%d/%m/%Y %H:%M"
       normal: "%d/%m/%Y"
+      at_date: "%d/%m/%Y às %H:%M"
     day_names: [Domingo, Segunda, "Terça", Quarta, Quinta, Sexta, "Sábado"]
     abbr_day_names: [Dom, Seg, Ter, Qua, Qui, Sex, "Sáb"]
     month_names: ['', Janeiro, Fevereiro, "Março", Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro]
@@ -464,6 +465,8 @@ pt_BR:
       chat_room:
         title: Título
         description: Descrição
+        start_date: Início
+        end_date: Término
         start_hour: Horário
         end_hour: à
       author:
@@ -493,6 +496,8 @@ pt_BR:
         type_event: Tipo
         place: Local
         description: Descrição
+        start_date: Início
+        end_date: Término
         start_hour: Horário
         end_hour: à
         content_exam: "Conteúdo da Prova"
@@ -655,6 +660,8 @@ pt_BR:
   all: "Todos"
   home: "Home"
   of: " de "
+  start_date: Início
+  end_date: Término
   required_fields: "* campo(s) obrigatório(s)"
   object_not_found: "Objeto não encontrado"
   search: "Filtrar"
@@ -2730,6 +2737,43 @@ pt_BR:
       type: "Tipo*"
       filter: Filtro
       offers: Oferta
+    import:
+      steps:
+        title: Importação de Material
+        choose: Escolher itens
+        conclude: Finalizar
+      list:
+        Assignment: Trabalhos
+        ChatRoom: Chat
+        Discussion: Fóruns
+        Exam: Provas
+        ScheduleEvent: Eventos
+        Webconference: Webconferências
+        name: Nome
+        data_range: Período
+        initial_date: Disponibilidade
+        duration: Duração
+        title: Título
+        type: Tipo
+        item: Item
+        group: Grupo
+        individual: Individual
+        place: Local
+        date: Data
+        controlled: Controlada
+        answers: Possui respostas
+        has_content: Possui conteúdo
+        recorded: Iniciar com gravação
+        shared_between_groups: Compartilhar entre turmas
+        y: Sim
+        n: Não
+        add: Adicionar para lista de importação
+        none: Nenhum material encontrado
+      success:
+        imported: Importado com sucesso
+      errors:
+        import_empty: É necessário escolher ao menos um item para finalizar
+        permission: Você não tem permissão para importar material didático
     items:
       information: Informação
       education: Educação
@@ -2756,6 +2800,7 @@ pt_BR:
       application: Aplicação
       edit_content: Editar conteúdo
       tool_management: Gerência de atividades avaliativas/de frequência
+      import_tool_items: Importar material didático
     success:
       saved: Salvo com sucesso
       deleted: Excluido com sucesso

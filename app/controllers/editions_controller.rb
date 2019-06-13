@@ -14,7 +14,7 @@ class EditionsController < ApplicationController
     authorize! :content, Edition, on: @allocation_tags_ids
     @user_profiles       = current_user.resources_by_allocation_tags_ids(@allocation_tags_ids)
     @allocation_tags_ids = @allocation_tags_ids.join(" ")
-    
+
     render partial: 'items'
   rescue=> error
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
@@ -138,15 +138,80 @@ class EditionsController < ApplicationController
 
     allocation_tag_ids = params[:allocation_tags_ids]
 
-    allocation_tag_ids.each do |allocation_tag_id|      
+    allocation_tag_ids.each do |allocation_tag_id|
       Group.verify_management(allocation_tag_id)
     end
-   
+
     render json: { success: true, msg: 'Atividades Gerenciadas com sucesso!' }
 
   rescue StandardError => error
-    puts error
-    render json: { success: false, msg: 'Um erro ocorreu, por favor entre em contato com o suporte.' } 
+    render json: { success: false, msg: 'Um erro ocorreu, por favor entre em contato com o suporte.' }
+  end
+
+  def import_tool_items
+    @allocation_tags_ids = params[:allocation_tags_ids].split(' ').flatten.map(&:to_i)
+
+    @groups = Group.joins(:allocation_tag).where(allocation_tags: { id: @allocation_tags_ids })
+    @curriculum_unit = @groups.first.curriculum_unit
+    @types = CurriculumUnitType.all
+
+    render partial: 'editions/import/steps'
+  end
+
+  def import_tool_items_list
+    allocation_tags = AllocationTag.get_by_params(params)
+    @selected, @allocation_tags_ids = allocation_tags[:selected], allocation_tags[:allocation_tags]
+
+    @tools = EvaluativeTool.find_tools(@allocation_tags_ids)
+    @tools = @tools.group_by { |t| t['academic_tool_type'] }
+    @tools = @tools.keep_if { |key, value| key == "ScheduleEvent" || key == "Webconference" } unless current_user.profiles.any? { |profile| profile.types == 8 ||  profile.types == 16 }
+
+    @support_materials = SupportMaterialFile.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).order("attachment_updated_at DESC").uniq if current_user.profiles.any? { |profile| profile.types == 8 ||  profile.types == 16 }
+
+    @bibliographies = Bibliography.joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: @allocation_tags_ids.split(" ").flatten }).uniq if current_user.profiles.any? { |profile| profile.types == 8 ||  profile.types == 16 }
+
+    render partial: 'editions/import/list'
+  end
+
+  def import
+    ActiveRecord::Base.transaction do
+      raise 'import_empty' if params[:tools_imported].split(';').empty?
+
+      params[:tools_imported].split(';').each do |tool|
+          tool_hash = tool.split(',')
+
+          if tool_hash[0] == "Bibliography" || tool_hash[0] == "SupportMaterialFile"
+            item = tool_hash[0].classify.constantize.find(tool_hash[1])
+
+            new_item = item.dup
+            new_item.attachment = item.attachment
+            new_item.copy_associations(item) if item.class.to_s == "Bibliography"
+            new_item.save!
+          else
+            ac = AcademicAllocation.find(tool_hash[1])
+            new_item = ac.academic_tool.dup
+
+            if ac.academic_tool_type != "Webconference"
+              new_item.schedule = Schedule.create start_date: tool_hash[2], end_date: tool_hash[3]
+              new_item.start_hour = tool_hash[4] if new_item.respond_to?(:start_hour)
+              new_item.end_hour = tool_hash[5] if new_item.respond_to?(:end_hour)
+            else
+              new_item.user_id = current_user.id
+              new_item.initial_time = tool_hash[6]
+              new_item.duration = tool_hash[7]
+            end
+
+            new_item.save!
+          end
+
+          new_ac = AcademicAllocation.new(academic_tool_id: new_item.id, academic_tool_type: tool_hash[0], allocation_tag_id: active_tab[:url][:allocation_tag_id])
+          new_ac.save!
+      end
+    end
+
+    render json: { success: true, notice: t('editions.import.success.imported') }
+  rescue => error
+    render json: { success: false, alert: error.message }, status: :unprocessable_entity
   end
 
   def tool_management
@@ -244,7 +309,7 @@ class EditionsController < ApplicationController
 
         # getting errors to final_weight
         acs = AcademicAllocation.where(allocation_tag_id: at.related, evaluative: true).where('final_exam = false').pluck('DISTINCT final_weight')
- 
+
         if acs.any?
           sum = acs.inject(:+) || 0
           if sum != 100

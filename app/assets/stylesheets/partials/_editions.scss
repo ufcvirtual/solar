@@ -161,8 +161,41 @@ label[for="all"]{
 
 .edition_items{
   .tool_management{
+    // margin-bottom: 20px;
+    margin-bottom: 3px;
+  }
+  .tool-management-last-item {
     margin-bottom: 20px;
   }
+}
+
+.data-range, .hour-range {
+  display: flex;
+  label {
+    width: 60px !important;
+    text-align: center;
+  }
+}
+
+.webconference_initial_time label,
+.webconference_duration label {
+  text-align: center;
+}
+
+#webconference_initial_time {
+  width: 130px;
+}
+
+#webconference_duration {
+  width: 60px;
+}
+
+.data-range {
+  margin-bottom: 5px;
+}
+
+.import_editions_title {
+  margin-top: 5px;
 }
 
 .tool_management{

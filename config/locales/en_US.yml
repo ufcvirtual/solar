@@ -398,6 +398,8 @@ en_US:
       chat_room:
         title: Title
         description: Description
+        start_date: Period
+        end_date: To
         start_hour: Start hour
         end_hour: End hour
       author:
@@ -427,6 +429,8 @@ en_US:
         type_event: Type
         place: Place
         description: Description
+        start_date: Period
+        end_date: To
         start_hour: Start hour
         end_hour: End hour
         content_exam: Exam content
@@ -586,6 +590,8 @@ en_US:
 
   all: "All"
   of: "of"
+  start_date: Period
+  end_date: To
   signature: "Student signature:"
   required_fields: "* required field(s)"
   object_not_found: "Object not found"
@@ -2440,6 +2446,43 @@ en_US:
       type: "Type*"
       filter: Filter
       offers: Offers
+    import:
+      steps:
+        title: Import of Material
+        choose: Choose items
+        conclude: Conclude
+      list:
+        Assignment: Assignments
+        ChatRoom: ChatRooms
+        Discussion: Discussions
+        Exam: Exams
+        ScheduleEvent: Events
+        Webconference: Webconferences
+        name: Name
+        data_range: Data range
+        initial_date: Availability
+        duration: Duration
+        title: Title
+        type: Type
+        item: Item
+        group: Group
+        individual: Individual
+        place: Place
+        date: Date
+        controlled: Controlled
+        answers: Has answers
+        has_content: Has content
+        recorded: Start with record
+        shared_between_groups: Shared between groups
+        y: Yes
+        n: No
+        add: Add to import list
+        none: No material found
+      success:
+        imported: Imported successfully
+      errors:
+        import_empty: You must choose at least one item to finish
+        permission: You are not allowed to import didactic materials
     items:
       information: Information
       education: Education
@@ -2465,6 +2508,7 @@ en_US:
       edit_content: Edit content
       digital_class: Digital Class
       tool_management: Evaluative/Frequency activities management
+      import_tool_items: Import didactic material
     success:
       saved: Saved successfully
       deleted: Deleted successfully
