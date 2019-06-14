@@ -181,6 +181,10 @@
 
 :javascript
 
+  $("#start_date, #end_date").mask("#{I18n.t('date.formats.mask')}");
+  $("#start_hour").mask("99:99");
+  $("#end_hour").mask("99:99");
+
   $(function(){
     $(".enunciation_more").click(function(){
       $(this).css("display", "none");
