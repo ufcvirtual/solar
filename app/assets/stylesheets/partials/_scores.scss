@@ -359,10 +359,11 @@ tbody{
 
 .tb_list_students{
   .top_elements{
-    margin-left: 35%;
-    display: inline-block;
+    display: flex;
+    justify-content: center;
     a, .print_pdf, form{
       display: inline-block;
+      margin-left: 5px;
     }
   }
 

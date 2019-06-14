@@ -25,6 +25,10 @@ class ScoresController < ApplicationController
     @tools = ( ats.empty? ? [] : EvaluativeTool.count_tools(ats.join(',')) )
     @tools_list = EvaluativeTool.descendants
 
+    @button_text_register_notes = @allocation_tag.block_register_notes ? 'register_notes_on' : 'register_notes_off'
+    @activity_not_evaluated, activity_open =  Score.check_open_activity_without_note(ats.join(','))
+    @activity_open = activity_open==true && @allocation_tag.block_register_notes==false ? true : false
+
     @wh = @allocation_tag.get_curriculum_unit.try(:working_hours)
   end
 
@@ -33,7 +37,7 @@ class ScoresController < ApplicationController
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
     @wh = AllocationTag.find(@allocation_tag_id).get_curriculum_unit.try(:working_hours)
-
+    @allocation_tag = AllocationTag.find(@allocation_tag_id)
     query = case params[:type]
             when 'frequency'; 'ac.frequency = true'
             when 'evaluative'; 'ac.evaluative = true'
@@ -63,8 +67,6 @@ class ScoresController < ApplicationController
 
     @tools = EvaluativeTool.descendants
 
-    @button_text_register_notes = @bloq_register_notes ? 'register_notes_on' : 'register_notes_off'
-
     @score_type = params[:type]
     if params[:report]
       @users = Score.get_users(ats)
@@ -84,9 +86,9 @@ class ScoresController < ApplicationController
       @users = Score.get_users(ats).paginate(page: params[:page], per_page: 20)
       @scores = Score.evaluative_frequency(ats, params[:type])
 
-      @confirm = @scores.select { |s| s.situation == 'sent' }.count > 0 ? true : false
-      score_open = @scores.select { |score| score.end_date > Date.today }.count > 0 ? true : false
-      @score_open = score_open==true && @bloq_register_notes==false ? true : false
+      @button_text_register_notes = @allocation_tag.block_register_notes ? 'register_notes_on' : 'register_notes_off'
+      @activity_not_evaluated, activity_open =  Score.check_open_activity_without_note(ats)
+      @activity_open = activity_open==true && @allocation_tag.block_register_notes==false ? true : false
       
       respond_to do |format|
         format.html { render partial: 'evaluative_frequency', locals: {score_type: params[:type] }}
@@ -117,7 +119,13 @@ class ScoresController < ApplicationController
       send_data ReportsHelper.scores_general(@ats, @wh, @users, @allocation_tag_id, @tools, params[:type], @merged_group).render, :filename => "#{t("scores.reports.#{params[:type]}")}.pdf", :type => "application/pdf", disposition: 'inline'
 
     else
+      @not_evaluated = false
       @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true).paginate(:page => params[:page], :per_page => 20)
+      
+      @activity_not_evaluated, activity_open =  Score.check_open_activity_without_note(ats)
+      @button_text_register_notes = @allocation_tag.block_register_notes ? 'register_notes_on' : 'register_notes_off'
+      @activity_open = activity_open==false && @allocation_tag.block_register_notes==false ? true : false
+
       respond_to do |format|
         format.html { render partial: "#{params[:type]}"  }
         format.json { render json: @users }
@@ -415,15 +423,22 @@ class ScoresController < ApplicationController
 
   def set_register_notes
     authorize! :set_register_notes, Score, { on: allocation_tag_id = active_tab[:url][:allocation_tag_id]}
-
     allocation_tag = AllocationTag.find(allocation_tag_id)
-    allocation_tag.bloq_register_notes = allocation_tag.bloq_register_notes==true ? false : true
+    activity_not_evaluated, activity_open =  Score.check_open_activity_without_note(allocation_tag.related.join(','))
+
+    raise "date" if activity_open && allocation_tag.block_register_notes==false
+
+    allocation_tag.block_register_notes = allocation_tag.block_register_notes==true ? false : true
     allocation_tag.save!
-    button_text_register_notes= allocation_tag.bloq_register_notes == true ? 'register_notes_off' : 'register_notes_on'
+    button_text_register_notes= allocation_tag.block_register_notes == true ? 'register_notes_off' : 'register_notes_on'
 
     render json: {success: true, notice: t("scores.index.msg_#{button_text_register_notes}"), register_notes_text: t("scores.index.#{button_text_register_notes}")}
   rescue => error
-    render json: { alert: t('scores.index.error_msg_register_notes') }, status: :unprocessable_entity
+    if error.to_s == 'date'
+      render json: { alert: t('scores.index.error_msg_register_notes_active_open') }, status: :unprocessable_entity
+    else
+      render json: { alert: t('scores.index.error_msg_register_notes') }, status: :unprocessable_entity
+    end
   end
 
 end

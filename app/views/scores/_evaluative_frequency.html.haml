@@ -15,7 +15,7 @@
     %div{ class: 'print_pdf' }
       = f.button :submit, :class => "btn",  value: t('scores.index.print_pdf')
   - if (can? :set_register_notes, Score, { on: @allocation_tag_id })
-    = link_to t("scores.index.#{@button_text_register_notes}"), '#void', class: "btn "+(@score_open ? 'disabled_register_notes' : ''), onclick: @score_open ? '' : 'set_register_notes(this, '+@confirm.to_s+','+ @bloq_register_notes.to_s+');', :'data-url' => set_register_notes_scores_path, onkeydown: 'click_on_keypress(event, this);', id: 'register_notes', disabled: @score_open
+    = link_to t("scores.index.#{@button_text_register_notes}"), '#void', class: "btn "+(@activity_open ? 'disabled_register_notes' : ''), onclick: @activity_open ? '' : 'set_register_notes(this, '+@activity_not_evaluated.to_s+','+ @block_register_notes.to_s+');', :'data-url' => set_register_notes_scores_path, onkeydown: 'click_on_keypress(event, this);', id: 'register_notes', disabled: @activity_open
 
   = link_to t('messages.send_message'), "#", class: "btn btn_send_msg", disabled: true, :'data-url' => new_by_scores_messages_path(user_ids: ':user_ids')
 

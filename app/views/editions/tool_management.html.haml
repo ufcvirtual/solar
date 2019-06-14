@@ -41,6 +41,9 @@
     %div.rules_and_info= raw t('.rule_final_exam_passing_grade', final_exam_passing_grade: (@course.try(:final_exam_passing_grade) || t('.not_defined')))
     %br
     %div.rules_and_info= raw t('.rule_window_analyzer')
+    - if @groups_block_register_notes.count > 0
+      %br
+      %div.rules_and_info= raw t('.groups_block_register_notes', groups: @groups_block_register_notes.join(', '))
   .management
 
     = form_tag manage_tools_editions_path, id: 'form_manage_tools_editions', method: :put do

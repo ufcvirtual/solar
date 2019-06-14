@@ -217,7 +217,7 @@ class EditionsController < ApplicationController
   def tool_management
     @allocation_tags_ids = params[:allocation_tags_ids].split(' ').flatten.map(&:to_i)
     @tool_name = params[:tool_name]
-
+    @ats = AllocationTag.where(id: @allocation_tags_ids)
     raise 'only_groups_and_offer' if AllocationTag.where(id: @allocation_tags_ids).where('group_id IS NOT NULL OR offer_id IS NOT NULL').count != @allocation_tags_ids.size
 
     authorize! :tool_management, Edition, { on: @allocation_tags_ids }
@@ -225,10 +225,15 @@ class EditionsController < ApplicationController
     @tools = @tools.group_by { |t| t['academic_tool_type'] }
 
     @groups = Group.joins(:allocation_tag).where(allocation_tags: { id: @allocation_tags_ids })
+    @groups_block_register_notes = []
+    @groups.each do |g|
+      if g.allocation_tag.block_register_notes
+        @groups_block_register_notes << g.name
+      end 
+    end
     @curriculum_unit = @groups.first.curriculum_unit
     @course = @groups.first.course
     @working_hours = @curriculum_unit.try(:working_hours)
-
   end
 
   def manage_tools
@@ -239,7 +244,16 @@ class EditionsController < ApplicationController
     allocation_tags = AllocationTag.where(id: allocation_tags_ids)
     authorize! :tool_management, Edition, { on: allocation_tags_ids }
 
+    groups = Group.joins(:allocation_tag).where(allocation_tags: { id: allocation_tags_ids })
+    groups_block_register_notes = []
+    groups.each do |g|
+      if g.allocation_tag.block_register_notes
+        groups_block_register_notes << g.name
+      end 
+    end
+    
     errors = []
+    errors << t('editions.tool_management.groups_block_register_notes_error', groups: groups_block_register_notes.join(', ')) if groups_block_register_notes.count > 0
 
     at = allocation_tags.where('group_id IS NOT NULL OR offer_id IS NOT NULL')
 
