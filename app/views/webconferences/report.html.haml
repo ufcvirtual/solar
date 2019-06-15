@@ -223,7 +223,7 @@
 
     for (var i=0;i<data1.length;i++){ data.addRow([data1[i][0], parseInt(data1[i][1]) ]); }
 
-    var options = { title: "#{t('webconferences.report.statistic_per_type')}", is3D: true };
+    var options = { title: "#{t('webconferences.report.statistic_per_type')}", pieSliceText: 'value', is3D: true };
 
     formatter_integer.format(data, 1);
 
@@ -232,7 +232,6 @@
 
     // Schedules Per Month
     if (#{@schedules_per_month} != 0) {
-      console.log (#{@schedules_per_month}.length === 0)
       var data1 = JSON.parse('#{@schedules_per_month.to_json.html_safe}');
       var data = new google.visualization.DataTable();
       data.addColumn('string', 'Mês');
@@ -263,7 +262,16 @@
     formatter_integer.format(data, 2);
 
     var chart = new google.charts.Bar(document.getElementById('chart_total'));
-    chart.draw(data, google.charts.Bar.convertOptions(options));
+
+    var view = new google.visualization.DataView(data);
+    view.setColumns([0, 1,
+                    { calc: "stringify",
+                      sourceColumn: 1,
+                      type: "string",
+                      role: "annotation" },
+                    2]);
+
+    chart.draw(view, google.charts.Bar.convertOptions(options));
 
     // Per Month
     var data1 = JSON.parse('#{@per_month.to_json.html_safe}');
@@ -333,7 +341,7 @@
 
     for (var i=0;i<data1.length;i++){ data.addRow([data1[i][4], parseInt(data1[i][2])]); }
 
-    var options = { title: "#{t('webconferences.report.statistic_per_server')}", is3D: true };
+    var options = { title: "#{t('webconferences.report.statistic_per_server')}", pieSliceText: 'value', is3D: true };
 
     formatter_integer.format(data, 1);
 
@@ -348,7 +356,7 @@
 
     for (var i=0;i<data1.length;i++){ data.addRow([data1[i][4], parseInt(data1[i][1])]); }
 
-    var options = { title: "#{t('webconferences.report.statistic_ps_hours')}", is3D: true };
+    var options = { title: "#{t('webconferences.report.statistic_ps_hours')}", pieSliceText: 'value', is3D: true };
 
     formatter_integer.format(data, 1);
 
@@ -364,7 +372,7 @@
 
       for (var i=0;i<data1.length;i++){ data.addRow([data1[i][4], parseInt(data1[i][3])]); }
 
-      var options = { title: "#{t('webconferences.report.statistic_ps_rt')}", is3D: true, sliceVisibilityThreshold:0  };
+      var options = { title: "#{t('webconferences.report.statistic_ps_rt')}", pieSliceText: 'value', is3D: true, sliceVisibilityThreshold:0  };
 
       formatter_integer.format(data, 1);
 
@@ -379,7 +387,7 @@
 
       for (var i=0;i<data1.length;i++){ data.addRow([data1[i][0], parseInt(data1[i][1])]); }
 
-      var options = { title: "#{t('webconferences.report.statistic_ps_rt_access')}", is3D: true, sliceVisibilityThreshold:0 };
+      var options = { title: "#{t('webconferences.report.statistic_ps_rt_access')}", pieSliceText: 'value', is3D: true, sliceVisibilityThreshold:0 };
 
       formatter_integer.format(data, 1);
 
@@ -420,7 +428,7 @@
       data.addRow([data1[i][0], parseInt(data1[i][1]), parseInt(data1[i][2]), parseInt(data1[i][3]), parseInt(data1[i][4]), parseInt(data1[i][5]), parseInt(data1[i][6]), parseInt(data1[i][7]), parseInt(data1[i][8]), parseInt(data1[i][9])]);
     }
 
-    var options = { legend: { position: "bottom", maxLines: 3 }, vAxis : { format: 'decimal' }, seriesType: 'bars' };
+    var options = { legend: { position: "top", maxLines: 3 }, vAxis : { format: 'decimal' }, seriesType: 'bars' };
 
     formatter_integer.format(data, 1);
     formatter_integer.format(data, 2);
@@ -502,7 +510,7 @@
       data.addRow([data1[i][0], parseInt(data1[i][1]), parseInt(data1[i][2]), parseInt(data1[i][3]), parseInt(data1[i][4]), parseInt(data1[i][5]), parseInt(data1[i][6]), parseInt(data1[i][7]), parseInt(data1[i][8]), parseInt(data1[i][9])]);
     }
 
-    var options = { legend: { position: "bottom", maxLines: 3 }, vAxis : { format: 'decimal' }, seriesType: 'bars' };
+    var options = { legend: { position: "top", maxLines: 3 }, vAxis : { format: 'decimal' }, seriesType: 'bars' };
 
     formatter_integer.format(data, 1);
     formatter_integer.format(data, 2);
@@ -540,7 +548,8 @@
      ['2017.1', 259, 287, 668, 878, 706],
      ['2017.2', 372, 270, 587, 800, 738],
      ['2018.1', 199, 131, 397, 648, 797],
-     ['2018.2', 138, 92, 272, 493, 657]
+     ['2018.2', 138, 92, 272, 493, 657],
+     ['2019.1', 115, 85, 220, 507, 647]
     ]);
 
     var options = { legend: { position: "bottom", maxLines: 3 }, vAxis : { format: 'decimal' }, seriesType: 'bars', series: {5: {type: 'line'} }};
@@ -559,7 +568,8 @@
           ['2017.1', 3.53],
           ['2017.2', 3.46],
           ['2018.1', 3.79],
-          ['2018.2', 3.87]
+          ['2018.2', 3.87],
+          ['2019.1', 3.94]
         ]);
 
     var options = { title: 'Média', legend: { position: 'bottom' }, vAxis : { format: 'decimal' } };
@@ -571,14 +581,15 @@
 
     // Difficulties
     var data = google.visualization.arrayToDataTable([
-     ['Semestre', 'Áudio falhando', 'Conexão caindo', 'Webcam travando', 'Volume baixo', 'Configurações iniciais'],
-     ['2017.1', 1555, 540, 350, 343, 412],
-     ['2017.2', 1474, 574, 277, 277, 262],
-     ['2018.1', 925, 352, 217, 218, 170],
-     ['2018.2', 587, 301, 169, 177, 184]
+     ['Semestre', 'Áudio falhando', 'Conexão caindo', 'Webcam travando', 'Volume baixo', 'Configurações iniciais', 'Nenhum problema ou dificuldade'],
+     ['2017.1', 1555, 540, 350, 343, 412, 0],
+     ['2017.2', 1474, 574, 277, 277, 262, 0],
+     ['2018.1', 925, 352, 217, 218, 170, 0],
+     ['2018.2', 587, 301, 169, 177, 184, 589],
+     ['2019.1', 498, 275, 130, 110, 103, 643]
     ]);
 
-    var options = { legend: { position: "bottom", maxLines: 3 }, vAxis : { format: 'decimal' }, seriesType: 'bars' };
+    var options = { legend: { position: "top", maxLines: 3 }, vAxis : { format: 'decimal' }, seriesType: 'bars' };
 
     formatter_integer.format(data, 1);
     formatter_integer.format(data, 2);
@@ -591,11 +602,11 @@
 
     var data = google.visualization.arrayToDataTable([
       ['Dificuldade', 'Quantidade'],
-      ['Áudio falhando', 4541],
-      ['Conexão caindo', 1767],
-      ['Webcam travando', 1013],
-      ['Volume baixo', 1015],
-      ['Configurações iniciais', 1028]
+      ['Áudio falhando', 5039],
+      ['Conexão caindo', 2042],
+      ['Webcam travando', 1143],
+      ['Volume baixo', 1125],
+      ['Configurações iniciais', 1131]
     ]);
 
     var options = { title: 'Total', is3D: true };
@@ -611,7 +622,8 @@
      ['2017.1', 2360, 158, 112, 2, 16, 150],
      ['2017.2', 2398, 92, 93, 3, 6, 175],
      ['2018.1', 1903, 31, 77, 1, 8, 152],
-     ['2018.2', 1411, 21, 68, 23, 7, 37]
+     ['2018.2', 1411, 21, 68, 23, 7, 37],
+     ['2019.1', 1370, 16, 52, 17, 11, 50]
     ]);
 
     var options = { legend: { position: "bottom", maxLines: 3 }, vAxis : { format: 'decimal' }, seriesType: 'bars' };
@@ -628,12 +640,12 @@
 
     var data = google.visualization.arrayToDataTable([
       ['Local', 'Quantidade'],
-      ['Casa', 8072],
-      ['Polo', 301],
-      ['Trabalho', 350],
-      ['Faculdade', 29],
-      ['Lan house', 31],
-      ['Outro', 514]
+      ['Casa', 9442],
+      ['Polo', 317],
+      ['Trabalho', 402],
+      ['Faculdade', 46],
+      ['Lan house', 42],
+      ['Outro', 87]
     ]);
 
     var options = { title: 'Total', is3D: true, sliceVisibilityThreshold: .0 };
@@ -649,7 +661,8 @@
      ['2017.1', 2007, 707, 2, 0, 168, 166, 477],
      ['2017.2', 1979, 651, 2, 1, 90, 131, 334],
      ['2018.1', 1648, 420, 20, 0, 51, 56, 213],
-     ['2018.2', 1095, 281, 207, 8, 23, 56, 144]
+     ['2018.2', 1095, 281, 207, 8, 23, 56, 144],
+     ['2019.1', 1049, 242, 226, 3, 25, 30, 154]
     ]);
 
     var options = { legend: { position: "bottom", maxLines: 3 }, vAxis : { format: 'decimal' }, seriesType: 'bars' };
@@ -666,10 +679,10 @@
 
     var data = google.visualization.arrayToDataTable([
       ['Equipamento', 'Quantidade'],
-      ['Notebook', 6729],
-      ['Desktop', 2059],
-      ['Smartphone', 231],
-      ['Tablet', 9]
+      ['Notebook', 7778],
+      ['Desktop', 2301],
+      ['Smartphone', 457],
+      ['Tablet', 12]
     ]);
 
     var options = { title: 'Total', is3D: true, sliceVisibilityThreshold: .0 };
@@ -682,10 +695,10 @@
     // Internet
     var data = google.visualization.arrayToDataTable([
       ['Velocidade', 'Quantidade'],
-      ['> 5 Mbps', 675],
-      ['2 <> 5 Mbps', 431],
-      ['<2 Mbps', 160],
-      ['Não sei', 267]
+      ['> 5 Mbps', 1403],
+      ['2 <> 5 Mbps', 795],
+      ['<2 Mbps', 249],
+      ['Não sei', 527]
     ]);
 
     var options = { title: "#{I18n.t('webconferences.report.feedback_internet_title')}", is3D: true, sliceVisibilityThreshold: .0 };
