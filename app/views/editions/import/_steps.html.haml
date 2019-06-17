@@ -18,7 +18,7 @@
     $('.cbx_value').each(function(index, element){
       if($(element).is(':checked')) {
         var tr = $(element).closest('.lines');
-        data = [$(tr).data('type'), $(tr).data('id'), $(tr).find('#start_date').val(), $(tr).find('#end_date').val(), $(tr).find('#start_hour').val(), $(tr).find('#end_hour').val(), $(tr).find('#webconference_initial_time').val(), $(tr).find('#webconference_duration').val()].join(',');
+        data = [$(tr).data('type'), $(tr).data('id'), $(tr).find('.start_date').val(), $(tr).find('.end_date').val(), $(tr).find('.start_hour').val(), $(tr).find('.end_hour').val(), $(tr).find('.initial_time').val(), $(tr).find('#webconference_duration').val()].join(',');
         tools_to_import.push(data);
       }
     });

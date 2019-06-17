@@ -1,4 +1,5 @@
 - groups = (!@selected.nil? && @selected == 'GROUP')
+- tools_ids = []
 .block_wrapper.list_tool_items_import{ :"data-link-list" => import_tool_items_list_editions_path(allocation_tags_ids: @allocation_tags_ids) }
   -# -  unless @tools.empty? && @support_materials.empty? && @bibliographies.empty?
   -  unless (@tools.nil? || @tools.empty?) && (@support_materials.nil? || @support_materials.empty?) && (@bibliographies.nil? || @bibliographies.empty?)
@@ -36,6 +37,7 @@
             %tbody.tools_to_import
               - tools_items.each do |tool|
                 - next if tool.academic_tool.respond_to?(:integrated) && tool.academic_tool.integrated
+                - tools_ids << tool.id
                 %tr.lines{ :'data-id' => tool.id, :'data-type' => tool.academic_tool_type }
                   %td= check_box_tag("cbx_tool_#{tool.id}", tool.id, false, { class: 'cbx_value' })
                   %td{headers: 'tool-title'}
@@ -61,21 +63,21 @@
                       - if tool.webconference?
                         %td.center.in-checked{headers: 'tool-data-range', style: 'display: none;'}
                           .webconference_date.center
-                            = f.input :initial_time, as: :string, label: t('assignment_webconferences.form.date_label'), placeholder: t('assignment_webconferences.form.date_placeholder'), :'aria-label' => t('assignment_webconferences.form.date_aria_label'), input_html: {value: (l(f.object.initial_time, format: :mask_with_time_form) rescue ''), size: 50}
+                            = f.input :initial_time, as: :string, label: t('assignment_webconferences.form.date_label'), placeholder: t('assignment_webconferences.form.date_placeholder'), :'aria-label' => t('assignment_webconferences.form.date_aria_label'), input_html: {value: (l(f.object.initial_time, format: :mask_with_time_form) rescue ''), id: "initial_time_#{tool.id}", class: 'initial_time', size: 50}
                         %td.center.in-checked{headers: 'tool-duration', style: 'display: none;'}
                           = f.input :duration, hint: t('.minutes')
                       - else
                         %td.center.in-checked{headers: 'tool-data-range', style: 'display: none;'}
                           .schedule_dates
                             .data-range
-                              = f.input :start_date, as: :string, label: t(:start_date), input_html: {id: 'start_date', value: l(@new_tool.schedule.start_date.try(:to_date) || Date.today, format: :datepicker)}
-                              = f.input :end_date, as: :string, label: t(:end_date), input_html: {id: 'end_date', value: l(@new_tool.schedule.end_date.try(:to_date) || Date.today, format: :datepicker)}
+                              = f.input :start_date, as: :string, label: t(:start_date), input_html: {id: "start_date_#{tool.id}", class: 'start_date', value: l(@new_tool.schedule.start_date.try(:to_date) || Date.today, format: :datepicker)}
+                              = f.input :end_date, as: :string, label: t(:end_date), input_html: {id: "end_date_#{tool.id}", class: 'end_date', value: l(@new_tool.schedule.end_date.try(:to_date) || Date.today, format: :datepicker)}
                             - unless tool.discussion?
                               .hour-range
-                                = f.input :start_hour, input_html: {id: 'start_hour', size: 10}
-                                = f.input :end_hour, input_html: {id: 'end_hour', size: 10}
+                                = f.input :start_hour, input_html: {id: "start_hour_#{tool.id}", class: 'start_hour', size: 10}
+                                = f.input :end_hour, input_html: {id: "end_hour_#{tool.id}", class: 'end_hour', size: 10}
                   - if tool.respond_to?(:academic_tool_type) && tool.assignment?
-                    %td.center{headers: 'tool-type-event'}
+                    %td.center{headers: 'tool-type-event', style: 'width: 80px'}
                       %div.title= t(((tool.academic_tool.type_assignment.to_i == Assignment_Type_Individual) ? ".individual" : ".group"))
                     %td.center{headers: 'tool-answers'}
                       %div= tool.academic_tool.academic_allocation_users.count.zero? ? t('.n') : t('.y')
@@ -177,16 +179,18 @@
   - else
     .block_content.block_content_text= t('.none')
 
-= javascript_include_tag 'tooltip'
+= javascript_include_tag 'tooltip', 'jquery-ui', 'jquery.ui.datepicker-en-US', 'jquery.ui.datepicker-pt-BR', 'jquery-ui-timepicker-addon'
 
 :javascript
 
-  $("#webconference_initial_time").mask("#{I18n.t('date.formats.mask_with_time')}");
-  $("#start_date, #end_date").mask("#{I18n.t('date.formats.mask')}");
-  $("#start_hour").mask("99:99");
-  $("#end_hour").mask("99:99");
+  $(".initial_time").mask("#{I18n.t('date.formats.mask_with_time')}");
+  $(".start_date, .end_date").mask("#{I18n.t('date.formats.mask')}");
+  $(".start_hour").mask("99:99");
+  $(".end_hour").mask("99:99");
 
   $(function(){
+    var tools_ids = "#{tools_ids}".trim().replace(/\[|\]/g, "").split(",")
+
     $(".enunciation_more").click(function(){
       $(this).css("display", "none");
       $(this).closest(".description").find(".enunciation_slice").css("display", "none");
@@ -231,6 +235,14 @@
         });
       }
     });
+
+    var options = $.extend({}, $.datepicker.regional['#{I18n.locale}']);
+    for (var i = 0; i < tools_ids.length; i++) {
+      var id = tools_ids[i].trim();
+      $('#start_date_'+id).datepicker( $.extend({}, options, { onSelect: function(selected) { $('#start_date_'+id).datepicker("option", "minDate", selected); } }) );
+      $('#end_date_'+id).datepicker( $.extend({}, options, { onSelect: function(selected) { $('#end_date_'+id).datepicker("option", "maxDate", selected); } }) );
+      set_datetime_masked('initial_time_'+id);
+    }
   });
 
   function hide_or_show(icon){
@@ -238,4 +250,17 @@
     div.next().slideToggle();
     div.find('.icon-arrow-down-triangle').toggleClass('invisible');
     div.find('.icon-arrow-up-triangle').toggleClass('invisible');
+  }
+
+  function set_datetime_masked(id){
+    var currentDate = new Date();
+
+    $("#"+id).datetimepicker({
+      hour: currentDate.getHours(),
+      minute: currentDate.getMinutes(),
+
+      timeInput: true,
+      controlType: 'select',
+      minDateTime: currentDate
+    });
   }
