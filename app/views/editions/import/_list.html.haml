@@ -121,7 +121,6 @@
 
             %tbody
               - @support_materials.each do |material|
-                - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
                 %tr.lines{:'data-id' => material.id, :'data-type' => "SupportMaterialFile"}
                   %td.center
                     = check_box_tag("cbx_material_#{material.id}", material.id, false, {class: "cbx_value", :'data-is-link' => (material.material_type == Material_Type_Link)})
