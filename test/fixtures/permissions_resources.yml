@@ -470,6 +470,11 @@ webconferenceprof6:
   resource_id: 186
   per_id: false
 
+admin_webconference2:
+  profile_id: 23
+  resource_id: 241
+  per_id: false
+
 ##############################
 # TUTOR A DISTANCIA #
 ##############################

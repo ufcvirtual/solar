@@ -20,6 +20,15 @@
 	color: red;
 }
 
+[class^="icon-"].on,
+[class*=" icon-"].on {
+	color: #003E7A;
+}
+
+ [class^="icon-"].off,
+[class*=" icon-"].off {
+	color: red;
+}
 
 [class^="icon-"], [class*=" icon-"] {
 	font-family: 'Solar';
