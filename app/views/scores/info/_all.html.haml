@@ -87,7 +87,7 @@
 
                   %td{headers: "al_eva_btn"}
                     - if @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate) || @can_comment
-                      = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: @bloq_register_notes ? '' : "open_evaluation(this);", :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), class: 'btn ' +(@bloq_register_notes ? 'disabled_register_notes' : 'open_evaluation'), onkeydown: 'click_on_keypress(event, this);', disabled: @bloq_register_notes, :"data-tooltip" => (@bloq_register_notes ? t("scores.index.msg_button_register_off") : '')
+                      = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: "open_evaluation(this);", :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'evaluative'), class: 'btn open_evaluation', onkeydown: 'click_on_keypress(event, this);'
 
                   %td.center{headers: 'al_eva_af' }=raw t(tool.final_exam, scope: [:common_between_pages, :final_exam])
                   %td.center{headers: "al_eva_aft"}=(tool.new_after_evaluation ==  true ? t('scores.info.new_yes') : t('scores.info.new_no'))
@@ -175,7 +175,7 @@
                     %td.center{headers: "al_fre_comment"}= link_to content_tag(:i, nil, class: 'icon-comment'), "#void", onclick: 'open_summary(this)', :'data-url' => summary_comments_path(ac_id: tool.id, tool_id: tool.academic_tool_id, group_id: tool.group_id, tool: tool.academic_tool_type), class: "btn #{tool.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: tool.count_comments), :'aria-label' => t('comments.summary.count_alt', count: tool.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
                   %td{headers: "al_fre_btn"}
                     - if @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate) || @can_comment
-                      = link_to content_tag(:i, nil, class: 'icon-write'),  "#void", onclick: @bloq_register_notes ? '' : 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'frequency'), class: 'btn '+(@bloq_register_notes ? 'disabled_register_notes' : 'open_evaluation'), onkeydown: 'click_on_keypress(event, this);', disabled: @bloq_register_notes, :"data-tooltip" => (@bloq_register_notes ? t("scores.index.msg_button_register_off") : '')
+                      = link_to content_tag(:i, nil, class: 'icon-write'),  "#void", onclick: 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'frequency'), class: 'btn open_evaluation', onkeydown: 'click_on_keypress(event, this);'
                   %td.center{headers:'al_freq_hours'}=raw t('common_between_pages.hours', hours: tool.max_working_hours)
                   %td.center{headers: "al_fre_aft"}=(tool.new_after_evaluation == true ? t('scores.info.new_yes') : t('scores.info.new_no'))
       - else
@@ -256,7 +256,7 @@
                     %td.center{headers: "al_not_comment"}= link_to content_tag(:i, nil, class: 'icon-comment'), "#void", onclick: 'open_summary(this)', :'data-url' => summary_comments_path(ac_id: tool.id, tool_id: tool.academic_tool_id, group_id: tool.group_id, tool: tool.academic_tool_type), class: "btn #{tool.count_comments.to_i > 0 ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.count', count: tool.count_comments), :'aria-label' => t('comments.summary.count_alt', count: tool.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
                   %td{headers: "al_not_btn"}
                     - if @can_evaluate.include?(tool.academic_tool_type.to_s.tableize.to_sym => :evaluate) || @can_comment
-                      = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: @bloq_register_notes ? '' : 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'not_evaluative'), class: 'btn  '+(@bloq_register_notes ? 'disabled_register_notes' : 'open_evaluation'), onkeydown: 'click_on_keypress(event, this);', disabled: @bloq_register_notes, :"data-tooltip" => (@bloq_register_notes ? t("scores.index.msg_button_register_off") : '')
+                      = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: 'open_evaluation(this)', :'data-url' => redirect_to_evaluate_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation, score_type: 'not_evaluative'), class: 'btn  open_evaluation', onkeydown: 'click_on_keypress(event, this);'
 
       - else
         .block_content.block_content_text= t(:itens_not_found)
