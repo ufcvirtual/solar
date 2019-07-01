@@ -4,7 +4,7 @@ module V1
     before { verify_ip_access_and_guard! }
 
     namespace :courses do
-      desc "Todos os cursos por tipo e semestre"
+      desc "Todos os cursos por tipo e semestre", hidden: true
       params do
         requires :semester, type: String
         requires :course_type_id, type: Integer#, values: -> { CurriculumUnitType.all.map(&:id) }
@@ -15,7 +15,7 @@ module V1
     end # courses
 
     namespace :course do
-      desc "Criação de curso"
+      desc "Criação de curso", hidden: true
       params { requires :name, :code, type: String }
       post "/" do
         begin
@@ -28,7 +28,7 @@ module V1
         end
       end
 
-      desc "Edição de curso"
+      desc "Edição de curso", hidden: true
       params do
         requires :id, type: Integer#, values: -> { Course.all.map(&:id) }
         optional :name, :code, type: String
@@ -45,7 +45,7 @@ module V1
         end
       end
 
-      desc "Todos os tipos de curso"
+      desc "Todos os tipos de curso", hidden: true
       get "types", rabl: "curriculum_units/types" do
         @types = CurriculumUnitType.all
       end

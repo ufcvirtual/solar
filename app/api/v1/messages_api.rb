@@ -7,7 +7,14 @@ module V1
 
       segment do
 
-        desc 'Exibir mensagem'
+        desc 'Exibir mensagem', {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         get "/:id", rabl: 'messages/show' do
           @message = Message.find(params[:id])
 
@@ -16,7 +23,14 @@ module V1
           LogAction.create(log_type: LogAction::TYPE[:update], user_id: current_user.id, ip: get_remote_ip, description: "message: #{@message.id} read message from #{sent_by_responsible ? 'responsible' : 'other'}", allocation_tag_id: @message.allocation_tag_id) rescue nil
         end
 
-        desc 'Compor Mensagem'
+        desc 'Compor Mensagem', {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :group_id, type: Integer
           optional :files, type: Array
@@ -110,7 +124,14 @@ module V1
           verify_user_permission_and_set_obj(:index)
         end
 
-        desc 'Listar todas as mensagens'
+        desc 'Listar todas as mensagens', {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           optional :group_id, type: Integer, desc: 'Group ID.'
           optional :box, type: String, desc: 'Box Type'
@@ -128,7 +149,14 @@ module V1
           @pages_amount = (@total/limit).ceil.to_i + 1
         end
 
-        desc 'Exibir anexos da mensagem'
+        desc 'Exibir anexos da mensagem', {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :id, type: Integer
         end
@@ -136,7 +164,14 @@ module V1
           @files = MessageFile.where(message_id: params[:id].to_i)
         end
 
-        desc 'Remover mensagem do inbox para lixeira'
+        desc 'Remover mensagem do inbox para lixeira', {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :id, type: Integer
         end
@@ -145,7 +180,14 @@ module V1
           {ok: 'ok'}
         end
 
-        desc 'Marcar mensagem como lida/não lida/restaurar'
+        desc 'Marcar mensagem como lida/não lida/restaurar', {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :status, type: Symbol, values: [:read, :restore, :unread]
           requires :id, type: Integer
@@ -155,7 +197,14 @@ module V1
           {ok: 'ok'}
         end
 
-        desc 'Recuperar lista de possíveis contatos'
+        desc 'Recuperar lista de possíveis contatos', {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :group_id, type: Integer
         end
@@ -163,7 +212,14 @@ module V1
           @contacts = User.all_at_allocation_tags(@allocation_tag_related, Allocation_Activated, true)
         end
 
-        desc 'Responder/Encaminhar mensagem'
+        desc 'Responder/Encaminhar mensagem', {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :id, type: Integer
           requires :group_id, type: Integer
@@ -255,7 +311,14 @@ module V1
           # verify_user_permission_and_set_obj(:index)
         end
 
-        desc 'Listar todas as mensagens'
+        desc 'Listar todas as mensagens', {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           optional :group_id, type: Integer, desc: 'Group ID.'
           optional :box, type: String, desc: 'Box Type'

@@ -5,10 +5,19 @@ module V1
     guard_all!
 
     namespace :event do
-      desc "Edição de ac de evento"
+      desc "Edição de ac de evento", {
+        headers: {
+          "Authorization" => {
+            description: "Token",
+            required: true
+          }
+        }
+      }
       params do
-        requires :id, type: Integer
-        requires :date, :start, :end
+        requires :id, type: Integer, desc: "Id do AcademicAllocation."
+        requires :date, desc: "Data do evento."
+        requires :start, desc: "Horário de inicio do evento."
+        requires :end, desc: "Horário de termíno do evento."
       end
       put "/:id" do
         begin
@@ -36,7 +45,14 @@ module V1
       #   end
       # end
 
-      desc "Criação de um ou mais eventos"
+      desc "Criação de um ou mais eventos", {
+        headers: {
+          "Authorization" => {
+            description: "Token",
+            required: true
+          }
+        }
+      }
       params do
         requires :groups, type: Array
         requires :course_code, :curriculum_unit_code, :semester, type: String
@@ -59,7 +75,14 @@ module V1
 
       end # /
 
-      desc "Remoção de um ou mais acs de eventos"
+      desc "Remoção de um ou mais acs de eventos", {
+        headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
       params do
         requires :ids, type: String, desc: "Events IDs."
       end
@@ -84,7 +107,14 @@ module V1
 
       segment do
 
-        desc "Listar Eventos"
+        desc "Listar Eventos", {
+        headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :allocation_tag_id, type: Integer, desc: "AllocationTagId"
         end
@@ -96,7 +126,14 @@ module V1
 
       segment do
 
-        desc "Listar Alunos"
+        desc "Listar Alunos", {
+        headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :allocation_tag_id, type: Integer, desc: "AllocationTagId"
         end
@@ -109,7 +146,14 @@ module V1
 
       segment do
 
-        desc "Listar Responsáveis"
+        desc "Listar Responsáveis", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :allocation_tag_id, type: Integer, desc: "AllocationTagId"
         end
@@ -121,7 +165,20 @@ module V1
 
       segment do
 
-        desc "Enviar arquivo para aluno"
+        desc "Enviar arquivo para aluno", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
+        params do
+          requires :file, type: File, desc: "Arquivo"
+          requires :student_id, type: Integer, desc: "Id do aluno"
+          requires :id, type: Integer, desc: "Id do Evento"
+          requires :allocation_tag_id, type: Integer, desc: "AllocationTagId"
+        end
         post "/send_file" do
           academic_allocation = AcademicAllocation.where(allocation_tag_id: params[:allocation_tag_id].to_i).where(academic_tool_id: params[:id].to_i)
           academic_allocation_user = AcademicAllocationUser.where(academic_allocation_id: academic_allocation[0].id).where(user_id: params[:student_id].to_i)
@@ -137,7 +194,14 @@ module V1
 
       segment do
 
-        desc "Ver nota do aluno"
+        desc "Ver nota do aluno", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :event_id, type: Integer, desc: "ID do Evento"
           requires :student_id, type: Integer, desc: "ID do Aluno"
@@ -155,7 +219,14 @@ module V1
 
       segment do
 
-        desc "Listar Arquivos enviado para o Aluno"
+        desc "Listar Arquivos enviado para o Aluno", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :id, type: Integer, desc: "ID do Evento"
           requires :student_id, type: Integer, desc: "ID do Aluno"
@@ -172,7 +243,14 @@ module V1
 
       segment do
 
-        desc "Listar comentários do responsável para o Aluno"
+        desc "Listar comentários do responsável para o Aluno", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :event_id, type: Integer, desc: "ID do Evento"
           requires :student_id, type: Integer, desc: "ID do Aluno"

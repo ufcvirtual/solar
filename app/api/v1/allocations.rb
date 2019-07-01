@@ -5,7 +5,7 @@ module V1
 
     namespace :allocations do
 
-      desc "Alocação de usuário"
+      desc "Alocação de usuário", hidden: true
       params do
         requires :profile_id, type: Integer
         requires :type, type: String, values: ["curriculum_unit_type", "curriculum_unit", "course", "offer", "group"]
@@ -24,6 +24,7 @@ module V1
             { ok: :ok }
           end
         end
+        desc "Alocação de usuário", hidden: true
         params do
           optional :curriculum_unit_code, :course_code, :semester, :group_name, :group_code
           at_least_one_of :curriculum_unit_code, :course_code, :semester, :group_name, :group_code
@@ -38,7 +39,7 @@ module V1
 
       end # segment
 
-      desc "Desativação de alocação de usuário"
+      desc "Desativação de alocação de usuário", hidden: true
       params do
         requires :type, type: String, values: ["curriculum_unit_type", "curriculum_unit", "course", "offer", "group"]
         optional :profile_id, type: Integer
@@ -56,7 +57,7 @@ module V1
             { ok: :ok }
           end
         end
-
+        desc "Desativação de alocação de usuário", hidden: true
         params do
           optional :curriculum_unit_code, :course_code, :semester, :group_name, :group_code
           at_least_one_of :curriculum_unit_code, :course_code, :semester, :group_name, :group_code
@@ -75,7 +76,7 @@ module V1
 
     namespace :group do
 
-      desc "Recupera usuários alocados em uma turma"
+      desc "Recupera usuários alocados em uma turma", hidden: true
       params do
         optional :profile_id, :group_id, type: Integer
         optional :curriculum_unit_code, :course_code, :semester, :group_code, :group_name

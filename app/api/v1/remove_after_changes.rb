@@ -9,6 +9,7 @@ module V1
 
           # load/groups/allocate_user
           # params { requires :cpf, :perfil, :codDisciplina, :codGraduacao, :codTurma, :periodo, :ano }
+          desc "Altera alocação do usuário", hidden: true
           put :allocate_user do # Receives user's cpf, group and profile to allocate
             begin
               allocation = params[:allocation]
@@ -27,6 +28,7 @@ module V1
           end # allocate_profile
 
           # load/groups/block_profile
+          desc "Bloqueia o perfil do usuário", hidden: true
           put :block_profile do # Receives user's cpf, group and profile to block
             allocation = params[:allocation]
             user       = User.find_by_cpf!(allocation[:cpf].to_s.delete('.').delete('-'))
@@ -46,6 +48,7 @@ module V1
 
         namespace :curriculum_units do
           # load/curriculum_units/editors
+          desc "", hidden: true
           post :editors do
             load_editors  = params[:editores]
             uc            = CurriculumUnit.find_by_code!(load_editors[:codDisciplina])
@@ -62,6 +65,7 @@ module V1
           end
 
           # load/curriculum_units
+          desc "", hidden: true
           params do
             requires :codigo, :nome, type: String
             requires :cargaHoraria, type: Integer
@@ -83,6 +87,7 @@ module V1
 
         namespace :groups do
           # POST load/groups
+          desc "", hidden: true
           post "/" do
             load_group    = params[:turmas]
             cpfs          = load_group[:professores]
@@ -141,6 +146,7 @@ module V1
             end # before
 
             # POST load/groups/enrollments
+            desc "", hidden: true
             post :enrollments do
               begin
                 create_allocations(@groups.compact, @user, @student_profile, @enrollment)
@@ -152,6 +158,7 @@ module V1
             end
 
             # DELETE load/groups/enrollments
+            desc "", hidden: true
             delete :enrollments do
               begin
                 cancel_allocations(@groups.compact, @user, @student_profile)
@@ -165,6 +172,7 @@ module V1
           end # segment
 
           # PUT load/groups/cancel_students_enrollments
+          desc "", hidden: true
           params{ requires :semester, type: String }
           put :cancel_students_enrollments do
             begin
@@ -178,6 +186,7 @@ module V1
           end
 
           # GET load/groups/enrollments
+          desc "", hidden: true
           params { requires :codDisciplina, :codGraduacao, :nomeTurma, :periodo, :ano, type: String }
           get :enrollments, rabl: "users/list" do
             group  = get_group_by_names(params[:codDisciplina], params[:codGraduacao], params[:nomeTurma], (params[:periodo].blank? ? params[:ano] : "#{params[:ano]}.#{params[:periodo]}"))
@@ -190,6 +199,7 @@ module V1
         end # groups
 
         namespace :user do
+          desc "", hidden: true
           params { requires :cpf, type: String }
           # load/user
           post "/" do
@@ -209,7 +219,7 @@ module V1
 
         namespace :event do
 
-          desc "Edição de evento"
+          desc "Edição de evento", hidden: true
           params do
             requires :id, type: Integer, desc: "Event ID."
             requires :Data, :HoraInicio, :HoraFim
@@ -237,7 +247,7 @@ module V1
 
         namespace :events do
 
-          desc "Criação de um ou mais eventos"
+          desc "Criação de um ou mais eventos", hidden: true
           params do
             requires :Turmas, type: Array
             requires :CodigoCurso, :CodigoDisciplina, :Periodo, type: String
@@ -264,7 +274,7 @@ module V1
 
           end # /
 
-          desc "Remoção de um ou mais acs de eventos"
+          desc "Remoção de um ou mais acs de eventos", hidden: true
           params { requires :ids, type: String, desc: "Events IDs." }
           delete "/:ids" do
             begin

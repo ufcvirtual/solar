@@ -7,7 +7,14 @@ module V1
 
       namespace :curriculum_units do
 
-        desc "Turmas de uma UC do usuario"
+        desc "Turmas de uma UC do usuario", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
          requires :id, type: Integer #, values: -> { CurriculumUnit.all.map(&:id) } }
          optional :profiles_ids, type: Array
@@ -27,7 +34,14 @@ module V1
 
       namespace :user do
 
-        desc "Turmas de um usuario"
+        desc "Turmas de um usuario", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           optional :semester, type: String
           optional :curriculum_unit_type_id, :course_id, :curriculum_unit_id, type: Integer
@@ -57,7 +71,14 @@ module V1
 
       before { guard! }
 
-      desc 'Retorna participantes da turma'
+      desc 'Retorna participantes da turma', {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
       params do
         requires :id, type: Integer
       end
@@ -86,7 +107,7 @@ module V1
       namespace :groups do
 
         namespace :merge do
-          desc "Aglutinação/Desaglutinação de turmas"
+          desc "Aglutinação/Desaglutinação de turmas", hidden: true
           params do
             requires :main_group, :main_course, :main_curriculum_unit, :main_semester, type: String
             requires :secundary_groups, type: Array
@@ -128,7 +149,7 @@ module V1
         #   -- periodo, tipo
         #   -- periodo, curso
         #   -- periodo, curso, disciplina
-        desc "Todas as turmas por tipo de curso, semestre, curso, disciplina ou a propria turma"
+        desc "Todas as turmas por tipo de curso, semestre, curso, disciplina ou a propria turma", hidden: true
         params do
           optional :semester, type: String
           optional :course_type_id, :course_id, :discipline_id, type: Integer
@@ -165,7 +186,7 @@ module V1
           }
         end
 
-        desc "Todas as turmas por semestre, tipo de curso, curso, disciplina e status da turma"
+        desc "Todas as turmas por semestre, tipo de curso, curso, disciplina e status da turma", hidden: true
         params do
           requires :semester, type: String
           optional :curriculum_unit_type_id, default: 2, type: Integer
@@ -194,7 +215,7 @@ module V1
           @groups = (params[:only_active] ? :active_groups : :groups)
         end
 
-        desc "Todas as turmas por semestre, tipo de curso, curso, disciplina e status da turma - retorna apenas os dados das turma"
+        desc "Todas as turmas por semestre, tipo de curso, curso, disciplina e status da turma - retorna apenas os dados das turma", hidden: true
         params do
           requires :semester, type: String
           optional :curriculum_unit_type_id, default: 2, type: Integer
@@ -236,7 +257,7 @@ module V1
             end
           end
 
-          desc "Criação de turma"
+          desc "Criação de turma", hidden: true
           params do
             requires :code, :name, type: String
             optional :offer_id, type: Integer#, values: -> { Offer.all.map(&:id) }
@@ -263,7 +284,7 @@ module V1
             end
           end
 
-          desc "Remove turma"
+          desc "Remove turma", hidden: true
            params do
             optional :name, :code, type: String
             optional :id, type: Integer
@@ -309,7 +330,7 @@ module V1
 
         end #segment
 
-        desc "Edição de turma"
+        desc "Edição de turma", hidden: true
         params do
           requires :id, type: Integer#, values: -> { Group.all.map(&:id) }
           optional :name, :location_name, :location_office, :code, type: String
@@ -331,7 +352,7 @@ module V1
           end
         end
 
-        desc 'Recuperação de dados dos alunos com relacao a turma'
+        desc 'Recuperação de dados dos alunos com relacao a turma', hidden: true
         params do
           requires :semester, :course_code, :curriculum_unit_code, type: String
           optional :curriculum_unit_type_id, default: 2
@@ -356,7 +377,7 @@ module V1
           end
         end # students_info
 
-        desc 'Recuperação de dados da turma'
+        desc 'Recuperação de dados da turma', hidden: true
         params do
           requires :semester, :course_code, :curriculum_unit_code, type: String
           optional :curriculum_unit_type_id, default: 2
@@ -381,7 +402,7 @@ module V1
           end
         end # info
 
-        desc 'Recuperação de dados do responsavel com relacao a turma'
+        desc 'Recuperação de dados do responsavel com relacao a turma', hidden: true
         params do
           requires :semester, :course_code, :curriculum_unit_code, :cpf, type: String
           optional :curriculum_unit_type_id, default: 2

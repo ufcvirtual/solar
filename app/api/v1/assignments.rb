@@ -32,7 +32,14 @@ module V1
           verify_user_permission_on_assignments_and_set_obj(:list, :assignments)
         end # befor
 
-        desc "Listar todos trabalhos da turma"
+        desc "Listar todos trabalhos da turma", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :group_id, type: Integer
         end
@@ -47,7 +54,14 @@ module V1
           is_responsible(:list, :assignments)
         end # befor
 
-        desc "Listar todas as informações de trabalhos do aluno"
+        desc "Listar todas as informações de trabalhos do aluno", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :assignment_id, type: Integer
           requires :group_id, type: Integer
@@ -63,7 +77,14 @@ module V1
           is_responsible(:list, :assignments)
         end # befor
 
-        desc "Listar todas as informações de trabalhos do aluno"
+        desc "Listar todas as informações de trabalhos do aluno", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :student_id, type: Integer
           requires :group_id, type: Integer
@@ -81,10 +102,18 @@ module V1
         before do
           verify_user_permission_on_assignments_and_set_obj(:show, :assignments)
         end
-        desc "Enviar arquivo de trabalho"
+        desc "Enviar arquivo de trabalho", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :assignment_id, type: Integer
           requires :group_id, type: Integer
+          requires :file, type: File
         end
         post "/file" do
           assignment = Assignment.find(params[:assignment_id])
@@ -103,7 +132,14 @@ module V1
           end
         end
 
-        desc "Remover arquivo enviado"
+        desc "Remover arquivo enviado", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :id, type: Integer
           requires :group_id, type: Integer
@@ -121,7 +157,14 @@ module V1
         before do
           verify_user_permission_on_assignments_and_set_obj(:create, :assignment_webconferences)
         end
-        desc "Agendar webconference de trabalho"
+        desc "Agendar webconference de trabalho", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :group_id, type: Integer
           requires :assignment_id, type: Integer
@@ -149,7 +192,14 @@ module V1
           end
         end
 
-        desc "Remover webconference agendada"
+        desc "Remover webconference agendada", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :group_id, type: Integer
           requires :id, type: Integer

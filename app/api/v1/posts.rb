@@ -42,7 +42,14 @@ module V1
           end
         end # after
 
-        desc 'Lista dos posts mais novos. Se uma data for passada, aqueles serão a partir dela.'
+        desc 'Lista dos posts mais novos. Se uma data for passada, aqueles serão a partir dela.', {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do # parâmetros comuns às duas chamadas: new e history
           requires :group_id, type: Integer, desc: 'Group ID.'
           optional :date, type: DateTime, desc: 'Posts date.'
@@ -56,7 +63,14 @@ module V1
           # @posts
         end
 
-        desc 'Lista dos posts mais antigos com relação a uma data.'
+        desc 'Lista dos posts mais antigos com relação a uma data.', {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do # parâmetros comuns às duas chamadas: new e history
           requires :group_id, type: Integer, desc: 'Group ID.'
           requires :date, type: DateTime, desc: 'Posts date.'
@@ -79,7 +93,14 @@ module V1
         end # before
 
         ## discussions/1/posts
-        desc 'Lista de posts de primeiro nivel.'
+        desc 'Lista de posts de primeiro nivel.', {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :id, type: Integer, desc: 'Discussion ID.'
           requires :group_id, type: Integer, desc: 'Group ID.'
@@ -104,7 +125,14 @@ module V1
         end
 
         ## discussions/1/posts
-        desc 'Lista de posts filhos.'
+        desc 'Lista de posts filhos.', {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :id, type: Integer, desc: 'Post ID.'
           optional :limit, type: Integer, default: Rails.application.config.items_per_page.to_i, desc: 'Posts limit.'
@@ -125,7 +153,14 @@ module V1
       end
 
       ## CREATE
-
+      desc 'Create a post.', {
+        headers: {
+          "Authorization" => {
+            description: "Token",
+            required: true
+          }
+        }
+      }
       params do
         requires :id, type: Integer, desc: 'Discussion ID.'
         requires :discussion_post, type: Hash do
@@ -162,7 +197,14 @@ module V1
       end #:id/posts
 
       namespace :post do
-        desc 'Update a post.'
+        desc 'Update a post.', {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         params do
           requires :id, type: Integer, desc: 'Post ID.'
           requires :discussion_post, type: Hash do
@@ -198,7 +240,14 @@ module V1
 
       ## CREATE files
 
-      desc 'Send files to a post.'
+      desc 'Send files to a post.', {
+        headers: {
+          "Authorization" => {
+            description: "Token",
+            required: true
+          }
+        }
+      }
       params { requires :id, type: Integer, desc: 'Post ID.' }
       post ':id/files' do
         post = Post.find(params[:id])
@@ -221,7 +270,14 @@ module V1
       ## LIST files
 
       # GET posts/:id/files
-      desc 'Files of a post.'
+      desc 'Files of a post.', {
+        headers: {
+          "Authorization" => {
+            description: "Token",
+            required: true
+          }
+        }
+      }
       params { requires :id, type: Integer, desc: 'Discussion ID.' }
       get ":id/files", rabl: "posts/files" do
         raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
@@ -231,7 +287,14 @@ module V1
 
       ## DELETE post and files
 
-      desc 'Delete a post.'
+      desc 'Delete a post.', {
+        headers: {
+          "Authorization" => {
+            description: "Token",
+            required: true
+          }
+        }
+      }
       params { requires :id, type: Integer, desc: 'Post ID.' }
       delete ':id' do
         User.current = current_user
@@ -241,7 +304,14 @@ module V1
         user_posts.destroy # user posts
       end
 
-      desc 'Delete a file of a post.'
+      desc 'Delete a file of a post.', {
+        headers: {
+          "Authorization" => {
+            description: "Token",
+            required: true
+          }
+        }
+      }
       params { requires :id, type: Integer, desc: 'File Post ID.' }
       delete 'files/:id' do
         pfile = PostFile.find(params[:id])

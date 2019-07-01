@@ -19,6 +19,14 @@ module V1
       end
 
       ## api/v1/webconferences/1/
+      desc "Lista de Webconferências", {
+        headers: {
+          "Authorization" => {
+            description: "Token",
+            required: true
+          }
+        }
+      }
       params { requires :group_id, type: Integer, desc: 'ID da turma' }
       get ":group_id", rabl: 'webconferences/index' do
         if Exam.verify_blocking_content(current_user.id)
@@ -31,7 +39,14 @@ module V1
         end
       end # get
 
-      desc "Retorna link para acesso a Webconferencia"
+      desc "Retorna link para acesso a Webconferencia", {
+        headers: {
+          "Authorization" => {
+            description: "Token",
+            required: true
+          }
+        }
+      }
       params do
         requires :group_id, type: Integer, desc: 'ID da turma'
         requires :id, type: Integer, desc: 'ID da webconferência'
@@ -58,7 +73,14 @@ module V1
         end
       end # get
 
-      desc "Retorna links para acesso as gravacoes caso existam"
+      desc "Retorna links para acesso as gravacoes caso existam", {
+        headers: {
+          "Authorization" => {
+            description: "Token",
+            required: true
+          }
+        }
+      }
       params do
         requires :group_id, type: Integer, desc: 'ID da turma'
         requires :id, type: Integer, desc: 'ID da webconferência'

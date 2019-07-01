@@ -84,6 +84,12 @@ gem "actionpack", "4.0.13"
 gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'
 
+#API document
+gem 'grape-swagger', '~> 0.25.3'
+gem 'grape-swagger-entity'
+gem 'grape-swagger-representable'
+gem 'grape-swagger-ui'
+
 group :development do
   gem "rb-readline", "~> 0.5.1"
   gem "net-ssh", "~> 2.6.8" # dependencia capistrano

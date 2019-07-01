@@ -5,7 +5,7 @@ module V1
 
     namespace :sav do
       
-      desc "Cadastro de questionário"
+      desc "Cadastro de questionário", hidden: true
       params do
         requires :questionnaire_id, type: Integer
         optional :groups_id, :profiles_ids, type: Array
@@ -31,7 +31,7 @@ module V1
         end
       end
 
-      desc "Edição de questionário"
+      desc "Edição de questionário", hidden: true
       params do
         requires :questionnaire_id, type: Integer
         optional :groups_id, :profiles_ids, type: Array
@@ -62,7 +62,7 @@ module V1
         end
       end
 
-      desc 'Remoção de questionário'
+      desc 'Remoção de questionário', hidden: true
       params do
         requires :questionnaire_id, type: Integer
         optional :groups_id, :profiles_ids, type: Array

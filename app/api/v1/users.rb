@@ -6,7 +6,14 @@ module V1
       before { guard! }
 
       namespace :users do
-
+        desc "Retorna o usuário", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         # GET /users/me
         get "/me", rabl: "users/show" do
           @user = current_user
@@ -17,6 +24,15 @@ module V1
           requires :group_id, type: Integer
           optional :style, type: String, values: %w(small forum medium), default: 'medium'
         end
+        #desc 'old document', hidden: true
+        desc "Retorna a foto do usuário", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         get "/:id/photo" do
 
           @group = Group.find(params[:group_id])
@@ -41,14 +57,14 @@ module V1
       before { verify_ip_access_and_guard! }
 
       namespace :user do
-
+        
         params do
           requires :name, :cpf, :email, type: String
           requires :gender, type: Boolean
           requires :birthdate, type: Date
           optional :username, :cell_phone, :telephone, :address, :address_number, :address_neighborhood, :zipcode, :country, :state, :city, :special_needs, :institution, :nick
         end
-
+        desc "Cadastra um nono usuário", hidden: true
         post "/" do
           begin
             cpf = params[:cpf].delete('.').delete('-')
@@ -116,6 +132,7 @@ module V1
           requires :cpf, type: String
           optional :only_if_exists, type: Boolean, default: false
         end
+        desc "Importa o CPF informado", hidden: true
         post "import/:cpf" do
           begin
             cpf = params[:cpf].delete('.').delete('-')
@@ -132,6 +149,7 @@ module V1
           requires :cpf, type: String
           requires :name, type: String
         end
+        desc "Desvincular o CPF informado", hidden: true
         put "unbind/:cpf" do
           begin
             cpf = params[:cpf].delete('.').delete('-')
@@ -145,6 +163,7 @@ module V1
         end
 
         params{requires :cpf, type: String}
+        desc "Verifica o CPF informado", hidden: true
         get "verify/:cpf" do
           begin
             cpf = params[:cpf].delete('.').delete('-')
@@ -164,6 +183,7 @@ module V1
           optional :email, type: String
           at_least_one_of :email, :username
         end
+        desc "Valida o CPF informado", hidden: true
         get "validates/:cpf" do
           begin
             cpf = params[:cpf].delete('.').delete('-')
@@ -198,13 +218,29 @@ module V1
         before { guard! }
 
         namespace :user do
+          params{requires :file, type: File}
+          desc "Altera a foto do perfil do usuário", {
+            headers: {
+              "Authorization" => {
+                description: "Token",
+                required: true
+              }
+            }
+          }
           put :photo do
             current_user.api = true
             current_user.update_attributes!(photo: ActionDispatch::Http::UploadedFile.new(params[:file]))
 
             {ok: :ok}
           end
-
+          desc "Apaga a foto do perfil do usuário", {
+            headers: {
+              "Authorization" => {
+                description: "Token",
+                required: true
+              }
+            }
+          }
           delete :photo do
             current_user.photo = nil
             current_user.api = true
@@ -216,6 +252,14 @@ module V1
           params do
             optional :style, type: String, values: %w(small forum medium), default: 'medium'
           end
+          desc "Retorna a foto do perfil do usuário", {
+            headers: {
+              "Authorization" => {
+                description: "Token",
+                required: true
+              }
+            }
+          }
           get :photo do
             if current_user.photo.path(params[:style]).blank?
               send_file("#{Rails.root}/app/assets/images/no_image_#{params[:style]}.png", params[:style])
@@ -228,7 +272,7 @@ module V1
 
       namespace :profiles do
 
-        desc "Retorna usuários com perfis informados"
+        desc "Retorna usuários com perfis informados", hidden: true
         params do
           requires :ids, type: String # formato id,id,id
           optional :only_active, type: Boolean, default: true

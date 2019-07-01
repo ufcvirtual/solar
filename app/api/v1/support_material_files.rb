@@ -6,7 +6,14 @@ module V1
       end
 
       ## api/v1/groups/1/lessons
-      desc "Lista de material de apoio da turma"
+      desc "Lista de material de apoio da turma", {
+        headers: {
+          "Authorization" => {
+            description: "Token",
+            required: true
+          }
+        }
+      }
       params { requires :id, type: Integer, desc: "ID da turma" }
       get ":id/support_material_files" do
         authorize! :index, SupportMaterialFile, on: @ats, read: true
@@ -30,7 +37,14 @@ module V1
         end
       end # get
 
-      desc "Download material de apoio"
+      desc "Download material de apoio", {
+        headers: {
+          "Authorization" => {
+            description: "Token",
+            required: true
+          }
+        }
+      }
       params { requires :id, type: Integer, desc: "ID do material de apoio" }
       get ":id/support_material_files/:file_id/download" do
         authorize! :download, SupportMaterialFile, on: @ats, read: true

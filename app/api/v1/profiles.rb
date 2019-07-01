@@ -7,7 +7,7 @@ module V1
 
       namespace :profiles do
 
-        desc "Todos os perfis"
+        desc "Todos os perfis", hidden: true
         get "/", rabl: "profiles/list" do
           @profiles = Profile.all_except_basic
         end

@@ -6,7 +6,14 @@ module V1
       end
 
       ## api/v1/groups/1/lessons
-      desc "Lista de aulas da turma"
+      desc "Lista de aulas da turma", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
       params { requires :group_id, type: Integer }
       get ":group_id/lessons", rabl: "lessons/list" do
         guard!
@@ -22,6 +29,7 @@ module V1
       ## aulas publicas
 
       ## api/v1/lessons
+      desc "Lista de aulas", hidden: true
       get "/" do
         verify_ip_access_and_guard!
         raise 'exam' if Exam.verify_blocking_content(current_user.id) || false

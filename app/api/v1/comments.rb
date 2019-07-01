@@ -31,6 +31,14 @@ module V1
       end
 
       ## api/v1/comments/:student_id
+      desc "Lista de comentários por atividade", {
+        headers: {
+          "Authorization" => {
+            description: "Token",
+            required: true
+          }
+        }
+      }
       params do
         requires :group_id, type: Integer, desc: 'ID da turma'
         optional :student_id, type: Integer, desc: 'ID do aluno'

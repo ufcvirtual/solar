@@ -4,7 +4,7 @@ module V1
 
     before { verify_ip_access_and_guard! }
 
-    desc "Remove curso ou disciplina ou oferta ou turma"
+    desc "Remove curso ou disciplina ou oferta ou turma", hidden: true
     params { requires :type, type: String, values: ['curriculum_unit', 'course', 'offer', 'group'] }
     delete "/taggables/:type/:id" do
       begin

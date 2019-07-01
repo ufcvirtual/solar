@@ -14,12 +14,26 @@ module V1
 
       namespace :curriculum_units do
 
-        desc "Lista UCs da oferta vigente."
+        desc "Lista UCs da oferta vigente", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         get "/", rabl: "curriculum_units/list" do # Futuramente, poderemos especificar outra oferta
           # @curriculum_units
         end
 
-        desc "Lista UCs da oferta vigente incluindo as turmas"
+        desc "Lista UCs da oferta vigente incluindo as turmas", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
         get "groups", rabl: "curriculum_units/list_with_groups" do
           # @curriculum_units, @u_groups
         end
@@ -34,7 +48,7 @@ module V1
 
       namespace :curriculum_unit do
 
-        desc "Criação de disciplina"
+        desc "Criação de disciplina", hidden: true
         params do
           requires :name, :code, type: String
           optional :curriculum_unit_type_id, type: Integer, default: 2#, values: -> { CurriculumUnitType.all.map(&:id) }
@@ -55,7 +69,7 @@ module V1
           end
         end
 
-        desc "Edição de disciplina"
+        desc "Edição de disciplina", hidden: true
         params do
           requires :id, type: Integer#, values: -> { CurriculumUnit.all.map(&:id) }
           optional :name, :code, type: String
@@ -74,7 +88,7 @@ module V1
           end
         end
 
-        desc "Remover disciplina"
+        desc "Remover disciplina", hidden: true
         params do
           optional :id, type: Integer
           optional :code
@@ -103,7 +117,7 @@ module V1
 
       end # curriculum_unit
 
-      desc "Todas as disciplinas por tipo, semestre ou curso"
+      desc "Todas as disciplinas por tipo, semestre ou curso", hidden: true
         params do
           requires :semester, type: String
           optional :course_type_id, type: Integer#, values: -> { CurriculumUnitType.all.map(&:id) }

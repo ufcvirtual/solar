@@ -1,3 +1,4 @@
+require 'grape-swagger'
 module V1
   class Routes < Base
     namespace :routes
@@ -13,5 +14,6 @@ module V1
       end
       routes.compact
     end
+    
   end
 end

@@ -6,7 +6,7 @@ module V1
       before { verify_ip_access_and_guard! }
 
       namespace :offer do 
-        desc "Criação de oferta/semestre"
+        desc "Criação de oferta/semestre", hidden: true
         params do
           requires :name, type: String
           requires :offer_start, :offer_end, type: Date
@@ -27,7 +27,7 @@ module V1
           end
         end
 
-        desc "Edição de oferta"
+        desc "Edição de oferta", hidden: true
         params do
           optional :offer_start, :offer_end, :enrollment_start, :enrollment_end, type: Date
           at_least_one_of :offer_start, :offer_end, :enrollment_start, :enrollment_end
@@ -40,7 +40,7 @@ module V1
         end
       end # offer
 
-      desc "Todos os semestres"
+      desc "Todos os semestres", hidden: true
       get :semesters, rabl: "semesters/list" do
         @semesters = Semester.order('name desc').uniq
       end

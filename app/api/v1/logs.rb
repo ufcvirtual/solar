@@ -96,7 +96,14 @@ module V1
       #   LogAccess.drop_and_create_table_temporary_logs_comments(@ats.uniq, [params[:student_id]])
       # end # get
 
-
+      desc "Lista logs por usuário", {
+        headers: {
+          "Authorization" => {
+            description: "Token",
+            required: true
+          }
+        }
+      }
       get "user/:id", rabl: "users/show" do
         user = User.find(params[:id])
         courses = (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['uab_courses'] rescue nil)

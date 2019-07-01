@@ -8,6 +8,14 @@ module V1
       end
 
       ## api/v1/groups/1/agenda
+      desc "Agenda da turma", {
+        headers: {
+          "Authorization" => {
+            description: "Token",
+            required: true
+          }
+        }
+      }
       params { requires :id, type: Integer, desc: 'ID da turma' }
       get ":id/agenda" do
         authorize! :calendar, Agenda, {on: @ats, read: true}
