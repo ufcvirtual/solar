@@ -3,6 +3,7 @@ $(function(){
 
   $('#save').click(function(){
     var link_to_amount_file = $(this).closest('tr.file_form').prev('tr.lines').find('.file_amount').find('a');
+    console.log(link_to_amount_file);
     $(this).closest('form').serialize_and_submit({
       files: true,
       prepend_to_list: $("#tb_lf tbody"),
@@ -68,6 +69,7 @@ $(function(){
       error_message: '',
       complement_success: function(data){
         $('.file_amount').find('a').each(function() {
+          console.log(this);
           updates_number_of_files(this);
         });
         if(!!$('.fancybox-outer').length)

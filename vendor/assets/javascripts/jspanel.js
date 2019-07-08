@@ -183,7 +183,7 @@ var jsPanel = {
         }
     }(),
     themes: ['default', 'primary', 'info', 'success', 'warning', 'danger'],
-    ziBase: 100,
+    ziBase: 10000,
 
     ajax: function ajax(obj, ajaxConfig) {
         // check whether obj is a jsPanel or something else

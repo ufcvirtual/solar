@@ -3560,6 +3560,7 @@ pt_BR:
       see_files: Ver arquivos enviados
       download_all: Download dos arquivos de todos os alunos
       upload_all: Enviar arquivos da turma
+      enrollment: Matrícula
     presential_test_participants:
       list_name: Lista de Alunos
       name_studante: Nome
@@ -3635,6 +3636,7 @@ pt_BR:
       ended: Não é possível enviar arquivos enquanto a atividade não for finalizada.
       offer: Não é possível enviar ou remover arquivos após o término da oferta.
       remove: Não é possível remover arquivos após o envio de nota, frequência ou comentários.
+      student_count: " %{count} alunos com o mesmo número de matrícula na turma"
 
   agendas:
     dropdown_content:

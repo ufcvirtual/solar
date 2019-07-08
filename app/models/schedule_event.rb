@@ -136,6 +136,7 @@ class ScheduleEvent < Event
   def participants(allocation_tag_id)
     User.find_by_sql <<-SQL
       SELECT DISTINCT
+        allocations.enrollment,
         users.id,
         users.name,
         ac.id AS ac_id,
