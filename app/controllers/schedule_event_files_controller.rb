@@ -24,9 +24,9 @@ class ScheduleEventFilesController < ApplicationController
     authorize! :create, ScheduleEventFile, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
     errors = create_many.flatten
-
+    acu = AcademicAllocationUser.find(params[:schedule_event_file][:academic_allocation_user_id])
     if errors.blank?
-      render partial: 'files', locals: { files: @schedule_event_files, disabled: false, can_send_file: can?(:create, ScheduleEventFile, on: [@allocation_tag_id]), can_correct: can?(:online_correction, ScheduleEventFile, on: [@allocation_tag_id])}
+      render partial: 'schedule_event_files/files', locals: { files: acu.try(:schedule_event_files), disabled: false, can_send_file: can?(:create, ScheduleEventFile, on: [@allocation_tag_id]), can_correct: can?(:online_correction, ScheduleEventFile, on: [@allocation_tag_id])}
     else
       render json: { success: false, alert: errors.flatten.uniq.join(';') }, status: :unprocessable_entity
     end
