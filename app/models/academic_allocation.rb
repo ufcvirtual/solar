@@ -194,7 +194,7 @@ class AcademicAllocation < ActiveRecord::Base
     academic_tool_type.eql? 'Exam'
   end
 
-  def copy_group_assignments(to_ac_id, user, ip) # user e IP serão usados no LOG
+  def copy_group_assignments(to_ac_id, user, ip, group_assignment_id) # user e IP serão usados no LOG
     ActiveRecord::Base.transaction do
       group_assignments.where(id: group_assignment_id).each do |group|
         group.copy(to_ac_id)
