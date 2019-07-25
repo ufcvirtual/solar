@@ -86,12 +86,10 @@ module V1
           post "/" do
             load_group    = params[:turmas]
             cpfs          = load_group[:professores]
-            semester_name = load_group[:periodo].blank? ? load_group[:ano] : "#{
-            load_group[:ano]}.#{load_group[:periodo]}"
+            semester_name = load_group[:periodo].blank? ? load_group[:ano] : "#{load_group[:ano]}.#{load_group[:periodo]}"
             offer_period  = { start_date: load_group[:dtInicio].to_date, end_date: (load_group[:dtFim].to_date) }
-            course        = Course.find_by_code! load_group[:codGraduacao]
+            course        = Course.find_by_code! load_group[:codGraduacao] unless load_group[:codGraduacao].blank?
             uc            = CurriculumUnit.find_by_code! load_group[:codDisciplina]
-
             begin
               group = nil
               if load_group[:name].blank?
@@ -101,10 +99,15 @@ module V1
 
               ActiveRecord::Base.transaction do
                 semester = verify_or_create_semester(semester_name, offer_period)
-                offer    = verify_or_create_offer(semester, {curriculum_unit_id: uc.id, course_id: course.id}, offer_period)
-                load_group[:code] = get_group_code(load_group[:code], load_group[:name], load_group[:year].to_i) unless load_group[:name].blank?
-
-                verify_previous_groups(semester, uc.id, course.id, load_group[:name])
+                if course.nil?
+                  offer    = verify_or_create_offer(semester, {curriculum_unit_id: uc.id, course_id: nil}, offer_period)
+                  load_group[:code] = get_group_code(load_group[:code], load_group[:name], load_group[:year].to_i) unless load_group[:name].blank?
+                  verify_previous_groups(semester, uc.id, nil, load_group[:name])
+                else  
+                  offer    = verify_or_create_offer(semester, {curriculum_unit_id: uc.id, course_id: course.id}, offer_period)
+                  load_group[:code] = get_group_code(load_group[:code], load_group[:name], load_group[:year].to_i) unless load_group[:name].blank?
+                  verify_previous_groups(semester, uc.id, course.id, load_group[:name])
+                end
 
                 group    = verify_or_create_group({offer_id: offer.id, code: load_group[:code], name: load_group[:name], location_name: load_group[:location_name], location_office: load_group[:location_office]})
 

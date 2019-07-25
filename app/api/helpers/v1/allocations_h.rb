@@ -1,8 +1,8 @@
 module V1::AllocationsH
 
   ## remover
-  def allocate_professors(group, cpfs)
-    group.allocations.where(profile_id: 17).update_all(status: 2) # cancel all previous allocations
+  def allocate_professors(group, cpfs, profile_id=17)
+    group.allocations.where(profile_id: profile_id).update_all(status: 2) # cancel all previous allocations
 
     cpfs = cpfs.reject { |c| c.empty? }
     cpfs.each do |cpf|
@@ -13,7 +13,7 @@ module V1::AllocationsH
       end
 
       group.api = true
-      group.allocate_user(professor.id, 17)
+      group.allocate_user(professor.id, profile_id)
     end
   end
 
