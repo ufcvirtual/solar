@@ -75,7 +75,7 @@ module V1::EventsH
         alloc_tag.save!
         group_events << {name: group.name, Codigo: group.name, id: ac.id}
       end
-      AcademicTool.send_email(event, acs, false)
+      AcademicTool.send_email(event, acs, false) if event.verify_start
     elsif !existing_ac.nil? && (event.id != update_event.try(:id))
       old_event = old_event = ScheduleEvent.find(existing_ac.academic_tool_id)
       existing_ac.update_attributes(academic_tool_id: event.id)
