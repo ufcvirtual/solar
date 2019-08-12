@@ -241,9 +241,8 @@ class Allocation < ActiveRecord::Base
     uc = allocation_tag.get_curriculum_unit
     ats = allocation_tag.related
     min_hours = (uc.try(:min_hours) || course.try(:min_hours))
-
     # if final_exam rules not defined or (have enough hours and everything is ok)
-    if (course.passing_grade.blank? || ((parcial_grade < course.passing_grade && (course.min_grade_to_final_exam.blank? || course.min_grade_to_final_exam <= parcial_grade)) && (course.min_hours.blank? || uc.working_hours.blank? || (min_hours*0.01)*uc.working_hours <= working_hours)))
+    if (!course.nil? && course.passing_grade.blank? || ((parcial_grade < (!course.nil? && course.passing_grade) && ((!course.nil? && course.min_grade_to_final_exam.blank? )|| (!course.nil? && course.min_grade_to_final_exam) <= parcial_grade)) && ((!course.nil? && course.min_hours.blank?) || uc.working_hours.blank? || (min_hours*0.01)*uc.working_hours <= working_hours)))
        afs = AcademicAllocation.find_by_sql <<-SQL
         WITH groups AS (
           SELECT group_participants.group_assignment_id AS group_id
