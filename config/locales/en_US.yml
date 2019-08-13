@@ -3311,6 +3311,7 @@ en_US:
       see_files: See files sent
       download_all: Download of all student's files
       upload_all: Send class's file
+      enrollment: Enrollment
     presential_test_participants:
       list_name: Students List
       name: Name
@@ -3385,6 +3386,7 @@ en_US:
       ended: It's not possible to send files before the end of activity.
       offer: It's not possible to send or remove files after offer's end.
       remove: Não é possível remover arquivos após o envio de nota, frequência ou comentários.
+      student_count: " %{count} students with the same registration number in the class"
 
   agendas:
     dropdown_content:

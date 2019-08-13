@@ -6,7 +6,7 @@ class Score # < ActiveRecord::Base
 
     related = related || at.related
 
-    history_access = LogAccess.where(log_type: LogAccess::TYPE[:group_access], user_id: user_id, allocation_tag_id: related).limit(5)
+    history_access = LogAccess.where(log_type: LogAccess::TYPE[:group_access], user_id: user_id, allocation_tag_id: related).order("created_at DESC").limit(5)
     public_files   = PublicFile.where(user_id: user_id, allocation_tag_id: at_id)
     count_access = LogAccess.where(log_type: LogAccess::TYPE[:group_access], user_id: user_id, allocation_tag_id: related).count
 

@@ -3,7 +3,7 @@ module AdministrationsHelper
   include AllocationsHelper
 
   def last_accessed(id)
-    last_accessed = LogAccess.find_by_user_id(id)
+    last_accessed = LogAccess.where(user_id: id).last
     last_accessed.nil? ? " - " : l(last_accessed.created_at.to_date, format: :default).to_s
   end
 

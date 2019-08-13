@@ -21,7 +21,7 @@ module V1::AllocationsH
   def create_allocations(groups, user, profile_id, enrollment)
     ActiveRecord::Base.transaction do
       groups.each do |group|
-        group.api = true
+        #group.api = true
         group.first.allocate_user(user.id, profile_id, nil, group.last.try(:id), Allocation_Activated, enrollment)
         unless group.first.try(:id) == group.last.try(:id)
           unless group.last.blank?

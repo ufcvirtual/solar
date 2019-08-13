@@ -24,9 +24,9 @@ class ScheduleEventFilesController < ApplicationController
     authorize! :create, ScheduleEventFile, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
     errors = create_many.flatten
-
+    acu = AcademicAllocationUser.find(params[:schedule_event_file][:academic_allocation_user_id])
     if errors.blank?
-      render partial: 'files', locals: { files: @schedule_event_files, disabled: false, can_send_file: can?(:create, ScheduleEventFile, on: [@allocation_tag_id]), can_correct: can?(:online_correction, ScheduleEventFile, on: [@allocation_tag_id])}
+      render partial: 'schedule_event_files/files', locals: { files: acu.try(:schedule_event_files), disabled: false, can_send_file: can?(:create, ScheduleEventFile, on: [@allocation_tag_id]), can_correct: can?(:online_correction, ScheduleEventFile, on: [@allocation_tag_id])}
     else
       render json: { success: false, alert: errors.flatten.uniq.join(';') }, status: :unprocessable_entity
     end
@@ -97,7 +97,7 @@ class ScheduleEventFilesController < ApplicationController
       if params[:zip].present?
         schedule_event_files = ScheduleEventFile.get_all_event_files(params[:event_id])
         path_zip = compress_file({ files: schedule_event_files, table_column_name: 'attachment_file_name', name_zip_file: @event.title })
-        download_file(:back, path_zip, file_name)
+        download_file(:back, path_zip)
       else
         if @file.file_correction
           pdf = Prawn::Document.new
@@ -131,11 +131,14 @@ class ScheduleEventFilesController < ApplicationController
 
       params[:schedule_event_files][:files].each do |file|
         enrollment = file.original_filename.strip.scan(/\d+/).first
-        al = Allocation.where("enrollment = ? AND enrollment IS NOT NULL", enrollment).first
+        alloc = Allocation.where("enrollment = ? AND enrollment IS NOT NULL AND allocation_tag_id = ? ", enrollment, ac.allocation_tag_id)
 
-        if al.nil?
+        if alloc.blank?
           errors << t('schedule_event_files.error.student_not_found', file_name: file.original_filename)
-        else
+        elsif alloc.count > 1
+          errors <<  t('schedule_event_files.error.student_count', count: alloc.count)
+        else  
+          al = alloc.first
           student_id = al.user_id
           acu = AcademicAllocationUser.find_or_create_one(ac.id, params[:allocation_tags_ids], student_id)
 
@@ -143,7 +146,6 @@ class ScheduleEventFilesController < ApplicationController
           fail_to_create.empty? ? count_success += 1 : errors << fail_to_create
         end
       end
-
       if errors.flatten.empty?
         render json: { success: true, type_message: 'notice', message: t('schedule_event_files.success.created') }
       elsif count_success > 0

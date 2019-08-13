@@ -9,6 +9,7 @@
 
     .form-inputs.block_content
       = f.hidden_field :academic_allocation_user_id, value: @schedule_event_file.academic_allocation_user_id
+      = f.hidden_field :user_id, value: @schedule_event_file.academic_allocation_user.user_id, class: 'user_id'
 
     .event_file_form
       .form-inputs.block_content

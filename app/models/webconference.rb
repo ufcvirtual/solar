@@ -356,7 +356,7 @@ class Webconference < ActiveRecord::Base
             LEFT JOIN temp_web_uab_access ON temp_web_uab_access.ac_id_access = temp_web_uab.ac_id
             GROUP BY 2 ORDER BY acessos DESC LIMIT 10
             ) as result
-          GROUP BY  1, 2"
+          GROUP BY  1, 2 ORDER BY semester"
     AcademicAllocation.connection.select_all(sql)
   end
 

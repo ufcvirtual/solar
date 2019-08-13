@@ -156,8 +156,16 @@ class MessagesController < ApplicationController
 
         emails << params[:message][:support] unless params[:message][:support].blank?
 
-        @message.files << original_files if original_files and not original_files.empty?
+        #@message.files << original_files.dup if original_files and not original_files.empty?
         @message.save!
+        if original_files and not original_files.empty?
+          original_files.each do |file|
+            new_file = file.dup
+            new_file.message_id = @message.id   
+            new_file.attachment = file.attachment    
+            new_file.save!    
+          end
+        end
 
         Job.send_mass_email(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email)
         #Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email).deliver
