@@ -190,6 +190,7 @@ class Allocation < ActiveRecord::Base
   end
 
   def calculate_final_grade(grade=nil)
+
     return true unless profile_id == Profile.student_profile && !allocation_tag.nil?
 
     calculate_parcial_grade
@@ -244,7 +245,8 @@ class Allocation < ActiveRecord::Base
     ats = allocation_tag.related
     min_hours = (uc.try(:min_hours) || course.try(:min_hours))
     # if final_exam rules not defined or (have enough hours and everything is ok)
-    if (!course.nil? && course.passing_grade.blank? || ((parcial_grade < (!course.nil? && course.passing_grade) && ((!course.nil? && course.min_grade_to_final_exam.blank? )|| (!course.nil? && course.min_grade_to_final_exam) <= parcial_grade)) && ((!course.nil? && course.min_hours.blank?) || uc.working_hours.blank? || (min_hours*0.01)*uc.working_hours <= working_hours)))
+
+    if ((!course.nil? && course.passing_grade.blank?) || ((!course.nil? && parcial_grade < course.passing_grade && ((!course.nil? && course.min_grade_to_final_exam.blank?) || (!course.nil? && course.min_grade_to_final_exam <= parcial_grade))) && ((!course.nil? && course.min_hours.blank?) || uc.working_hours.blank? || (min_hours*0.01)*uc.working_hours <= working_hours)))
        afs = AcademicAllocation.find_by_sql <<-SQL
         WITH groups AS (
           SELECT group_participants.group_assignment_id AS group_id
@@ -278,7 +280,6 @@ class Allocation < ActiveRecord::Base
       raise 'af'
       # update_attributes final_exam_grade: nil
     end
-
     update_attributes final_grade: (final_exam_grade.blank? ? parcial_grade : ((parcial_grade+final_exam_grade)/2).to_f.round(2))
 
     set_situation(manually)
@@ -298,7 +299,7 @@ class Allocation < ActiveRecord::Base
     end
 
     hours_defined = (!uc.working_hours.blank? && !min_hours.blank?)
-    has_passing_grade = !course.passing_grade.blank?
+    has_passing_grade = (!course.nil? && !course.passing_grade.blank?)
 
     calculate_final_grade if parcial_grade.blank? && (manually || !final_grade.blank?)
     calculate_working_hours if (working_hours.blank? || working_hours == 0) && manually
@@ -313,12 +314,12 @@ class Allocation < ActiveRecord::Base
         update_attributes grade_situation: FailedFrequency
       elsif has_passing_grade && has_evaluative_activities
         # if parcial grade is already enough
-        if (!parcial_grade.blank? && parcial_grade >= course.passing_grade)
+        if (!parcial_grade.blank? && (!course.nil? && parcial_grade >= course.passing_grade))
           update_attributes grade_situation: Approved
         # if parcial grade is not enough
         else
           # if there is a minimum grade to final exam and parcial grade still is not enough
-          if (parcial_grade.blank? || (!course.min_grade_to_final_exam.blank? && course.min_grade_to_final_exam > parcial_grade))
+          if (parcial_grade.blank? || (!course.nil? && !course.min_grade_to_final_exam.blank? && course.min_grade_to_final_exam > parcial_grade))
             update_attributes grade_situation: Failed
           # if parcial grade is enough or there isnt a minimum grade to final exam
           else
@@ -332,18 +333,18 @@ class Allocation < ActiveRecord::Base
             # has a final exam grade
             else
               # if there is a minimum grade to final exam and it is not enough
-              if !course.min_final_exam_grade.blank? && course.min_final_exam_grade > final_exam_grade
+              if !course.nil? && !course.min_final_exam_grade.blank? && course.min_final_exam_grade > final_exam_grade
                 update_attributes grade_situation: Failed
               # if there is no minimum grade to final exam OR there is and it is enough
               else
                 # if there is a minimum passing grade after final exam and final grade is not enough
-                if !course.final_exam_passing_grade.blank? && course.final_exam_passing_grade > final_grade
+                if !course.nil? && !course.final_exam_passing_grade.blank? && course.final_exam_passing_grade > final_grade
                   update_attributes grade_situation: Failed
                 # final grade is enough
-                elsif !course.final_exam_passing_grade.blank?
+                elsif !course.nil? && !course.final_exam_passing_grade.blank?
                   update_attributes grade_situation: FinalExamApproved
                 # if there isnt a minimum passing grade after final exam and final grade is not enoguh
-                elsif course.passing_grade > final_grade
+                elsif !course.nil? && course.passing_grade > final_grade
                   update_attributes grade_situation: Failed
                 # if there isnt a minimum passing grade after final exam and final grade is enoguh
                 else
