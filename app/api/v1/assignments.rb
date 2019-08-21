@@ -86,6 +86,7 @@ module V1
         params do
           requires :assignment_id, type: Integer
           requires :group_id, type: Integer
+          requires :file, type: File
         end
         post "/file" do
           assignment = Assignment.find(params[:assignment_id])
@@ -102,20 +103,21 @@ module V1
             raise af.errors.full_messages.join(', ')
           end
         end
-      end
 
-      desc "Remover arquivo enviado"
-      params do
-        requires :id, type: Integer
-      end
-      delete "/file/:id" do
-        assignment_file = AssignmentFile.find(params[:id].to_i)
-        assignment_file.api = true
-        assignment_file.destroy
+        desc "Remover arquivo enviado"
+        params do
+          requires :id, type: Integer
+          requires :group_id, type: Integer
+        end
+        delete "/file/:id" do
+          assignment_file = AssignmentFile.find(params[:id].to_i)
+          raise CanCan::AccessDenied if (assignment_file.user_id != current_user.id)
+          assignment_file.api = true
+          assignment_file.destroy
 
-        {ok: :ok}
+          {ok: :ok}
+        end
       end
-
       segment do
         before do
           verify_user_permission_on_assignments_and_set_obj(:create, :assignment_webconferences)
@@ -148,43 +150,44 @@ module V1
           end
         end
 
-      desc "Agendar webconference de trabalho"
-      params do
-        requires :assignment_webconference, type: Hash do
-          requires :title, type: String
-          requires :initial_time, type: String
-          requires :duration, type: String
-          requires :is_recorded, type: Boolean, default: false
+        desc "Agendar webconference de trabalho"
+        params do
+          requires :assignment_webconference, type: Hash do
+            requires :title, type: String
+            requires :initial_time, type: String
+            requires :duration, type: String
+            requires :is_recorded, type: Boolean, default: false
+          end
+        end
+        post "/webconference" do
+          al = AcademicAllocation.where(allocation_tag_id: params[:allocation_tag_id].to_i).where(academic_tool_id: params[:assignment_id]).first
+          acu = AcademicAllocationUser.where(academic_allocation_id: al.id).first
+
+          awf = AssignmentWebconference.new(assignment_webconference_params)
+          awf.academic_allocation_user_id = acu.id
+          awf.api_call = true
+          awf.api = true
+
+          if awf.save
+            { id: awf.id }
+          else
+            raise awf.errors.full_messages
+          end
+        end
+
+        desc "Remover webconference agendada"
+        params do
+          requires :id, type: Integer
+        end
+        delete "/webconference/:id" do
+          awf = AssignmentWebconference.find(params[:id].to_i)
+          raise CanCan::AccessDenied unless awf.owner(current_user.id)
+          awf.api = true
+          awf.destroy
+
+          {ok: :ok}
         end
       end
-      post "/webconference" do
-        al = AcademicAllocation.where(allocation_tag_id: params[:allocation_tag_id].to_i).where(academic_tool_id: params[:assignment_id]).first
-        acu = AcademicAllocationUser.where(academic_allocation_id: al.id).first
-
-        awf = AssignmentWebconference.new(assignment_webconference_params)
-        awf.academic_allocation_user_id = acu.id
-        awf.api_call = true
-        awf.api = true
-
-        if awf.save
-          { id: awf.id }
-        else
-          raise awf.errors.full_messages
-        end
-      end
-
-      desc "Remover webconference agendada"
-      params do
-        requires :id, type: Integer
-      end
-      delete "/webconference/:id" do
-        awf = AssignmentWebconference.find(params[:id].to_i)
-        awf.api = true
-        awf.destroy
-
-        {ok: :ok}
-      end
-
     end
 
   end
