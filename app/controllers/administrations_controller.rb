@@ -405,7 +405,8 @@ class AdministrationsController < ApplicationController
 
   def responsibles_list
     allocation_tags_ids = AllocationTag.get_by_params(params, false, true)[:allocation_tags]
-    authorize! :responsibles, Administration, {on: allocation_tags_ids, accepts_general_profile: true}
+    allocation_tags = AllocationTag.get_by_params(params)[:allocation_tags]
+    authorize! :responsibles, Administration, {on: allocation_tags, accepts_general_profile: true}
 
     @allocations = Allocation.responsibles(allocation_tags_ids)
 
