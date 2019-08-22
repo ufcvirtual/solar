@@ -3395,6 +3395,9 @@ pt_BR:
       agendaWeekAlt: Visualização por semana
       monthAlt: Visualização por mês
       listAlt: Visualização em lista dos próximos eventos
+      prev_month: Mês anterior
+      next_month: Próximo Mês
+    by_day: "Dia"
 
   deficiency:
     deficiency: Deficiência

@@ -3090,6 +3090,9 @@ en_US:
       agendaWeekAlt: View by week
       monthAlt: View by month
       listAlt: View next events list
+      prev_month: Previous Month
+      next_month: Next Month
+    by_day: "Day"
 
   deficiency:
     deficiency: Deficiency
