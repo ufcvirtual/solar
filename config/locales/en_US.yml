@@ -2033,6 +2033,7 @@ en_US:
       summary_evaluative: "This table contains all the evaluation activity"
       summary_frequency: "This table contains all the frequency activity"
       summary_notevaluative: "This table contains all the not evaluation activity"
+      members_group: Group's members
     assignments:
       participants: See participants
       groups: See groups

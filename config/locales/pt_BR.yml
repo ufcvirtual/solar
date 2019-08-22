@@ -2317,6 +2317,7 @@ pt_BR:
       summary_evaluative: "Está tabela contém todas as atividades avaliativas com as seguintes informações: Descrição da atividade, período que poderá ser realizada, situação, nota e se foi alterada após o envio."
       summary_frequency: "Está tabela contém todas as atividades de frequência com as seguintes informações: Descrição da atividade, período que poderá ser realizada, situação, frequência obtida e se foi alterada após o envio."
       summary_notevaluative: "Está tabela contém todas as atividades não avaliativas com as seguintes informações: Descrição da atividade, período que poderá ser realizada, situação, nota e se foi alterada após o envio."
+      members_group: Integrantes do grupo
     assignments:
       participants: Ver participantes
       groups: Ver grupos
