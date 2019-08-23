@@ -44,6 +44,17 @@
                     %i.icon-arrow-down-triangle{:'aria-hidden'=>'true'}
                   .dropdown.dropdown-tip{id: "dropdown_eq_#{assignment.academic_tool_id}"}
                     %ul{ class: 'dropdown-menu' }
+              - unless assignment.group_id.blank?
+                .equivalent
+                  %a{ href: '#', :"data-dropdown" => "#dropdown_group_#{assignment.academic_tool_id}" }
+                    %i.icon-users{:'aria-hidden' => true}
+                    = t("assignments.list.members_group")
+                    %i.icon-arrow-down-triangle{:'aria-hidden' => true}
+                  .dropdown.dropdown-tip{id: "dropdown_group_#{assignment.academic_tool_id}"}
+                    %ul{ class: 'dropdown-menu' }
+                      - group = GroupAssignment.find(assignment.group_id)
+                      - group.group_participants.each do |gp|
+                        %li=gp.user.name
             %td.center{headers: "date_range#{type}" }
               %div= [l(assignment.start_date.to_date, format: :normal), l(assignment.end_date.to_date, format: :normal)].join(" - ")
               %div= [(assignment.start_hour), (assignment.end_hour)].join(' - ') unless assignment.start_hour.blank?

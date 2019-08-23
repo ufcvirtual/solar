@@ -751,6 +751,7 @@ function loadFocus(){
     }
     $.cookie("listIdFocu", arrIdFocus);
   });
+
 }
 
 function loading_page(element){
@@ -796,10 +797,10 @@ function calendar_prev_next_month_accessible(){
   setTimeout(function(){
 
     $(".ui-datepicker-next").attr("tabindex", "0");
-    $(".ui-datepicker-next").attr("aria-label", "Próximo Mês");
+    $(".ui-datepicker-next").attr("aria-label", "<%=I18n.t('fullcalendar.buttons.next_month')%>");
 
     $(".ui-datepicker-prev").attr("tabindex", "0");
-    $(".ui-datepicker-prev").attr("aria-label", "Mês Anterior");
+    $(".ui-datepicker-prev").attr("aria-label", "<%=I18n.t('fullcalendar.buttons.prev_month')%>");
 
     $(".ui-datepicker-month").attr("tabindex", "0");
     $(".ui-datepicker-year").attr("tabindex", "0");
@@ -825,11 +826,10 @@ function calendar_accessible(){
 
     $all_days.each(function(item_day){
       var value_day = $(this).text();
-      $(this).attr("aria-label", "Dia " + value_day);
+      $(this).attr("aria-label", "<%=I18n.t('fullcalendar.by_day')%> " + value_day);
     });
 
   }, 500);
-
 }
 
 function hide_element(event) {
