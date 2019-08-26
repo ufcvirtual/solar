@@ -13,7 +13,7 @@
             %li
               = participant.name
               - unless @class_participants.include? participant.id
-                %span{:"data-tooltip" => t('.moved_allocation'), :'aria-label' => t(".moved_allocation")}= content_tag :i, nil, class: 'icon-warning moved_allocation' 
+                %span{:"data-tooltip" => t('.moved_allocation'), :'aria-label' => t(".moved_allocation")}= content_tag :i, nil, class: 'icon-warning moved_allocation'
       - else
         = t(".no_participants")
   - else
@@ -33,6 +33,11 @@
       %thead
         %tr.lines
           %th.no_sort=t('.description')
+          - if !@group.nil? && @can_evaluate
+            %th.no_sort
+              .individually_graded_setter
+                = t('.individually_graded')
+                %a.individually_graded_link{href: "#void", :'data-link' => individually_graded_assignment_path(group_id: @group.id)}= image_tag "#{@group.individually_graded ? 'released' : 'rejected'}.png"
       %tbody
         %tr.lines
           %td= @assignment.enunciation
@@ -56,7 +61,7 @@
 :javascript
   $('#page_title').attr("tabindex", "0");
   $('#page_title').focus();
-  
+
   function delete_file(button){
     $(button).nice_delete({
       parent: 'tr.lines'
@@ -70,4 +75,211 @@
         open: true,
         element_selector: '#focu'
       });
+  }
+
+  $(function(){
+    var mutex = { lock: 1 }; // Trava para garantir que o usuário faça 1 requisição por vez
+    var message_confirm_individually_graded = "#{t('assignments.confirm_individually_graded')}";
+    var message_confirm_group_graded = "#{t('assignments.confirm_group_graded')}";
+
+    $(".link_send_msg").on('click', function(event){
+      event.preventDefault();
+
+      students_ids = []
+
+      if($(".block_user span").data() != null){
+        students_ids.push($(".block_user span").data().id)
+      }
+
+      $('.participants_list li').each(function(index, element){
+        students_ids.push(element.dataset.id)
+      });
+
+      var url = $(this).data('url').replace(':user_ids', students_ids.join(","));
+      $(this).call_fancybox({
+        href: url,
+        open: true
+      });
+
+    });
+
+    $(".individually_graded_link").on('click', function(event){
+      event.preventDefault();
+
+      var link = this;
+      var confirm_change = false;
+
+      if($(link).find('img').attr('src') == '/assets/rejected.png') {
+        var group_already_evaluated = !!$('.without_individually_graded').find('td.evaluation').find('.text').text().trim() || !!$('.without_individually_graded').find('td.frequency').find('.text').text().trim();
+
+        if(group_already_evaluated) {
+          var confirm_change = confirm(message_confirm_individually_graded);
+          if(confirm_change) {
+            individually_graded_toggle(link, mutex);
+          }
+        } else {
+          individually_graded_toggle(link, mutex);
+        }
+      } else {
+        var there_is_student_already_evaluated = false;
+
+        $('.with_individually_graded').each(function() {
+          if(!!$(this).find('td.evaluation').find('.text').text().trim() || !!$(this).find('td.frequency').find('.text').text().trim()) {
+            there_is_student_already_evaluated = true;
+            return;
+          }
+        });
+
+        if(there_is_student_already_evaluated) {
+          var confirm_change = confirm(message_confirm_group_graded);
+          if(confirm_change) {
+            individually_graded_toggle(link, mutex);
+          }
+        } else {
+          individually_graded_toggle(link, mutex);
+        }
+      }
+    });
+
+  });
+
+  function individually_graded_toggle(link, mutex) {
+    $(link).find('img').addClass('individually_graded_link_cursor_wait');
+
+    if( mutex.lock > 0 ) {
+      mutex.lock -= 1;
+
+      $.ajax({
+        dataType: "json",
+        method: "PUT",
+        url: $(link).data("link"),
+        data: {
+          "individually_graded": $(link).find('img').attr('src') == '/assets/rejected.png' ? true : false
+        },
+        success: function(data) {
+          var src = $(link).find('img').attr('src');
+
+          if (src=='/assets/released.png'){
+            var newsrc = '/assets/rejected.png';
+            $('th.student_name').addClass('hide');
+            $('.with_individually_graded').addClass('hide');
+            $('.without_individually_graded').removeClass('hide');
+          } else {
+            var newsrc = '/assets/released.png';
+
+            $('th.student_name').removeClass('hide');
+            $('.with_individually_graded').removeClass('hide');
+            $('.without_individually_graded').addClass('hide');
+
+            var table = $('.without_individually_graded').closest('tbody');
+
+            clean_content_table(table);
+            create_content_table(table, data);
+          }
+
+          $(link).find('img').attr('src', newsrc);
+          $(link).find('img').removeClass('individually_graded_link_cursor_wait');
+
+          flash_message(data.notice, 'notice');
+          mutex.lock += 1;
+        },
+        error: function(data) {
+          $(link).find('img').removeClass('individually_graded_link_cursor_wait');
+
+          var data = $.parseJSON(data.responseText);
+          if (typeof(data.alert) != "undefined")
+            flash_message(data.alert, 'alert');
+
+          mutex.lock += 1;
+        }
+      });
+    }
+  }
+
+  function clean_content_table(table) {
+    table.find('.with_individually_graded').empty(); // Limpa o conteúdo da tabela com avaliação individual
+  }
+
+  function create_content_table(table, data) {
+    $(data.students_info).each(function(index, assignment) {
+      var linha = $('<tr>').addClass('lines with_individually_graded');
+      var form = $('<form accept-charset="UTF-8" action="/assignments/' + assignment.id + '/evaluate" method="post" novalidate="novalidate">').addClass('simple_form academic_allocation_user');
+
+      var hidden_input = $('<div>').addClass('input hidden academic_allocation_user_user_id').append(
+        $('<input>').addClass('hidden').attr('id', 'academic_allocation_user_user_id').attr('type', 'hidden').val(assignment.student_id)
+      );
+
+      var student_name = $('<td>').addClass('center').attr('width', '20%').text(assignment.student_name);
+      var start_date = $('<td>').addClass('center').attr('headers', 'begin').text(assignment.start_date);
+      var end_date = $('<td>').addClass('center').attr('headers', 'end').text(assignment.end_date);
+      var situation = $('<td>').addClass('center assignment_to_be_sent').attr('headers', 'situation').text(assignment.student_situation);
+
+      var grade = $('<td>').addClass('center evaluation').attr('headers', 'grade').text(assignment.student_grade == null ? '' : assignment.student_grade);
+
+      var evaluation = $('<div>').addClass('student_assignment_evaluation');
+      var evaluation_text = $('<div>').addClass('text');
+      var evaluation_input = $('<div>').addClass('input invisible').append(
+        $('<div>').addClass('input float required academic_allocation_user_grade').append(
+          $('<input>').addClass('numeric float required').attr('aria-label', 'Nota').attr('id', 'academic_allocation_user_grade').attr('name', 'academic_allocation_user[grade]').attr('step', '0.01').attr('type', 'number').attr('min', '0').attr('max', '10').css('width', '50px')
+        )
+      );
+
+      evaluation.append(evaluation_text).append(evaluation_input);
+      grade.append(evaluation);
+
+      var working_hours = $('<td>').addClass('center frequency').attr('headers', 'working_hours').text(assignment.student_working_hours == null ? '' : assignment.student_working_hours);
+
+      var evaluation_wh = $('<div>').addClass('student_assignment_evaluation');
+      var evaluation_text_wh = $('<div>').addClass('text');
+      var evaluation_input_wh = $('<div>').addClass('input invisible').append(
+        $('<div>').addClass('input float required academic_allocation_user_working_hours').append(
+          $('<input>').addClass('numeric float required').attr('aria-label', 'Carga Horária').attr('id', 'academic_allocation_user_working_hours').attr('name', 'academic_allocation_user[working_hours]').attr('step', 'any').attr('type', 'number').attr('placeholder', 'Máximo: ' + assignment.max_wh + ' Hs').attr('min', '0').attr('max', assignment.max_wh).css('width', '90px')
+        )
+      );
+
+      evaluation_wh.append(evaluation_text_wh).append(evaluation_input_wh);
+      working_hours.append(evaluation_wh);
+
+      var buttons = $('<td>').addClass('center').attr('headers', 'evaluate').append(
+        $('<div>').addClass('edit_button').append(
+          $('<a>').addClass('btn edit').attr('aria-label', 'Alterar nota').attr('data-tooltip', 'Alterar nota').attr('href', '#void').attr('onclick', 'edit_button(this)').append(
+            $('<i>').addClass('icon-write')
+          )
+        )
+      ).append(
+        $('<div>').addClass('evaluation_buttons invisible').append(
+          $('<a>').addClass('btn btn_main').attr('aria-label', 'Salvar').attr('data-tooltip', 'Salvar').attr('href', '#void').attr('onclick', 'finish_individually_graded_evaluation(this)').append(
+            $('<i>').addClass('icon-checkmark')
+          )
+        ).append(
+          $('<a>').addClass('btn btn_caution cancel_evaluation').attr('aria-label', 'Cancelar').attr('data-tooltip', 'Cancelar').attr('href', '#void').attr('onclick', 'cancel_button(this)').append(
+            $('<i>').addClass('icon-cross')
+          )
+        )
+      );
+
+      linha.append(form).append(hidden_input).append(student_name).append(start_date).append(end_date).append(situation).append(grade).append(working_hours).append(buttons);
+      table.append(linha);
+    });
+  }
+
+  function finish_individually_graded_evaluation(btn){
+    var form = $(btn).closest('tr').find('form');
+    var user_id = $(btn).closest('tr').find('div.academic_allocation_user_user_id').find('input').val();
+    var grade = $(btn).closest('tr').find('td.evaluation').find('.input input').val();
+    var wh = $(btn).closest('tr').find('td.frequency').find('.input input').val();
+
+    $.put(form.attr('action'), {"academic_allocation_user": {"user_id": user_id, "group_id": "", "grade": grade, "working_hours": wh}}, function(data){
+      flash_message(data.notice, 'notice');
+      var td = form.closest('tr').find('td.evaluation');
+      td.find('.text').html(td.find('.input input').val());
+      td = form.closest('tr').find('td.frequency');
+      td.find('.text').html(td.find('.input input').val());
+
+      cancel_button(btn);
+    }).error(function(data){
+      var data = $.parseJSON(data.responseText);
+      if (typeof(data.alert) != "undefined")
+        flash_message(data.alert, 'alert');
+    });
   }

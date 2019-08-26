@@ -35,14 +35,14 @@ class AcademicAllocationUser < ActiveRecord::Base
   validate :verify_wh, if: '!working_hours.blank? && merge.nil?'
   validate :verify_grade, if: '!grade.blank? && merge.nil?'
   validate :verify_offer, :verify_date, if: '(working_hours_changed? || grade_changed?) && merge.nil?'
-  validates :group_assignment_id, presence: true, if: Proc.new { |a| a.try(:assignment).try(:type_assignment) == Assignment_Type_Group }
+  # validates :group_assignment_id, presence: true, if: Proc.new { |a| a.try(:assignment).try(:type_assignment) == Assignment_Type_Group }
 
   before_save :if_group_assignment_remove_user_id
   before_save :verify_profile, :verify_group, :verify_participants, if: 'merge.nil?'
 
   before_destroy :delete_with_dependents
 
-  attr_accessor :merge
+  attr_accessor :merge, :user_name
 
   STATUS = {
     empty: 0,
@@ -103,6 +103,12 @@ class AcademicAllocationUser < ActiveRecord::Base
         errors.add(:grade, I18n.t('academic_allocation_users.errors.not_participant')) if academic_allocation.evaluative && grade_changed?
         errors.add(:working_hours, I18n.t('academic_allocation_users.errors.not_participant')) if academic_allocation.frequency && working_hours_changed?
       end
+    end
+  end
+
+  def verify_block_register_notes
+    if allocation_tag.block_register_notes
+      errors.add(:block_register_notes, I18n.t("scores.index.msg_button_register_off"))
     end
   end
 
@@ -377,6 +383,11 @@ class AcademicAllocationUser < ActiveRecord::Base
 
     # if final_exam rules not defined or (have enough hours and everything is ok)
     return true if (course.passing_grade.blank? || ((!allocation.parcial_grade.blank? && (allocation.parcial_grade < course.passing_grade && (course.min_grade_to_final_exam.blank? || course.min_grade_to_final_exam <= allocation.parcial_grade))) && (min_hours.blank? || uc.working_hours.blank? || (min_hours*0.01)*uc.working_hours <= allocation.working_hours)))
+  end
+
+  def remove_grade_and_working_hours
+    self.grade, self.working_hours = nil, nil
+    self.save
   end
 
 end

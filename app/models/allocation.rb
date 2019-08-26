@@ -226,8 +226,8 @@ class Allocation < ActiveRecord::Base
     AcademicAllocation.find_by_sql <<-SQL
       WITH groups AS (
         SELECT group_participants.group_assignment_id AS group_id
-        FROM group_participants
-        WHERE user_id = #{user_id}
+        FROM group_participants JOIN group_assignments ON group_participants.group_assignment_id = group_assignments.id
+        WHERE user_id = #{user_id} AND individually_graded = FALSE
       )
       SELECT SUM(ac.grade) as grade
       FROM (
@@ -456,7 +456,17 @@ class Allocation < ActiveRecord::Base
       if args.any?
         query << "groups.offer_id = :offer_id" if args[:offer_id].present?
         query << "groups.id IN (:group_id)" if args[:group_id].present?
-        query << "allocations.status = :status" if args[:status].present?
+        if args[:status].present?
+          query << "allocations.status = :status"
+          if args[:status] == Allocation_Pending && !args[:pending_old]
+            query << "((current_date >= schedules.start_date OR schedules.start_date IS NULL) AND (current_date <= schedules.end_date OR schedules.end_date IS NULL))"
+          end
+
+          if args[:pending_old]
+            query << "schedules.end_date < current_date"
+          end
+
+        end
 
         if args[:user_search].present?
           user_search = [args[:user_search].split(" ").compact.join("%"), "%"].join
