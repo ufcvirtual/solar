@@ -2218,6 +2218,8 @@ pt_BR:
       change_to: "<p>Atividade %{activity} - %{activity_name} foi alterada para %{date_start} à %{date_end}</p>"
       afected_by_date: "Não é possível alterar para a data escolhida, pois atividades já enviadas seriam afetadas. Escolha novas datas."
   assignments:
+    confirm_group_graded: 'Está ação irá apagar as avaliações dos alunos desse grupo. Você tem certeza disso?'
+    confirm_individually_graded: 'Está ação irá apagar a avaliação do grupo. Você tem certeza disso?'
     restrict_assignment: "Local de trabalho não permitido"
     index:
       expand_enunciation: Expandir enunciado
@@ -2268,6 +2270,8 @@ pt_BR:
       updated: Trabalho atualizado com sucesso.
       deleted: Trabalho deletado com sucesso.
       evaluated: Trabalho avaliado com sucesso.
+      individually: Alunos do grupo serão avaliados individualmente.
+      not_individually: O grupo terá apenas uma nota geral.
     error:
       created: Não foi possível criar trabalho.
       updated: Não foi possível atualizar trabalho.
@@ -2284,6 +2288,7 @@ pt_BR:
       change_type_after_period: não pode ser alterado após término do trabalho
       controlled: Trabalho controlado deve ter, pelo menos, um IP
       controlled_date: Não é possível remover IPs de trabalhos já iniciados ou encerrados
+      individually_error: Não foi possível mudar a forma de avaliação do trabalho.
     show:
       name: Nome
       enunciation: Enunciado
@@ -2305,6 +2310,7 @@ pt_BR:
       situation: Situação
       grade: Nota
       description: Descrição
+      individually_graded: Trabalho avaliado individualmente
     list:
       individual_assignments: Trabalhos individuais
       group_assignments: Trabalhos em grupo

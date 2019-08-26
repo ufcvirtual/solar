@@ -44,3 +44,16 @@
     cursor: pointer;
   }
 }
+
+.individually_graded_link_cursor_wait {
+  cursor: wait !important;
+}
+
+.individually_graded_setter {
+  float: right;
+  width: 245px;
+  img {
+    position: relative;
+    top: 4px;
+  }
+}

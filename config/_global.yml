@@ -24,6 +24,8 @@ development:
   url_options:
     :host: "localhost"
     :port: 3000
+  posts:
+    old_post_date: "2019-05-01 23:59"
 
 test:
   devise:

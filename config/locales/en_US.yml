@@ -1933,6 +1933,8 @@ en_US:
       afected_by_date: "It's not possible to change to choosen dates, because Não é possível alterar para a data escolhida, pois atividades já enviadas seriam afetadas. Choose new dates."
 
   assignments:
+    confirm_group_graded: 'This action will erase the evaluation already made for the students. Are you sure about this?'
+    confirm_individually_graded: 'This action will erase the evaluation of this group. Are you sure about this?'
     restrict_assignment: "This place is not permit to do the assignment"
     index:
       expand_enunciation: Expand enunciation
@@ -1983,6 +1985,8 @@ en_US:
       updated: Assignment was successfully updated.
       deleted: Assignment was successfully deleted.
       evaluated: Assignment was successfully evaluated.
+      individually: Students in the group will be evaluated individually.
+      not_individually: The group will only have one general grade.
     error:
       created: Assignment wasn't created.
       updated: Assignment wasn't updated.
@@ -1999,6 +2003,7 @@ en_US:
       change_type_after_period: "can't change after assignment's ending"
       controlled: Controlled assignment must have, at least, one IP
       controlled_date: "It's not possible to remove IPs of ended or started assignments"
+      individually_error: It was not possible to change the form of evaluation of the work
     show:
       name: Name
       enunciation: Enunciation
@@ -2020,6 +2025,7 @@ en_US:
       situation: Situation
       grade: Grade
       description: Description
+      individually_graded: Assignment evaluated individually
     list:
       individual_assignments: Individual assignments
       group_assignments: Group assignments
