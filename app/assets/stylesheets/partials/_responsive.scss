@@ -313,8 +313,10 @@
   #image_help,
   #mysolar_tabs_wrapper_with_dropdown,
   #mysolar_suggestions_for_mobile {
+    margin-left: 7px;
     display: inline-block;
     background-color: $color_white_base;
+    font-size: 14px;
   }
 
   #mysolar_top_options {
@@ -369,6 +371,14 @@
 
   .no-float-mobile {
     float: none !important;
+  }
+
+  .forum_post img {
+    max-width: 100% !important;
+  }
+
+  .forum_post_icon img {
+    display: none;
   }
 
   label {
