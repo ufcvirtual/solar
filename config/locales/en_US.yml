@@ -2125,6 +2125,7 @@ en_US:
       select_an_assignment: Select an assignment
       select_a_group: Select a group
       import: Import
+      confirm: All groups of the selected assignment will be imported.
     list:
       no_groups: No groups
       participants: See participants

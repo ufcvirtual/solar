@@ -2410,6 +2410,7 @@ pt_BR:
       select_an_assignment: Selecione um trabalho
       select_a_group: Selecione um grupo
       import: Importar
+      confirm: Serão importados todos os grupos do trabalho selecionado.
     list:
       no_groups: Sem grupos
       participants: Ver participantes
