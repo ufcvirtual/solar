@@ -1,8 +1,6 @@
 function select_group(element, event){
   if(event === undefined || event.which == 13 ) {
-    $(".tb_list .lines a").removeClass("selected-group") 
-    $(element).addClass("selected-group")
-
+    $(".selected").removeClass("selected");
     var label = ( $(element).hasClass("label") ? element : $(element).closest(".label") );
     $(label).addClass("selected");
 
@@ -134,7 +132,7 @@ function select_assignment(element, event){
 
 function import_group(button){
   var from_group_id = $($(".label.selected")[0]).data("assignment-id")
-  $.post($(button).data("url").replace("aid", from_group_id), { group_assignment_id: $(".selected-group").data("group-id") } , function(data1){
+  $.post($(button).data("url").replace("aid", from_group_id), function(data1){
     $.fancybox.close();
     update_list(data1.notice);
   }).error(function(data){

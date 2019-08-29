@@ -196,7 +196,7 @@ class AcademicAllocation < ActiveRecord::Base
 
   def copy_group_assignments(to_ac_id, user, ip, group_assignment_id) # user e IP serão usados no LOG
     ActiveRecord::Base.transaction do
-      group_assignments.where(id: group_assignment_id).each do |group|
+      group_assignments.each do |group|
         group.copy(to_ac_id)
         LogAction.create(log_type: LogAction::TYPE[:create], user_id: user, ip: ip, description: "import_group: #{group.attributes}", academic_allocation_id: to_ac_id)
       end
