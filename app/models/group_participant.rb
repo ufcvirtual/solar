@@ -6,9 +6,11 @@ class GroupParticipant < ActiveRecord::Base
 
   has_many :academic_allocation_users
 
+  
   before_create :can_add?, :can_change?, if: 'merge.nil?'
   before_destroy :can_change?, :can_destroy?, if: 'merge.nil?'
 
+  validate :user_already_entered?
   attr_accessor :merge
 
   def can_change?
@@ -33,6 +35,11 @@ class GroupParticipant < ActiveRecord::Base
     at = group_assignment.academic_allocation.allocation_tag.id
     assignment = group_assignment.assignment
     raise 'date_range_expired' unless (assignment.in_time?(at) || assignment.will_open?(at, User.current.id))
+  end
+
+  def user_already_entered?
+    gpu = GroupParticipant.joins(:group_assignment).where("group_assignments.academic_allocation_id = ? AND group_participants.user_id = ?", group_assignment.academic_allocation.id, user_id).first
+    raise 'user_already_exists' unless gpu.nil?
   end
 
 end
