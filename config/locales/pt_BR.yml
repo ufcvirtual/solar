@@ -2422,6 +2422,7 @@ pt_BR:
       unique_name: deve ser único.
       alone: Aluno está sozinho no grupo e não pode ficar sem grupo após o término da atividade.
       already_exists: Já existe um grupo com o nome deste aluno. Favor renomear o grupo.
+      user_already_exists: Aluno já inserido em um grupo para esse trabalho.
     success:
       imported: Grupos e participantes importados com sucesso.
     new:
