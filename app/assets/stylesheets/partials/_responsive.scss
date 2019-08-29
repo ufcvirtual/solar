@@ -281,7 +281,7 @@
     min-width: 280px !important;
   }
 
-  .fancybox-inner {
+  .fancybox-inner, .embeddedContent iframe {
     width: 100% !important;
   }
 
@@ -374,8 +374,17 @@
     float: none !important;
   }
 
-  .forum_post img {
+  .forum_post img,
+  .forum_post_wrapper img,
+  .forum_post_inner_content img {
     max-width: 100% !important;
+  }
+
+  .forum_post_inner_content {
+    width: 100%;
+    p {
+      text-align: justify;
+    }
   }
 
   .forum_post_icon img {

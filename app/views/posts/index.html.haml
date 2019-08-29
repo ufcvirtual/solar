@@ -116,6 +116,14 @@
   $("#button_new_post").focus();
 
   $(function(){
+    $('article.forum_post').each(function() {
+      var width_head = $('#mysolar_content').width() - $(this).find('.forum_post_head').offset().left;
+      var width_content = $('#mysolar_content').width() - $(this).find('.forum_post_inner_content').offset().left;
+
+      $(this).find('.forum_post_head').css('width', width_head);
+      $(this).find('.forum_post_inner_content').css('width', width_content);
+    });
+
     $('.draft_version_explain').call_fancybox({
       'maxWidth': '700px',
       content: $('#fv_explain').html()
