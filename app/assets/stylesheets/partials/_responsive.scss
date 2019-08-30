@@ -752,6 +752,13 @@
       margin: 10px 0 !important;
     }
   }
+
+  .dropdown .select_all_box, .dropdown .no_tags {
+    display: flex;
+    input {
+      margin-right: 5px;
+    }
+  }
 }
 
 @media (max-width: 768px){
