@@ -12,6 +12,19 @@
     ._cell.forum_post_icon
       = (@researcher ? image_tag('no_image.png', size: '40x40') : image_tag(user.user_photo(:forum), size: '40x40', alt: t(:mysolar_alt_img_user) + ' ' + user.nick))
     ._cell.forum_post_head{class: new_post_class + post_draft + unread_post}
+      .forum_post_date
+        = l(post.updated_at, format: :discussion_post_date)
+        = l(post.updated_at, format: :discussion_post_hour)
+        - if post.draft
+          %p= raw t('.draft', aria: t('.draft2') + t('fancybox.open'))
+        - if post.children_count > 0 && display_mode != 'list'
+          .links_to_hide_and_show
+            = link_to t(".hide_posts"), "#void", onclick: "show_or_hide('hide', this);", class: 'link-hide'
+            = link_to t(".show_posts"), "#"+"#{post.id}", onclick: "show_or_hide('show', this);", class: 'link-show invisible'
+            .icons.links_to_hide_and_show
+              = link_to content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t(".hide_posts")), "#void", onclick: "show_or_hide('hide', this);"
+              = link_to content_tag(:i, nil, class: 'invisible icon-arrow-down-triangle', :"data-tooltip" => t(".show_posts")), "#"+"#{post.id}", onclick: "show_or_hide('show', this);"
+              
       .forum_post_author
         .forum_participant_nick{ alt: "#{user.info(:nick, @researcher)}" }
           = user.info(:nick, @researcher)
@@ -26,18 +39,7 @@
 
         .forum_participant_profile
           = (profile = post.profile).nil? ? '' : profile.name
-      .forum_post_date
-        = l(post.updated_at, format: :discussion_post_date)
-        = l(post.updated_at, format: :discussion_post_hour)
-        - if post.draft
-          %p= raw t('.draft', aria: t('.draft2') + t('fancybox.open'))
-      - if post.children_count > 0 && display_mode != 'list'
-        .links_to_hide_and_show
-          = link_to t(".hide_posts"), "#void", onclick: "show_or_hide('hide', this);", class: 'link-hide'
-          = link_to t(".show_posts"), "#"+"#{post.id}", onclick: "show_or_hide('show', this);", class: 'link-show invisible'
-          .icons.links_to_hide_and_show
-            = link_to content_tag(:i, nil, class: 'icon-arrow-up-triangle', :"data-tooltip" => t(".hide_posts")), "#void", onclick: "show_or_hide('hide', this);"
-            = link_to content_tag(:i, nil, class: 'invisible icon-arrow-down-triangle', :"data-tooltip" => t(".show_posts")), "#"+"#{post.id}", onclick: "show_or_hide('show', this);"
+
   ._line
     ._cell.forum_post_icon
     ._cell.forum_post_content{class: post_draft}
@@ -119,6 +121,3 @@
       });
     }, 200);
   });
-
-
-

@@ -112,20 +112,25 @@ div.forum_navigation {
   font-family: 'Ubuntu';
   font-weight: bold;
   width: 100%;
-  display: block;
+  // display: block;
   text-align: left;
   border-bottom: 1px solid;
 }
 
 
 .forum_post_author {
-  float: left;
+  // float: left;
   padding-left: 5px;
 }
 
 .forum_post_date {
   color: $color_gray_font;
   text-align: right;
+
+  display: flex;
+  flex-direction: column;
+  float: right;
+
   p{
     margin-right: 1.5em;
     color: $color_red;
