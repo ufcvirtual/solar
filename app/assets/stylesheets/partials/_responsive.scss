@@ -309,12 +309,14 @@
     }
   }
 
-  #image_accessibility,
-  #image_help,
   #image_user,
+  #image_help,
+  #image_exit,
+  #image_accessibility,
   #mysolar_tabs_wrapper_with_dropdown,
   #mysolar_suggestions_for_mobile {
-    margin-left: 7px;
+    margin-left: 0;
+    margin-right: 0;
     display: inline-block;
     background-color: $color_white_base;
     font-size: 14px;
@@ -423,10 +425,6 @@
   .group_label,
   .bibliography_address {
     min-width: 155px !important;
-
-    label {
-      width: 45px !important;
-    }
   }
 
   #bibliography_publisher,
@@ -758,6 +756,10 @@
     input {
       margin-right: 5px;
     }
+  }
+
+  .mysolar_unit_tab {
+    display: inline-flex;
   }
 }
 
