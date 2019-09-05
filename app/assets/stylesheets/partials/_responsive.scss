@@ -349,6 +349,20 @@
     margin-top: 15px;
   }
 
+  .preview_webconferences {
+    .block_content_toolbar {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+    }
+    #search {
+      width: 90%;
+    }
+    .block_toolbar_right {
+      margin-left: 12px;
+    }
+  }
+
   .message_new_textbox {
     display: block;
   }
