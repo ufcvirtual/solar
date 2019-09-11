@@ -67,12 +67,34 @@ module APIGuard
         when Oauth2::AccessTokenValidationService::VALID
           @current_user = User.find(access_token.resource_owner_id) rescue nil
           APILog.current_user = @current_user
+          @current_client = OauthApplication.where(uid: access_token.application.try(:uid)).first rescue nil
         end
       end
     end
 
     def current_user
       @current_user
+    end
+
+    def current_client
+      @current_client
+    end
+
+    def guard_user!
+      guard!
+      # quando a app cliente acessa por acceess_token, o sistema entende quem criou o cliente como o current_user
+      if @current_user.blank? || !@current_client.blank?
+        Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [TokenNotFoundError] message: Error while checking for user for provided client token - NOT FOUND"
+        raise TokenNotFoundError
+      end
+    end
+
+    def guard_client!
+      guard!
+      if @current_client.blank?
+        Rails.logger.info "[API] [ERROR] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [TokenNotFoundError] message: Error while checking for client for provided user token - NOT FOUND"
+        raise TokenNotFoundError
+      end
     end
 
     private

@@ -253,6 +253,7 @@ pt_BR:
       user:
         alternate_email: "E-mail alternativo"
         password: "Senha"
+        encrypted_password: "Senha"
         current_password: "Senha"
         new_password: "Nova Senha"
         username: "Login"
@@ -664,6 +665,7 @@ pt_BR:
   dont_destroy_with_content: "Possui conteúdo"
   item_search_no_found: "Nenhum item encontrado"
   no_javascript: Seu navegador não suporta JavaScript ou está com este desabilitado.
+  other: Outro
 
   #Página de Login
   login_description1: "O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,
@@ -2027,7 +2029,7 @@ pt_BR:
     passwords:
       new_password: Nova senha
       confirm_new_password: Confirmar nova senha
-      change_my_password: Alterar
+      change_my_password: Alterar senha
     confirmations:
       send_instructions: 'Instruções de como confirmar sua conta serão enviados para seu email em alguns minutos.'
       send_paranoid_instructions: 'Instruções de como confirmar sua conta serão enviados para seu email em alguns minutos, caso ele exista em nossa base de dados'
@@ -2052,9 +2054,10 @@ pt_BR:
         subject: 'Instruções de desbloqueio'
       msg:
         hello: "Olá %{email}!"
-        request: "Alguém solicitou um link para alterar sua senha. "
-        request_info: "Você pode fazer isso através do link abaixo."
+        request: "Foi solicitado um link de recuperação de senha. "
+        request_info: "Caso deseje proceder, você pode fazer isso através do link abaixo."
         request_info_ma: "Como você é um usuário integrado ao Sigaa, você deve realizar a recuperação de senha através desse. Para isso, acesse o link abaixo."
+        request_info_app: "Atualmente seu login e senha estão associados ao %{system}. Para manter a integração, você deve solicitar a alteração de sua senha no %{system} acessando %{url}. Caso deseje desfazer a integração e alterar sua senha do Solar de modo independente, acesse o link abaixo."
         ignore: "Se não foi você quem solicitou este link, por favor ignore este email."
         change: "Sua senha não vai ser modificada enquanto você não acessar o link e criar uma nova."
         username_info: "Seu login é: %{username}."
@@ -2584,6 +2587,7 @@ pt_BR:
     specific_profile: "Perfil Específico"
     specific_profile_text: "Perfil específico de uma disciplina, oferta ou turma<br/><em>Exemplo: Professor, Tutor</em>"
     close: Fechar
+    oauth_application: "O login e senha deste usuário, bem como os demais dados pessoais e de acesso, estão vinculados ao sistema %{system}. Ao confirmar, este vínculo será removido e os dois cadastros serão independentes, bem como o login ou senha poderão ser diferentes. Você tem certeza que deseja prosseguir? O usuário será informado sobre a mudança."
     allocations_user:
       no_data: Nenhuma alocação cadastrada
     users:
@@ -3253,6 +3257,7 @@ pt_BR:
   confirm_cancel: 'Tem certeza de que deseja cancelar?'
   message_confirm_user: "Tem certeza?"
   page_loading: "A página está carregando..."
+  oauth_application_password: "Seu login e senha, assim como os demais dados pessoais e de acesso, estão vinculados ao sistema %{system}. Ao confirmar, este vínculo será removido e os dois cadastros serão independentes, bem como o login ou senha poderão ser diferentes. Você tem certeza que deseja prosseguir?"
 
   messages:
     file_too_big: "Arquivo muito grande!"
@@ -3437,6 +3442,50 @@ pt_BR:
       prev_month: Mês anterior
       next_month: Próximo Mês
     by_day: "Dia"
+
+  deficiency:
+    deficiency: Deficiência
+    deficiencys: Deficiências
+    autism_complete: Autismo
+    low_vision_complete: Baixa visão
+    blindness_complete: Cegueira
+    hearing_deficiency_complete: Deficiência auditiva
+    physical_disability_complete: Deficiência física
+    intellectual_deficiency_complete: Deficiência intelectual
+    multiple_disability_complete: Deficiência múltipla
+    deafness_complete: Surdez
+    deafblindness_complete: Surdocegueira
+    aspergers_syndrome_complete: Síndrome de Asperger
+    rett_syndrome_complete: Síndrome de Rett
+    childhood_disintegrative_disorder_complete: Transtorno desintegrativo de infância
+    none: Nenhuma
+    other: Outra
+    autism: AUT
+    low_vision: BVO
+    blindness: CEG
+    hearing_deficiency: DAA
+    physical_disability: DFA
+    intellectual_deficiency: DIL
+    multiple_disability: DMA
+    deafness: SUR
+    deafblindness: SCA
+    aspergers_syndrome: SDA
+    rett_syndrome: SRETT
+    childhood_disintegrative_disorder: TDI
+    code:
+      autism: 1
+      low_vision: 2
+      blindness: 3
+      hearing_deficiency: 4
+      physical_disability: 5
+      intellectual_deficiency: 6
+      multiple_disability: 7
+      deafness: 8
+      deafblindness: 9
+      aspergers_syndrome: 10
+      rett_syndrome: 11
+      childhood_disintegrative_disorder: 12
+      other: 13
 
   deficiency:
     deficiency: Deficiência
@@ -3762,6 +3811,8 @@ pt_BR:
       cpf_as_username: 'não pode ser o CPF de outro usuário'
       multiple_sessions: "Não é possível ficar logado em múltiplos dispositivos ao mesmo tempo."
       username: "deve ter apenas letras e números."
+      password_mandatory_integration: "necessária. Seu login e senha, bem como os demais dados pessoais e de acesso, estão associados ao %{system}. Ao alterar algum desses dados, esta integração será desfeita e faz-se necessário que sua senha também seja alterada."
+      oauth_application: "não pode ser alterado, pois este é um usuário integrado ao %{system}. A integração deve ser desfeita para que este campo possa ser alterado."
     notices:
       ma:
         use_ma_data: "Seus dados de acesso foram importados do Sigaa. Para alterar ou recuperar seus dados de acesso, vá ao endereço: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
@@ -3802,6 +3853,7 @@ pt_BR:
       previous_username: "Login anterior: "
       previous_email: "Email anterior: "
       last_access: "Último acesso: "
+      other_system: "Integrado a outro sistema: "
       y: Sim
       n: Não
     request_profile:

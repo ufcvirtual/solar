@@ -55,8 +55,9 @@ module Taggable
   ## Alocações
 
   # creates or activates user allocation
-  def allocate_user(user_id, profile_id, updated_by_user_id=nil, origin_group_id=nil, status=Allocation_Activated, enrollment=nil)
+  def allocate_user(user_id, profile_id, updated_by_user_id=nil, origin_group_id=nil, status=Allocation_Activated, notify=false, enrollment=nil)
     allocation = Allocation.where(user_id: user_id, allocation_tag_id: self.allocation_tag.id, profile_id: profile_id).first_or_initialize
+    new_record, old_status = allocation.new_record?, allocation.status
     allocation.status = status
     allocation.enrollment = enrollment
     allocation.updated_by_user_id = updated_by_user_id # if nil, was updated by system
@@ -71,6 +72,9 @@ module Taggable
 
     allocation.origin_group_id = (origin_group_id.blank? ? nil : origin_group_id)
     allocation.save!
+
+    allocation.user.notify_by_email(nil, nil, false, [], allocation.allocation_tag) if notify && status == Allocation_Activated && (new_record || old_status != Allocation_Activated) && profile_id == Profile.student_profile && (!allocation.group.blank? && allocation.group.status)
+
     allocation
   end
 

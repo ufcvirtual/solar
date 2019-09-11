@@ -216,6 +216,7 @@ en_US:
     attributes:
       user:
         password: "Password"
+        encrypted_password: "Password"
         current_password: "Password"
         new_password: "New Password"
         username: "Login"
@@ -596,6 +597,7 @@ en_US:
   dont_destroy_with_content: "It has content"
   item_search_no_found: "No item found"
   no_javascript: "Your browser does not support JavaScript or it's disabled."
+  other: Other
   login_description1: "Solar is a virtual learning environment developed by the UFC Virtual Institute at Federal University of Ceará. It is geared towards the teacher and the student, allowing the publication of courses and interaction with them."
   login_description2: "The Solar was developed to enhance the learning process, starting from the interaction with the graphic interface of the environment, and to allow fast access to the pages and the content, easy navigation and browser compatibility. Here, the learner feels safe to explore the available spaces. The environment is supported by a philosophy of interaction, not control."
   login_title: "Sistema Online de Aprendizagem da Universidade Federal do Ceará"
@@ -1734,7 +1736,7 @@ en_US:
     users_passwords:
       new_password: New password
       confirm_new_password: Confirm new password
-      change_my_password: Change
+      change_my_password: Change password
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       send_instructions_email: 'An email with instructions about how to set a new password will be send to the following email %{email}.'
       updated: 'Your password was changed successfully. You are now signed in.'
@@ -1773,9 +1775,10 @@ en_US:
         subject: 'Unlock Instructions'
       msg:
         hello: "Hello %{email}!"
-        request: "Someone has requested a link to change your password."
-        request_info: "You can do this through the link below."
+        request: "A password recovery url was requested."
+        request_info: "If you want to continue, you can do this through the link below."
         request_info_ma: "As you are an user integrated with Sigaa, you must recover your password through it. To do so, access the link below."
+        request_info_app: "Your login and password are currently associated with %{system}. To maintain integration, you must request to change your password on %{system} by accessing %{url}. If you would like to undo the integration and change your Solar password independently, please visit the link below."
         ignore: "If you didn't request this, please ignore this email."
         change: "Your password won't change until you access the link above and create a new one."
         username_info: "Your username is: %{username}."
@@ -2295,6 +2298,7 @@ en_US:
     specific_profile: Specific Profile
     specific_profile_text: "Profile that is specific to a discipline, offer or group <br/><em>Example: Professor, Tutor</em>"
     close: Close
+    oauth_application: "This user username and password, as well other personal and access data, are linked to %{system} system. By confirming, this bond will be removed and both registration will be independent, as well the username or password could be different. Are you sure you want to proceed? This user will be informed about this change."
     allocations_user:
       no_data: No data
     users:
@@ -2953,7 +2957,7 @@ en_US:
   confirm_cancel: 'Are you sure you want to cancel?'
   message_confirm_user: 'Are you sure?'
   page_loading: "Page is loading..."
-
+  oauth_application_password: "Your username and password, as well your other personal and access data, are linked to %{system} system. By confirming, this bond will be removed and both registration will be independent, as well your username or password could be different. Are you sure you want to proceed?"
   messages:
     file_too_big: "File too big"
     mail_header: "Sent by: "
@@ -3450,6 +3454,8 @@ en_US:
       cpf_as_username: "can't be another's suser CPF"
       multiple_sessions: "It's not possible to be logged on multiple devices at same time."
       username: "must have only letters and numbers."
+      password_mandatory_integration: "necessary. Your username and password, as well all your personal and access data, are associated to %{system}. By changing any of those information, this integration will be removed and it is necessary that your password also be changed."
+      oauth_application: "can't be changed. This user is integrated to %{system}. Integration must be removed to that this field could be updated."
     notices:
       ma:
         use_ma_data: "Your access data were imported from Sigaa. To change or recover your access data, go to the address: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
@@ -3490,6 +3496,7 @@ en_US:
       previous_email: "Previous Email: "
       last_access: "Last access: "
       selfregistration: "Has made his selfregistration at Sigaa: "
+      other_system: "Integrated with another system: "
       y: 'Yes'
       n: 'No'
     request_profile:

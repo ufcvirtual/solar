@@ -54,7 +54,17 @@ class AdministrationsController < ApplicationController
     set_current_user
 
     @user = User.find(params[:id])
+    previous_user = @user.dup
+
     if @user.update_attributes(user_params)
+      changes = []
+      unless previous_user.oauth_application_id.blank?
+        User::API_FIELDS.each do |api_field|
+          changes << api_field.to_sym if previous_user.send(api_field.to_sym).to_s != @user.send(api_field.to_sym).to_s
+        end
+      end
+
+      @user.notify_by_email(changes.include?(:username), false, (!previous_user.oauth_application_id.blank? && @user.oauth_application_id.blank?) ? previous_user.oauth_application : nil, changes) if changes.any?
       render json: {success: true}, status: :ok
     else
       render json: {success: false, alert: @user.errors.full_messages.uniq.compact}, status: :unprocessable_entity
@@ -433,7 +443,7 @@ class AdministrationsController < ApplicationController
 
     def allocate_user(group, at, user)
       begin
-        group.allocate_user(user.id, Profile.student_profile, current_user.id)
+        group.allocate_user(user.id, Profile.student_profile, current_user.id, nil, Allocation_Activated, true)
         @log[:success] << t(:allocation_success, scope: [:administrations, :import_users, :log], cpf: user.cpf, allocation_tag: at)
       rescue => error
         @log[:error] << t(:allocation_error, scope: [:administrations, :import_users, :log], cpf: user.cpf)

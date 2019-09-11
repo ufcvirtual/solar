@@ -70,7 +70,7 @@
         </tr>
         <tr>
           <td class="form_label"><%= f.label :birthdate, :class=>"label_usuario"%></td>
-          <td class="form_field"><%= f.date_select :birthdate, :start_year => Time.now.year - 2, :end_year => 1900, :id => 'user_birthdate' %></td>
+          <td class="form_field"><%= f.date_select :birthdate, :start_year => Time.now.year - 2, :end_year => 1900, :id => 'user_birthdate', include_blank: true %></td>
           <td class="form_label"><%= f.label :gender %></td>
           <td class="form_field"><%= f.select :gender, ([["M", true], ["F", false]]) , :id => 'gender',:size=>2 %></td>
         </tr>
