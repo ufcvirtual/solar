@@ -1,5 +1,7 @@
 Solar::Application.routes.draw do
 
+  resources :oauth_applications
+
   devise_for :users, controllers: { registrations: "devise/users", passwords: "devise/users_passwords", sessions: "devise/login" }
 
   authenticated :user do
@@ -248,6 +250,7 @@ Solar::Application.routes.draw do
       get :reports_pdf
       get :redirect_to_open
       put :set_situation
+      put :set_register_notes
       put :remove_situation
       get :info_summary
     end
@@ -518,6 +521,7 @@ Solar::Application.routes.draw do
 
   resources :schedule_event_files, except: [:index, :show] do
     member do
+      get :count_user_file
       get :online_correction
       post :save_online_correction_file
       delete :delete_online_correction_canvas
@@ -525,6 +529,7 @@ Solar::Application.routes.draw do
     collection do
       get :can_download
       get :download
+      post :upload
       get :zip_download, to: :download, defaults: {zip: true}
       get :summary
     end
@@ -554,6 +559,7 @@ Solar::Application.routes.draw do
       get :pending
 
       get "download/file/:file_id", to: "messages#download_files", as: :download_file
+      get "api_download/file/:file_id", to: "messages#api_download", as: :api_download
 
       get :support_new, to: "messages#new", as: :support_new, support: true
 
@@ -625,6 +631,8 @@ Solar::Application.routes.draw do
     collection do
       get :list
       get :preview
+      get :report
+      get :download
 
       put ':tool_id/unbind/group/:id' , to: 'groups#change_tool', type: 'unbind', tool_type: 'Webconference', as: :unbind_group_from
       put ':tool_id/remove/group/:id' , to: 'groups#change_tool', type: 'remove', tool_type: 'Webconference', as: :remove_group_from
@@ -733,6 +741,7 @@ Solar::Application.routes.draw do
     end
   end
 
+  resources :change_logs, except: [:new, :edit]
 
   resources :savs, only: :index, defaults: { format: 'json' }
 
@@ -761,7 +770,7 @@ Solar::Application.routes.draw do
   get '/media/ckeditor/pictures/:file.:extension', to: 'access_control#ckeditor_pictures'
   get '/media/ckeditor/attachment_files/:file.:extension', to: 'access_control#ckeditor_attachment_files'
 
-  get '/media/schedule_event/schedule_event_files/:file.:extension', to: 'access_control#online_correction_files', as: 'get_file'
+  get '/media/schedule_event/schedule_event_files/:file', to: 'access_control#online_correction_files', as: 'get_file'
 
   mount Ckeditor::Engine => '/ckeditor'
   ## como a API vai ser menos usada, fica mais rapido para o solar rodar sem precisar montar essas rotas

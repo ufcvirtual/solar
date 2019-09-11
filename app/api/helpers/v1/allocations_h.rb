@@ -48,7 +48,6 @@ module V1::AllocationsH
     end
   end
 
-
   def cancel_all_allocations(profile_id, semester_id)
     ucs = CurriculumUnitType.find(2).curriculum_units.map(&:id)
     params = { curriculum_unit_id: ucs }
@@ -73,11 +72,16 @@ module V1::AllocationsH
   end
   ## remover
 
-  def allocate(params, cancel = false, raise_error=false)
-    objects = ( params[:id].nil? ?  get_destination(params[:curriculum_unit_code], params[:course_code], params[:group_name], params[:semester], params[:group_code]) : params[:type].capitalize.constantize.find(params[:id]) )
+  def allocate(params, cancel = false, raise_error=false, notify=false, verify_access=false)
+    objects = ( params[:id].nil? ?  get_destination(params[:curriculum_unit_code], params[:course_code], params[:group_name], params[:semester], params[:group_code]) : params[:type].capitalize.constantize.where(id: params[:id]) )
     users  = get_users(params)
 
+
     raise ActiveRecord::RecordNotFound if users.empty?
+    if verify_access
+      raise CanCan::AccessDenied if users.map(&:oauth_application_id).compact.blank? || users.map(&:oauth_application_id).uniq != [@current_client.id]
+      authorize_client!([objects].flatten.map(&:allocation_tag).map(&:id).flatten)
+    end
 
     [objects].flatten.map{|object| object.cancel_allocations(nil, params[:profile_id])} if params[:remove_previous_allocations]
 
@@ -90,7 +94,7 @@ module V1::AllocationsH
         if cancel
           object.cancel_allocations(user.id, params[:profile_id], nil, {}, raise_error)
         else
-          object.allocate_user(user.id, params[:profile_id])
+          object.allocate_user(user.id, params[:profile_id], nil, nil, Allocation_Activated, notify)
         end
       end
     end

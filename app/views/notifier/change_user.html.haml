@@ -7,15 +7,49 @@
     %title= "Solar"
     = yield(:head)
   %body
-    %p= raw "Caro(a) #{@user.name}, <br/><br/> Informamos que seu login e/ou senha foram alterados no AVA - Ambiente Virtual de Aprendizagem, SOLAR 2.0. <br/> Os novos dados são:"
-    %p= "Login: #{@user.username}"
-    - unless @password.blank?
-      %p= "Senha: #{@password}"
+    %p= raw "Caro(a) #{@user.name}, <br/><br/> Informamos que os seguintes dados foram alterados no Ambiente Virtual de Aprendizagem SOLAR 2.0: #{@changed_data.join(', ')} <br/>"
+
+    - if @username_changed.nil?
+      %p= "Seu login é: #{@user.username}"
+    - elsif @username_changed
+      %p= "Seu login foi alterado para: #{@user.username}"
     - else
-      - if @user.integrated && !@user.on_blacklist?
-        %p= link_to('Não lembra sua senha?', "https://si3.ufc.br/admin/public/recuperar_senha.jsf")
-      - elsif !@token.blank?
-        %p= link_to('Não lembra sua senha?', edit_password_url(@user, reset_password_token: @token))
+      %p= "Seu login permanece sendo: #{@user.username}"
+
+
+    - unless @password.blank?
+      %p= "Sua senha é: #{@password}"
+    - else
+      %p
+        - if @user.integrated && !@user.on_blacklist?
+          = "Sua senha é a mesma utilizada no SIGAA. Caso não se lembre dela, acesse o "
+          = link_to('SIGAA', "https://si3.ufc.br/admin/public/recuperar_senha.jsf")
+          = "."
+        - elsif !@user.oauth_application_id.blank? && @removed_integration.blank?
+          - app_name = @user.oauth_application.name
+          = "Sua senha é a mesma utilizada no #{app_name}. Caso não se lembre dela, acesse o "
+          = link_to("#{app_name}", "#{@user.oauth_application.recover_password_url}")
+          = "."
+          / - if !@token.blank?
+          /   %p
+          /     = "Caso deseje cadastrar uma senha no Solar diferente da usada no #{app_name}, acesse "
+          /     = link_to("este link", edit_password_url(@user, reset_password_token: @token))
+          /     = ". Informamos que uma vez feito o desvínculo de sua conta entre o Solar e o #{app_name}, não será possível refazê-lo."
+        - elsif !@token.blank?
+          - if @removed_integration.blank?
+            = "Caso não #{@password_changed ? 'saiba sua nova senha' : 'lembre sua senha'}, "
+            = link_to("clique aqui", edit_password_url(@user, reset_password_token: @token))
+            = "."
+          - else
+            = "Em virtude da mudança em #{@username_changed.blank? ? 'seus dados' : 'seu login'}, a integração do seu usuário com o #{@removed_integration.name} foi desfeita."
+            - unless @password_changed
+              = "Para ter acesso ao Solar#{@username_changed ? ' com o novo login' : ''}, é necessário definir uma nova senha "
+              = link_to("neste link", edit_password_url(@user, reset_password_token: @token))
+              = "."
+            - else
+              = "Caso não saiba sua nova senha, "
+              = link_to("clique aqui", edit_password_url(@user, reset_password_token: @token))
+              = "."
     %br
     %p= link_to('Acesso ao Solar', home_url(only_path: false))
     %p{style: "color: #7C7C7C; font-size: 8pt; padding-top: 10px;"}= I18n.t("notifier.dont_reply_message")

@@ -216,6 +216,7 @@ en_US:
     attributes:
       user:
         password: "Password"
+        encrypted_password: "Password"
         current_password: "Password"
         new_password: "New Password"
         username: "Login"
@@ -248,6 +249,7 @@ en_US:
         photo_content_type: "Invalid file type"
         photo_file_size: "File too large. The maximum size of your photo should be up to 700KB."
         reset_password_token: "Reset password token"
+        other_special_needs: "Which *"
       curriculum_unit:
         name: Name
         code: Code
@@ -472,6 +474,7 @@ en_US:
         grade: Grade
         working_hours: Working hours
         group_assignment_id: Assignment group
+        block_register_notes: ""
       message:
         content: Content
         subject: Subject
@@ -594,6 +597,7 @@ en_US:
   dont_destroy_with_content: "It has content"
   item_search_no_found: "No item found"
   no_javascript: "Your browser does not support JavaScript or it's disabled."
+  other: Other
   login_description1: "Solar is a virtual learning environment developed by the UFC Virtual Institute at Federal University of Ceará. It is geared towards the teacher and the student, allowing the publication of courses and interaction with them."
   login_description2: "The Solar was developed to enhance the learning process, starting from the interaction with the graphic interface of the environment, and to allow fast access to the pages and the content, easy navigation and browser compatibility. Here, the learner feels safe to explore the available spaces. The environment is supported by a philosophy of interaction, not control."
   login_title: "Sistema Online de Aprendizagem da Universidade Federal do Ceará"
@@ -1127,6 +1131,7 @@ en_US:
       attention_message: 'Attention:'
       save_automatically_message: ' all changes are save automatically.'
       send_file: Send file
+      warning_files_name: "Please, remove the accents from the files."
     destination_folder_error: A destination folder must be selected
     move_error: It wasn't possible to move
     at_least_one: "Select, at least, one item to %{to}"
@@ -1414,6 +1419,7 @@ en_US:
       new: "New Webconference"
       edit: "Edit Webconference"
       minutes: " minutes"
+      integrated_webconference: This webconference has integration with other databases and, therefore, your day can not be modified, only the time of the date editing field can be changed.
     list:
       webconferences: "Webconferences"
       name: Name
@@ -1477,6 +1483,7 @@ en_US:
       removed_record: Removed or empty record
       copy: It's not possible to remove this webconference record. This webconferenceis a copy. It's necessary to remove original webconference's record.
       acu: It's not possible to remove this webconferences or its record. There are evaluated students or with comments.
+      cant_edit_date: Only the day can not be changed.
     preview:
       delete_record: Remove record
       placeholder: Type any value to be searched at the table of this page
@@ -1527,6 +1534,11 @@ en_US:
       record: Recording %{number}
       start: Recording's start
       end: Recording's end
+      options: Options
+      download_podcast: Download Podcast
+      download_video: Download Vídeo
+      download_chat: Download Chat
+      download_slides: Download Slides
       warning: '<b>Importat: </b> To each prolonged absence from webconference participants, a new recording is made.'
       no_message: Removed or empty recordings or webconference does not have any recordings
       remove: Remove recording
@@ -1586,6 +1598,7 @@ en_US:
   navigation_first_page: "First page "
   navigation_last_page: "Last page "
   navigation_page: "Page: "
+  confirm_create_group_assignment_in_today: "Work is started today, so students will be automatically grouped into groups."
 
   menu_dc_lesson: Digital Class
   menu_content: Content
@@ -1640,6 +1653,7 @@ en_US:
   menu_home: Home
   menu_admin_notifications: General notifications
   menu_events: Events
+  menu_admin_report_webconference: UAB web conferencing report
 
   places_nav_panel_course_hint: "Type the course's name or part of it"
   places_nav_panel_semester_hint: "Type the semester or part of it"
@@ -1688,7 +1702,7 @@ en_US:
     users_passwords:
       new_password: New password
       confirm_new_password: Confirm new password
-      change_my_password: Change
+      change_my_password: Change password
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       send_instructions_email: 'An email with instructions about how to set a new password will be send to the following email %{email}.'
       updated: 'Your password was changed successfully. You are now signed in.'
@@ -1727,9 +1741,10 @@ en_US:
         subject: 'Unlock Instructions'
       msg:
         hello: "Hello %{email}!"
-        request: "Someone has requested a link to change your password."
-        request_info: "You can do this through the link below."
+        request: "A password recovery url was requested."
+        request_info: "If you want to continue, you can do this through the link below."
         request_info_ma: "As you are an user integrated with Sigaa, you must recover your password through it. To do so, access the link below."
+        request_info_app: "Your login and password are currently associated with %{system}. To maintain integration, you must request to change your password on %{system} by accessing %{url}. If you would like to undo the integration and change your Solar password independently, please visit the link below."
         ignore: "If you didn't request this, please ignore this email."
         change: "Your password won't change until you access the link above and create a new one."
         username_info: "Your username is: %{username}."
@@ -2021,6 +2036,7 @@ en_US:
       summary_evaluative: "This table contains all the evaluation activity"
       summary_frequency: "This table contains all the frequency activity"
       summary_notevaluative: "This table contains all the not evaluation activity"
+      members_group: Group's members
     assignments:
       participants: See participants
       groups: See groups
@@ -2246,6 +2262,7 @@ en_US:
     specific_profile: Specific Profile
     specific_profile_text: "Profile that is specific to a discipline, offer or group <br/><em>Example: Professor, Tutor</em>"
     close: Close
+    oauth_application: "This user username and password, as well other personal and access data, are linked to %{system} system. By confirming, this bond will be removed and both registration will be independent, as well the username or password could be different. Are you sure you want to proceed? This user will be informed about this change."
     allocations_user:
       no_data: No data
     users:
@@ -2556,6 +2573,8 @@ en_US:
       rule_min_final_exam_grade: "<div> 9) <b>Minimum final exam grade allowed: %{min_final_exam_grade}</b></div>"
       rule_final_exam_passing_grade: "<div> 10) <b>Minimum final grade to approval after final exam: %{final_exam_passing_grade}</b></div>"
       rule_window_analyzer: "<div> 11) The <b>Analyzer</b> is a tool that allows you to execute correctly activities configurations. By pressing shortcut 'A' or clicking on 'Analyzer' link, a window will show up. It will show the calculation, at real time, of groups <b>final weight</b> and  <b>working hours</b>. In way that will be easier to identify which groups are with final weight 100 and working hours equal to the informed on these instructions. The green text  ilustrates that the calculation is OK and the red text shows that there are something wrong with the calculation: there are more or less hours or final weight. When everything is green or when all final weight are 100 and the working hours are the same as showned at these instructions, click on 'Finish'</div>"
+      groups_block_register_notes: "<div> 12) The class (s): <b> %{groups}</b> are with the blocked note register.</div>"
+      groups_block_register_notes_error: "The class (s): <b> %{groups}</b> are with the blocked note register."
       expand: Expand all
       compress: Compress all
       share_wh: Share working/hours
@@ -2902,7 +2921,7 @@ en_US:
   confirm_cancel: 'Are you sure you want to cancel?'
   message_confirm_user: 'Are you sure?'
   page_loading: "Page is loading..."
-
+  oauth_application_password: "Your username and password, as well your other personal and access data, are linked to %{system} system. By confirming, this bond will be removed and both registration will be independent, as well your username or password could be different. Are you sure you want to proceed?"
   messages:
     file_too_big: "File too big"
     mail_header: "Sent by: "
@@ -2923,10 +2942,15 @@ en_US:
     no_subject: "(no subject)"
     support: "Support <atendimento@virtual.ufc.br>"
     support_only_email: "<atendimento@virtual.ufc.br>"
+    support_email: "atendimento@virtual.ufc.br"
     support_html: "Support &lt;atendimento@virtual.ufc.br&gt;"
     support_simple: "Support"
     no_mail: no email
     send_message: Send Message
+    next: Next
+    previous: Previous
+    next_msg: Next Message
+    previous_msg: Previous Message
     contacts:
       title: "Selection of contacts"
       contacts: "Contacts"
@@ -3070,6 +3094,51 @@ en_US:
       agendaWeekAlt: View by week
       monthAlt: View by month
       listAlt: View next events list
+
+  deficiency:
+    deficiency: Deficiency
+    deficiencys: Deficiencys
+    autism_complete: Autism
+    low_vision_complete: Low vision
+    blindness_complete: Blindness
+    hearing_deficiency_complete: Hearing Deficiency
+    physical_disability_complete: Physical disability
+    intellectual_deficiency_complete: Intellectual deficiency
+    multiple_disability_complete: Multiple Disability
+    deafness_complete: Deafness
+    deafblindness_complete: Deafblindness
+    aspergers_syndrome_complete: Asperger's syndrome
+    rett_syndrome_complete: Rett Syndrome
+    childhood_disintegrative_disorder_complete: Childhood Disintegrative Disorder
+    none: None
+    other: Other
+    autism: AUT
+    low_vision: BVO
+    blindness: CEG
+    hearing_deficiency: DAA
+    physical_disability: DFA
+    intellectual_deficiency: DIL
+    multiple_disability: DMA
+    deafness: SUR
+    deafblindness: SCA
+    aspergers_syndrome: SDA
+    rett_syndrome: SRETT
+    childhood_disintegrative_disorder: TDI
+    code:
+      autism: 1
+      low_vision: 2
+      blindness: 3
+      hearing_deficiency: 4
+      physical_disability: 5
+      intellectual_deficiency: 6
+      multiple_disability: 7
+      deafness: 8
+      deafblindness: 9
+      aspergers_syndrome: 10
+      rett_syndrome: 11
+      childhood_disintegrative_disorder: 12
+      other: 13
+
   schedule_events:
     restrict_events: "Not allowed to access events"
     index:
@@ -3104,6 +3173,10 @@ en_US:
       continue: Continue
     print:
       previous: Previous
+      info_accessibility: Accessibility
+      info_contrast: '1. In colored tests observe the contrast between the colors used.'
+      info_text_black: '2. Text should preferably be black.'
+      info_caption_in_picture: '4. Images must have subtitles.'
     success:
       created: Event was successfully created.
       updated: Event was successfully updated.
@@ -3169,6 +3242,9 @@ en_US:
       content: Has exam's content
       y: Yes
       n: No
+      print_acessibility: Print acessibility
+      print_exame_acessibility: Print proof with accessibility
+      has_content: Has content
     participants:
       title: Participants
       student: Students
@@ -3181,6 +3257,7 @@ en_US:
       files: Files
       see_files: See files sent
       download_all: Download of all student's files
+      upload_all: Send class's file
     presential_test_participants:
       list_name: Students List
       name: Name
@@ -3228,11 +3305,14 @@ en_US:
       clear: Clear
       deleting_canvas: Cleaning file.
       message_confirm_cleaning: "This action can't be undone. Are you sure?"
+      insert_button: "Write text"
     success:
       file_saved: File was successfully saved.
       file_cleaned: File was successfully cleaned.
       created: File was successfully sent.
       deleted: File was successfully deleted.
+    warning:
+      fails: "%{sucess_files} files have been uploaded. %{fail_file}"
     error:
       download: It was not possible to download
       date_range_expired: It was not possible to execute action. Date range expired.
@@ -3245,6 +3325,8 @@ en_US:
       file_not_saved: It was not possible to save file.
       file_not_cleaned: It was not possible to clean file.
       cant_download: It's not possible to download this(these) file(s)
+      cant_upload: It's not possible to upload this(these) file(s)
+      student_not_found: Verify if the file %{file_name} starts with student enrollment.
       type: "Files can only be sent to events with the following types: Presential Test and Presential Meeting"
       general_error: "Only image (jpeg/png/gif) or pdf files of 2MB or less can be sent to Presential Tests or Presential Meetings."
       ended: It's not possible to send files before the end of activity.
@@ -3330,6 +3412,8 @@ en_US:
       cpf_as_username: "can't be another's suser CPF"
       multiple_sessions: "It's not possible to be logged on multiple devices at same time."
       username: "must have only letters and numbers."
+      password_mandatory_integration: "necessary. Your username and password, as well all your personal and access data, are associated to %{system}. By changing any of those information, this integration will be removed and it is necessary that your password also be changed."
+      oauth_application: "can't be changed. This user is integrated to %{system}. Integration must be removed to that this field could be updated."
     notices:
       ma:
         use_ma_data: "Your access data were imported from Sigaa. To change or recover your access data, go to the address: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
@@ -3370,6 +3454,7 @@ en_US:
       previous_email: "Previous Email: "
       last_access: "Last access: "
       selfregistration: "Has made his selfregistration at Sigaa: "
+      other_system: "Integrated with another system: "
       y: 'Yes'
       n: 'No'
     request_profile:
@@ -3745,7 +3830,15 @@ en_US:
       situation4: "- By removing sutdent's situations, all will be setted as 'Pending' or 'Undefined' until they're setted again."
       situation5: "- Once situation was defined, at every new evaluation or working hours, student's situation will be immediately updated."
       confirm: Last evaluative activity haven't happened yet. Are you sure that you want to set situations?
+      confirm2: There are unfinished and / or submitted activities without note and / or workload. Are you sure you want to block note registration?
       origin_group: Original group (merged)
+      register_notes_on: Release Notes Record
+      register_notes_off: Lock Notes Record
+      msg_register_notes_on: Release Notes Record
+      msg_register_notes_off: Locked note log
+      error_msg_register_notes: Error releasing / blocking note log
+      msg_button_register_off: Record of notes blocked by the person in charge
+      error_msg_register_notes_active_open: "Error: There are unfinished activities."
     info:
       assignments: Assignments
       date_range: Date range
@@ -3838,6 +3931,7 @@ en_US:
       comments: Comments
       origin_group: "<b>Original group (merged):</b>"
       origin_group2: "<b>Original group (merged):</b> %{group}"
+      unread_posts: Unread posts
     situation:
       not_started: Not started
       to_answer: To answer
@@ -4665,6 +4759,8 @@ en_US:
       no_frequency_tools: There are no frequency activity to this action.
       changes: "Activities managed successfully. Some tools already have grades and working hours for some students. If an already evaluated activity is no longer evaluative, it's grade no longer will count at student's final grade. The same to working hours. It's also important to check if new maximum working hours are not smaller than already evaluated working hours."
       evaluative: One or more of the removed tools were evaluatives / frequency tools. Is important to check evaluative/frequency activity management to verify weights and working_hours.
+    messages:
+      execute_manage_tool: Run automatic management?
 
   academic_allocation_users:
     errors:

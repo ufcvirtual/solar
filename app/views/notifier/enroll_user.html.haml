@@ -1,0 +1,48 @@
+!!!
+%html
+  %head
+    %meta{:charset => "utf-8"}
+    %meta{"http-equiv" => "X-UA-Compatible", :content => "IE=edge,chrome=1"}
+    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1"}
+    %title= "Solar"
+    = yield(:head)
+  %body
+    %p= raw "Caro(a) #{@user.name}, <br/><br/> Informamos que você foi matriculado no seguinte curso no Ambiente Virtual de Aprendizagem SOLAR 2.0: #{link_to(@allocation_tag, home_url(only_path: false))}. <br/>"
+
+
+    - if @user.integrated && !@user.on_blacklist?
+      %p
+        = "Seu login e senha são os mesmos utilizados no SIGAA. Seu login é "
+        =b "#{@user.username}."
+        = "Caso não lembre sua senha, acesse o "
+        = link_to('SIGAA', "https://si3.ufc.br/admin/public/recuperar_senha.jsf")
+        = " para recuperá-la."
+    - elsif !@user.oauth_application_id.blank?
+      - app_name = @user.oauth_application.name
+      %p
+        = "Seu login e senha são os mesmos utilizados no #{app_name}. Seu login é "
+        %b= "#{@user.username}."
+        = "Caso não lembre sua senha, acesse o "
+        = link_to("#{app_name}", "#{@user.oauth_application.recover_password_url}")
+        = " para recuperá-la."
+      / %p
+      /   = "Caso deseje cadastrar uma senha no Solar diferente da usada no #{app_name}, acesse "
+      /   = link_to("este link", edit_password_url(@user, reset_password_token: @token))
+      /   = ". Informamos que uma vez feito o desvínculo de sua conta entre o Solar e o #{app_name}, não será possível refazê-lo."
+    - else
+      %p= "Seu login é: #{@user.username}"
+      - unless @password.blank?
+        %p= "E sua senha é: #{@password}"
+      - else
+        = "Caso não lembre sua senha, "
+        = link_to("clique aqui", edit_password_url(@user, reset_password_token: @token))
+        = "."
+
+    %br
+    %p= link_to('Acesso ao Solar', home_url(only_path: false))
+    %p
+      = "Precisa de ajuda? Veja nosso "
+      = link_to('FAQ', "http://www.solar.virtual.ufc.br/faq")
+      = " e nossos "
+      = link_to('tutoriais', "http://www.solar.virtual.ufc.br/tutorials_login")
+    %p{style: "color: #7C7C7C; font-size: 8pt; padding-top: 10px;"}= I18n.t("notifier.dont_reply_message")

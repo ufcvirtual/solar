@@ -1,9 +1,15 @@
 module V1
   class Allocations < Base
 
-    before { verify_ip_access_and_guard! }
-
     namespace :allocations do
+
+      before do
+        begin
+          verify_ip_access!
+        rescue
+          guard_client!
+        end
+      end
 
       desc "Alocação de usuário"
       params do
@@ -25,13 +31,26 @@ module V1
           end
         end
         params do
-          optional :curriculum_unit_code, :course_code, :semester, :group_name, :group_code
+          requires :cpf, type: String
+          optional :curriculum_unit_code, :course_code, :semester, :group_name, :group_code, type: String
+          optional :start_date, :end_date, type: Date
+          optional :notify_user, type: Boolean, default: false
+          optional :random_group, type: Boolean, default: false
           at_least_one_of :curriculum_unit_code, :course_code, :semester, :group_name, :group_code
+          mutually_exclusive :start_date, :semester
+          mutually_exclusive :end_date, :semester
+          mutually_exclusive :random_group, :group_code
         end
         post ":type" do
           begin
-            params[:group_code] = get_group_code(params[:group_code], params[:group_name]) unless params[:group_code].blank? || params[:group_name].blank?
-            allocate(params)
+            if params[:random_group]
+              group_id = get_group_destination_randomly(params[:curriculum_unit_code], params[:course_code], params[:start_date], params[:end_date], params[:cpf], params[:profile_id])
+              allocate({type: 'group', cpf: params[:cpf], id: group_id, profile_id: params[:profile_id]}, false, false, params[:notify_user], !@current_client.blank?)
+            else
+              params[:group_code] = get_group_code(params[:group_code], params[:group_name]) unless params[:group_code].blank? || params[:group_name].blank?
+              allocate(params, false, false, params[:notify_user], !@current_client.blank?)
+            end
+
             { ok: :ok }
           end
         end
@@ -58,13 +77,29 @@ module V1
         end
 
         params do
+          requires :cpf, type: String
           optional :curriculum_unit_code, :course_code, :semester, :group_name, :group_code
+          optional :start_date, :end_date, type: Date
+          optional :notify_user, type: Boolean, default: false
+          optional :random_group, type: Boolean, default: false
           at_least_one_of :curriculum_unit_code, :course_code, :semester, :group_name, :group_code
+          mutually_exclusive :start_date, :semester
+          mutually_exclusive :end_date, :semester
+          mutually_exclusive :random_group, :group_code
+          exactly_one_of :cpf
+
         end
         delete ":type" do
           begin
-            params[:group_code] = get_group_code(params[:group_code], params[:group_name]) unless params[:group_code].blank? || params[:group_name].blank?
-            allocate(params, true, params[:raise_error])
+            # parametro raise_error retorna ok se mandar remover alocação que ja nao existia
+            if params[:random_group]
+              groups_ids = get_group_destination_randomly(params[:curriculum_unit_code], params[:course_code], params[:start_date], params[:end_date], params[:cpf], params[:profile_id], true)
+              allocate({type: 'group', cpf: params[:cpf], id: groups_ids, profile_id: params[:profile_id]}, true, false, params[:notify_user], !@current_client.blank?)
+            else
+              params[:group_code] = get_group_code(params[:group_code], params[:group_name]) unless params[:group_code].blank? || params[:group_name].blank?
+              allocate(params, true, params[:raise_error], params[:notify_user], !@current_client.blank?)
+            end
+
             { ok: :ok }
           end
         end
@@ -74,6 +109,8 @@ module V1
     end # allocations
 
     namespace :group do
+
+      before { verify_ip_access_and_guard! }
 
       desc "Recupera usuários alocados em uma turma"
       params do
