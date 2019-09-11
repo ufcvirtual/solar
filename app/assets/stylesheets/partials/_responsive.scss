@@ -407,6 +407,47 @@
     display: none;
   }
 
+  .responsive_curse_input,
+  #curriculum_unit_name,
+  #curriculum_unit_code,
+  #curriculum_unit_resume,
+  #curriculum_unit_objectives,
+  #curriculum_unit_syllabus,
+  #curriculum_unit_prerequisites,
+  #curriculum_unit_working_hours,
+  #curriculum_unit_min_hours,
+  #group_name,
+  #group_code,
+  #group_location {
+    width: 100% !important;
+  }
+
+  .course_min_hours label,
+  .course_passing_grade label,
+  .course_name label,
+  .course_code label,
+  .course_min_grade_to_final_exam label,
+  .course_min_final_exam_grade label,
+  .course_final_exam_passing_grade label,
+  .label_curse_input,
+  .curriculum_unit_name label,
+  .curriculum_unit_code label,
+  .curriculum_unit_resume label,
+  .curriculum_unit_objectives label,
+  .curriculum_unit_syllabus label,
+  .curriculum_unit_prerequisites label,
+  .curriculum_unit_working_hours label,
+  .curriculum_unit_min_hours label,
+  .group_name label,
+  .group_code label,
+  .group_location label {
+    display: inline !important;
+  }
+
+  .responsive_group_label {
+    text-align: left;
+  }
+
   label {
     display: block;
   }
