@@ -85,10 +85,7 @@ module V1::AllocationsH
 
 
     raise ActiveRecord::RecordNotFound if users.empty?
-    if verify_access
-      raise CanCan::AccessDenied if users.map(&:oauth_application_id).compact.blank? || users.map(&:oauth_application_id).uniq != [@current_client.id]
-      authorize_client!([objects].flatten.map(&:allocation_tag).map(&:id).flatten)
-    end
+    authorize_client!([objects].flatten.map(&:allocation_tag).map(&:id).flatten) if verify_access
 
     [objects].flatten.map{|object| object.cancel_allocations(nil, params[:profile_id])} if params[:remove_previous_allocations]
 

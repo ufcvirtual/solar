@@ -1,7 +1,5 @@
 Solar::Application.routes.draw do
 
-  resources :oauth_applications
-
   devise_for :users, controllers: { registrations: "devise/users", passwords: "devise/users_passwords", sessions: "devise/login" }
 
   authenticated :user do

@@ -60,7 +60,7 @@ module V1
       desc "Desativação de alocação de usuário"
       params do
         requires :type, type: String, values: ["curriculum_unit_type", "curriculum_unit", "course", "offer", "group"]
-        optional :profile_id, type: Integer
+        optional :profile_id, type: Integer, default: 1
         optional :user_id, :id, type: Integer
         optional :cpf, type: String
         optional :users_ids, :cpfs, type: Array
