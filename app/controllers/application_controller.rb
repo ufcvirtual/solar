@@ -138,7 +138,7 @@ class ApplicationController < ActionController::Base
       params[:selected_group] = allocation_tag.group_id
       allocation_tag_id_group = if params[:selected_group].blank?
         profiles_ids = current_user.profiles_with_access_on('show', 'curriculum_units', nil, true)
-        RelatedTaggable.where('group_id IN (?)', current_user.groups(profiles_ids, Allocation_Activated, nil, nil
+        RelatedTaggable.where('group_id IN (?)', current_user.groups(profiles_ids, Allocation_Activated, nil, nil, active_tab[:url][:id]).pluck(:id)).first.group_at_id
       else
         allocation_tag.id
       end
