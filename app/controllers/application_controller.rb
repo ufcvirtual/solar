@@ -142,8 +142,6 @@ class ApplicationController < ActionController::Base
       else
         allocation_tag.id
       end
-     end
-
     end
 
     user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:allocation_tag_id] = allocation_tag_id_group
