@@ -547,6 +547,7 @@ class User < ActiveRecord::Base
           user.password = new_password
         end
 
+        params.except!(:id)
         user.attributes = user.attributes.merge!(params.merge!({ active: true }))
       end
 
@@ -554,7 +555,7 @@ class User < ActiveRecord::Base
 
       if user.save
         log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
-        imported << {user: user, group: group, group_name: row['Turma']}
+        imported << {user: user, group: group, group_name: row['Turma'].to_s}
         user.notify_user(new_password, changes)
       else
         if user.errors[:username].blank? || (user.integrated && !can_add_to_blacklist) # if no error with username happens or cant unbind user from modulo
@@ -571,7 +572,7 @@ class User < ActiveRecord::Base
 
           if user.save
             log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
-            imported << {user: user, group: group, group_name: row['Turma']}
+            imported << {user: user, group: group, group_name: row['Turma'].to_s}
             user.notify_user(new_password, changes)
 
           elsif user.errors[:email].first == I18n.t('users.errors.ma.already_exists') || user.errors[:username].first == I18n.t('users.errors.ma.already_exists') # if still have errors with MA
@@ -579,7 +580,7 @@ class User < ActiveRecord::Base
 
             if user.save
               log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
-              imported << {user: user, group: group, group_name: row['Turma']}
+              imported << {user: user, group: group, group_name: row['Turma'].to_s}
 
               blacklist = UserBlacklist.where(cpf: user.cpf).first_or_initialize # add again to blacklist
               blacklist.name = user.name
@@ -810,7 +811,7 @@ class User < ActiveRecord::Base
       data.merge!({password: Devise.friendly_token.first(6)})
     end
 
-    data.merge!({selfregistration: !(user_data[6].blank? || user_data[5].blank? || user_data[8].blank?)})
+    data.merge!({selfregistration: !(user_data[6].blank? || user_data[5].blank?)})# || user_data[8].blank?)})
 
     return data
   end

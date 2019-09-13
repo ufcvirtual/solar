@@ -189,18 +189,30 @@ class ScheduleEventsController < ApplicationController
       html.sub!(pattern, name)
     end
 
-    def normalize_exam_header(html, student, profs, tutors, event, curriculum_unit, coordinator)
-      fill_field_info html, /disciplina:(\s*\n*\t*(&nbsp;)*)/i, "Disciplina: #{curriculum_unit.code} - #{curriculum_unit.name}<br>" unless curriculum_unit.nil?
-      fill_field_info html, /(coordenador\(a\)(\s*\n*\t*(&nbsp;)*)da(\s*\n*\t*(&nbsp;)*)disciplina:|coordenador(\s*\n*\t*(&nbsp;)*)da(\s*\n*\t*(&nbsp;)*)disciplina:|coordenador:(\s*\n*\t*(&nbsp;)*))/i, "Coordenador(a) da disciplina: #{coordinator.name}<br>" unless coordinator.nil?
+    # def normalize_exam_header(html, student, profs, tutors, event, curriculum_unit, coordinator)
+    #   fill_field_info html, /disciplina:(\s*\n*\t*(&nbsp;)*)/i, "Disciplina: #{curriculum_unit.code} - #{curriculum_unit.name}<br>" unless curriculum_unit.nil?
+    #   fill_field_info html, /(coordenador\(a\)(\s*\n*\t*(&nbsp;)*)da(\s*\n*\t*(&nbsp;)*)disciplina:|coordenador(\s*\n*\t*(&nbsp;)*)da(\s*\n*\t*(&nbsp;)*)disciplina:|coordenador:(\s*\n*\t*(&nbsp;)*))/i, "Coordenador(a) da disciplina: #{coordinator.name}<br>" unless coordinator.nil?
+    #   fill_field_info html, /(nome(\s*\n*\t*(&nbsp;)*)do\(a\)(\s*\n*\t*(&nbsp;)*)aluno\(a\):(\s*\n*\t*(&nbsp;)*)|nome(\s*\n*\t*(&nbsp;)*)do(\s*\n*\t*(&nbsp;)*)aluno:|aluno:)/i, "Nome do(a) aluno(a): #{student.name}<br>" unless student.nil?
+    #   unless event.nil?
+    #     # fill_field_info html, /polo:(\s*\n*\t*(&nbsp;)*)|pólo:(\s*\n*\t*(&nbsp;)*)/i, "Polo: #{event.place}<br>"
+    #     fill_field_info html, /prova:(\s*\n*\t*(&nbsp;)*)/i, "Prova: #{event.title}<br>"
+    #     fill_field_info html, /data:(\s*\n*\t*(&nbsp;)*)/i, "Data: #{event.get_date}<br>"
+    #   end
+    #   profs.each { |prof| fill_field_info html, /(professor\(a\)(\s*\n*\t*(&nbsp;)*)titular:(\s*\n*\t*(&nbsp;)*)|professor(\s*\n*\t*(&nbsp;)*)titular:(\s*\n*\t*(&nbsp;)*)|professor:(\s*\n*\t*(&nbsp;)*))/i, "Professor(a) da disciplina: #{prof.name}<br>"  } unless profs.nil? || profs.empty?
+    #   tutors.each { |tutor| fill_field_info html, /(tutor\(a\)(\s*\n*\t*(&nbsp;)*)da(\s*\n*\t*(&nbsp;)*)disciplina:(\s*\n*\t*(&nbsp;)*)|tutor(\s*\n*\t*(&nbsp;)*)da(\s*\n*\t*(&nbsp;)*)disciplina:(\s*\n*\t*(&nbsp;)*)|tutor:(\s*\n*\t*(&nbsp;)*))/i, "Tutor(a) da disciplina: #{tutor.name}<br>"  } unless tutors.nil? || tutors.empty?
+    # end
+
+    def normalize_exam_header(html, student, profs, tutors, event, curriculum_unit, coord)
+      fill_field_info html, /disciplina:(\s*\n*\t*(&nbsp;)*)/i, "Disciplina: <b>#{curriculum_unit.code} - #{curriculum_unit.name}</b><br>" unless curriculum_unit.nil?
       fill_field_info html, /(nome(\s*\n*\t*(&nbsp;)*)do\(a\)(\s*\n*\t*(&nbsp;)*)aluno\(a\):(\s*\n*\t*(&nbsp;)*)|nome(\s*\n*\t*(&nbsp;)*)do(\s*\n*\t*(&nbsp;)*)aluno:|aluno:)/i, "Nome do(a) aluno(a): #{student.name}<br>" unless student.nil?
-      unless event.nil?
-        # fill_field_info html, /polo:(\s*\n*\t*(&nbsp;)*)|pólo:(\s*\n*\t*(&nbsp;)*)/i, "Polo: #{event.place}<br>"
-        fill_field_info html, /prova:(\s*\n*\t*(&nbsp;)*)/i, "Prova: #{event.title}<br>"
-        fill_field_info html, /data:(\s*\n*\t*(&nbsp;)*)/i, "Data: #{event.get_date}<br>"
+      unless event.blank?
+        fill_field_info html, /prova:(\s*\n*\t*(&nbsp;)*)/i, "Prova: <b>#{event.title}</b>"
+        fill_field_info html, /data:(\s*\n*\t*(&nbsp;)*)/i, "Data: #{event.get_date}"
       end
-      profs.each { |prof| fill_field_info html, /(professor\(a\)(\s*\n*\t*(&nbsp;)*)titular:(\s*\n*\t*(&nbsp;)*)|professor(\s*\n*\t*(&nbsp;)*)titular:(\s*\n*\t*(&nbsp;)*)|professor:(\s*\n*\t*(&nbsp;)*))/i, "Professor(a) da disciplina: #{prof.name}<br>"  } unless profs.nil? || profs.empty?
-      tutors.each { |tutor| fill_field_info html, /(tutor\(a\)(\s*\n*\t*(&nbsp;)*)da(\s*\n*\t*(&nbsp;)*)disciplina:(\s*\n*\t*(&nbsp;)*)|tutor(\s*\n*\t*(&nbsp;)*)da(\s*\n*\t*(&nbsp;)*)disciplina:(\s*\n*\t*(&nbsp;)*)|tutor:(\s*\n*\t*(&nbsp;)*))/i, "Tutor(a) da disciplina: #{tutor.name}<br>"  } unless tutors.nil? || tutors.empty?
+      profs.each { |prof| fill_field_info html, /(professor\(a\)(\s*\n*\t*(&nbsp;)*)titular:(\s*\n*\t*(&nbsp;)*)|professor(\s*\n*\t*(&nbsp;)*)titular:(\s*\n*\t*(&nbsp;)*)|professor:(\s*\n*\t*(&nbsp;)*)|coordenador\(a\)(\s*\n*\t*(&nbsp;)*)de(\s*\n*\t*(&nbsp;)*)disciplina:(\s*\n*\t*(&nbsp;)*)|coordenador\(a\)(\s*\n*\t*(&nbsp;)*)da(\s*\n*\t*(&nbsp;)*)disciplina:(\s*\n*\t*(&nbsp;)*))/i, "Professor(a) da disciplina: #{prof.name}<br>"  } unless profs.blank?
+      tutors.each { |tutor| fill_field_info html, /(tutor\(a\)(\s*\n*\t*(&nbsp;)*)à(\s*\n*\t*(&nbsp;)*)distância:(\s*\n*\t*(&nbsp;)*)|tutor(\s*\n*\t*(&nbsp;)*)à(\s*\n*\t*(&nbsp;)*)distância:(\s*\n*\t*(&nbsp;)*)|tutor:(\s*\n*\t*(&nbsp;)*))/i, "Tutor(a) à distância: #{tutor.name}<br>"  } unless tutors.blank?
     end
+
 
     def pictures_with_abs_path(html)
       html.gsub!(/(href|src)=(['"])\/([^\"']*|[^"']*)['"]/i, '\1=\2' + "#{Rails.root}/" + '\3\2')

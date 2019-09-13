@@ -134,10 +134,22 @@ class MessagesController < ApplicationController
         @message.sender = current_user
         @message.allocation_tag_id = @allocation_tag_id
 
-        raise "error" if params[:message][:contacts].empty?
-        emails = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
+        raise "error" if params[:message][:contacts].nil? && params[:message][:support].blank?
+
+        # raise "error" if params[:message][:contacts].empty?
+        # emails = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
+                      # .where("(nmail.message IS NULL OR nmail.message=TRUE)")
+                      # .where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
+
+        # @message.files << original_files if original_files and not original_files.empty?
+
+        emails = []
+        unless params[:message][:contacts].nil?
+                emails = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
                       .where("(nmail.message IS NULL OR nmail.message=TRUE)")
                       .where(id: params[:message][:contacts].split(',')).pluck(:email).flatten.compact.uniq
+        end
+        emails << 'atendimento@virtual.ufc.br' unless params[:message][:support].blank?
 
         @message.files << original_files if original_files and not original_files.empty?
         @message.save!
@@ -162,7 +174,8 @@ class MessagesController < ApplicationController
         @attribute = attribute
       end
       @reply_to = []
-      @reply_to = User.where(id: params[:message][:contacts].split(',')).select("id, (name||' <'||email||'>') as resume")
+      # @reply_to = User.where(id: params[:message][:contacts].split(',')).select("id, (name||' <'||email||'>') as resume")
+      @reply_to = User.where(id: params[:message][:contacts].split(',')).select("id, (name||' <'||email||'>') as resume") unless params[:message][:contacts].blank?
 
       @support = params[:message][:support]
 

@@ -41,6 +41,7 @@ module SentActivity
       end
       academic_allocation_user.merge = merge if respond_to?(:merge)
       academic_allocation_user.save(validate: false)
+      academic_allocation_user.recalculate_final_grade(academic_allocation_user.allocation_tag.id)
     end
   end
 

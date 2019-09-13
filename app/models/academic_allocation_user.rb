@@ -122,10 +122,12 @@ class AcademicAllocationUser < ActiveRecord::Base
       allocations = Allocation.includes(:profile).references(:profile).where(user_id: user, status: Allocation_Activated, allocation_tag_id: AllocationTag.find(allocation_tag_id).lower_related).where('cast(profiles.types & ? as boolean)', Profile_Type_Student)
       allocation = allocations.where('final_grade IS NOT NULL OR working_hours IS NOT NULL').first || allocations.first
 
-      allocation.calculate_working_hours
+      unless allocation.nil?
+        allocation.calculate_working_hours
 
-      allocation.calculate_parcial_grade unless academic_allocation.final_exam
-      allocation.calculate_final_exam_grade
+        allocation.calculate_parcial_grade unless academic_allocation.final_exam
+        allocation.calculate_final_exam_grade
+      end
     end
   end
 

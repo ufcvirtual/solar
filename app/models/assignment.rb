@@ -63,7 +63,6 @@ class Assignment < Event
   def will_open?(allocation_tag_id, user_id)
     startt    = (!start_hour.blank? ? (schedule.start_date.beginning_of_day + start_hour.split(':')[0].to_i.hours + start_hour.split(':')[1].to_i.minutes) : schedule.start_date.beginning_of_day)
 
-
     AllocationTag.find(allocation_tag_id).is_observer_or_responsible?(user_id) && startt > Time.now
   end
 
