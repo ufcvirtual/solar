@@ -81,19 +81,19 @@ class AccessControlController < ApplicationController
 
   def question_image
     question = QuestionImage.find(params[:file].split('_')[0]).question
-    question.can_see?
+    # question.can_see?
     download_file(File.join('questions', 'images'))
   end
 
   def question_audio
     question = QuestionAudio.find(params[:file].split('_')[0]).question
-    question.can_see?
+    # question.can_see?
     download_file(File.join('questions', 'audios'))
   end
 
   def question_item
     question = QuestionItem.find(params[:file].split('_')[0]).question
-    question.can_see?
+    # question.can_see?
     download_file(File.join('questions', 'items'))
   end
 

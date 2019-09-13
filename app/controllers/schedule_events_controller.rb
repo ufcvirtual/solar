@@ -197,7 +197,7 @@ class ScheduleEventsController < ApplicationController
     end
 
     def normalize_exam_header(html, student, enrollment, profs, tutors, event, curriculum_unit, course_name, coord)
-      fill_field_info html, /curso:(\s*\n*\t*(&nbsp;)*)_*/i, "Curso: <b>#{course_name}</b>" unless course_name.blank?
+           fill_field_info html, /curso:(\s*\n*\t*(&nbsp;)*)_*/i, "Curso: <b>#{course_name}</b>" unless course_name.blank?
       fill_field_info html, /disciplina:(\s*\n*\t*(&nbsp;)*)_*/i, "Disciplina: <b>#{curriculum_unit.code} - #{curriculum_unit.name}</b>" unless curriculum_unit.nil?
       # fill_field_info html, /(coordenador\(a\)(\s*\n*\t*(&nbsp;)*)do(\s*\n*\t*(&nbsp;)*)curso:|coordenador\(a\)(\s*\n*\t*(&nbsp;)*)da(\s*\n*\t*(&nbsp;)*)curso:|coordenador:(\s*\n*\t*(&nbsp;)*)coordenador\(a\)(\s*\n*\t*(&nbsp;)*)de(\s*\n*\t*(&nbsp;)*)curso:)/i, "Coordenador(a) do curso: #{coord.name}<br>" unless coord.nil?
       fill_field_info html, /(nome(\s*\n*\t*(&nbsp;)*)do\(a\)(\s*\n*\t*(&nbsp;)*)aluno\(a\):(\s*\n*\t*(&nbsp;)*)|nome(\s*\n*\t*(&nbsp;)*)do(\s*\n*\t*(&nbsp;)*)aluno:|aluno:)_*/i, "Nome do(a) aluno(a): <b>#{student.name}</b>" unless student.nil?
@@ -210,6 +210,7 @@ class ScheduleEventsController < ApplicationController
       profs.each { |prof| fill_field_info html, /(professor\(a\)(\s*\n*\t*(&nbsp;)*)titular:(\s*\n*\t*(&nbsp;)*)|professor(\s*\n*\t*(&nbsp;)*)titular:(\s*\n*\t*(&nbsp;)*)|professor:(\s*\n*\t*(&nbsp;)*)|coordenador\(a\)(\s*\n*\t*(&nbsp;)*)de(\s*\n*\t*(&nbsp;)*)disciplina:(\s*\n*\t*(&nbsp;)*)|coordenador\(a\)(\s*\n*\t*(&nbsp;)*)da(\s*\n*\t*(&nbsp;)*)disciplina:(\s*\n*\t*(&nbsp;)*))/i, "Professor(a) da disciplina: #{prof.name}<br>"  } unless profs.blank?
       tutors.each { |tutor| fill_field_info html, /(tutor\(a\)(\s*\n*\t*(&nbsp;)*)à(\s*\n*\t*(&nbsp;)*)distância:(\s*\n*\t*(&nbsp;)*)|tutor(\s*\n*\t*(&nbsp;)*)à(\s*\n*\t*(&nbsp;)*)distância:(\s*\n*\t*(&nbsp;)*)|tutor:(\s*\n*\t*(&nbsp;)*))/i, "Tutor(a) à distância: #{tutor.name}<br>"  } unless tutors.blank?
     end
+
 
     def pictures_with_abs_path(html)
       html.gsub!(/(href|src)=(['"])\/([^\"']*|[^"']*)['"]/i, '\1=\2' + "#{Rails.root}/" + '\3\2')

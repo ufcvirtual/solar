@@ -167,9 +167,9 @@ class MessagesController < ApplicationController
         if original_files and not original_files.empty?
           original_files.each do |file|
             new_file = file.dup
-            new_file.message_id = @message.id   
-            new_file.attachment = file.attachment    
-            new_file.save!    
+            new_file.message_id = @message.id
+            new_file.attachment = file.attachment
+            new_file.save!
           end
         end
 

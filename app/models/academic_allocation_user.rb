@@ -111,7 +111,7 @@ class AcademicAllocationUser < ActiveRecord::Base
 
   def verify_block_register_notes
     if allocation_tag.block_register_notes
-      errors.add(:block_register_notes, I18n.t("scores.index.msg_button_register_off")) 
+      errors.add(:block_register_notes, I18n.t("scores.index.msg_button_register_off"))
     end
   end
 
@@ -140,7 +140,6 @@ class AcademicAllocationUser < ActiveRecord::Base
       allocation = allocations.where('final_grade IS NOT NULL OR working_hours IS NOT NULL').first || allocations.first
       unless allocation.nil?
         allocation.calculate_working_hours
-
         allocation.calculate_parcial_grade unless academic_allocation.final_exam
         allocation.calculate_final_exam_grade
       end
