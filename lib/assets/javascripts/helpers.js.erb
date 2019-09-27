@@ -827,9 +827,24 @@ function calendar_accessible(){
     $all_days.each(function(item_day){
       var value_day = $(this).text();
       $(this).attr("aria-label", "<%=I18n.t('fullcalendar.by_day')%> " + value_day);
+
+      if(!$(this).parent().hasClass("highlight-date-mark")){
+        $(this).removeAttr("href")
+        replaceElementTag($(this), '<span></span>')
+      }      
     });
 
   }, 500);
+}
+
+function replaceElementTag(targetSelector, newTagString) {
+  $(targetSelector).each(function(){
+      var newElem = $(newTagString, {html: $(this).html()});
+      $.each(this.attributes, function() {
+          newElem.attr(this.name, this.value);
+      });
+      $(this).replaceWith(newElem);
+  });
 }
 
 function hide_element(event) {

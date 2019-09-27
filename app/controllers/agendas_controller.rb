@@ -24,6 +24,8 @@ class AgendasController < ApplicationController
     @schedules = Agenda.events(@allocation_tags_ids, @date = params[:date].to_date.to_formatted_s(:db))
   rescue CanCan::AccessDenied
     @schedules = []
+  rescue ArgumentError
+    @schedules = []
   end
 
   def list
