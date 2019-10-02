@@ -309,7 +309,7 @@ class WebconferencesController < ApplicationController
     @total_per_offer = Webconference.total_per_offer.rows
     @access_per_offer = Webconference.access_per_offer.rows
     @access_per_course = Webconference.access_per_course.rows
-    @participantCountPerServer = participantCountPerServer
+    @participant_count_per_server = participant_count_per_server
     @avg_access_per_semester = Webconference.avg_access_per_semester.rows
   end
 

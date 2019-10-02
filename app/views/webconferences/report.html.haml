@@ -380,7 +380,7 @@
       chart.draw(data, options);
 
     //Per Server - access real time
-      var data1 = JSON.parse('#{@participantCountPerServer.to_json.html_safe}');
+      var data1 = JSON.parse('#{@participant_count_per_server.to_json.html_safe}');
       var data = new google.visualization.DataTable();
       data.addColumn('string', 'Server');
       data.addColumn('number', 'Usuários');

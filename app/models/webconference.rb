@@ -166,9 +166,12 @@ class Webconference < ActiveRecord::Base
       if webconference.origin_meeting_id.blank?
         api = Bbb.bbb_prepare(webconference.server)
         meeting_id    = webconference.get_mettingID(academic_allocation.allocation_tag_id)
-        response      = api.get_recordings()
+
+        options = {meetingID: meeting_id}
+        response      = api.get_recordings(options)
+
         response[:recordings].each do |m|
-          api.delete_recordings(m[:recordID]) if m[:meetingID] == meeting_id
+          api.delete_recordings(m[:recordID])
         end
       end
     end

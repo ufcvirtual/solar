@@ -1473,7 +1473,7 @@ en_US:
       access: Can't access this webconference. Verify it's period.
       no_record: This webconference has no recordings
       offline: Unavailable webconference
-      still_processing: This webconference's recording is still processing. Please wait.
+      still_processing: This webconference's recording is still processing. <br/><br/> Processing takes about the same time as the class. <br/><br/> Please, wait and try again later.
       general_message: It was not possible to execute this action.
       on_going: This webconference hasn't finished yet. Please wait.
       date_range: Assignment's date range already expired.
@@ -1532,6 +1532,7 @@ en_US:
       record: Recording %{number}
       start: Recording's start
       end: Recording's end
+      duration: Duration
       options: Options
       download_podcast: Download Podcast
       download_video: Download Vídeo

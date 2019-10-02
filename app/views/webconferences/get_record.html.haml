@@ -9,16 +9,18 @@
           %tr.lines
             %th= t('.access')
             %th= t(".start")
-            %th= t(".end")
+            %th= t(".duration")
             %th= t(".options")
         %tbody
           - @recordings.each_with_index do |record, idx|
-            %tr.lines
+            - diff, duration = Bbb.get_duration(record[:startTime].to_datetime, record[:endTime].to_datetime)
+            %tr.lines_get_record
               %td= link_to t('.record', number: idx+1), Bbb.get_recording_url(record, 'presentation'), target: '_blank', :'aria-label' => t('webconferences.index.access_web_recording', name: t('.record', number: idx+1) )
               %td= l(record[:startTime].to_datetime)
-              %td= l(record[:endTime].to_datetime)
+              %td= duration
+              %input.duration{:type=>"hidden", :value=>diff}
               %td
-                %span= link_to (content_tag(:i, nil, class: 'icon-video-conference')), download_webconferences_path(url: Bbb.get_recording_url(record, 'video'), type: 'application/video', filename: 'video.mp4'), "data-tooltip" => t(".download_video"),  :'aria-label' => t(".download_video"), class: "btn", target: '_blank'
+                //%span= link_to (content_tag(:i, nil, class: 'icon-video-conference')), download_webconferences_path(url: Bbb.get_recording_url(record, 'video'), type: 'application/video', filename: 'video.mp4'), "data-tooltip" => t(".download_video"),  :'aria-label' => t(".download_video"), class: "btn", target: '_blank'
                 %span= link_to (content_tag(:i, nil, class: 'icon-microphone')), download_webconferences_path(url: Bbb.get_recording_url(record, 'podcast'), type: 'application/audio', filename: 'podcast.ogg'), class: 'btn ', :'data-tooltip' => t('.download_podcast'), :'aria-label' => t('.download_podcast'), :target => "_blank", class: "btn", target: '_blank'
                 //%span= link_to (content_tag(:i, nil, class: 'icon-text-2')),  download_webconferences_path(url: Bbb.get_recording_url(record, 'podcast'), type: 'application/audio', filename: 'podcast.ogg'), class: 'btn' , :'data-tooltip' => t('.download_slides'), :'aria-label' => t('.download_slides'), :target => "_blank", class: "btn", target: '_blank'
                 //%span= link_to (content_tag(:i, nil, class: 'icon-chat')),  download_webconferences_path(url: Bbb.get_recording_url(record, 'podcast'), type: 'application/audio', filename: 'podcast.ogg'), class: 'btn ', :'data-tooltip' => t('.download_chat'), :'aria-label' => t('.download_chat'), :target => "_blank", class: "btn", target: '_blank'
@@ -45,4 +47,14 @@
           flash_message(data.alert, 'alert', 'fancybox-outer');
       });
     });
+  });
+
+  $(function(){
+    let max = 0; 
+    let index_max = 0;
+    $('.duration').each(function(index, item) {
+      if (max === 0) {max = item; index_max = index}; 
+      if (Number(item.value) > Number(max.value)) {max = item; index_max = index}; 
+    });
+    $(".lines_get_record").eq(index_max).css("font-weight","Bold");
   });

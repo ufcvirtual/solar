@@ -1667,7 +1667,7 @@ pt_BR:
       access: Não é possível acessar esta webconferência. Verifique sua duração.
       no_record: Esta webconferência não possui gravações
       offline: Webconferência indisponível
-      still_processing: A gravação desta webconferência ainda está sendo processada. Favor aguardar.
+      still_processing: A gravação desta webconferência está sendo processada. <br/><br/> O processamento leva, aproximadamente, o mesmo tempo de duração da aula. <br/><br/> Por favor, aguarde e tente novamente mais tarde.
       general_message: Não foi possível realizar a ação desejada
       on_going: A webconferência ainda não finalizou. Favor aguardar.
       date_range: O período do trabalho já foi encerrado.
@@ -1727,6 +1727,7 @@ pt_BR:
       record: Gravação %{number}
       start: Início da gravação
       end: Fim da gravação
+      duration: Duração
       options: Opções
       download_podcast: Baixar Podcast
       download_video: Baixar Vídeo

@@ -177,10 +177,13 @@ module Bbb
     ( !server.blank? && !bbb_online?(Bbb.bbb_prepare(server)) )
   end
 
-  def bbb_all_recordings(api = nil)
+  def get_recordings(api = nil, meetingId)
     api = bbb_prepare if api.nil?
     raise "offline"   if api.nil?
-    response = api.get_recordings
+
+    options = {meetingID: meetingId}
+    response = api.get_recordings(options)
+
     response[:recordings]
   rescue => error
     return []
@@ -206,16 +209,11 @@ module Bbb
 
   def recordings(recordings = [], at_id = nil)
     meeting_id = get_mettingID(at_id)
-    recordings = bbb_all_recordings if recordings.blank?
-    common_recordings = []
+    recordings = get_recordings(meeting_id) if recordings.blank?
 
-    recordings.each do |m|
-      common_recordings << m if m[:metadata][:meetingId] == meeting_id
-    end
-
-    return common_recordings
+    return recordings
   rescue
-    false
+    return []
   end
 
   def remove_record(recordId, at=nil)
@@ -267,11 +265,18 @@ module Bbb
   end
 
   def is_over?
-    Time.now > (initial_time+duration.minutes+15.minutes)
+    # Time.now > (initial_time+duration.minutes+15.minutes)
+    Time.now > (initial_time+(duration.minutes*2))
   end
 
   def over?
     Time.now > (initial_time+duration.minutes)
+  end
+
+  def self.get_duration(start, final)
+    diff = final.to_time - start.to_time
+    duration = '%dh %02dm %02ds' % [ diff / 3600, (diff / 60) % 60, diff % 60 ]
+    return diff, duration
   end
 
   def can_destroy?
@@ -313,7 +318,7 @@ module Bbb
     0
   end
 
-  def participantCountPerServer
+  def participant_count_per_server
     server = 0
     result = 0
     count = Array.new
