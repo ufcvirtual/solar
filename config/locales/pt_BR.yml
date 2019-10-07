@@ -364,6 +364,7 @@ pt_BR:
         block_content: Bloquear conteúdo do Solar durante a prova
         uninterrupted: Ininterrupta
         controlled: Controlada
+        immediate_result_release: Liberação imediata do resultado
       ip_real:
         ip_v4: "Digite o IP V4"
         ip_v6: "Digite o IP V6"
@@ -4612,6 +4613,9 @@ pt_BR:
         duration: Tempo que o aluno terá para responder a prova após iniciá-la.
         result_release: Liberação do resultado
         result_release_explain: Data e hora nas quais o resultado da prova será liberado. Quando em branco, o resultado será liberado imediatamente após o término da prova.
+        immediate_result_release_activated: Desativar liberação imediata do resultado
+        immediate_result_release_deactivated: Ativar liberação imediata do resultado
+        immediate_result_release_explain: Se ativo, o resultado da prova será liberado imediatamente após o término. Neste caso, a prova pode ter apenas 1 tentativa.
       control:
         continue: Continuar
         previous: Anterior
@@ -4627,6 +4631,7 @@ pt_BR:
       info: 'O resultado ficará disponível em %{date}'
       title: '(Resultado)'
       aria: 'Visualizar data de liberação do resultado'
+      imemediate: Imediatamente após a finalização da prova pelo aluno
     pre:
       alert_save: Todas as questões são salvas automaticamente.
       alert_start: Clique no link abaixo se você tem certeza que deseja iniciar a prova.

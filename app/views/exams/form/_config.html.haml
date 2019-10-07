@@ -22,8 +22,10 @@
     %span.field_with_errors.error= @exam.errors[:block_content].first
 .ckb
   = f.input :number_questions
+
 .ckb
   = f.input :attempts
+
 .ckb
   = f.input :attempts_correction, as: :select, collection: ([ [t('.greater'), Exam::GREATER], [t('.average'), Exam::AVERAGE], [t('.last'), Exam::LAST]]), include_blank: false
 .ckb
@@ -54,8 +56,8 @@
   = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox cancel', alt: t(:cancel), onkeydown: 'exit(event)'
   = button_tag t('.previous'), :type => 'button', :onclick => "back_to_info(event)", class: 'btn btn_default btn_main btn_lightbox', onkeypress: 'back_to_info(event)', alt: t('.previous')
   = button_tag t('.continue'), :type => 'button', :onclick => "go_to_controls(event)", class: 'btn btn_main btn_lightbox', onkeypress: 'go_to_controls(event)', alt: t('.continue'), id: "__continue"
-  
- 
+
+
 
 :javascript
 
