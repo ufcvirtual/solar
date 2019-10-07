@@ -21,6 +21,28 @@ function mysolarTopSubmenuToggle() {
   return false;
 }
 
+function mysolarTopSubmenuOpen() {
+  var left = $("#mysolar_top_user_nick").offset().left;
+  var origin = $("#mysolar_topbar").offset().left;
+  left -= origin + 100;
+  $("#mysolar_top_submenu").css('left', left);
+  $("#mysolar_top_submenu").slideDown(150);
+  $('#mysolar_top_submenu_label').addClass('mysolar_top_submenu_label_selected');
+  $('#mysolar_top_submenu_label').addClass('mysolar_top_submenu_label_regular');
+  return false;
+}
+
+function mysolarTopSubmenuClose(event) {
+  var left = $("#mysolar_top_user_nick").offset().left;
+  var origin = $("#mysolar_topbar").offset().left;
+  left -= origin + 100;
+  $("#mysolar_top_submenu").css('left', left);
+  $("#mysolar_top_submenu").slideUp(150);
+  $('#mysolar_top_submenu_label').removeClass('mysolar_top_submenu_label_selected');
+  $('#mysolar_top_submenu_label').removeClass('mysolar_top_submenu_label_regular');
+  return false;
+}
+
 function mysolarTopSubmenuHelpToggle(){
   var left = $("#help_top").offset().left;
   var origin = $("#mysolar_topbar").offset().left;
@@ -29,6 +51,28 @@ function mysolarTopSubmenuHelpToggle(){
   $("#mysolar_submenu_help").slideToggle(150);
   $('#mysolar_top_help').toggleClass('mysolar_top_submenu_label_selected');
   $('#mysolar_top_help').toggleClass('mysolar_top_submenu_label_regular');
+  return false;
+}
+
+function mysolarTopSubmenuHelpOpen(){
+  var left = $("#help_top").offset().left;
+  var origin = $("#mysolar_topbar").offset().left;
+  left -= origin + 46;
+  $("#mysolar_submenu_help").css('left', left);
+  $("#mysolar_submenu_help").slideDown(150);
+  $('#mysolar_top_help').addClass('mysolar_top_submenu_label_selected');
+  $('#mysolar_top_help').addClass('mysolar_top_submenu_label_regular');
+  return false;
+}
+
+function mysolarTopSubmenuHelpClose(){
+  var left = $("#help_top").offset().left;
+  var origin = $("#mysolar_topbar").offset().left;
+  left -= origin + 46;
+  $("#mysolar_submenu_help").css('left', left);
+  $("#mysolar_submenu_help").slideUp(150);
+  $('#mysolar_top_help').removeClass('mysolar_top_submenu_label_selected');
+  $('#mysolar_top_help').removeClass('mysolar_top_submenu_label_regular');
   return false;
 }
 
@@ -528,6 +572,28 @@ function mysolarAccessibilitySubmenuToggle(){
   return false;
 }
 
+function mysolarAccessibilitySubmenuOpen(){
+  var left = $("#accessibility_top").offset().left;
+  var origin = $("#mysolar_topbar").offset().left;
+  left -= origin + 95;
+  $("#mysolar_accessibility_submenu").css('left', left);
+  $("#mysolar_accessibility_submenu").slideDown(150);
+  $('#accessibility_top_menu').addClass('mysolar_top_submenu_label_selected');
+  $('#accessibility_top_menu').addClass('mysolar_top_submenu_label_regular');
+  return false;
+}
+
+function mysolarAccessibilitySubmenuClose(){
+  var left = $("#accessibility_top").offset().left;
+  var origin = $("#mysolar_topbar").offset().left;
+  left -= origin + 95;
+  $("#mysolar_accessibility_submenu").css('left', left);
+  $("#mysolar_accessibility_submenu").slideUp(150);
+  $('#accessibility_top_menu').removeClass('mysolar_top_submenu_label_selected');
+  $('#accessibility_top_menu').removeClass('mysolar_top_submenu_label_regular');
+  return false;
+}
+
 function goToRight(element) {
   $(element).closest("li").next(".nav_menu").find(".nav_item").focus();
 }
@@ -542,54 +608,6 @@ function goDown(element) {
 
 function goUp(element) {
   $(element).closest("li").prev(".sub_nav_menu").find(".sub_nav_item").focus();
-}
-
-function goInside(element) {
-  var elementID = $(element).attr("id");
-  var offset = $(element).offset().left - $("#mysolar_topbar").offset().left;
-
-  if (elementID == "mysolar_top_user_nick") {
-    $("#mysolar_top_submenu").css('left', offset);
-    $("#mysolar_top_submenu").slideDown(150);
-    $('#mysolar_top_submenu_label').addClass('mysolar_top_submenu_label_selected');
-    $('#mysolar_top_submenu_label').addClass('mysolar_top_submenu_label_regular');
-    $("#my_data").focus();
-  } else if (elementID == "accessibility_top") {
-    $(element).closest("ul").css('left', offset);
-    $("#mysolar_accessibility_submenu").slideDown(150);
-    $('#accessibility_top_menu').addClass('mysolar_top_submenu_label_selected');
-    $('#accessibility_top_menu').addClass('mysolar_top_submenu_label_regular');
-    $("a[href=#main_content_accesskey]").focus();
-  } else if(elementID == "help_top") {
-    $(element).closest("ul").css('left', offset);
-    $("#mysolar_submenu_help").slideDown(150);
-    $('#mysolar_top_help').addClass('mysolar_top_submenu_label_selected');
-    $('#mysolar_top_help').addClass('mysolar_top_submenu_label_regular');
-    $("#help_context").focus();
-  } else if(elementID == "logout") {
-    $("#logout").click();
-  }
-}
-
-function goOut(element) {
-  var elementID = $(element).closest("ul").attr("id");
-
-  if( elementID == undefined) {
-    $("#mysolar_top_submenu").slideUp(150);
-    $('#mysolar_top_submenu_label').removeClass('mysolar_top_submenu_label_selected');
-    $('#mysolar_top_submenu_label').addClass('mysolar_top_submenu_label_regular');
-    $('#mysolar_top_user_nick').focus();
-  } else if ( elementID == "mysolar_accessibility_submenu" ) {
-    $(element).closest("ul").slideUp(150);
-    $('#accessibility_top_menu').removeClass('mysolar_top_submenu_label_selected');
-    $('#accessibility_top_menu').addClass('mysolar_top_submenu_label_regular');
-    $('#accessibility_top').focus();
-  } else if ( elementID == "mysolar_submenu_help" ) {
-    $(element).closest("ul").slideUp(150);
-    $('#mysolar_top_help').removeClass('mysolar_top_submenu_label_selected');
-    $('#mysolar_top_help').addClass('mysolar_top_submenu_label_regular');
-    $('#help_top').focus();
-  }
 }
 
 function focuInpuErro(){
@@ -831,7 +849,7 @@ function calendar_accessible(){
       if(!$(this).parent().hasClass("highlight-date-mark")){
         $(this).removeAttr("href")
         replaceElementTag($(this), '<span></span>')
-      }      
+      }
     });
 
   }, 500);
