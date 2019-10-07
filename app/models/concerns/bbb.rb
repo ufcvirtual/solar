@@ -176,10 +176,13 @@ module Bbb
     ( !server.blank? && !bbb_online?(Bbb.bbb_prepare(server)) )
   end
 
-  def bbb_all_recordings(api = nil)
+  # def bbb_all_recordings(api = nil)
+  def get_recordings(api = nil, meetingId)
     api = bbb_prepare if api.nil?
     raise "offline"   if api.nil?
-    response = api.get_recordings
+    # response = api.get_recordings
+    options = {meetingID: meetingId}
+    response = api.get_recordings(options)
     response[:recordings]
   rescue => error
     return []
@@ -205,15 +208,20 @@ module Bbb
 
   def recordings(recordings = [], at_id = nil)
     meeting_id = get_mettingID(at_id)
-    recordings = bbb_all_recordings if recordings.blank?
-    common_recordings = []
+    # recordings = bbb_all_recordings if recordings.blank?
+    # common_recordings = []
 
-    recordings.each do |m|
-      common_recordings << m if m[:metadata][:meetingId] == meeting_id
-    end
+    # recordings.each do |m|
+      # common_recordings << m if m[:metadata][:meetingId] == meeting_id
+    # end
 
-    return common_recordings
-    return false
+    # return common_recordings
+    # return false
+
+    recordings = get_recordings(meeting_id) if recordings.blank?
+    return recordings
+  rescue
+    return []
   end
 
   def remove_record(recordId, at=nil)

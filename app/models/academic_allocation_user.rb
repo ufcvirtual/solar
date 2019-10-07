@@ -297,19 +297,27 @@ class AcademicAllocationUser < ActiveRecord::Base
     last_attempt.save
 
     self.update_attributes status: STATUS[:sent]
+
+    exam = last_attempt.exam
+
+    if exam.immediate_result_release
+      acu = last_attempt.academic_allocation_user
+      exam.recalculate_grades(acu.user_id, acu.allocation_tag.id, true)
+    end
   end
 
   def status_exam
     last_attempt  = exam_user_attempts.last
     user_attempts = exam_user_attempts.count
     case
-    when !exam.started?                                                      then 'not_started'
-    when exam.on_going? && (exam_responses.blank? || exam_responses == 0)    then 'to_answer'
-    when exam.on_going? && !last_attempt.complete                            then 'not_finished'
-    when exam.on_going? && (exam.attempts > user_attempts)                   then 'retake'
-    when !grade.blank? && exam.ended?                                        then 'corrected'
-    when last_attempt.complete && (exam.attempts == user_attempts)           then 'finished'
-    when exam.ended? && (user_attempts != 0 && !user_attempts.blank?) && grade.blank? then 'not_corrected'
+    when !exam.started?                                                                             then 'not_started'
+    when exam.immediate_result_release && last_attempt.complete && (exam.attempts == user_attempts) then 'finished'
+    when exam.on_going? && (exam_responses.blank? || exam_responses == 0)                           then 'to_answer'
+    when exam.on_going? && !last_attempt.complete                                                   then 'not_finished'
+    when exam.on_going? && (exam.attempts > user_attempts)                                          then 'retake'
+    when !grade.blank? && exam.ended?                                                               then 'corrected'
+    when last_attempt.complete && (exam.attempts == user_attempts)                                  then 'finished'
+    when exam.ended? && (user_attempts != 0 && !user_attempts.blank?) && grade.blank?               then 'not_corrected'
     else
       'not_answered'
     end

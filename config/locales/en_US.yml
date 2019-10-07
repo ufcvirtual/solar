@@ -314,6 +314,7 @@ en_US:
         attempts_correction: Grade calculation method
         block_content: Block Solar's content during exam
         controlled: Controlled
+        immediate_result_release: Immediate result release
       exam_user:
         grade: Grade
       exam_question:
@@ -4192,6 +4193,9 @@ en_US:
         duration: Student's time to respond the exam after start it.
         result_release: Result's release
         result_release_explain: Date and time on which exam's result will be released. When empty, result will be released immediately after exam's end
+        immediate_result_release_activated: Deactivate immediate result release
+        immediate_result_release_deactivated: Activate immediate result release
+        immediate_result_release_explain: If activated, exam's result will be released immediately after is finished. In that case, exam can only have 1 attempt.
       control:
         continue: Continue
         previous: Previous
@@ -4207,6 +4211,7 @@ en_US:
       info: 'Result will be released at %{date}'
       title: '(Result)'
       aria: 'View result release date'
+      imemediate: immediately after student finishing exam
     pre:
       alert_save: All questions are automatically saved.
       alert_start: Click the link below if you are sure you want to start the exam.
