@@ -14,6 +14,8 @@ class AllocationTag < ActiveRecord::Base
 
   has_many :savs, dependent: :destroy
 
+  has_many :allocation_tag_owners
+
   def groups
     case refer_to
       when 'group'

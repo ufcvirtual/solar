@@ -1011,6 +1011,7 @@ pt_BR:
       enrollment_period_expired: Período encerrado
       search_for: "Semestre, disciplina, curso ou turma"
       not_allowed_user_uab: "Aluno UAB: Para solicitar trancamento ou desistência, entrar em contato com a secretaria do curso"
+      not_allowed_external_client: "Aluno de curso externo: Para solicitar trancamento ou desistência, entrar em contato com o cliente responsável pelo curso"
       general_message: Não foi possível realizar a ação desejada
       uab_enrollment: A matrícula de disciplinas a distância não pode ser realizada através do Solar
       uab_general: Não é possível alterar matrícula de disciplinas à distância pelo Solar
