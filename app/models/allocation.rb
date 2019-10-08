@@ -104,6 +104,7 @@ class Allocation < ActiveRecord::Base
     unless allocation_tag.nil?
       uc = allocation_tag.get_curriculum_unit
       raise 'not_allowed_user_uab' if (!uc.blank? && uc.curriculum_unit_type_id == 2 && self.status ==  Allocation_Activated && profile_id  == Profile.student_profile)
+      raise 'not_allowed_external_client' if (self.status ==  Allocation_Activated && profile_id == Profile.student_profile && self.allocation_tag.allocation_tag_owners.any?)
     end
     self.updated_by_user_id = by_user.try(:id)
     case type
