@@ -337,7 +337,7 @@ class ScoresController < ApplicationController
     tool_id = AcademicAllocation.find(params[:ac_id]).academic_tool_id
 
     unless ['started', 'opened', 'retake', 'to_answer', 'to_send', 'not_finished', 'sent', 'evaluated', 'to_be_sent', 'without_group', 'in_progress'].include?(params[:situation])
-      if ((params[:situation] == 'not_started' or params[:situation] == 'corrected') && params[:tool_type] == 'Exam')
+      if ((params[:situation] == 'not_started' || params[:situation] == 'corrected') && params[:tool_type] == 'Exam')
         authorize! :show, Question, { on: active_tab[:url][:allocation_tag_id] }
         render json: { url: preview_exam_path(tool_id, allocation_tags_ids: active_tab[:url][:allocation_tag_id]) }
       else

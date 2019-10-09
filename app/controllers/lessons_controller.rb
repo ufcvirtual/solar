@@ -128,6 +128,7 @@ class LessonsController < ApplicationController
   # GET /lessons/1/edit
   def edit
     # verify_owner(params[:id])
+    @lesson = Lesson.find(params[:id])
     lesson_modules_by_ats(@allocation_tags_ids)
     groups_by_lesson(@lesson)
   end
@@ -136,6 +137,7 @@ class LessonsController < ApplicationController
   # PUT /lessons/1.json
  def update
     # verify_owner(params[:id])
+    @lesson = Lesson.find(params[:id])
     @lesson.update_attributes! lesson_params
 
     render json: { success: true, notice: t('lessons.success.updated') }

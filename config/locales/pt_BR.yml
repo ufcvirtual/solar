@@ -253,6 +253,7 @@ pt_BR:
       user:
         alternate_email: "E-mail alternativo"
         password: "Senha"
+        encrypted_password: "Senha"
         current_password: "Senha"
         new_password: "Nova Senha"
         username: "Login"
@@ -285,6 +286,7 @@ pt_BR:
         photo_content_type: "Tipo de arquivo inválido."
         photo_file_size: "Arquivo muito grande. O tamanho máximo da sua foto deve ser de até 700KB."
         reset_password_token: "Token de recuperação de senha"
+        other_special_needs: "Qual *"
       curriculum_unit:
         name: Nome
         code: Código
@@ -362,6 +364,7 @@ pt_BR:
         block_content: Bloquear conteúdo do Solar durante a prova
         uninterrupted: Ininterrupta
         controlled: Controlada
+        immediate_result_release: Liberação imediata do resultado
       ip_real:
         ip_v4: "Digite o IP V4"
         ip_v6: "Digite o IP V6"
@@ -540,6 +543,7 @@ pt_BR:
         grade: Nota
         working_hours: Carga horária
         group_assignment_id: Grupo
+        block_register_notes: ""
       message:
         content: Conteúdo
         subject: Assunto
@@ -662,6 +666,7 @@ pt_BR:
   dont_destroy_with_content: "Possui conteúdo"
   item_search_no_found: "Nenhum item encontrado"
   no_javascript: Seu navegador não suporta JavaScript ou está com este desabilitado.
+  other: Outro
 
   #Página de Login
   login_description1: "O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,
@@ -999,6 +1004,7 @@ pt_BR:
       enrollment_period_expired: Período encerrado
       search_for: "Semestre, disciplina, curso ou turma"
       not_allowed_user_uab: "Aluno UAB: Para solicitar trancamento ou desistência, entrar em contato com a secretaria do curso"
+      not_allowed_external_client: "Aluno de curso externo: Para solicitar trancamento ou desistência, entrar em contato com o cliente responsável pelo curso"
       general_message: Não foi possível realizar a ação desejada
       uab_enrollment: A matrícula de disciplinas a distância não pode ser realizada através do Solar
       uab_general: Não é possível alterar matrícula de disciplinas à distância pelo Solar
@@ -1306,6 +1312,7 @@ pt_BR:
       attention_message: 'Atenção:'
       save_automatically_message: ' todas as alterações são salvas automaticamente.'
       send_file: Enviar arquivo
+      warning_files_name: "Por favor, remover os acentos dos arquivos."
     destination_folder_error: Uma pasta de destino deve ser selecionada
     move_error: Não foi possível mover
     at_least_one: "Selecione, ao menos, um item para %{to}"
@@ -1607,6 +1614,7 @@ pt_BR:
       new: "Nova Webconferência"
       edit: "Editar Webconferência"
       minutes: " minutos"
+      integrated_webconference: Esta webconferência possui integração com outras bases de dados e, por isso, o seu dia não pode ser modificado, apenas o horário do campo de edição de data pode ser alterado.
     list:
       webconferences: "Webconferências"
       name: Nome
@@ -1671,6 +1679,7 @@ pt_BR:
       removed_record: Gravação removida ou vazia
       copy: Não é possível remover a gravação desta webconferência, pois ela é uma cópia. É necessário remover a gravação da webconferência original.
       acu: Não é possível remover a gravação ou webconferência, pois há alunos avaliados/com comentários.
+      cant_edit_date: Apenas o dia não pode ser alterado.
     preview:
       delete_record: Remover gravação
       report: Relatório webconferências (UAB)
@@ -1722,6 +1731,11 @@ pt_BR:
       record: Gravação %{number}
       start: Início da gravação
       end: Fim da gravação
+      options: Opções
+      download_podcast: Baixar Podcast
+      download_video: Baixar Vídeo
+      download_chat: Baixar Bate-papo
+      download_slides: Baixar Slides
       warning: '<b>Importante: </b> Para cada ausência prolongada de participantes na webconferência, uma nova gravação é realizada.'
       no_message: Gravações removidas ou vazias ou a webconferência não possui gravações
       remove: Remover gravação
@@ -1739,56 +1753,59 @@ pt_BR:
       resume_total: 'Total de webconferências criadas desde 2014.2 (efetivas):'
       resume_max_access: 'Máximo de acessos únicos a uma webconferência:'
       resume_avg_access: 'Média de acessos únicos nas webconferências (usuários/web):'
-      resume_total_access: 'Total de acessos únicos desde 2014.2:'
-      resume_grade: 'Nota atual do semestre (média geral do feddback):'
-      resume_grade_value: '7,58/10'
+      resume_total_access: 'Total de acessos desde 2014.2 (únicos):'
       title_statistic: 'Estatísticas do Servidor (Gerais)'
-      statistic_duration: 'Média de duração das webconferências (minutos):'
+      statistic_duration: 'Média de duração das webconferências:'
       statistic_rec: 'Porcentagem de webconferências gravadas:'
       statistic_recording_per_server_1: 'Horas de gravações (BBB1):'
       statistic_recording_per_server_2: 'Horas de gravações (BBB2):'
+      statistic_recording_per_server_3: 'Horas de gravações (BBB3):'
+      statistic_recording_per_server_4: 'Horas de gravações (BBB4):'
+      statistic_recording_per_server_5: 'Horas de gravações (BBB5):'
       statistic_shared: 'Porcentagem de Webconferẽncias compartilhadas entre turmas:'
       statistic_per_server: 'Webconferências por servidor:'
       statistic_per_type: 'Webconferẽncias por tipo (total):'
       statistic_ps_total: 'Total'
-      statistic_ps_rt: 'Webconferências em tempo real (agendadas)'
-      statistic_ps_rt_access: 'Usuários em tempo real'
+      statistic_ps_hours: 'Horas de gravações:'
+      statistic_ps_rt: 'Webconferências em tempo real:'
+      statistic_ps_rt_access: 'Usuários em tempo real:'
       web_title: 'Webconferências (UAB)'
       web_total: 'Total de webconferências criadas e efetivas por semestre:'
-      web_12_month: 'Total por mês (últimos 12 meses):'
+      web_12_month: 'Total (últimos 12 meses):'
+      web_next_6_month: 'Agendamentos (próximos 6 meses):'
+      web_real_time: 'Webconferências/Usuários em Tempo Real'
       web_month: 'Webconferências por mês (agrupadas):'
       web_day: 'Webconferências por dia da semana (agrupadas):'
       web_hour: 'Webconferências por hora do dia (agrupadas):'
       web_course: 'Webconferências por curso:'
-      web_offer: 'Webconferências por disciplina:'
-      web_creator: 'Webconferências por criador:'
+      web_offer: 'Webconferências por disciplina (Histórico):'
+      web_creator: 'Webconferências por criador (Histórico):'
       access_title: 'Acessos (UAB)'
+      access_total: 'Total de acessos únicos por semestre:'
       access_course: 'Quantidade de acessos únicos por Curso:'
-      access_offer: 'Quantidade de acessos únicos por disciplina:'
+      access_offer: 'Quantidade de acessos únicos por disciplina (Histórico):'
       access_avg: 'Média de acessos por webconferência efetiva:'
-      historic_title: 'Histórico de mudanças'
-      historic_d7: '??/??/????'
-      historic_t7: 'Implantação do botão de suporte'
-      historic_d6: '06/07/2018'
-      historic_t6: 'Implantação da versão 2.0 com html5, novo layout e novo slide default.'
-      historic_d5: '22/05/2017'
-      historic_t5: 'Informações básicas de uso da ferramenta'
-      historic_d4: '24/04/2017'
-      historic_t4: 'Implantação do https, configuração inicial simplificada e mensagem de boas vindas'
-      historic_d3: '16/02/2017'
-      historic_t3: 'Balanceamento de carga com 2 servidores, bbb 1.0'
-      historic_d2: '09/02/2017'
-      historic_t2: 'Formulário de feedback'
-      historic_d1: '??/??/2014'
-      historic_t1: 'BBB 0.81'
-      feedback_title: 'Feedback - 7737 respostas (22% dos usuários)'
-      feedback_grade: 'Nota das webconferências (1 à 5):'
+      historic_title: 'Histórico de mudanças nos servidores bigbluebutton'
+      feedback_title: 'Feedback - 10965 respostas'
+      feedback_grade: 'Notas das webconferências (1 à 5):'
       feedback_difficulty: 'Dificuldades na webconferência:'
       feedback_access: 'Local de acesso:'
       feedback_equipament: 'Equipamento utilizado:'
       feedback_internet: 'Velocidade da internet:'
-      feedback_html5: 'Aceitação da versão em html5:'
-      feedback_html5_flash: 'HTML5 X Flash:'
+      feedback_internet_title: 'Qual a velocidade de sua internet?'
+      feedback_html5: 'Aceitação da versão em HTML5:'
+      feedback_html5_title: 'Você gostou da nova versão da webconferência?'
+      feedback_html5_flash: 'Comparativo entre as versões HTML5 e Flash:'
+      feedback_html5_flash_title: 'Escolha o que você gostou na nova versão ou o que preferia da versão antiga'
+      changelog_deployment: 'Data de implantação'
+      changelog_description: 'Descrição'
+      changelog_options: 'Opções'
+      changelog_pending: 'Pendente'
+      changelog_edit: 'Editar'
+      changelog_delete: 'Excluir'
+      changelog_save: 'Salvar'
+      changelog_pending: 'Pendente'
+      changelog_confirm: 'Tem certeza que deseja apagar esse registro?'
   navigation_of: " de "
   navigation_next: "Próxima >"
   navigation_previous: "< Anterior"
@@ -1834,6 +1851,7 @@ pt_BR:
   to_send: A enviar
   without_group: Sem Grupo
   not_corrected: Não Corrigido
+  confirm_create_group_assignment_in_today: "O trabalho está iniciado hoje, por esse motivo os alunos serão alocados em grupos automaticamente."
 
   # Assignment Comments
   comment_error_delete_file: Erro ao tentar excluir arquivo
@@ -1904,6 +1922,7 @@ pt_BR:
   menu_home: Início
   menu_admin_notifications: Avisos Gerais
   menu_events: "Eventos"
+  menu_admin_report_webconference: Relatório webconferências UAB
 
   # Componente de filtro/busca de allocationTags (places_nav_panel)
   places_nav_panel_course_hint: "Digite o nome do curso ou parte dele"
@@ -1976,7 +1995,7 @@ pt_BR:
     passwords:
       new_password: Nova senha
       confirm_new_password: Confirmar nova senha
-      change_my_password: Alterar
+      change_my_password: Alterar senha
     confirmations:
       send_instructions: 'Instruções de como confirmar sua conta serão enviados para seu email em alguns minutos.'
       send_paranoid_instructions: 'Instruções de como confirmar sua conta serão enviados para seu email em alguns minutos, caso ele exista em nossa base de dados'
@@ -2001,9 +2020,10 @@ pt_BR:
         subject: 'Instruções de desbloqueio'
       msg:
         hello: "Olá %{email}!"
-        request: "Alguém solicitou um link para alterar sua senha. "
-        request_info: "Você pode fazer isso através do link abaixo."
+        request: "Foi solicitado um link de recuperação de senha. "
+        request_info: "Caso deseje proceder, você pode fazer isso através do link abaixo."
         request_info_ma: "Como você é um usuário integrado ao Sigaa, você deve realizar a recuperação de senha através desse. Para isso, acesse o link abaixo."
+        request_info_app: "Atualmente seu login e senha estão associados ao %{system}. Para manter a integração, você deve solicitar a alteração de sua senha no %{system} acessando %{url}. Caso deseje desfazer a integração e alterar sua senha do Solar de modo independente, acesse o link abaixo."
         ignore: "Se não foi você quem solicitou este link, por favor ignore este email."
         change: "Sua senha não vai ser modificada enquanto você não acessar o link e criar uma nova."
         username_info: "Seu login é: %{username}."
@@ -2302,6 +2322,7 @@ pt_BR:
       summary_evaluative: "Está tabela contém todas as atividades avaliativas com as seguintes informações: Descrição da atividade, período que poderá ser realizada, situação, nota e se foi alterada após o envio."
       summary_frequency: "Está tabela contém todas as atividades de frequência com as seguintes informações: Descrição da atividade, período que poderá ser realizada, situação, frequência obtida e se foi alterada após o envio."
       summary_notevaluative: "Está tabela contém todas as atividades não avaliativas com as seguintes informações: Descrição da atividade, período que poderá ser realizada, situação, nota e se foi alterada após o envio."
+      members_group: Integrantes do grupo
     assignments:
       participants: Ver participantes
       groups: Ver grupos
@@ -2530,6 +2551,7 @@ pt_BR:
     specific_profile: "Perfil Específico"
     specific_profile_text: "Perfil específico de uma disciplina, oferta ou turma<br/><em>Exemplo: Professor, Tutor</em>"
     close: Fechar
+    oauth_application: "O login e senha deste usuário, bem como os demais dados pessoais e de acesso, estão vinculados ao sistema %{system}. Ao confirmar, este vínculo será removido e os dois cadastros serão independentes, bem como o login ou senha poderão ser diferentes. Você tem certeza que deseja prosseguir? O usuário será informado sobre a mudança."
     allocations_user:
       no_data: Nenhuma alocação cadastrada
     users:
@@ -2844,6 +2866,8 @@ pt_BR:
       rule_min_final_exam_grade: "<div> 9) <b>Nota mínima permitida para AF: %{min_final_exam_grade}</b></div>"
       rule_final_exam_passing_grade: "<div> 10) <b>Média mínima para aprovação após realização de AF: %{final_exam_passing_grade}</b></div>"
       rule_window_analyzer: "<div> 11) O <b>Analisador</b> é uma ferramenta que permite ajudá-lo a realizar as configurações das atividades de forma correta. Ao pressionar a tecla de atalho 'A' ou clicar no link 'Analisador', uma janela surgirá. Ela mostrará o cálculo, em tempo real, do <b>peso final</b> e da <b>carga horária</b> das turmas. Deste modo, ficará mais fácil identificar se as turmas estão com o peso final 100 e a carga horária de acordo com o informado nessas instruções. O texto verde ilustrará que o cálculo está OK e o texto vermelho ilustrará que o cálculo indica que há uma quantidade a mais ou a menos de horas ou no peso final. Quando tudo estiver verde ou quando todos os pesos finais forem 100 e as horas corresponderem às horas da disciplina, clique em 'Finalizar'</div>"
+      groups_block_register_notes: "<div> 12) A(s) turma(s): <b> %{groups} </b> esta(ão) com o registro de notas bloqueadas.</div>"
+      groups_block_register_notes_error: "A(s) turma(s): <b> %{groups} </b> esta(ão) com o registro de notas bloqueadas."
       expand: Expandir todos
       compress: Comprimir todos
       share_wh: Dividir carga horária
@@ -3197,6 +3221,7 @@ pt_BR:
   confirm_cancel: 'Tem certeza de que deseja cancelar?'
   message_confirm_user: "Tem certeza?"
   page_loading: "A página está carregando..."
+  oauth_application_password: "Seu login e senha, assim como os demais dados pessoais e de acesso, estão vinculados ao sistema %{system}. Ao confirmar, este vínculo será removido e os dois cadastros serão independentes, bem como o login ou senha poderão ser diferentes. Você tem certeza que deseja prosseguir?"
 
   messages:
     file_too_big: "Arquivo muito grande!"
@@ -3218,10 +3243,15 @@ pt_BR:
     no_subject: "(sem assunto)"
     support: "Atendimento <atendimento@virtual.ufc.br>"
     support_only_email: "<atendimento@virtual.ufc.br>"
+    support_email: "atendimento@virtual.ufc.br"
     support_html: "Atendimento &lt;atendimento@virtual.ufc.br&gt;"
     support_simple: "Atendimento"
     no_mail: sem email
     send_message: Enviar Mensagem
+    next: Próxima
+    previous: Anterior
+    next_msg: Próxima Mensagem
+    previous_msg: Mensagem Anterior
     contacts:
       title: "Seleção de contatos"
       contacts: "Contatos"
@@ -3373,6 +3403,50 @@ pt_BR:
       monthAlt: Visualização por mês
       listAlt: Visualização em lista dos próximos eventos
 
+  deficiency:
+    deficiency: Deficiência
+    deficiencys: Deficiências
+    autism_complete: Autismo
+    low_vision_complete: Baixa visão
+    blindness_complete: Cegueira
+    hearing_deficiency_complete: Deficiência auditiva
+    physical_disability_complete: Deficiência física
+    intellectual_deficiency_complete: Deficiência intelectual
+    multiple_disability_complete: Deficiência múltipla
+    deafness_complete: Surdez
+    deafblindness_complete: Surdocegueira
+    aspergers_syndrome_complete: Síndrome de Asperger
+    rett_syndrome_complete: Síndrome de Rett
+    childhood_disintegrative_disorder_complete: Transtorno desintegrativo de infância
+    none: Nenhuma
+    other: Outra
+    autism: AUT
+    low_vision: BVO
+    blindness: CEG
+    hearing_deficiency: DAA
+    physical_disability: DFA
+    intellectual_deficiency: DIL
+    multiple_disability: DMA
+    deafness: SUR
+    deafblindness: SCA
+    aspergers_syndrome: SDA
+    rett_syndrome: SRETT
+    childhood_disintegrative_disorder: TDI
+    code:
+      autism: 1
+      low_vision: 2
+      blindness: 3
+      hearing_deficiency: 4
+      physical_disability: 5
+      intellectual_deficiency: 6
+      multiple_disability: 7
+      deafness: 8
+      deafblindness: 9
+      aspergers_syndrome: 10
+      rett_syndrome: 11
+      childhood_disintegrative_disorder: 12
+      other: 13
+
   #Eventos da agenda
   schedule_events:
     restrict_events: "Não permitido é permitido acessar os eventos"
@@ -3408,6 +3482,11 @@ pt_BR:
       continue: "Próximo"
     print:
       previous: Voltar
+      info_accessibility: Acessibilidade
+      info_contrast: '1. Em provas coloridas observar o contraste entre as cores usadas.'
+      info_text_black: '2. Texto deve ser preferencialmente na cor preta.'
+      info_enlarged_images: '3. Usar imagens de boa qualidade e se possível ampliadas.'
+      info_caption_in_picture: '4. As imagens devem possuír legendas.'
     success:
       created: Evento criado com sucesso.
       updated: Evento atualizado com sucesso.
@@ -3473,6 +3552,9 @@ pt_BR:
       content: Possui conteúdo de prova
       y: Sim
       n: Não
+      print_acessibility: Imprimir acessibilidade
+      print_exame_acessibility: Imprimir prova com acessibilidade
+      has_content: Possui conteúdo
     participants:
       title: Participantes
       student: Alunos
@@ -3485,6 +3567,7 @@ pt_BR:
       files: Arquivos
       see_files: Ver arquivos enviados
       download_all: Download dos arquivos de todos os alunos
+      upload_all: Enviar arquivos da turma
     presential_test_participants:
       list_name: Lista de Alunos
       name_studante: Nome
@@ -3533,11 +3616,14 @@ pt_BR:
       clear: "Limpar"
       deleting_canvas: "Limpando arquivo."
       message_confirm_cleaning: "Está ação não pode ser desfeita. Você tem certeza disso?"
+      insert_button: "Escrever texto"
     success:
       file_saved: Arquivo salvo com sucesso.
       file_cleaned: Arquivo limpo com sucesso.
       created: Arquivo(s) enviado(s) com sucesso(s).
       deleted: Arquivo(s) deletado(s) com sucesso(s).
+    warning:
+      fails: "Foram enviados %{sucess_files} arquivos. %{fail_file}"
     error:
       download: Não foi possível realizar o download
       date_range_expired: Não foi possível realizar ação. Período encerrado.
@@ -3550,6 +3636,8 @@ pt_BR:
       file_not_saved: "Não foi possível salvar o arquivo."
       file_not_cleaned: "Não foi possível limpar o arquivo."
       cant_download: Não é possível realizar o download deste(s) arquivo(s)
+      cant_upload: Não é possível realizar o upload deste(s) arquivo(s)
+      student_not_found: Verifique se o nome do arquivo "%{file_name}" inicia com a matricula do aluno.
       type: Arquivos podem ser enviados apenas para eventos dos tipos Prova Presencial e Encontro Presencial
       general_error: "Apenas arquivos de imagens (jpeg/png/gif) ou pdfs de até 2MB devem ser enviados em eventos dos tipos Encontro Presencial ou Prova Presencial."
       ended: Não é possível enviar arquivos enquanto a atividade não for finalizada.
@@ -3637,6 +3725,8 @@ pt_BR:
       cpf_as_username: 'não pode ser o CPF de outro usuário'
       multiple_sessions: "Não é possível ficar logado em múltiplos dispositivos ao mesmo tempo."
       username: "deve ter apenas letras e números."
+      password_mandatory_integration: "necessária. Seu login e senha, bem como os demais dados pessoais e de acesso, estão associados ao %{system}. Ao alterar algum desses dados, esta integração será desfeita e faz-se necessário que sua senha também seja alterada."
+      oauth_application: "não pode ser alterado, pois este é um usuário integrado ao %{system}. A integração deve ser desfeita para que este campo possa ser alterado."
     notices:
       ma:
         use_ma_data: "Seus dados de acesso foram importados do Sigaa. Para alterar ou recuperar seus dados de acesso, vá ao endereço: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
@@ -3677,6 +3767,7 @@ pt_BR:
       previous_username: "Login anterior: "
       previous_email: "Email anterior: "
       last_access: "Último acesso: "
+      other_system: "Integrado a outro sistema: "
       y: Sim
       n: Não
     request_profile:
@@ -4051,7 +4142,15 @@ pt_BR:
       situation4: "- Ao remover as situações dos alunos, todas serão definidas como 'Pendente' ou 'Indefinida' até que sejam definidas novamente."
       situation5: "- Uma vez definida a situação, a cada nova avaliação, carga horária e afins, a situação do aluno será imediatamente atualizada."
       confirm: A última atividade avaliativa ainda não aconteceu. Tem certeza que deseja definir as situações?
+      confirm2: Existem atividades não finalizadas e/ou enviadas sem nota e/ou carga horária. Tem certeza que deseja bloquear o registro de notas?
       origin_group: Turma original (aglutinada)
+      register_notes_on: Liberar Registro de Notas
+      register_notes_off: Bloquear Registro de Notas
+      msg_register_notes_on: Liberado registro de notas
+      msg_register_notes_off: Bloqueado registro de notas
+      error_msg_register_notes: Erro ao liberar/bloquear registro de notas
+      msg_button_register_off: Registro de notas bloqueada pelo responsável
+      error_msg_register_notes_active_open: "Erro: Existem atividades não finalizadas."
     info:
       assignments: Trabalhos
       date_range: Período
@@ -4143,6 +4242,7 @@ pt_BR:
       comments: Comentários
       origin_group: "<b>Turma original (aglutinada):</b>"
       origin_group2: "<b>Turma original (aglutinada):</b> %{group}"
+      unread_posts: Posts não lidos
     reports:
       general_evaluative: Relatório Acompanhamento - Atividades Avaliativas
       general_frequency: Relatório Acompanhamento - Atividades de Frequência
@@ -4407,6 +4507,9 @@ pt_BR:
         duration: Tempo que o aluno terá para responder a prova após iniciá-la.
         result_release: Liberação do resultado
         result_release_explain: Data e hora nas quais o resultado da prova será liberado. Quando em branco, o resultado será liberado imediatamente após o término da prova.
+        immediate_result_release_activated: Desativar liberação imediata do resultado
+        immediate_result_release_deactivated: Ativar liberação imediata do resultado
+        immediate_result_release_explain: Se ativo, o resultado da prova será liberado imediatamente após o término. Neste caso, a prova pode ter apenas 1 tentativa.
       control:
         continue: Continuar
         previous: Anterior
@@ -4422,6 +4525,7 @@ pt_BR:
       info: 'O resultado ficará disponível em %{date}'
       title: '(Resultado)'
       aria: 'Visualizar data de liberação do resultado'
+      imemediate: Imediatamente após a finalização da prova pelo aluno
     pre:
       alert_save: Todas as questões são salvas automaticamente.
       alert_start: Clique no link abaixo se você tem certeza que deseja iniciar a prova.
@@ -4974,6 +5078,8 @@ pt_BR:
       no_frequency_tools: Não há ferramentas de frequência para realizar esta ação.
       changes: 'Atividades gerenciadas com sucesso. Já houve definição de nota e/ou carga horária para alunos em uma ou mais ferramentas. Se uma atividade já havia sido avaliada e não é mais avaliativa, sua nota não será considerada no cálculo da média. O mesmo para a carga horária. Também é importante verificar se as cargas horárias definidas não ultrapassam o novo máximo definido se for o caso.'
       evaluative: Uma ou mais ferramentas removidas eram avaliativas e/ou de frequência. É importante que as configurações de ferramentas avaliativas / frequência sejam re-avaliadas para verificar pesos e cargas horárias.
+    messages:
+      execute_manage_tool: Deseja realizar a gerência automática?
 
   academic_allocation_users:
     errors:

@@ -11,7 +11,7 @@ class RenameAssignmentComments < ActiveRecord::Migration
     remove_foreign_key :comments, name: 'assignment_comments_user_id_fk'
     add_foreign_key :comments, :users
 
-    rename_index :comments, 'assignment_comments_pkey', 'comments_pkey'
+    # rename_index :comments, 'assignment_comments_pkey', 'comments_pkey'
   end
 
   def down

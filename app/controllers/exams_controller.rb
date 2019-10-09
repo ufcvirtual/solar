@@ -103,11 +103,9 @@ class ExamsController < ApplicationController
     authorize! :open, Exam, { on: @allocation_tag_id = active_tab[:url][:allocation_tag_id] }
     @exam = Exam.find(params[:id])
     @situation = params[:situation]
-
     verify_ip!(@exam.id, :exam, @exam.controlled, :error_text_min)
     acs = @exam.academic_allocations
     ac_id = (acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: @allocation_tag_id).first.id)
-
     @acu = AcademicAllocationUser.find_or_create_one(ac_id, @allocation_tag_id, current_user.id, nil, true)
 
     last_attempt = @acu.exam_user_attempts.last
@@ -186,7 +184,7 @@ class ExamsController < ApplicationController
     end
     @exam = Exam.find(params[:id])
     raise 'uninterrupted' if @exam.uninterrupted && !@exam.ended?
-    raise 'dates' unless @exam.ended?
+    raise 'dates' unless @exam.ended? || (@exam.started? && @exam.immediate_result_release)
 
     acs = @exam.academic_allocations
     @ac = (acs.size == 1 ? acs.first : acs.where(allocation_tag_id: active_tab[:url][:allocation_tag_id]).first)
@@ -234,7 +232,7 @@ class ExamsController < ApplicationController
       authorize! :evaluate, Exam, { on: at_id }
       user_id = params[:user_id]
     end
-    raise 'not_finished' unless exam.ended?
+    raise 'not_finished' unless exam.ended? || (exam.started? && exam.immediate_result_release)
     raise 'result_release_date' unless exam.allow_calculate_grade?
     grade, wh = exam.recalculate_grades(user_id, at_id, true)
 
@@ -256,9 +254,10 @@ class ExamsController < ApplicationController
     ats = allocation_tags_ids.gsub(' ', ",") rescue allocation_tags_ids
 
     exam = Exam.find(params[:id])
-    raise 'not_finished' unless exam.ended?
+    raise 'not_finished' unless exam.ended? || (exam.started? && exam.
+      immediate_result_release)
     raise 'result_release_date' unless exam.allow_calculate_grade?
-    exam.recalculate_grades(nil, ats, true)
+    exam.recalculate_grades((exam.immediate_result_release ? params[:user_id] : nil), ats, true)
     if acu = AcademicAllocationUser.find_one(params[:ac_id], params[:user_id])
       if params.include?(:score_type)
         return_acu_result(acu, allocation_tags_ids, params[:score_type])
@@ -325,7 +324,7 @@ class ExamsController < ApplicationController
     params.require(:exam).permit(:name, :description, :duration, :start_hour, :end_hour,
                                  :random_questions, :raffle_order, :auto_correction,
                                  :block_content, :number_questions, :attempts, :controlled,
-                                 :attempts_correction, :result_email, :uninterrupted, :result_release,
+                                 :attempts_correction, :result_email, :uninterrupted, :result_release, :immediate_result_release,
                                  schedule_attributes: [:id, :start_date, :end_date],
                                  ip_reals_attributes: [:id, :ip_v4, :ip_v6, :use_local_network, :_destroy])
   end
@@ -376,7 +375,7 @@ class ExamsController < ApplicationController
       raise 'not_corrected' if @acu.blank? || @acu.grade.blank?
       raise 'no_attempt' if @last_attempt.blank?
       raise 'result_release_date' unless @exam.allow_calculate_grade?
-      exam.recalculate_grades(@user, @allocation_tag_id, true) if @acu.exam_user_attempts.where(grade: nil).any?
+      @exam.recalculate_grades(@user, @allocation_tag_id, true) if @acu.exam_user_attempts.where(grade: nil).any?
     elsif  @user != current_user.id
       raise CanCan::AccessDenied
     end

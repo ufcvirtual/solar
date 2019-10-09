@@ -99,7 +99,7 @@
                 = exam.working_hours
             - elsif @can_evaluate
               %td.center{headers: 'e_calcule'}
-                - if exam.closed == true
+                - if exam.closed == true || (exam.opened? && exam.server == true)
                   = link_to content_tag(:i, nil, class: 'icon-exam'), "#void", onclick: "calcule_grade_exam(this);", class: "ico-e", :'data-url' => calculate_grade_exam_path(exam.academic_tool_id), :"data-tooltip" => t('exams.index.calculate'), :"aria-label" => t('exams.index.calculate')
 
   - else

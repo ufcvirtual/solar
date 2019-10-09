@@ -16,7 +16,14 @@
 
 = f.input :duration, input_html: { :"data-tooltip" => t('exams.form.info.duration') }
 
-= f.input :result_release, as: :string, label: t('exams.form.info.result_release') + " (?)", placeholder: t('assignment_webconferences.form.date_placeholder'), label_html: { :'data-tooltip' => t('.result_release_explain') }, input_html: {value: (l(f.object.result_release, format: :mask_with_time_form) rescue '')}
+.label
+  = f.label :immediate_result_release, :'data-tooltip' => t('.immediate_result_release_explain')
+  = f.input :immediate_result_release, as: :boolean, label: false
+  = link_to (image_tag "#{f.object.immediate_result_release ? 'released' : 'rejected'}.png"), "#void", onclick: 'change(this, ["#exam_result_release", ".exam_result_release", "#exam_attempts", ".exam_attempts", "#exam_attempts_correction", ".exam_attempts_correction"])', onkeydown: 'click_on_keypress(event, this)', :'data-tooltip' => "", :'data-id' => 'immediate_result_release', :'data-active' => t('.immediate_result_release_activated'), :'data-not-active' => t('.immediate_result_release_deactivated'), :'data-val'=> f.object.immediate_result_release
+  - if @exam.errors[:immediate_result_release].any?
+    %span.field_with_errors.error= @exam.errors[:immediate_result_release].first
+
+= f.input :result_release, as: :string, label: t('exams.form.info.result_release') + " (?)", placeholder: t('assignment_webconferences.form.date_placeholder'), label_html: { :'data-tooltip' => t('.result_release_explain')}, input_html: {value: (l(f.object.result_release, format: :mask_with_time_form) rescue '')}
 
 = render 'groups/codes'
 
@@ -24,10 +31,16 @@
   = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox cancel', onkeypress: 'click_on_keypress(event, this)'
   = button_tag t('.continue'), :type => 'button', :onclick => "go_to_config(event)", class: 'btn btn_main btn_lightbox', id: '_continue', onkeypress: 'go_to_config(event)'
 
-= javascript_include_tag 'ckeditor/init', 'jquery-ui-timepicker-addon'
+= javascript_include_tag 'ckeditor/init', 'jquery-ui-timepicker-addon', 'ip'
 
 :javascript
   $(function(){
+
+    var immediate_result_release = $($("[data-id='immediate_result_release']")[0]);
+    if(immediate_result_release.data('val') == true){
+      change(immediate_result_release, ["#exam_result_release", ".exam_result_release", "#exam_attempts", ".exam_attempts", "#exam_attempts_correction", ".exam_attempts_correction"])
+    }
+
     CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
 
     CKEDITOR.editorConfig = function (config) {

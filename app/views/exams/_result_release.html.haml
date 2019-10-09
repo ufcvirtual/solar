@@ -5,4 +5,7 @@
       %i.icon-arrow-down-triangle
     .dropdown.dropdown-tip{id: "dropdown_result_release#{exam.id}#{id}"}
       .dropdown-menu
-        = t('.info', date: l(exam.release_date.to_datetime, format: :at_date))
+        - if exam.server == "true"
+          = t('.imemediate')
+        - else
+          = t('.info', date: l(exam.release_date.to_datetime, format: :at_date))
