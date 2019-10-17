@@ -13,7 +13,7 @@
     - if @user.integrated && !@user.on_blacklist?
       %p
         = "Seu login e senha são os mesmos utilizados no SIGAA. Seu login é "
-        =b "#{@user.username}."
+        %b "#{@user.username}."
         = "Caso não lembre sua senha, acesse o "
         = link_to('SIGAA', "https://si3.ufc.br/admin/public/recuperar_senha.jsf")
         = " para recuperá-la."

@@ -22,6 +22,8 @@ class Allocation < ActiveRecord::Base
   validates :profile_id, :user_id, presence: true
   validate :valid_profile_in_allocation_tag?, if: '!allocation_tag_id.nil?'
 
+  validate :can_cancel?, if: "!allocation_tag_id.nil? && status_changed?"
+
   validates_uniqueness_of :profile_id, scope: [:user_id, :allocation_tag_id]
 
   after_save :update_digital_class_members, if: '(!new_record? && (status_changed? || profile_id_changed?))', on: :update
@@ -97,6 +99,13 @@ class Allocation < ActiveRecord::Base
       when Allocation_Pending_Reactivate, Allocation_Pending; "#FF6600"
       when Allocation_Activated; "#006600"
       when Allocation_Cancelled, Allocation_Rejected, Allocation_Merged; "#FF0000"
+    end
+  end
+
+  def can_cancel?
+    if status_was == Allocation_Activated && status != Allocation_Activated && self.allocation_tag.allocation_tag_owners.any? && profile_id == Profile.student_profile
+      evaluative_acs = AcademicAllocation.where(allocation_tag_id: allocation_tag_id, evaluative: true)
+      raise I18n.t("enrollments.index.evaluative_activities") if self.user.academic_allocation_users.where(academic_allocation_id: evaluative_acs.map(&:id)).any?
     end
   end
 
