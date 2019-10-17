@@ -174,7 +174,10 @@ class User < ActiveRecord::Base
   end
 
   def remove_association_app
-    if !oauth_application.blank? && ((changed & API_FIELDS).any? || (encrypted_password_was != encrypted_password)) && api.nil?
+    changed_params = self.changes
+    changed_params.reject! {|k,v| v.blank? || v.all?(&:blank?) }
+
+    if !oauth_application.blank? && ((changed_params.keys & API_FIELDS).any? || (encrypted_password_was != encrypted_password)) && api.nil?
       self.oauth_application_id = nil
       self.save(validate: false)
     end
