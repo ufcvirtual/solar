@@ -1263,3 +1263,9 @@ res240:
   controller: "webconferences"
   action: "report"
   description: "Relatório todas as webconferencias"
+
+res241:
+  id: 241
+  controller: 'webconferences'
+  action: 'see_help_requests'
+  description: 'Visualizar chamadas de ajuda das webconferências' 

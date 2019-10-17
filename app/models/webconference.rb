@@ -38,7 +38,7 @@ class Webconference < ActiveRecord::Base
   def self.all_by_allocation_tags(allocation_tags_ids, opt = { asc: true }, user_id = nil)
     query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids } }
 
-    select = "users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency, academic_allocations.frequency_automatic, academic_allocations.max_working_hours, academic_allocations.final_exam, eq_web.title AS eq_name, webconferences.initial_time || '' AS start_hour, webconferences.initial_time + webconferences.duration* interval '1 min' || '' AS end_hour, webconferences.initial_time AS start_date, CASE
+    select = "users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency, academic_allocations.frequency_automatic, academic_allocations.max_working_hours, academic_allocations.final_exam, academic_allocations.support_help AS support_help, eq_web.title AS eq_name, webconferences.initial_time || '' AS start_hour, webconferences.initial_time + webconferences.duration* interval '1 min' || '' AS end_hour, webconferences.initial_time AS start_date, CASE
       WHEN acu.grade IS NOT NULL OR acu.working_hours IS NOT NULL THEN 'evaluated'
       WHEN (acu.status = 1 OR (acu.status IS NULL AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.count > 0))) THEN 'sent'
       when NOW()>webconferences.initial_time AND NOW()<(webconferences.initial_time + webconferences.duration* interval '1 min') then 'in_progress'
@@ -138,12 +138,22 @@ class Webconference < ActiveRecord::Base
   end
 
   def login_meeting(user, meeting_id, meeting_name, options)
+    #token_xml = change_config_xml(academic_allocations.first.id, meeting_id) if is_portfolio # Origem portfolio?
+    avatar = Rails.application.routes.url_helpers.home_url.gsub('/home', '') + user.photo.url(:medium)
     @api.create_meeting(meeting_name, meeting_id, options) unless @api.is_meeting_running?(meeting_id)
-     if (responsible?(user.id) || user.can?(:preview, Webconference, { on: academic_allocations.flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true, any: true }))
-      @api.join_meeting_url(meeting_id, "#{user.name}*", options[:moderatorPW])
+    if (responsible?(user.id) || user.can?(:preview, Webconference, { on: academic_allocations.flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true, any: true }))
+      @api.join_meeting_url(meeting_id, "#{user.name}*", options[:moderatorPW], { avatarURL: avatar }) # option: :configToken => token_xml
     else
-      @api.join_meeting_url(meeting_id, user.name, options[:attendeePW])
+      @api.join_meeting_url(meeting_id, user.name, options[:attendeePW], { avatarURL: avatar })
     end
+  end
+
+  def change_config_xml(academic_allocation_id, meeting_id)
+    url = Rails.application.routes.url_helpers.home_url.gsub('/home', '') + Rails.application.routes.url_helpers.support_webconference_messages_path(ac: academic_allocation_id)
+    config_xml = @api.get_default_config_xml
+    config_xml = BigBlueButton::BigBlueButtonConfigXml.new(config_xml)
+    config_xml.set_attribute("help", "url", url)
+    token = @api.set_config_xml(meeting_id, config_xml)
   end
 
   def have_permission?(user, at_id = nil)
@@ -261,6 +271,14 @@ class Webconference < ActiveRecord::Base
               .group('log_actions.created_at, users.name, allocation_tags.id, users.id, acu.grade, acu.working_hours, students.id, academic_allocations.max_working_hours')
   end
 
+  # Retorna a lista com os atendimentos da webconferência (academic_allocation)
+  def get_support_attendance(acs)
+    LogAction.joins(:user)
+             .where(academic_allocation_id: acs, log_type: LogAction::TYPE[:webconferece_support_attendance])
+             .select("log_actions.created_at, users.name AS user_name")
+             .order('log_actions.created_at ASC')
+  end
+
   def self.update_previous(academic_allocation_id, user_id, academic_allocation_user_id)
     LogAction.where(academic_allocation_id: academic_allocation_id, user_id: user_id, log_type: 7).update_all academic_allocation_user_id: academic_allocation_user_id
   end
@@ -292,6 +310,12 @@ class Webconference < ActiveRecord::Base
     urls.flatten
   end
 
+  # Atualiza a academic_allocation (support_help)
+  def self.set_status_support_help(academic_allocation_id, status)
+    ac = AcademicAllocation.find(academic_allocation_id)
+    ac.update_attributes! support_help: status
+    ac
+  end
 
   # Inicializa as tabelas temporárias usadas no relatório
   def self.drop_and_create_table_temporary_webs_and_access_uab
