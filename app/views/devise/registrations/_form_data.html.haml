@@ -48,7 +48,7 @@
           %span.form_field{:'data-tooltip' => t('users.warnings.cpf')}= f.text_field :cpf, size: field_size, id: 'cpf', disabled: true
           %span.form_error= msg_cpf
         %li
-          %span.form_label= f.label :birthdate, class: 'label_usuario', id: 'birthdate', :'data-previous-value' => [@user.birthdate.day, @user.birthdate.month, @user.birthdate.year]
+          %span.form_label= f.label :birthdate, class: 'label_usuario', id: 'birthdate', :'data-previous-value' => [@user.birthdate.try(:day), @user.birthdate.try(:month), @user.birthdate.try(:year)]
           %span.form_field= f.date_select :birthdate, start_year: Time.now.year - 2, end_year: 1900, include_blank: true
         %li
           %span.form_label= f.label :gender, class: 'label_gender'

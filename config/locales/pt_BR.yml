@@ -1017,6 +1017,7 @@ pt_BR:
       uab_general: Não é possível alterar matrícula de disciplinas à distância pelo Solar
       off_period: Perído de matrícula encerrado
       info: Informações sobre %{about}
+      evaluative_activities: "Aluno já realizou atividades avaliativas, não é possível cancelar sua matrícula."
     show:
       course: Curso
       curriculum_unit: Disciplina

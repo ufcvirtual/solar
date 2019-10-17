@@ -841,6 +841,7 @@ en_US:
       uab_general: It's not possible to change an enrollment for a distance curriculum unit by Solar
       off_period: Closed enrollment period
       info: Information about %{about}
+      evaluative_activities: "Student already sent evaluative activities, it's not possible to cancel the enrollment."
     show:
       course: Course
       curriculum_unit: Subject
