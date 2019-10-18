@@ -318,6 +318,11 @@ module Bbb
     0
   end
 
+  # Retorna a quantidade de chamados em aberto
+  def self.count_help
+    Webconference.joins(:academic_allocations).where(academic_allocations: { support_help: Support_Help_Request}).count
+  end
+
   def participant_count_per_server
     server = 0
     result = 0
