@@ -51,11 +51,11 @@
                   = t(".brush")
               %li
                 %a#undo{href: "#void", onclick: "toolChanger(this)"}
-                  %i.icon-redo
+                  = image_tag 'desfazer.png', width: 15, height: 18
                   = t(".undo")
               %li
                 %a#redo{href: "#void", onclick: "toolChanger(this)"}
-                  %i.icon-redo2
+                  = image_tag 'refazer.png', width: 15, height: 18
                   = t(".redo")
           %li#user
             = image_tag current_user.user_photo(:small), alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", :'aria-hidden' => 'true'
