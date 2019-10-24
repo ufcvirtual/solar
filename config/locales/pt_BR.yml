@@ -1702,7 +1702,7 @@ pt_BR:
       scheduled: "Agendadas"
       finish: "Finalizadas"
       recorded: "Com gravação"
-      disconnect_webcsocket: "Tem certeza que deseja desativar o suporte em tempo real?"    
+      disconnect_webcsocket: "Tem certeza que deseja desativar o suporte em tempo real?"
     index:
       shared_with: Compartilhada entre %{link} turma(s)
       access: Lista de acessos
@@ -3635,7 +3635,7 @@ pt_BR:
       online_correction: Correção online
     files:
       delete: Remover arquivo
-      correction_file: Correção de prova online
+      correction_file: Correção de prova online (abre uma nova janela)
     online_correction:
       tools: "Ferramentas"
       hand: "Mão"

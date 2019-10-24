@@ -3325,7 +3325,7 @@ en_US:
       online_correction: Online correction
     files:
       delete: Remove file
-      correction_file: Exam online correction
+      correction_file: Exam online correction (opens in new window)
     online_correction:
       tools: Tools
       hand: Hand
