@@ -46,7 +46,8 @@ class ScheduleEventFile < ActiveRecord::Base
     # end
 
     if self.id.nil?
-      "#{self.academic_allocation_user.user.name.split(' ').join('_')}-#{self.attachment_file_name}".gsub( /[^a-zA-Z0-9_\.\-]/, '')
+      file_format = '.' + self.attachment_file_name.split('.').last
+      "#{self.academic_allocation_user.user.name.split(' ').join('_')}-#{self.attachment_file_name}".gsub( /[^a-zA-Z0-9_\-]/, '').gsub(/(jpeg|jpg|gif|png|pdf)/, file_format)
     else
       self.attachment_file_name
     end
