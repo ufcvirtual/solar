@@ -20,7 +20,7 @@
           %th.date_column.center{id: "sent_on_file" }= t('.sent_on')
           %th.date_column.center{id: "sent_by_file" }= t('.sent_by')
           - if can_correct
-            %th.no_sort.center{id: "correction_file" }= t('.online_correction')
+            %th.no_sort.center.dont-show-in-mobile{id: "correction_file" }= t('.online_correction')
           - if can_send_file
             %th.no_sort{id: "delete_file" }
               .visuallyhidden=t("schedule_event_files.file.delete")
