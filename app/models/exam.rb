@@ -93,7 +93,7 @@ class Exam < Event
     query << "academic_allocations.allocation_tag_id IN (#{ats}) "  unless ats.blank?
     query << "exam_user_attempts.grade IS NULL" unless all.blank?
     query << "exams.result_release <= NOW()" unless result_release.blank?
-    query << "((schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour IS NOT NULL AND end_hour != '' AND end_hour::time < current_time)) OR ((schedules.start_date < current_date OR (schedules.start_date = current_date AND start_hour::time < current_time)) AND exams.immediate_result_release=TRUE))"
+    query << "((schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour IS NOT NULL AND end_hour != '' AND end_hour::time < current_time)) OR ((schedules.start_date < current_date OR (schedules.start_date = current_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR start_hour::time < current_time))) AND exams.immediate_result_release=TRUE))"
 
     AcademicAllocationUser.joins(academic_allocation: [exam: :schedule])
             .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id")
@@ -155,7 +155,7 @@ class Exam < Event
   end
 
   def can_correct?(user_id, ats)
-    AcademicAllocationUser.joins(academic_allocation: [exam: :schedule]).joins('LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id').where("(schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour::time < current_time)) OR ((schedules.start_date < current_date OR (schedules.start_date = current_date AND start_hour::time < current_time)) AND exams.immediate_result_release=TRUE)").where(user_id: user_id, exams: { status: true, id: id }, academic_allocations: { allocation_tag_id: ats }).where('exam_user_attempts.grade IS NULL').any?
+    AcademicAllocationUser.joins(academic_allocation: [exam: :schedule]).joins('LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id').where("(schedules.end_date < current_date OR (schedules.end_date = current_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR exams.end_hour::time < current_time))) OR ((schedules.start_date < current_date OR (schedules.start_date = current_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR exams.start_hour::time < current_time))) AND exams.immediate_result_release=TRUE)").where(user_id: user_id, exams: { status: true, id: id }, academic_allocations: { allocation_tag_id: ats }).where('exam_user_attempts.grade IS NULL').any?
   end
 
   def self.correction_cron

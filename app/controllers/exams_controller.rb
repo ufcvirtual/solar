@@ -335,7 +335,7 @@ class ExamsController < ApplicationController
 
   def verify_time
     if params[:situation] == 'finished' || params[:situation] == 'corrected'
-      raise 'not_finished' unless @exam.ended?
+      raise 'not_finished' unless @exam.ended? || (@exam.started? && @exam.immediate_result_release)
     else
       raise 'time' unless @exam.on_going?
     end
