@@ -315,7 +315,7 @@ class AcademicAllocationUser < ActiveRecord::Base
     when exam.on_going? && (exam_responses.blank? || exam_responses == 0)                           then 'to_answer'
     when exam.on_going? && !last_attempt.complete                                                   then 'not_finished'
     when exam.on_going? && (exam.attempts > user_attempts)                                          then 'retake'
-    when !grade.blank? && exam.ended?                                                               then 'corrected'
+    when !grade.blank? && (exam.ended? || (exam.started? && exam.immediate_result_release))                                                               then 'corrected'
     when last_attempt.complete && (exam.attempts == user_attempts)                                  then 'finished'
     when exam.ended? && (user_attempts != 0 && !user_attempts.blank?) && grade.blank?               then 'not_corrected'
     else

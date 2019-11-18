@@ -231,24 +231,23 @@
   function submit_form(object){
     var form_fields = $($("#api_fields").val());
     var birthdate_previous = $('#birthdate').data('previous-value').split(" ");
-    console.log(form_fields);
 
     var something_was_changed = false;
 
-    if($('#user_birthdate_3i').val().toString() != birthdate_previous[0]){
+    if(!(isEmpty($('#user_birthdate_3i').val()) && isEmpty(birthdate_previous[0])) || ($('#user_birthdate_3i').val() != birthdate_previous[0])){
       something_was_changed = true;
     }
 
-    if($('#user_birthdate_2i').val().toString() != birthdate_previous[1]){
+    if(!(isEmpty($('#user_birthdate_2i').val()) && isEmpty(birthdate_previous[1])) || ($('#user_birthdate_2i').val() != birthdate_previous[1])){
       something_was_changed = true;
     }
 
-    if($('#user_birthdate_1i').val().toString() != birthdate_previous[2]){
+    if(!(isEmpty($('#user_birthdate_1i').val()) && isEmpty(birthdate_previous[2])) || ($('#user_birthdate_1i').val() != birthdate_previous[2])){
       something_was_changed = true;
     }
 
     form_fields.each(function(){
-      if($(this).val() != $(this).data('previous-value')){
+      if(!(isEmpty($(this).val()) && isEmpty($(this).data('previous-value'))) || ($(this).val() != $(this).data('previous-value'))){
         something_was_changed = true;
       }
     });
@@ -259,4 +258,8 @@
     }
 
     $(object).parents('form:first').submit();
+  }
+
+  function isEmpty(value){
+    return (value == null || value.length === 0);
   }
