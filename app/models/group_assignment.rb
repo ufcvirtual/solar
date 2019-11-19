@@ -63,9 +63,9 @@ class GroupAssignment < ActiveRecord::Base
   def self.split_students_in_groups(assignment_id = nil)
 
     unless assignment_id.nil?
-      assignments_in_group = Assignment.joins(:schedule).where(type_assignment: 1, schedules: {start_date: Date.current}).where(id: assignment_id)
+      assignments_in_group = Assignment.joins(:schedule).where(type_assignment: Assignment_Type_Group, schedules: {start_date: Date.current}).where(id: assignment_id)
     else
-      assignments_in_group = Assignment.joins(:schedule).where(type_assignment: 1, schedules: {start_date: Date.current})
+      assignments_in_group = Assignment.joins(:schedule).where(type_assignment: Assignment_Type_Group, schedules: {start_date: Date.current})
     end
 
     assignments_in_group.each do |assignment_group|
