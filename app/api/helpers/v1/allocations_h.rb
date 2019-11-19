@@ -1,8 +1,8 @@
 module V1::AllocationsH
 
   ## remover
-  def allocate_professors(group, cpfs)
-    group.allocations.where(profile_id: 17).update_all(status: 2) # cancel all previous allocations
+  def allocate_professors(group, cpfs, profile_id=17)
+    group.allocations.where(profile_id: profile_id).update_all(status: 2) # cancel all previous allocations
 
     cpfs = cpfs.reject { |c| c.empty? }
     cpfs.each do |cpf|
@@ -12,7 +12,8 @@ module V1::AllocationsH
         Rails.logger.info "[API] [WARNING] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [404] message: Não foi possível cadastrar o professor de cpf #{cpf} - SI3 não enviou os dados"
       end
 
-      group.allocate_user(professor.id, 17)
+      group.api = true
+      group.allocate_user(professor.id, profile_id)
     end
   end
 
