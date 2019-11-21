@@ -1,11 +1,13 @@
 collection @offers
 
+attributes :id
+
 child :course do
-  attributes :id, :code, :name
+  attributes :id, :code, :name, :min_grade_to_final_exam, :min_hours, :min_final_exam_grade, :final_exam_passing_grade, :passing_grade
 end
 
 child :curriculum_unit do
-  attributes :id, :code, :name
+  attributes :id, :code, :name, :resume, :objectives, :prerequisites, :credits, :working_hours, :min_hours
 end
 
 child :semester do
