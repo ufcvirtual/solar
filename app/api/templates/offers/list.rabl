@@ -7,7 +7,7 @@ child :course do
 end
 
 child :curriculum_unit do
-  attributes :id, :code, :name, :resume, :objectives, :prerequisites, :credits, :working_hours, :min_hours
+  attributes :id, :code, :name, :resume, :objectives, :syllabus, :prerequisites, :credits, :working_hours, :min_hours
 end
 
 child :semester do
