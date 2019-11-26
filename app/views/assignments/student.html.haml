@@ -63,6 +63,7 @@
   = link_to t(:back), :back, class: "btn", id: 'back'
 
 :javascript
+  var has_frequency = "#{@ac.frequency}";
   $('#page_title').attr("tabindex", "0");
   $('#page_title').focus();
 
@@ -166,14 +167,12 @@
           if (src=='/assets/released.png'){
             var newsrc = '/assets/rejected.png';
             $('th.student_name').addClass('hide');
-            $('th.to_hide').addClass('hide');
             $('.with_individually_graded').addClass('hide');
             $('.without_individually_graded').removeClass('hide');
           } else {
             var newsrc = '/assets/released.png';
 
             $('th.student_name').removeClass('hide');
-            $('th.to_hide').removeClass('hide');
             $('.with_individually_graded').removeClass('hide');
             $('.without_individually_graded').addClass('hide');
 
@@ -233,19 +232,6 @@
       evaluation.append(evaluation_text).append(evaluation_input);
       grade.append(evaluation);
 
-      var working_hours = $('<td>').addClass('center frequency').attr('headers', 'working_hours').text(assignment.student_working_hours == null ? '' : assignment.student_working_hours);
-
-      var evaluation_wh = $('<div>').addClass('student_assignment_evaluation');
-      var evaluation_text_wh = $('<div>').addClass('text');
-      var evaluation_input_wh = $('<div>').addClass('input invisible').append(
-        $('<div>').addClass('input float required academic_allocation_user_working_hours').append(
-          $('<input>').addClass('numeric float required').attr('aria-label', 'Carga Horária').attr('id', 'academic_allocation_user_working_hours').attr('name', 'academic_allocation_user[working_hours]').attr('step', 'any').attr('type', 'number').attr('placeholder', 'Máximo: ' + assignment.max_wh + ' Hs').attr('min', '0').attr('max', assignment.max_wh).css('width', '90px')
-        )
-      );
-
-      evaluation_wh.append(evaluation_text_wh).append(evaluation_input_wh);
-      working_hours.append(evaluation_wh);
-
       var buttons = $('<td>').addClass('center').attr('headers', 'evaluate').append(
         $('<div>').addClass('edit_button').append(
           $('<a>').addClass('btn edit').attr('aria-label', 'Alterar nota').attr('data-tooltip', 'Alterar nota').attr('href', '#void').attr('onclick', 'edit_button(this)').append(
@@ -264,7 +250,24 @@
         )
       );
 
-      linha.append(form).append(hidden_input).append(student_name).append(start_date).append(end_date).append(situation).append(grade).append(working_hours).append(buttons);
+      if(has_frequency == 'true') {
+        var working_hours = $('<td>').addClass('center frequency').attr('headers', 'working_hours').text(assignment.student_working_hours == null ? '' : assignment.student_working_hours);
+
+        var evaluation_wh = $('<div>').addClass('student_assignment_evaluation');
+        var evaluation_text_wh = $('<div>').addClass('text');
+        var evaluation_input_wh = $('<div>').addClass('input invisible').append(
+          $('<div>').addClass('input float required academic_allocation_user_working_hours').append(
+            $('<input>').addClass('numeric float required').attr('aria-label', 'Carga Horária').attr('id', 'academic_allocation_user_working_hours').attr('name', 'academic_allocation_user[working_hours]').attr('step', 'any').attr('type', 'number').attr('placeholder', 'Máximo: ' + assignment.max_wh + ' Hs').attr('min', '0').attr('max', assignment.max_wh).css('width', '90px')
+          )
+        );
+
+        evaluation_wh.append(evaluation_text_wh).append(evaluation_input_wh);
+        working_hours.append(evaluation_wh);
+
+        linha.append(form).append(hidden_input).append(student_name).append(start_date).append(end_date).append(situation).append(grade).append(working_hours).append(buttons);
+      } else {
+        linha.append(form).append(hidden_input).append(student_name).append(start_date).append(end_date).append(situation).append(grade).append(buttons);
+      }
       table.append(linha);
     });
   }
