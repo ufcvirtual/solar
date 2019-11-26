@@ -166,12 +166,14 @@
           if (src=='/assets/released.png'){
             var newsrc = '/assets/rejected.png';
             $('th.student_name').addClass('hide');
+            $('th.to_hide').addClass('hide');
             $('.with_individually_graded').addClass('hide');
             $('.without_individually_graded').removeClass('hide');
           } else {
             var newsrc = '/assets/released.png';
 
             $('th.student_name').removeClass('hide');
+            $('th.to_hide').removeClass('hide');
             $('.with_individually_graded').removeClass('hide');
             $('.without_individually_graded').addClass('hide');
 

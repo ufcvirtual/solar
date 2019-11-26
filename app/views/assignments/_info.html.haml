@@ -13,6 +13,7 @@
           %th.center.no_sort{ style: 'width:10%', id: "working_hours" }= t('.working_hours')
         - if @can_evaluate
           %th.center.no_sort{ style: 'width:20%',id: "evaluate" }
+        %th.no_sort.to_hide{class: 'hide'}
     %tbody.info
       %tr.lines.without_individually_graded{class: @group.individually_graded && !@only_student_profile ? 'hide' : ''}
         = simple_form_for :academic_allocation_user, url: evaluate_assignment_path(@assignment), html: { method: :put } do |f|
