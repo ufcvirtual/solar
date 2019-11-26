@@ -5,7 +5,7 @@ module V1
 
       before { verify_ip_access_and_guard! }
 
-      namespace :offer do 
+      namespace :offer do
         desc "Criação de oferta/semestre"
         params do
           requires :name, type: String
@@ -46,6 +46,20 @@ module V1
       end
 
     end # segment
+
+    segment do
+      before{ guard_client! }
+
+      namespace :my_offers do
+        desc "Todas as ofertas da aplicação cliente"
+        get "/", rabl: "offers/list" do
+          ats = AllocationTagOwner.where(oauth_application_id: @current_client.id).map(&:allocation_tag)
+          @offers = ats.map(&:offers).flatten.uniq
+        end
+      end
+
+    end
+
 
   end
 end
