@@ -275,7 +275,7 @@ GEM
     parallel (1.12.1)
     parser (2.5.0.2)
       ast (~> 2.4.0)
-    passenger (5.0.30)
+    passenger (5.1.0)
       rack
       rake (>= 0.8.1)
     pdf-core (0.6.1)
@@ -515,7 +515,7 @@ DEPENDENCIES
   net-ssh (~> 2.6.8)
   nokogiri (= 1.5.5)
   paperclip (~> 3.4.2)
-  passenger (~> 5.0.8)
+  passenger (~> 5.1.0)
   pg (~> 0.15.0)
   prawn (~> 2.0.1)
   prawn-table
