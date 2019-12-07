@@ -31,7 +31,14 @@ module V1
           end
         end
         params do
-          requires :cpf, type: String
+          requires :profile_id, type: Integer
+          requires :type, type: String, values: ["curriculum_unit_type", "curriculum_unit", "course", "offer", "group"]
+          optional :user_id, type: Integer
+          optional :cpf, type: String
+          optional :users_ids, :cpfs, type: Array
+          optional :remove_previous_allocations, type: Boolean, default: false
+          optional :remove_user_previous_allocations, type: Boolean, default: false
+          optional :ma, type: Boolean, default: false
           optional :curriculum_unit_code, :course_code, :semester, :group_name, :group_code, type: String
           optional :start_date, :end_date, type: Date
           optional :notify_user, type: Boolean, default: false
@@ -40,6 +47,7 @@ module V1
           mutually_exclusive :start_date, :semester
           mutually_exclusive :end_date, :semester
           mutually_exclusive :random_group, :group_code
+          exactly_one_of :cpf, :user_id, :users_ids, :cpfs
         end
         post ":type" do
           begin
