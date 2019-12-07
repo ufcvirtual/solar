@@ -304,6 +304,8 @@ class AcademicAllocationUser < ActiveRecord::Base
       acu = last_attempt.academic_allocation_user
       exam.recalculate_grades(acu.user_id, acu.allocation_tag.id, true)
     end
+
+    exam
   end
 
   def status_exam
