@@ -131,8 +131,9 @@ class GroupAssignment < ActiveRecord::Base
       students_ids = students_without_group.pluck(:id).shuffle
       groups_assignment_division = {}
       if students_without_group.length == total_quantity_students #se todos os alunos estão sem grupo
-        students_groups = GroupAssignment.split_students_in_groups_of_standard_number(3, students_groups, students_ids)
-
+        students_groups = students_without_group.length == 4 && total_quantity_students == 4 ?
+                            GroupAssignment.split_students_in_groups_of_standard_number(2, students_groups, students_ids) :
+                            GroupAssignment.split_students_in_groups_of_standard_number(3, students_groups, students_ids)
       #Se mais da metade ja possui grupos OU se menos da metade ja possui grupos OU exatamente a metade possui grupo, pegar a média de alunos nesses grupos para dividir os novos grupos.
       elsif (total_quantity_students - students_without_group.length) >= (total_quantity_students / 2) ||
          (total_quantity_students - students_without_group.length) <= (total_quantity_students / 2) ||
