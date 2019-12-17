@@ -74,7 +74,7 @@ class GroupAssignment < ActiveRecord::Base
         alloc_tag_id = academic_allocation.allocation_tag_id
         students_without_group = academic_allocation.academic_tool.students_without_groups(alloc_tag_id)
         unless students_without_group.blank?
-          responsibles_emails = User.joins(:allocations, :profiles).where(allocations: {allocation_tag_id: alloc_tag_id}).where(profiles: {id: 3}).uniq.map{|user| user.email}
+          responsibles_emails = User.joins(:profiles, :allocations).where(allocations: {allocation_tag_id: alloc_tag_id}).where(profiles: {id: 3}).uniq.map{|user| user.email}
           students_groups = []
           Struct.new('Group_Object',:group_name, :students)
           groups_assignment_division, students_groups = GroupAssignment.get_groups_assignment_division(students_without_group, academic_allocation, alloc_tag_id, students_groups)
