@@ -74,7 +74,7 @@ class AssignmentsController < ApplicationController
     @assignment.schedule.verify_today = true
 
     @assignment.save!
-    GroupAssignment.split_students_in_groups(@assignment.id)
+    Thread.new{ GroupAssignment.split_students_in_groups(@assignment.id) }
     render_assignment_success_json('created')
 
   rescue => error
