@@ -53,7 +53,7 @@ module V1
       get 'posts' do
 
         semester = Semester.where(name: params[:semester]).first
-        groups = Group.joins(offer: [:course, :curriculum_unit]).where(offers: {semester_id: semester.id}, courses: {code: params[:course_code]}, curriculum_units: {code: params[:curriculum_unit_code], curriculum_unit_type_id: 2}, status: true)
+        groups = Group.joins(offer: [:course, :curriculum_unit]).where(offers: {semester_id: semester.id}, courses: {code: params[:course_code]}, curriculum_units: {code: params[:curriculum_unit_code]}, status: true)
 
         @ats = groups.map(&:allocation_tag).map(&:id).flatten.uniq
         @ats << groups.first.offer.allocation_tag.related({upper: true})
