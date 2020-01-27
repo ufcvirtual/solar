@@ -21,8 +21,6 @@ class ScheduleEvent < Event
 
   after_update :notify_content, if: 'content_exam_changed?'
 
-  attr_accessor :api
-
   def verify_hours
     errors.add(:end_hour, I18n.t(:range_hour_error, scope: [:schedule_events, :error])) if end_hour.rjust(5, '0') < start_hour.rjust(5, '0')
   end
@@ -134,7 +132,6 @@ class ScheduleEvent < Event
       I18n.t('schedule_events.show.datetime2', date_start: schedule.start_date.to_date.to_s, date_end: schedule.end_date.to_date.to_s, start: start_hour, end: end_hour)
     end
   end
-<<<<<<< HEAD
 
   def participants(allocation_tag_id)
     User.find_by_sql <<-SQL

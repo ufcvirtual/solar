@@ -14,22 +14,11 @@ module V1
 
         # GET /users/1/photo
         params do
-          requires :group_id, type: Integer
           optional :style, type: String, values: %w(small forum medium), default: 'medium'
         end
         get "/:id/photo" do
-
-          @group = Group.find(params[:group_id])
-          user = User.find(params[:id])
-
-          raise CanCan::AccessDenied if current_user.profiles_with_access_on(:show, :curriculum_units, @group.allocation_tag.related, true).blank?
-          raise CanCan::AccessDenied if current_user.id != user.id && user.profiles_with_access_on(:show, :curriculum_units, @group.allocation_tag.related, true).blank?
-
-          if user.photo.path(params[:style]).blank?
-            send_file("#{Rails.root}/app/assets/images/no_image_#{params[:style]}.png", params[:style])
-          else
-            send_file(user.photo.path(params[:style]), params[:style])
-          end
+          user = current_user.id == params[:id].to_i ? current_user : User.find(params[:id])
+          send_file(user.photo.path(params[:style]), params[:style])
         end
 
       end # users
@@ -67,9 +56,11 @@ module V1
               user_exist = User.where(cpf: cpf).first
               user = user_exist.nil? ? User.new(cpf: cpf) : user_exist
 
+
               user_data = nil
               if (!User::MODULO_ACADEMICO.nil? && User::MODULO_ACADEMICO['integrated'])
                 user_data = User.connect_and_import_user(cpf) # try to import
+                user.api = true
                 user.synchronize(user_data) # synchronize user with new MA data
               end
 
@@ -196,6 +187,7 @@ module V1
               cpf = cpf.rjust(11, '0')
               user_blacklist = UserBlacklist.where(cpf: cpf).first_or_initialize
               user_blacklist.name = params[:name] unless params[:name].blank?
+              user_blacklist.api = true
               user_blacklist.save!
               {ok: :ok}
             end
@@ -251,12 +243,9 @@ module V1
 
         end
 
-      end # user
+        segment do
+          before { guard! }
 
-      segment do
-        before { guard! }
-
-        namespace :user do
           put :photo do
             current_user.api = true
             current_user.update_attributes!(photo: ActionDispatch::Http::UploadedFile.new(params[:file]))
@@ -282,8 +271,9 @@ module V1
               send_file(current_user.photo.path(params[:style]), params[:style])
             end
           end
-        end
-      end
+        end # segment
+
+      end # user
 
       namespace :profiles do
 

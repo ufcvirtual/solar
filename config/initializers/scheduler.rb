@@ -38,3 +38,4 @@ if (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['run_scheduler'] 
   end
 
 end
+
