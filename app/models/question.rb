@@ -229,7 +229,7 @@ class Question < ActiveRecord::Base
       raise 'correct_item'  if type_question != Question::TRUE_FALSE && question_items.where(value: true).empty?
       raise 'only_one_true' if type_question == 0 && question_items.where(value: true).size > 1
     end
-  ende
+  end
 
   def can_see?(boolean=false)
     result = !privacy || owners? || have_access?
