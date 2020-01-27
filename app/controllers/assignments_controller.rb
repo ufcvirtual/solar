@@ -126,7 +126,7 @@ class AssignmentsController < ApplicationController
     else
       assignment_started?(@assignment)
       verify_owner_or_responsible!(@allocation_tag_id, nil, :html)
-      @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
+      @class_participants = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
 
       @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
       @ac = AcademicAllocation.where(academic_tool_id: @assignment.id, allocation_tag_id: @allocation_tag_id, academic_tool_type: 'Assignment').first
@@ -140,7 +140,7 @@ class AssignmentsController < ApplicationController
       @not_only_student_profile = current_user_profiles.any?{ |p| p.types != Profile_Type_Student}
       @only_student_profile = current_user_profiles.any?{ |p| p.types == Profile_Type_Student}
 
-      if @group.individually_graded
+      if !@group.nil? && @group.individually_graded
         @acu.remove_grade_and_working_hours
         @individually_graded_acus = set_academic_allocation_user_for_individually_graded(@ac.id, @allocation_tag_id, @group)
         @student_id = params[:student_id]
