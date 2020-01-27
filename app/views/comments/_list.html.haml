@@ -11,8 +11,13 @@
       .comment_form
       %ul.comments_list
         - unless comments.blank?
-          - comments.each do |comment|
-            = render partial: 'comments/comment', locals: { comment: comment }
+          - if !tool.nil? && tool.type_assignment == Assignment_Type_Group
+            - comments.each do |comment|
+              - if comment.specific_user_id.nil? || comment.responsibles.include?(current_user.id) || comment.specific_user_id == current_user.id
+                = render partial: 'comments/comment', locals: { comment: comment }
+          - else
+            - comments.each do |comment|
+              = render partial: 'comments/comment', locals: { comment: comment }
         %li.text_none.empty_message#no_itens_message_comment{ class: (comments.blank? ? '' : 'hide_message') }= t(:itens_not_found)
 
 = javascript_include_tag 'comments'

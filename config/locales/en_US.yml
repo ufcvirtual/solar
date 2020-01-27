@@ -5150,6 +5150,7 @@ en_US:
       title_alt2: "Access grades/working hours and comments to %{tool}"
     list:
       new: New comment
+      to: "to %{user_name}"
       title: "Responsible's comments"
       confirm: Confirm to cancel comment?
       comment_finish_evaluation_unsaved: There is comment not saved. Do you want to proceed and save it before finish?
@@ -5161,6 +5162,7 @@ en_US:
     form:
       attach_file: Attach file
       attached_files: Attachments
+      send_to: 'Send comment to: '
     success:
       new: Comment created successfully
       edit: Comment updated successfully
