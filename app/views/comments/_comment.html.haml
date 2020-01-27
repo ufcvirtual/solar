@@ -1,6 +1,9 @@
 %li.comment.tb_comments{ :"data-link-list" => comment_path(comment), summary: t("assignments.list.summary_comments") }
   .comment_head
-    .user_comment= comment.user.nick
+    %div
+      .user_comment= comment.user.nick
+      - if comment.to_user
+        .to= t("comments.list.to", user_name: comment.to_user.try(:name))
     .comment_date= (comment.updated_at.blank? ? l(comment.created_at, format: :long) : l(comment.updated_at, format: :long))
   .comment
     %div{ class: "comment_#{comment.id}", colspan: '2' }

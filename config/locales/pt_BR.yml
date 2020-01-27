@@ -5504,6 +5504,7 @@ pt_BR:
       title_alt2: "Acessar notas/frequências e comentários para %{tool}"
     list:
       new: Novo comentário
+      to: "para %{user_name}"
       title: Comentários dos responsáveis
       confirm: Confirma cancelamento do comentário?
       comment_finish_evaluation_unsaved: Há comentário não salvo, deseja salvá-lo antes de finalizar a ação?
@@ -5515,6 +5516,7 @@ pt_BR:
     form:
       attach_file: Anexar arquivo
       attached_files: Anexos
+      send_to: 'Enviar comentário para: '
     success:
       new: Comentário criado com sucesso
       edit: Comentário alterado com sucesso

@@ -49,6 +49,14 @@ class Comment < ActiveRecord::Base
     self.user_id = User.current.try(:id)
   end
 
+  def responsibles
+    Allocation.responsibles(self.allocation_tag.id).map { |allocation| allocation.user_id }.uniq
+  end
+
+  def to_user
+    User.find(self.specific_user_id) unless self.specific_user_id.blank?
+  end
+
   def delete_with_dependents
     files.delete_all
     self.delete
