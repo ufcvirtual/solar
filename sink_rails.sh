@@ -1,6 +1,6 @@
 #!/bin/sh -x
 CURRENT=`git branch | grep "*" | awk '{print $2}'`
-git checkout rails_4_0_0
-git pull origin rails_4_0_0
+git checkout deploy-test
+git pull origin deploy-test
 git checkout ${CURRENT}
-git rebase development ${CURRENT}
+git rebase deploy-test ${CURRENT}

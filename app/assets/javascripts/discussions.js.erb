@@ -1,15 +1,32 @@
 /* configuração da barra de ferramentas do ckeditor */
 CKEDITOR.editorConfig = function (config) {
   config.language = locale;
-  config.toolbar =
-    [
-      { name: 'clipboard', items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-      { name: 'styles', items : [ 'Styles', 'Format', 'Font', 'TextColor' ] },
-      { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
-      { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] },
-      { name: 'links', items : [ 'Link', 'Unlink', 'Image', 'oembed', 'Smiley' ] },
-      { name: 'insert', items : ['EqnEditor'] },
-    ];
+
+  config.toolbarGroups = [
+    { name: 'clipboard',   groups: [ 'cut', 'copy', 'paste', 'pasteText', 'pasteFromWord', '-', 'undo', 'redo' ] },
+    { name: 'editing',     groups: [ 'find', 'selection' ] },
+    { name: 'links',  groups: ['link', 'unlink', 'image', 'oembed', 'smiley' ] },
+    { name: 'insert', groups: ['eqneditor' ] },
+    { name: 'forms' },
+    { name: 'tools' },
+    { name: 'document',    groups: [ 'mode', 'document', 'doctools' ] },
+    { name: 'others' },
+    '/',
+    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup', 'bold', 'italic', 'underline', 'strike', '-', 'removeformat' ] },
+    { name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
+    { name: 'styles',   groups: [ 'styles', 'format', 'font', 'textcolor' ] },
+    { name: 'colors' }
+  ];
+
+  // Remove some buttons provided by the standard plugins, which are
+  // not needed in the Standard(s) toolbar.
+  config.removeButtons = 'Underline,Subscript,Superscript';
+
+  // Set the most common block elements.
+  config.format_tags = 'p;h1;h2;h3;pre';
+
+  // Simplify the dialog windows.
+  config.removeDialogTabs = 'image:advanced;link:advanced';
 
     config.extraPlugins = 'eqneditor,oembed,smiley';
     config.startupFocus = true;
