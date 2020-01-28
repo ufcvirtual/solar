@@ -64,6 +64,7 @@ module Taggable
 
     # if was merged and not anymore, but student still allocated at last group
     allocation.origin_group.cancel_allocations(user_id, profile_id) unless allocation.origin_group_id.blank? || origin_group_id == allocation.origin_group_id
+
     unless origin_group_id.blank?
       Allocation.where(origin_group_id: origin_group_id, user_id: user_id, profile_id: profile_id).where("id != ?", allocation.id).each do |al|
         al.group.change_allocation_status(user_id, Allocation_Cancelled, nil, {profile_id: profile_id})
@@ -79,6 +80,7 @@ module Taggable
   end
 
   def cancel_allocations(user_id = nil, profile_id = nil, updated_by_user_id=nil, opts = {}, raise_error = false)
+    Rails.logger.info "cancel_allocations"
     query = {}
     query.merge!({user_id: user_id})       unless user_id.nil?
     query.merge!({profile_id: profile_id}) unless profile_id.nil?
@@ -90,12 +92,10 @@ module Taggable
     end
 
     all_query = all.where(query)
-
     if raise_error && all_query.empty?
       Rails.logger.info "[API] [ERROR] [#{Time.now}] can't cancel allocation that doesn't exists user_id #{user_id} - profile_id #{profile_id} - allocation_tag_id #{allocation_tag.id}"
       raise "allocation doesnt exist"
     end
-
     all_query.each do |al|
       al.update_attributes(status: Allocation_Cancelled, updated_by_user_id: updated_by_user_id, origin_group_id: nil)
     end
