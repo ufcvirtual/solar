@@ -1579,6 +1579,7 @@ en_US:
       new_request: "New request(s) for help from webconference !!!"
       send_request: "Your request has been sent! Please go back to the webconference and wait for support."
       error_request: "Failed to send! Please try again later."
+      choose_webconference: "It is necessary to choose a webconference so you can ask for help"
     warning:
       blocked: "Your browser has popup permissions blocked. Please allow it."
     user_access:
@@ -2985,6 +2986,7 @@ en_US:
     support_html: "Support &lt;atendimento@virtual.ufc.br&gt;"
     support_help: "Support webconference <webconferencia@virtual.ufc.br>"
     support_simple: "Support"
+    support_warning: "There is no one online at the moment. Please, explain your difficulty or problem, return to the webconference and someone will assist you soon as possible."
     no_mail: no email
     send_message: Send Message
     next: Next

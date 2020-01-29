@@ -1776,6 +1776,7 @@ pt_BR:
       new_request: "novo(s) pedido(s) de ajuda da(s) webconferência(s) !!!"
       send_request: "Sua solicitação foi enviada! Por favor, volte à webconferência e aguarde o atendimento."
       error_request: "Falha no envio! Por favor, tente novamente mais tarde."
+      choose_webconference: "É necessário selecionar uma webconferência para solicitar ajuda"
     warning:
       blocked: 'Seu navegador está com a permissão de popups bloqueada. Favor desbloquear.'
     user_access:
@@ -3286,6 +3287,7 @@ pt_BR:
     support_html: "Atendimento &lt;atendimento@virtual.ufc.br&gt;"
     support_help: "Suporte webconferência <webconferencia@virtual.ufc.br>"
     support_simple: "Atendimento"
+    support_warning: "Não há ninguém online no momento. Por favor, explique a dificuldade ou problema encontrados, retorne para a webconferência e, assim que possível, alguém irá auxiliá-lo."
     no_mail: sem email
     send_message: Enviar Mensagem
     next: Próxima

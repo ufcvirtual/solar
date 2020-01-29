@@ -28,7 +28,7 @@
               - if (@can_evaluate || @can_comment) && !@too_old
                 %td{headers:'evaluate'}
 
-                  - if log.is_student == true 
+                  - if log.is_student == true
                     = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: 'evaluate_web(this)', :'data-url' => user_access_webconference_path(@webconference, user_id: log.user_id, back:true),  class: 'btn evaluate', :"data-tooltip" => t('.evaluate')
               %td.profile{headers:'profile'}= '(' + log.profile_name + ')'
               %td.user{headers:'user'}= (@researcher ? t(:hidden_info) : log.user_name)
@@ -70,7 +70,7 @@
               %date{datetime: l(log.created_at.to_datetime, format: :clock_time)}= l(log.created_at.to_datetime, format: :clock_time)
             %td.user{headers:'user'}= (log.user_name)
     - else
-      .block_content_text_list.text_none= t('.no_requests')
+      .block_content_text_list.text_none= t('webconferences.list_support_help.no_requests')
 
 =javascript_include_tag 'tooltip'
 

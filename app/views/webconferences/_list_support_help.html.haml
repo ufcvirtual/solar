@@ -16,4 +16,4 @@
             %date{datetime: l(log.created_at.to_datetime, format: :clock_time)}= l(log.created_at.to_datetime, format: :clock_time)
           %td.user{headers:'user'}= (log.user_name)
   - else
-    .block_content_text_list.text_none= t('.no_requests') 
+    .block_content_text_list.text_none= t('webconferences.list_support_help.no_requests')
