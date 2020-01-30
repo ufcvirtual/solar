@@ -4295,16 +4295,18 @@ pt_BR:
       situation3: "- Uma vez atingida a data de definição automática de situação (%{date}), não será possível remover a situação dos alunos."
       situation4: "- Ao remover as situações dos alunos, todas serão definidas como 'Pendente' ou 'Indefinida' até que sejam definidas novamente."
       situation5: "- Uma vez definida a situação, a cada nova avaliação, carga horária e afins, a situação do aluno será imediatamente atualizada."
+      grades1: "<br/>- Os responsáveis pela disciplina poderão <b>encerrar o registro de notas</b> a partir do momento que não houver atividades avaliativas ou de frequência em aberto."
+      grades2: "- Uma vez que o registro de notas esteja <b>encerrado</b>, <b>não será possível avaliar atividades</b>."
       confirm: A última atividade avaliativa ainda não aconteceu. Tem certeza que deseja definir as situações?
-      confirm2: Existem atividades não finalizadas e/ou enviadas sem nota e/ou carga horária. Tem certeza que deseja bloquear o registro de notas?
+      confirm2: Existem atividades não finalizadas e/ou enviadas sem nota e/ou carga horária. Tem certeza que deseja encerrar o registro de notas?
       origin_group: Turma original (aglutinada)
       register_notes_on: Liberar Registro de Notas
-      register_notes_off: Bloquear Registro de Notas
+      register_notes_off: Encerrar Registro de Notas
       msg_register_notes_on: Liberado registro de notas
-      msg_register_notes_off: Bloqueado registro de notas
-      error_msg_register_notes: Erro ao liberar/bloquear registro de notas
-      msg_button_register_off: Registro de notas bloqueada pelo responsável
-      error_msg_register_notes_active_open: "Erro: Existem atividades não finalizadas."
+      msg_register_notes_off: Registro de notas encerrado
+      error_msg_register_notes: Erro ao liberar/encerrar registro de notas
+      msg_button_register_off: Registro de notas encerrado pelo responsável
+      error_msg_register_notes_active_open: "Não é possível encerrar o registro de notas. Existem atividades não finalizadas."
     info:
       assignments: Trabalhos
       date_range: Período

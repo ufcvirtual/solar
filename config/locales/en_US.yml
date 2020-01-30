@@ -2613,8 +2613,8 @@ en_US:
       rule_min_final_exam_grade: "<div> 9) <b>Minimum final exam grade allowed: %{min_final_exam_grade}</b></div>"
       rule_final_exam_passing_grade: "<div> 10) <b>Minimum final grade to approval after final exam: %{final_exam_passing_grade}</b></div>"
       rule_window_analyzer: "<div> 11) The <b>Analyzer</b> is a tool that allows you to execute correctly activities configurations. By pressing shortcut 'A' or clicking on 'Analyzer' link, a window will show up. It will show the calculation, at real time, of groups <b>final weight</b> and  <b>working hours</b>. In way that will be easier to identify which groups are with final weight 100 and working hours equal to the informed on these instructions. The green text  ilustrates that the calculation is OK and the red text shows that there are something wrong with the calculation: there are more or less hours or final weight. When everything is green or when all final weight are 100 and the working hours are the same as showned at these instructions, click on 'Finish'</div>"
-      groups_block_register_notes: "<div> 12) The class (s): <b> %{groups}</b> are with the blocked note register.</div>"
-      groups_block_register_notes_error: "The class (s): <b> %{groups}</b> are with the blocked note register."
+      groups_block_register_notes: "<div> 12) The class(es): <b> %{groups}</b> are with the grade registration closed.</div>"
+      groups_block_register_notes_error: "The class(es): <b> %{groups}</b> are with the grade registration closed."
       expand: Expand all
       compress: Compress all
       share_wh: Share working/hours
@@ -3895,6 +3895,8 @@ en_US:
       situation3: "- Once automatically situation setting date reached (%{date}), it won't be possible to remove student's situations."
       situation4: "- By removing sutdent's situations, all will be setted as 'Pending' or 'Undefined' until they're setted again."
       situation5: "- Once situation was defined, at every new evaluation or working hours, student's situation will be immediately updated."
+      grades1: "<br/>- Course's responsible are able to <b>close grades registration</b> by the time there is no more open evaluative of frequency activities."
+      grades2: "- Once grade registration is <b>closed</b>, <b>won't be possible to evaluate activities</b>."
       confirm: Last evaluative activity haven't happened yet. Are you sure that you want to set situations?
       confirm2: There are unfinished and / or submitted activities without note and / or workload. Are you sure you want to block note registration?
       origin_group: Original group (merged)
