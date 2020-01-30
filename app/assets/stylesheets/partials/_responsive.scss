@@ -816,6 +816,14 @@
   .mysolar_unit_tab {
     display: inline-flex;
   }
+
+  .lesson {
+    .content {
+      video {
+        width: 100%;
+      }
+    }
+  }
 }
 
 @media (max-width: 768px){
