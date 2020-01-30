@@ -3895,18 +3895,18 @@ en_US:
       situation3: "- Once automatically situation setting date reached (%{date}), it won't be possible to remove student's situations."
       situation4: "- By removing sutdent's situations, all will be setted as 'Pending' or 'Undefined' until they're setted again."
       situation5: "- Once situation was defined, at every new evaluation or working hours, student's situation will be immediately updated."
-      grades1: "<br/>- Course's responsible are able to <b>close grades registration</b> by the time there is no more open evaluative of frequency activities."
+      grades1: "- Course's responsible are able to <b>close grades registration</b> by the time there is no more open evaluative of frequency activities."
       grades2: "- Once grade registration is <b>closed</b>, <b>won't be possible to evaluate activities</b>."
       confirm: Last evaluative activity haven't happened yet. Are you sure that you want to set situations?
-      confirm2: There are unfinished and / or submitted activities without note and / or workload. Are you sure you want to block note registration?
+      confirm2: There are unfinished and / or submitted activities without note and / or workload. Are you sure you want to close grades registration?
       origin_group: Original group (merged)
       register_notes_on: Release Notes Record
       register_notes_off: Lock Notes Record
       msg_register_notes_on: Release Notes Record
       msg_register_notes_off: Locked note log
       error_msg_register_notes: Error releasing / blocking note log
-      msg_button_register_off: Record of notes blocked by the person in charge
-      error_msg_register_notes_active_open: "Error: There are unfinished activities."
+      msg_button_register_off: "Grades registration was closed by the course's responsible"
+      error_msg_register_notes_active_open: "It was not possible to close grades registration. There are unfinished activities."
     info:
       assignments: Assignments
       date_range: Date range
