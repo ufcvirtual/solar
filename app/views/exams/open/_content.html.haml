@@ -57,7 +57,7 @@
             %li.audio{class: (@pdf == 1 ? '' : 'legend')}
               - unless @pdf == 1
                 .audio
-                  %audio{ src: q_audio.audio, autoplay: false, controls: true, name: 'audioQuestion', preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' => (q_audio.description.blank? ? '' : t('exams.open.audio', alt: q_audio.description))}
+                  %audio{ src: q_audio.audio, autoplay: false, controls: true, name: 'audioQuestion', controlsList:"nodownload",preload: 'none', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' => (q_audio.description.blank? ? '' : t('exams.open.audio', alt: q_audio.description))}
                     %p= t("errors.messages.audio")
                   = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
                   = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'

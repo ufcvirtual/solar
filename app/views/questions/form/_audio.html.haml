@@ -10,7 +10,7 @@
           - if aud.object.audio.blank?
             %audio{ src: '' }
           - else
-            %audio{ src: aud.object.audio, autoplay: false, controls: true, name: 'audioQuestion'}
+            %audio{ src: aud.object.audio, autoplay: false, controls: true,controlsList:"nodownload", name: 'audioQuestion'}
               %p= t("errors.messages.audio")
 
           = aud.input :audio, as: :file, label: false

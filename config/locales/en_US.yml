@@ -2179,7 +2179,7 @@ en_US:
       unique_name: must be unique.
       alone: Student is alone at this group and can't be without any group after assignment's end.
       already_exists: Already exists a group with student's name. Please rename that group.
-      user_already_exists: Student already in a group for this job
+      user_already_exists: Student is already in a group for this assignment
     success:
       imported: Groups and participants imported successfully.
     new:

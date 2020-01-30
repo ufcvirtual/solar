@@ -38,7 +38,7 @@
               - if i.object.item_audio?
                 .audio.legend
                   .audio
-                    %audio{ src: i.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
+                    %audio{ src: i.object.item_audio.as_json, autoplay: false, controls: true,controlsList:"nodownload", name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
                       %p= t("errors.messages.audio")
                     = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
                     = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'
@@ -88,7 +88,7 @@
               - if b.object.item_audio?
                 .audio.legend
                   .audio
-                    %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
+                    %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true,controlsList:"nodownload", name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
                       %p= t("errors.messages.audio")
                     = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
                     = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'
@@ -146,7 +146,7 @@
               - if b.object.item_audio?
                 .audio.legend
                   .audio
-                    %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
+                    %audio{ src: b.object.item_audio.as_json, autoplay: false, controls: true,controlsList:"nodownload", name: 'audioQuestion', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);", :'aria-label' =>  t('exams.open.audio_item', item: arr_alf[num_question]) + t(:audio_suggestions_item)}
                       %p= t("errors.messages.audio")
                     = link_to content_tag(:i, nil, class: 'icon-backward2', :"data-tooltip" => t('questions.questions.up_down'), :'aria-label' => t('questions.questions.up_down')), "#void", onclick: 'down_speed()'
                     = link_to content_tag(:i, nil, class: 'icon-forward3', :"data-tooltip" => t('questions.questions.up_speed'), :'aria-label' => t('questions.questions.up_speed')), "#void", onclick: 'up_speed()'

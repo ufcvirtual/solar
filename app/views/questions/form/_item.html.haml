@@ -46,7 +46,7 @@
                 - if i.object.item_audio_file_name.blank?
                   %audio{ src: '' }
                 - else
-                  %audio{ src: i.object.item_audio.as_json, autoplay: false, controls: true, name: 'audioQuestion', id: 'audio_item'}
+                  %audio{ src: i.object.item_audio.as_json, autoplay: false, controls: true,controlsList:"nodownload", name: 'audioQuestion', id: 'audio_item'}
                     %p= t("errors.messages.audio")
                 = i.input :item_audio, as: :file, label: false
                 - if i.object.item_audio_file_name
