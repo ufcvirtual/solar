@@ -2478,6 +2478,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			 *     vertically to fill its container.
 			 */
 			vbox: function( dialog, childObjList, childHtmlList, htmlList, elementDefinition ) {
+				console.log(elementDefinition);
 				if ( arguments.length < 3 )
 					return;
 
