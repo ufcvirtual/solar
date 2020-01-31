@@ -3616,9 +3616,9 @@ pt_BR:
     print:
       previous: Voltar
       info_accessibility: Acessibilidade
-      info_contrast: '1. Em provas coloridas observar o contraste entre as cores usadas.'
+      info_contrast: '1. Em provas coloridas, observar o contraste entre as cores usadas.'
       info_text_black: '2. Texto deve ser preferencialmente na cor preta.'
-      info_enlarged_images: '3. Usar imagens de boa qualidade e se possível ampliadas.'
+      info_enlarged_images: '3. Usar imagens de boa qualidade e, se possível, ampliadas.'
       info_caption_in_picture: '4. As imagens devem possuír legendas.'
     success:
       created: Evento criado com sucesso.
