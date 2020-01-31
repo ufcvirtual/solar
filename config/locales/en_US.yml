@@ -2186,6 +2186,9 @@ en_US:
       new_group_name: New group
     automatic_split_group_jobs:  Automatic split of group assignment
     split_group_jobs: "Assignment %{assignment_key} starts today. For this reason, students will be automatically assigned to groups"
+    alert_create_assignment_group_email: Warning split group assignments
+    automatic_one_week_before_email_split_group: "Assignment %{assignment_group_name} starts in 1 week, if students are not divided into groups, groups will be created
+                                                  automatically from an average of previous groups or with approximately 3 students in each group"
   public_files:
     index:
       title: "Public area of %{name}"
