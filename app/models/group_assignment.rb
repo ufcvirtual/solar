@@ -60,6 +60,24 @@ class GroupAssignment < ActiveRecord::Base
     joins(:group_participants).where(academic_allocation_id: academic_allocation_id, group_participants: {user_id: user_id}).first
   end
 
+  def self.send_email_one_week_before_start_assignment_in_group(assignment_id = nil)
+    
+    unless assignment_id.nil?
+      assignments_in_group = Assignment.joins(:schedule).where(type_assignment: Assignment_Type_Group).where('schedules.start_date > ? AND schedules.start_date < ?', Date.current, Date.current + 6).where(id: assignment_id)
+    else
+      assignments_in_group = Assignment.joins(:schedule).where(type_assignment: Assignment_Type_Group).where('schedules.start_date = ?', Date.current + 6.days)
+    end
+    
+    assignments_in_group.each do |assignment_group|
+
+      assignment_group.academic_allocations.each do |academic_allocation|
+        alloc_tag_id = academic_allocation.allocation_tag_id
+        responsibles_emails = User.joins(:profiles, :allocations).where(allocations: {allocation_tag_id: alloc_tag_id}).where(profiles: {id: 3}).uniq.map{|user| user.email}
+        Job.send_mass_email(responsibles_emails, I18n.t("group_assignments.alert_create_assignment_group_email"), "#{I18n.t('group_assignments.automatic_one_week_before_email_split_group', assignment_group_name: assignment_group.name)}", [])
+      end
+    end
+  end
+
   def self.split_students_in_groups(assignment_id = nil)
 
     unless assignment_id.nil?
