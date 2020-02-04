@@ -1106,6 +1106,7 @@ pt_BR:
       draft_alt: Aula %{lesson} está como rascunho (clique para alterar para liberada)
       released_alt: Aula %{lesson} está liberada (clique para alterar para rascunho)
       lesson_notes: Notas de aula
+      download_file: Arquivos para download
       summary: Tabela contendo link de acesso às aulas disponíveis e nome em texto das aulas indisponíveis, bem como períodos de acesso e link de acesso às notas de aula para cada aula. Todas as aulas são referentes ao módulo %{module_name}.
       caption: Lista de aulas para o módulo %{module_name}
       number_of_lessons: "%{module_name} possui %{lesson_number} aulas"
@@ -1266,7 +1267,7 @@ pt_BR:
       lmodule_menu: " %{lmodule} (Clique para alterar o módulo. Um submenu para seleção de módulos ficará disponível)"
       lesson_menu: " %{lesson} (Clique para alterar a aula. Um submenu para seleção de aulas ficará disponível)"
       download: "Baixar aula em arquivo PDF"
-      download_file: "Caso você não consiga executar o arquivo, click aqui para fazer o download"
+      download_file: "Caso você não consiga executar o arquivo, clique aqui para fazer o download"
 
   lesson_modules:
     general_of_offer: "Geral"

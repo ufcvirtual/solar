@@ -925,6 +925,7 @@ en_US:
       draft_alt: Lesson %{lesson} is draft (click to release it)
       released_alt: Lesson %{lesson} is released (click to change to draft)
       lesson_notes: Lesson notes
+      download_file: Files to download
       summary: Table which content includes access links to available lessons and text name of unavailable lessons, also access periods and access links to lesson's notes for each one of them. All lessons are related to lesson module %{module_name}.
       caption: Lesson module %{module_name} lesson's list
       number_of_lessons: "%{module_name} has %{lesson_number} lessons"

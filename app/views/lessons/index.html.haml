@@ -17,6 +17,7 @@
               %th.date{id: "notes_#{lmodule.id}"}= t('.lesson_notes')
               - if @responsible
                 %th.no_sort{id: "accept_#{lmodule.id}"}= t('.acceptance')
+              %th.no_sort{id: "download_file_#{lmodule.id}"}= t('.download_file')
           %tbody
             - lmodule.lessons_to_open(current_user, true).each do |lesson|
               %tr.lines{ class: (lesson.closed? && !@only_student) ? 'period_ended' : '', id: "lesson_#{lesson.id}" }= render(lesson)
