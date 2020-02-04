@@ -1106,6 +1106,7 @@ pt_BR:
       draft_alt: Aula %{lesson} está como rascunho (clique para alterar para liberada)
       released_alt: Aula %{lesson} está liberada (clique para alterar para rascunho)
       lesson_notes: Notas de aula
+      download_file: Arquivos para download
       summary: Tabela contendo link de acesso às aulas disponíveis e nome em texto das aulas indisponíveis, bem como períodos de acesso e link de acesso às notas de aula para cada aula. Todas as aulas são referentes ao módulo %{module_name}.
       caption: Lista de aulas para o módulo %{module_name}
       number_of_lessons: "%{module_name} possui %{lesson_number} aulas"
