@@ -27,6 +27,8 @@ class Webconference < ActiveRecord::Base
 
   validate :verify_offer, unless: 'allocation_tag_ids_associations.blank?'
 
+  validate :verify_title, if: 'title_changed? && !!integrated && merge.nil? && api.nil?'
+
   before_destroy :can_change?
 
   attr_accessor :date_changed
@@ -42,6 +44,8 @@ class Webconference < ActiveRecord::Base
       WHEN acu.grade IS NOT NULL OR acu.working_hours IS NOT NULL THEN 'evaluated'
       WHEN (acu.status = 1 OR (acu.status IS NULL AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.count > 0))) THEN 'sent'
       when NOW()>webconferences.initial_time AND NOW()<(webconferences.initial_time + webconferences.duration* interval '1 min') then 'in_progress'
+      when NOW() < webconferences.initial_time AND webconferences.integrated='true' AND webconferences.user_id IS NULL then 'scheduled_coord'
+      when NOW() < webconferences.initial_time AND webconferences.integrated='true' AND webconferences.user_id IS NOT NULL then 'scheduled_someone'
       when NOW() < webconferences.initial_time then 'scheduled'
       when (NOW()<webconferences.initial_time + webconferences.duration* interval '1 min' + interval '15 mins') then 'processing'
       else 'finish'
@@ -54,7 +58,7 @@ class Webconference < ActiveRecord::Base
     opt.merge!(select2: "webconferences.*, academic_allocations.allocation_tag_id AS at_id, academic_allocations.id AS ac_id, #{select}")
     opt.merge!(select1: "DISTINCT webconferences.id, webconferences.*, NULL AS at_id, NULL AS ac_id, users.name AS user_name, #{select}")
 
-  webconferences = Webconference.joins(:moderator)
+  webconferences = Webconference.joins("LEFT JOIN users ON webconferences.user_id = users.id")
                   .joins("JOIN academic_allocations ON webconferences.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Webconference'")
                   .joins(" LEFT JOIN
                     (SELECT count(log_actions.id), log_actions.academic_allocation_id FROM log_actions
@@ -192,6 +196,8 @@ class Webconference < ActiveRecord::Base
   end
 
   def can_add_group?(ats = [])
+    return false if integrated
+
     if shared_between_groups
       verify_quantity(ats) if ats.any?
     else
@@ -295,6 +301,10 @@ class Webconference < ActiveRecord::Base
     offer = AllocationTag.find(allocation_tag_ids_associations).first.offers.first
     errors.add(:initial_time, I18n.t('schedules.errors.offer_end')) if offer.end_date < (initial_time + duration.minutes).to_date
     errors.add(:initial_time, I18n.t('schedules.errors.offer_start')) if offer.start_date > initial_time.to_date
+  end
+
+  def verify_title
+    errors.add(:title, 'nao e possivel alterar o titulo de webconferencias integradas')
   end
 
   def comments_by_user

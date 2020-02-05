@@ -62,7 +62,7 @@ a.assignment_not_sent {
   color: $color_main;
 }
 
-.assignment_not_started, .assignment_scheduled {
+.assignment_not_started, .assignment_scheduled, .assignment_scheduled_coord, .assignment_scheduled_someone {
   color: $color_almost_gray_content;
 }
 

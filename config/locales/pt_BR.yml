@@ -1623,7 +1623,7 @@ pt_BR:
       new: "Nova Webconferência"
       edit: "Editar Webconferência"
       minutes: " minutos"
-      integrated_webconference: Esta webconferência possui integração com outras bases de dados e, por isso, o seu dia não pode ser modificado, apenas o horário do campo de edição de data pode ser alterado.
+      integrated_webconference: Esta webconferência possui integração com outras bases de dados e, por isso, seu título não pode ser modificado.
     list:
       webconferences: "Webconferências"
       name: Nome
@@ -1634,6 +1634,8 @@ pt_BR:
       status: "Status"
       in_progress: "Em andamento"
       scheduled: "Agendada"
+      scheduled_coord: 'Agendada (data sugerida pela coordenação)'
+      scheduled_someone: 'Agendada (data definida por %{user})'
       finish: "Finalizada"
       processing: "Processando"
       play: "Assistir Gravação"
@@ -1677,6 +1679,7 @@ pt_BR:
       limit: 'Foi atingido o limite de participantes para este dia e horário. Favor escolher outro horário ou diminuir a quantidade de turmas se o caso.'
       time_and_place: Já existe uma webconferência para este dia/horário e turmas.
       date: Esta webconferência já foi encerrada. Seu período não pode ser alterado.
+      started: Esta webconferência já foi iniciada. Seu período não pode ser alterado.
       access: Não é possível acessar esta webconferência. Verifique sua duração.
       no_record: Esta webconferência não possui gravações
       offline: Webconferência indisponível
@@ -1688,6 +1691,7 @@ pt_BR:
       removed_record: Gravação removida ou vazia
       copy: Não é possível remover a gravação desta webconferência, pois ela é uma cópia. É necessário remover a gravação da webconferência original.
       acu: Não é possível remover a gravação ou webconferência, pois há alunos avaliados/com comentários.
+      integrated: Não é possível remover webconferências integradas a outros sistemas.
       cant_edit_date: Apenas o dia não pode ser alterado.
     preview:
       delete_record: Remover gravação
@@ -4436,6 +4440,8 @@ pt_BR:
       scheduled: "Agendada"
       finish: "Finalizada"
       processing: "Processando"
+      scheduled_coord: 'Agendada (data sugerida pela coordenação)'
+      scheduled_someone: 'Agendada (data definida por %{user})'
     access:
       date: Data
       time: Horário

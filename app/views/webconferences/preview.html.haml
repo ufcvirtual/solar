@@ -55,7 +55,7 @@
         %tbody
           - @webconferences.each_with_index do |webconference, idx|
             - unavailable = exist_and_offline?(webconference.server)
-            - disabled = (webconference.situation == 'scheduled' || webconference.situation == 'in_progress' || webconference.situation == 'processing' || unavailable)
+            - disabled = (webconference.situation == 'scheduled' || webconference.situation == 'scheduled_coord' || webconference.situation == 'scheduled_someone' || webconference.situation == 'in_progress' || webconference.situation == 'processing' || unavailable)
             %tr.lines.list_webs
               %td{ style: 'text-align:center;' }= check_box_tag :ckb_webconference, webconference.ac_id || webconference.academic_allocations.first.id, false, { class: 'ckb_webconference' }
               %td{ class: 'link_help' }= webconference.link_to_join(current_user, webconference.at_id)
@@ -100,7 +100,7 @@
               %td.center
                 %div= l(webconference.start_date.to_date)
                 %div= [l(webconference.start_hour.to_datetime, format: :today), l(webconference.end_hour.to_datetime, format: :today)].join(' - ')
-              %td.center{class: (unavailable ? 'web_not_started' : "web_#{webconference.situation}")}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t(webconference.situation, scope: [:scores, :situation])
+              %td.center{class: (unavailable ? 'web_not_started' : "web_#{webconference.situation}")}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t(webconference.situation, scope: [:scores, :situation], user: webconference.user_name)
               %td.invisible= location
               %td.center= webconference.meeting_info(current_user, webconference.at_id)
               - if disabled

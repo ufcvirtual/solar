@@ -864,6 +864,8 @@ class Score # < ActiveRecord::Base
               #{evaluated_status}
               WHEN (#{sent_status} OR ((academic_allocation_users.status IS NULL OR academic_allocation_users.status = 2) AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.id IS NOT NULL))) THEN 'sent'
               when NOW()>webconferences.initial_time AND NOW()<(webconferences.initial_time + webconferences.duration* interval '1 min') then 'in_progress'
+              when NOW() < webconferences.initial_time AND webconferences.integrated='t' AND webconferences.user_id IS NULL then 'scheduled_coord'
+              when NOW() < webconferences.initial_time AND webconferences.integrated='t' AND webconferences.user_id IS NOT NULL then 'scheduled_someone'
               when NOW() < webconferences.initial_time then 'scheduled'
               when (NOW()<webconferences.initial_time + webconferences.duration* interval '1 min' + interval '15 mins') then 'processing'
             ELSE 'finish'
@@ -877,7 +879,7 @@ class Score # < ActiveRecord::Base
           LEFT JOIN webconferences eq_web ON eq_web.id = eq_ac.academic_tool_id AND eq_ac.academic_tool_type = 'Webconference'
           WHERE
             academic_allocations.academic_tool_id = webconferences.id AND academic_allocations.academic_tool_type='Webconference' #{wq} #{ats_query}
-          GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, webconferences.title,  webconferences.initial_time, webconferences.duration, webconferences.description, new_after_evaluation, academic_allocation_users.grade,  academic_allocation_users.working_hours, academic_allocation_users.user_id, academic_allocations.evaluative, academic_allocations.frequency, eq_web.title, webconferences.shared_between_groups, academic_allocation_users.id, webconferences.user_id, webconferences.server, log_actions.id
+          GROUP BY academic_allocations.id, academic_allocations.allocation_tag_id, academic_allocations.academic_tool_id, academic_allocations.academic_tool_type, webconferences.title,  webconferences.initial_time, webconferences.duration, webconferences.description, new_after_evaluation, academic_allocation_users.grade,  academic_allocation_users.working_hours, academic_allocation_users.user_id, academic_allocations.evaluative, academic_allocations.frequency, eq_web.title, webconferences.shared_between_groups, academic_allocation_users.id, webconferences.user_id, webconferences.server, log_actions.id, webconferences.integrated
           )"
 
         end
