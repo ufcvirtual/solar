@@ -37,16 +37,12 @@ module V1::EventsH
     end
 
     if event.new_record? && update_event.blank?
+      event.api = true
       if event_info[:type] != 5
         schedule = Schedule.create! start_date: params[:event][:date], end_date: params[:event][:date]
         event.schedule_id = schedule.id
-        event.api = true
-        event.save!
-      else
-        event.moderator = current_user unless current_user.nil?
-        event.api = true
-        event.save!
       end
+      event.save!
     elsif event.new_record? && !update_event.blank? && !existing_ac.blank?
       event = update_event
       event.api = true
@@ -55,7 +51,7 @@ module V1::EventsH
         event.schedule.update_attributes! start_date: params[:event][:date], end_date: params[:event][:date]
         event.update_attributes! start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":")
       else
-        event.update_attributes! initial_time: initial_time, duration: duration
+        event.update_attributes! initial_time: initial_time, duration: duration, user_id: nil
       end
     end
 

@@ -11,8 +11,8 @@ class WebconferencesController < ApplicationController
   before_filter :prepare_for_group_selection, only: :index
 
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
-  before_filter only: [:edit, :update] do |controller| # futuramente show aqui também
-    @allocation_tags_ids = params[:allocation_tags_ids]
+  before_filter only: [:edit] do |controller| # futuramente show aqui também
+    @allocation_tags_ids = params[:allocation_tags_ids].split(' ').flatten.compact
     get_groups_by_tool(@webconference = Webconference.find(params[:id]))
   end
 
@@ -51,6 +51,7 @@ class WebconferencesController < ApplicationController
     authorize! :update, Webconference, on: @allocation_tags_ids
 
     @webconference = Webconference.find(params[:id])
+    @groups = AllocationTag.where(id: @allocation_tags_ids).map(&:group).flatten & @groups rescue @groups
   end
 
   # POST /webconferences
@@ -77,9 +78,36 @@ class WebconferencesController < ApplicationController
   # PUT /webconferences/1
   # PUT /webconferences/1.json
   def update
+    @allocation_tags_ids = params[:allocation_tags_ids].split(' ').flatten.compact
+    get_groups_by_tool(@webconference = Webconference.find(params[:id]))
+
+    new_tool = @webconference.dup
+
     authorize! :update, Webconference, on: @webconference.academic_allocations.pluck(:allocation_tag_id)
 
-    @webconference.date_changed = webconference_params[:initial_time].strip.split(" ").first != @webconference.initial_time.strftime('%F').split("-").reverse.join("/")
+    @groups = AllocationTag.where(id: @allocation_tags_ids).map(&:group).flatten & @groups rescue @groups
+
+    academic_allocations = AcademicAllocation.where(allocation_tag_id: @allocation_tags_ids, academic_tool_type: 'Webconference', academic_tool_id: @webconference.id)
+
+    @webconference.user_id = @current_user.id
+
+    if @webconference.integrated && (@webconference.academic_allocations.size > academic_allocations.size) && academic_allocations.size >= 1
+      @webconference.attributes = webconference_params
+      if @webconference.valid?
+        ActiveRecord::Base.transaction do
+          authorize! :change_tool, Group, on: @groups.map(&:allocation_tag).map(&:id)
+          raise 'cant_unbind' unless @webconference.can_unbind?(@groups)
+          new_tool.created_at = @webconference.attributes["created_at"]
+          new_tool.updated_at = @webconference.attributes["updated_at"]
+          new_tool.merge = true
+          new_tool.save!
+          acs =AcademicAllocation.where(academic_tool_type: 'Webconference', academic_tool_id: @webconference.id).where("id not in (#{academic_allocations.map(&:id).join(',')})")
+          acs.update_all(academic_tool_id: new_tool.id)
+        end
+      else
+        raise 'invalid'
+      end
+    end
     @webconference.update_attributes!(webconference_params)
 
     render json: { success: true, notice: t(:updated, scope: [:webconferences, :success]) }
@@ -87,7 +115,7 @@ class WebconferencesController < ApplicationController
     render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
-  rescue
+  rescue => error
     params[:success] = false
     render :edit
   end

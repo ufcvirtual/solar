@@ -1428,7 +1428,7 @@ en_US:
       new: "New Webconference"
       edit: "Edit Webconference"
       minutes: " minutes"
-      integrated_webconference: This webconference has integration with other databases and, therefore, your day can not be modified, only the time of the date editing field can be changed.
+      integrated_webconference: This webconference has integration with other databases and, therefore, it's title can not be modified.
     list:
       webconferences: "Webconferences"
       name: Name
@@ -1438,6 +1438,8 @@ en_US:
       min: "min"
       in_progress: "In Progress"
       scheduled: "Scheduled"
+      scheduled_coord: 'Scheduled (date suggested by coordinators)'
+      scheduled_someone: 'Scheduled (date defined by %{user})'
       finish: "Finish"
       processing: "Processing"
       play: "Watch recording"
@@ -1481,6 +1483,7 @@ en_US:
       limit: "Student's limit for this day and time has been reached. Please choose other date/time or decrease amount of groups if necessary"
       time_and_place: Already exists a webconference for this datetime and groups
       date: This webconference already happened. It's not possible to change it's period.
+      started: This webconference already started. It's not possible to change it's period.
       access: Can't access this webconference. Verify it's period.
       no_record: This webconference has no recordings
       offline: Unavailable webconference
@@ -1492,6 +1495,7 @@ en_US:
       removed_record: Removed or empty record
       copy: It's not possible to remove this webconference record. This webconferenceis a copy. It's necessary to remove original webconference's record.
       acu: It's not possible to remove this webconferences or its record. There are evaluated students or with comments.
+      integrated: It's not possible to delete webconferences integrated to other systems.
       cant_edit_date: Only the day can not be changed.
     preview:
       delete_record: Remove record
@@ -4028,6 +4032,8 @@ en_US:
       scheduled: "Scheduled"
       finish: "Finish"
       processing: "Processing"
+      scheduled_coord: 'Scheduled (date suggested by coordinators)'
+      scheduled_someone: 'Scheduled (date defined by %{user})'
     reports:
       general_evaluative: Scores Report - Evaluative Activities
       general_frequency: Scores Report - Frequency Activities
