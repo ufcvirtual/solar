@@ -20,7 +20,7 @@ class Webconference < ActiveRecord::Base
   validates :title, :description, length: { maximum: 255 }
   validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
 
-  validate :cant_change_date, on: :update, if: 'initial_time_changed? || duration_changed?'
+  validate :cant_change_date, if: '(new_record? || initial_time_changed? || duration_changed?) && merge.blank?'
   validate :cant_change_shared, on: :update, if: 'shared_between_groups_changed?'
 
   validate :verify_quantity, if: '!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed? || new_record?) && merge.nil?'

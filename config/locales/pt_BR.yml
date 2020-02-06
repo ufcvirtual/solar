@@ -1678,8 +1678,9 @@ pt_BR:
       record_not_deleted: 'Não foi possível remover gravação das webconferências'
       limit: 'Foi atingido o limite de participantes para este dia e horário. Favor escolher outro horário ou diminuir a quantidade de turmas se o caso.'
       time_and_place: Já existe uma webconferência para este dia/horário e turmas.
-      date: Esta webconferência já foi encerrada. Seu período não pode ser alterado.
-      started: Esta webconferência já foi iniciada. Seu período não pode ser alterado.
+      date: Esta webconferência já foi encerrada e possui gravação. Seu período não pode ser alterado.
+      started: Esta webconferência já foi iniciada. Apenas sua duração pode ser alterada.
+      date_new: Não é possível definir a webconferência como já encerrada.
       access: Não é possível acessar esta webconferência. Verifique sua duração.
       no_record: Esta webconferência não possui gravações
       offline: Webconferência indisponível
@@ -4541,6 +4542,8 @@ pt_BR:
       time_and_place: Já existe uma webconferência para este grupo neste trabalho para este dia e horário.
       unavailable_or_date_range: Não é possível realizar ação. Webconferência indisponível ou prazo encerrado.
       date: Esta webconferência já foi encerrada e possui gravação. Seu período não pode ser alterado.
+      started: Esta webconferência já foi iniciada. Apenas sua duração pode ser alterada.
+      date_new: Não é possível definir a webconferência como já encerrada.
     success:
       removed: Webconferência deletada com sucesso
       record: Gravação removida com sucesso

@@ -1483,7 +1483,8 @@ en_US:
       limit: "Student's limit for this day and time has been reached. Please choose other date/time or decrease amount of groups if necessary"
       time_and_place: Already exists a webconference for this datetime and groups
       date: This webconference already happened. It's not possible to change it's period.
-      started: This webconference already started. It's not possible to change it's period.
+      started: This webconference already started. It's not possible to change it's duration.
+      date_new: It's not possible to set a webconference as finished.
       access: Can't access this webconference. Verify it's period.
       no_record: This webconference has no recordings
       offline: Unavailable webconference
@@ -4138,7 +4139,9 @@ en_US:
       limit: "Student's limit for this day and time has been reached. Please choose other date or time"
       time_and_place: There's already a webconference for this group at this assignment at the choosen time.
       unavailable_or_date_range: It was not possible to execute action. Webconference's unavailable or date range expirded.
-      date: This webconference already happened and was recorded. It's not possible to change it's period.
+      date: This webconference already happened. It's not possible to change it's period.
+      started: This webconference already started. It's not possible to change it's duration.
+      date_new: It's not possible to set a webconference as finished.
     success:
       removed: Webconference was successfully deleted.
       record: Webconference's record successfully removed.

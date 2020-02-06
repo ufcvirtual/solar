@@ -1,8 +1,6 @@
 module V1
   class Events < Base
 
-    guard_all!
-
     namespace :events do
 
       helpers do
