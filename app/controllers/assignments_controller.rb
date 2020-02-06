@@ -75,6 +75,7 @@ class AssignmentsController < ApplicationController
 
     @assignment.save!
     Thread.new{ GroupAssignment.split_students_in_groups(@assignment.id) }
+    Thread.new{ GroupAssignment.send_email_one_week_before_start_assignment_in_group(@assignment.id) }
     render_assignment_success_json('created')
 
   rescue => error
