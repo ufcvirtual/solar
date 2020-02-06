@@ -1,6 +1,8 @@
 module V1
   class Events < Base
-    
+
+    guard_all!
+
     namespace :events do
 
       helpers do
@@ -11,6 +13,12 @@ module V1
           @group.allocation_tag.related
           @profile_id = current_user.profiles_with_access_on(permission, controller, @group.allocation_tag.related, true).first
           raise CanCan::AccessDenied if @profile_id.nil? || !(current_user.groups([@profile_id], Allocation_Activated).include?(@group))
+        end
+
+        def is_responsible(permission,  controler = :schedule_events) 
+          verify_user_permission_on_events_and_set_obj(permission, controler)
+
+          raise  CanCan::AccessDenied unless current_user.id == params[:student_id].to_i || AllocationTag.find(@at.id).is_observer_or_responsible?(current_user.id)
         end
 
       end
@@ -89,49 +97,52 @@ module V1
 
       segment do
 
-        before { guard! }
+        before do
+          verify_user_permission_on_events_and_set_obj(:index)
+        end # befor
 
         desc "Listar Eventos"
         params do
           requires :group, type: String, desc: "Group Name"
         end
         get "/", rabl: 'events/list' do
-          verify_user_permission_on_events_and_set_obj(:index)
-          group = Group.where(name: params[:group]).first
-          @events = Score.list_tool(current_user.id, group.allocation_tag.id, 'schedule_events', false, false, true)
+          @is_student  = !@at.is_observer_or_responsible?(current_user.id)
+          @events = Score.list_tool(current_user.id, @group.allocation_tag.id, 'schedule_events', false, false, true)
         end      
-  
-        desc "Listar Sumário do Aluno"
+      end
+
+      segment do
+         before do
+          is_responsible(:list, :schedule_events)
+        end
+
+        desc "Listar Sumário dos Alunos"
         params do
-          requires :id, type: Integer, desc: "ID do AcademicAllocation do Evento"
-          requires :student_id, type: Integer, desc: "ID do Aluno"
+          requires :event_id, type: Integer, desc: "ID do Evento"
           requires :group, type: String, desc: "Group Name"
         end
-        get ":id/students/:student_id/summary", rabl: 'events/summary' do
-          verify_user_permission_on_events_and_set_obj(:index)
-          ac = AcademicAllocation.find(params[:id])
-          @acu = AcademicAllocationUser.where(academic_allocation_id: ac.id).where(user_id: params[:student_id]).first
+        get ":event_id/participants", rabl: 'events/summary' do
+          @event = ScheduleEvent.find(params[:event_id].to_i)
+          @users = AllocationTag.get_participants(@at.id, { students: true })
         end
 
         desc "Enviar arquivo para aluno"
         params do
-          requires :id, type: Integer, desc: "ID do AcademicAllocation do Evento"
+          requires :academic_allocation_id, type: Integer, desc: "ID do AcademicAllocation do Evento"
           requires :student_id, type: Integer, desc: 'ID do Aluno'
           requires :file, type: File
           requires :group, type: String, desc: "Group Name"
         end
-        post ":id/students/:student_id/files" do
-          academic_allocation = AcademicAllocation.find(params[:id])
-          academic_allocation_user = AcademicAllocationUser.where(academic_allocation_id: academic_allocation.id).where(user_id: params[:student_id])
+        post ":academic_allocation_id/students/:student_id/files" do
+          academic_allocation_user = AcademicAllocationUser.where(user_id: params[:student_id], academic_allocation_id: params[:academic_allocation_id]).first
   
-          sef = ScheduleEventFile.new({user_id: current_user.id, academic_allocation_user_id: academic_allocation_user[0].id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
+          sef = ScheduleEventFile.new({user_id: current_user.id, academic_allocation_user_id: academic_allocation_user.id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
           sef.api = true
           sef.save!
   
           {ok: :ok}
         end
         
-
       end
       
     end

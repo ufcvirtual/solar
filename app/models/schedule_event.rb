@@ -183,4 +183,11 @@ class ScheduleEvent < Event
     end
   end
 
+  def acu_by_user(user_id)
+    return [] if user_id.blank?
+    acu = AcademicAllocationUser.find_one(academic_allocations.map(&:id), user_id)
+    return [] if acu.blank?
+    acu
+  end
+
 end

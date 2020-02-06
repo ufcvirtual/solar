@@ -405,4 +405,11 @@ class AcademicAllocationUser < ActiveRecord::Base
     return true if (course.passing_grade.blank? || ((!allocation.parcial_grade.blank? && (allocation.parcial_grade < course.passing_grade && (course.min_grade_to_final_exam.blank? || course.min_grade_to_final_exam <= allocation.parcial_grade))) && (min_hours.blank? || uc.working_hours.blank? || (min_hours*0.01)*uc.working_hours <= allocation.working_hours)))
   end
 
+  def self.comments_by_user(academic_allocation_id, user_id)
+    return [] if user_id.blank? || academic_allocation_id.blank?
+    acu = AcademicAllocationUser.find_one(academic_allocation_id, user_id)
+    return [] if acu.blank?
+    acu.comments
+  end
+
 end
