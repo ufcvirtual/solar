@@ -15,18 +15,18 @@ module V1
           raise CanCan::AccessDenied if @profile_id.nil? || !(current_user.groups([@profile_id], Allocation_Activated).include?(@group))
         end
 
-        def is_responsible(permission,  controler = :schedule_events) 
+        def is_responsible(permission,  controler = :schedule_events)
           verify_user_permission_on_events_and_set_obj(permission, controler)
 
           raise  CanCan::AccessDenied unless current_user.id == params[:student_id].to_i || AllocationTag.find(@at.id).is_observer_or_responsible?(current_user.id)
         end
 
       end
-      
+
       segment do
 
         before { verify_ip_access_and_guard! }
-  
+
         desc "Criação de um ou mais Eventos padrão"
         params do
           requires :groups, type: Array, desc: 'Nome da(s) turma(s) onde o evento será criado'
@@ -39,7 +39,7 @@ module V1
         end
         post "/" do
           group_events = []
-  
+
           begin
             ActiveRecord::Base.transaction do
               offer = get_offer(params[:curriculum_unit_code], params[:course_code], params[:semester])
@@ -47,7 +47,7 @@ module V1
             end
             group_events
           end
-  
+
         end
 
         desc "Edição de Evento"
@@ -60,16 +60,16 @@ module V1
             ac = AcademicAllocation.find(params[:id])
             raise ActiveRecord::RecordNotFound if ac.blank?
             event =  ac.academic_tool_type == 'ScheduleEvent' ? ScheduleEvent.find(ac.academic_tool_id) : Webconference.find(ac.academic_tool_id)
-    
+
             ActiveRecord::Base.transaction do
-              create_event({event: {date: params[:date], start: params[:start], end: params[:end], title: event.title, type_event: (ac.academic_tool_type == 'ScheduleEvent' ? event.type_event : 6)}}, ac.allocation_tag.group.offer.allocation_tag.related, nil, ac, (event.academic_allocations.count == 1 ? event : nil))
-              
+              create_event({event: {date: params[:date], start: params[:start], end: params[:end], title: event.title, type: (ac.academic_tool_type == 'ScheduleEvent' ? event.type_event : 6)}}, ac.allocation_tag.group.offer.allocation_tag.related, nil, ac, (event.academic_allocations.count == 1 ? event : nil))
+
               {id: ac.id}
             end
           end
-  
-        end        
-  
+
+        end
+
         desc "Remoção de um ou Eventos"
         params do
           requires :ids, type: String, desc: "ID(s) do(s) AcademicAllocation(s) do(s) Evento(s)"
@@ -80,7 +80,7 @@ module V1
               acs = AcademicAllocation.where(id: params[:ids].split(','))
               raise ActiveRecord::RecordNotFound if acs.empty?
               event =  acs.first.academic_tool_type == 'ScheduleEvent' ? ScheduleEvent.find(acs.first.academic_tool_id) : Webconference.find(acs.first.academic_tool_id)
-  
+
               if acs.count == event.academic_allocations.count
                 event.api = true
                 raise event.errors.full_messages unless event.destroy
@@ -88,11 +88,11 @@ module V1
                 acs.destroy_all
               end
             end
-  
+
             {ok: :ok}
           end
         end
-  
+
       end
 
       segment do
@@ -108,7 +108,7 @@ module V1
         get "/", rabl: 'events/list' do
           @is_student  = !@at.is_observer_or_responsible?(current_user.id)
           @events = Score.list_tool(current_user.id, @group.allocation_tag.id, 'schedule_events', false, false, true)
-        end      
+        end
       end
 
       segment do
@@ -135,16 +135,16 @@ module V1
         end
         post ":academic_allocation_id/students/:student_id/files" do
           academic_allocation_user = AcademicAllocationUser.where(user_id: params[:student_id], academic_allocation_id: params[:academic_allocation_id]).first
-  
+
           sef = ScheduleEventFile.new({user_id: current_user.id, academic_allocation_user_id: academic_allocation_user.id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
           sef.api = true
           sef.save!
-  
+
           {ok: :ok}
         end
-        
+
       end
-      
+
     end
 
   end

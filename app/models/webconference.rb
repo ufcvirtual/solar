@@ -25,16 +25,34 @@ class Webconference < ActiveRecord::Base
 
   validate :verify_quantity, if: '!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed? || new_record?) && merge.nil?'
 
-  validate :verify_offer, unless: 'allocation_tag_ids_associations.blank?'
+  validate :verify_offer, unless: 'allocation_tag_ids_associations.blank? && offer_api.blank?'
 
   validate :verify_title, if: 'title_changed? && !!integrated && merge.nil? && api.nil?'
 
   before_destroy :can_change?
 
-  attr_accessor :date_changed
+  attr_accessor :date_changed, :offer_api
 
   def link_to_join(user, at_id = nil, url = false)
     ((on_going? && bbb_online? && have_permission?(user, at_id.to_i)) ? (url ? bbb_join(user, at_id) : ActionController::Base.helpers.link_to((title rescue name), bbb_join(user, at_id), target: '_blank')) : (title rescue name))
+  end
+
+  def start_date
+    initial_time.to_date
+  end
+
+  def end_date
+    initial_time.to_date
+  end
+
+  def start_hour
+    time = initial_time.to_datetime
+    "#{time.hour}:#{time.minute}"
+  end
+
+  def end_hour
+    time = (initial_time.to_datetime + duration.minutes)
+    "#{time.hour}:#{time.minute}"
   end
 
   def self.all_by_allocation_tags(allocation_tags_ids, opt = { asc: true }, user_id = nil)
@@ -298,7 +316,7 @@ class Webconference < ActiveRecord::Base
   end
 
   def verify_offer
-    offer = AllocationTag.find(allocation_tag_ids_associations).first.offers.first
+    offer = offer_api || AllocationTag.find(allocation_tag_ids_associations).first.offers.first
     errors.add(:initial_time, I18n.t('schedules.errors.offer_end')) if offer.end_date < (initial_time + duration.minutes).to_date
     errors.add(:initial_time, I18n.t('schedules.errors.offer_start')) if offer.start_date > initial_time.to_date
   end

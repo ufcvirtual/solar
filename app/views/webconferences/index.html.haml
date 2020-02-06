@@ -61,14 +61,15 @@
                       %ul{ class: 'dropdown-menu', :'aria-label' => t('.groups', web: webconference.title) }
                         - groups_codes.each do |code|
                           %li= code
-                .participants.equivalent
-                  %a{ href: '#', :"data-dropdown" => "#dropdown_m_#{webconference.id}", onkeydown: 'click_on_keypress(event, this);' }
-                    %i.icon-user{:'aria-hidden' => 'true'}
-                    = t(:moderator, scope: [:webconferences, :list])
-                    %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-                  .dropdown.dropdown-tip{id: "dropdown_m_#{webconference.id}"}
-                    %ul{ class: 'dropdown-menu' }
-                      = webconference.user_name
+                - unless webconference.user_name.blank?
+                  .participants.equivalent
+                    %a{ href: '#', :"data-dropdown" => "#dropdown_m_#{webconference.id}", onkeydown: 'click_on_keypress(event, this);' }
+                      %i.icon-user{:'aria-hidden' => 'true'}
+                      = t(:moderator, scope: [:webconferences, :list])
+                      %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
+                    .dropdown.dropdown-tip{id: "dropdown_m_#{webconference.id}"}
+                      %ul{ class: 'dropdown-menu' }
+                        = webconference.user_name
                 .equivalent
                   - unless webconference.eq_name.blank?
                     %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{webconference.id}", onkeydown: 'click_on_keypress(event, this);' }

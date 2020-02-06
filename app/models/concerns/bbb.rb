@@ -90,8 +90,6 @@ module Bbb
       elsif (Time.now >= initial_time_was)
         errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.started"))
       end
-
-      # errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.cant_edit_date")) if self.integrated && self.date_changed
     end
   end
 
@@ -290,7 +288,7 @@ module Bbb
     raise 'unavailable'              unless server.blank? || bbb_online?
     raise 'not_ended'                unless !started? || is_over?
     raise 'acu'                      if (respond_to?(:academic_allocation_users) && academic_allocation_users.any?) || (!respond_to?(:academic_allocation_users) && academic_allocation_user.blank?)
-    raise 'integrated' if integrated
+    raise 'integrated' if integrated && (api.blank? || is_over?)
   end
 
   def can_destroy_boolean?

@@ -88,6 +88,14 @@ class ScheduleEvent < Event
     Time.now > endt
   end
 
+  def start_date
+    schedule.start_date
+  end
+
+  def end_date
+    schedule.end_date
+  end
+
   def can_change?
     api || new_record? || !integrated
   end

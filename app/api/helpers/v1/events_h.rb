@@ -34,6 +34,7 @@ module V1::EventsH
       event = ScheduleEvent.joins(:schedule, :academic_allocations).where(schedules: { start_date: params[:event][:date], end_date: params[:event][:date] }, title: event_info[:title], type_event: event_info[:type], place: 'Polo', start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":"), integrated: true, academic_allocations: { allocation_tag_id: ats } ).first_or_initialize
     else
       event = Webconference.joins(:academic_allocations).where(initial_time: initial_time, title: event_info[:title], duration: duration, integrated: true, academic_allocations: { allocation_tag_id: ats } ).first_or_initialize
+      event.offer_api = offer
     end
 
     if event.new_record? && update_event.blank?
@@ -73,18 +74,17 @@ module V1::EventsH
       end
       AcademicTool.send_email(event, acs, false) if event.verify_start
     elsif !existing_ac.nil? && (event.id != update_event.try(:id))
-      old_event = old_event = ScheduleEvent.find(existing_ac.academic_tool_id)
+      old_event = existing_ac.academic_tool_type.constantize.find(existing_ac.academic_tool_id)
       existing_ac.update_attributes(academic_tool_id: event.id)
       if !event.new_record? && !update_event.blank?
-        AcademicTool.send_email(event, [existing_ac], true, {start_date: update_event.schedule.start_date , end_date: update_event.schedule.end_date, start_hour: update_event.start_hour, end_hour: update_event.end_hour})
+        AcademicTool.send_email(event, [existing_ac], true, {start_date: update_event.start_date , end_date: update_event.end_date, start_hour: update_event.start_hour, end_hour: update_event.end_hour})
         update_event.api = true
         update_event.merge = true
         update_event.destroy
       else
-        AcademicTool.send_email(event, [existing_ac], true, {start_date: old_event.schedule.start_date , end_date: old_event.schedule.end_date, start_hour: old_event.start_hour, end_hour: old_event.end_hour})
+        AcademicTool.send_email(event, [existing_ac], true, {start_date: old_event.start_date , end_date: old_event.end_date, start_hour: old_event.start_hour, end_hour: old_event.end_hour})
       end
     end
-
     group_events
   end
 
