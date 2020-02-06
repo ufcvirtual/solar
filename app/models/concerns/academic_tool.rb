@@ -181,8 +181,8 @@ module AcademicTool
 
     def new_msg_template(info)
       if respond_to?(:initial_time)
-        start_date = initial_time.strftime("%d/%m/%Y %H:%M")
-        end_date = (initial_time + (duration * 60)).strftime("%d/%m/%Y %H:%M")
+        start_date = initial_time.strftime("%d/%m/%Y")
+        end_date = (initial_time + (duration * 60)).strftime("%d/%m/%Y")
       elsif respond_to?(:schedule)
         start_date = schedule.start_date
         end_date = schedule.end_date
@@ -191,43 +191,52 @@ module AcademicTool
       hours = (respond_to?(:start_hour) && !start_hour.blank?) ? "de #{start_hour} às #{end_hour}" : ""
 
       unless start_date.blank?
-        %{
-          Informamos que um #{I18n.t("activerecord.models.#{self.class.to_s.tableize.singularize}")} de nome #{respond_to?(:title) ? self.title : self.name} de #{info} foi criado(a) com o período de #{start_date} à #{end_date} #{hours}.
+        if start_date == end_date
+          %{
+          Informamos que um #{I18n.t("activerecord.models.#{self.class.to_s.tableize.singularize}")} de nome #{respond_to?(:title) ? self.title : self.name} de #{info} foi criado(a) para o dia #{start_date} #{hours}.
           <br/><br/><br/>
           Não responda esta mensagem. Este é um email automático do Solar 2.0.
-        }
+          }
+        else
+          %{
+            Informamos que um #{I18n.t("activerecord.models.#{self.class.to_s.tableize.singularize}")} de nome #{respond_to?(:title) ? self.title : self.name} de #{info} foi criado(a) com o período de #{start_date} à #{end_date} #{hours}.
+            <br/><br/><br/>
+            Não responda esta mensagem. Este é um email automático do Solar 2.0.
+          }
+        end
       end
     end
 
     def update_msg_template(info, old_info=nil)
-      unless old_info.blank?
+      unless old_info.blank? && respond_to?(:schedule)
         schedule.previous_changes[:start_date] = old_info[:start_date]
         schedule.previous_changes[:end_date] = old_info[:end_date]
         start_hour_was = old_info[:start_hour]
         end_hour_was = old_info[:end_hour]
       end
 
+
       if respond_to?(:initial_time)
         changes1 = [initial_time_was, initial_time].compact
-        start_date = [changes1.first.strftime("%d/%m/%Y %H:%M"), changes1.last.strftime("%d/%m/%Y %H:%M")]
+        start_date_object = [changes1.first.strftime("%d/%m/%Y %H:%M"), changes1.last.strftime("%d/%m/%Y %H:%M")]
 
         changes2 = [duration_was, duration].compact
-        end_date = [(changes1.first + (changes2.first * 60)).strftime("%d/%m/%Y %H:%M"), (changes1.last + (changes2.last * 60)).strftime("%d/%m/%Y %H:%M")]
+        end_date_object = [(changes1.first + (changes2.first * 60)).strftime("%d/%m/%Y %H:%M"), (changes1.last + (changes2.last * 60)).strftime("%d/%m/%Y %H:%M")]
       elsif respond_to?(:schedule)
         changes = schedule.previous_changes[:start_date].compact rescue [schedule.start_date]
-        start_date = [changes.first, changes.last]
+        start_date_object = [changes.first, changes.last]
 
         changes = schedule.previous_changes[:end_date].compact rescue [schedule.end_date]
-        end_date = [changes.first, changes.last]
+        end_date_object = [changes.first, changes.last]
       end
 
-      dates = if start_date.size == 1 && end_date.size == 1
-        " para #{start_date.last} à #{end_date.last}"
+      dates = if start_date_object.size == 1 && end_date_object.size == 1
+        " para #{start_date_object.last} à #{end_date_object.last}"
       else
-        " de #{start_date.first} à #{end_date.first} para #{start_date.last} à #{end_date.last}"
+        " de #{start_date_object.first} à #{end_date_object.first} para #{start_date_object.last} à #{end_date_object.last}"
       end
 
-      if respond_to?(:start_hour)
+      if respond_to?(:start_hour) && !respond_to?(:initial_time)
         changes1 = [start_hour_was, start_hour].compact.reject { |c| c.empty? }
         start_hour = [changes1.first, changes1.last]
 
@@ -249,7 +258,7 @@ module AcademicTool
         end
       end
 
-      unless start_date.blank?
+      unless start_date_object.blank?
         %{
           Informamos que a atividade (#{I18n.t("activerecord.models.#{self.class.to_s.tableize.singularize}")}) #{respond_to?(:title) ? self.title : self.name} de #{info} teve seu período alterado #{dates} #{hours}.
           <br/><br/><br/>

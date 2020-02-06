@@ -48,7 +48,7 @@ module V1::EventsH
       event = update_event
       event.api = true
 
-      if event.try(:type_event) && event_info[:type] != 5
+      if event.try(:type) && event_info[:type] != 5
         event.schedule.update_attributes! start_date: params[:event][:date], end_date: params[:event][:date]
         event.update_attributes! start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":")
       else
@@ -72,17 +72,17 @@ module V1::EventsH
         alloc_tag.save!
         group_events << {name: group.name, Codigo: group.name, id: ac.id}
       end
-      AcademicTool.send_email(event, acs, false) if event.verify_start
+      AcademicTool.send_email(event, acs, false) if event.verify_start && acs.any?
     elsif !existing_ac.nil? && (event.id != update_event.try(:id))
       old_event = existing_ac.academic_tool_type.constantize.find(existing_ac.academic_tool_id)
       existing_ac.update_attributes(academic_tool_id: event.id)
       if !event.new_record? && !update_event.blank?
-        AcademicTool.send_email(event, [existing_ac], true, {start_date: update_event.start_date , end_date: update_event.end_date, start_hour: update_event.start_hour, end_hour: update_event.end_hour})
+        AcademicTool.send_email(event, [existing_ac], true, {start_date: update_event.start_date , end_date: update_event.end_date, start_hour: update_event.start_hour, end_hour: update_event.end_hour}) if event.verify_start
         update_event.api = true
         update_event.merge = true
         update_event.destroy
       else
-        AcademicTool.send_email(event, [existing_ac], true, {start_date: old_event.start_date , end_date: old_event.end_date, start_hour: old_event.start_hour, end_hour: old_event.end_hour})
+        AcademicTool.send_email(event, [existing_ac], true, {start_date: old_event.start_date , end_date: old_event.end_date, start_hour: old_event.start_hour, end_hour: old_event.end_hour}) if event.verify_start
       end
     end
     group_events
