@@ -123,7 +123,7 @@ module V1
         end
         get ":event_id/participants", rabl: 'events/summary' do
           @event = ScheduleEvent.find(params[:event_id].to_i)
-          @objects = AllocationTag.get_participants(@at.id, { students: true })
+          @users = AllocationTag.get_participants(@at.id, { students: true })
         end
 
         desc "Enviar arquivo para aluno"
@@ -134,10 +134,9 @@ module V1
           requires :group, type: String, desc: "Group Name"
         end
         post ":academic_allocation_id/students/:student_id/files" do
-          academic_allocation = AcademicAllocation.find(params[:academic_allocation_id])
-          academic_allocation_user = AcademicAllocationUser.where(academic_allocation_id: academic_allocation.id).where(user_id: params[:student_id])
+          academic_allocation_user = AcademicAllocationUser.where(user_id: params[:student_id], academic_allocation_id: params[:academic_allocation_id]).first
   
-          sef = ScheduleEventFile.new({user_id: current_user.id, academic_allocation_user_id: academic_allocation_user[0].id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
+          sef = ScheduleEventFile.new({user_id: current_user.id, academic_allocation_user_id: academic_allocation_user.id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
           sef.api = true
           sef.save!
   
