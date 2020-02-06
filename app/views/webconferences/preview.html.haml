@@ -43,7 +43,7 @@
             %th.default_width= t(:name, scope: [:webconferences, :list])
             %th.bigger_width= t('.location')
             %th.default_width= t(:availability, scope: [:webconferences, :list])
-            %th.smaller_width= t(:status, scope: [:webconferences, :list])
+            %th.default_width= t(:status, scope: [:webconferences, :list])
             %th.invisible
             %th.invisible
             %th.smaller_width= t('webconferences.index.user_online')
@@ -100,7 +100,7 @@
               %td.center
                 %div= l(webconference.start_date.to_date)
                 %div= [l(webconference.start_hour.to_datetime, format: :today), l(webconference.end_hour.to_datetime, format: :today)].join(' - ')
-              %td.center{class: (unavailable ? 'web_not_started' : "web_#{webconference.situation}")}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t(webconference.situation, scope: [:scores, :situation], user: webconference.user_name)
+              %td.center{class: (unavailable ? 'web_not_started' : "assignment_#{webconference.situation}")}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t(webconference.situation, scope: [:scores, :situation], user: webconference.user_name)
               %td.invisible= location
               %td.center= webconference.meeting_info(current_user, webconference.at_id)
               - if disabled

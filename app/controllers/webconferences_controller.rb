@@ -147,6 +147,8 @@ class WebconferencesController < ApplicationController
     @webconferences = Webconference.all_by_allocation_tags(ats, { asc: false }).paginate(:per_page => 100, page: params[:page])
     if @filter_situation == 'recorded'
       @webconferences = (@webconferences.select { |web|  web.is_recorded }).paginate(:per_page => 100, page: params[:page])
+    elsif @filter_situation == 'scheduled'
+      @webconferences = (@webconferences.select { |web|  ['scheduled', 'scheduled_someone', 'scheduled_coord'].include?(web.situation) }).paginate(:per_page => 100, page: params[:page])
     elsif @filter_situation != 'all'
       @webconferences = (@webconferences.select { |web|  web.situation ==  @filter_situation }).paginate(:per_page => 100, page: params[:page])
     end
