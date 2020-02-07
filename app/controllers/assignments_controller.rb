@@ -74,9 +74,7 @@ class AssignmentsController < ApplicationController
     @assignment.schedule.verify_today = true
 
     @assignment.save!
-    Thread.new{ GroupAssignment.split_students_in_groups(@assignment.id) }
-    Thread.new{ GroupAssignment.send_email_one_week_before_start_assignment_in_group(@assignment.id) }
-    render_assignment_success_json('created')
+    render_assignment_success_json('created', @assignment.id)
 
   rescue => error
     if @assignment.errors.empty?
@@ -202,6 +200,13 @@ class AssignmentsController < ApplicationController
     render partial: (assignment.type_assignment == Assignment_Type_Group ? 'groups' : 'participants'), locals: { assignment: assignment }
   end
 
+  def send_email_division_groups
+    assignment = Assignment.find(params[:id])
+    GroupAssignment.split_students_in_groups(assignment.id)
+    GroupAssignment.send_email_one_week_before_start_assignment_in_group(assignment.id)
+    render json: { success: true }
+  end
+
   private
 
     def assignment_params
@@ -211,8 +216,8 @@ class AssignmentsController < ApplicationController
         ip_reals_attributes: [:id, :ip_v4, :ip_v6, :_destroy])
     end
 
-    def render_assignment_success_json(method)
-      render json: {success: true, notice: t(method, scope: 'assignments.success')}
+    def render_assignment_success_json(method, id=nil)
+      render json: {success: true, notice: t(method, scope: 'assignments.success'), id: id}
     end
 
     def assignment_started?(assignment)

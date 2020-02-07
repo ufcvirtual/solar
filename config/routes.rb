@@ -396,6 +396,7 @@ Solar::Application.routes.draw do
       get :summarized
       get :participants
       put 'evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Assignment', as: :evaluate
+      post :send_email_division_groups
     end
 
     collection do

@@ -139,7 +139,14 @@
       $('#assignment_form:last').serialize_and_submit({
         files: true,
         outer: 'fancybox-outer',
-        replace_list: (("#{escape_once(params[:calendar])}" == "") ? $(".list_assignments") : $(".calendar_schedules"))
+        replace_list: (("#{escape_once(params[:calendar])}" == "") ? $(".list_assignments") : $(".calendar_schedules")),
+        complement_success: function(data){
+          if(data.id){
+            var url = "#{send_email_division_groups_assignment_path(id: 'assignment_param_id')}".replace('assignment_param_id', data.id);
+            $.post(url, function(data1){
+            });
+          }
+        }
       });
     });
 
