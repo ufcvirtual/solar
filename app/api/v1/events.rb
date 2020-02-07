@@ -38,6 +38,10 @@ module V1
         post "/" do
           group_events = []
 
+          startd = DateTime.parse("#{params[:event][:date]} #{params[:event][:start]}")
+          endd = DateTime.parse("#{params[:event][:date]} #{params[:event][:end]}")
+          raise 'end_smaller_than_start' if endd <= startd
+
           begin
             ActiveRecord::Base.transaction do
               offer = get_offer(params[:curriculum_unit_code], params[:course_code], params[:semester])
@@ -55,6 +59,10 @@ module V1
         end
         put "/:id" do
           begin
+            startd = DateTime.parse("#{params[:date]} #{params[:start]}")
+            endd = DateTime.parse("#{params[:date]} #{params[:end]}")
+            raise 'end_smaller_than_start' if endd <= startd
+
             ac = AcademicAllocation.find(params[:id])
             raise ActiveRecord::RecordNotFound if ac.blank?
             event =  ac.academic_tool_type == 'ScheduleEvent' ? ScheduleEvent.find(ac.academic_tool_id) : Webconference.find(ac.academic_tool_id)
