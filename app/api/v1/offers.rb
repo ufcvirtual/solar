@@ -1,7 +1,7 @@
 module V1
   class Offers < Base
 
-     segment do
+    segment do
 
       before { verify_ip_access_and_guard! }
 

@@ -263,17 +263,16 @@ module V1
 
         segment do
           before { guard! }
-
-          namespace :user do
-            params{requires :file, type: File}
-            desc "Altera a foto do perfil do usuário", {
-              headers: {
-                "Authorization" => {
-                  description: "Token",
-                  required: true
-                }
+          
+          params{requires :file, type: File}
+          desc "Altera a foto do perfil do usuário", {
+            headers: {
+              "Authorization" => {
+                description: "Token",
+                required: true
               }
             }
+          }
 
           put :photo do
             current_user.api = true
