@@ -84,9 +84,13 @@ module Bbb
   end
 
   def cant_change_date
+    errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.date_new")) if (Time.now > (initial_time+duration.minutes))
     if (initial_time_was && duration_was)
-      errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.date")) if (Time.now > (initial_time_was+duration_was.minutes))
-      errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.cant_edit_date")) if self.integrated && self.date_changed
+      if (Time.now > (initial_time_was+duration_was.minutes))
+        errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.date"))
+      elsif (Time.now >= initial_time_was && initial_time_changed?)
+        errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.started"))
+      end
     end
   end
 
@@ -177,10 +181,13 @@ module Bbb
     ( !server.blank? && !bbb_online?(Bbb.bbb_prepare(server)) )
   end
 
-  def bbb_all_recordings(api = nil)
+  def get_recordings(api = nil, meetingId)
     api = bbb_prepare if api.nil?
     raise "offline"   if api.nil?
-    response = api.get_recordings
+
+    options = {meetingID: meetingId}
+    response = api.get_recordings(options)
+
     response[:recordings]
   rescue => error
     return []
@@ -206,16 +213,11 @@ module Bbb
 
   def recordings(recordings = [], at_id = nil)
     meeting_id = get_mettingID(at_id)
-    recordings = bbb_all_recordings if recordings.blank?
-    common_recordings = []
+    recordings = get_recordings(meeting_id) if recordings.blank?
 
-    recordings.each do |m|
-      common_recordings << m if m[:metadata][:meetingId] == meeting_id
-    end
-
-    return common_recordings
+    return recordings
   rescue
-    false
+    return []
   end
 
   def remove_record(recordId, at=nil)
@@ -267,11 +269,18 @@ module Bbb
   end
 
   def is_over?
-    Time.now > (initial_time+duration.minutes+15.minutes)
+    # Time.now > (initial_time+duration.minutes+15.minutes)
+    Time.now > (initial_time+(duration.minutes*2))
   end
 
   def over?
     Time.now > (initial_time+duration.minutes)
+  end
+
+  def self.get_duration(start, final)
+    diff = final.to_time - start.to_time
+    duration = '%dh %02dm %02ds' % [ diff / 3600, (diff / 60) % 60, diff % 60 ]
+    return diff, duration
   end
 
   def can_destroy?
@@ -280,6 +289,7 @@ module Bbb
     raise 'unavailable'              unless server.blank? || bbb_online?
     raise 'not_ended'                unless !started? || is_over?
     raise 'acu'                      if (respond_to?(:academic_allocation_users) && academic_allocation_users.any?) || (!respond_to?(:academic_allocation_users) && academic_allocation_user.blank?)
+    raise 'integrated' if integrated && (api.blank? || over?)
   end
 
   def can_destroy_boolean?
@@ -313,7 +323,12 @@ module Bbb
     0
   end
 
-  def participantCountPerServer
+  # Retorna a quantidade de chamados em aberto
+  def self.count_help
+    Webconference.joins(:academic_allocations).where(academic_allocations: { support_help: Support_Help_Request}).count
+  end
+
+  def participant_count_per_server
     server = 0
     result = 0
     count = Array.new

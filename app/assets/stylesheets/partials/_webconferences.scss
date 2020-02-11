@@ -15,8 +15,23 @@ form{
   }
 }
 
+
+/* #######################################################
+                      Preview
+####################################################### */
+
 .preview_webconferences{
+  .block_toolbar_left{
+    display: inline-flex;
+    .title{
+      padding: 10px 5px;
+    }
+  }
+
   .block_toolbar_right{
+    .delete_record_btn:first-of-type{
+      margin-right: 5px;
+    }
     .delete_record_btn{
       margin-top: 7px;
     }
@@ -27,13 +42,19 @@ form{
       overflow-y: auto;
     }
   }
+  .support_help_request{ background-color: $event_chat_background !important; } /* #619ad2 */
+  .support_help_success{ background-color: $event_discussion_background !important; } /* #b3dd89 */
+  .support_help_fail{ background-color: $event_presential_meeting_background !important; } /* #EA8A8A */
+  .support_help_message{ background-color: $event_assignment_background !important; } /* #F2F27B */
 }
 
+
 .block_wrapper{
-  .title-warning:first-of-type{
-    margin-bottom: 0;
+  .title-warning:nth-child(2){
+    margin-top: -15px;
   }
 }
+
 
 .title-warning{
   /* text-align: center; */
@@ -122,6 +143,10 @@ table.webconferences{
 
 }
 
+.webconference_list_support{
+  margin-top: 30px;
+}
+
 .title-warning + .webconference_access{
   .text_none{
     border-top: solid 1px;
@@ -129,15 +154,22 @@ table.webconferences{
   }
 }
 
-.description_webconferences {
-  table-layout: fixed;
+.support_webconferences{
+  .block_content{
+    margin-top: 10px;
+    .options_support_web{
+      .radio_options {
+        width: 100%;
+        .option{
+          padding: 8px 0px 0px 20px;
+        }
+      }
+    }
+  }
 }
 
-/*Preview*/
-.block_wrapper.preview_webconferences{
-  .delete_record_btn:first-of-type{
-    margin-right: 5px;
-  }
+.description_webconferences {
+  table-layout: fixed;
 }
 
 /* #######################################################
@@ -188,7 +220,7 @@ table.webconferences{
   .block_content_toolbar {
     padding: 20px 0 15px 0;
     #txt_deployment { max-width: 100px; text-align: center; margin: 2px; }
-    #txt_description { min-width: 350px; margin: 2px; }
+    #txt_description { min-width: 300px; margin: 2px; }
     #saveChangeLogButton { min-width: 100px; margin: 5px;}
   }
 }

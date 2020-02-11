@@ -17,10 +17,12 @@ class User < ActiveRecord::Base
 
   CHANGEABLE_FIELDS = %W{bio interests music movies books phrase site nick alternate_email photo_file_name photo_content_type photo_file_size photo_updated_at active}
   MODULO_ACADEMICO  = YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s] rescue nil
+  API_FIELDS = %W{name email gender username birthdate cell_phone telephone address address_number address_neighborhood zipcode country state special_needs nick institution}
 
   has_many :oauth_applications, class_name: 'Doorkeeper::Application', as: :owner
 
   has_one :personal_configuration
+  belongs_to :oauth_application
 
   has_many :allocations
   has_many :allocation_tags, -> { uniq }, through: :allocations
@@ -58,13 +60,12 @@ class User < ActiveRecord::Base
 
   @has_special_needs
 
-  attr_accessor :login, :has_special_needs, :synchronizing
+  attr_accessor :login, :has_special_needs, :synchronizing, :api
 
   email_format = %r{\A((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?\z}i
 
   validates :name, presence: true, length: { within: 6..200 }
   validates :nick, presence: true, length: { within: 3..34 }
-  validates :birthdate, presence: true
   validates :username, presence: true, length: { maximum: 20, minimum: 3 }, uniqueness: {case_sensitive: false}, format: { with: /\A[_.a-zA-Z0-9\-]+\Z/ }, unless: Proc.new{ |a| !a.on_blacklist? && a.integrated? && (a.synchronizing.nil? || a.synchronizing) }
 
   validates :password, presence: true, confirmation: true, length: { minimum: 6, maximum: 120 }, unless: Proc.new { |a| !a.encrypted_password.blank? || (a.integrated? && !a.on_blacklist?) }
@@ -86,6 +87,7 @@ class User < ActiveRecord::Base
   validates_length_of :telephone, maximum: 50
   validates_length_of :email, maximum: 200
 
+  validate :cpf_integration, if: Proc.new{ |a| !a.new_record? && !a.oauth_application_id.blank? }
   validate :integration, if: Proc.new{ |a| !a.new_record? && !a.on_blacklist? && a.integrated? && (a.synchronizing.nil? || !a.synchronizing) }
   validate :data_integration, if: Proc.new{ |a| (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO["integrated"]) && (a.new_record? || username_changed? || email_changed? || cpf_changed?) && (a.synchronizing.nil? || !a.synchronizing) }
 
@@ -94,6 +96,7 @@ class User < ActiveRecord::Base
   validate :only_admin, if: '!new_record? && (cpf_changed? || active_changed?)'
 
   before_save :set_empty_email, if: 'email.blank?'
+  after_save :remove_association_app, if: '!oauth_application_id.blank? && api.blank?'
 
   # paperclip uses: file_name, content_type, file_size e updated_at
   has_attached_file :photo,
@@ -129,16 +132,55 @@ class User < ActiveRecord::Base
     super and self.active
   end
 
+  def self.reset_password_by_token(params={})
+    recoverable = super(params)
+
+    unless recoverable.oauth_application.blank?
+      app = recoverable.oauth_application
+      recoverable.oauth_application_id = nil
+      recoverable.save(validate: false)
+
+      recoverable.notify_by_email(nil, true, app, [:password])
+    end
+
+    recoverable
+  end
+
   ## Permite modificacao dos dados do usuario sem necessidade de informar a senha - para usuarios ja logados
   ## Define o valor de @has_special_needs na edicao de um usuario (update)
   def update_with_password(params={})
     @has_special_needs = (params[:special_needs].blank?)
     #params.delete(:has_special_needs)
-    if (params[:password].blank? && params[:current_password].blank? && params[:password_confirmation].blank?)
-      params.delete(:current_password)
-      self.update_without_password(params)
+
+    changes = false
+    unless self.oauth_application_id.blank?
+      API_FIELDS.each do |api_field|
+        changes = true if self.send(api_field.to_sym).to_s != params[api_field.to_sym].to_s
+      end
+    end
+
+    # se o usuario, originalmente criado por outra aplicacao, mudar qualquer dado oriundo da API manualmente, o solar passara a ignorar a associacao
+    if !self.oauth_application_id.blank? && (params[:password].blank? || params[:current_password].blank? || params[:password_confirmation].blank?) && changes
+      error_field = (params[:password].blank? ? :password : (params[:current_password].blank? ? :current_password : :password_confirmation))
+      errors.add(error_field, I18n.t('users.errors.password_mandatory_integration', system: self.oauth_application.name))
+      false
     else
-      super(params)
+      if (params[:password].blank? && params[:current_password].blank? && params[:password_confirmation].blank?)
+        params.delete(:current_password)
+        self.update_without_password(params)
+      else
+        super(params)
+      end
+    end
+  end
+
+  def remove_association_app
+    changed_params = self.changes
+    changed_params.reject! {|k,v| v.blank? || v.all?(&:blank?) }
+
+    if !oauth_application.blank? && ((changed_params.keys & API_FIELDS).any? || (encrypted_password_was != encrypted_password)) && api.nil?
+      self.oauth_application_id = nil
+      self.save(validate: false)
     end
   end
 
@@ -479,7 +521,7 @@ class User < ActiveRecord::Base
       new_password         = nil
       group = Group.joins(:allocation_tag).where(allocation_tags: {id: ats}).where("lower(name) = ?", row['Turma'].downcase).first if (row.include?('Turma') && !row['Turma'].blank? && !ats.blank?)
 
-      if !user.integrated || can_add_to_blacklist
+      if (!user.integrated || can_add_to_blacklist) && user.oauth_application_id.blank?
         blacklist.save if !blacklist.nil? && blacklist.new_record? && user.integrated && can_add_to_blacklist
 
         params = {}
@@ -501,7 +543,7 @@ class User < ActiveRecord::Base
           end
         end
 
-        params.merge!({ birthdate: '1970-01-01' })                  if user.birthdate.nil?
+        # params.merge!({ birthdate: '1970-01-01' })                  if user.birthdate.nil?
         params.merge!({ nick: user.username || params[:username] }) if user.nick.nil?
 
         if user.new_record?
@@ -509,13 +551,16 @@ class User < ActiveRecord::Base
           user.password = new_password
         end
 
+        params.except!(:id)
         user.attributes = user.attributes.merge!(params.merge!({ active: true }))
       end
+
+      changes = user.changed
 
       if user.save
         log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
         imported << {user: user, group: group, group_name: row['Turma'].to_s}
-        user.notify_user(new_password)
+        user.notify_user(new_password, changes)
       else
         if user.errors[:username].blank? || (user.integrated && !can_add_to_blacklist) # if no error with username happens or cant unbind user from modulo
           log[:error] << I18n.t(:error, scope: [:administrations, :import_users, :log], cpf: user.cpf, error: user.errors.full_messages.compact.uniq.join(', '))
@@ -527,23 +572,25 @@ class User < ActiveRecord::Base
           user.username = user.email.split('@')[0][0..19] unless user.valid? # by email
           user.username = [user.email.split('@')[0], 'tmp'].join('_')[0..19] unless user.valid? # by email
 
+          changes = user.changed
+
           if user.save
             log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
-            imported << {user: user, group: group, group_name: row['Turma']}
-            user.notify_user(new_password)
+            imported << {user: user, group: group, group_name: row['Turma'].to_s}
+            user.notify_user(new_password, changes)
 
           elsif user.errors[:email].first == I18n.t('users.errors.ma.already_exists') || user.errors[:username].first == I18n.t('users.errors.ma.already_exists') # if still have errors with MA
             UserBlacklist.where(cpf: cpf).delete_all # remove from blacklist so it can be imported
 
             if user.save
               log[:success] << I18n.t(:success, scope: [:administrations, :import_users, :log], cpf: user.cpf)
-              imported << {user: user, group: group, group_name: row['Turma']}
+              imported << {user: user, group: group, group_name: row['Turma'].to_s}
 
               blacklist = UserBlacklist.where(cpf: user.cpf).first_or_initialize # add again to blacklist
               blacklist.name = user.name
               blacklist.save
 
-              user.notify_user(new_password)
+              user.notify_user(new_password, changes)
             else
               log[:error] << I18n.t(:error, scope: [:administrations, :import_users, :log], cpf: user.cpf, error: user.errors.full_messages.compact.uniq.join(', '))
             end
@@ -557,25 +604,31 @@ class User < ActiveRecord::Base
     { imported: imported, log: log }
   end
 
-  def notify_user(new_password)
-    unless new_password.blank?
+  def notify_user(new_password, changes)
+    changes = changes - ["password_salt"]
+    if !new_password.blank?
       Thread.new do
         Notifier.new_user(self, new_password).deliver
       end
-    else
-      notify_by_email
+    elsif changes.any?
+      notify_by_email(changes.include?(:username), changes.include?(:encrypted_password), false, changes)
     end
   end
 
-  def notify_by_email
+  def notify_by_email(changed_username=nil, changed_password=nil, removed_integration=false, changed_data=[], allocation_tag=nil)
+
     raw_token, hashed_token = Devise.token_generator.generate(User, :reset_password_token)
     self.reset_password_token = hashed_token
     self.reset_password_sent_at = Time.now.utc
     self.save(validate: false)
 
-    Thread.new do
-      Notifier.change_user(User.find(id), raw_token).deliver
-    end
+    # Thread.new do
+      unless allocation_tag.blank?
+        Notifier.enroll_user(User.find(id), allocation_tag, raw_token).deliver
+      else
+        Notifier.change_user(User.find(id), raw_token, nil, changed_username, changed_password, removed_integration, changed_data).deliver
+      end
+    # end
   end
 
   def self.open_spreadsheet(file, sep = ';')
@@ -590,6 +643,10 @@ class User < ActiveRecord::Base
 
   def notes(lesson_id, query = {})
     lesson_notes.where(lesson_id: lesson_id).where(query).order('name')
+  end
+
+  def cpf_integration
+    errors.add(:cpf, I18n.t('users.errors.oauth_application', system: oauth_application.name)) if cpf_changed? && !oauth_application_id.blank?
   end
 
   ######################
@@ -758,7 +815,7 @@ class User < ActiveRecord::Base
       data.merge!({password: Devise.friendly_token.first(6)})
     end
 
-    data.merge!({selfregistration: !(user_data[6].blank? || user_data[5].blank? || user_data[8].blank?)})
+    data.merge!({selfregistration: !(user_data[6].blank? || user_data[5].blank?)})# || user_data[8].blank?)})
 
     return data
   end
@@ -971,8 +1028,8 @@ class User < ActiveRecord::Base
 
     if integrated && selfregistration
       password = password.encode("ISO-8859-1", fallback: 'fallback', undef: :replace, replace: '?')
-      password = Digest::MD5.hexdigest(password)
     end
+    password = Digest::MD5.hexdigest(password) if (integrated && selfregistration) || oauth_application.try(:cryptography) == 'md5'
 
     Devise.secure_compare(Digest::SHA1.hexdigest(password), self.encrypted_password)
   end

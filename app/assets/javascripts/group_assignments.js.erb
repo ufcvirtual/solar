@@ -118,6 +118,10 @@ function clear_participant_list(){
 function select_assignment(element, event){
   if (event === undefined || event.which == 13) {
     $(".selected").removeClass("selected");
+
+    $(".assignment-selected").removeClass("assignment-selected");
+    $(element).parent().addClass("assignment-selected")
+
     var label = ( $(element).hasClass("label") ? element : $(element).closest(".label") );
     $(label).addClass("selected");
     $.get($(label).data("url"), function(data){
@@ -131,7 +135,11 @@ function select_assignment(element, event){
 }
 
 function import_group(button){
-  var from_group_id = $($(".label.selected")[0]).data("assignment-id")
+
+  if (!confirm("<%=I18n.t('group_assignments.import_list.confirm')%>"))
+    return false;
+
+  var from_group_id = $($(".label.assignment-selected")[0]).data("assignment-id")
   $.post($(button).data("url").replace("aid", from_group_id), function(data1){
     $.fancybox.close();
     update_list(data1.notice);

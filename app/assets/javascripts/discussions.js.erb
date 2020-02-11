@@ -1,20 +1,40 @@
 /* configuração da barra de ferramentas do ckeditor */
 CKEDITOR.editorConfig = function (config) {
-  config.language = locale;
-  config.toolbar =
-    [
-      { name: 'clipboard', items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-      { name: 'styles', items : [ 'Styles', 'Format', 'Font', 'TextColor' ] },
-      { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
-      { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] },
-      { name: 'links', items : [ 'Link', 'Unlink', 'Image', 'oembed', 'Smiley' ] },
-      { name: 'insert', items : ['EqnEditor'] },
-    ];
+  language = locale=='pt_BR' ? 'pt-br' : locale;
+  config.language = language;
+  config.toolbarGroups = [
+    { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+    { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+    { name: 'styles', groups: [ 'styles' ] },
+    { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+    { name: 'forms', groups: [ 'forms' ] },
+    { name: 'colors', groups: [ 'colors' ] },
+    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+    '/',
+    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+    { name: 'links', groups: [ 'links' ] },
+    { name: 'insert', groups: [ 'insert', 'eqneditor' ] },
+    '/',
+    { name: 'tools', groups: [ 'tools' ] },
+    { name: 'others', groups: [ 'others' ] },
+  ];
+
+  // Remove some buttons provided by the standard plugins, which are
+  // not needed in the Standard(s) toolbar.
+  config.removeButtons = 'Source,Save,NewPage,Preview,Print,Templates,Find,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Subscript,Superscript,CopyFormatting,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,Language,Anchor,Flash,Table,HorizontalRule,SpecialChar,PageBreak,Iframe,FontSize,BGColor,Maximize,ShowBlocks';
+
+
+  // Set the most common block elements.
+  config.format_tags = 'p;h1;h2;h3;pre';
+
+  // Simplify the dialog windows.
+  config.removeDialogTabs = 'image:advanced;link:advanced';
 
     config.extraPlugins = 'eqneditor,oembed,smiley';
     config.startupFocus = true;
     config.autoParagraph = false;
 };
+
 
 CKEDITOR.on('instanceReady', function (ev) {
    // Prevent drag-and-drop.
@@ -63,6 +83,9 @@ function remove_ckeditor(){
 }
 
 function new_post(obj, parent) {
+  var width = $(obj).closest('.forum_post_wrapper').width();
+  $(obj).closest('.forum_post_wrapper').css('width', width);
+
   if($("#new_post:visible").length > 0)
     if (!confirm("<%= I18n.t('posts.index.confirm_ckeditor') %>")) return;
   form_post_reset_parameters();
@@ -87,6 +110,9 @@ function new_post(obj, parent) {
 };
 
 function update_post(obj, post, parent) {
+  var width = $(obj).closest('.forum_post_wrapper').width();
+  $(obj).closest('.forum_post_wrapper').css('width', width);
+
   if($("#new_post:visible").length > 0)
     if (!confirm("<%= I18n.t('posts.index.confirm_ckeditor') %>")) return;
   form_post_reset_parameters();

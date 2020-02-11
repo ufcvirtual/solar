@@ -1,8 +1,8 @@
 module V1::AllocationsH
 
   ## remover
-  def allocate_professors(group, cpfs)
-    group.allocations.where(profile_id: 17).update_all(status: 2) # cancel all previous allocations
+  def allocate_professors(group, cpfs, profile_id=17)
+    group.allocations.where(profile_id: profile_id).update_all(status: 2) # cancel all previous allocations
 
     cpfs = cpfs.reject { |c| c.empty? }
     cpfs.each do |cpf|
@@ -13,7 +13,7 @@ module V1::AllocationsH
       end
 
       group.api = true
-      group.allocate_user(professor.id, 17)
+      group.allocate_user(professor.id, profile_id)
     end
   end
 
@@ -22,11 +22,11 @@ module V1::AllocationsH
     ActiveRecord::Base.transaction do
       groups.each do |group|
         #group.api = true
-        group.first.allocate_user(user.id, profile_id, nil, group.last.try(:id), Allocation_Activated, enrollment)
+        group.first.allocate_user(user.id, profile_id, nil, group.last.try(:id), Allocation_Activated, false, enrollment)
         unless group.first.try(:id) == group.last.try(:id)
           unless group.last.blank?
             # set or create merged allocation
-            group.last.allocate_user(user.id, profile_id, nil, nil, 5, enrollment)
+            group.last.allocate_user(user.id, profile_id, nil, nil, 5, false, enrollment)
           else
             # cancel possible previous merges allocations
             Allocation.where(origin_group_id: group.first.id, user_id: user.id, profile_id: profile_id).each do |al|
@@ -55,7 +55,6 @@ module V1::AllocationsH
     end
   end
 
-
   def cancel_all_allocations(profile_id, semester_id)
     ucs = CurriculumUnitType.find(2).curriculum_units.map(&:id)
     params = { curriculum_unit_id: ucs }
@@ -80,11 +79,13 @@ module V1::AllocationsH
   end
   ## remover
 
-  def allocate(params, cancel = false, raise_error=false)
-    objects = ( params[:id].nil? ?  get_destination(params[:curriculum_unit_code], params[:course_code], params[:group_name], params[:semester], params[:group_code]) : params[:type].capitalize.constantize.find(params[:id]) )
+  def allocate(params, cancel = false, raise_error=false, notify=false, verify_access=false)
+    objects = ( params[:id].nil? ?  get_destination(params[:curriculum_unit_code], params[:course_code], params[:group_name], params[:semester], params[:group_code]) : params[:type].capitalize.constantize.where(id: params[:id]) )
     users  = get_users(params)
 
+
     raise ActiveRecord::RecordNotFound if users.empty?
+    authorize_client!([objects].flatten.map(&:allocation_tag).map(&:id).flatten) if verify_access
 
     [objects].flatten.map{|object| object.cancel_allocations(nil, params[:profile_id])} if params[:remove_previous_allocations]
 
@@ -101,7 +102,7 @@ module V1::AllocationsH
         if cancel
           object.cancel_allocations(user.id, params[:profile_id], nil, {}, raise_error)
         else
-          object.allocate_user(user.id, params[:profile_id])
+          object.allocate_user(user.id, params[:profile_id], nil, nil, Allocation_Activated, notify)
         end
       end
     end

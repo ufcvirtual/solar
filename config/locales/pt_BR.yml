@@ -254,6 +254,7 @@ pt_BR:
       user:
         alternate_email: "E-mail alternativo"
         password: "Senha"
+        encrypted_password: "Senha"
         current_password: "Senha"
         new_password: "Nova Senha"
         username: "Login"
@@ -364,6 +365,7 @@ pt_BR:
         block_content: Bloquear conteúdo do Solar durante a prova
         uninterrupted: Ininterrupta
         controlled: Controlada
+        immediate_result_release: Liberação imediata do resultado
       ip_real:
         ip_v4: "Digite o IP V4"
         ip_v6: "Digite o IP V6"
@@ -671,6 +673,7 @@ pt_BR:
   dont_destroy_with_content: "Possui conteúdo"
   item_search_no_found: "Nenhum item encontrado"
   no_javascript: Seu navegador não suporta JavaScript ou está com este desabilitado.
+  other: Outro
 
   #Página de Login
   login_description1: "O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,
@@ -926,6 +929,13 @@ pt_BR:
   edition: "Edição"
   enrollment: "Matrícula"
 
+  # Suporte Webconferência
+  support_web_tooltip: "Suporte às webconferências"
+  support_web_tooltip_on: "Ativar suporte às webconferências"
+  support_web_tooltip_off: "Desativar suporte às webconferências"
+  support_web: "Suporte Webconferência"
+  support_web_count: "Quantidade de webconferências solicitando ajuda no momento"
+
   # portlets do meu solar
   # Disciplina
   my_solar_curriculum_units: "Disciplinas"
@@ -1009,11 +1019,13 @@ pt_BR:
       enrollment_period_expired: Período encerrado
       search_for: "Semestre, disciplina, curso ou turma"
       not_allowed_user_uab: "Aluno UAB: Para solicitar trancamento ou desistência, entrar em contato com a secretaria do curso"
+      not_allowed_external_client: "Aluno de curso externo: Para solicitar trancamento ou desistência, entrar em contato com o cliente responsável pelo curso"
       general_message: Não foi possível realizar a ação desejada
       uab_enrollment: A matrícula de disciplinas a distância não pode ser realizada através do Solar
       uab_general: Não é possível alterar matrícula de disciplinas à distância pelo Solar
       off_period: Perído de matrícula encerrado
       info: Informações sobre %{about}
+      evaluative_activities: "Aluno já realizou atividades avaliativas, não é possível cancelar sua matrícula."
     show:
       course: Curso
       curriculum_unit: Disciplina
@@ -1102,6 +1114,7 @@ pt_BR:
       draft_alt: Aula %{lesson} está como rascunho (clique para alterar para liberada)
       released_alt: Aula %{lesson} está liberada (clique para alterar para rascunho)
       lesson_notes: Notas de aula
+      download_file: Arquivos para download
       summary: Tabela contendo link de acesso às aulas disponíveis e nome em texto das aulas indisponíveis, bem como períodos de acesso e link de acesso às notas de aula para cada aula. Todas as aulas são referentes ao módulo %{module_name}.
       caption: Lista de aulas para o módulo %{module_name}
       number_of_lessons: "%{module_name} possui %{lesson_number} aulas"
@@ -1262,7 +1275,7 @@ pt_BR:
       lmodule_menu: " %{lmodule} (Clique para alterar o módulo. Um submenu para seleção de módulos ficará disponível)"
       lesson_menu: " %{lesson} (Clique para alterar a aula. Um submenu para seleção de aulas ficará disponível)"
       download: "Baixar aula em arquivo PDF"
-      download_file: "Caso você não consiga executar o arquivo, click aqui para fazer o download"
+      download_file: "Caso você não consiga executar o arquivo, clique aqui para fazer o download"
 
   lesson_modules:
     general_of_offer: "Geral"
@@ -1618,7 +1631,7 @@ pt_BR:
       new: "Nova Webconferência"
       edit: "Editar Webconferência"
       minutes: " minutos"
-      integrated_webconference: Esta webconferência possui integração com outras bases de dados e, por isso, o seu dia não pode ser modificado, apenas o horário do campo de edição de data pode ser alterado.
+      integrated_webconference: Esta webconferência possui integração com outras bases de dados e, por isso, seu título não pode ser modificado.
     list:
       webconferences: "Webconferências"
       name: Nome
@@ -1629,6 +1642,8 @@ pt_BR:
       status: "Status"
       in_progress: "Em andamento"
       scheduled: "Agendada"
+      scheduled_coord: 'Agendada (data sugerida pela coordenação)'
+      scheduled_someone: 'Agendada (data definida por %{user})'
       finish: "Finalizada"
       processing: "Processando"
       play: "Assistir Gravação"
@@ -1671,11 +1686,13 @@ pt_BR:
       record_not_deleted: 'Não foi possível remover gravação das webconferências'
       limit: 'Foi atingido o limite de participantes para este dia e horário. Favor escolher outro horário ou diminuir a quantidade de turmas se o caso.'
       time_and_place: Já existe uma webconferência para este dia/horário e turmas.
-      date: Esta webconferência já foi encerrada. Seu período não pode ser alterado.
+      date: Esta webconferência já foi encerrada e possui gravação. Seu período não pode ser alterado.
+      started: Esta webconferência já foi iniciada. Apenas sua duração pode ser alterada.
+      date_new: Não é possível definir a webconferência como já encerrada.
       access: Não é possível acessar esta webconferência. Verifique sua duração.
       no_record: Esta webconferência não possui gravações
       offline: Webconferência indisponível
-      still_processing: A gravação desta webconferência ainda está sendo processada. Favor aguardar.
+      still_processing: A gravação desta webconferência está sendo processada. <br/><br/> O processamento leva, aproximadamente, o mesmo tempo de duração da aula. <br/><br/> Por favor, aguarde e tente novamente mais tarde.
       general_message: Não foi possível realizar a ação desejada
       on_going: A webconferência ainda não finalizou. Favor aguardar.
       date_range: O período do trabalho já foi encerrado.
@@ -1683,16 +1700,28 @@ pt_BR:
       removed_record: Gravação removida ou vazia
       copy: Não é possível remover a gravação desta webconferência, pois ela é uma cópia. É necessário remover a gravação da webconferência original.
       acu: Não é possível remover a gravação ou webconferência, pois há alunos avaliados/com comentários.
+      integrated: Não é possível remover webconferências integradas a outros sistemas.
       cant_edit_date: Apenas o dia não pode ser alterado.
     preview:
       delete_record: Remover gravação
       report: Relatório webconferências (UAB)
       placeholder: Digite qualquer valor a ser buscado na tabela desta página
       search: Busca
+      filter: Filtro
       location: Localização
-      warning: 'Esta tela não permite a edição de webconferências, apenas sua visualização, bem como de suas respectivas gravações (permitindo a deleção dessas). Para criar/editar/remover webconferências, dirija-se a Edição de Conteúdo.'
+      information_title: '<b>Informações básicas</b>'
+      information: "Esta tela não permite a edição de webconferências, apenas sua visualização, bem como de suas respectivas gravações (permitindo a deleção dessas). Para criar/editar/remover webconferências, dirija-se a Edição de Conteúdo.<br><br>Ao clicar no botão <b>Suporte Webconferência</b>, disponível para o perfil \'<i>Suporte Webconferência</i>\', você ficará disponível para receber chamados de ajuda das webconferências em andamento.<br><br>Aparecerá um aviso no topo da página quando houver um novo chamado. Para atender a um chamado, basta entrar na webconferência.<br><br>As webconferências com chamado serão identificadas com as seguintes cores: <ul style='list-style-type: square; margin-left: 40px;'> <li>Azul - Chamado em aberto;</li> <li>Verde - Chamado atendido;</li> <li>Vermelha - Webconferência encerrada e chamado não atendido;</li> <li>Amarela - Ninguém do suporte online, usuário encaminhado para o email(webconferência@virtual.ufc.br).</li> </ul>"
       shared_with: ( Compartilhada entre %{link} turma(s) )
-      access: Lista de acessos
+      access: Acessos
+      help: Chamados
+      help_list: Lista de chamados
+      view_webs: 'Visualizar: %{type}'
+      all: "Todas"
+      in_progress: "Em andamento"
+      scheduled: "Agendadas"
+      finish: "Finalizadas"
+      recorded: "Com gravação"
+      disconnect_webcsocket: "Tem certeza que deseja desativar o suporte em tempo real?"
     index:
       shared_with: Compartilhada entre %{link} turma(s)
       access: Lista de acessos
@@ -1720,6 +1749,8 @@ pt_BR:
       group: Turma
       user: Usuário
       title: Lista de acessos a webconferêcia %{webconference_name}
+      title_list_support: Atendimentos a chamados (suporte)
+      responsible: 'Atendido por:'
       on_going: '<b> Aviso: </b> Esta webconferência ainda está em andamento, portanto esta lista de acessos pode aumentar.'
       not_started: '<b> Aviso: </b> Esta webconferência ainda não iniciou.'
       evaluate: Avaliar/Comentar
@@ -1729,12 +1760,19 @@ pt_BR:
       working_hours: Carga horária
       profile: Perfil
       summary: Tabela cujo conteúdo contém a lista com todos os acessos à webconferência com perfil, nome, horário e data da pessoa que acessou e o nome completo da turma. Bem como também há a possibilidade de avaliar os acessos de um aluno, no caso de professor.
+    list_support_help:
+      title: Lista de atendimentos da webconferência - %{webconference_name}
+      no_requests: Não existem registros de atendimento para esta webconferência.
+      responsible: 'Atendido por:'
+      date: Data
+      time: Hora
     get_record:
       recordings: Gravações de %{name}
       access: Acesso à gravação
       record: Gravação %{number}
       start: Início da gravação
       end: Fim da gravação
+      duration: Duração
       options: Opções
       download_podcast: Baixar Podcast
       download_video: Baixar Vídeo
@@ -1743,6 +1781,16 @@ pt_BR:
       warning: '<b>Importante: </b> Para cada ausência prolongada de participantes na webconferência, uma nova gravação é realizada.'
       no_message: Gravações removidas ou vazias ou a webconferência não possui gravações
       remove: Remover gravação
+    support_help:
+      title: ' Suporte Webconferência'
+      answer_html: "<br> Olá <b>%{user_name}</b>! <br><br> Selecione a webconferência para a qual você deseja solicitar ajuda: "
+      request: 'Solicitar ajuda em tempo real'
+      message: 'Enviar Mensagem'
+      no_data_html: "Não existem webconferências em andamento. Clique <a href='https://goo.gl/forms/PEB4WFixcWwuGyOt1' target='_blank'>aqui</a> para responder ao questionário de avaliação da ferramenta."
+      new_request: "novo(s) pedido(s) de ajuda da(s) webconferência(s) !!!"
+      send_request: "Sua solicitação foi enviada! Por favor, volte à webconferência e aguarde o atendimento."
+      error_request: "Falha no envio! Por favor, tente novamente mais tarde."
+      choose_webconference: "É necessário selecionar uma webconferência para solicitar ajuda"
     warning:
       blocked: 'Seu navegador está com a permissão de popups bloqueada. Favor desbloquear.'
     user_access:
@@ -1999,7 +2047,7 @@ pt_BR:
     passwords:
       new_password: Nova senha
       confirm_new_password: Confirmar nova senha
-      change_my_password: Alterar
+      change_my_password: Alterar senha
     confirmations:
       send_instructions: 'Instruções de como confirmar sua conta serão enviados para seu email em alguns minutos.'
       send_paranoid_instructions: 'Instruções de como confirmar sua conta serão enviados para seu email em alguns minutos, caso ele exista em nossa base de dados'
@@ -2024,9 +2072,10 @@ pt_BR:
         subject: 'Instruções de desbloqueio'
       msg:
         hello: "Olá %{email}!"
-        request: "Alguém solicitou um link para alterar sua senha. "
-        request_info: "Você pode fazer isso através do link abaixo."
+        request: "Foi solicitado um link de recuperação de senha. "
+        request_info: "Caso deseje proceder, você pode fazer isso através do link abaixo."
         request_info_ma: "Como você é um usuário integrado ao Sigaa, você deve realizar a recuperação de senha através desse. Para isso, acesse o link abaixo."
+        request_info_app: "Atualmente seu login e senha estão associados ao %{system}. Para manter a integração, você deve solicitar a alteração de sua senha no %{system} acessando %{url}. Caso deseje desfazer a integração e alterar sua senha do Solar de modo independente, acesse o link abaixo."
         ignore: "Se não foi você quem solicitou este link, por favor ignore este email."
         change: "Sua senha não vai ser modificada enquanto você não acessar o link e criar uma nova."
         username_info: "Seu login é: %{username}."
@@ -2334,6 +2383,7 @@ pt_BR:
       summary_evaluative: "Está tabela contém todas as atividades avaliativas com as seguintes informações: Descrição da atividade, período que poderá ser realizada, situação, nota e se foi alterada após o envio."
       summary_frequency: "Está tabela contém todas as atividades de frequência com as seguintes informações: Descrição da atividade, período que poderá ser realizada, situação, frequência obtida e se foi alterada após o envio."
       summary_notevaluative: "Está tabela contém todas as atividades não avaliativas com as seguintes informações: Descrição da atividade, período que poderá ser realizada, situação, nota e se foi alterada após o envio."
+      members_group: Integrantes do grupo
     assignments:
       participants: Ver participantes
       groups: Ver grupos
@@ -2426,6 +2476,7 @@ pt_BR:
       select_an_assignment: Selecione um trabalho
       select_a_group: Selecione um grupo
       import: Importar
+      confirm: Serão importados todos os grupos do trabalho selecionado.
     list:
       no_groups: Sem grupos
       participants: Ver participantes
@@ -2438,12 +2489,16 @@ pt_BR:
       unique_name: deve ser único.
       alone: Aluno está sozinho no grupo e não pode ficar sem grupo após o término da atividade.
       already_exists: Já existe um grupo com o nome deste aluno. Favor renomear o grupo.
+      user_already_exists: Aluno já inserido em um grupo para esse trabalho.
     success:
       imported: Grupos e participantes importados com sucesso.
     new:
       new_group_name: Novo grupo
     automatic_split_group_jobs:  Divisão automática de trabalhos em grupos
-    split_group_jobs: "O trabalho %{assignment_key} inicia hoje, alunos sem grupos foram dividos ou inseridos em outros grupos de forma automática do seguinte modo:"
+    split_group_jobs: "O trabalho %{assignment_key} inicia hoje. Por este motivo, os alunos serão distribuídos em grupos automaticamente"
+    alert_create_assignment_group_email: Aviso divisão de grupos de trabalho
+    automatic_one_week_before_email_split_group: "O trabalho %{assignment_group_name} inicia em 1 semana, caso não feita a divisão em grupos dos alunos, serão criados grupos 
+                                                  automaticamente a partir de uma média de grupos anteriores ou com, aproximadamente, 3 alunos em cada grupo"
   public_files:
     index:
       title: "Área pública de %{name}"
@@ -2562,6 +2617,7 @@ pt_BR:
     specific_profile: "Perfil Específico"
     specific_profile_text: "Perfil específico de uma disciplina, oferta ou turma<br/><em>Exemplo: Professor, Tutor</em>"
     close: Fechar
+    oauth_application: "O login e senha deste usuário, bem como os demais dados pessoais e de acesso, estão vinculados ao sistema %{system}. Ao confirmar, este vínculo será removido e os dois cadastros serão independentes, bem como o login ou senha poderão ser diferentes. Você tem certeza que deseja prosseguir? O usuário será informado sobre a mudança."
     allocations_user:
       no_data: Nenhuma alocação cadastrada
     users:
@@ -2914,8 +2970,8 @@ pt_BR:
       rule_min_final_exam_grade: "<div> 9) <b>Nota mínima permitida para AF: %{min_final_exam_grade}</b></div>"
       rule_final_exam_passing_grade: "<div> 10) <b>Média mínima para aprovação após realização de AF: %{final_exam_passing_grade}</b></div>"
       rule_window_analyzer: "<div> 11) O <b>Analisador</b> é uma ferramenta que permite ajudá-lo a realizar as configurações das atividades de forma correta. Ao pressionar a tecla de atalho 'A' ou clicar no link 'Analisador', uma janela surgirá. Ela mostrará o cálculo, em tempo real, do <b>peso final</b> e da <b>carga horária</b> das turmas. Deste modo, ficará mais fácil identificar se as turmas estão com o peso final 100 e a carga horária de acordo com o informado nessas instruções. O texto verde ilustrará que o cálculo está OK e o texto vermelho ilustrará que o cálculo indica que há uma quantidade a mais ou a menos de horas ou no peso final. Quando tudo estiver verde ou quando todos os pesos finais forem 100 e as horas corresponderem às horas da disciplina, clique em 'Finalizar'</div>"
-      groups_block_register_notes: "<div> 12) A(s) turma(s): <b> %{groups} </b> esta(ão) com o registro de notas bloqueadas.</div>"
-      groups_block_register_notes_error: "A(s) turma(s): <b> %{groups} </b> esta(ão) com o registro de notas bloqueadas."
+      groups_block_register_notes: "<div> 12) A(s) turma(s): <b> %{groups} </b> esta(ão) com o registro de notas encerrado.</div>"
+      groups_block_register_notes_error: "A(s) turma(s): <b> %{groups} </b> esta(ão) com o registro de notas encerrado."
       expand: Expandir todos
       compress: Comprimir todos
       share_wh: Dividir carga horária
@@ -3279,6 +3335,7 @@ pt_BR:
   confirm_cancel: 'Tem certeza de que deseja cancelar?'
   message_confirm_user: "Tem certeza?"
   page_loading: "A página está carregando..."
+  oauth_application_password: "Seu login e senha, assim como os demais dados pessoais e de acesso, estão vinculados ao sistema %{system}. Ao confirmar, este vínculo será removido e os dois cadastros serão independentes, bem como o login ou senha poderão ser diferentes. Você tem certeza que deseja prosseguir?"
 
   messages:
     file_too_big: "Arquivo muito grande!"
@@ -3302,7 +3359,9 @@ pt_BR:
     support_only_email: "<atendimento@virtual.ufc.br>"
     support_email: "atendimento@virtual.ufc.br"
     support_html: "Atendimento &lt;atendimento@virtual.ufc.br&gt;"
+    support_help: "Suporte webconferência <webconferencia@virtual.ufc.br>"
     support_simple: "Atendimento"
+    support_warning: "Não há ninguém online no momento. Por favor, explique a dificuldade ou problema encontrados, retorne para a webconferência e, assim que possível, alguém irá auxiliá-lo."
     no_mail: sem email
     send_message: Enviar Mensagem
     next: Próxima
@@ -3459,6 +3518,97 @@ pt_BR:
       agendaWeekAlt: Visualização por semana
       monthAlt: Visualização por mês
       listAlt: Visualização em lista dos próximos eventos
+      prev_month: Mês anterior
+      next_month: Próximo Mês
+    by_day: "Dia"
+
+  deficiency:
+    deficiency: Deficiência
+    deficiencys: Deficiências
+    autism_complete: Autismo
+    low_vision_complete: Baixa visão
+    blindness_complete: Cegueira
+    hearing_deficiency_complete: Deficiência auditiva
+    physical_disability_complete: Deficiência física
+    intellectual_deficiency_complete: Deficiência intelectual
+    multiple_disability_complete: Deficiência múltipla
+    deafness_complete: Surdez
+    deafblindness_complete: Surdocegueira
+    aspergers_syndrome_complete: Síndrome de Asperger
+    rett_syndrome_complete: Síndrome de Rett
+    childhood_disintegrative_disorder_complete: Transtorno desintegrativo de infância
+    none: Nenhuma
+    other: Outra
+    autism: AUT
+    low_vision: BVO
+    blindness: CEG
+    hearing_deficiency: DAA
+    physical_disability: DFA
+    intellectual_deficiency: DIL
+    multiple_disability: DMA
+    deafness: SUR
+    deafblindness: SCA
+    aspergers_syndrome: SDA
+    rett_syndrome: SRETT
+    childhood_disintegrative_disorder: TDI
+    code:
+      autism: 1
+      low_vision: 2
+      blindness: 3
+      hearing_deficiency: 4
+      physical_disability: 5
+      intellectual_deficiency: 6
+      multiple_disability: 7
+      deafness: 8
+      deafblindness: 9
+      aspergers_syndrome: 10
+      rett_syndrome: 11
+      childhood_disintegrative_disorder: 12
+      other: 13
+
+  deficiency:
+    deficiency: Deficiência
+    deficiencys: Deficiências
+    autism_complete: Autismo
+    low_vision_complete: Baixa visão
+    blindness_complete: Cegueira
+    hearing_deficiency_complete: Deficiência auditiva
+    physical_disability_complete: Deficiência física
+    intellectual_deficiency_complete: Deficiência intelectual
+    multiple_disability_complete: Deficiência múltipla
+    deafness_complete: Surdez
+    deafblindness_complete: Surdocegueira
+    aspergers_syndrome_complete: Síndrome de Asperger
+    rett_syndrome_complete: Síndrome de Rett
+    childhood_disintegrative_disorder_complete: Transtorno desintegrativo de infância
+    none: Nenhuma
+    other: Outra
+    autism: AUT
+    low_vision: BVO
+    blindness: CEG
+    hearing_deficiency: DAA
+    physical_disability: DFA
+    intellectual_deficiency: DIL
+    multiple_disability: DMA
+    deafness: SUR
+    deafblindness: SCA
+    aspergers_syndrome: SDA
+    rett_syndrome: SRETT
+    childhood_disintegrative_disorder: TDI
+    code:
+      autism: 1
+      low_vision: 2
+      blindness: 3
+      hearing_deficiency: 4
+      physical_disability: 5
+      intellectual_deficiency: 6
+      multiple_disability: 7
+      deafness: 8
+      deafblindness: 9
+      aspergers_syndrome: 10
+      rett_syndrome: 11
+      childhood_disintegrative_disorder: 12
+      other: 13
 
   deficiency:
     deficiency: Deficiência
@@ -3540,9 +3690,9 @@ pt_BR:
     print:
       previous: Voltar
       info_accessibility: Acessibilidade
-      info_contrast: '1. Em provas coloridas observar o contraste entre as cores usadas.'
+      info_contrast: '1. Em provas coloridas, observar o contraste entre as cores usadas.'
       info_text_black: '2. Texto deve ser preferencialmente na cor preta.'
-      info_enlarged_images: '3. Usar imagens de boa qualidade e se possível ampliadas.'
+      info_enlarged_images: '3. Usar imagens de boa qualidade e, se possível, ampliadas.'
       info_caption_in_picture: '4. As imagens devem possuír legendas.'
     success:
       created: Evento criado com sucesso.
@@ -3657,7 +3807,7 @@ pt_BR:
       online_correction: Correção online
     files:
       delete: Remover arquivo
-      correction_file: Correção de prova online
+      correction_file: Correção de prova online (abre uma nova janela)
     online_correction:
       tools: "Ferramentas"
       hand: "Mão"
@@ -3784,6 +3934,8 @@ pt_BR:
       cpf_as_username: 'não pode ser o CPF de outro usuário'
       multiple_sessions: "Não é possível ficar logado em múltiplos dispositivos ao mesmo tempo."
       username: "deve ter apenas letras e números."
+      password_mandatory_integration: "necessária. Seu login e senha, bem como os demais dados pessoais e de acesso, estão associados ao %{system}. Ao alterar algum desses dados, esta integração será desfeita e faz-se necessário que sua senha também seja alterada."
+      oauth_application: "não pode ser alterado, pois este é um usuário integrado ao %{system}. A integração deve ser desfeita para que este campo possa ser alterado."
     notices:
       ma:
         use_ma_data: "Seus dados de acesso foram importados do Sigaa. Para alterar ou recuperar seus dados de acesso, vá ao endereço: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
@@ -3824,6 +3976,7 @@ pt_BR:
       previous_username: "Login anterior: "
       previous_email: "Email anterior: "
       last_access: "Último acesso: "
+      other_system: "Integrado a outro sistema: "
       y: Sim
       n: Não
     request_profile:
@@ -4128,6 +4281,25 @@ pt_BR:
         title: "Comentários [C]"
       code:
         title: 67
+    support_webconference:
+      name:
+          on_off: "Ativar/Desativar suporte às webconferências"
+          on_off_key: "Shift + S"
+          list_webconferences: "Visualizar webconferências (Suporte)"
+          list_webconferences_key: "Shift + V"
+          list_all: "Listar todas às webconferências [T]"
+          list_scheduled: "Listar webconferências agendadas [G]"
+          list_in_progress: "Listar webconferências em andamento [A]"
+          list_finalized: "Listar webconferências finalizadas [F]"
+          list_recorded: "Listar webconferências com gravação [R]"
+      code:
+          on_off: 83
+          list_webconferences: 86
+          list_all: 84
+          list_scheduled: 71
+          list_in_progress: 65
+          list_finalized: 70
+          list_recorded: 82
     editions:
       name:
         window: "Analizador [A]"
@@ -4197,16 +4369,18 @@ pt_BR:
       situation3: "- Uma vez atingida a data de definição automática de situação (%{date}), não será possível remover a situação dos alunos."
       situation4: "- Ao remover as situações dos alunos, todas serão definidas como 'Pendente' ou 'Indefinida' até que sejam definidas novamente."
       situation5: "- Uma vez definida a situação, a cada nova avaliação, carga horária e afins, a situação do aluno será imediatamente atualizada."
+      grades1: "- Os responsáveis pela disciplina poderão <b>encerrar o registro de notas</b> a partir do momento que não houver atividades avaliativas ou de frequência em aberto."
+      grades2: "- Uma vez que o registro de notas esteja <b>encerrado</b>, <b>não será possível avaliar atividades</b>."
       confirm: A última atividade avaliativa ainda não aconteceu. Tem certeza que deseja definir as situações?
-      confirm2: Existem atividades não finalizadas e/ou enviadas sem nota e/ou carga horária. Tem certeza que deseja bloquear o registro de notas?
+      confirm2: Existem atividades não finalizadas e/ou enviadas sem nota e/ou carga horária. Tem certeza que deseja encerrar o registro de notas?
       origin_group: Turma original (aglutinada)
       register_notes_on: Liberar Registro de Notas
-      register_notes_off: Bloquear Registro de Notas
+      register_notes_off: Encerrar Registro de Notas
       msg_register_notes_on: Liberado registro de notas
-      msg_register_notes_off: Bloqueado registro de notas
-      error_msg_register_notes: Erro ao liberar/bloquear registro de notas
-      msg_button_register_off: Registro de notas bloqueada pelo responsável
-      error_msg_register_notes_active_open: "Erro: Existem atividades não finalizadas."
+      msg_register_notes_off: Registro de notas encerrado
+      error_msg_register_notes: Erro ao liberar/encerrar registro de notas
+      msg_button_register_off: Registro de notas encerrado pelo responsável
+      error_msg_register_notes_active_open: "Não é possível encerrar o registro de notas. Existem atividades não finalizadas."
     info:
       assignments: Trabalhos
       date_range: Período
@@ -4332,6 +4506,8 @@ pt_BR:
       scheduled: "Agendada"
       finish: "Finalizada"
       processing: "Processando"
+      scheduled_coord: 'Agendada (data sugerida pela coordenação)'
+      scheduled_someone: 'Agendada (data definida por %{user})'
     access:
       date: Data
       time: Horário
@@ -4431,6 +4607,8 @@ pt_BR:
       time_and_place: Já existe uma webconferência para este grupo neste trabalho para este dia e horário.
       unavailable_or_date_range: Não é possível realizar ação. Webconferência indisponível ou prazo encerrado.
       date: Esta webconferência já foi encerrada e possui gravação. Seu período não pode ser alterado.
+      started: Esta webconferência já foi iniciada. Apenas sua duração pode ser alterada.
+      date_new: Não é possível definir a webconferência como já encerrada.
     success:
       removed: Webconferência deletada com sucesso
       record: Gravação removida com sucesso
@@ -4563,6 +4741,9 @@ pt_BR:
         duration: Tempo que o aluno terá para responder a prova após iniciá-la.
         result_release: Liberação do resultado
         result_release_explain: Data e hora nas quais o resultado da prova será liberado. Quando em branco, o resultado será liberado imediatamente após o término da prova.
+        immediate_result_release_activated: Desativar liberação imediata do resultado
+        immediate_result_release_deactivated: Ativar liberação imediata do resultado
+        immediate_result_release_explain: Se ativo, o resultado da prova será liberado imediatamente após o término. Neste caso, a prova pode ter apenas 1 tentativa.
       control:
         continue: Continuar
         previous: Anterior
@@ -4578,6 +4759,7 @@ pt_BR:
       info: 'O resultado ficará disponível em %{date}'
       title: '(Resultado)'
       aria: 'Visualizar data de liberação do resultado'
+      imemediate: Imediatamente após a finalização da prova pelo aluno
     pre:
       alert_save: Todas as questões são salvas automaticamente.
       alert_start: Clique no link abaixo se você tem certeza que deseja iniciar a prova.

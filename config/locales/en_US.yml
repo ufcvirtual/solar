@@ -216,6 +216,7 @@ en_US:
     attributes:
       user:
         password: "Password"
+        encrypted_password: "Password"
         current_password: "Password"
         new_password: "New Password"
         username: "Login"
@@ -313,6 +314,7 @@ en_US:
         attempts_correction: Grade calculation method
         block_content: Block Solar's content during exam
         controlled: Controlled
+        immediate_result_release: Immediate result release
       exam_user:
         grade: Grade
       exam_question:
@@ -602,6 +604,7 @@ en_US:
   dont_destroy_with_content: "It has content"
   item_search_no_found: "No item found"
   no_javascript: "Your browser does not support JavaScript or it's disabled."
+  other: Other
   login_description1: "Solar is a virtual learning environment developed by the UFC Virtual Institute at Federal University of Ceará. It is geared towards the teacher and the student, allowing the publication of courses and interaction with them."
   login_description2: "The Solar was developed to enhance the learning process, starting from the interaction with the graphic interface of the environment, and to allow fast access to the pages and the content, easy navigation and browser compatibility. Here, the learner feels safe to explore the available spaces. The environment is supported by a philosophy of interaction, not control."
   login_title: "Sistema Online de Aprendizagem da Universidade Federal do Ceará"
@@ -758,6 +761,11 @@ en_US:
   description: "Description"
   edition: "Edition"
   enrollment: "Enrollment"
+  support_web_tooltip: "Webconference Support"
+  support_web_tooltip_on: "Enable webconference support"
+  support_web_tooltip_off: "Disable webconference support"
+  support_web: "Webconference Support"
+  support_web_count: "Number of webconferences requesting help at the moment"
   my_solar_curriculum_units: "Subjects"
   my_solar_curriculum_without: "No subjects found."
   my_solar_uc_without_group: There are no groups
@@ -834,11 +842,13 @@ en_US:
       enrollment_period_expired: Expired period
       search_for: "Semester, subject, course or class"
       not_allowed_user_uab: "Student UAB: To request a lockout or withdrawal, contact the course secretariat"
+      not_allowed_external_client: "Student from external course: To request a lockout or withdrawal, contact client responsible for the course"
       general_message: It was not possible to execute action
       uab_enrollment: It's not possible to enroll at a distance curriculum unit by Solar
       uab_general: It's not possible to change an enrollment for a distance curriculum unit by Solar
       off_period: Closed enrollment period
       info: Information about %{about}
+      evaluative_activities: "Student already sent evaluative activities, it's not possible to cancel the enrollment."
     show:
       course: Course
       curriculum_unit: Subject
@@ -922,6 +932,7 @@ en_US:
       draft_alt: Lesson %{lesson} is draft (click to release it)
       released_alt: Lesson %{lesson} is released (click to change to draft)
       lesson_notes: Lesson notes
+      download_file: Files to download
       summary: Table which content includes access links to available lessons and text name of unavailable lessons, also access periods and access links to lesson's notes for each one of them. All lessons are related to lesson module %{module_name}.
       caption: Lesson module %{module_name} lesson's list
       number_of_lessons: "%{module_name} has %{lesson_number} lessons"
@@ -1424,7 +1435,7 @@ en_US:
       new: "New Webconference"
       edit: "Edit Webconference"
       minutes: " minutes"
-      integrated_webconference: This webconference has integration with other databases and, therefore, your day can not be modified, only the time of the date editing field can be changed.
+      integrated_webconference: This webconference has integration with other databases and, therefore, it's title can not be modified.
     list:
       webconferences: "Webconferences"
       name: Name
@@ -1434,6 +1445,8 @@ en_US:
       min: "min"
       in_progress: "In Progress"
       scheduled: "Scheduled"
+      scheduled_coord: 'Scheduled (date suggested by coordinators)'
+      scheduled_someone: 'Scheduled (date defined by %{user})'
       finish: "Finish"
       processing: "Processing"
       play: "Watch recording"
@@ -1477,10 +1490,12 @@ en_US:
       limit: "Student's limit for this day and time has been reached. Please choose other date/time or decrease amount of groups if necessary"
       time_and_place: Already exists a webconference for this datetime and groups
       date: This webconference already happened. It's not possible to change it's period.
+      started: This webconference already started. It's not possible to change it's duration.
+      date_new: It's not possible to set a webconference as finished.
       access: Can't access this webconference. Verify it's period.
       no_record: This webconference has no recordings
       offline: Unavailable webconference
-      still_processing: This webconference's recording is still processing. Please wait.
+      still_processing: This webconference's recording is still processing. <br/><br/> Processing takes about the same time as the class. <br/><br/> Please, wait and try again later.
       general_message: It was not possible to execute this action.
       on_going: This webconference hasn't finished yet. Please wait.
       date_range: Assignment's date range already expired.
@@ -1488,15 +1503,27 @@ en_US:
       removed_record: Removed or empty record
       copy: It's not possible to remove this webconference record. This webconferenceis a copy. It's necessary to remove original webconference's record.
       acu: It's not possible to remove this webconferences or its record. There are evaluated students or with comments.
+      integrated: It's not possible to delete webconferences integrated to other systems.
       cant_edit_date: Only the day can not be changed.
     preview:
       delete_record: Remove record
       placeholder: Type any value to be searched at the table of this page
       search: Search
+      filter: Filter
       location: Location
-      warning: "This page doesn't allow webconference's edition, only it's preview, as it's respective records (allowing the removal of these). To create/edit/remove webconferences, go to Content Edition."
+      information_title: '<b>Basic information</b>'
+      information: "This page doesn't allow webconference's edition, only it's preview, as it's respective records (allowing the removal of these). To create/edit/remove webconferences, go to Content Edition.<br><br>When you click the <b>Web Conferencing Support</b> button, available for the \'<i>Conferencing Support profile</i>\', you will be available to receive help from webconferences in progress.<br><br>A warning will appear at the top of the page when there is a new call. To answer a call, simply enter the webconference.<br><br>Webconferences with call will be identified in the following colors: <ul style='list-style-type: square; margin-left: 40px;'> <li>Blue - Open call;</li> <li>Green - Answered call;</li> <li>Red - Webconference closed and called unanswered;</li> <li>Yellow - No one from the online support, user sent to the email (webconferência@virtual.ufc.br).</li> </ul>"
       shared_with: ( Shared with %{link} group(s) )
-      access: Access's list
+      access: Access
+      help: Request
+      help_list: Requests responses
+      view_webs: 'View: %{type}'
+      all: "All"
+      in_progress: "In progress"
+      scheduled: "Scheduled"
+      finish: "Finished"
+      recorded: "With recording"
+      disconnect_webcsocket: "Are you sure you want to disable real-time support?"
     index:
       shared_with: Shared with %{link} group(s)
       access: Access's list
@@ -1524,6 +1551,8 @@ en_US:
       group: Group
       user: User
       title: List of access to webconference %{webconference_name}
+      title_list_support: Support for requests (support)
+      responsible: 'Attended by:'
       on_going: '<b> Warning: </b> This webconference is still on going, therefore this access list can be extended.'
       not_started: '<b> Warning: </b> This webconference have not started yet.'
       evaluate: Evaluate/Comment
@@ -1533,12 +1562,19 @@ en_US:
       working_hours: Working hours
       profile: Profile
       summary: Table which content has all access list with profile, name of user, complete name of group, date and time info. As well you can evaluate all access of a student, if you're a teatcher.
+    list_support_help:
+      title: Webconference attendance list - %{webconference_name}
+      no_requests: There are no attendance records for this webconference.
+      responsible:  'Attended by:'
+      date: Date
+      time: Time
     get_record:
       recordings: "%{name}'s recordings"
       access: Access to recording
       record: Recording %{number}
       start: Recording's start
       end: Recording's end
+      duration: Duration
       options: Options
       download_podcast: Download Podcast
       download_video: Download Vídeo
@@ -1547,6 +1583,16 @@ en_US:
       warning: '<b>Importat: </b> To each prolonged absence from webconference participants, a new recording is made.'
       no_message: Removed or empty recordings or webconference does not have any recordings
       remove: Remove recording
+    support_help:
+      title: ' Support Web Conferencing'
+      answer_html: "<br> Hello <b>%{user_name}</b>! <br><br> Select the webconference for which you want to request help: "
+      request: 'Request real-time help'
+      message: 'Send Message'
+      no_data_html: "There are no webconferences in progress. Click <a href='https://goo.gl/forms/PEB4WFixcWwuGyOt1' target='_blank'>here</a> to respond to the tool evaluation questionnaire."
+      new_request: "New request(s) for help from webconference !!!"
+      send_request: "Your request has been sent! Please go back to the webconference and wait for support."
+      error_request: "Failed to send! Please try again later."
+      choose_webconference: "It is necessary to choose a webconference so you can ask for help"
     warning:
       blocked: "Your browser has popup permissions blocked. Please allow it."
     user_access:
@@ -1707,7 +1753,7 @@ en_US:
     users_passwords:
       new_password: New password
       confirm_new_password: Confirm new password
-      change_my_password: Change
+      change_my_password: Change password
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       send_instructions_email: 'An email with instructions about how to set a new password will be send to the following email %{email}.'
       updated: 'Your password was changed successfully. You are now signed in.'
@@ -1746,9 +1792,10 @@ en_US:
         subject: 'Unlock Instructions'
       msg:
         hello: "Hello %{email}!"
-        request: "Someone has requested a link to change your password."
-        request_info: "You can do this through the link below."
+        request: "A password recovery url was requested."
+        request_info: "If you want to continue, you can do this through the link below."
         request_info_ma: "As you are an user integrated with Sigaa, you must recover your password through it. To do so, access the link below."
+        request_info_app: "Your login and password are currently associated with %{system}. To maintain integration, you must request to change your password on %{system} by accessing %{url}. If you would like to undo the integration and change your Solar password independently, please visit the link below."
         ignore: "If you didn't request this, please ignore this email."
         change: "Your password won't change until you access the link above and create a new one."
         username_info: "Your username is: %{username}."
@@ -2049,6 +2096,7 @@ en_US:
       summary_evaluative: "This table contains all the evaluation activity"
       summary_frequency: "This table contains all the frequency activity"
       summary_notevaluative: "This table contains all the not evaluation activity"
+      members_group: Group's members
     assignments:
       participants: See participants
       groups: See groups
@@ -2140,6 +2188,7 @@ en_US:
       select_an_assignment: Select an assignment
       select_a_group: Select a group
       import: Import
+      confirm: All groups of the selected assignment will be imported.
     list:
       no_groups: No groups
       participants: See participants
@@ -2152,12 +2201,16 @@ en_US:
       unique_name: must be unique.
       alone: Student is alone at this group and can't be without any group after assignment's end.
       already_exists: Already exists a group with student's name. Please rename that group.
+      user_already_exists: Student is already in a group for this assignment
     success:
       imported: Groups and participants imported successfully.
     new:
       new_group_name: New group
     automatic_split_group_jobs:  Automatic split of group assignment
-    split_group_jobs: "Assignment %{assignment_key} starts today, students without groups were automatically split or inserted into other groups as follows:"
+    split_group_jobs: "Assignment %{assignment_key} starts today. For this reason, students will be automatically assigned to groups"
+    alert_create_assignment_group_email: Warning split group assignments
+    automatic_one_week_before_email_split_group: "Assignment %{assignment_group_name} starts in 1 week, if students are not divided into groups, groups will be created
+                                                  automatically from an average of previous groups or with approximately 3 students in each group"
   public_files:
     index:
       title: "Public area of %{name}"
@@ -2274,6 +2327,7 @@ en_US:
     specific_profile: Specific Profile
     specific_profile_text: "Profile that is specific to a discipline, offer or group <br/><em>Example: Professor, Tutor</em>"
     close: Close
+    oauth_application: "This user username and password, as well other personal and access data, are linked to %{system} system. By confirming, this bond will be removed and both registration will be independent, as well the username or password could be different. Are you sure you want to proceed? This user will be informed about this change."
     allocations_user:
       no_data: No data
     users:
@@ -2622,8 +2676,8 @@ en_US:
       rule_min_final_exam_grade: "<div> 9) <b>Minimum final exam grade allowed: %{min_final_exam_grade}</b></div>"
       rule_final_exam_passing_grade: "<div> 10) <b>Minimum final grade to approval after final exam: %{final_exam_passing_grade}</b></div>"
       rule_window_analyzer: "<div> 11) The <b>Analyzer</b> is a tool that allows you to execute correctly activities configurations. By pressing shortcut 'A' or clicking on 'Analyzer' link, a window will show up. It will show the calculation, at real time, of groups <b>final weight</b> and  <b>working hours</b>. In way that will be easier to identify which groups are with final weight 100 and working hours equal to the informed on these instructions. The green text  ilustrates that the calculation is OK and the red text shows that there are something wrong with the calculation: there are more or less hours or final weight. When everything is green or when all final weight are 100 and the working hours are the same as showned at these instructions, click on 'Finish'</div>"
-      groups_block_register_notes: "<div> 12) The class (s): <b> %{groups}</b> are with the blocked note register.</div>"
-      groups_block_register_notes_error: "The class (s): <b> %{groups}</b> are with the blocked note register."
+      groups_block_register_notes: "<div> 12) The class(es): <b> %{groups}</b> are with the grade registration closed.</div>"
+      groups_block_register_notes_error: "The class(es): <b> %{groups}</b> are with the grade registration closed."
       expand: Expand all
       compress: Compress all
       share_wh: Share working/hours
@@ -2980,7 +3034,7 @@ en_US:
   confirm_cancel: 'Are you sure you want to cancel?'
   message_confirm_user: 'Are you sure?'
   page_loading: "Page is loading..."
-
+  oauth_application_password: "Your username and password, as well your other personal and access data, are linked to %{system} system. By confirming, this bond will be removed and both registration will be independent, as well your username or password could be different. Are you sure you want to proceed?"
   messages:
     file_too_big: "File too big"
     mail_header: "Sent by: "
@@ -3003,7 +3057,9 @@ en_US:
     support_only_email: "<atendimento@virtual.ufc.br>"
     support_email: "atendimento@virtual.ufc.br"
     support_html: "Support &lt;atendimento@virtual.ufc.br&gt;"
+    support_help: "Support webconference <webconferencia@virtual.ufc.br>"
     support_simple: "Support"
+    support_warning: "There is no one online at the moment. Please, explain your difficulty or problem, return to the webconference and someone will assist you soon as possible."
     no_mail: no email
     send_message: Send Message
     next: Next
@@ -3153,6 +3209,9 @@ en_US:
       agendaWeekAlt: View by week
       monthAlt: View by month
       listAlt: View next events list
+      prev_month: Previous Month
+      next_month: Next Month
+    by_day: "Day"
 
   deficiency:
     deficiency: Deficiency
@@ -3348,7 +3407,7 @@ en_US:
       online_correction: Online correction
     files:
       delete: Remove file
-      correction_file: Exam online correction
+      correction_file: Exam online correction (opens in new window)
     online_correction:
       tools: Tools
       hand: Hand
@@ -3473,6 +3532,8 @@ en_US:
       cpf_as_username: "can't be another's suser CPF"
       multiple_sessions: "It's not possible to be logged on multiple devices at same time."
       username: "must have only letters and numbers."
+      password_mandatory_integration: "necessary. Your username and password, as well all your personal and access data, are associated to %{system}. By changing any of those information, this integration will be removed and it is necessary that your password also be changed."
+      oauth_application: "can't be changed. This user is integrated to %{system}. Integration must be removed to that this field could be updated."
     notices:
       ma:
         use_ma_data: "Your access data were imported from Sigaa. To change or recover your access data, go to the address: <a href='https://si3.ufc.br/sigaa/verTelaLogin.do' target='_blank'>https://si3.ufc.br/sigaa/verTelaLogin.do</a>."
@@ -3513,6 +3574,7 @@ en_US:
       previous_email: "Previous Email: "
       last_access: "Last access: "
       selfregistration: "Has made his selfregistration at Sigaa: "
+      other_system: "Integrated with another system: "
       y: 'Yes'
       n: 'No'
     request_profile:
@@ -3818,6 +3880,25 @@ en_US:
         title: "Comments [C]"
       code:
         title: 67
+    support_webconference:
+      name:
+          on_off: "Enable/Disable webconference support"
+          on_off_key: "Shift + Q"
+          list_webconferences: "View webconferences (Support)"
+          list_webconferences_key: "Shift + V"
+          list_all: "List all webconferences [A]"
+          list_scheduled: "List scheduled webconferences [S]"
+          list_in_progress: "List webconferences in progress [P]"
+          list_finalized: "List completed webconferences [C]"
+          list_recorded: "List recorded webconferences [R]"
+      code:
+          on_off: 81
+          list_webconferences: 86
+          list_all: 65
+          list_scheduled: 83
+          list_in_progress: 80
+          list_finalized: 67
+          list_recorded: 82
     editions:
       name:
         window: "Analyzer [A]"
@@ -3887,16 +3968,18 @@ en_US:
       situation3: "- Once automatically situation setting date reached (%{date}), it won't be possible to remove student's situations."
       situation4: "- By removing sutdent's situations, all will be setted as 'Pending' or 'Undefined' until they're setted again."
       situation5: "- Once situation was defined, at every new evaluation or working hours, student's situation will be immediately updated."
+      grades1: "- Course's responsible are able to <b>close grades registration</b> by the time there is no more open evaluative of frequency activities."
+      grades2: "- Once grade registration is <b>closed</b>, <b>won't be possible to evaluate activities</b>."
       confirm: Last evaluative activity haven't happened yet. Are you sure that you want to set situations?
-      confirm2: There are unfinished and / or submitted activities without note and / or workload. Are you sure you want to block note registration?
+      confirm2: There are unfinished and / or submitted activities without note and / or workload. Are you sure you want to close grades registration?
       origin_group: Original group (merged)
       register_notes_on: Release Notes Record
       register_notes_off: Lock Notes Record
       msg_register_notes_on: Release Notes Record
       msg_register_notes_off: Locked note log
       error_msg_register_notes: Error releasing / blocking note log
-      msg_button_register_off: Record of notes blocked by the person in charge
-      error_msg_register_notes_active_open: "Error: There are unfinished activities."
+      msg_button_register_off: "Grades registration was closed by the course's responsible"
+      error_msg_register_notes_active_open: "It was not possible to close grades registration. There are unfinished activities."
     info:
       assignments: Assignments
       date_range: Date range
@@ -4017,6 +4100,8 @@ en_US:
       scheduled: "Scheduled"
       finish: "Finish"
       processing: "Processing"
+      scheduled_coord: 'Scheduled (date suggested by coordinators)'
+      scheduled_someone: 'Scheduled (date defined by %{user})'
     reports:
       general_evaluative: Scores Report - Evaluative Activities
       general_frequency: Scores Report - Frequency Activities
@@ -4118,7 +4203,9 @@ en_US:
       limit: "Student's limit for this day and time has been reached. Please choose other date or time"
       time_and_place: There's already a webconference for this group at this assignment at the choosen time.
       unavailable_or_date_range: It was not possible to execute action. Webconference's unavailable or date range expirded.
-      date: This webconference already happened and was recorded. It's not possible to change it's period.
+      date: This webconference already happened. It's not possible to change it's period.
+      started: This webconference already started. It's not possible to change it's duration.
+      date_new: It's not possible to set a webconference as finished.
     success:
       removed: Webconference was successfully deleted.
       record: Webconference's record successfully removed.
@@ -4250,6 +4337,9 @@ en_US:
         duration: Student's time to respond the exam after start it.
         result_release: Result's release
         result_release_explain: Date and time on which exam's result will be released. When empty, result will be released immediately after exam's end
+        immediate_result_release_activated: Deactivate immediate result release
+        immediate_result_release_deactivated: Activate immediate result release
+        immediate_result_release_explain: If activated, exam's result will be released immediately after is finished. In that case, exam can only have 1 attempt.
       control:
         continue: Continue
         previous: Previous
@@ -4265,6 +4355,7 @@ en_US:
       info: 'Result will be released at %{date}'
       title: '(Result)'
       aria: 'View result release date'
+      imemediate: immediately after student finishing exam
     pre:
       alert_save: All questions are automatically saved.
       alert_start: Click the link below if you are sure you want to start the exam.

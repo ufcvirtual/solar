@@ -20,6 +20,15 @@
 	color: red;
 }
 
+[class^="icon-"].on,
+[class*=" icon-"].on {
+	color: #003E7A;
+}
+
+ [class^="icon-"].off,
+[class*=" icon-"].off {
+	color: red;
+}
 
 [class^="icon-"], [class*=" icon-"] {
 	font-family: 'Solar';
@@ -538,12 +547,12 @@
 	content: "\e607";
 }
 .icon-backward2:before {
-  content: "\23ea";
-  color: #696969;
+  content: "\23ee";
+  color: #000;
 }
 .icon-forward3:before {
-  content: "\23e9";
-  color: #696969;
+  content: "\23ed";
+  color: #000;
 }
 .icon-cancel-circle:before {
   content: "\2bbf";
@@ -559,4 +568,14 @@
 }
 .icon-hand:before {
 	content: "\270B";
+}
+@-moz-document url-prefix() {
+   .icon-backward2:before {
+	  content: "\23ee";
+	  color: #fff;
+	}
+	.icon-forward3:before {
+	  content: "\23ed";
+	  color: #fff;
+	}
 }

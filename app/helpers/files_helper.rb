@@ -99,8 +99,8 @@ module FilesHelper
     Zip::File.open(path_zip_file) do |zipfile|
       zipfile.each do |f|
         f_path = File.join(destination, f.name)
-        f_path = f_path.force_encoding('iso-8859-1').encode('utf-8')
-        normalize_file_path(f_path)
+        # f_path = f_path.force_encoding('iso-8859-1').encode('utf-8')
+        # normalize_file_path(f_path)
         FileUtils.mkdir_p(File.dirname(f_path))
         zipfile.extract(f, f_path) unless File.exist?(f_path)
       end # each

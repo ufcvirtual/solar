@@ -257,7 +257,6 @@
     }
     .question_audios {
       text-align: center;
-      //margin-left: 15%;
 
       #question_audio{
         max-width: 150px;
@@ -269,7 +268,7 @@
       .audio {
         display: inline-block;
         a i{
-          margin-bottom: 44px;
+          margin-bottom: 52px;
           display: inline-block;
           vertical-align: middle;
         }
@@ -277,26 +276,21 @@
           text-align: left;
         }
       }
+  
       .audio.legend{
         padding: 10px 0 0 10px;
-        //display: block
-        // display: inline-grid;
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
-        //width: 620px;
         margin-bottom: 10px;
-        //background-color: $question_image_legend_background;
         .audio{
           margin: 5px 0 5px 0;
           background: $questions_audios_background;
-          background: -moz-linear-gradient(to bottom, black, black);
+          background: -moz-linear-gradient(to bottom, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%);
           padding-bottom: 22px;
-          //background: -moz-linear-gradient(left, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%);
-          // height: 32px;
-          height: 54px;
-          //width: 56%;
+          padding-right: 10px;
+          height: 53.9px;
           width: max-content;
           position: relative;
           top: 50%;
@@ -307,7 +301,6 @@
         }
         .legend{
           padding-top: 13px;
-          //width: 44%;
           display: inline-block;
           text-align: center;
           vertical-align: top;
@@ -414,23 +407,17 @@
       align-items: center;
       margin-top: 1%;
       padding: 0 0 6px 10px;
-      //display: block;
-      // display: -webkit-box;
       text-align: center;
-      //width: 600px;
       margin-bottom: 10px;
-      //background-color: $question_image_legend_background_exams;
-      // display: table;
 
       .audio{
         margin: 5px 0 0 -11px;
         padding-top: 7px;
         padding-bottom: 15px;
+        padding-right: 10px;
         background-color: $questions_audios_background_exams;
-        background: -moz-linear-gradient(to bottom, black, black);
-        //background: -moz-linear-gradient(left, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%);
+        background: -moz-linear-gradient(to bottom, $questions_audios_background_firefox, $questions_audios_background_firefox);
         height: 31px;
-        /*width: 58%;*/
         width: max-content;
         position: relative;
         left: 0.5%;
@@ -453,9 +440,6 @@
       }
       .audio_description{
         padding-top: 13px;
-        // top: 50%;
-        // width: 42%;
-        // margin-left: 105%;
         box-sizing: content-box;
         a i{
           margin-top: 4px;
@@ -483,6 +467,7 @@
         padding-top: 10px;
         padding-bottom: 8px;
         background-color: $questions_audios_background;
+        padding-right: 10px;
         background: -moz-linear-gradient(left, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%, $questions_audios_background_firefox 100%);
         height: 27px;
         width: 58%;
@@ -797,5 +782,17 @@
 [class^="list_questions_exam_"]{
   a, a i{
     display: inline;
+  }
+}
+
+@-moz-document url-prefix() {
+  .exam_open .questions .question_audios .audio.legend .audio{
+    height: 43.9px;
+  }
+  .exam_open .question_items .audio.legend .audio{
+    height: 21.9px;
+  }
+  .exam_open .questions .question_audios .audio a i{
+    margin-bottom: 40px;
   }
 }

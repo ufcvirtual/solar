@@ -41,18 +41,18 @@
       %ul.form_user_content
         %li
           %span.form_label= f.label :name
-          %span.form_field= f.text_field :name, id: 'name', size: field_size
+          %span.form_field= f.text_field :name, id: 'name', size: field_size, :'data-previous-value' => @user.name
           %span.form_error= msg_name
         %li
           %span.form_label= f.label :cpf
           %span.form_field{:'data-tooltip' => t('users.warnings.cpf')}= f.text_field :cpf, size: field_size, id: 'cpf', disabled: true
           %span.form_error= msg_cpf
         %li
-          %span.form_label= f.label :birthdate, class: 'label_usuario'
-          %span.form_field= f.date_select :birthdate, start_year: Time.now.year - 2, end_year: 1900, id: 'birthdate'
+          %span.form_label= f.label :birthdate, class: 'label_usuario', id: 'birthdate', :'data-previous-value' => [@user.birthdate.try(:day), @user.birthdate.try(:month), @user.birthdate.try(:year)]
+          %span.form_field= f.date_select :birthdate, start_year: Time.now.year - 2, end_year: 1900, include_blank: true
         %li
           %span.form_label= f.label :gender, class: 'label_gender'
-          %span.form_field= f.select :gender, ([["M", true], ["F", false]]) , id: 'gender', size: 2
+          %span.form_field= f.select :gender, ([["M", true], ["F", false]]) , id: 'gender', size: 2, :'data-previous-value' => @user.gender
         %li
           %span.form_label= f.label "#{t(:form_special_needs)}*"
           %span.for
@@ -74,12 +74,12 @@
       %ul.form_user_for_mobile
         %li
           %span.form_label= f.label :nick
-          %span.form_field= f.text_field :nick, id: 'nick', size: field_size
+          %span.form_field= f.text_field :nick, id: 'nick', size: field_size, :'data-previous-value' => @user.nick
           %span.form_error= msg_nick
       %ul.form_user_for_mobile
         %li
           %span.form_label= f.label :username
-          %span.form_field= f.text_field :username, id: 'login', size: field_size
+          %span.form_field= f.text_field :username, id: 'login', size: field_size, :'data-previous-value' => @user.username
           %span.form_error= msg_login
       %ul.form_user_for_mobile
         %li
@@ -98,7 +98,7 @@
       %ul.form_user_for_mobile
         %li
           %span.form_label= f.label :email
-          %span.form_field= f.text_field :email, id: 'email', size: field_size
+          %span.form_field= f.text_field :email, id: 'email', size: field_size, :'data-previous-value' => @user.email
           %span.form_error= msg_email
       %ul.form_user_for_mobile
         %li
@@ -118,36 +118,36 @@
       %ul.form_user_for_mobile
         %li
           %span.form_label= f.label :address
-          %span.form_field= f.text_field :address , id: 'address', size: field_size
+          %span.form_field= f.text_field :address , id: 'address', size: field_size, :'data-previous-value' => @user.address
           %span.form_e
         %li
           %span.form_label= f.label :address_number
-          %span.form_field= f.text_field :address_number , id: 'address_number', size: 10
+          %span.form_field= f.text_field :address_number , id: 'address_number', size: 10, :'data-previous-value' => @user.address_number
           %span.form_label= f.label :address_complement
-          %span.form_field= f.text_field :address_complement, id: 'address_complement', size: 16
+          %span.form_field= f.text_field :address_complement, id: 'address_complement', size: 16, :'data-previous-value' => @user.address_complement
         %li
           %span.form_label= f.label :address_neighborhood
-          %span.form_field= f.text_field :address_neighborhood, id: 'address_neighborhood', size: 10
+          %span.form_field= f.text_field :address_neighborhood, id: 'address_neighborhood', size: 10, :'data-previous-value' => @user.address_neighborhood
           %span.form_label= f.label :zipcode
-          %span.form_field= f.text_field :zipcode, size: 16, id: 'zipcode'
+          %span.form_field= f.text_field :zipcode, size: 16, id: 'zipcode', :'data-previous-value' => @user.zipcode
         %li
           %span.form_label= f.label :country
-          %span.form_field= f.text_field :country, id: 'country', size: 10
+          %span.form_field= f.text_field :country, id: 'country', size: 10, :'data-previous-value' => @user.country
           %span.form_label= f.label :state
           %span.form_field= f.select :state, ([["AC", "AC"], ["AL", "AL"], ["AP", "AP"],
                 ["AM", "AM"], ["BA", "BA"], ["CE", "CE"], ["DF", "DF"], ["ES", "ES"],
                 ["GO", "GO"], ["MA", "MA"], ["MT", "MT"], ["MS", "MS"], ["MG", "MG"],
                 ["PA", "PA"], ["PB", "PB"], ["PR", "PR"], ["PE", "PE"], ["PI", "PI"],
                 ["RJ", "RJ"], ["RN", "RN"], ["RS", "RS"], ["RO", "RO"], ["RR", "RR"],
-                ["SC", "SC"], ["SP", "SP"], ["SE", "SE"], ["TO", "TO"]]), include_blank: true
+                ["SC", "SC"], ["SP", "SP"], ["SE", "SE"], ["TO", "TO"]]), include_blank: true, :'data-previous-value' => @user.state
         %li
           %span.form_label= f.label :city
-          %span.form_field= f.text_field :city, id: 'city', size: field_size
+          %span.form_field= f.text_field :city, id: 'city', size: field_size, :'data-previous-value' => @user.city
         %li
           %span.form_label= f.label :telephone
-          %span.form_field= f.text_field :telephone, size: 10, id: 'telephone'
+          %span.form_field= f.text_field :telephone, size: 10, id: 'telephone', :'data-previous-value' => @user.telephone
           %span.form_label= f.label :cell_phone
-          %span.form_field= f.text_field :cell_phone, size: 16, id: 'cell_phone'
+          %span.form_field= f.text_field :cell_phone, size: 16, id: 'cell_phone', :'data-previous-value' => @user.cell_phone
 
   / Dados de Instituição
   .block_wrapper
@@ -157,7 +157,7 @@
       %ul.form_user_for_mobile
         %li
           %span.form_label= f.label :institution
-          %span.form_field= f.text_field :institution, id: 'institution', size: field_size
+          %span.form_field= f.text_field :institution, id: 'institution', size: field_size, :'data-previous-value' => @user.institution
           %span.form_error= msg_institution
 
   / Pessoais
@@ -190,9 +190,10 @@
 
   .user_data_form_buttons
     %input.btn.btn_default.user_data_form_buttons{type: "button",  value: "#{ t(:back) }", onclick: "document.location.href='#{home_path}'"}
-    = f.submit t(:confirm), id: "confirm", class: "btn btn_main user_data_form_buttons", alt:  t(:confirm)
+    = link_to t(:confirm), "#void", onclick:  "submit_form(this)", id: "confirm", class: "btn btn_main user_data_form_buttons", alt:  t(:confirm)
 
   = hidden_field_tag :changeable_fields, User::CHANGEABLE_FIELDS
+  = hidden_field_tag :api_fields, '#' + (User::API_FIELDS.split(' ').flatten - ['birthdate']) .join(', #')
 
 = javascript_include_tag 'tooltip'
 
@@ -222,4 +223,40 @@
     $(function(){
       $('#accesskey_maincontent').prop('href', '#register-header');
     });
+  }
+
+  function submit_form(object){
+    var form_fields = $($("#api_fields").val());
+    var birthdate_previous = $('#birthdate').data('previous-value').split(" ");
+
+    var something_was_changed = false;
+
+    if(!(isEmpty($('#user_birthdate_3i').val()) && isEmpty(birthdate_previous[0])) || ($('#user_birthdate_3i').val() != birthdate_previous[0])){
+      something_was_changed = true;
+    }
+
+    if(!(isEmpty($('#user_birthdate_2i').val()) && isEmpty(birthdate_previous[1])) || ($('#user_birthdate_2i').val() != birthdate_previous[1])){
+      something_was_changed = true;
+    }
+
+    if(!(isEmpty($('#user_birthdate_1i').val()) && isEmpty(birthdate_previous[2])) || ($('#user_birthdate_1i').val() != birthdate_previous[2])){
+      something_was_changed = true;
+    }
+
+    form_fields.each(function(){
+      if(!(isEmpty($(this).val()) && isEmpty($(this).data('previous-value'))) || ($(this).val() != $(this).data('previous-value'))){
+        something_was_changed = true;
+      }
+    });
+
+    if ("#{@user.oauth_application.try(:id)}" != "" && something_was_changed){
+      if (!confirm("#{I18n.t(:oauth_application_password, system: "#{@user.oauth_application.try(:name)}")}"))
+        return false;
+    }
+
+    $(object).parents('form:first').submit();
+  }
+
+  function isEmpty(value){
+    return (value == null || value.length === 0);
   }

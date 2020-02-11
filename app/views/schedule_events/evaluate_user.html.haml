@@ -23,6 +23,12 @@
   .files
     = render partial: 'schedule_event_files/list', locals: { files: @acu.try(:schedule_event_files), tool: @schedule_event, tool_type: 'ScheduleEvent', student_id: @student_id }
 
+  .files
+    = render partial: 'schedule_event_files/list', locals: { files: @acu.try(:schedule_event_files), tool: @schedule_event, tool_type: 'ScheduleEvent', student_id: @student_id }
+
+  .files
+    = render partial: 'schedule_event_files/list', locals: { files: @acu.try(:schedule_event_files), tool: @schedule_event, tool_type: 'ScheduleEvent', student_id: @student_id }
+
   .comments
     = render partial: 'comments/list', locals: { comments: @acu.try(:comments), tool: @schedule_event, tool_type: 'ScheduleEvent' }
 

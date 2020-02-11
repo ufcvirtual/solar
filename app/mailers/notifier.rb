@@ -29,8 +29,23 @@ class Notifier < ActionMailer::Base
          subject: "[SOLAR] Novo Cadastro")
   end
 
-  def change_user(user, token=nil, password=nil)
+  def enroll_user(user, allocation_tag, token=nil, password=nil)
     @user, @token, @password = user, token, password
+    @allocation_tag = allocation_tag.info
+
+    mail(to: @user.email,
+         subject: "[SOLAR] Matrícula")
+  end
+
+  def change_user(user, token=nil, password=nil, username_changed=nil, password_changed=nil, removed_integration=nil, changed_data=[])
+    @user, @token, @password = user, token, password
+    @username_changed, @password_changed = username_changed, password_changed
+    @removed_integration = removed_integration
+
+    @changed_data = []
+    changed_data.each do |data|
+      @changed_data << t("activerecord.attributes.user.#{data.to_s}")
+    end
 
     mail(to: @user.email,
          subject: "[SOLAR] Mudança de dados de acesso")

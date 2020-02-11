@@ -18,6 +18,12 @@
     %li=raw t('scores.index.situation3', date: l(@allocation_tag.situation_date))
   %li=raw t('scores.index.situation2')
   %li=raw t('scores.index.situation5')
+  %br
+  - unless @activity_open
+    %li
+      %b= t('scores.index.msg_button_register_off')
+  %li=raw t('scores.index.grades1')
+  %li=raw t('scores.index.grades2')
 %br
 
 .parent
@@ -38,7 +44,6 @@
           %th#situation= t('scores.index.situation')
           - if @merged_group
             %th#main_group= t('scores.index.origin_group')
-
       %tbody.users
         - if @users.blank?
           %tr.lines
@@ -47,22 +52,15 @@
           = render partial: 'pending_summary', locals: { users: @users, merged_group: @merged_group }
 - unless @users.blank?
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), summary_scores_path(page: @users.next_page), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items), :'aria-label' => t(:load_items)  if @users.next_page
-
-
 :javascript
-
   $(function(){
     $('#all_students_scores').nice_checkbox();
-
     $(".btn_send_msg").on('click', function(event){
       event.preventDefault();
-
       if($(this).is('[disabled]')){
        return false
       }
-
       students_ids = []
-
       $('tbody :checkbox:checked').each(function(index, element){
         students_ids.push(element.value)
       });
@@ -71,7 +69,5 @@
         href: url,
         open: true,
       });
-
     });
-
   });

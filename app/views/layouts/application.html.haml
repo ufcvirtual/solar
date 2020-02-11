@@ -43,6 +43,19 @@
               = link_to '#void', {onclick: "mysolarTopSubmenuToggle()", class: 'mysolar_top_link nav_item', id: 'mysolar_top_user_nick'} do
                 = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", :'aria-hidden' => 'true'
                 %span#student-name.dont-show-in-mobile= current_user.nick
+              / Submenu
+              %ul#mysolar_top_submenu
+                %li.sub_nav_menu.mysolar_top_submenu_fix
+                  = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "mysolar_top_img_user"
+                  #mysolar_top_submenu_username= current_user.name
+                  #mysolar_top_submenu_useremail= current_user.email
+                - if current_user.can_synchronize?
+                  %li.sub_nav_menu.mysolar_top_submenu_fix= link_to t("mysolar.synchronize"), "#", :'data-url' => synchronize_ma_users_path, id: 'synchronize', class: "sub_nav_item"
+                %li.sub_nav_menu.mysolar_top_submenu_fix= link_to t(:mysolar_edit_profile), edit_user_registration_path, id: 'my_data', class: "sub_nav_item"
+                %li.sub_nav_menu.mysolar_top_submenu_fix= link_to t(:mysolar_change_picture), edit_photo_users_path, class: "fancybox.ajax sub_nav_item", :'aria-label' => t(:mysolar_change_picture) + t('fancybox.open')
+                %li.sub_nav_menu.mysolar_top_submenu_fix= link_to t("mysolar.profiles"), profiles_users_path, class: "sub_nav_item"
+                %li.sub_nav_menu.mysolar_top_submenu_fix= link_to t("mysolar.configure"), configure_users_path, class: "sub_nav_item"
+                %li.sub_nav_menu.mysolar_top_submenu_fix= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, class: "sub_nav_item")
             %li#server_clock_wrapper.nav_menu.dont-show-in-mobile
               %span#server_clock.nav_item.dont-show-in-mobile{name: "server_clock"}
             %li#accessibility_top_menu.mysolar_top_submenu_label_regular.nav_menu
@@ -71,23 +84,10 @@
                 %li.sub_nav_menu= link_to t(:login_faq), faq_path, class: "sub_nav_item", :'aria-label' => t(:login_faq)
                 %li.sub_nav_menu= link_to t(:videos), "../../video_tutorials.html", target: "_blank", class: "sub_nav_item", :'aria-label' => t(:videos)+ t(:new_window)
                 %li.sub_nav_menu= link_to t(:contact), support_new_messages_path, class: "sub_nav_item"
-            %li#mysolar_top_logout.nav_menu.dont-show-in-mobile
+            %li#mysolar_top_logout.nav_menu
               = link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, id: "logout", class: "mysolar_top_link logout nav_item dont-show-in-mobile")
-        / Submenu
-        #mysolar_top_submenu
-          %div
-            = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "mysolar_top_img_user"
-            #mysolar_top_submenu_username= current_user.name
-            #mysolar_top_submenu_useremail= current_user.email
-          %ul
-            /  icon-cycle
-            - if current_user.can_synchronize?
-              %li.sub_nav_menu= link_to t("mysolar.synchronize"), "#", :'data-url' => synchronize_ma_users_path, id: 'synchronize', class: "sub_nav_item"
-            %li.sub_nav_menu= link_to t(:mysolar_edit_profile), edit_user_registration_path, id: 'my_data', class: "sub_nav_item"
-            %li.sub_nav_menu= link_to t(:mysolar_change_picture), edit_photo_users_path, class: "fancybox.ajax sub_nav_item", id: "change_picture", :'aria-label' => t(:mysolar_change_picture) + t('fancybox.open')
-            %li.sub_nav_menu= link_to t("mysolar.profiles"), profiles_users_path, class: "sub_nav_item"
-            %li.sub_nav_menu= link_to t("mysolar.configure"), configure_users_path, class: "sub_nav_item"
-            %li.sub_nav_menu= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, class: "sub_nav_item")
+              %a{href: "/logout", class: "mysolar_top_link logout nav_item"}
+                = image_tag 'exit-icon.png', id: "image_exit", height: "30", width: "30", class: "show-only-in-mobile", alt: t(:mysolar_alt_img_exit), :'aria-hidden' => 'true'
 
         / tabs
         .open-menu
@@ -108,7 +108,7 @@
                   - link_name = user_session[:tabs][:opened][link_id][:breadcrumb].first[:tab]
                   %li.mysolar_unit_tab{:'data-tab-context'=>"#{Context_Curriculum_Unit}", :'data-tab-id'=>"#{link_id}", class: user_session[:tabs][:active] != "Home" ? "mysolar_unit_active_tab" : ""}
                     = link_to(link_name.truncate(30), activate_tab_path(id: link_id), :'aria-label'=>t('tabs.access', name: link_name))
-                    = link_to('',close_tab_path(id: link_id), class: 'tabs_close', id: "#{link_id}", :'aria-label' => t('tabs.close', name: link_name), data: { confirm: t('tabs.close_confirm', name: link_name) })
+                    = link_to('',close_tab_path(id: link_id), class: 'tabs_close', style: "top: 4px;", id: "#{link_id}", :'aria-label' => t('tabs.close', name: link_name), data: { confirm: t('tabs.close_confirm', name: link_name) })
                 - else
                   - menu_dropdown_open_id = user_session[:tabs][:active] == "Home" ? user_session[:tabs][:opened].keys[1] : user_session[:tabs][:active]
                   - menu_dropdown_open_name = user_session[:tabs][:opened][menu_dropdown_open_id][:breadcrumb].first[:tab]
@@ -138,6 +138,13 @@
 
             %li#mysolar_suggestions
               = link_to t(:mysolar_suggestions), 'https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ', class: 'btn', target: '_blank', :'aria-label' => t(:mysolar_suggestions) + t(:new_window)
+            // Support webconference
+            - if @support_help
+              %li#mysolar_support_web
+                = link_to("#", method: "get", class: "btn", onclick: "change_session_sh(#{current_user.id});", :'aria-label' => session[:support_connect] ? t(:support_web_tooltip_off) : t(:support_web_tooltip_on), :'data-tooltip' => session[:support_connect] ? t(:support_web_tooltip_off) : t(:support_web_tooltip_on), :'data-shortcut' => t("shortcut.support_webconference.code.on_off"), :'data-shortcut-shift' => true, remote: true) do
+                  = content_tag(:i, nil, class: "icon-chat #{session[:support_connect] ? 'off' : 'on'}")
+                  = t(:support_web)
+                = link_to Bbb.count_help, preview_webconferences_path, :'aria-label' => t(:support_web_count), :id => "btn_count_help", :class => "btn count_help btn-orange", :'data-tooltip' => t(:support_web_count), :'data-shortcut' => t("shortcut.support_webconference.code.list_webconferences"), :'data-shortcut-shift' => true
             %li
               %noscript= content_tag(:i, nil, class: 'icon-warning noscript', :'aria-label' => t(:no_javascript), title: t(:no_javascript))
 
@@ -345,7 +352,6 @@
         $("#mysolar_open_lesson button").removeClass("disabled");
     });
 
-
     // IM
     imageLoading = "#{image_path('spinner.gif')}"
     xmpp_cpf = "#{current_user.cpf}";
@@ -460,13 +466,18 @@
       //logout
       $('.mysolar_top_link.logout').click(function(e) {
         try {
-          alert(logout_path)
-          alert('teste ok')
-          $(".xmpp-status-menu .unavailable").click();
-          con.xmppstatus.save({'status': 'online'});
-          delete con;
-          con = null;
-          setTimeout(function(){location.href="#{logout_path}";},250); // espera 250 milesegundos para redirecionar para a pagina de logout
+          // Desconecta do IM
+          //$(".xmpp-status-menu .unavailable").click();
+          $('#disconnectDl').click();
+          if (con.length) {
+            con.xmppstatus.save({'status': 'online'});
+            delete con;
+            con = null; }
+
+          //Desconecta o support_help das webconferências
+          if ("#{session[:support_connect]}" == "true") { change_session_sh("#{current_user.id}", true); }
+          // espera 250 milesegundos para redirecionar para a pagina de logout
+          setTimeout(function(){location.href="#{logout_path}";},250);
           e.preventDefault();
         } catch(err) {}
       });
@@ -542,30 +553,20 @@
         goToRight(this);
       } else if (keynum == 37) {
         goToLeft(this);
-      } else if (keynum == 40 || keynum == 32 || keynum == 13) {
-        goInside(this);
       }
     });
 
     $(".sub_nav_item").on("keydown", function(event){
       var keynum = event.which || event.keyCode;
 
-      switch( keynum ) {
-        case 40:
-          goDown(this);
-          break;
-        case 39:
-          goOut(this);
-          break;
-        case 38:
-          goUp(this);
-          break;
-        case 37:
-          goOut(this);
-          break;
-        case 27:
-          goOut(this);
-          break;
+      if( keynum == 27) {
+        $(this).closest("ul").slideUp(150);
+        $('#mysolar_top_submenu_label').removeClass('mysolar_top_submenu_label_selected');
+        $('#mysolar_top_submenu_label').addClass('mysolar_top_submenu_label_regular');
+        $('#accessibility_top_menu').removeClass('mysolar_top_submenu_label_selected');
+        $('#accessibility_top_menu').addClass('mysolar_top_submenu_label_regular');
+        $('#mysolar_top_help').removeClass('mysolar_top_submenu_label_selected');
+        $('#mysolar_top_help').addClass('mysolar_top_submenu_label_regular');
       }
     });
 
@@ -604,6 +605,18 @@
 
         });
       }
+
+      $('#mysolar_top_user_nick').focusin(function() {
+        window.setTimeout(mysolarTopSubmenuOpen, 300);
+      });
+
+      $('#accessibility_top').focusin(function() {
+        window.setTimeout(mysolarAccessibilitySubmenuOpen, 300);
+      });
+
+      $('#help_top').focusin(function() {
+        window.setTimeout(mysolarTopSubmenuHelpOpen, 300);
+      });
     });
 
     function focusTitle(){
@@ -680,6 +693,18 @@
         $('[data-shortcut-shift = "true"]', '.submenu, .mysolar_menu_title_single').each(function(){
           remove_underline_shortcut(this);
         });
+
+        if( e.target.id != 'mysolar_top_user_nick' && !e.target.className.includes('sub_nav_item') ) {
+          mysolarTopSubmenuClose(e);
+        }
+
+        if( e.target.id != 'accessibility_top' && !e.target.className.includes('sub_nav_item') ) {
+          mysolarAccessibilitySubmenuClose(e);
+        }
+
+        if( e.target.id != 'help_top' && !e.target.className.includes('sub_nav_item') ) {
+          mysolarTopSubmenuHelpClose(e);
+        }
       });
 
       setTimeout(function(){
@@ -689,7 +714,121 @@
     });
 
     $(function(){
-      //calendar_keyboard_event_accessibility();
-      //calendar_prev_next_month_accessible();
       calendar_accessible();
     });
+
+    $(document).keydown(function (e) {
+      if (e.which === 27) {
+        $("#dropdown_menu").slideUp(150);
+        $(".dropdown_close").hide(150);
+      }
+    });
+
+     //////////////////////////////////////
+    /*    Support Help Webconference    */
+    //////////////////////////////////////
+    $(function(){
+      if ("#{@support_help}" == "true") {
+        console.log("Cliente suporte: Atualizando a página... Chamando a funcão principal");
+        websocket_support_help("#{current_user.id}", ("#{session[:support_connect]}" == "true"), false);
+      }
+    });
+
+     var ws_sh = ws_sh || null;
+    //Websocket botão support_help
+    function websocket_support_help(user, session, button, btn_exit){
+      console.log("Cliente suporte: Função principal! - ws_sh: " + ws_sh + ", Botão: " + button + ", Sessão: " + session + ", Sair: " + btn_exit );
+      // Desconectando
+      if (!session) {
+        console.log("Cliente suporte: Está conectado? " + ws_sh);
+        if (ws_sh) {
+          console.log("Cliente suporte: A sessão é false - Desconectando");
+          //Muda o botão se não tem sessão
+          $('#mysolar_support_web .btn:first i').removeClass( "off" );
+          $('#mysolar_support_web .btn:first i').addClass( "on" );
+          $('.qtip-content').html("#{I18n.t('support_web_tooltip_on')}");
+          //Desconectando se botão
+          if (button){
+            console.log("Cliente suporte: Botão acionado - Desconectando...");
+            if (!btn_exit){
+              if (confirm("#{I18n.t('webconferences.preview.disconnect_webcsocket')}")){
+                console.log("Desconectado...!");
+                ws_sh.close();
+                console.log("Cliente suporte: Desconectado!");
+              }
+              else { change_session_sh(user); console.log("Cliente suporte: Cancelando desconexão... Muda a sessão e reconecta..."); }
+            //Desconecta ao sair do solar
+            } else {
+              console.log("Cliente suporte: Desconectando com o botão sair!!!");
+              ws_sh.close();
+              console.log("Cliente suporte: Desconectado com o botão sair!!!");
+            }
+          }
+        }
+      }
+      //Conectando
+      else {
+        console.log("Cliente suporte: A sessão é true - Conectando");
+        //Muda o botão se tem sessão
+        $('#mysolar_support_web .btn:first i').removeClass( "on" );
+        $('#mysolar_support_web .btn:first i').addClass( "off" );
+        $('.qtip-content').html("#{I18n.t('support_web_tooltip_off')}");
+        //Conectando se botão
+        console.log("Cliente suporte: Conectando usuário ao websocket...");
+        var websocket_host_sp = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["host_support_help"]}";
+        var websocket_port_sp = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["port_support_help"]}";
+        //Conexão com o WebSocket
+        ws_sh = new WebSocket('ws://'+websocket_host_sp+':'+websocket_port_sp+'/'+user);
+        ws_sh.onmessage = function (msg) {
+          var data = JSON.parse(msg.data);
+          console.log("Cliente suporte: Mensagem recebida do server: " + data.academic_allocation_id);
+          add_support_help_warning(data.requests, data.academic_allocation_id);
+        };
+        ws_sh.onopen = function () {  }; //ao iniciar ws
+        ws_sh.onclose = function () {  }; // ao perder conexão com o ws
+        ws_sh.onerror = function (err) { }; // ao receber erro no ws
+      }
+    }
+
+     // Alterna a sessão do usuário
+    function change_session_sh(user, btn_exit = false){
+      console.log("Cliente suporte: GET AJAX - Mudando a sessão...");
+      $.ajax({
+        type: "GET",
+        url: "/webconferences/support_help_session",
+        success: function(data){
+          console.log("Cliente suporte: Resposta get ajax: " + data.session + user);
+          console.log("Cliente suporte: Sessão alterada com sucesso... Chamando a funcão principal");
+          websocket_support_help(user, data.session, true, btn_exit);
+        },
+        error: function(data){
+          console.log("ERROR: " + data);
+        }
+      })
+    }
+
+     // Novo chamado!
+    function add_support_help_warning(count_help, ac_id){
+      console.log("Cliente suporte: Carregando a flash_message... Quantidade de chamados: " + count_help);
+      if (count_help>0) {
+        var new_help = $( "input[value='"+ ac_id +"']" ).parent();
+        console.log("Novo chamado: " + ac_id + " - " + new_help);
+        // Atualiza css
+        new_help.removeClass("support_help_success support_help_message");
+        new_help.addClass("support_help_request");
+        if ($(new_help).offset()) {
+          // Aponta para a web
+          $(window).scrollTop($(new_help).offset().top);
+        }
+        // Atualiza contador
+        $('#btn_count_help').html(count_help);
+        // Flash Message
+        flash_message(count_help + " #{I18n.t('webconferences.support_help.new_request')}", "warning", undefined);
+        // Redireciona para a tela de preview ao clicar no flash_message
+        $("#flash_message.warning").click(function(){
+          window.location.href = "#{preview_webconferences_path}";
+        });
+      }
+      else
+        erase_flash_messages();
+    }

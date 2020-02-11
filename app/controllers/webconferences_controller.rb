@@ -1,4 +1,5 @@
 require 'will_paginate/array'
+require "em-websocket"
 
 class WebconferencesController < ApplicationController
 
@@ -10,17 +11,21 @@ class WebconferencesController < ApplicationController
   before_filter :prepare_for_group_selection, only: :index
 
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
-  before_filter only: [:edit, :update] do |controller| # futuramente show aqui também
-    @allocation_tags_ids = params[:allocation_tags_ids]
+  before_filter only: [:edit] do |controller| # futuramente show aqui também
+    @allocation_tags_ids = params[:allocation_tags_ids].split(' ').flatten.compact
     get_groups_by_tool(@webconference = Webconference.find(params[:id]))
   end
+
+  before_filter :close_expired_support_help, only: :preview
 
   def index
     authorize! :index, Webconference, on: [at = active_tab[:url][:allocation_tag_id]]
     @can_see_access = can? :list_access, Webconference, { on: at }
     @user = current_user
     @is_student = @user.is_student?([at])
-    @webconferences = Webconference.all_by_allocation_tags(AllocationTag.find(at).related(upper: true), {asc: true}, (@can_see_access ? nil : current_user.id))
+    @webconferences = Webconference.all_by_allocation_tags(AllocationTag.find(at).related(upper: true), {asc: false}, (@can_see_access ? nil : current_user.id))
+    @webconferences_online = @webconferences.select { |w| w.on_going? } # Webs online para a escolha pelo usuário no atendimento em tempo real
+    @request_support = params[:request_support] # Para abrir o fancybox do atendimento
   end
 
   # GET /webconferences/list
@@ -46,6 +51,7 @@ class WebconferencesController < ApplicationController
     authorize! :update, Webconference, on: @allocation_tags_ids
 
     @webconference = Webconference.find(params[:id])
+    @groups = AllocationTag.where(id: @allocation_tags_ids).map(&:group).flatten & @groups rescue @groups
   end
 
   # POST /webconferences
@@ -72,9 +78,36 @@ class WebconferencesController < ApplicationController
   # PUT /webconferences/1
   # PUT /webconferences/1.json
   def update
+    @allocation_tags_ids = params[:allocation_tags_ids].split(' ').flatten.compact
+    get_groups_by_tool(@webconference = Webconference.find(params[:id]))
+
+    new_tool = @webconference.dup
+
     authorize! :update, Webconference, on: @webconference.academic_allocations.pluck(:allocation_tag_id)
 
-    @webconference.date_changed = webconference_params[:initial_time].strip.split(" ").first != @webconference.initial_time.strftime('%F').split("-").reverse.join("/")
+    @groups = AllocationTag.where(id: @allocation_tags_ids).map(&:group).flatten & @groups rescue @groups
+
+    academic_allocations = AcademicAllocation.where(allocation_tag_id: @allocation_tags_ids, academic_tool_type: 'Webconference', academic_tool_id: @webconference.id)
+
+    @webconference.user_id = @current_user.id
+
+    if @webconference.integrated && (@webconference.academic_allocations.size > academic_allocations.size) && academic_allocations.size >= 1
+      @webconference.attributes = webconference_params
+      if @webconference.valid?
+        ActiveRecord::Base.transaction do
+          authorize! :change_tool, Group, on: @groups.map(&:allocation_tag).map(&:id)
+          raise 'cant_unbind' unless @webconference.can_unbind?(@groups)
+          new_tool.created_at = @webconference.attributes["created_at"]
+          new_tool.updated_at = @webconference.attributes["updated_at"]
+          new_tool.merge = true
+          new_tool.save!
+          acs =AcademicAllocation.where(academic_tool_type: 'Webconference', academic_tool_id: @webconference.id).where("id not in (#{academic_allocations.map(&:id).join(',')})")
+          acs.update_all(academic_tool_id: new_tool.id)
+        end
+      else
+        raise 'invalid'
+      end
+    end
     @webconference.update_attributes!(webconference_params)
 
     render json: { success: true, notice: t(:updated, scope: [:webconferences, :success]) }
@@ -82,7 +115,7 @@ class WebconferencesController < ApplicationController
     render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
-  rescue
+  rescue => error
     params[:success] = false
     render :edit
   end
@@ -110,7 +143,15 @@ class WebconferencesController < ApplicationController
   # GET /webconferences/preview
   def preview
     ats = current_user.allocation_tags_ids_with_access_on('preview', 'webconferences', false, true)
-    @webconferences = Webconference.all_by_allocation_tags(ats, { asc: false }).paginate(page: params[:page], per_page: 30)
+    @filter_situation = params[:status] || 'in_progress'
+    @webconferences = Webconference.all_by_allocation_tags(ats, { asc: false }).paginate(:per_page => 100, page: params[:page])
+    if @filter_situation == 'recorded'
+      @webconferences = (@webconferences.select { |web|  web.is_recorded }).paginate(:per_page => 100, page: params[:page])
+    elsif @filter_situation == 'scheduled'
+      @webconferences = (@webconferences.select { |web|  ['scheduled', 'scheduled_someone', 'scheduled_coord'].include?(web.situation) }).paginate(:per_page => 100, page: params[:page])
+    elsif @filter_situation != 'all'
+      @webconferences = (@webconferences.select { |web|  web.situation ==  @filter_situation }).paginate(:per_page => 100, page: params[:page])
+    end
     @can_see_access = can? :list_access, Webconference, { on: ats, accepts_general_profile: true }
     @can_remove_record = (can? :manage_record, Webconference, { on: ats, accepts_general_profile: true })
     @can_see_report = can? :report, Webconference, {on: [CurriculumUnitType.find(2).allocation_tag.id] , accepts_general_profile: true}
@@ -175,12 +216,13 @@ class WebconferencesController < ApplicationController
 
   def list_access
     @webconference = Webconference.find(params[:id])
-      authorize! :list_access, Webconference, { on: at_id = active_tab[:url][:allocation_tag_id] || params[:at_id] || @webconference.allocation_tags.map(&:id), accepts_general_profile: true }
+    authorize! :list_access, Webconference, { on: at_id = active_tab[:url][:allocation_tag_id] || params[:at_id] || @webconference.allocation_tags.map(&:id), accepts_general_profile: true }
 
     academic_allocations_ids = (@webconference.shared_between_groups ? @webconference.academic_allocations.map(&:id) : @webconference.academic_allocations.where(allocation_tag_id: at_id).first.try(:id))
     ats = AllocationTag.where(id: at_id).map(&:related)
 
     @logs = @webconference.get_access(academic_allocations_ids, ats, {})
+    @logs_support = @webconference.get_support_attendance(academic_allocations_ids)
 
     @researcher = current_user.is_researcher?(ats)
     @too_old    = @webconference.initial_time.to_date < Date.parse(YAML::load(File.open('config/webconference.yml'))['participant_log_date']) rescue false
@@ -194,6 +236,23 @@ class WebconferencesController < ApplicationController
     AcademicAllocationUser.set_new_after_evaluation(at_id, @webconference.id, 'Webconference', @logs.map(&:user_id).uniq, nil, false)
 
     render partial: 'list_access'
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
+  rescue => error
+    render json: { success: false, alert: t('webconferences.error.access') }, status: :unprocessable_entity
+  end
+
+  # Retorna a lista de atendimentos do Log_actions
+  def list_support_help
+    @webconference = Webconference.find(params[:id])
+    @at_id         = active_tab[:url][:allocation_tag_id] || params[:at_id] || @webconference.allocation_tags.map(&:id)
+    authorize! :see_help_requests, Webconference, { on: @at_id, accepts_general_profile: true }
+
+    academic_allocations_ids = (@webconference.shared_between_groups ? @webconference.academic_allocations.map(&:id) : @webconference.academic_allocations.where(allocation_tag_id: @at_id ).first.try(:id))
+
+    @logs = @webconference.get_support_attendance(academic_allocations_ids)
+
+    render partial: 'list_support_help'
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
   rescue => error
@@ -272,6 +331,35 @@ class WebconferencesController < ApplicationController
     # render_json_error(error, 'webconferences.error')
   end
 
+  def support_help_session
+    if session[:support_connect].nil? || session[:support_connect] == false
+      session[:support_connect] = true
+    else
+      session[:support_connect] = false
+    end
+    respond_to do |format|
+      format.json { render json: {session: session[:support_connect] } }
+    end
+  end
+
+   # Tela de escolha da web para o atendimento do suporte
+  def support_help
+    @webconferences_online = params[:web_online].nil? ? nil : Webconference.find(params[:web_online])
+  end
+
+   # Atendimento do chamado de suporte da webconferência
+  def support_help_attendance
+    ac_id = params[:ac_id]
+    # Mudança do status da academic_allocation (Support_Help_Success)
+    Webconference.set_status_support_help(ac_id, Support_Help_Success)
+    # Registro do atendimento no Log
+    LogAction.create(log_type: LogAction::TYPE[:webconferece_support_attendance], user_id: current_user.id, description: "Support for webconference", academic_allocation_id: ac_id)
+
+     respond_to do |format|
+      format.json { render json: {response: "OK" } }
+    end
+  end
+
   # GET /webconferences/report
   def report
     authorize! :report, Webconference, {on: [CurriculumUnitType.find(2).allocation_tag.id] , accepts_general_profile: true}
@@ -309,7 +397,7 @@ class WebconferencesController < ApplicationController
     @total_per_offer = Webconference.total_per_offer.rows
     @access_per_offer = Webconference.access_per_offer.rows
     @access_per_course = Webconference.access_per_course.rows
-    @participantCountPerServer = participantCountPerServer
+    @participant_count_per_server = participant_count_per_server
     @avg_access_per_semester = Webconference.avg_access_per_semester.rows
   end
 
@@ -346,6 +434,11 @@ class WebconferencesController < ApplicationController
     logs.each do |log|
       LogAction.create(params_log.merge!(log))
     end
+  end
+
+  # Muda o status da academic_allocation para Support_Help_Fail se a webconferência encerrar e não tiver atendimento
+  def close_expired_support_help
+    AcademicAllocation.joins("JOIN webconferences ON webconferences.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Webconference'").where( support_help: Support_Help_Request ).where("NOW() > webconferences.initial_time + webconferences.duration* interval '1 min'").update_all( support_help: Support_Help_Fail )
   end
 
   def webconference_params

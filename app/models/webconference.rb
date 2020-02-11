@@ -20,28 +20,50 @@ class Webconference < ActiveRecord::Base
   validates :title, :description, length: { maximum: 255 }
   validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
 
-  validate :cant_change_date, on: :update, if: 'initial_time_changed? || duration_changed?'
+  validate :cant_change_date, if: '(new_record? || initial_time_changed? || duration_changed?) && merge.blank?'
   validate :cant_change_shared, on: :update, if: 'shared_between_groups_changed?'
 
   validate :verify_quantity, if: '!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed? || new_record?) && merge.nil?'
 
-  validate :verify_offer, unless: 'allocation_tag_ids_associations.blank?'
+  validate :verify_offer, unless: 'allocation_tag_ids_associations.blank? && offer_api.blank?'
+
+  validate :verify_title, if: 'title_changed? && !!integrated && merge.nil? && api.nil?'
 
   before_destroy :can_change?
 
-  attr_accessor :date_changed
+  attr_accessor :date_changed, :offer_api
 
   def link_to_join(user, at_id = nil, url = false)
     ((on_going? && bbb_online? && have_permission?(user, at_id.to_i)) ? (url ? bbb_join(user, at_id) : ActionController::Base.helpers.link_to((title rescue name), bbb_join(user, at_id), target: '_blank')) : (title rescue name))
   end
 
+  def start_date
+    initial_time.to_date
+  end
+
+  def end_date
+    initial_time.to_date
+  end
+
+  def start_hour
+    time = initial_time.to_datetime
+    "#{time.hour}:#{time.minute}"
+  end
+
+  def end_hour
+    time = (initial_time.to_datetime + duration.minutes)
+    "#{time.hour}:#{time.minute}"
+  end
+
   def self.all_by_allocation_tags(allocation_tags_ids, opt = { asc: true }, user_id = nil)
     query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids } }
 
-    select = "users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency, academic_allocations.frequency_automatic, academic_allocations.max_working_hours, academic_allocations.final_exam, eq_web.title AS eq_name, webconferences.initial_time || '' AS start_hour, webconferences.initial_time + webconferences.duration* interval '1 min' || '' AS end_hour, webconferences.initial_time AS start_date, CASE
+    select = "users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency, academic_allocations.frequency_automatic, academic_allocations.max_working_hours, academic_allocations.final_exam, academic_allocations.support_help AS support_help, eq_web.title AS eq_name, webconferences.initial_time || '' AS start_hour, webconferences.initial_time + webconferences.duration* interval '1 min' || '' AS end_hour, webconferences.initial_time AS start_date, CASE
       WHEN acu.grade IS NOT NULL OR acu.working_hours IS NOT NULL THEN 'evaluated'
       WHEN (acu.status = 1 OR (acu.status IS NULL AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.count > 0))) THEN 'sent'
       when NOW()>webconferences.initial_time AND NOW()<(webconferences.initial_time + webconferences.duration* interval '1 min') then 'in_progress'
+      when NOW() < webconferences.initial_time AND webconferences.integrated='true' AND webconferences.user_id IS NULL then 'scheduled_coord'
+      when NOW() < webconferences.initial_time AND webconferences.integrated='true' AND webconferences.user_id IS NOT NULL then 'scheduled_someone'
       when NOW() < webconferences.initial_time then 'scheduled'
       when (NOW()<webconferences.initial_time + webconferences.duration* interval '1 min' + interval '15 mins') then 'processing'
       else 'finish'
@@ -54,7 +76,7 @@ class Webconference < ActiveRecord::Base
     opt.merge!(select2: "webconferences.*, academic_allocations.allocation_tag_id AS at_id, academic_allocations.id AS ac_id, #{select}")
     opt.merge!(select1: "DISTINCT webconferences.id, webconferences.*, NULL AS at_id, NULL AS ac_id, users.name AS user_name, #{select}")
 
-  webconferences = Webconference.joins(:moderator)
+  webconferences = Webconference.joins("LEFT JOIN users ON webconferences.user_id = users.id")
                   .joins("JOIN academic_allocations ON webconferences.id = academic_allocations.academic_tool_id AND academic_allocations.academic_tool_type = 'Webconference'")
                   .joins(" LEFT JOIN
                     (SELECT count(log_actions.id), log_actions.academic_allocation_id FROM log_actions
@@ -138,12 +160,22 @@ class Webconference < ActiveRecord::Base
   end
 
   def login_meeting(user, meeting_id, meeting_name, options)
+    #token_xml = change_config_xml(academic_allocations.first.id, meeting_id) if is_portfolio # Origem portfolio?
+    avatar = Rails.application.routes.url_helpers.home_url.gsub('/home', '') + user.photo.url(:medium)
     @api.create_meeting(meeting_name, meeting_id, options) unless @api.is_meeting_running?(meeting_id)
-     if (responsible?(user.id) || user.can?(:preview, Webconference, { on: academic_allocations.flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true, any: true }))
-      @api.join_meeting_url(meeting_id, "#{user.name}*", options[:moderatorPW])
+    if (responsible?(user.id) || user.can?(:preview, Webconference, { on: academic_allocations.flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true, any: true }))
+      @api.join_meeting_url(meeting_id, "#{user.name}*", options[:moderatorPW], { avatarURL: avatar }) # option: :configToken => token_xml
     else
-      @api.join_meeting_url(meeting_id, user.name, options[:attendeePW])
+      @api.join_meeting_url(meeting_id, user.name, options[:attendeePW], { avatarURL: avatar })
     end
+  end
+
+  def change_config_xml(academic_allocation_id, meeting_id)
+    url = Rails.application.routes.url_helpers.home_url.gsub('/home', '') + Rails.application.routes.url_helpers.support_webconference_messages_path(ac: academic_allocation_id)
+    config_xml = @api.get_default_config_xml
+    config_xml = BigBlueButton::BigBlueButtonConfigXml.new(config_xml)
+    config_xml.set_attribute("help", "url", url)
+    token = @api.set_config_xml(meeting_id, config_xml)
   end
 
   def have_permission?(user, at_id = nil)
@@ -166,9 +198,12 @@ class Webconference < ActiveRecord::Base
       if webconference.origin_meeting_id.blank?
         api = Bbb.bbb_prepare(webconference.server)
         meeting_id    = webconference.get_mettingID(academic_allocation.allocation_tag_id)
-        response      = api.get_recordings()
+
+        options = {meetingID: meeting_id}
+        response      = api.get_recordings(options)
+
         response[:recordings].each do |m|
-          api.delete_recordings(m[:recordID]) if m[:meetingID] == meeting_id
+          api.delete_recordings(m[:recordID])
         end
       end
     end
@@ -179,6 +214,8 @@ class Webconference < ActiveRecord::Base
   end
 
   def can_add_group?(ats = [])
+    return false if integrated
+
     if shared_between_groups
       verify_quantity(ats) if ats.any?
     else
@@ -258,6 +295,14 @@ class Webconference < ActiveRecord::Base
               .group('log_actions.created_at, users.name, allocation_tags.id, users.id, acu.grade, acu.working_hours, students.id, academic_allocations.max_working_hours')
   end
 
+  # Retorna a lista com os atendimentos da webconferência (academic_allocation)
+  def get_support_attendance(acs)
+    LogAction.joins(:user)
+             .where(academic_allocation_id: acs, log_type: LogAction::TYPE[:webconferece_support_attendance])
+             .select("log_actions.created_at, users.name AS user_name")
+             .order('log_actions.created_at ASC')
+  end
+
   def self.update_previous(academic_allocation_id, user_id, academic_allocation_user_id)
     LogAction.where(academic_allocation_id: academic_allocation_id, user_id: user_id, log_type: 7).update_all academic_allocation_user_id: academic_allocation_user_id
   end
@@ -271,9 +316,13 @@ class Webconference < ActiveRecord::Base
   end
 
   def verify_offer
-    offer = AllocationTag.find(allocation_tag_ids_associations).first.offers.first
+    offer = offer_api || AllocationTag.find(allocation_tag_ids_associations).first.offers.first
     errors.add(:initial_time, I18n.t('schedules.errors.offer_end')) if offer.end_date < (initial_time + duration.minutes).to_date
     errors.add(:initial_time, I18n.t('schedules.errors.offer_start')) if offer.start_date > initial_time.to_date
+  end
+
+  def verify_title
+    errors.add(:title, 'nao e possivel alterar o titulo de webconferencias integradas')
   end
 
   def comments_by_user
@@ -289,6 +338,12 @@ class Webconference < ActiveRecord::Base
     urls.flatten
   end
 
+  # Atualiza a academic_allocation (support_help)
+  def self.set_status_support_help(academic_allocation_id, status)
+    ac = AcademicAllocation.find(academic_allocation_id)
+    ac.update_attributes! support_help: status
+    ac
+  end
 
   # Inicializa as tabelas temporárias usadas no relatório
   def self.drop_and_create_table_temporary_webs_and_access_uab

@@ -19,13 +19,13 @@
   white-space: normal;
   font-family: 'Ubuntu';
   width: 100%;
-  // display: block;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   text-align: left;
   border-bottom: 1px solid;
   border-bottom-color: $color_main;
   background-color: $color_white_base;
-  display: flex;
-  justify-content: space-between;
 }
 
 .to {

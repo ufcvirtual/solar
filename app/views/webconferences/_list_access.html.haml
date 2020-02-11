@@ -28,7 +28,7 @@
               - if (@can_evaluate || @can_comment) && !@too_old
                 %td{headers:'evaluate'}
 
-                  - if log.is_student == true 
+                  - if log.is_student == true
                     = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: 'evaluate_web(this)', :'data-url' => user_access_webconference_path(@webconference, user_id: log.user_id, back:true),  class: 'btn evaluate', :"data-tooltip" => t('.evaluate')
               %td.profile{headers:'profile'}= '(' + log.profile_name + ')'
               %td.user{headers:'user'}= (@researcher ? t(:hidden_info) : log.user_name)
@@ -50,7 +50,6 @@
       .block_content_text_list.text_none= t('.too_old')
     - else
       .block_content_text_list.text_none= t('.no_log')
-
 
 =javascript_include_tag 'tooltip'
 

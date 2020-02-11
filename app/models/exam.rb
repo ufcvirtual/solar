@@ -27,6 +27,8 @@ class Exam < Event
   validate :check_hour, if: lambda { |c| !c[:start_hour].blank? && !c[:end_hour].blank?  }
   validate :check_result_release_date, if: '!result_release.blank? && merge.nil?'
 
+  before_save :after_immediate_result_release, if: 'immediate_result_release && merge.nil? && immediate_result_release_changed?'
+
   accepts_nested_attributes_for :schedule
 
   before_destroy :can_destroy?, if: 'merge.nil?'
@@ -50,9 +52,10 @@ class Exam < Event
   end
 
   def recalculate_grades(user_id=nil, ats=nil, all=nil)
-    if ended?
+    if ended? || (started? && immediate_result_release && !user_id.blank?)
       grade = 0.00
       wh = 0
+
       # chamar metodo de correção dos itens respondidos para todos os que existem
       list_exam_correction(user_id, ats, all).each do |acu|
         correct_exam(acu.id)
@@ -90,7 +93,7 @@ class Exam < Event
     query << "academic_allocations.allocation_tag_id IN (#{ats}) "  unless ats.blank?
     query << "exam_user_attempts.grade IS NULL" unless all.blank?
     query << "exams.result_release <= NOW()" unless result_release.blank?
-    query << "(schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour IS NOT NULL AND end_hour != '' AND end_hour::time < current_time))"
+    query << "((schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour IS NOT NULL AND end_hour != '' AND end_hour::time < current_time)) OR ((schedules.start_date < current_date OR (schedules.start_date = current_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR start_hour::time < current_time))) AND exams.immediate_result_release=TRUE))"
 
     AcademicAllocationUser.joins(academic_allocation: [exam: :schedule])
             .joins("LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id")
@@ -152,7 +155,7 @@ class Exam < Event
   end
 
   def can_correct?(user_id, ats)
-    AcademicAllocationUser.joins(academic_allocation: [exam: :schedule]).joins('LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id').where("schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour::time < current_time)").where(user_id: user_id, exams: { status: true, id: id }, academic_allocations: { allocation_tag_id: ats }).where('exam_user_attempts.grade IS NULL').any?
+    AcademicAllocationUser.joins(academic_allocation: [exam: :schedule]).joins('LEFT JOIN exam_user_attempts ON exam_user_attempts.academic_allocation_user_id = academic_allocation_users.id').where("(schedules.end_date < current_date OR (schedules.end_date = current_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR exams.end_hour::time < current_time))) OR ((schedules.start_date < current_date OR (schedules.start_date = current_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR exams.start_hour::time < current_time))) AND exams.immediate_result_release=TRUE)").where(user_id: user_id, exams: { status: true, id: id }, academic_allocations: { allocation_tag_id: ats }).where('exam_user_attempts.grade IS NULL').any?
   end
 
   def self.correction_cron
@@ -450,11 +453,16 @@ class Exam < Event
   end
 
   def allow_calculate_grade?
-    (result_release.blank? || (result_release <= DateTime.now()))
+    (result_release.blank? || (result_release <= DateTime.now()) || immediate_result_release)
   end
 
   def check_result_release_date
     errors.add(:result_release, I18n.t('exams.error.result_release')) if ((end_hour.blank? && result_release.to_date < schedule.end_date.to_date) || (!end_hour.blank? && result_release <= [schedule.end_date.to_s, end_hour.to_s].join(' ').to_time))
+  end
+
+  def after_immediate_result_release
+    self.result_release = nil
+    self.attempts = 1
   end
 
 end

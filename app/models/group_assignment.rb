@@ -60,24 +60,43 @@ class GroupAssignment < ActiveRecord::Base
     joins(:group_participants).where(academic_allocation_id: academic_allocation_id, group_participants: {user_id: user_id}).first
   end
 
+  def self.send_email_one_week_before_start_assignment_in_group(assignment_id = nil)
+    
+    unless assignment_id.nil?
+      assignments_in_group = Assignment.includes(:schedule).where(type_assignment: Assignment_Type_Group).where('schedules.start_date > ? AND schedules.start_date < ?', Date.current, Date.current + 6).where(id: assignment_id).references(:schedules)
+    else
+      assignments_in_group = Assignment.includes(:schedule).where(type_assignment: Assignment_Type_Group).where('schedules.start_date = ?', Date.current + 6.days).references(:schedules)
+    end
+    
+    assignments_in_group.each do |assignment_group|
+
+      assignment_group.academic_allocations.each do |academic_allocation|
+        alloc_tag_ids = AllocationTag.find(academic_allocation.allocation_tag_id).related
+        responsibles_emails = User.joins(:profiles, :allocations).where(allocations: {allocation_tag_id: alloc_tag_ids}).where(profiles: {id: 3}).uniq.map{|user| user.email}
+        
+        Job.send_mass_email(responsibles_emails, I18n.t("group_assignments.alert_create_assignment_group_email"), "#{I18n.t('group_assignments.automatic_one_week_before_email_split_group', assignment_group_name: assignment_group.name)}", [])
+      end
+    end
+  end
+
   def self.split_students_in_groups(assignment_id = nil)
 
     unless assignment_id.nil?
-      assignments_in_group = Assignment.joins(:schedule).where(type_assignment: 1, schedules: {start_date: Date.current}).where(id: assignment_id)
+      assignments_in_group = Assignment.includes(:schedule).where(type_assignment: Assignment_Type_Group, schedules: {start_date: Date.current}).where(id: assignment_id).references(:schedules)
     else
-      assignments_in_group = Assignment.joins(:schedule).where(type_assignment: 1, schedules: {start_date: Date.current})
+      assignments_in_group = Assignment.includes(:schedule).where(type_assignment: Assignment_Type_Group, schedules: {start_date: Date.current}).references(:schedules)
     end
 
     assignments_in_group.each do |assignment_group|
 
       assignment_group.academic_allocations.each do |academic_allocation|
-        alloc_tag_id = academic_allocation.allocation_tag_id
-        students_without_group = academic_allocation.academic_tool.students_without_groups(alloc_tag_id)
+        alloc_tag_ids = AllocationTag.find(academic_allocation.allocation_tag_id).related
+        students_without_group = academic_allocation.academic_tool.students_without_groups(alloc_tag_ids)
         unless students_without_group.blank?
-          responsibles_emails = User.joins(:allocations, :profiles).where(allocations: {allocation_tag_id: alloc_tag_id}).where(profiles: {types: Profile_Type_Class_Responsible}).uniq.map{|user| user.email}
+          responsibles_emails = User.joins(:profiles, :allocations).where(allocations: {allocation_tag_id: alloc_tag_ids}).where(profiles: {id: 3}).uniq.map{|user| user.email}
           students_groups = []
-          Struct.new('Group_Object',:group_name, :students)
-          groups_assignment_division, students_groups = GroupAssignment.get_groups_assignment_division(students_without_group, academic_allocation, alloc_tag_id, students_groups)
+          Struct.new('Group_Object', :group_name, :students)
+          groups_assignment_division, students_groups = GroupAssignment.get_groups_assignment_division(students_without_group, academic_allocation, alloc_tag_ids, students_groups)
           groups_assignment_division, students_groups = GroupAssignment.add_student_in_groups_assignment_division(students_groups, groups_assignment_division, academic_allocation)
 
           unless groups_assignment_division.blank?
@@ -131,8 +150,9 @@ class GroupAssignment < ActiveRecord::Base
       students_ids = students_without_group.pluck(:id).shuffle
       groups_assignment_division = {}
       if students_without_group.length == total_quantity_students #se todos os alunos estão sem grupo
-        students_groups = GroupAssignment.split_students_in_groups_of_standard_number(3, students_groups, students_ids)
-
+        students_groups = students_without_group.length == 4 && total_quantity_students == 4 ?
+                            GroupAssignment.split_students_in_groups_of_standard_number(2, students_groups, students_ids) :
+                            GroupAssignment.split_students_in_groups_of_standard_number(3, students_groups, students_ids)
       #Se mais da metade ja possui grupos OU se menos da metade ja possui grupos OU exatamente a metade possui grupo, pegar a média de alunos nesses grupos para dividir os novos grupos.
       elsif (total_quantity_students - students_without_group.length) >= (total_quantity_students / 2) ||
          (total_quantity_students - students_without_group.length) <= (total_quantity_students / 2) ||

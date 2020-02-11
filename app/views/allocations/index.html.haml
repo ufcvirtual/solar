@@ -1,6 +1,6 @@
 .block_wrapper
   .block_title{ style: 'height:0' }
-  .block_content_toolbar#search_box_accesskey
+  .block_content_toolbar#search_box_accesskey.enroll_correct
     .block_toolbar_left
       = select_tag :status, options_for_select(status_hash.invert.to_a, @status)
       = text_field_tag :user_search, '', placeholder: t('.filter_user'), class: "search_box_focus"

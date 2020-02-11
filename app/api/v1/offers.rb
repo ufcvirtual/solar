@@ -47,5 +47,18 @@ module V1
 
     end # segment
 
+    segment do
+      before{ guard_client! }
+
+      namespace :my_offers do
+        desc "Todas as ofertas da aplicação cliente"
+        get "/", rabl: "offers/list" do
+          ats = AllocationTagOwner.where(oauth_application_id: @current_client.id).map(&:allocation_tag)
+          @offers = ats.map(&:offers).flatten.uniq
+        end
+      end
+
+    end
+
   end
 end

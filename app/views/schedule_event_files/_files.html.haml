@@ -7,8 +7,7 @@
       %td.center{headers: "sent_on_file" }= l(file.updated_at, format: :at_date)
       %td.center{headers: "sent_by_file" }= file.user.name
       - if can_correct
-        %td.center{headers: "correction_file"}= link_to content_tag(:i, nil, class: "icon-edit", :'aria-hidden' => true), online_correction_schedule_event_file_path(file.id, file: file.attachment_file_name, extension: file.attachment_content_type), :"data-tooltip" => t(".correction_file"), :'aria-label' => t(".correction_file"), target: "_blank", class: 'btn'
+        %td.center.dont-show-in-mobile{headers: "correction_file"}= link_to content_tag(:i, nil, class: "icon-edit", :'aria-hidden' => true), online_correction_schedule_event_file_path(file.id, file: file.attachment_file_name, extension: file.attachment_content_type), :"data-tooltip" => t(".correction_file"), :'aria-label' => t(".correction_file"), target: "_blank", class: 'btn'
       - if can_send_file
         %td.center{headers: "delete_file"}= link_to content_tag(:i, nil, class: "icon-trash", :'aria-hidden' => true), '#void', :"data-link-delete" => schedule_event_file_path(file.id), :"data-tooltip" => t(".delete"), :'aria-label' => t(".delete"), onclick: "delete_file(this);", onkeypress: 'click_on_keypress(event, this);', class: 'btn'
-
 = javascript_include_tag 'tooltip'

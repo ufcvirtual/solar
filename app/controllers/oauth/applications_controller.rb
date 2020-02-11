@@ -1,9 +1,12 @@
+# class OauthApplicationsController < Doorkeeper::ApplicationsController
 class Oauth::ApplicationsController < Doorkeeper::ApplicationsController
+  # uninitialized constant OauthApplicationsController
   before_filter :authenticate_user!
 
   def index
     authorize! :oauth_applications, Administration
     @applications = current_user.oauth_applications
+
   end
 
   # only needed if each application must have some owner

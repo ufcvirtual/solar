@@ -12,6 +12,8 @@
         %i.icon-arrow-down-triangle
         %i.icon-arrow-up-triangle.invisible
       %div.accessibility.invisible{tabindex: 0}= raw t('.accessibility')
+    %div
+      = link_to "support_help", support_help_webconferences_path(web_online: @webconferences_online), class: 'hidden', id: "link_support_help", remote: true
     .block_title
       %h2
         %i.icon-video-conference
@@ -22,7 +24,7 @@
           %tr.lines
             %th.greater_width#web_name= t(:name, scope: [:webconferences, :list])
             %th.center.default_width#web_availability= t(:availability, scope: [:webconferences, :list])
-            %th.center.smaller_width#web_status= t(:status, scope: [:webconferences, :list])
+            %th.center.default_width#web_status= t(:status, scope: [:webconferences, :list])
             %th.center.smaller_width#web_users= t('.user_online')
             %th.center.smaller_width#web_recording.no_sort= t('.recording')
             %th.center.smaller_width#web_evaluative= t(:evaluative, scope: [:scores, :index])
@@ -34,7 +36,7 @@
         %tbody
           - @webconferences.each do |webconference|
             - unavailable = exist_and_offline?(webconference.server.to_i)
-            - disabled = (webconference.situation == 'scheduled' || webconference.situation == 'in_progress' || webconference.situation == 'processing' || unavailable)
+            - disabled = (webconference.situation == 'scheduled' || webconference.situation == 'scheduled_coord' || webconference.situation == 'scheduled_someone' || webconference.situation == 'in_progress' || webconference.situation == 'processing' || unavailable)
             %tr.lines
               %td.webconference_access{ :'data-url' => access_webconference_path(webconference, at_id: webconference.at_id), headers: 'web_name' }
                 - if webconference.on_going?
@@ -59,14 +61,15 @@
                       %ul{ class: 'dropdown-menu', :'aria-label' => t('.groups', web: webconference.title) }
                         - groups_codes.each do |code|
                           %li= code
-                .participants.equivalent
-                  %a{ href: '#', :"data-dropdown" => "#dropdown_m_#{webconference.id}", onkeydown: 'click_on_keypress(event, this);' }
-                    %i.icon-user{:'aria-hidden' => 'true'}
-                    = t(:moderator, scope: [:webconferences, :list])
-                    %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-                  .dropdown.dropdown-tip{id: "dropdown_m_#{webconference.id}"}
-                    %ul{ class: 'dropdown-menu' }
-                      = webconference.user_name
+                - unless webconference.user_name.blank?
+                  .participants.equivalent
+                    %a{ href: '#', :"data-dropdown" => "#dropdown_m_#{webconference.id}", onkeydown: 'click_on_keypress(event, this);' }
+                      %i.icon-user{:'aria-hidden' => 'true'}
+                      = t(:moderator, scope: [:webconferences, :list])
+                      %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
+                    .dropdown.dropdown-tip{id: "dropdown_m_#{webconference.id}"}
+                      %ul{ class: 'dropdown-menu' }
+                        = webconference.user_name
                 .equivalent
                   - unless webconference.eq_name.blank?
                     %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{webconference.id}", onkeydown: 'click_on_keypress(event, this);' }
@@ -86,7 +89,7 @@
               %td.center{headers: 'web_availability'}
                 %div= l(webconference.start_date.to_date)
                 %div= [l(webconference.start_hour.to_datetime, format: :today), l(webconference.end_hour.to_datetime, format: :today)].join(' - ')
-              %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}"), headers: 'web_status'}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t(webconference.situation, scope: [:scores, :situation])
+              %td.center{class: (unavailable ? 'assignment_not_started' : "assignment_#{webconference.situation}"), headers: 'web_status'}= unavailable ? t(:unavailable, scope: [:webconferences, :list]) : t(webconference.situation, scope: [:scores, :situation], user: webconference.user_name)
               %td.center{headers: 'web_users'}= webconference.meeting_info(current_user, webconference.at_id)
               - if disabled
                 %td.center{:'data-tooltip' => t('.recordings_disabled', web: webconference.title), headers: 'web_recording'}= link_to content_tag(:i, nil, class: 'icon-play disabled'), '#void', disabled: true, onclick: 'return false', :'aria-label' => t('.recordings_disabled', web: webconference.title), class: 'btn'
@@ -107,4 +110,13 @@
 :javascript
   $(function(){
     $('.record').call_fancybox();
+    $('#link_support_help').call_fancybox();
+  });
+
+  // Se parâmetro request_support, chama o fancybox
+  $(document).ready(function() {
+    if ("#{@request_support}" == "true") {
+      console.log("Cliente: Chamada de ajuda!! Parâmetro request_support encontrado, chamando o fancybox!");
+      $('#link_support_help').click();
+    }
   });

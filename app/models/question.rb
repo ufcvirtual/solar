@@ -219,6 +219,7 @@ class Question < ActiveRecord::Base
   def can_change_status?
     raise 'permission' unless owner?
     raise 'in_use'     if exams.any? && status && !owner?# if in use and already published
+    raise 'cant_change_status_after_published_exam' unless exams.select{|e| e.status == true }.blank?
     validate_items
   end
 

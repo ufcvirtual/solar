@@ -74,6 +74,11 @@
     /*    zoom: 1;
     *display: inline;*/
   }
+
+  li.mysolar_top_submenu_fix {
+    display: block;
+    float: none;
+  }
 }
 
 #mysolar_top_options #mysolar_top_submenu_label:hover,
@@ -357,6 +362,12 @@ a.mysolar_top_link {
   margin: 0 2px;
 }
 
+/* Suporte webconferência */
+.count_help{
+  float: right;
+  font-size: 11pt;
+}
+
 /**
 /* Barra Lateral de Menu (sidebar)
 */
@@ -383,7 +394,7 @@ a.mysolar_top_link {
   padding-top: 0;
   margin-top: 0;
   width: 100%;
-  z-index:10;
+  z-index: 99;
 }
 
 .mysolar_menu_group > ul {

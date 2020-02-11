@@ -383,6 +383,12 @@ div.block_title {
   }
 }
 
+.enroll_correct {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
 .block_content_toolbar label{
   color: $color_black;
 }

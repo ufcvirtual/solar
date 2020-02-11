@@ -1,12 +1,12 @@
 %td= @user.integrated? ? @user.name : text_field_tag("name", @user.name, required: true)
 %td= @user.integrated? ? @user.email : text_field_tag("email", @user.email, required: true)
 %td= @user.integrated? ? @user.username : text_field_tag("username", @user.username, required: true)
-%td= (@user.integrated? || !@user_admin) ? @user.cpf : text_field_tag("cpf", @user.cpf, required: true)
+%td= (@user.integrated? || !@user_admin || !@user.oauth_application_id.blank?) ? @user.cpf : text_field_tag("cpf", @user.cpf, required: true)
 %td= @user_admin ? select(:status, :id, user_status.invert.to_a, {selected: @user.active? ? 1 : 0}) : select(:status, :id, user_status.invert.to_a, {selected: @user.active? ? 1 : 0}, disabled: true)
 %td.manage-user-buttons{style: 'text-align:right'}
   .btn-group.manage-user-buttons{tabindex: "0"}
     = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: "cancel(this)", :"show-link" => admin_user_path(@user.id), class: "btn btn_caution btn_manage_cancel"
-    = link_to content_tag(:i, nil, class: 'icon-checkmark'), "#void", onclick: "update_user(this)", :"save-link" => admin_user_path(@user), :"show-link" => admin_user_path(@user.id), class:  "btn btn_main btn_manage_cancel"
+    = link_to content_tag(:i, nil, class: 'icon-checkmark'), "#void", onclick: "update_user(this)", :"save-link" => admin_user_path(@user), :"show-link" => admin_user_path(@user.id), class:  "btn btn_main btn_manage_cancel", :'data-application' => @user.oauth_application_id, :'data-preivous-username' => @user.username, :'data-confirm-msg' => t('administrations.oauth_application', system: @user.oauth_application.try(:name))
 
 :javascript
   eval("#{show_flash}");

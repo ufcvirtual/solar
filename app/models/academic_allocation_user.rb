@@ -140,7 +140,6 @@ class AcademicAllocationUser < ActiveRecord::Base
       allocation = allocations.where('final_grade IS NOT NULL OR working_hours IS NOT NULL').first || allocations.first
       unless allocation.nil?
         allocation.calculate_working_hours
-
         allocation.calculate_parcial_grade unless academic_allocation.final_exam
         allocation.calculate_final_exam_grade
       end
@@ -315,19 +314,29 @@ class AcademicAllocationUser < ActiveRecord::Base
     last_attempt.save
 
     self.update_attributes status: STATUS[:sent]
+
+    exam = last_attempt.exam
+
+    if exam.immediate_result_release
+      acu = last_attempt.academic_allocation_user
+      exam.recalculate_grades(acu.user_id, acu.allocation_tag.id, true)
+    end
+
+    exam
   end
 
   def status_exam
     last_attempt  = exam_user_attempts.last
     user_attempts = exam_user_attempts.count
     case
-    when !exam.started?                                                      then 'not_started'
-    when exam.on_going? && (exam_responses.blank? || exam_responses == 0)    then 'to_answer'
-    when exam.on_going? && !last_attempt.complete                            then 'not_finished'
-    when exam.on_going? && (exam.attempts > user_attempts)                   then 'retake'
-    when !grade.blank? && exam.ended?                                        then 'corrected'
-    when last_attempt.complete && (exam.attempts == user_attempts)           then 'finished'
-    when exam.ended? && (user_attempts != 0 && !user_attempts.blank?) && grade.blank? then 'not_corrected'
+    when !exam.started?                                                                             then 'not_started'
+    when exam.immediate_result_release && last_attempt.complete && (exam.attempts == user_attempts) then 'finished'
+    when exam.on_going? && (exam_responses.blank? || exam_responses == 0)                           then 'to_answer'
+    when exam.on_going? && !last_attempt.complete                                                   then 'not_finished'
+    when exam.on_going? && (exam.attempts > user_attempts)                                          then 'retake'
+    when !grade.blank? && (exam.ended? || (exam.started? && exam.immediate_result_release))                                                               then 'corrected'
+    when last_attempt.complete && (exam.attempts == user_attempts)                                  then 'finished'
+    when exam.ended? && (user_attempts != 0 && !user_attempts.blank?) && grade.blank?               then 'not_corrected'
     else
       'not_answered'
     end
@@ -399,6 +408,13 @@ class AcademicAllocationUser < ActiveRecord::Base
   def remove_grade_and_working_hours
     self.grade, self.working_hours = nil, nil
     self.save
+  end
+
+  def self.comments_by_user(academic_allocation_id, user_id)
+    return [] if user_id.blank? || academic_allocation_id.blank?
+    acu = AcademicAllocationUser.find_one(academic_allocation_id, user_id)
+    return [] if acu.blank?
+    acu.comments
   end
 
 end

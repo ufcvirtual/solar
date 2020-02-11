@@ -11,24 +11,24 @@
 }
 
 .bar1, .bar2, .bar3 {
-  width: 35px;
-  height: 4px;
-  background-color: $color_black;
+  width: 25px;
+  height: 3px;
+  background-color: $color_main;
   margin: 6px 0;
   transition: 0.4s;
   border-radius: 15px;
 }
 
 .change .bar1 {
-  -webkit-transform: rotate(-45deg) translate(-9px, 6px);
-  transform: rotate(-45deg) translate(-9px, 6px);
+  -webkit-transform: rotate(-45deg) translate(-8px, 6px);
+  transform: rotate(-45deg) translate(-8px, 6px);
 }
 
 .change .bar2 {opacity: 0;}
 
 .change .bar3 {
-  -webkit-transform: rotate(45deg) translate(-9px, -6px);
-  transform: rotate(45deg) translate(-9px, -6px);
+  -webkit-transform: rotate(45deg) translate(-6px, -6px);
+  transform: rotate(45deg) translate(-6px, -6px);
 }
 
 .row {
@@ -258,7 +258,7 @@
   .active-menu:after {
     content: '';
     display: inline-block;
-    z-index: 1;
+    z-index: 20;
 
     position: fixed;
     top: 0;
@@ -281,7 +281,7 @@
     min-width: 280px !important;
   }
 
-  .fancybox-inner {
+  .fancybox-inner, .embeddedContent iframe {
     width: 100% !important;
   }
 
@@ -309,11 +309,17 @@
     }
   }
 
-  #image_accessibility,
+  #image_user,
   #image_help,
+  #image_exit,
+  #image_accessibility,
   #mysolar_tabs_wrapper_with_dropdown,
   #mysolar_suggestions_for_mobile {
+    margin-left: 0;
+    margin-right: 0;
     display: inline-block;
+    background-color: $color_white_base;
+    font-size: 14px;
   }
 
   #mysolar_top_options {
@@ -343,6 +349,20 @@
     margin-top: 15px;
   }
 
+  .preview_webconferences {
+    .block_content_toolbar {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+    }
+    #search {
+      width: 90%;
+    }
+    .block_toolbar_right {
+      margin-left: 12px;
+    }
+  }
+
   .message_new_textbox {
     display: block;
   }
@@ -368,6 +388,64 @@
 
   .no-float-mobile {
     float: none !important;
+  }
+
+  .forum_post img,
+  .forum_post_wrapper img,
+  .forum_post_inner_content img {
+    max-width: 100% !important;
+  }
+
+  .forum_post_inner_content {
+    width: 100%;
+    p {
+      text-align: justify;
+    }
+  }
+
+  .forum_post_icon img {
+    display: none;
+  }
+
+  .responsive_curse_input,
+  #curriculum_unit_name,
+  #curriculum_unit_code,
+  #curriculum_unit_resume,
+  #curriculum_unit_objectives,
+  #curriculum_unit_syllabus,
+  #curriculum_unit_prerequisites,
+  #curriculum_unit_working_hours,
+  #curriculum_unit_min_hours,
+  #group_name,
+  #group_code,
+  #group_location {
+    width: 100% !important;
+  }
+
+  .course_min_hours label,
+  .course_passing_grade label,
+  .course_name label,
+  .course_code label,
+  .course_min_grade_to_final_exam label,
+  .course_min_final_exam_grade label,
+  .course_final_exam_passing_grade label,
+  .label_curse_input,
+  .curriculum_unit_name label,
+  .curriculum_unit_code label,
+  .curriculum_unit_resume label,
+  .curriculum_unit_objectives label,
+  .curriculum_unit_syllabus label,
+  .curriculum_unit_prerequisites label,
+  .curriculum_unit_working_hours label,
+  .curriculum_unit_min_hours label,
+  .group_name label,
+  .group_code label,
+  .group_location label {
+    display: inline !important;
+  }
+
+  .responsive_group_label {
+    text-align: left;
   }
 
   label {
@@ -402,10 +480,6 @@
   .group_label,
   .bibliography_address {
     min-width: 155px !important;
-
-    label {
-      width: 45px !important;
-    }
   }
 
   #bibliography_publisher,
@@ -780,9 +854,23 @@
     }
   }
 
-  .class-position {
-    float: none;
-    position: static;
+  .dropdown .select_all_box, .dropdown .no_tags {
+    display: flex;
+    input {
+      margin-right: 5px;
+    }
+  }
+
+  .mysolar_unit_tab {
+    display: inline-flex;
+  }
+
+  .lesson {
+    .content {
+      video {
+        width: 100%;
+      }
+    }
   }
 }
 
@@ -795,6 +883,13 @@
     display: block !important;
     margin-left: 0 !important;
     overflow-x: auto;
+  }
+}
+
+@media (max-width: 980px) {
+  .class-position {
+    float: none;
+    position: static;
   }
 }
 

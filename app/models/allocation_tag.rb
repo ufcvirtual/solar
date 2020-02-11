@@ -14,6 +14,8 @@ class AllocationTag < ActiveRecord::Base
 
   has_many :savs, dependent: :destroy
 
+  has_many :allocation_tag_owners
+
   def groups
     case refer_to
       when 'group'
@@ -371,8 +373,10 @@ class AllocationTag < ActiveRecord::Base
     course = get_course
     uc = get_curriculum_unit
 
-    hours_defined = (!uc.working_hours.blank? && (!course.min_hours.blank? || !uc.min_hours.blank?))
-    has_passing_grade = !course.passing_grade.blank?
+    min_hours = (uc.try(:min_hours) || course.try(:min_hours))
+    hours_defined = (!uc.working_hours.blank? && !min_hours.blank?)
+
+    has_passing_grade = !course.blank? && !course.passing_grade.blank?
 
     return (!setted_situation && (!situation_date.nil? && Date.today >= situation_date) && (has_passing_grade || hours_defined))
   end

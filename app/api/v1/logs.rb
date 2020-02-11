@@ -8,7 +8,6 @@ module V1
       helpers do
         def verify_permission(method, ats=nil)
           permission = current_user.profiles_with_access_on(method, :logs, ats, true, false, true)
-
           raise CanCan::AccessDenied if permission.empty?
         end
       end
@@ -95,6 +94,39 @@ module V1
       #   #LogAccess.drop_and_create_table_temporary_logs_access(@ats, [params[:student_id]])
       #   LogAccess.drop_and_create_table_temporary_logs_comments(@ats.uniq, [params[:student_id]])
       # end # get
+
+      # DO NOT UNCOMMENT IN PRODUCTION
+      # api/v1/logs/posts
+      params do
+        requires :semester, type: String
+        requires :course_code, :curriculum_unit_code, type: String
+      end
+      desc "Logs dos posts", {
+        headers: {
+          "Authorization" => {
+            description: "Token",
+            required: true
+          }
+        }
+      }
+      get 'posts' do
+
+        semester = Semester.where(name: params[:semester]).first
+        groups = Group.joins(offer: [:course, :curriculum_unit]).where(offers: {semester_id: semester.id}, courses: {code: params[:course_code]}, curriculum_units: {code: params[:curriculum_unit_code]}, status: true)
+
+        @ats = groups.map(&:allocation_tag).map(&:id).flatten.uniq
+        @ats << groups.first.offer.allocation_tag.related({upper: true})
+        verify_permission(:index, @ats)
+
+        @acs = AcademicAllocation.where(academic_tool_type: 'Discussion', allocation_tag_id: @ats)
+
+        info = []
+        @acs.each do |ac|
+          info << {discussion: ac.academic_tool_id, group_or_offer: ac.allocation_tag_id, posts: Post.where(academic_allocation_id: ac.id, draft: false).as_json, evaluative: ac.evaluative, frequency: ac.frequency}
+        end
+
+        return info
+      end # get
 
       desc "Lista logs por usuário", {
         headers: {

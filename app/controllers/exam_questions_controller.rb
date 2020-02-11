@@ -27,7 +27,7 @@ class ExamQuestionsController < ApplicationController
     @exam_question.question.user_id = current_user.id
 
     ActiveRecord::Base.transaction do
-      if !params['question_texts']['text'].blank?
+      if !params['question_texts']['text'].strip.blank?
         @question_text = QuestionText.new(text: params['question_texts']['text'])
         @question_text.save
         @exam_question.question.question_text_id = @question_text.id

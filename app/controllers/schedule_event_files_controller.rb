@@ -100,6 +100,10 @@ class ScheduleEventFilesController < ApplicationController
         download_file(:back, path_zip)
       else
         if @file.file_correction
+
+          pages = @file.file_correction.length
+          count = 0
+
           pdf = Prawn::Document.new
           @file.file_correction.each do |key, value|
             temp_file = Tempfile.new('image', encoding: 'ascii-8bit')
@@ -107,7 +111,9 @@ class ScheduleEventFilesController < ApplicationController
             temp_file.write Base64.decode64(image_base64)
 
             pdf.image temp_file, at: [0, pdf.cursor], width: 500
-            pdf.start_new_page
+
+            count += 1
+            pdf.start_new_page if count != pages
           end
 
           file_name = @file.attachment_file_name.split('.').last != 'pdf' ? @file.attachment_file_name.gsub(/jpg|jpeg|png/, "pdf") : @file.attachment_file_name
@@ -137,7 +143,7 @@ class ScheduleEventFilesController < ApplicationController
           errors << t('schedule_event_files.error.student_not_found', file_name: file.original_filename)
         elsif alloc.count > 1
           errors <<  t('schedule_event_files.error.student_count', count: alloc.count)
-        else  
+        else
           al = alloc.first
           student_id = al.user_id
           acu = AcademicAllocationUser.find_or_create_one(ac.id, params[:allocation_tags_ids], student_id)

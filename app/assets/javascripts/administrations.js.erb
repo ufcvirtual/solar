@@ -4,8 +4,8 @@ $(function() {
   $("#search_user").click(function() {
     var url_for = "<%= Rails.application.routes.url_helpers.search_admin_users_path %>";
     var data = { user: encodeURIComponent($("#text_search").val()), type_search: $("#type_search").val()  };
-    $.get(url_for, data, function(data) { 
-      $('#list_users').html(data); 
+    $.get(url_for, data, function(data) {
+      $('#list_users').html(data);
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
@@ -28,8 +28,8 @@ function open_administration(obj) {
 
 function manage(obj) {
   $(obj).closest('tr').addClass('active');
-  $.get($(obj).attr('edit-link'), function(data) { 
-    $(obj).closest('tr').html(data); 
+  $.get($(obj).attr('edit-link'), function(data) {
+    $(obj).closest('tr').html(data);
   }).error(function(data){
     var data = $.parseJSON(data.responseText);
     if (typeof(data.alert) != "undefined")
@@ -39,8 +39,8 @@ function manage(obj) {
 
 function cancel(obj) {
   $(obj).closest('tr').removeClass('active');
-  $.get($(obj).attr('show-link'), function(data) { 
-    $(obj).closest('tr').html(data); 
+  $.get($(obj).attr('show-link'), function(data) {
+    $(obj).closest('tr').html(data);
   }).error(function(data){
     var data = $.parseJSON(data.responseText);
     if (typeof(data.alert) != "undefined")
@@ -55,8 +55,8 @@ function cancel(obj) {
 function update_allocation(obj) {
   var url = $(obj).attr('save-link');
 
-  $.put(url, 
-    {"status": $('#status_id option:selected', $(obj).closest('tr')).val()}, 
+  $.put(url,
+    {"status": $('#status_id option:selected', $(obj).closest('tr')).val()},
     function(data, textStatus, jqXHR){
       $(obj).closest('tr').removeClass('active');
       $.get($(obj).attr('show-link'), function(data) { $(obj).closest('tr').html(data); });
@@ -69,6 +69,12 @@ function update_allocation(obj) {
 
 function update_user(obj) {
   var url = $(obj).attr('save-link');
+
+  if(($(obj).data('application') != undefined) && ($(obj).closest('tr').find('input[id=username]').val() != $(obj).data('previous-username'))){
+    if (!confirm($(obj).data('confirm-msg'))){
+      return false;
+    }
+  }
 
   $.put(url, {"data": {
     "name": $(obj).closest('tr').find('input[id=name]').val(),

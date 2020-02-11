@@ -76,8 +76,7 @@ module V1
         before do
           is_responsible(:list, :assignments)
         end # befor
-
-        desc "Listar todas as informações de trabalhos do aluno", {
+        desc "Listar todas as informações de trabalhos dos alunos", {
           headers: {
             "Authorization" => {
               description: "Token",
@@ -85,6 +84,7 @@ module V1
             }
           }
         }
+        
         params do
           requires :student_id, type: Integer
           requires :group_id, type: Integer
@@ -201,7 +201,6 @@ module V1
           }
         }
         params do
-          requires :group_id, type: Integer
           requires :id, type: Integer
         end
         delete "/webconference/:id" do

@@ -88,6 +88,14 @@ class ScheduleEvent < Event
     Time.now > endt
   end
 
+  def start_date
+    schedule.start_date
+  end
+
+  def end_date
+    schedule.end_date
+  end
+
   def can_change?
     api || new_record? || !integrated
   end
@@ -181,6 +189,13 @@ class ScheduleEvent < Event
         Notifier.notify_exam_content(self, emails, I18n.t('schedule_events.notifier.content_exam')).deliver
       end
     end
+  end
+
+  def acu_by_user(user_id)
+    return [] if user_id.blank?
+    acu = AcademicAllocationUser.find_one(academic_allocations.map(&:id), user_id)
+    return [] if acu.blank?
+    acu
   end
 
 end

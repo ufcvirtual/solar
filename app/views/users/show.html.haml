@@ -17,7 +17,7 @@
     .block_title
       %h2= t(".personal_data")
     %div= t(".gender") + (@user.gender ? t(:m) : t(:f))
-    %div= t(".birthdate") + l(@user.birthdate)
+    %div= t(".birthdate") + (l(@user.birthdate) rescue t(".not_informed"))
     %div= t(".special_needs") + @user.special_needs unless @user.special_needs.nil?
 
   .block_content
@@ -52,6 +52,7 @@
     %div= t(".integrated") + (@user.integrated ? t(".y") : t(".n"))
     %div= t(".selfregistration") + (@user.selfregistration ? t(".y") : t(".n"))
     %div= t(".blacklist") + (@user.on_blacklist? ? t(".y") : t(".n"))
+    %div= t(".other_system") + (@user.oauth_application.blank? ? t(".n") : @user.oauth_application.name)
 
   .block_content
     .block_title

@@ -55,14 +55,16 @@ module Taggable
   ## Alocações
 
   # creates or activates user allocation
-  def allocate_user(user_id, profile_id, updated_by_user_id=nil, origin_group_id=nil, status=Allocation_Activated, enrollment=nil)
+  def allocate_user(user_id, profile_id, updated_by_user_id=nil, origin_group_id=nil, status=Allocation_Activated, notify=false, enrollment=nil)
     allocation = Allocation.where(user_id: user_id, allocation_tag_id: self.allocation_tag.id, profile_id: profile_id).first_or_initialize
+    new_record, old_status = allocation.new_record?, allocation.status
     allocation.status = status
     allocation.enrollment = enrollment
     allocation.updated_by_user_id = updated_by_user_id # if nil, was updated by system
 
     # if was merged and not anymore, but student still allocated at last group
     allocation.origin_group.cancel_allocations(user_id, profile_id) unless allocation.origin_group_id.blank? || origin_group_id == allocation.origin_group_id
+
     unless origin_group_id.blank?
       Allocation.where(origin_group_id: origin_group_id, user_id: user_id, profile_id: profile_id).where("id != ?", allocation.id).each do |al|
         al.group.change_allocation_status(user_id, Allocation_Cancelled, nil, {profile_id: profile_id})
@@ -71,10 +73,14 @@ module Taggable
 
     allocation.origin_group_id = (origin_group_id.blank? ? nil : origin_group_id)
     allocation.save!
+
+    allocation.user.notify_by_email(nil, nil, false, [], allocation.allocation_tag) if notify && status == Allocation_Activated && (new_record || old_status != Allocation_Activated) && profile_id == Profile.student_profile && (!allocation.group.blank? && allocation.group.status)
+
     allocation
   end
 
   def cancel_allocations(user_id = nil, profile_id = nil, updated_by_user_id=nil, opts = {}, raise_error = false)
+    Rails.logger.info "cancel_allocations"
     query = {}
     query.merge!({user_id: user_id})       unless user_id.nil?
     query.merge!({profile_id: profile_id}) unless profile_id.nil?
@@ -86,12 +92,10 @@ module Taggable
     end
 
     all_query = all.where(query)
-
     if raise_error && all_query.empty?
       Rails.logger.info "[API] [ERROR] [#{Time.now}] can't cancel allocation that doesn't exists user_id #{user_id} - profile_id #{profile_id} - allocation_tag_id #{allocation_tag.id}"
       raise "allocation doesnt exist"
     end
-
     all_query.each do |al|
       al.update_attributes(status: Allocation_Cancelled, updated_by_user_id: updated_by_user_id, origin_group_id: nil)
     end

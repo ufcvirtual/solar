@@ -73,14 +73,27 @@ class MessagesController < ApplicationController
     @message = Message.new
     @message.files.build
 
+    at = AllocationTag.find(@allocation_tag_id)
+
     @reply_to = [User.find(params[:user_id]).to_msg] unless params[:user_id].nil? # se um usuário for passado, colocá-lo na lista de destinatários
     @reply_to = [{resume: t("messages.support")}] unless params[:support].nil?
+
+    if params[:support_help]
+      ac = Webconference.set_status_support_help(params[:ac], Support_Help_Message) # Muda o status da AC para Support_Help_Message
+      web = Webconference.find(ac.academic_tool_id)
+      @reply_to = [{resume: t("messages.support_help"), subject: web.title + ' - ' + l(web.initial_time, format: :mask_with_time_form) + ' - ' + at.try(:info)}] # Envia o destinatário e o assunto para a mensagem
+    end
 
     @support = params[:support]
 
     @scores = params[:scores]
 
-    render layout: false unless @support || params[:layout]
+    if @support || params[:layout] || params[:support_help]
+      flash.now[:warning] = t('messages.support_warning')
+    else
+      render layout: false
+    end
+
   end
 
   def show
@@ -161,9 +174,9 @@ class MessagesController < ApplicationController
         if original_files and not original_files.empty?
           original_files.each do |file|
             new_file = file.dup
-            new_file.message_id = @message.id   
-            new_file.attachment = file.attachment    
-            new_file.save!    
+            new_file.message_id = @message.id
+            new_file.attachment = file.attachment
+            new_file.save!
           end
         end
 

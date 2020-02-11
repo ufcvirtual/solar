@@ -12,9 +12,9 @@ class ApplicationAPI < Grape::API
   end
 
   rescue_from Grape::Exceptions::ValidationErrors do |error|
-    Rails.logger.info "[API] [ERROR] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [400] message: #{error}"
-    rack_response(error.as_json, 400)
-    error!({ error: error.as_json }, 400)
+    Rails.logger.info "[API] [ERROR] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [400] message: #{error} #{error.try(:errors).try(:as_json)}"
+    rack_response(error.try(:errors).try(:as_json), 400)
+    error!({ error: error.try(:errors).try(:as_json) }, 400)
   end
 
   rescue_from CanCan::AccessDenied do |error|

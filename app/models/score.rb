@@ -741,7 +741,7 @@ class Score # < ActiveRecord::Base
             exams.attempts as count_all,
             NULL as moderator,
             exams.duration::text,
-            NULL as server,
+            exams.immediate_result_release::text as server,
             COALESCE(exams.result_release::timestamp, ((s.end_date || ' ' || COALESCE(CASE WHEN exams.end_hour='' THEN NULL ELSE exams.end_hour END, '23:59'))::timestamp + interval '2 min')::timestamp) AS release_date,
             CASE
               WHEN (current_date >= s.start_date AND current_date <= s.end_date) AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time > to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time < to_timestamp(exams.end_hour, 'HH24:MI:SS')::time) THEN true
@@ -755,10 +755,11 @@ class Score # < ActiveRecord::Base
               END AS closed,
             case
             when (current_date < s.start_date) OR (current_date = s.start_date AND ((exams.start_hour IS NOT NULL AND exams.end_hour != '' AND current_time<to_timestamp(exams.start_hour, 'HH24:MI:SS')::time))) then 'not_started'
+            when exams.immediate_result_release=TRUE AND academic_allocation_users.grade IS NULL AND ((last_attempt.complete=TRUE OR exams.uninterrupted=TRUE) AND (exams.attempts = user_attempts.count)) then 'finished'
             when ((current_date >= s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time>= to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND current_date <= s.end_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time<=to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) AND exam_responses.id IS NULL then 'to_answer'
             when ((current_date >= s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time>= to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND current_date <= s.end_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time<=to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) AND (exams.uninterrupted!=TRUE AND last_attempt.complete!=TRUE) then 'not_finished'
             when ((current_date >= s.start_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR current_time>= to_timestamp(exams.start_hour, 'HH24:MI:SS')::time) AND current_date <= s.end_date AND (exams.end_hour IS NULL OR exams.end_hour = '' OR current_time<=to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) AND user_attempts.count < exams.attempts then 'retake'
-            when academic_allocation_users.grade IS NOT NULL AND (current_date > s.end_date OR  (current_date = s.end_date AND (exams.end_hour IS NOT NULL AND exams.end_hour != '' AND current_time>to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) then 'corrected'
+            when academic_allocation_users.grade IS NOT NULL AND ((current_date > s.end_date OR (current_date = s.end_date AND (exams.end_hour IS NOT NULL AND exams.end_hour != '' AND current_time>to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) OR ((s.start_date < current_date OR (s.start_date = current_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR exams.start_hour::time < current_time))) AND exams.immediate_result_release=TRUE)) then 'corrected'
             when (current_date > s.end_date OR  (current_date = s.end_date AND (exams.end_hour IS NOT NULL AND exams.end_hour != '' AND current_time>to_timestamp(exams.end_hour, 'HH24:MI:SS')::time))) AND (user_attempts.count > 0 ) AND academic_allocation_users.grade IS NULL then 'not_corrected'
             when (last_attempt.complete=TRUE OR exams.uninterrupted=TRUE) AND (exams.attempts = user_attempts.count) then 'finished'
             else
@@ -893,6 +894,8 @@ class Score # < ActiveRecord::Base
               #{evaluated_status}
               WHEN (#{sent_status} OR ((academic_allocation_users.status IS NULL OR academic_allocation_users.status = 2) AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.id IS NOT NULL))) THEN 'sent'
               when NOW()>webconferences.initial_time AND NOW()<(webconferences.initial_time + webconferences.duration* interval '1 min') then 'in_progress'
+              when NOW() < webconferences.initial_time AND webconferences.integrated='t' AND webconferences.user_id IS NULL then 'scheduled_coord'
+              when NOW() < webconferences.initial_time AND webconferences.integrated='t' AND webconferences.user_id IS NOT NULL then 'scheduled_someone'
               when NOW() < webconferences.initial_time then 'scheduled'
               when (NOW()<webconferences.initial_time + webconferences.duration* interval '1 min' + interval '15 mins') then 'processing'
             ELSE 'finish'
