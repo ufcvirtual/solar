@@ -243,35 +243,37 @@ module V1
 
         end
 
-        segment do
-          before { guard! }
+        namespace :photo do
+          segment do
+            before { guard! }
 
-          put :photo do
-            current_user.api = true
-            current_user.update_attributes!(photo: ActionDispatch::Http::UploadedFile.new(params[:file]))
+            put :photo do
+              current_user.api = true
+              current_user.update_attributes!(photo: ActionDispatch::Http::UploadedFile.new(params[:file]))
 
-            {ok: :ok}
-          end
-
-          delete :photo do
-            current_user.photo = nil
-            current_user.api = true
-            current_user.save!
-
-            {ok: :ok}
-          end
-
-          params do
-            optional :style, type: String, values: %w(small forum medium), default: 'medium'
-          end
-          get :photo do
-            if current_user.photo.path(params[:style]).blank?
-              send_file("#{Rails.root}/app/assets/images/no_image_#{params[:style]}.png", params[:style])
-            else
-              send_file(current_user.photo.path(params[:style]), params[:style])
+              {ok: :ok}
             end
-          end
-        end # segment
+
+            delete :photo do
+              current_user.photo = nil
+              current_user.api = true
+              current_user.save!
+
+              {ok: :ok}
+            end
+
+            params do
+              optional :style, type: String, values: %w(small forum medium), default: 'medium'
+            end
+            get :photo do
+              if current_user.photo.path(params[:style]).blank?
+                send_file("#{Rails.root}/app/assets/images/no_image_#{params[:style]}.png", params[:style])
+              else
+                send_file(current_user.photo.path(params[:style]), params[:style])
+              end
+            end
+          end # segment
+        end # photo
 
       end # user
 
