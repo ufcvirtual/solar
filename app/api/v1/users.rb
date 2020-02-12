@@ -139,7 +139,14 @@ module V1
               { error: error || user.errors.full_messages.join(', ') }
             end
           end # /
-
+          desc "Altera dados do usuário", {
+            headers: {
+              "Authorization" => {
+                description: "Token",
+                required: true
+              }
+            }
+          }
           params do
             requires :cpf, type: String
             optional :gender, type: Boolean
@@ -155,7 +162,7 @@ module V1
             user = User.where(cpf: cpf).first
 
             raise ActiveRecord::RecordNotFound if user.blank?
-            raise CanCan::AccessDenied if user.oauth_application_id.blank? || user.oauth_application_id != @current_client.id
+            raise CanCan::AccessDenied if (!user.oauth_application_id.blank? && user.oauth_application_id != @current_client.try(:id))
 
             user.attributes = user_params(params)
             user.api = true
@@ -260,62 +267,63 @@ module V1
           end
 
         end
+        namespace :photo do
+          segment do
 
-        segment do
-          before { guard! }
-          
-          params{requires :file, type: File}
-          desc "Altera a foto do perfil do usuário", {
-            headers: {
-              "Authorization" => {
-                description: "Token",
-                required: true
+            before { guard! }
+            
+            params{requires :file, type: File}
+            desc "Altera a foto do perfil do usuário", {
+              headers: {
+                "Authorization" => {
+                  description: "Token",
+                  required: true
+                }
               }
             }
-          }
 
-          put :photo do
-            current_user.api = true
-            current_user.update_attributes!(photo: ActionDispatch::Http::UploadedFile.new(params[:file]))
+            put :photo do
+              current_user.api = true
+              current_user.update_attributes!(photo: ActionDispatch::Http::UploadedFile.new(params[:file]))
 
-            {ok: :ok}
-          end
-          desc "Apaga a foto do perfil do usuário", {
-            headers: {
-              "Authorization" => {
-                description: "Token",
-                required: true
-              }
-            }
-          }
-          delete :photo do
-            current_user.photo = nil
-            current_user.api = true
-            current_user.save!
-
-            {ok: :ok}
-          end
-
-          params do
-            optional :style, type: String, values: %w(small forum medium), default: 'medium'
-          end
-          desc "Retorna a foto do perfil do usuário", {
-            headers: {
-              "Authorization" => {
-                description: "Token",
-                required: true
-              }
-            }
-          }
-          get :photo do
-            if current_user.photo.path(params[:style]).blank?
-              send_file("#{Rails.root}/app/assets/images/no_image_#{params[:style]}.png", params[:style])
-            else
-              send_file(current_user.photo.path(params[:style]), params[:style])
+              {ok: :ok}
             end
-          end
-        end # segment
+            desc "Apaga a foto do perfil do usuário", {
+              headers: {
+                "Authorization" => {
+                  description: "Token",
+                  required: true
+                }
+              }
+            }
+            delete :photo do
+              current_user.photo = nil
+              current_user.api = true
+              current_user.save!
 
+              {ok: :ok}
+            end
+
+            params do
+              optional :style, type: String, values: %w(small forum medium), default: 'medium'
+            end
+            desc "Retorna a foto do perfil do usuário", {
+              headers: {
+                "Authorization" => {
+                  description: "Token",
+                  required: true
+                }
+              }
+            }
+            get :photo do
+              if current_user.photo.path(params[:style]).blank?
+                send_file("#{Rails.root}/app/assets/images/no_image_#{params[:style]}.png", params[:style])
+              else
+                send_file(current_user.photo.path(params[:style]), params[:style])
+              end
+            end
+          end # segment
+        end #photo
       end # user
 
       namespace :profiles do
