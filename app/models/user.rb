@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
 
   before_save :ensure_authentication_token!, :downcase_username
   before_save :downcase_email, unless: 'email.blank?'
-  after_save :log_update_user
+  after_save :log_update_user, unless: 'from_api?'
   after_save :update_digital_class_user, if: '(!new_record? && (name_changed? || email_changed? || cpf_changed?) && !digital_class_user_id.nil?)', on: :update
 
   before_save :set_previous, if: '(!new_record? && ((username_changed? && !previous_username.blank?) || email_changed? && !previous_email.blank?)) && (!synchronizing)'
