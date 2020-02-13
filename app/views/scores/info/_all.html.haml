@@ -29,7 +29,7 @@
                   %td{headers: "al_eva_tit"}
                     %div= t(tool.academic_tool_type.downcase, scope: [:activerecord, :models])
                     - if tool.opened == true && tool.academic_tool_type != 'ScheduleEvent' && tool.situation != 'finished' &&  available && tool.situation != 'without_group'
-                      = link_to tool.name, "#void", onclick: "open_tool(this);", :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => (tool.academic_tool_type == 'ChatRoom' ? tool.name + t('fancybox.open') : (tool.academic_tool_type == "Webconference" ? t('.access_web', web: tool.name) : tool.name )), class: 'link_content'
+                      = link_to tool.name, "#void", onclick: "open_tool(this);", :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => (tool.academic_tool_type == 'ChatRoom' ? tool.name + t('fancybox.open') : (tool.academic_tool_type == "Webconference" ? t('webconferences.index.access_web', web: tool.name) : tool.name )), class: 'link_content'
 
                     - else
                       - if tool.academic_tool_type == 'Exam'
@@ -118,7 +118,7 @@
                   %td{headers: "al_fre_tit"}
                     %div= t(tool.academic_tool_type.downcase, scope: [:activerecord, :models])
                     - if tool.opened == true && tool.academic_tool_type != 'ScheduleEvent' && available && tool.situation != 'without_group'
-                      = link_to tool.name, "#void", onclick: "open_tool(this);", :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => (tool.academic_tool_type == 'ChatRoom' ? tool.name + t('fancybox.open') : (tool.academic_tool_type == "Webconference" ? t('.access_web', web: tool.name) : tool.name )), class: 'link_content'
+                      = link_to tool.name, "#void", onclick: "open_tool(this);", :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => (tool.academic_tool_type == 'ChatRoom' ? tool.name + t('fancybox.open') : (tool.academic_tool_type == "Webconference" ? t('webconferences.index.access_web', web: tool.name) : tool.name )), class: 'link_content'
 
                     - else
                       - if tool.academic_tool_type == 'Exam'
@@ -202,7 +202,7 @@
                   %td{headers: "al_not_tit"}
                     %div= t(tool.academic_tool_type.downcase, scope: [:activerecord, :models])
                     - if tool.opened == true && tool.academic_tool_type != 'ScheduleEvent' && available && tool.situation != 'without_group'
-                      = link_to tool.name, "#void", onclick: 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => (tool.academic_tool_type == 'ChatRoom' ? tool.name + t('fancybox.open') : (tool.academic_tool_type == "Webconference" ? t('.access_web', web: tool.name) : tool.name )), class: 'link_content'
+                      = link_to tool.name, "#void", onclick: 'open_tool(this)', :'data-url' => redirect_to_open_scores_path(tool_type: tool.academic_tool_type, ac_id: tool.id, user_id: @user.id, group_id: tool.group_id, situation: tool.situation), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => (tool.academic_tool_type == 'ChatRoom' ? tool.name + t('fancybox.open') : (tool.academic_tool_type == "Webconference" ? t('webconferences.index.access_web', web: tool.name) : tool.name )), class: 'link_content'
                     - else
                       - if tool.academic_tool_type == 'Exam'
                         - if is_user
