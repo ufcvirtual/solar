@@ -230,14 +230,6 @@ module Bbb
     api.delete_recordings(recordId)
   end
 
-  def self.get_recording_url(recording)
-    response = recording[:playback][:format]
-    response = response.kind_of?(Array) ? response.find {|x| x[:type] == 'presentation'} : response
-    response = URI.parse(response[:url])
-    response.scheme = "https"
-    response.to_s
-  end
-
   # format: presentation, podcast and video
   def self.get_recording_url(recording, format)
     response = recording[:playback][:format]
