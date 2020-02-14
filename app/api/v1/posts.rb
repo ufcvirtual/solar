@@ -134,12 +134,12 @@ module V1
           optional :draft, type: Boolean, default: false
         end
       end
-      post ":id/posts" do
+      post ':id/posts' do
         verify_user_permission_on_discussion_and_set_obj(:create)
 
         raise MissingTokenError unless @discussion.user_can_interact?(current_user.id) # unauthorized
 
-        ats = [AllocationTag.find_by_group_id(@group.id)] || RelatedTaggable.related({ group_id: @group.id })
+        ats = AllocationTag.find_by_group_id(@group.id).related
 
         academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: ats).first
 
