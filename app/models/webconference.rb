@@ -334,7 +334,7 @@ class Webconference < ActiveRecord::Base
 
   def get_all_recordings_urls(at_id)
     urls = []
-    urls << recordings([], at_id).collect{|r| {url: Bbb.get_recording_url(r), start_time: r[:startTime].to_datetime, end_time: r[:endTime].to_datetime} }
+    urls << recordings([], at_id).collect{|record| {url: Bbb.get_recording_url(record, 'presentation'), start_time: record[:startTime].to_datetime, end_time: record[:endTime].to_datetime} }
     urls.flatten
   end
 
