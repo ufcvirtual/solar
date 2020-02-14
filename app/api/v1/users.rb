@@ -141,7 +141,7 @@ module V1
             user = User.where(cpf: cpf).first
 
             raise ActiveRecord::RecordNotFound if user.blank?
-            raise CanCan::AccessDenied if user.oauth_application_id.blank? || user.oauth_application_id != @current_client.id
+            raise CanCan::AccessDenied if (!user.oauth_application_id.blank? && user.oauth_application_id != @current_client.try(:id)) || (user.oauth_application_id.blank? && user.id != @current_user.try(:id))
 
             user.attributes = user_params(params)
             user.api = true
