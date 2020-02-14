@@ -93,7 +93,8 @@ class Discussion < Event
 
     posts_by_allocation_tags_ids(allocation_tags_ids, user_id, nil, { grandparent: false, query: query.join(' AND '),
                                                         order: "updated_at #{opts['order']}", limit: opts['limit'],
-                                                        offset: offset })
+                                                        offset: offset,
+                                                        select: 'DISTINCT discussion_posts.id, discussion_posts.*'  })
   end
 
   def posts_not_limit(opts = {}, allocation_tags_ids = nil, user_id=nil)
