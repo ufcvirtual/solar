@@ -81,12 +81,16 @@ class CommentsController < ApplicationController
   end
 
   def download
-    file = CommentFile.find(params[:file_id])
-    comment = file.comment
+    if Exam.verify_blocking_content(current_user.id)
+      redirect_to list_assignments_path, alert: t('assignments.restrict_assignment')
+    else
+      file = CommentFile.find(params[:file_id])
+      comment = file.comment
 
-    verify_access(comment.academic_allocation_user, comment.academic_allocation.academic_tool_type)
+      verify_access(comment.academic_allocation_user, comment.academic_allocation.academic_tool_type)
 
-    download_file(:back, file.attachment.path, file.attachment_file_name)
+      download_file(:back, file.attachment.path, file.attachment_file_name)
+    end
   end
 
   private

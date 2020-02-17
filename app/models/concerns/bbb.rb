@@ -281,7 +281,7 @@ module Bbb
     raise 'unavailable'              unless server.blank? || bbb_online?
     raise 'not_ended'                unless !started? || is_over?
     raise 'acu'                      if (respond_to?(:academic_allocation_users) && academic_allocation_users.any?) || (!respond_to?(:academic_allocation_users) && academic_allocation_user.blank?)
-    raise 'integrated' if integrated && (api.blank? || over?)
+    raise 'integrated' if (respond_to?(:integrated) && integrated) && (api.blank? || over?)
   end
 
   def can_destroy_boolean?
