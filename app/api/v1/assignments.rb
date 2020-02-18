@@ -202,6 +202,7 @@ module V1
         }
         params do
           requires :id, type: Integer
+          requires :group_id, type: Integer
         end
         delete "/webconference/:id" do
           awf = AssignmentWebconference.find(params[:id].to_i)

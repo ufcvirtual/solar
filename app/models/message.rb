@@ -195,11 +195,9 @@ class Message < ActiveRecord::Base
 
     def set_sender_and_recipients
       users = [{user: sender, status: Message_Filter_Sender}]
+      users << contacts.split(",").map {|u| {user_id: u, status: Message_Filter_Receiver}} unless contacts.blank?
       if api
-        users << contacts.map {|u| {user_id: u.id, status: Message_Filter_Receiver}} unless contacts.blank?
         users.flatten!
-      else
-        users << contacts.split(",").map {|u| {user_id: u, status: Message_Filter_Receiver}} unless contacts.blank?
       end
 
       self.user_messages.build users
