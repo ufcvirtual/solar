@@ -64,7 +64,10 @@ module Solar
     config.assets.enabled = true
     config.assets.compress = true
     config.assets.precompile << /(^[^_\/]|\/[^_])[^\/]*$/
+    config.assets.precompile += %w[ckeditor_4/ckeditor/config.js]
+    config.assets.precompile += ['ckeditor_4/ckeditor/*']
     config.assets.precompile += ['ckeditor/*']
+
 
     config.i18n.enforce_available_locales = true
     I18n.config.enforce_available_locales = true

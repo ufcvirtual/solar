@@ -1903,7 +1903,7 @@ pt_BR:
   to_send: A enviar
   without_group: Sem Grupo
   not_corrected: Não Corrigido
-  confirm_create_group_assignment_in_today: "O trabalho está iniciado hoje, por esse motivo os alunos serão alocados em grupos automaticamente."
+  confirm_create_group_assignment_in_today: "O trabalho inicia hoje. Por esse motivo, os alunos serão alocados em grupos automaticamente."
 
   # Assignment Comments
   comment_error_delete_file: Erro ao tentar excluir arquivo
@@ -2497,7 +2497,7 @@ pt_BR:
     automatic_split_group_jobs:  Divisão automática de trabalhos em grupos
     split_group_jobs: "O trabalho %{assignment_key} inicia hoje. Por este motivo, os alunos serão distribuídos em grupos automaticamente"
     alert_create_assignment_group_email: Aviso divisão de grupos de trabalho
-    automatic_one_week_before_email_split_group: "O trabalho %{assignment_group_name} inicia em 1 semana, caso não feita a divisão em grupos dos alunos, serão criados grupos 
+    automatic_one_week_before_email_split_group: "O trabalho %{assignment_group_name} inicia em 1 semana, caso não feita a divisão em grupos dos alunos, serão criados grupos
                                                   automaticamente a partir de uma média de grupos anteriores ou com, aproximadamente, 3 alunos em cada grupo"
   public_files:
     index:

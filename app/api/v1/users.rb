@@ -270,7 +270,7 @@ module V1
         namespace :photo do
           segment do
 
-            before { guard! }
+            before { guard_user! }
             
             params{requires :file, type: File}
             desc "Altera a foto do perfil do usuário", {
@@ -281,7 +281,6 @@ module V1
                 }
               }
             }
-
             put :photo do
               current_user.api = true
               current_user.update_attributes!(photo: ActionDispatch::Http::UploadedFile.new(params[:file]))
