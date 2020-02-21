@@ -1642,7 +1642,7 @@ en_US:
   navigation_first_page: "First page "
   navigation_last_page: "Last page "
   navigation_page: "Page: "
-  confirm_create_group_assignment_in_today: "Work is started today, so students will be automatically grouped into groups."
+  confirm_create_group_assignment_in_today: "Work is started today, so students will be automatically grouped."
 
   menu_dc_lesson: Digital Class
   menu_content: Content

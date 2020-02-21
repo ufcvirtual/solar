@@ -73,7 +73,7 @@ class MessagesController < ApplicationController
     @message = Message.new
     @message.files.build
 
-    at = AllocationTag.find(@allocation_tag_id)
+    at = AllocationTag.find(@allocation_tag_id) rescue nil
 
     @reply_to = [User.find(params[:user_id]).to_msg] unless params[:user_id].nil? # se um usuário for passado, colocá-lo na lista de destinatários
     @reply_to = [{resume: t("messages.support")}] unless params[:support].nil?
@@ -88,9 +88,10 @@ class MessagesController < ApplicationController
 
     @scores = params[:scores]
 
-    if @support || params[:layout] || params[:support_help]
+    # if @support || params[:layout] || params[:support_help]
+    if params[:support_help]
       flash.now[:warning] = t('messages.support_warning')
-    else
+    elsif !(@support || params[:layout])
       render layout: false
     end
 

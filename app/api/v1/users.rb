@@ -245,7 +245,7 @@ module V1
 
         namespace :photo do
           segment do
-            before { guard! }
+            before { guard_user! }
 
             put :photo do
               current_user.api = true
