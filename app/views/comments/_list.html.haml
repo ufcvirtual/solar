@@ -11,7 +11,7 @@
       .comment_form
       %ul.comments_list
         - unless comments.blank?
-          - if !tool.nil? && tool.type_assignment == Assignment_Type_Group
+          - if !tool.nil? && tool.try(:type_assignment) == Assignment_Type_Group
             - comments.each do |comment|
               - if comment.specific_user_id.nil? || comment.responsibles.include?(current_user.id) || comment.specific_user_id == current_user.id
                 = render partial: 'comments/comment', locals: { comment: comment }
