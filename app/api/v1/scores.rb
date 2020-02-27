@@ -108,10 +108,10 @@ module V1
         before do
           begin
             authorize! :index, Score, on: [@at.id]
-            user_id = params[:user_id]
+            @user_id = params[:user_id]
           rescue
             authorize! :info, Score, on: [@at.id]
-            user_id = current_user.id
+            @user_id = current_user.id
           end
         end
 
@@ -122,11 +122,11 @@ module V1
           end
         get ':id/scores/discussion/:discussion_id/info', rabl: 'scores/discussion' do
 
-          posts = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: @at.id, academic_tool_id: params[:discussion_id], academic_tool_type: 'Discussion' }, user_id: user_id, draft: false).order('updated_at DESC')
+          posts = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: @at.id, academic_tool_id: params[:discussion_id], academic_tool_type: 'Discussion' }, user_id: @user_id, draft: false).order('updated_at DESC')
 
           discussion = Discussion.find(params[:discussion_id])
           academic_allocation = discussion.academic_allocations.where(allocation_tag_id: @at.id).first
-          all_user = AcademicAllocationUser.find_one(academic_allocation.id, user_id, nil, false)
+          all_user = AcademicAllocationUser.find_one(academic_allocation.id, @user_id, nil, false)
 
           Struct.new('PostsScores',:posts, :all_user)
           @posts_scores = Struct::PostsScores.new(posts, all_user)
@@ -139,7 +139,7 @@ module V1
           end
         get ':id/scores/assignment/:assignment_id/info', rabl: 'scores/assignment' do
           ac = AcademicAllocation.where(academic_tool_id: params[:assignment_id], allocation_tag_id: @at.id, academic_tool_type: 'Assignment').first
-          @acu = AcademicAllocationUser.where(academic_allocation_id: ac.id).where(user_id: user_id).first
+          @acu = AcademicAllocationUser.where(academic_allocation_id: ac.id).where(user_id: @user_id).first
         end
 
         params do
@@ -152,10 +152,10 @@ module V1
 
           academic_allocations_ids = (webconference.shared_between_groups ? webconference.academic_allocations.map(&:id) : webconference.academic_allocations.where(allocation_tag_id: @at.id).first.try(:id))
           ats = AllocationTag.where(id: @at.id).map(&:related)
-          logs = webconference.get_access(academic_allocations_ids, ats, {user_id: user_id})
+          logs = webconference.get_access(academic_allocations_ids, ats, {user_id: @user_id})
           acs = AcademicAllocation.where(id: academic_allocations_ids)
           academic_allocation = acs.where(allocation_tag_id: @at.id).first
-          acu = AcademicAllocationUser.find_one(academic_allocation.id, user_id, nil, false)
+          acu = AcademicAllocationUser.find_one(academic_allocation.id, @user_id, nil, false)
 
           Struct.new('WebScores',:logs, :acu)
           @webconference_scores = Struct::WebScores.new(logs, acu)
@@ -168,9 +168,9 @@ module V1
         end
         get ':id/scores/chat/:chat_id/info', rabl: 'scores/chat' do
           chat_room = ChatRoom.find(params[:chat_id])
-          messages = chat_room.get_messages(@at.id, {user_id: user_id} )
+          messages = chat_room.get_messages(@at.id, {user_id: @user_id} )
           academic_allocation = chat_room.academic_allocations.where(allocation_tag_id: @at.id).first
-          acu = AcademicAllocationUser.find_one(academic_allocation.id, user_id,nil, false)
+          acu = AcademicAllocationUser.find_one(academic_allocation.id, @user_id,nil, false)
 
           Struct.new('ChatScores',:messages, :acu)
           @chat_scores = Struct::ChatScores.new(messages, acu)
