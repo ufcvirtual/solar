@@ -48,7 +48,7 @@ module V1::EventsH
       event = update_event
       event.api = true
 
-      if event.try(:type) && event_info[:type] != 5
+      if event.try(:type_event) && event_info[:type] != 5
         event.schedule.update_attributes! start_date: params[:event][:date], end_date: params[:event][:date]
         event.update_attributes! start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":")
       else

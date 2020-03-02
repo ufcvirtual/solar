@@ -72,16 +72,6 @@ module V1
 
       end # get
 
-      before do
-        begin
-          @at  = AllocationTag.find_by_group_id(params[:id])
-          @ats = RelatedTaggable.related(group_id: params[:id])
-          raise 'error' if @at.blank?
-        rescue
-          raise 'group does not exist'
-        end
-      end
-
       ## api/v1/groups/1/scores/
       desc "Lista das atividades de alunos e responsáveis", {
         headers: {
@@ -130,123 +120,143 @@ module V1
         end
       get ':id/scores/summary', rabl: 'scores/summary' do
         authorize! :index, Score, on: [@at.id]
+
+        @group = Group.find(params[:id])
+
         @users = AllocationTag.get_participants(@at.id, { students: true }, true)
         @wh = AllocationTag.find(@at.id).get_curriculum_unit.try(:working_hours)
       end
 
-      desc "Sumário do aluno em fórum", {
-        headers: {
-          "Authorization" => {
-            description: "Token",
-            required: true
+      segment do
+
+        before do
+          begin
+            authorize! :index, Score, on: [@at.id]
+            @user_id = params[:user_id]
+          rescue
+            authorize! :info, Score, on: [@at.id]
+            @user_id = current_user.id
+          end
+        end
+
+        desc "Sumário do aluno em fórum", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
           }
         }
-      }
-      params do
+        params do
+            requires :id, type: Integer, desc: 'ID da Turma'
+            requires :discussion_id, type: Integer, desc: 'ID do Fórum'
+            requires :user_id, type: Integer, desc: 'ID da Aluno'
+          end
+        get ':id/scores/discussion/:discussion_id/info', rabl: 'scores/discussion' do
+
+          posts = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: @at.id, academic_tool_id: params[:discussion_id], academic_tool_type: 'Discussion' }, user_id: @user_id, draft: false).order('updated_at DESC')
+
+          discussion = Discussion.find(params[:discussion_id])
+          academic_allocation = discussion.academic_allocations.where(allocation_tag_id: @at.id).first
+          all_user = AcademicAllocationUser.find_one(academic_allocation.id, @user_id, nil, false)
+
+          Struct.new('PostsScores',:posts, :all_user)
+          @posts_scores = Struct::PostsScores.new(posts, all_user)
+        end
+
+        desc "Sumário do aluno em trabalho", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
+        params do
+            requires :id, type: Integer, desc: 'ID da Turma'
+            requires :assignment_id, type: Integer, desc: 'ID do Trabalho'
+            requires :user_id, type: Integer, desc: 'ID da Aluno'
+          end
+        get ':id/scores/assignment/:assignment_id/info', rabl: 'scores/assignment' do
+          authorize! :index, Score, on: [@at.id]
+          ac = AcademicAllocation.where(academic_tool_id: params[:assignment_id], allocation_tag_id: @at.id, academic_tool_type: 'Assignment').first
+          @acu = AcademicAllocationUser.where(academic_allocation_id: ac.id).where(user_id: params[:user_id]).first
+        end
+
+        desc "Sumário do aluno em webconferência", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
+        params do
+            requires :id, type: Integer, desc: 'ID da Turma'
+            requires :webconference_id, type: Integer, desc: 'ID da Webconferência'
+            requires :user_id, type: Integer, desc: 'ID da Aluno'
+          end
+        get ':id/scores/webconference/:webconference_id/info', rabl: 'scores/webconference' do
+          authorize! :index, Score, on: [@at.id]
+          webconference = Webconference.find(params[:webconference_id])
+
+          academic_allocations_ids = (webconference.shared_between_groups ? webconference.academic_allocations.map(&:id) : webconference.academic_allocations.where(allocation_tag_id: @at.id).first.try(:id))
+          ats = AllocationTag.where(id: @at.id).map(&:related)
+          logs = webconference.get_access(academic_allocations_ids, ats, {user_id: params[:user_id]})
+          acs = AcademicAllocation.where(id: academic_allocations_ids)
+          academic_allocation = acs.where(allocation_tag_id: @at.id).first
+          acu = AcademicAllocationUser.find_one(academic_allocation.id, params[:user_id], nil, false)
+
+          Struct.new('WebScores',:logs, :acu)
+          @webconference_scores = Struct::WebScores.new(logs, acu)
+        end
+
+        desc "Sumário do aluno em chat", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
+          }
+        }
+        params do
           requires :id, type: Integer, desc: 'ID da Turma'
-          requires :discussion_id, type: Integer, desc: 'ID do Fórum'
+          requires :chat_id, type: Integer, desc: 'ID do Chat'
           requires :user_id, type: Integer, desc: 'ID da Aluno'
         end
-      get ':id/scores/discussion/:discussion_id/info', rabl: 'scores/discussion' do
-        authorize! :index, Score, on: [@at.id]
-        posts = Post.joins(:academic_allocation).where(academic_allocations: { allocation_tag_id: @at.id, academic_tool_id: params[:discussion_id], academic_tool_type: 'Discussion' }, user_id: params[:user_id], draft: false).order('updated_at DESC')
+        get ':id/scores/chat/:chat_id/info', rabl: 'scores/chat' do
+          authorize! :index, Score, on: [@at.id]
+          chat_room = ChatRoom.find(params[:chat_id])
+          messages = chat_room.get_messages(@at.id, {user_id: params[:user_id]} )
+          academic_allocation = chat_room.academic_allocations.where(allocation_tag_id: @at.id).first
+          acu = AcademicAllocationUser.find_one(academic_allocation.id, params[:user_id],nil, false)
 
-        discussion = Discussion.find(params[:discussion_id])
-        academic_allocation = discussion.academic_allocations.where(allocation_tag_id: @at.id).first
-        all_user = AcademicAllocationUser.find_one(academic_allocation.id, params[:user_id], nil, false)
-
-        Struct.new('PostsScores',:posts, :all_user)
-        @posts_scores = Struct::PostsScores.new(posts, all_user)
-      end
-      desc "Sumário do aluno em trabalho", {
-        headers: {
-          "Authorization" => {
-            description: "Token",
-            required: true
-          }
-        }
-      }
-      params do
-          requires :id, type: Integer, desc: 'ID da Turma'
-          requires :assignment_id, type: Integer, desc: 'ID do Trabalho'
-          requires :user_id, type: Integer, desc: 'ID da Aluno'
+          Struct.new('ChatScores',:messages, :acu)
+          @chat_scores = Struct::ChatScores.new(messages, acu)
         end
-      get ':id/scores/assignment/:assignment_id/info', rabl: 'scores/assignment' do
-        authorize! :index, Score, on: [@at.id]
-        ac = AcademicAllocation.where(academic_tool_id: params[:assignment_id], allocation_tag_id: @at.id, academic_tool_type: 'Assignment').first
-        @acu = AcademicAllocationUser.where(academic_allocation_id: ac.id).where(user_id: params[:user_id]).first
-      end
-      desc "Sumário do aluno em webconferência", {
-        headers: {
-          "Authorization" => {
-            description: "Token",
-            required: true
+
+        desc "Cadastra novo comentário para aluno.", {
+          headers: {
+            "Authorization" => {
+              description: "Token",
+              required: true
+            }
           }
         }
-      }
-      params do
+        params do
           requires :id, type: Integer, desc: 'ID da Turma'
-          requires :webconference_id, type: Integer, desc: 'ID da Webconferência'
-          requires :user_id, type: Integer, desc: 'ID da Aluno'
+          requires :academic_allocation_user_id, type: Integer, desc: 'ID da AcademicAllocationUser'
+          requires :comment, type: String
         end
-      get ':id/scores/webconference/:webconference_id/info', rabl: 'scores/webconference' do
-        authorize! :index, Score, on: [@at.id]
-        webconference = Webconference.find(params[:webconference_id])
+        post ':id/scores/comment/:academic_allocation_user_id' do
+          authorize! :index, Score, on: [@at.id]
+          comment = Comment.new(academic_allocation_user_id: params[:academic_allocation_user_id], comment: params[:comment], user_id: current_user)
+          comment.api = true
+          comment.save!
 
-        academic_allocations_ids = (webconference.shared_between_groups ? webconference.academic_allocations.map(&:id) : webconference.academic_allocations.where(allocation_tag_id: @at.id).first.try(:id))
-        ats = AllocationTag.where(id: @at.id).map(&:related)
-        logs = webconference.get_access(academic_allocations_ids, ats, {user_id: params[:user_id]})
-        acs = AcademicAllocation.where(id: academic_allocations_ids)
-        academic_allocation = acs.where(allocation_tag_id: @at.id).first
-        acu = AcademicAllocationUser.find_one(academic_allocation.id, params[:user_id], nil, false)
-
-        Struct.new('WebScores',:logs, :acu)
-        @webconference_scores = Struct::WebScores.new(logs, acu)
-      end
-      desc "Sumário do aluno em chat", {
-        headers: {
-          "Authorization" => {
-            description: "Token",
-            required: true
-          }
-        }
-      }
-      params do
-        requires :id, type: Integer, desc: 'ID da Turma'
-        requires :chat_id, type: Integer, desc: 'ID do Chat'
-        requires :user_id, type: Integer, desc: 'ID da Aluno'
-      end
-      get ':id/scores/chat/:chat_id/info', rabl: 'scores/chat' do
-        authorize! :index, Score, on: [@at.id]
-        chat_room = ChatRoom.find(params[:chat_id])
-        messages = chat_room.get_messages(@at.id, {user_id: params[:user_id]} )
-        academic_allocation = chat_room.academic_allocations.where(allocation_tag_id: @at.id).first
-        acu = AcademicAllocationUser.find_one(academic_allocation.id, params[:user_id],nil, false)
-
-        Struct.new('ChatScores',:messages, :acu)
-        @chat_scores = Struct::ChatScores.new(messages, acu)
-      end
-      desc "Cadastra novo comentário para aluno.", {
-        headers: {
-          "Authorization" => {
-            description: "Token",
-            required: true
-          }
-        }
-      }
-      params do
-        requires :id, type: Integer, desc: 'ID da Turma'
-        requires :academic_allocation_user_id, type: Integer, desc: 'ID da AcademicAllocationUser'
-        requires :comment, type: String
-      end
-    post ':id/scores/comment/:academic_allocation_user_id' do
-      authorize! :index, Score, on: [@at.id]
-      comment = Comment.new(academic_allocation_user_id: params[:academic_allocation_user_id], comment: params[:comment], user_id: current_user)
-      comment.api = true
-      comment.save!
-
-      {ok: 'ok'}
-    end
+          {ok: 'ok'}
+        end
+      end #segment
 
     end # namespace
 

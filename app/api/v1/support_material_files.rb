@@ -45,7 +45,10 @@ module V1
           }
         }
       }
-      params { requires :id, type: Integer, desc: "ID do material de apoio" }
+      params { 
+        requires :id, type: Integer, desc: "ID da turma" 
+        requires :file_id, type: Integer, desc: "ID do material de apoio"
+      }
       get ":id/support_material_files/:file_id/download" do
         authorize! :download, SupportMaterialFile, on: @ats, read: true
         raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
