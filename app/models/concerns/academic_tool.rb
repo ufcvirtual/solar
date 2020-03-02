@@ -9,13 +9,13 @@ module AcademicTool
     has_many :groups, through: :allocation_tags
     has_many :offers, through: :allocation_tags
 
-    after_create :define_academic_associations, unless: 'allocation_tag_ids_associations.nil?'
+    after_create :define_academic_associations, unless: -> { allocation_tag_ids_associations.nil?}
 
-    before_validation :set_schedule, if: 'respond_to?(:schedule) && merge.nil?'
+    before_validation :set_schedule, if: -> {respond_to?(:schedule) && merge.nil?}
 
-    before_save :set_situation_date, if: 'merge.nil?', on: :update
+    before_save :set_situation_date, if: -> { merge.nil?}, on: :update
 
-    after_update if: 'notify_change?' do
+    after_update if: -> {notify_change?} do
       send_email(true)
     end
 
@@ -28,11 +28,11 @@ module AcademicTool
         (
           respond_to?(:schedule) && (schedule.previous_changes.has_key?(:start_date) || schedule.previous_changes.has_key?(:end_date))
         ) || (
-          respond_to?(:initial_time) && (initial_time_changed? || duration_changed?)
+          respond_to?(:initial_time) && (saved_change_to_initial_time? || saved_change_to_duration?)
         ) || (
-          respond_to?(:start_hour) && (start_hour_changed? || end_hour_changed?)
+          respond_to?(:start_hour) && (saved_change_to_start_hour? || saved_change_to_end_hour?)
         ) || (
-          respond_to?(:status_changed?) && status_changed?
+          respond_to?(:status_changed?) && saved_change_to_status?
         )
       ) && verify_start
     )
@@ -277,6 +277,7 @@ module AcademicTool
 
 
     def define_academic_associations
+
       unless allocation_tag_ids_associations.blank?
         academic_allocations.create allocation_tag_ids_associations.map {|at| { allocation_tag_id: at }} unless self.class.to_s == 'ChatRoom'
         # chat already creates academic_allocations on its model because of the line accepts_nested_attributes_for :academic_allocations

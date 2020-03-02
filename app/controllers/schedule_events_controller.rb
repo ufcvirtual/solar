@@ -3,9 +3,9 @@ class ScheduleEventsController < ApplicationController
   include SysLog::Actions
 
   before_action :prepare_for_group_selection, only: :index
-  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
+  before_action :get_groups_by_allocation_tags, only: [:new, :create]
 
-  before_filter only: [:edit, :update, :show] do |controller|
+  before_action only: [:edit, :update, :show] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
     get_groups_by_tool(@schedule_event = ScheduleEvent.find(params[:id]))
   end
@@ -112,10 +112,10 @@ class ScheduleEventsController < ApplicationController
 
     render partial: 'summarized'
   rescue CanCan::AccessDenied
-    render text: t(:no_permission)
+    render plain: t(:no_permission)
   rescue => error
     error_message = (I18n.translate!("schedule_events.error.#{error}", raise: true) rescue t("schedule_events.error.general_message"))
-    render text: error_message
+    render plain: error_message
   end
 
   def participants
@@ -160,7 +160,11 @@ class ScheduleEventsController < ApplicationController
     if @event.content_exam.blank?
       render text: t("schedule_events.error.no_content")
     else
-      html = HTMLEntities.new.decode render_to_string("print_presential_test.html.haml", formats: [:html], layout: false)
+     # html = HTMLEntities.new.decode render_to_string("print_presential_test.html.haml", formats: [:html], layout: false)
+      if @course.has_exam_header
+        unless @allocation_tags_ids.size > 1
+          coord_profiles = (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['coord_profiles'] rescue nil)
+          coord = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", ats, Allocation_Activated, coord_profiles.split(',')).first unless coord_profiles.blank?
 
       if @course.use_autocomplete_header
         unless @allocation_tags_ids.size > 1
@@ -214,11 +218,10 @@ class ScheduleEventsController < ApplicationController
       end
       profs.each { |prof| fill_field_info html, /(professor\(a\)(\s*\n*\t*(&nbsp;)*)titular:(\s*\n*\t*(&nbsp;)*)|professor(\s*\n*\t*(&nbsp;)*)titular:(\s*\n*\t*(&nbsp;)*)|professor:(\s*\n*\t*(&nbsp;)*)|coordenador\(a\)(\s*\n*\t*(&nbsp;)*)de(\s*\n*\t*(&nbsp;)*)disciplina:(\s*\n*\t*(&nbsp;)*)|coordenador\(a\)(\s*\n*\t*(&nbsp;)*)da(\s*\n*\t*(&nbsp;)*)disciplina:(\s*\n*\t*(&nbsp;)*))/i, "Professor(a) da disciplina: #{prof.name}<br>"  } unless profs.blank?
       tutors.each { |tutor| fill_field_info html, /(tutor\(a\)(\s*\n*\t*(&nbsp;)*)à(\s*\n*\t*(&nbsp;)*)distância:(\s*\n*\t*(&nbsp;)*)|tutor(\s*\n*\t*(&nbsp;)*)à(\s*\n*\t*(&nbsp;)*)distância:(\s*\n*\t*(&nbsp;)*)|tutor:(\s*\n*\t*(&nbsp;)*))/i, "Tutor(a) à distância: #{tutor.name}<br>"  } unless tutors.blank?
+      html
     end
 
-    def pictures_with_abs_path(html)
-      html.gsub!(/(href|src)=(['"])\/([^\"']*|[^"']*)['"]/i, '\1=\2' + "#{Rails.root}/" + '\3\2')
-    end
+
 
     def verify_management
       allocation_tag_ids = params[:allocation_tags_ids]

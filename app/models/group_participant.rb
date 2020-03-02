@@ -6,9 +6,8 @@ class GroupParticipant < ActiveRecord::Base
 
   has_many :academic_allocation_users
 
-  
-  before_create :can_add?, :can_change?, if: 'merge.nil?'
-  before_destroy :can_change?, :can_destroy?, if: 'merge.nil?'
+  before_create :can_add?, :can_change?, if: -> {merge.nil?}
+  before_destroy :can_change?, :can_destroy?, if: -> {merge.nil?}
 
   validate :user_already_entered?
   attr_accessor :merge

@@ -1,4 +1,4 @@
-class AlterFatheridToParentid < ActiveRecord::Migration
+class AlterFatheridToParentid < ActiveRecord::Migration[5.0]
   def self.up
 
     # menus

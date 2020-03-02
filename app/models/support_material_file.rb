@@ -8,16 +8,20 @@ class SupportMaterialFile < ActiveRecord::Base
   before_save :url_protocol, if: :is_link?
   before_save :define_fixed_values
 
+  has_attached_file :attachment,
+    path: ":rails_root/media/support_material_files/:id_:basename.:extension",
+    url: "/media/support_material_files/:id_:basename.:extension"
+  
+  validates_attachment_size :attachment, less_than: 30.megabyte, message: ""
+  validates_attachment_content_type_in_black_list :attachment
+  do_not_validate_attachment_file_type :attachment
+
   validates :attachment, presence: true, unless: :is_link?
   validates :url, presence: true, if: :is_link?
 
   validates_format_of :url, with: /\A((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?\z/ix, if: :is_link?
-  validates_attachment_size :attachment, less_than: 30.megabyte, message: ""
-  validates_attachment_content_type_in_black_list :attachment
 
-  has_attached_file :attachment,
-    path: ":rails_root/media/support_material_files/:id_:basename.:extension",
-    url: "/media/support_material_files/:id_:basename.:extension"
+
 
    FILES_PATH = Rails.root.join('media', 'support_material_files') # path dos arquivos de aula
 

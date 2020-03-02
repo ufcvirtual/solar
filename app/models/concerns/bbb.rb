@@ -11,8 +11,8 @@ module Bbb
   def verify_quantity_users( allocation_tags_ids = [])
     query = "(initial_time BETWEEN ? AND ?) OR ((initial_time + (interval '1 minutes')*duration) BETWEEN ? AND ?) OR (? BETWEEN initial_time AND ((initial_time + (interval '1 minutes')*duration))) OR (? BETWEEN initial_time AND ((initial_time + (interval '1 minutes')*duration)))"
     end_time       = initial_time + duration.minutes
-    webconferences = Webconference.where(query, initial_time, end_time, initial_time, end_time, initial_time, end_time)
-    assignment_webconferences = AssignmentWebconference.where(query, initial_time, end_time, initial_time, end_time, initial_time, end_time)
+    webconferences = Webconference.where(query, initial_time, end_time, initial_time, end_time, initial_time, end_time).to_a
+    assignment_webconferences = AssignmentWebconference.where(query, initial_time, end_time, initial_time, end_time, initial_time, end_time).to_a
     webconferences            << self unless self.class == AssignmentWebconference || webconferences.include?(self)
     assignment_webconferences << self unless self.class == Webconference || assignment_webconferences.include?(self)
 

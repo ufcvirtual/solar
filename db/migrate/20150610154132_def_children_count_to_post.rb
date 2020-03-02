@@ -1,4 +1,4 @@
-class DefChildrenCountToPost < ActiveRecord::Migration
+class DefChildrenCountToPost < ActiveRecord::Migration[5.0]
   def up
     sql = '
           create index id_idx on discussion_posts(id);

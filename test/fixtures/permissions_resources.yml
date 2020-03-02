@@ -943,6 +943,11 @@ editorapproval1:
   resource_id: 168
   per_id: false
 
+allocation3:
+  profile_id: 5
+  resource_id: 232
+  per_id: false
+
 
 # Unidade Curricular - Editor
 
@@ -1288,6 +1293,11 @@ lessonedit11:
 lessonedit12:
   profile_id: 5
   resource_id: 193
+  per_id: false
+
+lessonedit13:
+  profile_id: 5
+  resource_id: 240
   per_id: false
 
 # Lessons Modules - Módulos

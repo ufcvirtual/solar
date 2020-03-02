@@ -27,8 +27,8 @@
                 - if @can_remove_record && !view_disabled
                   %span{headers: '_remove'}= button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution remove_record', :'data-tooltip' => t('webconferences.get_record.remove'), :'data-url' => remove_record_assignment_webconference_path(id: @assignment_webconference.id, recordID: record[:recordID]), :'aria-label' => t('webconferences.get_record.remove')
 
-  - else
-    .block_content_text_list.text_none= t("webconferences.get_record.no_message")
+    - else
+      .block_content_text_list.text_none= t("webconferences.get_record.no_message")
 
 = javascript_include_tag "tooltip"
 
@@ -42,7 +42,7 @@
       $.delete($(this).data('url'), function(data){
         tr.remove();
         flash_message(data.notice, "notice", 'fancybox-outer');
-      }).error(function(data){
+      }).fail(function(data){
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")
           flash_message(data.alert, 'alert', 'fancybox-outer');

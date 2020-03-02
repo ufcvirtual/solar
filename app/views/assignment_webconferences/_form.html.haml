@@ -6,11 +6,11 @@
   .form-inputs.block_content.webconference
     = f.hidden_field :academic_allocation_user_id, value: @assignment_webconference.academic_allocation_user_id
     .input
-      = f.input :title, :'aria-label' => t('.title_aria_label')
+      = f.input :title, input_html: {size: 50}, :'aria-label' => t('.title_aria_label')
       = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline.middle', ckeditor: false, div_id: 'assignment_webconference_title', number: '', field: t('.title')}
 
     .input
-      = f.input :initial_time, as: :string, label: t('.date_label'), placeholder: t('.date_placeholder'), :'aria-label' => t('.date_aria_label'), input_html: {value: (l(f.object.initial_time, format: :mask_with_time_form) rescue '')}
+      = f.input :initial_time, as: :string, label: t('.date_label'), placeholder: t('.date_placeholder'), :'aria-label' => t('.date_aria_label'), input_html: {value: (l(f.object.initial_time, format: :mask_with_time_form) rescue ''), size: 50}
 
     .input
       = f.input :duration, label: t('.duration_label'), :'aria-label' => t('assignment_webconferences.form.time_in_minutes')

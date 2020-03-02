@@ -44,6 +44,7 @@ class ScheduleEventFilesController < ApplicationController
     authorize! :online_correction, ScheduleEventFile, on: active_tab[:url][:allocation_tag_id]
     @canvas_data = ScheduleEventFile.find(params[:id]).file_correction.to_json
     @file_name = params[:file]
+    
     @file_path = get_file_path(id: params[:id], file: params[:file])
   end
 

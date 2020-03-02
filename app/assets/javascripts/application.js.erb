@@ -1,5 +1,6 @@
-// = require jquery
+// = require jquery3
 // = require jquery_ujs
+// = require rails-ujs
 // = require jquery.qtip2.min
 // = require jquery.sticky
 
@@ -14,6 +15,7 @@
 // = require jquery.dropdown
 // = require nested_form_fields
 
+
 // = require intro
 // = require contextual_help/default
 
@@ -25,7 +27,7 @@
 // = require messages
 // = require lessons
 
-// = require fancybox
+// = require fancyBox
 // = require helpers
 // = require nice
 
@@ -84,7 +86,7 @@ $(function() {
 * Alertas
 */
 
-$(window).load(function(){
+$(window).on('load', function(){
   $(".flash_message_wrapper").sticky({
     topSpacing: 0,
     center:true,

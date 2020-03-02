@@ -1,35 +1,36 @@
 class QuestionItem < ActiveRecord::Base
 
+  has_attached_file :item_audio,
+                    path: ':rails_root/media/questions/items/:id_:normalized_item_audio_file_name',
+                    url: '/media/questions/items/:id_:normalized_item_audio_file_name'
+
+  has_attached_file :item_image,
+                    styles: { medium: '350x350>' },
+                    path: ':rails_root/media/questions/items/:id_:basename_:style.:extension',
+                    url: '/media/questions/items/:id_:basename_:style.:extension'
   belongs_to :question
 
   has_many :exam_responses_question_items
   has_many :exam_responses, through: :exam_responses_question_items
+
 
   validates_attachment_size :item_image, less_than: 2.megabyte, message: ''
   validates_attachment_content_type :item_image, content_type: /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/, message: I18n.t('questions.error.wrong_type')
 
   validates :description, presence: true
 
-  validates :img_alt, presence: true, if: '(!item_image_file_name.blank? && img_alt.blank?)'
+  validates :img_alt, presence: true, if: -> {(!item_image_file_name.blank? && img_alt.blank?)}
 
-  validates :audio_description, presence: true, if: '(!item_audio_file_name.blank?)'
-
-  has_attached_file :item_image,
-                    styles: { medium: '350x350>' },
-                    path: ':rails_root/media/questions/items/:id_:basename_:style.:extension',
-                    url: '/media/questions/items/:id_:basename_:style.:extension'
+  validates :audio_description, presence: true, if: -> {(!item_audio_file_name.blank?)}
 
   validates_attachment_size :item_audio, less_than: 10.megabyte, message: ''
   validates_attachment_content_type :item_audio, content_type: /^audio\/(mpeg|x-mpeg|mp3|x-mp3|mpeg3|x-mpeg3|mpg|x-mpg|x-mpegaudio)$/, message: I18n.t('questions.error.wrong_type_audio')
 
-  has_attached_file :item_audio,
-                    path: ':rails_root/media/questions/items/:id_:normalized_item_audio_file_name',
-                    url: '/media/questions/items/:id_:normalized_item_audio_file_name'
-
   before_destroy :can_destroy?
 
-  before_save :replace_audio, if: '(!item_audio_file_name.blank? && (new_record? || item_audio_file_name_changed?))'
-  before_save :replace_image, if: '(!item_image_file_name.blank? && (new_record? || item_image_file_name_changed?))'
+  before_save :replace_audio, if: -> {(!item_audio_file_name.blank? && (new_record? || saved_change_to_item_audio_file_name?))}
+  before_save :replace_image, if: -> {(!item_image_file_name.blank? && (new_record? || saved_change_to_item_image_file_name?))}
+
 
   def can_destroy?
     raise 'in_use' if exam_responses.any?

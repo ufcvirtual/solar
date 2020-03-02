@@ -33,7 +33,7 @@ class SemestersController < ApplicationController
     if params[:combobox]
       render json: { 'html' => render_to_string(partial: 'select_semester.html', locals: { semesters: @semesters }) }
     else
-      @allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "offers").join(" ")
+      @allocation_tags_ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "offers", false, false, true).join(" ")
       render layout: false
     end
   end

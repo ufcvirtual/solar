@@ -15,13 +15,13 @@ class Schedule < ActiveRecord::Base
   has_many :semester_enrollments, class_name: 'Semester', foreign_key: 'enrollment_schedule_id'
 
   validates :start_date, presence: true
-  validates :end_date, presence: true, if: 'check_end_date'
+  validates :end_date, presence: true, if: -> {check_end_date}
 
   validate :start_date_before_end_date
-  validate :verify_by_current_date, if: 'verify_current_date && (start_date_changed? || end_date_changed?)'
-  validate :verify_by_today, if: 'verify_today && (start_date_changed? || end_date_changed?)'
+  validate :verify_by_current_date, if: -> {verify_current_date && (saved_change_to_start_date? || saved_change_to_end_date?)}
+  validate :verify_by_today, if: -> {verify_today && (saved_change_to_start_date? || saved_change_to_end_date?)}
 
-  validate :verify_offer, unless: 'verify_offer_ats.blank?'
+  validate :verify_offer, unless: -> {verify_offer_ats.blank?}
 
   before_destroy :can_destroy?
   before_update :copy_object

@@ -1,4 +1,4 @@
-class AddTypeToSupportMaterial < ActiveRecord::Migration
+class AddTypeToSupportMaterial < ActiveRecord::Migration[5.0]
   def up
     change_table :support_material_files do |t|
       t.integer :material_type, null: false, default: 0 # 0: file, 1: link

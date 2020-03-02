@@ -6,8 +6,8 @@
         - tool_id = tool
       - else
         - tool_id = tool.id
-      = content_tag(:i, nil, class: 'icon icon-cross change_tool_group', :"data-dropdown" => ".change_tool_dropdown_#{group.id}_#{tool_id}")
-      %div{id: "dropdown", class: "dropdown dropdown-tip change_tool_dropdown_#{group.id}_#{tool_id}"}
+      = content_tag(:i, nil, class: 'icon icon-cross change_tool_group ', :"data-dropdown" => ".change_tool_dropdown_#{group.id}_#{tool_id}")
+      %div{id: "dropdown", class: "dropdown dropdown-tip change_tool_dropdown_#{group.id}_#{tool_id} dropdown-relative"}
         %ul.dropdown-menu
           - if paths[:unbind]
             %li= link_to t('.unbind'), '#void', class: 'unbind', :"data-link" => paths[:unbind].gsub('param_id', group.id.to_s)

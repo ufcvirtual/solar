@@ -1212,6 +1212,12 @@ res231:
 
 res232:
   id: 232
+  controller: 'allocations'
+  action: 'index'
+  description: 'Gerenciar matrículas'
+
+res233:
+  id: 233
   controller: 'logs'
   action: 'index'
   description: '[API] Lista Logs por curso, disciplina e semestre'
@@ -1269,3 +1275,9 @@ res241:
   controller: 'webconferences'
   action: 'see_help_requests'
   description: 'Visualizar chamadas de ajuda das webconferências' 
+ 
+res242:
+  id: 242 
+  controller: 'lessons'
+  action: 'generate_audio'
+  description: 'Gerar áudio das aulas'

@@ -249,6 +249,9 @@ pt_BR:
       comment_file: Arquivo
       email: Email
       supportmaterialfile: Material de Apoio
+      lessonmodule: Módulos de Aula
+      log: Logs
+      oauth: API
       schedule_event_file: Arquivo
     attributes:
       user:
@@ -323,20 +326,25 @@ pt_BR:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 20MB."
         attachment_file_name: Arquivo
+        attachment: ""
       discussion_post_file:
         attachment_content_type: ""
+        attachment: ""
       message_file:
         message_content_type: ""
+        attachment: ""
       assignment_file:
         attachment_content_type: ""
-        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 26MB."
+        attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 26MB"
         attachment_file_name: Arquivo
         academic_allocation_user: ""
+        attachment: ""
       comment_file:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
         attachment: Arquivo
         attachment_file_name: Arquivo
+        attachment: ""
       group_assignment:
         group_name: "Nome do grupo"
       comment:
@@ -436,6 +444,7 @@ pt_BR:
         attachment_content_type: ""
         attachment_file_size: "Arquivo muito grande. O tamanho máximo deve ser de até 5MB."
         attachment_file_name: Arquivo
+        attachment: ""
       semester:
         offer: Oferta
         enrollment: Matrícula
@@ -493,6 +502,7 @@ pt_BR:
         additional_information: Informações Complementares
         url: Disponível em
         accessed_in: Acessado em
+        attachment: ""
       schedule_event:
         title: Título
         type_event: Tipo
@@ -582,6 +592,9 @@ pt_BR:
         attachment_content_type: ""
         attachment_file_size: ""
         attachment_file_name: ""
+      lesson_audio:
+        count_text: ""
+
     errors:
       uniqueness: "Registro já existe no sistema"
       template:
@@ -625,29 +638,40 @@ pt_BR:
         assignment_file:
           attributes:
             attachment_content_type:
+              invalid_type: "Tipo de arquivo inválido"
               invalid: "Tipo de arquivo inválido."
             attachment_file_name:
               blank: deve ser selecionado
             academic_allocation_user_id:
-              blank: Não é possivel enviar um arquivo para este trabalho.
+              blank: Não é possivel enviar um arquivo para este trabalho
+            attachment:
+              spoofed_media_type: "Tipo de arquivo inválido"  
         public_file:
           attributes:
             attachment_content_type:
-              invalid_type: "Tipo de arquivo inválido."
+              invalid_type: "Tipo de arquivo inválido"
             attachment_file_name:
               blank: deve ser selecionado
+            attachment:
+              spoofed_media_type: "Tipo de arquivo inválido"
         comment_file:
           attributes:
             attachment_content_type:
-              invalid_type: "Tipo de arquivo inválido."
+              invalid_type: "Tipo de arquivo inválido"
+            attachment:
+              spoofed_media_type: "Tipo de arquivo inválido"
         discussion_post_file:
           attributes:
             attachment_content_type:
-              invalid_type: "Tipo de arquivo inválido."
+              invalid_type: "Tipo de arquivo inválido"
+            attachment:
+              spoofed_media_type: "Tipo de arquivo inválido"
         message_file:
           attributes:
             message_content_type:
-              invalid_type: "Tipo de arquivo inválido."
+              invalid_type: "Tipo de arquivo inválido"
+            attachment:
+              spoofed_media_type: "Tipo de arquivo inválido"
         lesson:
           attributes:
             address:
@@ -656,6 +680,12 @@ pt_BR:
           attributes:
             attachment_content_type:
               invalid_type: inválido
+            attachment:
+              spoofed_media_type: "Tipo de arquivo inválido"
+        post_file:
+          attributes:
+            attachment:
+              spoofed_media_type: "Tipo de arquivo inválido"
 
 
   ########### GERAL ###############
@@ -1119,6 +1149,7 @@ pt_BR:
       caption: Lista de aulas para o módulo %{module_name}
       number_of_lessons: "%{module_name} possui %{lesson_number} aulas"
       jspanel_count_window: "Permitido somente 3 janelas"
+      download_audio: Baixar áudio
     list:
       lesson: Aula
       order: Ordem
@@ -1188,6 +1219,9 @@ pt_BR:
       blank_address: Aula %{lesson_name} não foi publicada. Deve ter URL ou arquivo inicial
       undefined_initial_file: "Aula %{lesson_name} não foi publicada. Um arquivo inicial deve ser definido."
       extract_zip: Não foi possível extrair automaticamente os arquivos do zip da aula %{lesson_name}.
+      limit_count_text: "Não foi possível gerar o audio limite excedido, disponível %{available}, a aula possuí %{count} caracteres."
+      export_empty: É necessário selecionar uma aula para onde os áudios seram exportados
+
     success:
       saved_as_draft: Aulas deletadas ou salvas como rascunho com sucesso.
       deleted: Aulas deletadas com sucesso.
@@ -1276,6 +1310,30 @@ pt_BR:
       lesson_menu: " %{lesson} (Clique para alterar a aula. Um submenu para seleção de aulas ficará disponível)"
       download: "Baixar aula em arquivo PDF"
       download_file: "Caso você não consiga executar o arquivo, clique aqui para fazer o download"
+      missing_topics: 'Texto está incompleto faltam os seguintes tópicos: '
+      generate_audio: Gerar audio
+      used: "Usado: (%{count})"
+      available: "Disponível: (%{count})"
+      text_generate_audio: Gerando áudios
+    export:
+      error: 'Aula não é do tipo arquivo e/ou não possui áudios validos' 
+      message_audio_success: "Áudio da aula gerado com sucesso."
+      button: Exportar áudios
+      lesson:
+        preview: Ver aula
+      list:
+        name: Nome
+        preview: Ver
+        type: Tipo
+        preview_tooltip: Visualizar aula
+        conclude: Finalizar
+        no_lesson: Nenhuma aula
+      steps:
+        title: Exportação de áudio de aula
+        choose: Escolher aula
+        conclude: Finalizar
+        back: Voltar
+        original_lesson: '** com relação a aula original'
 
   lesson_modules:
     general_of_offer: "Geral"
@@ -4622,7 +4680,7 @@ pt_BR:
       title_group: Webconferências agendadas pelo grupo
       title_student: Webconferências agendadas pelo aluno
       new: Nova webconferência
-      final: "Versão Final <a id='final_version_explain' href='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'>(?)</a>"
+      final: "Versão Final <a id='final_version_explain' href='javascript:;' data-fancybox='' data-type='inline' data-url='#fv_explain' aria-label='%{aria}' onkeydown='click_on_keypress(event, this);'>(?)</a>"
       final2: Explicação sobre a versão final
       fv_explain: "&nbsp;&nbsp;&nbsp;&nbsp;O tutor ou professor responsável pela avaliação tem, como papel, avaliar o aluno/grupo com base em seus arquivos enviados e webconferências criadas. Para avaliar uma webconferência, os responsáveis devem analisar as gravações existentes para, então, avaliar o desempenho do aluno. Entretanto, durante a execução do trabalho, o aluno ou o grupo de alunos pode agendar e gravar uma ou mais webconferências. Estas webconferências podem ser feitas, por exemplo, para reuniões entre os membros de uma equipe, para testes, para praticar uma apresentação etc. Ou seja, nem todas as webconferências cadastradas e gravadas precisam, necessariamente, servir para avaliação. <br/><br/> &nbsp;&nbsp;&nbsp;&nbsp;A fim de informar ao responsável qual ou quais das webconferências devem ser consideradas para avaliação, o aluno pode marcar uma ou mais webconferências como Versão Final. Desse modo, o responsável poderá avaliar apenas as webconferências marcadas dentre todas as agendadas e/ou gravadas. Se achar necessário, o responsável poderá analisar e avaliar todas as gravações disponíveis."
       start_recordding: Iniciar com gravação

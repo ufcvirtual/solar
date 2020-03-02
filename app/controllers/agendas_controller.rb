@@ -1,10 +1,10 @@
 # encoding: UTF-8
 class AgendasController < ApplicationController
-  before_filter :prepare_for_group_selection, only: :list
+  before_action :prepare_for_group_selection, only: :list
 
   layout false, only: [:calendar, :dropdown_content, :index, :events]
 
-  before_filter except: :dropdown_content do
+  before_action except: :dropdown_content do
     ats = if active_tab[:url].include?(:allocation_tag_id) # entrou na turma
             AllocationTag.find(active_tab[:url][:allocation_tag_id]).related
           elsif params[:allocation_tags_ids].blank?
@@ -15,7 +15,7 @@ class AgendasController < ApplicationController
     @allocation_tags_ids = ats.uniq
   end
 
-  after_filter only: [:list, :events] do
+  after_action only: [:list, :events] do
     @allocation_tags_ids = @allocation_tags_ids.join(' ') unless @allocation_tags_ids.nil?
   end
 

@@ -1,5 +1,5 @@
 // = require jquery.cookie
-// = require jquery.dynatree
+// = require jquery.dynatree.min
 // = require jquery.qtip.min
 
 jQuery(function($){
@@ -273,7 +273,7 @@ jQuery(function($){
               // },
               success: function(data){
                 $("#lesson_file_management").html(data);
-                $("#lesson_file_management").html(data);
+                //$("#lesson_file_management").html(data);
                 deselect_all();
               },
               error: function() {
@@ -343,7 +343,7 @@ jQuery(function($){
           url: $(this).data('unzip-path').replace(':file', getPath(selNodes[0])),
           success: function(data){
             $("#lesson_file_management").html(data);
-            $("#lesson_file_management").html(data);
+            //$("#lesson_file_management").html(data);
             deselect_all();
           },
           error: function(data){
@@ -567,7 +567,7 @@ function hide_checkboxes(flag, node){
 
 function deselect_all(){
   root = jQuery("#tree").dynatree("getRoot");
-  if(!root.isSelected())
+  if(!root.select())
     root.select(true); // seleciona toda a árvore
   root.select(false); // para deselecionar (se for só este direto, ele não executa pois a raiz pode não estar previamente selecionada)
 }
@@ -588,7 +588,7 @@ function saveDeletion(node, root_node){
     },
     success: function(data) {
       $("#lesson_file_management").html(data);
-      $("#lesson_file_management").html(data);
+      //$("#lesson_file_management").html(data);
       deselect_all();
       if(root_node) // atualiza listagem para que esta aula vire, se necessário, rascunho
         $.get($('.list_lessons').data('link-list'), function(data){
@@ -611,7 +611,7 @@ function newFolder(path){
     data: { "path": path },
     success: function(data){
       $("#lesson_file_management").html(data);
-      $("#lesson_file_management").html(data);
+      //$("#lesson_file_management").html(data);
       deselect_all();
     },
     error: function() {
@@ -637,7 +637,7 @@ function renameNode(node, new_title, path){
         defineInitialFile(node);
       else{
         $("#lesson_file_management").html(data);
-        $("#lesson_file_management").html(data);
+        //$("#lesson_file_management").html(data);
       }
       deselect_all();
     },
@@ -695,7 +695,7 @@ function saveMove(nodesToMove){
           },
           success: function(data) {
             $("#lesson_file_management").html(data);
-            $("#lesson_file_management").html(data);
+            //$("#lesson_file_management").html(data);
             deselect_all();
           },
           error: function() {
@@ -715,7 +715,7 @@ function defineInitialFile(node){
     data: { "path": getPath(node) },
     success: function(data){
       $("#lesson_file_management").html(data);
-      $("#lesson_file_management").html(data);
+      //$("#lesson_file_management").html(data);
       deselect_all();
     },
     error: function(){

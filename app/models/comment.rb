@@ -3,11 +3,11 @@ class Comment < ActiveRecord::Base
 
   #default_scope order: 'updated_at DESC'
 
-  before_save :can_save?, if: 'merge.nil?'
-  before_destroy :can_save?, if: 'merge.nil?'
-  before_create :define_user, if: 'merge.nil?'
-  after_create :set_acu_status, if: 'merge.nil?'
-  after_destroy :set_acu_status, if: 'merge.nil?'
+  before_save :can_save?, if: -> {merge.nil?}
+  before_destroy :can_save?, if: -> {merge.nil?}
+  before_create :define_user, if: -> {merge.nil?}
+  after_create :set_acu_status, if: -> {merge.nil?}
+  after_destroy :set_acu_status, if: -> {merge.nil?}
 
   belongs_to :academic_allocation_user, counter_cache: true
   belongs_to :user

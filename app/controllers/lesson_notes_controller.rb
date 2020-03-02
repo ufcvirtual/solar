@@ -6,8 +6,8 @@ class LessonNotesController < ApplicationController
 
   def index
     if Exam.verify_blocking_content(current_user.id)
-      render text: t('exams.restrict')
-    else
+      render plain: t('exams.restrict')
+    else 
       @lesson_id    = params[:lesson_id]
       @lesson_notes = current_user.notes(@lesson_id).order(:name)
     end

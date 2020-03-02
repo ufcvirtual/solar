@@ -17,7 +17,7 @@
     - else 
       %object{ data: @file.path, width: '100%', height: '100%', id: @file.id, :'aria-label' => 'Por favor visite o site para acessar este conteudo:'+@file.path }
 
-- if @file.attachment_content_type.index('audio')
+- if @file.is_file? && @file.attachment_content_type.index('audio')
   .question_audios{:'aria-hidden' => 'true'}
     .audio
       %form.hide

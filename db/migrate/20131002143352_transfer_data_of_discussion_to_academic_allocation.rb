@@ -1,4 +1,4 @@
-class TransferDataOfDiscussionToAcademicAllocation < ActiveRecord::Migration
+class TransferDataOfDiscussionToAcademicAllocation < ActiveRecord::Migration[5.0]
   def up
     Discussion.all.each do |discussion|
       AcademicAllocation.create(allocation_tag_id: discussion.allocation_tag_id, academic_tool_id: discussion.id, academic_tool_type: 'Discussion')

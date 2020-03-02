@@ -11,7 +11,7 @@ class Webconference < ActiveRecord::Base
 
   belongs_to :moderator, class_name: 'User', foreign_key: :user_id
 
-  has_many :academic_allocations, as: :academic_tool, dependent: :destroy
+  #has_many :academic_allocations, as: :academic_tool, dependent: :destroy
   has_many :allocation_tags, through: :academic_allocations
   has_many :groups, through: :allocation_tags
   has_many :offers, through: :allocation_tags
@@ -20,14 +20,14 @@ class Webconference < ActiveRecord::Base
   validates :title, :description, length: { maximum: 255 }
   validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
 
-  validate :cant_change_date, if: '(new_record? || initial_time_changed? || duration_changed?) && merge.blank?'
-  validate :cant_change_shared, on: :update, if: 'shared_between_groups_changed?'
+  validate :cant_change_date, if: -> {(new_record? || initial_time_changed? || duration_changed?) && merge.blank?}
+  validate :cant_change_shared, on: :update, if: -> {shared_between_groups_changed?}
 
-  validate :verify_quantity, if: '!(duration.nil? || initial_time.nil?) && (initial_time_changed? || duration_changed? || new_record?) && merge.nil?'
+  validate :verify_quantity, if: -> {!(duration.nil? || initial_time.nil?) && (saved_change_to_initial_time? || saved_change_to_duration? || new_record?) && merge.nil?}
 
-  validate :verify_offer, unless: 'allocation_tag_ids_associations.blank? && offer_api.blank?'
+  validate :verify_offer, unless: -> {allocation_tag_ids_associations.blank? && offer_api.blank?}
 
-  validate :verify_title, if: 'title_changed? && !!integrated && merge.nil? && api.nil?'
+  validate :verify_title, if: -> {title_changed? && !!integrated && merge.nil? && api.nil?}
 
   before_destroy :can_change?
 
@@ -99,7 +99,7 @@ class Webconference < ActiveRecord::Base
   end
 
   def self.groups_codes(id)
-    web = Webconference.find(id)
+    web = Webconference.where(id: id).first
     if web.shared_between_groups
       Group.joins(:allocation_tag).where(allocation_tags: { id: web.academic_allocations.pluck(:allocation_tag_id) }).pluck(:code)
     else
@@ -181,7 +181,7 @@ class Webconference < ActiveRecord::Base
   def have_permission?(user, at_id = nil)
     (student_or_responsible?(user.id, at_id) ||
       (
-        ats = (shared_between_groups || at_id.nil?) ? academic_allocations.flatten.map(&:allocation_tag_id).flatten : [at_id].flatten
+        ats = (shared_between_groups || at_id.nil?) ? academic_allocations.to_a.flatten.map(&:allocation_tag_id).flatten : [at_id].flatten
         allocations_with_acess =  user.allocation_tags_ids_with_access_on('interact','webconferences', false, true)
         allocations_with_acess.include?(nil) || (allocations_with_acess & ats).any?
       )
@@ -282,7 +282,7 @@ class Webconference < ActiveRecord::Base
     LogAction.joins(:academic_allocation, :allocation_tag, user: [allocations: :profile] )
               .joins('LEFT JOIN academic_allocation_users acu ON acu.academic_allocation_id = log_actions.academic_allocation_id AND acu.user_id = log_actions.user_id')
               .joins("LEFT JOIN allocations students ON allocations.id = students.id AND cast( profiles.types & '#{Profile_Type_Student}' as boolean )")
-              .where(academic_allocation_id: acs, log_type: LogAction::TYPE[:access_webconference], allocations: { allocation_tag_id: at_id })
+              .where("log_actions.academic_allocation_id IN (?) AND allocations.allocation_tag_id IN (?)", acs, at_id[0]).where(log_type: LogAction::TYPE[:access_webconference])
               .where(user_query)
               .where("cast( profiles.types & '#{Profile_Type_Student}' as boolean ) OR cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )")
               .select("log_actions.created_at, users.name AS user_name, allocation_tags.id AS at_id, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name, users.id AS user_id, acu.grade AS grade, acu.working_hours AS wh,

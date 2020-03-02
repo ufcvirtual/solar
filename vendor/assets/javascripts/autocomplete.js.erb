@@ -103,9 +103,10 @@
                },
                text: false
             })
-            .addClass( "ui-combobox-button arrow_icon" )
+            .addClass( "ui-state-default ui-button-text-only ui-combobox-button arrow_icon" )
             .removeClass("ui-widget")
-            .attr("title", "<%= I18n.t(:all_options, scope: [:autocomplete]) %>" );
+            .attr("title", "<%= I18n.t(:all_options, scope: [:autocomplete]) %>" )
+            .append("<span class='ui-button-text'></span>");
 
 
          // Our items have HTML tags.  The default rendering uses text()

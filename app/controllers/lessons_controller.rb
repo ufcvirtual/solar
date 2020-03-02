@@ -7,15 +7,15 @@ class LessonsController < ApplicationController
   include LessonFileHelper
   include LessonsHelper
 
-  before_filter :prepare_for_group_selection, only: :download_files
-  before_filter :offer_data, only: [:open, :open_module]
-  before_filter :set_current_user, only: :update
+  before_action :prepare_for_group_selection, only: :download_files
+  before_action :offer_data, only: [:open, :open_module]
+  before_action :set_current_user, only: :update
 
-  before_filter only: [:new, :create, :edit, :update] do |controller|
+  before_action only: [:new, :create, :edit, :update] do |controller|
     authorize! crud_action, Lesson, { on: @allocation_tags_ids = params[:allocation_tags_ids] }
   end
 
-  after_filter only: :update do
+  after_action only: :update do
     log(@lesson, "lesson: #{@lesson.id}, [copy original data] receive_updates_lessons: #{@lesson.receive_updates_lessons.pluck(:id)}") rescue nil
   end
 
@@ -37,7 +37,8 @@ class LessonsController < ApplicationController
     if @not_offer_area
       render json: { alert: t(:no_permission) }, status: :unauthorized
     else
-      redirect_to :back, alert: t(:no_permission)
+      #redirect_to :back, alert: t(:no_permission)
+      redirect_back fallback_location: :back, alert: t(:no_permission)
     end
   end
 
@@ -49,12 +50,12 @@ class LessonsController < ApplicationController
 
     @academic_allocations = LessonModule.academic_allocations_by_ats(@allocation_tags_ids.split(' '), page: params[:page])
   rescue
-    render nothing: true, status: 500
+    head :ok, status: 500
   end
 
   def open_module
     if Exam.verify_blocking_content(current_user.id)
-      render text: t('exams.restrict')
+      render plain: t('exams.restrict')
     else
       at_ids = (active_tab[:url][:allocation_tag_id].blank? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
       authorize! :show, Lesson, { on: [(@offer.allocation_tag.id rescue at_ids)].flatten, read: true, accepts_general_profile: true }
@@ -67,26 +68,32 @@ class LessonsController < ApplicationController
     end
   rescue => error
     Rails.logger.info "[ERROR] [APP] [#{Time.now}] [#{error}] [open lesson: #{@lesson.id}]"
-    render text: t('lessons.no_data'), status: :unprocessable_entity
+    render plain: t('lessons.no_data'), status: :unprocessable_entity
   end
 
   # GET /lessons/:id
   def open
     if Exam.verify_blocking_content(current_user.id)
-      render text: t('exams.restrict')
+      render plain: t('exams.restrict')
     else
-     authorize! :show, Lesson, { on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true }
+      authorize! :show, Lesson, { on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true }
       user_session[:lessons] << params[:id].to_i unless user_session[:lessons].include?(params[:id].to_i)
+      max = (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['text_to_speech']['max'] rescue nil)
 
       at_ids = (params[:allocation_tags_ids].present? ? params[:allocation_tags_ids].split(' ') : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
       @modules = LessonModule.to_select(at_ids, current_user)
       @lesson  = Lesson.find(params[:id])
+      lessonaudio = LessonAudio.where(lesson_id: @lesson.id, main: true,  status: true).first
+      @path_audio = lessonaudio.audio.url.gsub(':lesson_id',  @lesson.id.to_s) if !lessonaudio.nil? && File.exist?(lessonaudio.audio.path.gsub(':lesson_id',  @lesson.id.to_s))
+
+      @count_text_month = LessonAudio.count_text_month
+      @text_available = max - @count_text_month
 
       render layout: 'lesson'
     end
   rescue => error
     Rails.logger.info "[ERROR] [APP] [#{Time.now}] [#{error}] [open lesson: #{@lesson.id}]"
-    render text: t('lessons.no_data'), status: :unprocessable_entity
+    render plain: t('lessons.no_data'), status: :unprocessable_entity
   end
 
   def to_filter
@@ -209,14 +216,33 @@ class LessonsController < ApplicationController
         redirect_to redirect, alert: t(:file_error_nonexistent_file)
       end
     else
-      render nothing: true
+      head :ok
+    end
+  end
+
+  def download_audios
+    authorize! :download_files, Lesson, on: params[:allocation_tags_ids]
+    verify_owner(params[:id])
+    lesson = Lesson.find(params[:id])
+    audios_paths = get_audio(lesson.id)
+    unless audios_paths.empty?
+      zip_file_path = compress_file({ files: audios_paths, table_column_name: 'audio_file_name', audio: true, name_zip_file: lesson.name})
+
+      if zip_file_path
+        redirect = request.referer.nil? ? home_url(only_path: false) : request.referer
+        download_file(redirect, zip_file_path, File.basename(zip_file_path))
+      else
+        redirect_to redirect, alert: t(:file_error_nonexistent_file)
+      end
+    else
+      head :ok
     end
   end
 
   # este método serve apenas para retornar um erro ou prosseguir com o download através da chamada ajax da página
   def verify_download
     status = verify_lessons_to_download(params[:lessons_ids]) ? :ok : :not_found
-    render nothing: true, status: status
+    head :ok, status: status
   end
 
   ## PUT lessons/:id/order/:change_id
@@ -339,6 +365,109 @@ class LessonsController < ApplicationController
     authorize! :import, Lesson, { on: @lesson.allocation_tags.map(&:id).flatten, any: true }
     render partial: 'lessons/open/content'
   end
+
+  def generate_audio
+    @lesson = Lesson.find(params[:id])
+    authorize! :generate_audio, Lesson, { on: @lesson.allocation_tags.map(&:id).flatten, any: true}
+
+    texts = params[:text]
+    language = params[:language]
+    count_text = 0
+
+    texts.each do |key, text|
+      text_topico = text[1].strip
+      count_text += text_topico.to_s.length
+    end
+
+    lessonaudio = LessonAudio.new({lesson_id: @lesson.id, count_text: count_text, main: true}) 
+    raise lessonaudio.errors.full_messages.join(', ') unless lessonaudio.valid?
+  
+    LessonAudio.where(lesson_id: @lesson.id, status: true).update_all(status: false)
+    name_lesson = @lesson.name.gsub( /[^a-zA-Z0-9_\.]/, '_')
+    array_path = Array.new
+    path_audio_lesson_last = File.expand_path File.join("#{Rails.root}", 'media', "lessons/#{@lesson.id.to_s}/audios/#{name_lesson}.mp3")
+    directory = File.join("#{Rails.root}", 'media', "lessons/#{@lesson.id.to_s}/audios/")
+    Dir.mkdir(directory) unless File.exists?(directory)
+    texts.each do |key, text|
+      name_topico = text[0].strip 
+      text_topico = text[1].strip
+      path = LessonAudio.text_to_speech(name_topico, text_topico, @lesson.id, language)
+      array_path.push(path)
+    end
+    LessonAudio.concatenate_audio(array_path, path_audio_lesson_last)
+    lessonaudio.audio = File.new(path_audio_lesson_last) 
+    lessonaudio.audio.save                          
+    lessonaudio.save!
+    render json: { success: true, msg: t('lessons.export.message_audio_success'), path: lessonaudio.audio.url }
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
+  rescue => error
+    render json: { success: false, alert: lessonaudio.errors.full_messages.join(', ')}, status: :unprocessable_entity
+  end 
+
+  def verify_contains_audio
+    @lesson = Lesson.find(params[:id])
+    authorize! :generate_audio, Lesson, { on: @lesson.allocation_tags.map(&:id).flatten, any: true}
+    if(@lesson.is_file? && @lesson.contains_audio?)
+      render json: { success: true, msg: 'true' }
+    else
+      render json: { success: false, alert: t('lessons.export.error') }, status: :unprocessable_entity
+    end
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
+  end  
+
+  def export_steps
+    @ats   = params[:allocation_tags_ids]
+    authorize! :generate_audio, Lesson, on: params[:allocation_tags_ids]
+    @lesson = Lesson.find(params[:id])
+    if(@lesson.is_file? && @lesson.contains_audio?)
+      @lesson_id = @lesson.id
+      @types = CurriculumUnitType.all
+      @lesson_module_id = params[:lesson_module_id]
+      render partial: 'lessons/export/steps'
+    else
+      render json: { success: false, alert: t('lessons.export.error') }, status: :unprocessable_entity
+    end
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
+  end
+
+  def export_preview
+    @lesson = Lesson.find(params[:id])
+    authorize! :generate_audio, Lesson, { on: @lesson.allocation_tags.map(&:id).flatten, any: true}
+    authorize! :import, Lesson, { on: @lesson.allocation_tags.map(&:id).flatten, any: true }
+    render partial: 'lessons/open/content'
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
+  end
+
+  def export_list
+    allocation_tags = AllocationTag.get_by_params(params)
+    @selected, @allocation_tags_ids = allocation_tags[:selected], allocation_tags[:allocation_tags]
+    authorize! :generate_audio, Lesson, { on: @allocation_tags_ids, any: true }
+
+    @lesson_id = Lesson.find(params[:lesson_id]).id
+    @lmodules = LessonModule.by_ats(@allocation_tags_ids.split(' ').flatten)
+    render partial: 'lessons/export/list'
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
+  rescue => error
+    render_json_error(error, 'lessons.errors')
+  end
+
+  def export_lessonaudio
+    @lesson = Lesson.find(params[:id])
+    @lesson_import = Lesson.find(params[:lesson_id])
+    authorize! :generate_audio, Lesson, { on: @lesson.allocation_tags.map(&:id).flatten, any: true}
+    authorize! :generate_audio, Lesson, { on: @lesson_import.allocation_tags.map(&:id).flatten, any: true}
+    @lesson.clone_audio_to_another_lesson(params[:lesson_id])
+    render json: { success: true, msg: t('lessons.export.message_audio_success') }
+  rescue CanCan::AccessDenied
+    render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
+  rescue => error
+    render json: { success: false, alert: @lesson.errors.full_messages.join(', ')}, status: :unprocessable_entity
+  end 
 
   private
 

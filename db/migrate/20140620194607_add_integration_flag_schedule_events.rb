@@ -1,4 +1,4 @@
-class AddIntegrationFlagScheduleEvents < ActiveRecord::Migration
+class AddIntegrationFlagScheduleEvents < ActiveRecord::Migration[5.0]
   def up
   	add_column :schedule_events, :integrated, :boolean, default: false
   end

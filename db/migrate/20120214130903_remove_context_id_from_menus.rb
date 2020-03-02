@@ -1,4 +1,4 @@
-class RemoveContextIdFromMenus < ActiveRecord::Migration
+class RemoveContextIdFromMenus < ActiveRecord::Migration[5.0]
   def self.up
     remove_column :menus, :context_id
   end

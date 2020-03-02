@@ -1,4 +1,4 @@
-class RemoveNameFromQuestion < ActiveRecord::Migration
+class RemoveNameFromQuestion < ActiveRecord::Migration[5.0]
   def up
   	remove_column :questions, :name
   end

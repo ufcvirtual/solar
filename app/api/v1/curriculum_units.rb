@@ -9,7 +9,7 @@ module V1
         current_offers = Offer.currents({user_id: current_user.id})
 
         @u_groups         = Group.where(id: user_groups, offer_id: current_offers)
-        @curriculum_units = CurriculumUnit.joins(:offers).where("offers.id IN (?)", current_offers).uniq.order(:name)
+        @curriculum_units = CurriculumUnit.joins(:offers).where("offers.id IN (?)", current_offers).distinct.order(:name)
       end
 
       namespace :curriculum_units do

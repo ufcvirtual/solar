@@ -1,4 +1,4 @@
-class CreateSupportMaterialFiles < ActiveRecord::Migration
+class CreateSupportMaterialFiles < ActiveRecord::Migration[5.0]
   def self.up
     create_table :support_material_files do |t|
       t.integer :allocation_tag_id,         :null => false
@@ -9,7 +9,7 @@ class CreateSupportMaterialFiles < ActiveRecord::Migration
       t.string :folder,                     :limit => 255
     end
 
-    add_foreign_key(:support_material_files, :allocation_tags)
+    add_foreign_key :support_material_files, :allocation_tags
   end
 
   def self.down

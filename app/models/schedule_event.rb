@@ -17,9 +17,9 @@ class ScheduleEvent < Event
 
   before_destroy :can_remove_groups_with_raise
 
-  validate :verify_content, if:  Proc.new{|event| [Presential_Test].include?(event.type_event) && content_exam_changed?}, on: :update
+  validate :verify_content, if:  Proc.new{|event| [Presential_Test].include?(event.type_event) && saved_change_to_content_exam?}, on: :update
 
-  after_update :notify_content, if: 'content_exam_changed?'
+  after_update :notify_content, if: -> {saved_change_to_content_exam?}
 
   def verify_hours
     errors.add(:end_hour, I18n.t(:range_hour_error, scope: [:schedule_events, :error])) if end_hour.rjust(5, '0') < start_hour.rjust(5, '0')

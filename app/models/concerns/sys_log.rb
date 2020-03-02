@@ -10,7 +10,7 @@ module SysLog
     extend ActiveSupport::Concern
 
     included do
-      after_filter :log_create, unless: Proc.new {|c| request.get? }, except: [:change_participant, :import, :export, :annul, :remove_record]
+      after_action :log_create, unless: Proc.new {|c| request.get? }, except: [:change_participant, :import, :export, :annul, :remove_record]
     end
 
     def log_create
@@ -69,7 +69,7 @@ module SysLog
         # academic_allocation_id = obj.try(:academic_allocation).try(:id)
         academic_allocation_id = nil
         tbname = obj.try(:class).try(:table_name).to_s.singularize.to_sym if obj.try(:class).respond_to?(:table_name)
-        description = if !tbname.nil? && (params.has_key?(tbname) || params.size <= 3) && !obj.nil?
+        description = if !tbname.nil? && (params.has_key?(tbname) || params.to_h.size <= 3) && !obj.nil?
 
           obj_attrs = (obj.respond_to?(:log_description) ? obj.log_description : obj.attributes.except('attachment_updated_at', 'created_at', 'updated_at'))
           obj_attrs.merge!({'files' => obj.files.map {|f| f.attributes.except('attachment_updated_at') } }) if obj.respond_to?(:files) && obj.files.any?
@@ -102,8 +102,8 @@ module SysLog
 
     included do
       # request reset (create/reset_password_user) and  actually reset (update) user password
-      after_filter :log_update, only: [:update]
-      after_filter :log_request, only: [:create, :reset_password_user]
+      after_action :log_update, only: [:update]
+      after_action :log_request, only: [:create, :reset_password_user]
     end
 
     def log_update

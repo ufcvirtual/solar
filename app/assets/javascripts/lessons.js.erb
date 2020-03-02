@@ -224,3 +224,87 @@ function navigation_focus_lessons(event, link) {
       break;
   }
 }
+
+function send_text_lesson(obj){
+  var url = $(obj).data('url');
+  if(check_if_text_is_complete()==true){
+    language = $("#language_option option:selected").val();
+    $.fancybox.open($('#saving'));
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: {
+          timestamp: (new Date()).getTime(),
+          text: array_topicos,
+          language: language,
+          authenticity_token: $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function (data) {
+        $("#audio_lesson").attr("src", data.path);
+        $.fancybox.close();
+        flash_message(data.msg, 'notice');
+      },
+      error: function(data) {
+        $.fancybox.close();
+        var data = $.parseJSON(data.responseText);
+        if (typeof(data.alert) != "undefined")
+          flash_message(data.alert, 'alert');
+      }
+    });
+  }else{
+    alert('<%= I18n.t(:missing_topics, :scope => [:lessons, :open]) %>'+ array_topicos_missing.join(', '));
+  }
+}
+ function check_if_text_is_complete(){
+  let text_is_complete = true;
+  if(array_topicos.length>0){
+    for (var i in array_topicos) {
+      if(array_topicos[i].length==1){ 
+        let idx = array_topicos_missing.indexOf(array_topicos[i][0]);
+        if(idx==-1){
+          array_topicos_missing.push(array_topicos[i][0]);
+        }
+        text_is_complete = false;
+      }
+    }
+  }else{
+    text_is_complete = false;
+  }
+  return text_is_complete;
+}
+ function generate_text_lesson(){
+  for (var i in array_topicos) {
+    if(i==0)
+      lesson_text = array_topicos[i][1];
+    else
+      lesson_text = lesson_text+', '+array_topicos[i][1];
+  }
+}
+
+function clone_audio_lesson(id){
+ // e.preventDefault();
+  var url = "<%= Rails.application.routes.url_helpers.export_lessonaudio_lesson_path(id: ':id') %>";
+  var lesson_ids = $('.list_lessons_export tbody input:checked').map(function() { return parseInt(this.value); }).get();
+
+  if(!lesson_ids.length){
+    flash_message("<%= I18n.t('lessons.errors.export_empty') %>", 'alert');
+    return true;
+  }
+  // don't add toif already exists
+  if(!!$('tbody.lessons_to_export tr').length){
+    var existing_ids = $('tbody.lessons_to_export tr').map(function(){ return $(this).data('id'); }).get();
+    $.each(existing_ids, function(j){
+      var i = lesson_ids.indexOf(existing_ids[j]);
+      if(i != -1)
+        lesson_ids.splice(i, 1);
+    });
+  }
+  $.post(url.replace(':id', id), {lesson_id: lesson_ids[0]}, function(data){
+    $.fancybox.close();
+    setTimeout(function(){ flash_message(data.msg, 'notice'); }, 500);
+  }).fail(function(data){
+    var data = $.parseJSON(data.responseText);
+    if (typeof(data.alert) != "undefined")
+      flash_message(data.alert, 'alert');
+  });
+}

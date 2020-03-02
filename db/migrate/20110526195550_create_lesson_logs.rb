@@ -1,4 +1,4 @@
-class CreateLessonLogs < ActiveRecord::Migration
+class CreateLessonLogs < ActiveRecord::Migration[5.0]
   def self.up
     create_table "lesson_logs" do |t|
       t.integer  "lesson_id", :null => false
@@ -6,8 +6,8 @@ class CreateLessonLogs < ActiveRecord::Migration
       t.datetime "access_date",    :null => false
     end
 
-    add_foreign_key(:lesson_logs, :lessons)
-    add_foreign_key(:lesson_logs, :allocations)
+    add_foreign_key :lesson_logs, :lessons
+    add_foreign_key :lesson_logs, :allocations
   end
 
   def self.down

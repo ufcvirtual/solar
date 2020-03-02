@@ -1,4 +1,4 @@
-class ChangeLogAccessesToOffer < ActiveRecord::Migration
+class ChangeLogAccessesToOffer < ActiveRecord::Migration[5.0]
   
   def up
 

@@ -1,4 +1,4 @@
-class CreateLessonNotes < ActiveRecord::Migration
+class CreateLessonNotes < ActiveRecord::Migration[5.0]
   def change
     create_table :lesson_notes do |t|
       t.string :name, limit: 50

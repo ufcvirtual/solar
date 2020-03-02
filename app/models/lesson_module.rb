@@ -78,11 +78,18 @@ class LessonModule < ActiveRecord::Base
   end
 
   def self.by_ats(allocation_tags_ids)
-    joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }).order('id').uniq
+    joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }).order('id').distinct
   end
 
-  def approved_lessons(user_id)
-    lessons(user_id).where(status: Lesson_Approved).order('lessons.order ASC')
+  def approved_lessons(user_id, lesson_id=nil, type_file=nil)
+    lessons = lessons(user_id).where(status: Lesson_Approved).order('lessons.order ASC')
+    unless lesson_id.nil?
+      lessons = lessons.where("id <> ?", lesson_id)
+    end
+    unless type_file.nil?
+      lessons = lessons.where(type_lesson: Lesson_Type_File)
+    end
+    lessons
   end
 
   def allocation_tag_info
@@ -90,7 +97,7 @@ class LessonModule < ActiveRecord::Base
   end
 
   def self.by_name_and_allocation_tags_ids(name, allocation_tags_ids)
-    joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }, name: name).uniq
+    joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }, name: name).distinct
   end
 
   def lessons(user_id = nil)

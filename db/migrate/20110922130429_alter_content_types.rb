@@ -1,4 +1,4 @@
-class AlterContentTypes < ActiveRecord::Migration
+class AlterContentTypes < ActiveRecord::Migration[5.0]
   def self.up
 
     execute <<-SQL

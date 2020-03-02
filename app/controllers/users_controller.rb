@@ -7,9 +7,9 @@ class UsersController < ApplicationController
   layout false, only: [:show, :reset_password_url]
   load_and_authorize_resource only: [:mysolar, :update_photo, :salve_log_navigation]
 
-  before_filter :set_active_tab_to_home, only: :profiles
+  before_action :set_active_tab_to_home, only: :profiles
   # before_filter :application_context, only: :mysolar
-  after_filter :flash_notice, only: :create
+  after_action :flash_notice, only: :create
 
   def show
     # authorize! :show, User, on: allocation_tags # todo usuario vai ter permissao para ver todos?
@@ -103,7 +103,7 @@ class UsersController < ApplicationController
       begin
         raise t(:user_error_no_file_sent) unless params.include?(:user) && user_params.include?(:photo)
         @user.update_attributes!(user_params)
-        format.html { redirect_to :back, notice: t(:successful_update_photo) }
+        format.html { redirect_back fallback_location: :back, notice: t(:successful_update_photo) }
       rescue Exception => error
         error_msg = ''
         if error.message.index("not recognized by the 'identify'") # erro que nao teve tratamento
@@ -113,7 +113,7 @@ class UsersController < ApplicationController
         else # exibicao de erros conhecidos
           error_msg << error.message
         end
-        format.html { redirect_to :back, alert: error_msg }
+        format.html { redirect_back fallback_location: :back, alert: error_msg }
       end
     end
   end
@@ -124,7 +124,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.json { render json: {succes: true, notice: t(:remove_photo_msg) } }
-      format.html { redirect_to :back, notice: t(:remove_photo_msg) }
+      format.html { redirect_back fallback_location: :back, notice: t(:remove_photo_msg) }
     end
   rescue
     errors = current_user.errors.full_messages.join(',')

@@ -1,4 +1,4 @@
-class CreateReadNotifications < ActiveRecord::Migration
+class CreateReadNotifications < ActiveRecord::Migration[5.0]
   def change
     create_table :read_notifications, id: false do |t|
       t.references :notification, null: false

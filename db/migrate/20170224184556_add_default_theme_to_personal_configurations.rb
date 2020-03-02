@@ -1,4 +1,4 @@
-class AddDefaultThemeToPersonalConfigurations < ActiveRecord::Migration
+class AddDefaultThemeToPersonalConfigurations < ActiveRecord::Migration[5.0]
   def self.up
   	change_column :personal_configurations, :theme, :string, :default => "blue"
   	PersonalConfiguration.update_all(theme: "blue")

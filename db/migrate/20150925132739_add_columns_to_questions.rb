@@ -1,4 +1,4 @@
-class AddColumnsToQuestions < ActiveRecord::Migration
+class AddColumnsToQuestions < ActiveRecord::Migration[5.0]
   def up
     add_column :questions, :updated_by_user_id, :integer
     add_index :questions, :updated_by_user_id

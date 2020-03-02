@@ -1,4 +1,4 @@
-class ChangeUserType < ActiveRecord::Migration
+class ChangeUserType < ActiveRecord::Migration[5.0]
 	def up
     change_table :users do |t|
       t.boolean  "integrated", :default => false

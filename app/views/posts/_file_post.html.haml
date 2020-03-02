@@ -27,4 +27,14 @@
 					%video{ src: download_post_post_file_url(post, file), autoplay: false, controls: 'true', name: 'audioQuestion', preload: 'none',onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);"}  
 						%track{ kind: "captions"}  
 						%track{ kind: "descriptions"}
+
+
+		- if file.attachment_content_type.index('audio')
+			.question_audios{:'aria-hidden' => 'true'}
+				.audio
+					%form.hide
+						%input.aPbr{id: 'aPbr', type: 'range', value: 1, min: 0, max: 5, step: 0.1 }
+							%p
+								= t(:control_audio, scope: [:questions, :questions])
+								%span#aCurrentPbr= 1
 	        

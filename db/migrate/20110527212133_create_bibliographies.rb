@@ -1,4 +1,4 @@
-class CreateBibliographies < ActiveRecord::Migration
+class CreateBibliographies < ActiveRecord::Migration[5.0]
   def self.up
     create_table :bibliographies do |t|
       t.integer :allocation_tag_id, :null => false
@@ -13,7 +13,7 @@ class CreateBibliographies < ActiveRecord::Migration
       t.string :isbn_issn, :limit => 13
     end
 
-    add_foreign_key(:bibliographies, :allocation_tags)
+    add_foreign_key :bibliographies, :allocation_tags
   end
 
   def self.down

@@ -1,4 +1,4 @@
-class AlterTableCurriculumUnitAlterColumn < ActiveRecord::Migration
+class AlterTableCurriculumUnitAlterColumn < ActiveRecord::Migration[5.0]
   def self.up
     change_column :curriculum_units, :objectives, :text
     change_column :curriculum_units, :prerequisites, :text

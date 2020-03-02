@@ -1,12 +1,12 @@
-class CreatePermissionsMenus < ActiveRecord::Migration
+class CreatePermissionsMenus < ActiveRecord::Migration[5.0]
   def self.up
     create_table "permissions_menus", :id => false do |t|
       t.integer "profile_id", :null => false
       t.integer "menu_id",    :null => false
     end
 
-	add_foreign_key(:permissions_menus, :profiles)
-	add_foreign_key(:permissions_menus, :menus)
+	add_foreign_key :permissions_menus, :profiles
+	add_foreign_key :permissions_menus, :menus
   end
 
   def self.down

@@ -1,4 +1,4 @@
-class ChangeCurriculumUnit < ActiveRecord::Migration
+class ChangeCurriculumUnit < ActiveRecord::Migration[5.0]
   def up
     change_column :curriculum_units, :resume, :text, :null => true
     change_column :curriculum_units, :syllabus, :text, :null => true

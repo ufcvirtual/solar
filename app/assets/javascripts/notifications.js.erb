@@ -1,7 +1,7 @@
 function save_notification(){
   var content = $('div.ckeditor .cke_contents iframe').contents().find('body').html();
 
-  if (content != "<p><br></p>" && content != "")
+  if (content != "<p><br></p>" && content != "" && content != "<br>")
     $('textarea.ckeditor').html(content); // ckeditor nao envia conteudo quando se usa o serialize_and_submit
 
   $('form#notification_form').serialize_and_submit({
@@ -49,7 +49,7 @@ $(function(){
 
         $(".btn_edit, .btn_del").attr("disabled", true);
         update_tables_with_no_data();
-      }).error(function(data){
+      }).fail(function(data){
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")
           flash_message(data.alert, 'alert');

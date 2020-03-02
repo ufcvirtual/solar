@@ -1,4 +1,4 @@
-class TransferDataOfScheduleEventToAcademicAllocation < ActiveRecord::Migration
+class TransferDataOfScheduleEventToAcademicAllocation < ActiveRecord::Migration[5.0]
   def up
     ScheduleEvent.all.each do |schedule_event|
       AcademicAllocation.create(allocation_tag_id: schedule_event.allocation_tag_id, academic_tool_id: schedule_event.id, academic_tool_type: 'ScheduleEvent')

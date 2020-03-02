@@ -2,7 +2,7 @@
 # While you can edit this file, any changes you make to the definitions here
 # will be undone by the next auto-generated trigger migration.
 
-class CreateTriggerChatMessagesInsert < ActiveRecord::Migration
+class CreateTriggerChatMessagesInsert < ActiveRecord::Migration[5.0]
   def up
     create_trigger("chat_messages_after_insert_row_tr", :generated => true, :compatibility => 1).
         on("chat_messages").

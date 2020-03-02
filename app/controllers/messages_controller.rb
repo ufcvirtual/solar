@@ -4,8 +4,7 @@ class MessagesController < ApplicationController
   include SysLog::Actions
 
   doorkeeper_for :api_download
-
-  before_filter :prepare_for_group_selection, only: [:index]
+  before_action :prepare_for_group_selection, only: [:index]
 
   ## [inbox, outbox, trashbox]
   def index
@@ -139,7 +138,7 @@ class MessagesController < ApplicationController
         @reply_to = [@original.sent_by.to_msg]
         @message.subject = "#{t(:reply, scope: [:messages, :subject])} #{@message.subject}"
       when "reply_all"
-        @reply_to = @original.users.uniq.map(&:to_msg)
+        @reply_to = @original.users.distinct.map(&:to_msg)
         @message.subject = "#{t(:reply, scope: [:messages, :subject])} #{@message.subject}"
       when "forward"
         # sem contato default
@@ -158,7 +157,8 @@ class MessagesController < ApplicationController
 
     begin
       Message.transaction do
-        @message = Message.new(message_params, without_validation: true)
+        #@message = Message.new(message_params, without_validation: true)
+        @message = Message.new(message_params)
         @message.sender = current_user
         @message.allocation_tag_id = @allocation_tag_id
 
@@ -187,18 +187,24 @@ class MessagesController < ApplicationController
         Job.send_mass_email(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email)
         #Notifier.send_mail(emails, @message.subject, new_msg_template, @message.files.to_a, current_user.email).deliver
       end
+      
 
       if params[:scores]=='true'
-        respond_to do |format|
-          format.html { redirect_to :back, notice: t(:mail_sent, scope: :messages) }
-        end
+        redirect_back(fallback_location: solar_home_path)
       else
         respond_to do |format|
           format.html { redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages) }
           #format.json { render :json => {"msg": "Contato removido com sucesso"} }
         end
       end
-
+    rescue ActiveRecord::RecordInvalid
+      @message.errors.each do |attribute, erro|
+        @attribute = attribute
+      end
+      @support = params[:message][:support]
+      @reply_to = [{resume: t("messages.support")}] unless params[:message][:support].nil?
+      
+      render :new
     rescue => error
       if params[:scores]=='true'
         render json: { success: false, alert: @message.errors.full_messages.join(', ') }, status: :unprocessable_entity
@@ -294,7 +300,7 @@ class MessagesController < ApplicationController
     @reply_to = (params[:reply_to].blank? ? [] : User.where(id: params[:reply_to].split(',')).map(&:to_msg))
 
     unless params[:reply_to].blank? || @contacts.blank?
-      @list = @contacts.find_all_by_id(params[:reply_to].split(','))
+      @list = @contacts.where('users.id IN (?) ', params[:reply_to].split(','))
       @content_student = @list.any? { |u| u.types.to_i==Profile_Type_Student }
       @content_responsibles = @list.any? { |u| u.types.to_i==Profile_Type_Class_Responsible }
     end
@@ -320,10 +326,11 @@ class MessagesController < ApplicationController
 
     def new_msg_template
       system_label = not(@allocation_tag_id.nil?)
+      info = @message.labels(current_user.id, system_label).to_s.delete('[]"') if system_label
 
       %{
         <b>#{t(:mail_header, scope: :messages)} #{current_user.to_msg[:resume]}</b><br/>
-        #{@message.labels(current_user.id, system_label) if system_label}<br/>
+        #{info}<br/>
         ________________________________________________________________________<br/><br/>
         #{@message.content}
       }

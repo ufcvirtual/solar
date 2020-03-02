@@ -212,6 +212,9 @@ en_US:
       comment_file: File
       email: Email
       supportmaterialfile: Support Material
+      lessonmodule: Lesson Module
+      log: Logs
+      oauth: API
       schedule_event_file: Arquivo
     attributes:
       user:
@@ -288,6 +291,7 @@ en_US:
         attachment_file_size: "File too large. The maximum size should be up to 26MB."
         attachment_file_name: File
         academic_allocation_user_id: "Can't send file to this assignment"
+        attachment: ""
       group_assignment:
         group_name: "Group name"
       comment:
@@ -564,6 +568,8 @@ en_US:
               blank: must be selected
             academic_allocation_user_id:
               blank: "Can't send file to this assignment."
+            attachment:
+              spoofed_media_type: "TInvalid file type." 
         public_file:
           attributes:
             attachment_content_type:
@@ -937,6 +943,7 @@ en_US:
       caption: Lesson module %{module_name} lesson's list
       number_of_lessons: "%{module_name} has %{lesson_number} lessons"
       jspanel_count_window: "Allowed only 3 windows"
+      download_audio: Download audio
     list:
       lesson: Lesson
       order: Order
@@ -1006,6 +1013,8 @@ en_US:
       blank_address: Lesson %{lesson_name} was not published. Must have an URL or initial file
       undefined_initial_file: "Aula %{lesson_name} was not published. A initial file is necessary."
       extract_zip: It was not possible to, automatically, extract files from zip of lesson %{lesson_name}.
+      limit_count_text: "Could not generate audio limit exceeded, available %{available}, class has %{count} characters."
+      export_empty: Select lesson to export audio.
     success:
       saved_as_draft: Lessons were sucessfully created or saved as draft
       deleted: Lessons were successfully created
@@ -1094,6 +1103,30 @@ en_US:
       lesson_menu: " %{lesson} (Click to change lesson. A selection lesson submenu will be available)"
       download: "Download lesson in PDF file"
       download_file: "If you can't run the file, click here to download"
+      missing_topics: 'Text is incomplete The following topics are missing: '
+      generate_audio: Generate audio
+      used: Used
+      available: Available
+      text_generate_audio: Generating Audios
+    export:
+      error: Lesson is not of the file type and / or it does not have valid audios 
+      message_audio_success: "Lesson audio successfully generated."
+      button: Export audios
+      lesson:
+        preview: Preview lesson
+      list:
+        name: Name
+        preview: Preview
+        type: Type
+        preview_tooltip: Preview lesson
+        conclude: Conclude
+        no_lesson: No lesson
+      steps:
+        title: Lesson audio export
+        choose: Choose lesson
+        conclude: Conclude
+        back: Back
+        original_lesson: '** about source lesson'
   lesson_modules:
     general_of_offer: General
     general_of_group: General of group
@@ -1115,6 +1148,7 @@ en_US:
       general_message: It was not possible to execute action.
       import_empty: Select lessons to import.
       import_schedule: 'Start date is mandatory and must be smaller than end date, which are optional'
+
   lesson_files:
     root: Root
     delete_confirm: Are you sure you want to delete the selected items?
@@ -4219,7 +4253,7 @@ en_US:
       title_group: Webconferences scheduled by group
       title_student: Webconferences scheduled by student
       new: New webconference
-      final: "Final Version <a id='final_version_explain' href='#fv_explain' aria-label='%{aria} onkeydown='click_on_keypress(event, this);'>(?)</a>"
+      final: "Final Version <a id='final_version_explain' href='javascript:;' data-fancybox='' data-type='inline' data-url='#fv_explain' aria-label='%{aria} onkeydown='click_on_keypress(event, this);'>(?)</a>"
       final2: Explanation about final version
       fv_explain: "&nbsp;&nbsp; The tutor or professor responsible by evaluation has, as role, evaluate the student or group based on it's sent files and created webconferences. To evaluate a webconference, responsibles must analyse the existing recordings to, then, evaluate the student. However, during the execution of the assignment, the student or group of students may schedule and record one or more webconferences. These webconferences may be used, for example, to meetings between group members, to tests, to practice etc. That is, not all webconferences scheduled and recorded need, necessarily, be used to evaluation. <br/><br/> &nbsp;&nbsp;To inform the responsible wich ones of the webconferences must be used to evaluation, the student can define one or more as Final Version.  That way, the responsible will be able to evaluate only the webconferences defined as final version within all the ones scheduled and/or recorded. If necessary, responsibles may evaluate all recordings available."
       back: 'Back to webconferences list'

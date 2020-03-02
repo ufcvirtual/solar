@@ -49,7 +49,7 @@
       });
     }
 
-    $.put("#{import_lessons_path}", {lessons: lessons.join(';'), allocation_tags_ids: "#{@ats}", lesson_module_id: "#{@lesson_module_id}"}, function(data){
+    $.put("#{import_lessons_path}", {lessons: lessons.join(';'), allocation_tags_ids: "#{raw @ats}", lesson_module_id: "#{raw @lesson_module_id}"}, function(data){
       $.fancybox.close();
       var msg = data.msg;
 
@@ -59,8 +59,8 @@
       }).done(function(){
         flash_message(msg, 'notice', 'block_wrapper:first');
       });
-
-    }).error(function(data){
+      
+    }).fail(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
         flash_message(data.alert, 'alert');

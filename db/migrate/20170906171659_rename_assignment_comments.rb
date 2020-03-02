@@ -1,14 +1,14 @@
-class RenameAssignmentComments < ActiveRecord::Migration
+class RenameAssignmentComments < ActiveRecord::Migration[5.0]
   def up
+    remove_foreign_key :comment_files, :assignment_comments
     rename_table :assignment_comments, :comments
     rename_column :comment_files, :assignment_comment_id, :comment_id
 
-    remove_foreign_key :comment_files, :assignment_comments
     add_foreign_key :comment_files, :comments
 
-    remove_foreign_key :comments, name: 'assignment_comments_academic_allocation_user_id_fk'
+    remove_foreign_key :comments, column: 'academic_allocation_user_id'
     add_foreign_key :comments, :academic_allocation_users
-    remove_foreign_key :comments, name: 'assignment_comments_user_id_fk'
+    remove_foreign_key :comments, column: 'user_id'
     add_foreign_key :comments, :users
 
     #rename_index :comments, 'assignment_comments_pkey', 'comments_pkey'

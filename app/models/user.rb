@@ -25,8 +25,8 @@ class User < ActiveRecord::Base
   belongs_to :oauth_application
 
   has_many :allocations
-  has_many :allocation_tags, -> { uniq }, through: :allocations
-  has_many :profiles, -> { where(profiles: { status: true }, allocations: { status: 1 }).uniq }, through: :allocations # allocation.status = Allocation_Activated
+  has_many :allocation_tags, -> { distinct }, through: :allocations
+  has_many :profiles, -> { where(profiles: { status: true }, allocations: { status: 1 }).distinct }, through: :allocations # allocation.status = Allocation_Activated
   has_many :log_access
   has_many :log_actions
   has_many :lessons
@@ -52,17 +52,24 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :recoverable, :encryptable#, :timeoutable, :validatable
 
   before_save :ensure_authentication_token!, :downcase_username
-  before_save :downcase_email, unless: 'email.blank?'
+  before_save :downcase_email, unless: -> {email.blank?}
   after_save :log_update_user, unless: 'from_api?'
-  after_save :update_digital_class_user, if: '(!new_record? && (name_changed? || email_changed? || cpf_changed?) && !digital_class_user_id.nil?)', on: :update
+  after_save :update_digital_class_user, if: -> {(!new_record? && (saved_change_to_name? || saved_change_to_email? || saved_change_to_cpf?) && !digital_class_user_id.nil?)}, on: :update
 
-  before_save :set_previous, if: '(!new_record? && ((username_changed? && !previous_username.blank?) || email_changed? && !previous_email.blank?)) && (!synchronizing)'
+  before_save :set_previous, if: -> {(!new_record? && ((saved_change_to_username? && !previous_username.blank?) || saved_change_to_email? && !previous_email.blank?)) && (!synchronizing)}
 
   @has_special_needs
 
   attr_accessor :login, :has_special_needs, :synchronizing, :api
 
   email_format = %r{\A((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?\z}i
+
+  # paperclip uses: file_name, content_type, file_size e updated_at
+  has_attached_file :photo,
+    styles: { medium: '120x120#', small: '30x30#', forum: '40x40#' },
+    path: ':rails_root/media/:class/:id/photos/:style.:extension',
+    url: '/media/:class/:id/photos/:style.:extension',
+    default_url: '/assets/no_image_:style.png'
 
   validates :name, presence: true, length: { within: 6..200 }
   validates :nick, presence: true, length: { within: 3..34 }
@@ -74,7 +81,7 @@ class User < ActiveRecord::Base
 
   validates :email, uniqueness: {case_sensitive: false}, unless: Proc.new { |a| (a.integrated && !a.on_blacklist?) || a.email.blank?}
 
-  validates :email, confirmation: true, if: "(email_changed? || new_record?) && !(integrated && !on_blacklist?)"
+  validates :email, confirmation: true, if: -> {(saved_change_to_email? || new_record?) && !(integrated && !on_blacklist?)}
 
   validates :special_needs, presence: true, if: :special_needs?
 
@@ -89,14 +96,14 @@ class User < ActiveRecord::Base
 
   validate :cpf_integration, if: Proc.new{ |a| !a.new_record? && !a.oauth_application_id.blank? }
   validate :integration, if: Proc.new{ |a| !a.new_record? && !a.on_blacklist? && a.integrated? && (a.synchronizing.nil? || !a.synchronizing) }
-  validate :data_integration, if: Proc.new{ |a| (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO["integrated"]) && (a.new_record? || username_changed? || email_changed? || cpf_changed?) && (a.synchronizing.nil? || !a.synchronizing) }
+  validate :data_integration, if: Proc.new{ |a| (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO["integrated"]) && (a.new_record? || saved_change_to_username? || saved_change_to_email? || saved_change_to_cpf?) && (a.synchronizing.nil? || !a.synchronizing) }
 
-  validate :unique_cpf, if: "cpf_changed?"
+  validate :unique_cpf, if: -> { saved_change_to_cpf }
   validate :login_differ_from_cpf
-  validate :only_admin, if: '!new_record? && (cpf_changed? || active_changed?)'
+  validate :only_admin, if: -> { !new_record? && (saved_change_to_cpf? || saved_change_to_active?) }
 
-  before_save :set_empty_email, if: 'email.blank?'
-  after_save :remove_association_app, if: '!oauth_application_id.blank? && api.blank?'
+  before_save :set_empty_email, if: -> {email.blank?}
+  after_save :remove_association_app, if: -> {!oauth_application_id.blank? && api.blank?}
 
   # paperclip uses: file_name, content_type, file_size e updated_at
   has_attached_file :photo,
@@ -104,6 +111,7 @@ class User < ActiveRecord::Base
     path: ':rails_root/media/:class/:id/photos/:style.:extension',
     url: '/media/:class/:id/photos/:style.:extension',
     default_url: '/assets/no_image_:style.png'
+
 
   validates_attachment_size :photo, less_than: 700.kilobyte, message: '' # Esse message vazio deve permanecer dessa forma enquanto nao descobrirmos como passar a mensagem de forma correta. Se o message for vazio a validacao nao eh feita.
   validates_attachment_content_type :photo,
@@ -293,7 +301,7 @@ class User < ActiveRecord::Base
 
   # faltando pegar apenas alocacoes validas
   def all_allocation_tags(objects = false)
-    allocation_tags.collect! { |at| RelatedTaggable.related(at) }.flatten.uniq
+    allocation_tags.to_a.collect! { |at| RelatedTaggable.related(at) }.flatten.uniq
   end
 
   def to_msg
@@ -363,9 +371,9 @@ class User < ActiveRecord::Base
             allocations.status = #{Allocation_Activated}"
 
     sql << " AND " if !allocation_tag_id.blank? || verify_global_profile
-
+    
     query = []
-    query << "(allocations.allocation_tag_id IN (#{allocation_tag_id.join(',')}))" unless allocation_tag_id.blank?
+    query << "(allocations.allocation_tag_id IN (#{allocation_tag_id.join(',')}))" unless allocation_tag_id.blank? || allocation_tag_id.compact.empty?
     query << "(allocations.allocation_tag_id IS NULL)" if verify_global_profile
 
     sql << "( #{query.join(' OR ')} )"  unless query.blank?
@@ -423,15 +431,21 @@ class User < ActiveRecord::Base
   def activated_allocation_tag_ids(related = true, interacts = false)
     query = interacts ? "cast(profiles.types & #{Profile_Type_Student} as boolean) OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)" : ''
     allocation_tags = AllocationTag.joins(allocations: :profile).where(allocations: {user_id: id, status: Allocation_Activated.to_i}).where(query)
-    (related ? allocation_tags.collect!{ |at| at.related }.flatten.uniq : allocation_tags.pluck(:id))
+    (related ? allocation_tags.to_a.collect!{ |at| at.related }.flatten.uniq : allocation_tags.pluck(:id))
   end
 
   # Returns all allocation_tags_ids with activated access on informed actions of controller
   # if all is true         => recover all related
   # if include_nil is true => include nil if some allocation is not rellated to any allocation_tag
-  def allocation_tags_ids_with_access_on(actions, controller, all=false, include_nil=false)
-    allocations     = Allocation.joins(profile: :resources).where(resources: { action: actions, controller: controller }, allocations: { status: Allocation_Activated, user_id: id }).select('DISTINCT allocation_tag_id, allocations.id')
-    allocation_tags = AllocationTag.joins(:allocations).where(allocations: { id: allocations.pluck(:id) }).pluck(:id)
+  def allocation_tags_ids_with_access_on(actions, controller, all=false, include_nil=false, no_groups=false, no_offers=false)
+    query = "group_id IS NULL" if no_groups
+    query = "group_id IS NULL AND offer_id IS NULL" if no_groups && no_offers
+    unless actions.class.to_s == 'String'
+      actions = actions.flatten
+    end  
+    allocations     = Allocation.joins(profile: :resources).where("resources.action IN (?)", actions).where(resources: { controller: controller }, allocations: { status: Allocation_Activated, user_id: id })
+    .select('DISTINCT allocation_tag_id, allocations.id')
+    allocation_tags = AllocationTag.joins(:allocations).where(allocations: {id: allocations.pluck(:id) }).where(query).pluck(:id) 
 
     has_nil = (include_nil && allocations.where(allocation_tag_id: nil).any?)
 
@@ -933,6 +947,13 @@ class User < ActiveRecord::Base
     DigitalClass.update_user(self, ignore_changes)
   end
 
+  # Forces a new authentication token to be generated for this user and saves it
+  # to the database
+  def reset_authentication_token!
+    self.authentication_token = generate_authentication_token
+    save
+  end
+
   # groups that user can enroll
   def groups_to_enroll
     Offer.find_by_sql <<-SQL
@@ -1063,6 +1084,7 @@ class User < ActiveRecord::Base
     return (email.blank? ? set_reset_password_token : send_reset_password_instructions) unless integrated && !on_blacklist?
   end
 
+
   private
 
     def login_differ_from_cpf
@@ -1101,6 +1123,12 @@ class User < ActiveRecord::Base
       end
     end
 
+    def generate_authentication_token
+      loop do
+        token = Devise.friendly_token
+        break token unless User.find_by(authentication_token: token)
+      end
+    end
     # garantees that email will be nil when blank
     def set_empty_email
       self.email = nil

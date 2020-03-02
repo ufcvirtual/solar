@@ -569,6 +569,10 @@
 .icon-hand:before {
 	content: "\270B";
 }
+.icon-music3:before {
+	content: "\e029";
+	color: #FFFFFF;
+}
 @-moz-document url-prefix() {
    .icon-backward2:before {
 	  content: "\23ee";

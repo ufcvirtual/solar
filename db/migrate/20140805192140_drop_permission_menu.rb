@@ -1,4 +1,4 @@
-class DropPermissionMenu < ActiveRecord::Migration
+class DropPermissionMenu < ActiveRecord::Migration[5.0]
   def up
     drop_table :permissions_menus
   end

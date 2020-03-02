@@ -298,7 +298,6 @@ function insertText(event, element) {
   var positionX = $(element).offset().left - $(canvas).offset().left - $(element).position().left;
   var positionY = $(element).offset().top - $(canvas).offset().top - $(element).position().top;
   var tool = getToolSelected();
-
   drawScreen(context, positionX, positionY, false, tool, message);
 
   $(element).closest('.box').remove();

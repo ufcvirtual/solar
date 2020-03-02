@@ -218,8 +218,7 @@ class AdministrationsController < ApplicationController
 
     # if user isn't an admin, remove unrelated allocations
     @allocations = Allocation.remove_unrelated_allocations(current_user, @allocations) unless current_user.admin?
-
-    @allocations.compact!
+    @allocations.to_a.compact!
     @allocations = @allocations.paginate(page: params[:page], per_page: Rails.application.config.items_per_page)
     @types = [ [t('administrations.allocation_approval.name'), 'name'], [t('administrations.allocation_approval.profile'), 'profile'],
       [t('administrations.allocation_approval.type'), 'curriculum_unit_type'], [t('administrations.allocation_approval.course'), 'course'],

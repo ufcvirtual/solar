@@ -5,8 +5,8 @@ class AssignmentFilesController < ApplicationController
   include AssignmentsHelper
   include IpRealHelper
 
-  before_filter :set_current_user, only: [:destroy, :create]
-  before_filter :get_ac, only: :new
+  before_action :set_current_user, only: [:destroy, :create]
+  before_action :get_ac, only: :new
 
   layout false
 
@@ -29,7 +29,7 @@ class AssignmentFilesController < ApplicationController
     if @assignment_file.save
       render partial: 'file', locals: { file: @assignment_file, disabled: false }
     else
-      render json: { success: false, alert: @assignment_file.errors.full_messages.join(', ') }, status: :unprocessable_entity
+      render json: { success: false, alert: @assignment_file.errors.full_messages.join('. ') }, status: :unprocessable_entity
     end
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized

@@ -1,12 +1,12 @@
-class CreateMenusContexts < ActiveRecord::Migration
+class CreateMenusContexts < ActiveRecord::Migration[5.0]
   def self.up
      create_table "menus_contexts", :id => false do |t|
       t.integer "menu_id",    :null => false
-      t.integer "context_id", :null => false            
+      t.integer "context_id", :null => false           
     end
 
-    add_foreign_key(:menus_contexts, :menus)
-    add_foreign_key(:menus_contexts, :contexts)
+    add_foreign_key :menus_contexts, :menus
+    add_foreign_key :menus_contexts, :contexts
   end
 
   def self.down

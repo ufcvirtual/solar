@@ -3,9 +3,9 @@ class ExamsController < ApplicationController
   include SysLog::Actions
   include IpRealHelper
 
-  before_filter :prepare_for_group_selection, only: :index
-  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
-  before_filter :verify_exam, only: [:open]
+  before_action :prepare_for_group_selection, only: :index
+  before_action :get_groups_by_allocation_tags, only: [:new, :create]
+  before_action :verify_exam, only: [:open]
   layout false, except: :index
 
   def index
@@ -128,7 +128,7 @@ class ExamsController < ApplicationController
     end
 
   rescue => error
-    render text: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
+    render plain: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
   end
 
   def open
@@ -169,9 +169,9 @@ class ExamsController < ApplicationController
       end
     end
   rescue CanCan::AccessDenied
-    render text: t(:no_permission)
+    render plain: t(:no_permission)
   rescue => error
-    render text: error.to_s
+    render plain: error.to_s
   end
 
   def result_exam_user
@@ -201,9 +201,9 @@ class ExamsController < ApplicationController
                end
     @scores_exam = @exam.exam_questions.where(use_question: true).sum(:score)
   rescue CanCan::AccessDenied
-    render text: t(:no_permission)
+    render plain: t(:no_permission)
   rescue => error
-    render text: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
+    render plain: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
   end
 
   def complete
@@ -315,7 +315,7 @@ class ExamsController < ApplicationController
     acu = AcademicAllocationUser.find_one(ac_id, current_user.id, nil, true)
     @percentage = Exam.percent(exam.number_questions, acu.answered_questions)
   rescue => error
-    render text: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
+    render plain: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
   end
 
   private
@@ -381,7 +381,7 @@ class ExamsController < ApplicationController
     end
 
   rescue => error
-    render text: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
+    render plain: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
   end
 
   def return_acu_result(acu, at_id, score_type)

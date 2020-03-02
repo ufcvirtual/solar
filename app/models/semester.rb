@@ -18,7 +18,7 @@ class Semester < ActiveRecord::Base
 
   accepts_nested_attributes_for :offer_schedule, :enrollment_schedule, allow_destroy: true
 
-  after_save :update_digital_class, if: "name_changed?"
+  after_save :update_digital_class, if: -> {saved_change_to_name?}
 
   attr_accessor :type_id, :verify_current_date
 
@@ -64,7 +64,7 @@ class Semester < ActiveRecord::Base
     query << ( (params[:type_id] == 3 ? nil : (params[:uc_id].blank? or params[:uc_id] == "null") ? (combobox ? "offers.curriculum_unit_id IS NULL" : nil) : "offers.curriculum_unit_id = #{params[:uc_id]}") )
     query.compact!
 
-    joins(:offers).where(query.join(" AND ")).uniq.order("name DESC")
+    joins(:offers).where(query.join(" AND ")).distinct.order("name DESC")
   end
 
   def self.all_by_period(params = {}, combobox=false)
@@ -75,7 +75,7 @@ class Semester < ActiveRecord::Base
 
     year = Date.parse("#{params[:period]}-01-01") rescue Date.today
 
-    current_semesters = Semester.joins("LEFT JOIN offers ON offers.semester_id = semesters.id").currents(year).where(query.join(" AND ")).uniq
+    current_semesters = Semester.joins("LEFT JOIN offers ON offers.semester_id = semesters.id").currents(year).where(query.join(" AND ")).distinct
     query << "semester_id NOT IN (#{current_semesters.map(&:id).join(',')})" unless current_semesters.empty? # retirando semestres ja listados
     semesters_of_current_offers = Offer.currents({year: year, object: true, curriculum_unit_type_id: params[:type_id], course_id: params[:course_id], curriculum_unit_id: params[:uc_id]}).where(query.join(" AND ")).map(&:semester)
 
@@ -83,7 +83,7 @@ class Semester < ActiveRecord::Base
   end
 
   def update_digital_class(ignore_changes=false)
-    DigitalClass.update_taggable(self, ignore_changes) unless created_at_changed?
+    DigitalClass.update_taggable(self, ignore_changes) unless saved_change_to_created_at?
   end
 
 end

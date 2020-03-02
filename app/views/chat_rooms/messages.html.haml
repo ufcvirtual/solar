@@ -43,8 +43,8 @@
                   - if @can_evaluate || (message.u_id.to_i == current_user.id)
                     = message.wh
 
-  - else
-    .block_content_text_list.text_none= t(".no_message")
+    - else
+      .block_content_text_list.text_none= t(".no_message")
 
 = javascript_include_tag "tooltip"
 

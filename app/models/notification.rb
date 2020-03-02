@@ -9,7 +9,7 @@ class Notification < ActiveRecord::Base
 
   belongs_to :schedule
 
-  validate :verify_end_date, on: :update, if: 'ended?'
+  validate :verify_end_date, on: :update, if: -> {ended?}
 
   has_and_belongs_to_many :users, join_table: 'read_notifications'
   has_and_belongs_to_many :profiles, join_table: 'notification_profiles'
@@ -23,7 +23,7 @@ class Notification < ActiveRecord::Base
   validates :title, :description, :schedule, presence: true
   validates :title, length: { maximum: 255 }
 
-  after_save :remove_readings, on: :update, if: 'title_changed? || description_changed? || (mandatory_reading_changed? && mandatory_reading)'
+  after_save :remove_readings, on: :update, if: -> {saved_change_to_title? || saved_change_to_description? || (saved_change_to_mandatory_reading? && mandatory_reading)}
 
   def reject_files(file)
     (file[:file].blank? && (new_record? || file[:id].blank?))
@@ -36,8 +36,12 @@ class Notification < ActiveRecord::Base
   def copy_dependencies_from(notification_to_copy)
     unless notification_to_copy.notification_files.empty?
       notification_to_copy.notification_files.each do |file|
-        new_file = NotificationFile.create! file.attributes.merge({ notification_id: self.id })
-        copy_file(file, new_file, 'notifications', 'file')
+        #new_file = NotificationFile.create! file.attributes.merge({ notification_id: self.id })
+        #copy_file(file, new_file, 'notifications', 'file')
+        new_file = file.dup
+        new_file.file = file.file
+        new_file.notification_id = self.id
+        new_file.save!
       end
     end
   end

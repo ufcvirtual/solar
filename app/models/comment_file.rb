@@ -17,6 +17,7 @@ class CommentFile < ActiveRecord::Base
 
   validates_attachment_size :attachment, less_than: FILESIZE, message: ''
   validates_attachment_content_type_in_black_list :attachment
+  do_not_validate_attachment_file_type :attachment
 
   def order
    'attachment_updated_at DESC'

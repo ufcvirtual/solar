@@ -4,11 +4,11 @@ class SupportMaterialFilesController < ApplicationController
   include FilesHelper
 
   layout false, except: :index
-  before_filter :prepare_for_group_selection, only: :index
+  before_action :prepare_for_group_selection, only: :index
 
-  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
+  before_action :get_groups_by_allocation_tags, only: [:new, :create]
 
-  before_filter only: [:edit, :update] do |controller|
+  before_action only: [:edit, :update] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
     get_groups_by_tool(@support_material_file = SupportMaterialFile.find(params[:id]))
   end
@@ -77,11 +77,11 @@ class SupportMaterialFilesController < ApplicationController
 
   def open
     if Exam.verify_blocking_content(current_user.id)
-        redirect_to :back, alert: t('exams.restrict')
-    else
+        redirect_back fallback_location: :back, alert: t('exams.restrict')
+    else  
       @file = SupportMaterialFile.find(params[:id]) unless params[:id].blank?
       if @file.url.blank? && !File.exist?(@file.attachment.path)
-        render text: t(:file_error_nonexistent_file)
+        render html: t(:file_error_nonexistent_file)
       else
         allocation_tag_ids = if !((current_at = active_tab[:url][:allocation_tag_id]).blank?) # dentro de uma UC
             ats = AllocationTag.find(current_at).related
@@ -114,8 +114,8 @@ class SupportMaterialFilesController < ApplicationController
 
   def download
     if Exam.verify_blocking_content(current_user.id)
-        redirect_to :back, alert: t('exams.restrict')
-    else
+      redirect_back fallback_location: :back, alert: t('exams.restrict')
+    else  
       file = SupportMaterialFile.find(params[:id]) unless params[:id].blank?
 
       unless file.nil? || file.url.blank?
@@ -153,7 +153,7 @@ class SupportMaterialFilesController < ApplicationController
     @allocation_tags_ids = params[:groups_by_offer_id].present? ? AllocationTag.at_groups_by_offer_id(params[:groups_by_offer_id]) : params[:allocation_tags_ids]
     authorize! :list, SupportMaterialFile, on: @allocation_tags_ids
 
-    @support_materials = SupportMaterialFile.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).order("attachment_updated_at DESC").uniq
+    @support_materials = SupportMaterialFile.joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).order("attachment_updated_at DESC").distinct 
   rescue => error
     request.format = :json
     raise error.class

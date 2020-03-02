@@ -1,4 +1,4 @@
-class DropExamUserTable < ActiveRecord::Migration
+class DropExamUserTable < ActiveRecord::Migration[5.0]
   def up
     remove_column :exam_user_attempts, :exam_user_id
     drop_table :exam_users

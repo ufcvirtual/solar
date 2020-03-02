@@ -1,4 +1,4 @@
-class CreateMenus < ActiveRecord::Migration
+class CreateMenus < ActiveRecord::Migration[5.0]
   def self.up
     create_table "menus" do |t|
       t.integer "resource_id"
@@ -13,8 +13,8 @@ class CreateMenus < ActiveRecord::Migration
       ALTER TABLE menus ADD COLUMN father_id INTEGER NULL REFERENCES menus(id)
     SQL
 
-    add_foreign_key(:menus, :resources)
-    add_foreign_key(:menus, :contexts)
+    add_foreign_key :menus, :resources
+    add_foreign_key :menus, :contexts
   end
 
   def self.down

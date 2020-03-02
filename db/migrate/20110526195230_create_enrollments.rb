@@ -1,4 +1,4 @@
-class CreateEnrollments < ActiveRecord::Migration
+class CreateEnrollments < ActiveRecord::Migration[5.0]
   def self.up
     create_table "enrollments" do |t|
       t.integer  "offer_id"
@@ -6,7 +6,7 @@ class CreateEnrollments < ActiveRecord::Migration
       t.date     "end",        :null => false
     end
 
-    add_foreign_key(:enrollments, :offers)
+    add_foreign_key :enrollments, :offers
   end
 
   def self.down

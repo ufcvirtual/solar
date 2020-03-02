@@ -1,4 +1,4 @@
-class ChangeDefaultTypeOfAssignment < ActiveRecord::Migration
+class ChangeDefaultTypeOfAssignment < ActiveRecord::Migration[5.0]
   def up
     change_column :assignments, :type_assignment, :integer, default: 0
   end

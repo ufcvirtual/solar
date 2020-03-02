@@ -6,7 +6,7 @@ class Profile < ActiveRecord::Base
 
   has_and_belongs_to_many :resources, join_table: "permissions_resources"
 
-  after_create :copy_from_template, if: "not template.blank?"
+  after_create :copy_from_template, if: -> {not template.blank?}
 
   validates :description, :name, presence: true
   validates :name, length: {maximum: 255}

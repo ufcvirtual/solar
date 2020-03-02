@@ -16,18 +16,19 @@ class Lesson < ActiveRecord::Base #< Event
   has_many :offers, through: :allocation_tags
   has_many :notes, class_name: 'LessonNote', foreign_key: 'lesson_id', dependent: :destroy
   has_many :imported_to, class_name: 'Lesson', foreign_key: 'imported_from_id'
+  has_many :lesson_audios, class_name: 'LessonAudio', dependent: :destroy
 
   before_create :set_order
 
   before_save :url_protocol,        if: :is_link?
-  before_save :set_receive_updates, if: 'receive_updates_changed?'
+  before_save :set_receive_updates, if: -> {saved_change_to_receive_updates?}
   before_save :receive_changes,     if: :must_receive_changes?
 
-  before_validation :set_schedule, if: 'schedule'
+  before_validation :set_schedule, if: -> {schedule}
 
   after_save :send_changes,         if: :must_send_changes?
   after_save :create_or_update_folder
-  after_save :lesson_privacy,       if: 'privacy_changed?'
+  after_save :lesson_privacy,       if: -> {saved_change_to_privacy?}
   after_save :remove_dir_files,     if: :must_receive_changes?
 
   before_destroy :can_destroy?, :verify_files_before_destroy
@@ -38,9 +39,12 @@ class Lesson < ActiveRecord::Base #< Event
   validates :name, :type_lesson, presence: true
   validates :name, length: { maximum: 200 }
 
-  validate :can_change_privacy?, if: '!new_record? && privacy_changed?'
-  validate :can_change_status?, if: '!new_record? && status_changed? && !is_draft?'
+  validates :address, presence: true, if: -> {!is_draft? && persisted?}
 
+  validate :address_is_ok?
+  validate :can_change_privacy?, if: -> {!new_record? && saved_change_to_privacy?}
+  validate :can_change_status?, if: -> {!new_record? && saved_change_to_status? && !is_draft?}
+  
   # Na expressao regular os protocolos http, https e ftp podem aparecer somente uma vez ou nao aparecer
   validates_format_of :address, with: /\A((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?\z/ix,
   allow_nil: true, allow_blank: true, if: :is_link?
@@ -207,6 +211,22 @@ class Lesson < ActiveRecord::Base #< Event
   def is_video?
     (address.last(4).eql?('.aac') || address.last(4).eql?('.m4a') || address.last(4).eql?('.mp4') || address.last(4).eql?('.avi') || address.last(5).eql?('.webm') || address.last(4).eql?('.m4v'))
   end
+
+  def clone_audio_to_another_lesson(lesson_id)
+    audioslesson = LessonAudio.where(lesson_id: self.id, status: true)
+    LessonAudio.where(lesson_id: lesson_id, status: true).update_all(status: false)
+    audioslesson.each do |lessonaudio|
+      new_audiolesson = lessonaudio.dup
+      new_audiolesson.lesson_id = lesson_id
+      new_audiolesson.count_text = 0
+      new_audiolesson.audio = lessonaudio.audio
+      new_audiolesson.save!
+    end
+  end 
+
+  def contains_audio?
+    LessonAudio.where(lesson_id: self.id, status: true).count > 0 ? true : false
+  end 
 
   private
 

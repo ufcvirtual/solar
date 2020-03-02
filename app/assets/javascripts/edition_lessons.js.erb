@@ -10,7 +10,7 @@ $(function() {
       $(this).nice_open_lesson();
     });
 
-    $(".btn_edit, .btn_del, .release_lessons, .download_lesson_zip, .manage_files_lesson").attr("disabled", true);
+    $(".btn_edit, .btn_del, .release_lessons, .download_lesson_zip, .manage_files_lesson, .export_lessonaudio").attr("disabled", true);
 
     $(".link_new_lesson, .link_new_module, .edit_module").call_fancybox({
       width: '70%'
@@ -24,7 +24,7 @@ $(function() {
 
     $('.lesson_check_all').map(function(){
       $(this).nice_checkbox({
-        objects_to_change_status: ['.manage_files_lesson', '.download_lesson_zip', '.release_lessons', '[id^="move_lesson_from"]']
+        objects_to_change_status: ['.manage_files_lesson', '.download_lesson_zip', '.release_lessons', '[id^="move_lesson_from"]', ' .export_lessonaudio']
       });
     });
 
@@ -73,7 +73,7 @@ $(function() {
             $.get($('.list_lessons').data('link-list'), function(data){
               $('.list_lessons:first').replaceWith(data);
             });
-          }).error(function(data){
+          }).fail(function(data){
             flash_message(data.msg, 'alert');
           });
         }
@@ -103,7 +103,7 @@ $(function() {
             $('.list_lessons:first').replaceWith(data);
             focus_element($(data));
           });
-        }).error(function(data) {
+        }).fail(function(data) {
           if(typeof(module_id) != "undefined"){
             $.get($('.list_lessons').data('link-list'), function(data2){
               $('.list_lessons:first').replaceWith(data2);
@@ -175,7 +175,7 @@ $(function() {
           success: function(){
             window.location.href = link_download;
           },
-          error: function() {
+          fail: function() {
             flash_message("<%=I18n.t(:invalid_lesson_to_download, :scope => [:lessons, :errors])%>", "alert");
           }
         });
@@ -203,3 +203,5 @@ $(function() {
     }else
       return true;
   }
+
+

@@ -12,7 +12,7 @@
   // Todas as datas que possuem eventos
   //--------------------------------------------
   $(function() {
-    var dates_with_events = eval(#{@scheduled_events.as_json});
+    var dates_with_events = eval(#{raw @scheduled_events.as_json});
     showAgenda(dates_with_events);
     calendar_prev_next_month_accessible();
   });

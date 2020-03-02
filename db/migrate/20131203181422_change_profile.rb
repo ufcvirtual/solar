@@ -1,4 +1,4 @@
-class ChangeProfile < ActiveRecord::Migration
+class ChangeProfile < ActiveRecord::Migration[5.0]
 	def up
     change_table :profiles do |t|
       t.string :description, limit: 500

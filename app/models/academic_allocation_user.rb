@@ -30,18 +30,16 @@ class AcademicAllocationUser < ActiveRecord::Base
   has_many :log_actions
 
   validates :user_id, uniqueness: { scope: [:group_assignment_id, :academic_allocation_id] }
-  validates :user_id, presence: true, if: 'group_assignment_id.nil?'
-  validates :grade, numericality: { greater_than_or_equal_to: 0, smaller_than_or_equal_to: 10, allow_blank: true }, unless: 'grade.blank?'
-  validates :working_hours, numericality: { greater_than_or_equal_to: 0, allow_blank: true }, unless: 'working_hours.blank?'
-  validate :verify_wh, if: '!working_hours.blank? && merge.nil?'
-  validate :verify_grade, if: '!grade.blank? && merge.nil?'
-  validate :verify_offer, :verify_date, if: '(working_hours_changed? || grade_changed?) && merge.nil?'
-  # validates :group_assignment_id, presence: true, if: Proc.new { |a| a.try(:assignment).try(:type_assignment) == Assignment_Type_Group }
-
-  validate :verify_block_register_notes, if: '(!working_hours.blank? || !grade.blank?) && merge.nil?'
+  validates :user_id, presence: true, if: -> {group_assignment_id.nil?}
+  validates :grade, numericality: { greater_than_or_equal_to: 0, smaller_than_or_equal_to: 10, allow_blank: true }, unless: -> {grade.blank?}
+  validates :working_hours, numericality: { greater_than_or_equal_to: 0, allow_blank: true }, unless: -> {working_hours.blank?}
+  validate :verify_wh, if: -> {!working_hours.blank? && merge.nil?}
+  validate :verify_grade, if: -> {!grade.blank? && merge.nil?}
+  validate :verify_offer, :verify_date, if: -> {(working_hours_changed? || grade_changed?) && merge.nil?}
+  validates :group_assignment_id, presence: true, if: Proc.new { |a| a.try(:assignment).try(:type_assignment) == Assignment_Type_Group }
 
   before_save :if_group_assignment_remove_user_id
-  before_save :verify_profile, :verify_group, :verify_participants, if: 'merge.nil?'
+  before_save :verify_profile, :verify_group, :verify_participants, if: -> {merge.nil?}
 
   before_destroy :delete_with_dependents
 

@@ -378,7 +378,7 @@
           parent_id: data.parent_id,
           academic_allocation_id: data.ac_id
         }));
-      }).error(function(){
+      }).fail(function(){
         flash_message("#{t('posts.error.not_published')}", 'alert');
       });
     });

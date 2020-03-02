@@ -5,15 +5,15 @@ class AllocationsController < ApplicationController
 
   layout false, except: :index
 
-  before_filter only: [:enroll_request, :profile_request] do
+  before_action only: [:enroll_request, :profile_request] do
     authorize! :create, Allocation
   end
 
-  before_filter only: [:create_designation, :profile_request] do
+  before_action only: [:create_designation, :profile_request] do
     @allocation_tags_ids = AllocationTag.get_by_params(params)[:allocation_tags]
   end
 
-  before_filter only: [:show, :edit, :update] do
+  before_action only: [:show, :edit, :update] do
     @allocation = Allocation.find(params[:id])
 
     # editor/aluno
@@ -49,6 +49,9 @@ class AllocationsController < ApplicationController
   # GET /allocations/1/edit
   def edit
   end
+
+  def enrollments
+  end  
 
   ## matricular varios de uma vez /  mudar aluno de turma aceitando matricula
 
@@ -140,10 +143,10 @@ class AllocationsController < ApplicationController
       render json: { success: false, msg: t(params[:type], scope: 'allocations.request.error') }, status: :unprocessable_entity
     end
 
-  rescue CanCan::AccessDenied
-    render json: { msg: t(:no_permission), alert: t(:no_permission) }, status: :unauthorized
-  rescue => error
-    render_json_error(error, 'enrollments.index')
+  # rescue CanCan::AccessDenied
+  #   render json: { msg: t(:no_permission), alert: t(:no_permission) }, status: :unauthorized
+  # rescue => error
+  #   render_json_error(error, 'enrollments.index')
   end
 
   def show_profile

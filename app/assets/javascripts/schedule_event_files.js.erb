@@ -53,7 +53,7 @@ $(function(){
   $('.download_folder, .download_file').on('click', function(){
     $.get($(this).data('url'), function(data){
       window.location.href = data.url;
-    }).error(function(data){
+    }).fail(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
         flash_message(data.alert, 'alert', 'fancybox-outer');
@@ -113,7 +113,7 @@ function new_file(link) {
     $('.'+form_file).html(data);
     $("#no_itens_message_file").addClass('hide_message');
     $.fancybox.update();
-  }).error(function(data){
+  }).fail(function(data){
     $(link).show();
     var data = $.parseJSON(data.responseText);
     if (typeof(data.alert) != "undefined")

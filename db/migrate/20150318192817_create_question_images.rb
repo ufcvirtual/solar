@@ -1,4 +1,4 @@
-class CreateQuestionImages < ActiveRecord::Migration
+class CreateQuestionImages < ActiveRecord::Migration[5.0]
   def change
     create_table :question_images do |t|
       t.integer :question_id, null: false

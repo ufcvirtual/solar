@@ -19,7 +19,7 @@ class Report
       end
       allocation_tags_ids = allocation_tags_ids.uniq.join(',')
     end  
-    
+
     case query_type
       when '1'
         #reset_arrays #clean precausion..
@@ -64,9 +64,9 @@ class Report
 
         # 3 user com o campo integrado com o valor true, e que o cpf não consta na tabela user_blacklist
         @user_blacklist = UserBlacklist.all
-        models_info[2] = User.count(:all, :conditions => ['integrated = TRUE and cpf NOT IN (?)', @user_blacklist.map(&:cpf)])
+        models_info[2] = User.where('integrated = TRUE AND cpf NOT IN (?)', @user_blacklist.map(&:cpf)).count('id')
         # 4 user não vinculado ao modulo academico
-        models_info[3] = User.count(:all, :conditions => ['integrated = FALSE or integrated = TRUE and cpf IN (?)', @user_blacklist.map(&:cpf)])
+        models_info[3] = User.where('integrated = FALSE or integrated = TRUE and cpf IN (?)', @user_blacklist.map(&:cpf)).count('id')
 
         #quantidade de Disciplinas
         models_info[6] = "#{CurriculumUnit.count}"
@@ -262,9 +262,9 @@ class Report
             groups = AllocationTag.find(at.to_i).groups
           }
 
-          models_info[19] = groups.uniq.size
+          models_info[19] = groups.distinct.size
  
-          models_info[20] = groups.where("status = TRUE").uniq.size
+          models_info[20] = groups.where("status = TRUE").distinct.size
           
         end
        

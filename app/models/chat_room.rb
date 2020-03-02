@@ -9,7 +9,7 @@ class ChatRoom < Event
 
   has_many :messages, class_name: 'ChatMessage', through: :academic_allocations, source: :chat_messages
   has_many :participants, class_name: 'ChatParticipant', through: :academic_allocations, source: :chat_participants
-  has_many :users, -> { select('users.name', 'users.nick', 'users.id').uniq}, through: :participants
+  has_many :users, -> { select('users.name', 'users.nick', 'users.id').distinct}, through: :participants
   has_many :allocations, through: :participants
 
   accepts_nested_attributes_for :schedule
@@ -78,7 +78,7 @@ class ChatRoom < Event
   end
 
   def self.to_list_by_ats(allocation_tags_ids)
-    joins(:schedule, :allocation_tags).where(allocation_tags: { id: allocation_tags_ids }).select('chat_rooms.*, schedules.start_date AS chat_start_date').order('chat_start_date, title').uniq
+    joins(:schedule, :allocation_tags).where(allocation_tags: { id: allocation_tags_ids }).select('chat_rooms.*, schedules.start_date AS chat_start_date').order('chat_start_date, title').distinct
   end
 
   def get_messages(at_id, user_query={})

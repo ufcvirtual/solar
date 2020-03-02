@@ -195,7 +195,7 @@ module Taggable
 
   def users_with_profile_type(profile_type, related = true)
     User.joins(allocations: :profile).where("allocations.allocation_tag_id IN (?)", (related ? self.allocation_tag.related({ upper:true }) : self.allocation_tag.id) )
-      .where("cast(types & ? as boolean)", profile_type).uniq
+      .where("cast(types & ? as boolean)", profile_type).distinct
   end
 
   def users_with_profile(profile_id = nil, related = true)
@@ -203,7 +203,7 @@ module Taggable
     query.merge!(allocations: {profile_id: profile_id}) unless profile_id.nil?
 
     User.joins(:allocations).where("allocations.allocation_tag_id IN (?)", (related ? self.allocation_tag.related({upper:true}) : self.allocation_tag.id) )
-      .where(query).uniq
+      .where(query).distinct
   end
 
   def related(options={upper: true, lower: true, name: nil})
@@ -211,7 +211,7 @@ module Taggable
   end
 
   def update_digital_class(ignore_changes=false)
-    DigitalClass.update_taggable(self, ignore_changes) unless created_at_changed?
+    DigitalClass.update_taggable(self, ignore_changes) unless saved_change_to_created_at?
   end
 
   def self.descendants

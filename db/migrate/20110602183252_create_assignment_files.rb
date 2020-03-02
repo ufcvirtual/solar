@@ -1,4 +1,4 @@
-class CreateAssignmentFiles < ActiveRecord::Migration
+class CreateAssignmentFiles < ActiveRecord::Migration[5.0]
   def self.up
     create_table :assignment_files do |t|
       t.integer :send_assignment_id, :null => false
@@ -8,7 +8,7 @@ class CreateAssignmentFiles < ActiveRecord::Migration
       t.datetime :attachment_updated_at
     end
 
-    add_foreign_key(:assignment_files, :send_assignments)
+    add_foreign_key :assignment_files, :send_assignments
   end
 
   def self.down

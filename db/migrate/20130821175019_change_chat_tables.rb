@@ -1,4 +1,4 @@
-class ChangeChatTables < ActiveRecord::Migration
+class ChangeChatTables < ActiveRecord::Migration[5.0]
   def up
     rename_column :chat_rooms, :type, :chat_type
     rename_column :chat_messages, :type, :message_type

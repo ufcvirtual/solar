@@ -4,10 +4,10 @@ class CommentsController < ApplicationController
   include FilesHelper
   include AssignmentsHelper
 
-  before_filter :get_ac_tool, only: [:new, :index]
-  before_filter :set_score_type
-  before_filter :set_current_user, only: [:create, :update, :destroy]
-  before_filter only: [:edit, :update, :destroy] do |controller|
+  before_action :get_ac_tool, only: [:new, :index]
+  before_action :set_score_type
+  before_action :set_current_user, only: [:create, :update, :destroy]
+  before_action only: [:edit, :update, :destroy] do |controller|
     @comment = Comment.find(params[:id])
   end
 

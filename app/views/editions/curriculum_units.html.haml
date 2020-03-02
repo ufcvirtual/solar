@@ -49,8 +49,11 @@
       $.delete($(button).data('link-delete').replace(':id', uc_ids), function(data){
         flash_message(data.notice, 'notice');
         ucs.parents('tr').fadeOut().remove();
-      }).error(function(data){
+      }).fail(function(data){
+        console.log(data);
+
         var data = $.parseJSON(data.responseText);
+        //console.log(data);
         if (typeof(data.alert) != "undefined")
           flash_message(data.alert, 'alert');
       });

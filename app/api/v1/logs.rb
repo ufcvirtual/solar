@@ -158,7 +158,7 @@ module V1
 
         verify_permission(:index, user.allocations.where(profile_id: 1, status: 1).map(&:allocation_tag).map(&:related).flatten.uniq)
         {
-          country: user.country, state: user.state, city: user.city, zipcode: user.zipcode, address: user.address, address_number: user.address_number, address_complement: user.address_complement, address_neighborhood: user.address_neighborhood, zipcode: user.zipcode, special_needs: user.special_needs
+          country: user.country, state: user.state, city: user.city, zipcode: user.zipcode, address: user.address, address_number: user.address_number, address_complement: user.address_complement, address_neighborhood: user.address_neighborhood, special_needs: user.special_needs
         }
 
       end

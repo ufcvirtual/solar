@@ -1,4 +1,4 @@
-class CreateGroupAssignments < ActiveRecord::Migration
+class CreateGroupAssignments < ActiveRecord::Migration[5.0]
   def self.up
     create_table :group_assignments do |t|
       t.integer  :assignment_id, :null => false
@@ -6,7 +6,7 @@ class CreateGroupAssignments < ActiveRecord::Migration
       t.datetime :group_updated_at
     end
 
-    add_foreign_key(:group_assignments, :assignments)
+    add_foreign_key :group_assignments, :assignments
   end
 
   def self.down

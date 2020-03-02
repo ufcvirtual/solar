@@ -1,4 +1,4 @@
-class RenameTableLogToLogAccess < ActiveRecord::Migration
+class RenameTableLogToLogAccess < ActiveRecord::Migration[5.0]
   def up
     rename_table :logs, :log_accesses
 
@@ -11,7 +11,7 @@ class RenameTableLogToLogAccess < ActiveRecord::Migration
     end
 
     add_index :log_accesses, :user_id
-    add_index :log_accesses, :allocation_tag_id
+    #add_index :log_accesses, :allocation_tag_id
 
     ## quem era 2 vira um outro log (new_user)
     old_log = LogAccess.where(log_type: 2)

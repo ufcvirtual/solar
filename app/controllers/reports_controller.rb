@@ -1,6 +1,7 @@
 class ReportsController < ApplicationController
 
   include ReportsHelper
+  include EdxHelper
 
   $document_title
   

@@ -60,12 +60,25 @@
       [
         { name: 'styles', items : [ 'Styles', 'Format', 'Font', 'FontSize' ] },
         { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Strike', 'Underline', '-', 'RemoveFormat' ] },
+        { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] },
         { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
         { name: 'links', items : [ 'Link', 'Unlink' ] },
       ];
 
       config.autoParagraph = false;
+      config.AllowedContent = 'br[clear]';
   };
+
+  CKEDITOR.on('instanceReady', function (ev) {
+
+      ev.editor.dataProcessor.writer.setRules('br', {
+        indent: false,
+        breakBeforeOpen: false,
+        breakAfterOpen: false,
+        breakBeforeClose: false,
+        breakAfterClose: false
+     });
+  });
 
 
   $(function(){

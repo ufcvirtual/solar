@@ -27,7 +27,7 @@
       $($(this).parent().siblings()[0]).show();
     });
 
-    $(".btn_edit, .btn_del, .release_lessons, .download_lesson_zip, .manage_files_lesson").attr("disabled", true);
+    $(".btn_edit, .btn_del, .release_lessons, .download_lesson_zip, .manage_files_lesson, .export_lessonaudio").attr("disabled", true);
 
     $(".link_new_lesson, .link_new_module, .edit_module").call_fancybox({
       width: '70%'
@@ -35,7 +35,7 @@
 
     $('.lesson_check_all').map(function(){
       $(this).nice_checkbox({
-        objects_to_change_status: ['.manage_files_lesson', '.download_lesson_zip', '.release_lessons', '[id^="move_lesson_from"]']
+        objects_to_change_status: ['.manage_files_lesson', '.download_lesson_zip', '.release_lessons', '[id^="move_lesson_from"]', '.export_lessonaudio']
       });
     });
 
@@ -84,7 +84,7 @@
             $.get($('.list_lessons').data('link-list'), function(data){
               $('.list_lessons:first').replaceWith(data);
             });
-          }).error(function(data){
+          }).fail(function(data){
             flash_message(data.msg, 'alert');
           });
         }
@@ -98,7 +98,6 @@
 
       var module_id = $(this).data("module-id");
       var url = $(this).data("link-update");
-
       if(typeof(module_id) != "undefined" || $(this)[0].className == "change_lesson_status"){
 
         if ($(this)[0].className != "change_lesson_status"){
@@ -146,7 +145,7 @@
         var id2 = row.prev().attr('lesson_id');
         var url = "#{change_order_lesson_path(':id1', ':id2')}".replace(':id1', id1).replace(':id2', id2);
 
-        $.put(url, function(){ row.insertBefore(row.prev()); }).error(f_error);
+        $.put(url, function(){ row.insertBefore(row.prev()); }).fail(f_error);
 
       } else { // down
         if (row.next().attr('lesson_order') == undefined) return false;
@@ -154,7 +153,7 @@
         var id2 = row.next().attr('lesson_id');
         var url = "#{change_order_lesson_path(':id1', ':id2')}".replace(':id1', id1).replace(':id2', id2);
 
-        $.put(url, function(data, t, x){ row.insertAfter(row.next()); }).error(f_error);
+        $.put(url, function(data, t, x){ row.insertAfter(row.next()); }).fail(f_error);
       }
       return false;
     });
@@ -216,11 +215,35 @@
           success: function(){
             window.location.href = link_download;
           },
-          error: function() {
+          fail: function() {
             flash_message("#{I18n.t(:invalid_lesson_to_download, :scope => [:lessons, :errors])}", "alert");
           }
         });
       }
+    });
+
+    $(".export_lessonaudio").click(function(){
+      var selected_lessons = get_selected_lessons($(this).data('module-id'));
+      if(selected_lessons.length == 1){
+        var id = selected_lessons[0];
+        var url_get = "#{verify_contains_audio_lesson_path(id: ':id')}";
+        var obj = this;
+        $.get(url_get.replace(':id', id), function(data) { 
+          
+          url = $(obj).data("link-to-export").replace(':id', id);
+          $(obj).call_fancybox({href : url, open: true, minHeight: '800px', minWidth: '780px'});
+          return false;
+
+        }).fail(function(data){
+          $.fancybox.close();
+          var data = $.parseJSON(data.responseText);
+          if (typeof(data.alert) != "undefined")
+            flash_message(data.alert, 'alert');
+        });
+      }else
+        flash_message("<%=I18n.t(:one_lesson_must_be_selected, scope: [:lesson_files])%>", "alert");
+
+      return false;
     });
 
   });

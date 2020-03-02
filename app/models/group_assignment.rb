@@ -15,7 +15,7 @@ class GroupAssignment < ActiveRecord::Base
   validate :define_name
   validate :unique_group_name
 
-  before_save :verify_offer, if: 'merge.nil?'
+  before_save :verify_offer, if: -> {merge.nil?}
 
   attr_accessor :merge
 

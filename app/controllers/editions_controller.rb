@@ -16,8 +16,8 @@ class EditionsController < ApplicationController
     @allocation_tags_ids = @allocation_tags_ids.join(" ")
 
     render partial: 'items'
-  rescue=> error
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  # rescue=> error
+  #   render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   # GET /editions/academic
@@ -57,7 +57,11 @@ class EditionsController < ApplicationController
     @periods  = [[t(:actives, scope: [:editions, :semesters]), "active"], [t(:all, scope: [:editions, :semesters]), "all"]]
     @periods += Schedule.joins(:semester_periods).map {|p| [p.start_date.year, p.end_date.year] }.flatten.uniq.sort! {|x,y| y <=> x} # desc
 
-    @allocation_tags_ids = AllocationTag.where(id: current_user.allocation_tags_ids_with_access_on([:update, :destroy], "offers")).map{|at| at.related}.flatten.uniq
+    ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "offers")
+
+    @allocation_tags_ids = RelatedTaggable.related_from_array_ats(ids)
+    #@allocation_tags_ids = AllocationTag.where(id: current_user.allocation_tags_ids_with_access_on([:update, :destroy], "offers")).map{|at| at.related}.flatten.uniq
+
     @type = CurriculumUnitType.find(params[:curriculum_unit_type_id])
 
     @curriculum_units = @type.curriculum_units.joins(:allocation_tag).where(allocation_tags: {id: @allocation_tags_ids})
@@ -65,8 +69,8 @@ class EditionsController < ApplicationController
     @semesters = Semester.all_by_period({period: params[:period], user_id: current_user.id, type_id: @type.id}) # semestres do período informado ou ativos
 
     @allocation_tags_ids = @allocation_tags_ids.join(" ")
-  rescue => error
-    render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
+  # rescue => error
+  #   render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
   def groups
@@ -106,7 +110,7 @@ class EditionsController < ApplicationController
 
   #   render layout: false if params.include?(:layout)
   # rescue => error
-  #   redirect_to :back, alert: t('edx.errors.cant_connect')
+  #   redirect_back fallback_location: :back, alert: t('edx.errors.cant_connect')
   # end
 
   # GET /editions/content
@@ -237,9 +241,11 @@ class EditionsController < ApplicationController
   end
 
   def manage_tools
-    params[:academic_allocations] = params[:academic_allocations].collect{|key,value| value}
+    ActionController::Parameters.permit_all_parameters = true
+
+    params[:academic_allocations] = params[:academic_allocations].to_h.collect{|key,value| value}
     params[:academic_allocations] = params[:academic_allocations].delete_if{|a| a.nil? || a['acs'].blank?}
-    allocation_tags_ids = params[:academic_allocations].collect{|data| data['allocation_tags_ids'].delete('[]').split(',')}.flatten.map(&:to_i).uniq
+    allocation_tags_ids = params[:academic_allocations].collect{|data| data['allocation_tags_ids'].delete('[]').split(' ')}.flatten.map(&:to_i).uniq
 
     allocation_tags = AllocationTag.where(id: allocation_tags_ids)
     authorize! :tool_management, Edition, { on: allocation_tags_ids }
@@ -273,8 +279,8 @@ class EditionsController < ApplicationController
 
     ActiveRecord::Base.transaction do
       params[:academic_allocations].each do |data|
-        acs = AcademicAllocation.where(id: data['acs'].delete('[]').split(',')).each do |ac|
 
+        acs = AcademicAllocation.where(id: data['acs'].delete('[]').split(' ')).each do |ac|
 
           attributes = {'evaluative' => false, 'weight' => 1, 'final_weight' => 100, 'equivalent_academic_allocation_id' => nil, 'final_exam' => false, 'frequency' => false, 'frequency_automatic' => false, 'max_working_hours' => 0 }
 
@@ -296,10 +302,9 @@ class EditionsController < ApplicationController
             end
           end
 
-          attributes.merge!(data.slice('evaluative', 'weight', 'equivalent_academic_allocation_id', 'final_exam', 'frequency', 'frequency_automatic', 'max_working_hours', 'final_weight'))
+          attributes.merge!(data.to_h.slice('evaluative', 'weight', 'equivalent_academic_allocation_id', 'final_exam', 'frequency', 'frequency_automatic', 'max_working_hours', 'final_weight'))
 
           changes << {previous: ac.as_json, after: attributes}
-
           unless ac.update_attributes(attributes)
             errors << {ac: ac, messages: ac.errors.full_messages}
             acs_errors << ac.id
@@ -311,9 +316,10 @@ class EditionsController < ApplicationController
       allocation_tags.where('group_id IS NOT NULL').each do |at|
         # getting errors to working_hours
         unless max_working_hours.nil?
-          acs = AcademicAllocation.where(allocation_tag_id: at.related, frequency: true).where('final_exam = false AND equivalent_academic_allocation_id IS NULL').pluck(:max_working_hours)
+          acs = AcademicAllocation.where(allocation_tag_id: at.related, frequency: true).where('final_exam = false AND equivalent_academic_allocation_id IS NULL').pluck("SUM(max_working_hours) AS max_working_hours")
+          
           if acs.any?
-            wh = acs.sum(:max_working_hours)
+            wh = acs.first
             if wh != max_working_hours
               working_hours_errors << {at: at, wh: wh}
               ats_errors << at.id
@@ -353,7 +359,6 @@ class EditionsController < ApplicationController
     errors.each do |error|
       alert << ("#{t(error[:ac].academic_tool_type.tableize.singularize.to_sym, scope: [:activerecord, :models])} #{error[:ac].tool_name}: #{error[:messages].join('; ')}" rescue error)
     end
-
     (working_hours_errors || []).each do |error|
       alert << ["#{error[:at].groups.map(&:code).join(', ')}", t('evaluative_tools.errors.working_hour_error', max: max_working_hours, wh: error[:wh])].join(': ')
     end

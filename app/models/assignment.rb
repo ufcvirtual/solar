@@ -24,16 +24,20 @@ class Assignment < Event
 
   validates :name, :enunciation, :type_assignment, presence: true
   validates :name, length: { maximum: 1024 }
+  
+  validate :verify_date, on: :update, if: -> {saved_change_to_type_assignment?}
 
-  validate :verify_date, on: :update, if: 'type_assignment_changed?'
-
-  after_save :update_groups, on: :update, if: 'type_assignment_changed?'
+  after_save :update_groups, on: :update, if: -> {saved_change_to_type_assignment?}
 
   def copy_dependencies_from(assignment_to_copy)
     unless assignment_to_copy.enunciation_files.empty?
       assignment_to_copy.enunciation_files.each do |file|
-        new_file = AssignmentEnunciationFile.create! file.attributes.merge({ assignment_id: self.id })
-        copy_file(file, new_file, File.join('assignment', 'enunciation'))
+        #new_file = AssignmentEnunciationFile.create! file.attributes.merge({ assignment_id: self.id })
+        #copy_file(file, new_file, File.join('assignment', 'enunciation'))
+        new_file = file.dup
+        new_file.attachment = file.attachment
+        new_file.assignment_id = self.id
+        new_file.save!
       end
     end
     unless assignment_to_copy.ip_reals.empty?
@@ -141,7 +145,7 @@ class Assignment < Event
               WHERE group_assignments.academic_allocation_id = academic_allocations.id
                 AND group_participants.user_id = users.id
             )')
-        .uniq
+        .distinct
   end
 
   def self.list_assigment(user_id, at_id, evaluative=false, frequency=false)

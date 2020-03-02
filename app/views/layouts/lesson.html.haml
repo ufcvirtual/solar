@@ -6,9 +6,9 @@
     %meta{name: "viewport", content: "width=device-width, initial-scale=1 maximum-scale=1"}
     %title= content_for?(:title) ? yield(:title) : 'Solar'
 
-    = javascript_include_tag 'jquery', 'jquery.cookie', 'jquery.dropdown', 'lessons', 'breadcrumb'
+    = javascript_include_tag 'jquery3', 'jquery-ui', 'jquery_ujs', 'jquery.cookie', 'jquery.dropdown', 'lessons', 'breadcrumb', 'helpers', "jquery.fancybox3.min"
 
-    = stylesheet_link_tag 'jquery.dropdown.css'
+    = stylesheet_link_tag 'jquery.dropdown.css', "jquery.fancybox3.min", "online_correction_files"
     = stylesheet_link_tag "themes/theme_" + "#{user_session[:theme]}", id: "themes"
     = stylesheet_link_tag 'misc/div_layout', 'fonts/fonts', media: 'all'
 
@@ -17,4 +17,10 @@
     = yield(:head)
 
   %body
+    .block_wrapper_lesson
+      .flash_message_wrapper
+        - flash.each do |name, msg|
+          #flash_message{ class: name }
+            = content_tag(:span, msg, id: "flash_message_span")
+            
     = yield

@@ -1,4 +1,4 @@
-class ChangeMessagesAndLabels < ActiveRecord::Migration
+class ChangeMessagesAndLabels < ActiveRecord::Migration[5.0]
   def up
     ml = MessageLabel.where(label_system: true)
 
@@ -6,11 +6,10 @@ class ChangeMessagesAndLabels < ActiveRecord::Migration
       t.change :content, :text, null: false
 
       t.references :allocation_tag
-      t.foreign_key :allocation_tags
 
       t.timestamps
     end
-
+    add_foreign_key :messages, :allocation_tags
     # recuperando dados
     ml.each do |l|
       messages = l.messages
@@ -25,7 +24,7 @@ class ChangeMessagesAndLabels < ActiveRecord::Migration
     end
 
     ## msgs que nao tem label
-    msgs = Message.where("created_at is null and send_date is not null")
+    msgs = Message.where("created_at IS NULL AND send_date IS NOT NULL")
     msgs.each do |m|
       m.created_at = m.send_date
       m.save

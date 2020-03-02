@@ -1,4 +1,4 @@
-class AddUseQuestionColumnToExamQuestions < ActiveRecord::Migration
+class AddUseQuestionColumnToExamQuestions < ActiveRecord::Migration[5.0]
   def change
     add_column :exam_questions, :use_question, :boolean, default: false
   end

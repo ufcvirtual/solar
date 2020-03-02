@@ -8,10 +8,10 @@ class WebconferencesController < ApplicationController
 
   layout false, except: [:index, :preview, :report]
 
-  before_filter :prepare_for_group_selection, only: :index
+  before_action :prepare_for_group_selection, only: :index
 
-  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
-  before_filter only: [:edit] do |controller| # futuramente show aqui também
+  before_action :get_groups_by_allocation_tags, only: [:new, :create]
+  before_action only: [:edit] do |controller| # futuramente show aqui também
     @allocation_tags_ids = params[:allocation_tags_ids].split(' ').flatten.compact
     get_groups_by_tool(@webconference = Webconference.find(params[:id]))
   end
@@ -35,7 +35,7 @@ class WebconferencesController < ApplicationController
     @selected = params[:selected]
     authorize! :list, Webconference, on: @allocation_tags_ids
 
-    @webconferences = Webconference.joins(academic_allocations: :allocation_tag).where(allocation_tags: { id: @allocation_tags_ids.split(' ').flatten }).uniq
+    @webconferences = Webconference.joins(academic_allocations: :allocation_tag).where(allocation_tags: { id: @allocation_tags_ids.split(' ').flatten }).distinct
   end
 
   # GET /webconferences/new
@@ -194,7 +194,7 @@ class WebconferencesController < ApplicationController
 
   def access
     if Exam.verify_blocking_content(current_user.id)
-      render text: t('exams.restrict')
+      render plain: t('exams.restrict')
     else
       authorize! :interact, Webconference, { on: [at_id = active_tab[:url][:allocation_tag_id] || params[:at_id]] }
 
@@ -208,10 +208,10 @@ class WebconferencesController < ApplicationController
 
       render json: { success: true, url: url }
     end
-  rescue CanCan::AccessDenied
-    render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
-  rescue => error
-    render json: { success: false, alert: t('webconferences.error.access') }, status: :unprocessable_entity
+  # rescue CanCan::AccessDenied
+  #   render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
+  # rescue => error
+  #   render json: { success: false, alert: t('webconferences.error.access') }, status: :unprocessable_entity
   end
 
   def list_access
@@ -292,15 +292,15 @@ class WebconferencesController < ApplicationController
     @back = params.include?(:back)
 
     render partial: 'user_access'
-  rescue CanCan::AccessDenied
-    render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
-  rescue => error
-    render json: { success: false, alert: t('webconferences.error.access') }, status: :unprocessable_entity
+  # rescue CanCan::AccessDenied
+  #   render json: { success: false, alert: t(:no_permission) }, status: :unprocessable_entity
+  # rescue => error
+  #   render json: { success: false, alert: t('webconferences.error.access') }, status: :unprocessable_entity
   end
 
   def get_record
     if Exam.verify_blocking_content(current_user.id)
-      render text: t('exams.restrict')
+      render plain: t('exams.restrict')
     else
       @webconference = Webconference.find(params[:id])
       api = @webconference.bbb_prepare
@@ -327,7 +327,7 @@ class WebconferencesController < ApplicationController
     render json: { success: false, alert: t('webconferences.list.removed_record') }, status: :unprocessable_entity
   rescue => error
     error_message = error == CanCan::AccessDenied ? t(:no_permission) : (I18n.translate!("webconferences.error.#{error}", raise: true) rescue t("webconferences.error.removed_record"))
-    render text: error_message
+    render plain: error_message
     # render_json_error(error, 'webconferences.error')
   end
 

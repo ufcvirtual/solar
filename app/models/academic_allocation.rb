@@ -22,39 +22,39 @@ class AcademicAllocation < ActiveRecord::Base
   has_many :log_actions, dependent: :destroy
   has_many :chat_participants, inverse_of: :academic_allocation, dependent: :destroy
 
-  before_save :verify_association_with_allocation_tag, unless: 'allocation_tag_id.blank?'
+  before_save :verify_association_with_allocation_tag, unless: -> {allocation_tag_id.blank?}
 
-  before_destroy :move_lessons_to_default, if: 'lesson_module? && force.blank?'
+  before_destroy :move_lessons_to_default, if: -> {lesson_module? && force.blank?}
 
   before_validation :verify_uniqueness
 
   accepts_nested_attributes_for :chat_participants, allow_destroy: true, reject_if: proc { |attributes| attributes['allocation_id'] == '0' }
 
-  validate :verify_assignment_offer_date_range, if: "assignment? && !(evaluative_changed? || frequency_changed? || final_exam_changed? || equivalent_academic_allocation_id_changed?)"
+  validate :verify_assignment_offer_date_range, if: -> {assignment? && !(saved_change_to_evaluative? || saved_change_to_frequency? || saved_change_to_final_exam? || saved_change_to_equivalent_academic_allocation_id?)}
 
-  validates :weight, presence: true, numericality: { greater_than: 0,  only_float: true }, if: 'evaluative? && !final_exam? && equivalent_academic_allocation_id.nil?'
-  validates :final_weight, presence: true, numericality: { greater_than: 0,  only_float: true, smaller_than: 100.1 }, if: 'evaluative? && !final_exam? && equivalent_academic_allocation_id.nil?'
-  validates :max_working_hours, presence: true, numericality: { greater_than: 0,  only_float: true, allow_blank: true }, if: 'frequency? && !final_exam? && equivalent_academic_allocation_id.nil?'
+  validates :weight, presence: true, numericality: { greater_than: 0,  only_float: true }, if: -> {evaluative? && !final_exam? && equivalent_academic_allocation_id.nil?}
+  validates :final_weight, presence: true, numericality: { greater_than: 0,  only_float: true, smaller_than: 100.1 }, if: -> {evaluative? && !final_exam? && equivalent_academic_allocation_id.nil?}
+  validates :max_working_hours, presence: true, numericality: { greater_than: 0,  only_float: true, allow_blank: true }, if: -> {frequency? && !final_exam? && equivalent_academic_allocation_id.nil?}
 
-  validate :verify_equivalents, if: '(equivalent_academic_allocation_id_changed? && !equivalent_academic_allocation_id.nil?) || (!equivalent_academic_allocation_id.nil? && (frequency_changed? || evaluative_changed?))'
-  validate :verify_type, if: "(evaluative || frequency) && academic_tool_type == 'ScheduleEvent'"
+  validate :verify_equivalents, if: -> {(saved_change_to_equivalent_academic_allocation_id? && !equivalent_academic_allocation_id.nil?) || (!equivalent_academic_allocation_id.nil? && (saved_change_to_frequency? || saved_change_to_evaluative?))}
+  validate :verify_type, if: -> {(evaluative || frequency) && academic_tool_type == 'ScheduleEvent'}
 
-  before_save :set_evaluative_params, on: :update, unless: 'new_record?'
-  before_save :change_dependencies, on: :update, unless: 'new_record?'
-  before_save :set_automatic_frequency, on: :update, if: "frequency"
+  before_save :set_evaluative_params, on: :update, unless: -> {new_record?}
+  before_save :change_dependencies, on: :update, unless: -> {new_record?}
+  before_save :set_automatic_frequency, on: :update, if: -> {frequency}
 
-  after_save :update_acus, on: :update, if: "frequency_automatic && !max_working_hours.blank?"
+  after_save :update_acus, on: :update, if: -> {frequency_automatic && !max_working_hours.blank?}
 
   before_destroy :set_situation_date
   after_destroy :verify_management
 
   attr_accessor :merge, :force
 
-  after_create if: 'verify_tool' do
+  after_create if: -> {verify_tool} do
     AcademicTool.send_email(academic_tool, [self], false)
   end
 
-  before_destroy if: 'verify_tool', prepend: true do
+  before_destroy if: -> {verify_tool}, prepend: true do
     AcademicTool.send_email(academic_tool, [self]) if academic_tool.verify_can_destroy
   end
 
@@ -334,7 +334,7 @@ class AcademicAllocation < ActiveRecord::Base
     end
 
     def update_acus
-      if frequency_automatic_changed?
+      if saved_change_to_frequency_automatic?
         # set all previously evaluated acus as evaluated_by_responsible
         academic_allocation_users.where(evaluated_by_responsible: false).where("status = #{AcademicAllocationUser::STATUS[:evaluated]} AND working_hours IS NOT NULL").update_all evaluated_by_responsible: true
 
@@ -342,7 +342,7 @@ class AcademicAllocation < ActiveRecord::Base
         academic_allocation_users.where(evaluated_by_responsible: false, working_hours: nil).where("status = #{AcademicAllocationUser::STATUS[:sent]} OR ( (grade > 0) AND (status = #{AcademicAllocationUser::STATUS[:evaluated]}))").update_all working_hours: max_working_hours, status: AcademicAllocationUser::STATUS[:evaluated]
       end
 
-      if max_working_hours_changed?
+      if saved_change_to_max_working_hours?
         # update max_working_hours
         academic_allocation_users.where(evaluated_by_responsible: false).where("status = #{AcademicAllocationUser::STATUS[:evaluated]} AND working_hours IS NOT NULL").update_all working_hours: max_working_hours
       end

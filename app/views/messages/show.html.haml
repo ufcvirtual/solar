@@ -2,6 +2,12 @@
   .block_title
     %h2= @message.subject
   .block_content.messages
+    .align-left
+      %ul
+        %li= link_to content_tag(:i, nil, class: 'icon-reply', :"aria-hidden" => 'true'), reply_message_path(@message), class: 'btn btn_main', id: "reply", :'data-tooltip' => t(".reply"), :'aria-label'=> t(".reply")
+        %li= link_to content_tag(:i, nil, class: 'icon-reply-all', :"aria-hidden" => 'true'), reply_all_message_path(@message), class: 'btn', id: "reply_all", :'data-tooltip' => t(".reply_all"), :'aria-label'=> t(".reply_all")
+        %li= link_to content_tag(:i, nil, class: 'icon-forward', :"aria-hidden" => 'true'), forward_message_path(@message), class: 'btn', id: "forward", :'data-tooltip' => t(".forward"), :'aria-label'=> t(".forward")
+
     .align-right
       %ul
         - unless @previous_message_id.nil?

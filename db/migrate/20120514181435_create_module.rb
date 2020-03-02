@@ -1,4 +1,4 @@
-class CreateModule < ActiveRecord::Migration
+class CreateModule < ActiveRecord::Migration[5.0]
   def self.up
     create_table :lesson_modules do |t|
       t.integer :allocation_tag_id, :null => false
@@ -6,7 +6,7 @@ class CreateModule < ActiveRecord::Migration
       t.string  :description, :limit => 255
     end
 
-    add_foreign_key(:lesson_modules, :allocation_tags)
+    add_foreign_key :lesson_modules, :allocation_tags
   end
 
   def self.down

@@ -178,6 +178,7 @@ module V1
 
         academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: ats).first
 
+        academic_allocation = @discussion.academic_allocations.where(allocation_tag_id: ats.flatten.uniq).first
         acu = AcademicAllocationUser.find_or_create_one(academic_allocation.id, ats.first, current_user.id, nil, true, nil)
 
         @post = Post.new(post_params)

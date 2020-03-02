@@ -3,10 +3,10 @@ class PostsController < ApplicationController
   include PostsHelper
   include SysLog::Actions
 
-  # before_filter :authenticate_user!
-  before_filter :prepare_for_pagination
-  before_filter :set_current_user, only: [:destroy, :create, :update, :publish, :post_files]
-  after_filter  :update_ual, only: [:create, :update, :publish, :show, :post_files, :destroy]
+  # before_action :authenticate_user!
+  before_action :prepare_for_pagination
+  before_action :set_current_user, only: [:destroy, :create, :update, :publish, :post_files]
+  after_action  :update_ual, only: [:create, :update, :publish, :show, :post_files, :destroy]
 
   load_and_authorize_resource except: [:index, :user_posts, :create, :show, :evaluate, :publish, :post_files]
 
@@ -15,7 +15,8 @@ class PostsController < ApplicationController
   require 'will_paginate/array'
   def index
     if Exam.verify_blocking_content(current_user.id)
-      redirect_to :back, alert: t('exams.restrict')
+      #redirect_to :back, alert: t('exams.restrict')
+      redirect_back fallback_location: :back, alert: t('exams.restrict')
     else
       @discussion, @user = Discussion.find(params[:discussion_id]), current_user
 
@@ -81,7 +82,7 @@ class PostsController < ApplicationController
   ## all posts of the user
   def user_posts
     if Exam.verify_blocking_content(current_user.id)
-      render text: t('exams.restrict')
+      render plain: t('exams.restrict')
     else
       @user = User.find(params[:user_id])
       @discussion = Discussion.find(params[:discussion_id])

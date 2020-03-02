@@ -23,21 +23,20 @@ class Group < ActiveRecord::Base
 
   validates :code, :offer_id, presence: true
 
-  validate :unique_code_on_offer_by_name, unless: 'offer_id.nil? || code.nil? || !code_changed?'
-  validate :unique_name_on_offer, unless: 'offer_id.nil? || name.blank? || !name_changed?'
+  validate :unique_code_on_offer_by_name, unless: -> {offer_id.nil? || code.nil? || !saved_change_to_code?}
+  validate :unique_name_on_offer, unless: -> {offer_id.nil? || name.blank? || !saved_change_to_name?}
 
   validates :code, length: { maximum: 40 }
   validates :name, :location, length: { maximum: 100 }
 
-  validates :digital_class_directory_id, uniqueness: true, on: :update, unless: 'digital_class_directory_id.blank?'
+  validates :digital_class_directory_id, uniqueness: true, on: :update, unless: -> {digital_class_directory_id.blank?}
 
-  before_save :set_empty_name, if: 'name.blank?'
+  after_save :update_digital_class, if: -> {saved_change_to_code?}
+  before_save :set_empty_name, if: -> {name.blank?}
 
-  validate :name_mandatory_if_distant, if: 'name.blank?'
+  validate :name_mandatory_if_distant, if: -> {name.blank?}
 
-  after_save :update_digital_class, if: "code_changed?"
-
-  validate :block_fields_if_integrated, if: 'integrated && api.blank?'
+  validate :block_fields_if_integrated, if: -> {integrated && api.blank?}
 
   def order
    'groups.status, groups.code'
@@ -62,7 +61,7 @@ class Group < ActiveRecord::Base
 
   def students_allocations
     Allocation.joins(:profile).where("cast( profiles.types & '#{Profile_Type_Student}' as boolean )")
-      .where(status: Allocation_Activated, allocation_tag_id: allocation_tag.related).uniq(:user_id)
+      .where(status: Allocation_Activated, allocation_tag_id: allocation_tag.related).distinct(:user_id)
   end
 
   def any_lower_association?
@@ -107,7 +106,7 @@ class Group < ActiveRecord::Base
     query << "allocation_tags.group_id = #{id}"
     query << "log_type = #{LogAccess::TYPE[:group_access]}"
 
-    LogAccess.joins(:allocation_tag).joins('LEFT JOIN merges ON merges.main_group_id = allocation_tags.group_id OR merges.secundary_group_id = allocation_tags.group_id').where(query.join(' AND ')).uniq
+    LogAccess.joins(:allocation_tag).joins('LEFT JOIN merges ON merges.main_group_id = allocation_tags.group_id OR merges.secundary_group_id = allocation_tags.group_id').where(query.join(' AND ')).distinct
   end
 
   def verify_or_create_at_digital_class(available=nil)

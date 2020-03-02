@@ -183,7 +183,7 @@ $.fn.nice_filter = function(options) {
 
         $.get(url, data, function(result){
           $('.' + load_to + ':first').html(result);
-        }).error(function(data){
+        }).fail(function(data){
           $('.' + load_to + ':first').html('');
 
           var data = $.parseJSON(data.responseText);
@@ -252,7 +252,7 @@ $.fn.nice_delete = function(options) {
     method: options.method_delete,
     url: options.url,
     success: options.success,
-    error: options.error,
+    fail: options.error,
     complete: options.complete
   })
 
@@ -312,7 +312,8 @@ $.fn.serialize_and_submit = function(options) {
               options.prepend_to_list.prepend(data2);
             });
           }else{
-            $('#'+$(data).prop('id')).remove();
+            if($(data).prop('id'))
+              $('#'+$(data).prop('id')).remove();
             options.prepend_to_list.prepend(data);
           }
           $('.empty_message.text_none').addClass('invisible');
@@ -330,6 +331,12 @@ $.fn.serialize_and_submit = function(options) {
 
       update_tables_with_no_data();
       $(".block_toolbar_right a").attr('disabled', true); // desabilita os botoes da barra superior
+
+     // if(CKEDITOR.instances){
+     //   for(name in CKEDITOR.instances){
+     //     CKEDITOR.instances[name].destroy()
+      //  }
+     // }  
     }
   }
 
@@ -402,6 +409,7 @@ $.fn.nice_table_filter = function(options) {
 }
 
 $.fn.nice_open_lesson = function(options) {
+ 
   if (typeof(options) == "undefined")
     options = {};
 
@@ -421,8 +429,8 @@ $.fn.nice_open_lesson = function(options) {
       $('iframe').contents().find('html').prop('lang', "<%=I18n.locale.to_s.gsub('_', '-')%>");
     },
     afterClose:  function(event) {
-      event.element.prop('tabindex', 0);
-      event.element.focus();
+      $(event.element).prop('tabindex', 0);
+      $(event.element).focus();
       give_focus_to_back();
     }
   };

@@ -1,4 +1,4 @@
-class AlterTableLesson < ActiveRecord::Migration
+class AlterTableLesson < ActiveRecord::Migration[5.0]
   def self.up
     
     change_table :lessons do |t|

@@ -1,10 +1,10 @@
-class AlterGroupAssignment < ActiveRecord::Migration
+class AlterGroupAssignment < ActiveRecord::Migration[5.0]
   def up
 
     change_table :group_assignments do |t|
       t.references :academic_allocation
-      t.foreign_key :academic_allocations
     end
+    add_foreign_key :group_assignments, :academic_allocations
 
     group_assignments = GroupAssignment.all
 

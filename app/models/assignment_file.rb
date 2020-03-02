@@ -13,18 +13,19 @@ class AssignmentFile < ActiveRecord::Base
   has_one :assignment, through: :academic_allocation_user
   has_one :allocation_tag, through: :academic_allocation
 
-  before_save :can_change?, if: 'merge.nil?'
+  before_save :can_change?, if: -> {merge.nil?}
   before_destroy :can_destroy?
-
-  validates :attachment_file_name, presence: true
-  validates :academic_allocation_user_id, presence: true
 
   has_attached_file :attachment,
     path: ":rails_root/media/assignment/sent_assignment_files/:id_:basename.:extension",
     url: "/media/assignment/sent_assignment_files/:id_:basename.:extension"
+  
+  validates :attachment_file_name, presence: true
+  validates :academic_allocation_user_id, presence: true
 
   validates_attachment_size :attachment, less_than: FILESIZE, message: ' '
   validates_attachment_content_type_in_black_list :attachment
+  do_not_validate_attachment_file_type :attachment
 
   def order
    'attachment_updated_at DESC'
