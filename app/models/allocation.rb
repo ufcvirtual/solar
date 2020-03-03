@@ -23,7 +23,7 @@ class Allocation < ActiveRecord::Base
   validates :profile_id, :user_id, presence: true
   validate :valid_profile_in_allocation_tag?, if: -> {!allocation_tag_id.nil?}
 
-  validate :can_cancel?, if: "!allocation_tag_id.nil? && status_changed?"
+  validate :can_cancel?, if: -> {!allocation_tag_id.nil? && status_changed?}
 
   validates_uniqueness_of :profile_id, scope: [:user_id, :allocation_tag_id]
 

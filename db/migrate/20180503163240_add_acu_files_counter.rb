@@ -1,4 +1,4 @@
-class AddAcuFilesCounter < ActiveRecord::Migration
+class AddAcuFilesCounter < ActiveRecord::Migration[5.0]
   def up
     add_column :academic_allocation_users, :schedule_event_files_count, :integer, default: 0, null: false
     execute "UPDATE academic_allocation_users SET schedule_event_files_count=(

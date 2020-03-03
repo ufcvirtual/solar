@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!, except: [:verify_cpf, :api_download, :lesson_media, :tutorials, :privacy_policy, :comment_media] # devise
   before_action :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im, :get_theme, :user_support_help
   after_action :log_navigation
-  before_action :verify_bloq_register_notes
+  before_action :verify_block_register_notes
   before_action do |controller|
     controller.session['flash'].try(:stringify_keys!)
   end

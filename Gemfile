@@ -2,7 +2,7 @@ source "http://rubygems.org"
 
 ruby "2.3.6"
 
-gem 'rails', '5.1.6.1'
+gem 'rails', '5.1.7'
 gem "rack", "~> 2.0.0"
 #gem "rails", "~> 3.2.16"
 gem "rake", "~> 10.1.1"

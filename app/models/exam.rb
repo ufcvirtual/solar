@@ -27,7 +27,7 @@ class Exam < Event
   validate :check_hour, if: lambda { |c| !c[:start_hour].blank? && !c[:end_hour].blank?  }
   validate :check_result_release_date, if: -> {!result_release.blank? && merge.nil?}
 
-  before_save :after_immediate_result_release, if: 'immediate_result_release && merge.nil? && immediate_result_release_changed?'
+  before_save :after_immediate_result_release, if: -> {immediate_result_release && merge.nil? && immediate_result_release_changed?}
 
   accepts_nested_attributes_for :schedule
 

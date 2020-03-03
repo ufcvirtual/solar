@@ -1,4 +1,4 @@
-class AddUseAutocompleteHeaderToCourse < ActiveRecord::Migration
+class AddUseAutocompleteHeaderToCourse < ActiveRecord::Migration[5.0]
   def up
     add_column :courses, :use_autocomplete_header, :boolean, default: true, null: false
   end

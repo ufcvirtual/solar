@@ -1,4 +1,4 @@
-class AddIndividuallyGradedToGroupAssignments < ActiveRecord::Migration
+class AddIndividuallyGradedToGroupAssignments < ActiveRecord::Migration[5.0]
   def up
   	add_column :group_assignments, :individually_graded, :boolean, default: false
   end

@@ -1,4 +1,4 @@
-class CreateUserAccessLast < ActiveRecord::Migration
+class CreateUserAccessLast < ActiveRecord::Migration[5.0]
   def change
     create_table :user_access_lasts do |t|
       t.integer :user_id

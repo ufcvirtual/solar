@@ -2,15 +2,15 @@ module APILog
   extend ActiveSupport::Concern
 
   included do
-    after_create if: 'from_api?' do
+    after_create if: -> {from_api?} do
       create_log_api('create', self)
     end
 
-    after_update if: 'from_api?' do
+    after_update if: -> {from_api?} do
       create_log_api('update', self)
     end
 
-    before_destroy if: 'from_api?' do
+    before_destroy if: -> {from_api?} do
       create_log_api('destroy', self)
     end
 

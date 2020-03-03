@@ -1,4 +1,4 @@
-class AddHeaderExamToCourse < ActiveRecord::Migration
+class AddHeaderExamToCourse < ActiveRecord::Migration[5.0]
   def up
     add_column :courses, :has_exam_header, :boolean, default: false, null: false
     add_column :courses, :header_exam, :text

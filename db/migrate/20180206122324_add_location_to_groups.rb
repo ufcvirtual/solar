@@ -1,4 +1,4 @@
-class AddLocationToGroups < ActiveRecord::Migration
+class AddLocationToGroups < ActiveRecord::Migration[5.0]
   def up
     add_column :groups, :location, :string, size: 100
     add_column :groups, :name, :string, size: 100

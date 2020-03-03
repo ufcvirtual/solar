@@ -1,4 +1,4 @@
-class AddTimestampsSchedule < ActiveRecord::Migration
+class AddTimestampsSchedule < ActiveRecord::Migration[5.0]
   def change
     change_table(:schedules) { |t| t.timestamps }
 
