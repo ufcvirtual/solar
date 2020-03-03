@@ -87,7 +87,7 @@ class LessonsController < ApplicationController
       @path_audio = lessonaudio.audio.url.gsub(':lesson_id',  @lesson.id.to_s) if !lessonaudio.nil? && File.exist?(lessonaudio.audio.path.gsub(':lesson_id',  @lesson.id.to_s))
 
       @count_text_month = LessonAudio.count_text_month
-      @text_available = max - @count_text_month
+      @text_available = max - @count_text_month unless max.nil?
 
       render layout: 'lesson'
     end

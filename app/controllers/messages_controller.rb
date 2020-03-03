@@ -2,8 +2,8 @@ class MessagesController < ApplicationController
   include FilesHelper
   include MessagesHelper
   include SysLog::Actions
-
-  doorkeeper_for :api_download
+ 
+  before_action :doorkeeper_authorize!, only: [:api_download]
   before_action :prepare_for_group_selection, only: [:index]
 
   ## [inbox, outbox, trashbox]
