@@ -174,20 +174,15 @@ class Message < ActiveRecord::Base
 
   def recipients_in_same_group?
     us = []
-    message_contacts = User.where(id: self.contacts)
     
-    message_contacts.each do |u|
-      allocation = u.allocations.find{|all| all.allocation_tag_id == self.allocation_tag_id}
+    sender_at_ids = Allocation.where(user_id: self.sender.id, status: Allocation_Activated).map{|alloc_sender| alloc_sender.allocation_tag_id}
 
-      u.allocation_tags.each do |at|
-        if !allocation.nil? && allocation.status == Allocation_Activated && at.id == self.allocation_tag_id
-          us << u          
-        end
-      end
-
-      raise 'Contact not allowed' if us.blank?
-      us = []
+    self.contacts.split(",").each do |receiver|
+      us << Allocation.where(user_id: receiver, status: Allocation_Activated, allocation_tag_id: sender_at_ids)
     end
+
+    raise 'Contact not allowed' if us.blank?
+    us
 
   end
   
