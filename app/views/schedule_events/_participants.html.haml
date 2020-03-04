@@ -45,7 +45,7 @@
                 = link_to (participant.count || 0), "#void", onclick: "open_summary(this); return false", :'data-url' => summary_schedule_event_files_path(ac_id: participant.ac_id, tool_id: @event.id, user_id: participant.id), :'data-tooltip' => t('.see_files'), :'aria-label' => t('.see_files'), onkeydown: 'click_on_keypress(event, this);'
             - if @can_print
               %td.center{headers: 'participant-print'}
-                = link_to (content_tag(:i, nil, class: 'icon-printer')), print_presential_test_schedule_events_path(id: @event.id, allocation_tags_ids: @allocation_tag_id, student_id: participant.id), class: 'btn btn_print jspanel',  :"data-print-title" => t("schedule_events.list.print"), :"data-tooltip" => t("schedule_events.list.print"), :'name' => participant.name
+                = link_to t('schedule_events.list.print2'), print_presential_test_schedule_events_path(id: @event.id, allocation_tags_ids: @allocation_tag_id, student_id: participant.id), class: 'btn btn_print jspanel',  :"data-print-title" => t("schedule_events.list.print"), :"data-tooltip" => t("schedule_events.list.print"), :'name' => participant.name
           %tr.file_form
             %td.center{ colspan: 7 }
               .file_form{ class: "new_file-#{participant.id}" }

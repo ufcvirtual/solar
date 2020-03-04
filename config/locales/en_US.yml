@@ -3299,6 +3299,7 @@ en_US:
       print_acessibility: Print acessibility
       print_exame_acessibility: Print proof with accessibility
       has_content: Has content
+      print2: Print
     participants:
       title: Participants
       student: Students

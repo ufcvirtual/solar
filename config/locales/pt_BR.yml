@@ -3697,6 +3697,7 @@ pt_BR:
       print_acessibility: Imprimir acessibilidade
       print_exame_acessibility: Imprimir prova com acessibilidade
       has_content: Possui conteúdo
+      print2: Imprimir
     participants:
       title: Participantes
       student: Alunos
