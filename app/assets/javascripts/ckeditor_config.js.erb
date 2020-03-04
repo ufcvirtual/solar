@@ -1,0 +1,30 @@
+CKEDITOR.editorConfig = function (config) {
+  language = locale=='pt_BR' ? 'pt-br' : locale;
+  config.language = language;
+  config.toolbarGroups = [
+    { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+    { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+    { name: 'styles', groups: [ 'styles' ] },
+    { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+    { name: 'forms', groups: [ 'forms' ] },
+    { name: 'colors', groups: [ 'colors' ] },
+    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+    '/',
+    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+    { name: 'links', groups: [ 'links' ] },
+    { name: 'insert', groups: [ 'insert', 'eqneditor' ] },
+    '/',
+    { name: 'tools', groups: [ 'tools' ] },
+    { name: 'others', groups: [ 'others' ] },
+  ];
+  // Remove some buttons provided by the standard plugins, which are
+  // not needed in the Standard(s) toolbar.
+  config.removeButtons = 'Source,Save,NewPage,Preview,Print,Templates,Find,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Subscript,Superscript,CopyFormatting,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,Language,Anchor,Flash,Table,HorizontalRule,SpecialChar,PageBreak,Iframe,FontSize,BGColor,Maximize,ShowBlocks';
+  // Set the most common block elements.
+  config.format_tags = 'p;h1;h2;h3;pre';
+  // Simplify the dialog windows.
+  config.removeDialogTabs = 'image:advanced;link:advanced';
+  config.extraPlugins = 'eqneditor,oembed,smiley';
+  config.startupFocus = true;
+  config.autoParagraph = false;
+};

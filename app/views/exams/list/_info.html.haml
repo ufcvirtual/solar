@@ -18,7 +18,7 @@
         = link_to (content_tag(:i, nil, class: 'icon-trash')), "#void", onclick: 'delete_exam(this)', class: 'block_title_button delete_exam', :'data-link-delete' => exam_path(exam, allocation_tags_ids: @allocation_tags_ids), :'data-tooltip' => t('exams.list.delete_exam'), :"data-parent" => "exam_#{exam.id}"
         %a{ href: '#void', class: "show-only-in-mobile", :"data-dropdown" => "#dropdown_eq_#{exam.id}", :'data-tooltip' => t('exams.list.info_exam'), onkeydown: 'click_on_keypress(event, this);' }
           %i.icon-info2
-        .dropdown.dropdown-tip{ id: "dropdown_eq_#{exam.id}" }
+        .dropdown.dropdown-tip.dropdown-relative{ id: "dropdown_eq_#{exam.id}" }
           %ul{ class: 'dropdown-menu' }
             %li
               %span.draft{ class: (exam.status ? 'invisible' : '') }

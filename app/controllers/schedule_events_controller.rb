@@ -165,7 +165,8 @@ class ScheduleEventsController < ApplicationController
         unless @allocation_tags_ids.size > 1
           coord_profiles = (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['coord_profiles'] rescue nil)
           coord = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", ats, Allocation_Activated, coord_profiles.split(',')).first unless coord_profiles.blank?
-
+        end
+      end
       if @course.use_autocomplete_header
         unless @allocation_tags_ids.size > 1
           coord_profiles = (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['coord_profiles'] rescue nil)
@@ -221,8 +222,6 @@ class ScheduleEventsController < ApplicationController
       html
     end
 
-
-
     def verify_management
       allocation_tag_ids = params[:allocation_tags_ids]
       allocation_tag_ids.split(" ").each do |allocation_tag_id|
@@ -230,9 +229,7 @@ class ScheduleEventsController < ApplicationController
         unless ScheduleEvent.joins(:academic_allocations).where(type_event: 1, academic_allocations: {allocation_tag_id: allocation_tag_id.to_i}).blank?
           management_activities(allocation_tag_id.to_i)
         end
-
       end
-
     end
 
     def management_activities(allocation_tag_id)

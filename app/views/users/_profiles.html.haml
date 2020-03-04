@@ -25,7 +25,7 @@
         %a{ href: '#', :"data-dropdown" => "#dropdown_origin_group_#{allocation.id}" }
           = name_of(allocation.status, false)
           %i.icon-arrow-down-triangle{:'aria-hidden' => true}
-        .dropdown.dropdown-tip{id: "dropdown_origin_group_#{allocation.id}"}
+        .dropdown.dropdown-tip.dropdown-relative{id: "dropdown_origin_group_#{allocation.id}"}
           %ul{ class: 'dropdown-menu' }
             = allocation.merged_to
       - else

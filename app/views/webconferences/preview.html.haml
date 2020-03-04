@@ -15,7 +15,7 @@
         %a.btn.btn_dropdown{ href: '#', :"data-dropdown" => '#views-dropdown', "arial-label" => t('.filter') }
           = I18n.t('webconferences.preview.view_webs', type: I18n.t('webconferences.preview.'+@filter_situation))
           %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-        .dropdown.dropdown-tip#views-dropdown
+        .dropdown.dropdown-tip.dropdown-relative#views-dropdown
           %ul.dropdown-menu
             %li{role: 'menuitem'}= link_to t('.all'), preview_webconferences_path(status: "all"), class: 'selected all', id: "all", onkeydown: 'click_on_keypress(event, this);', :'data-shortcut' => t("shortcut.support_webconference.code.list_all"), :'data-shortcut-name' => t("shortcut.support_webconference.name.list_all"), :'aria-label' => t('.all')
             %li{role: 'menuitem'}= link_to t('.scheduled'), preview_webconferences_path(status: "scheduled"), class: 'scheduled', id: "scheduled",  onkeydown: 'click_on_keypress(event, this);', :'data-shortcut' => t("shortcut.support_webconference.code.list_scheduled"), :'data-shortcut-name' => t("shortcut.support_webconference.name.list_scheduled"), :'aria-label' => t('.scheduled')
@@ -30,7 +30,7 @@
         %a.btn.delete_record_btn{ href: nil, :'data-dropdown' => "#trash_dropdown", alt: t('.delete_record') }
           = content_tag(:i, nil, class:'icon-trash')
           %i.icon-arrow-down-triangle
-        #trash_dropdown.dropdown.dropdown-tip
+        #trash_dropdown.dropdown.dropdown-tip.dropdown-relative
           %ul.dropdown-menu
             %li
               %a.delete_record{ href: nil, :'data-link-remove' => remove_record_webconference_path(':id') }= t('.delete_record')
@@ -69,7 +69,7 @@
                       %i.icon-shuffle
                       = t('.shared_with', link: groups_codes.count)
                       %i.icon-arrow-down-triangle
-                    .dropdown.dropdown-tip{id: "dropdown_t_#{idx}"}
+                    .dropdown.dropdown-tip.dropdown-relative{id: "dropdown_t_#{idx}"}
                       %ul{ class: 'dropdown-menu' }
                         - groups_codes.each do |code|
                           %li= code
@@ -78,7 +78,7 @@
                     %i.icon-user
                     = t(:moderator, scope: [:webconferences, :list])
                     %i.icon-arrow-down-triangle
-                  .dropdown.dropdown-tip{id: "dropdown_m_#{idx}"}
+                  .dropdown.dropdown-tip.dropdown-relative{id: "dropdown_m_#{idx}"}
                     %ul{ class: 'dropdown-menu' }
                       = webconference.user_name
                 .equivalent
@@ -87,7 +87,7 @@
                       %i.icon-flow-parallel
                       = t('scores.info.equivalency')
                       %i.icon-arrow-down-triangle
-                    .dropdown.dropdown-tip{id: "dropdown_eq_#{idx}"}
+                    .dropdown.dropdown-tip.dropdown-relative{id: "dropdown_eq_#{idx}"}
                       %ul{ class: 'dropdown-menu' }
                         = raw t('scores.info.equivalent', name: webconference.eq_name)
                   - else
@@ -95,7 +95,7 @@
                       %i.icon-flow-parallel
                       =t('scores.info.equalities')
                       %i.icon-arrow-down-triangle
-                    .dropdown.dropdown-tip{id: "dropdown_eq_#{idx}"}
+                    .dropdown.dropdown-tip.dropdown-relative{id: "dropdown_eq_#{idx}"}
                       %ul{ class: 'dropdown-menu' }
               %td.center
                 %div= l(webconference.start_date.to_date)

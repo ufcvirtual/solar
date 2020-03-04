@@ -164,7 +164,6 @@ class MessagesController < ApplicationController
 
         raise "error" if params[:message][:contacts].nil? && params[:message][:support].blank?
         emails = []
-
         unless params[:message][:contacts].nil?
           emails = User.joins('LEFT JOIN personal_configurations AS nmail ON users.id = nmail.user_id')
                         .where("(nmail.message IS NULL OR nmail.message=TRUE)")
@@ -172,6 +171,7 @@ class MessagesController < ApplicationController
         end
 
         emails << params[:message][:support] unless params[:message][:support].blank?
+        p emails
 
         #@message.files << original_files.dup if original_files and not original_files.empty?
         @message.save!
@@ -209,6 +209,7 @@ class MessagesController < ApplicationController
       if params[:scores]=='true'
         render json: { success: false, alert: @message.errors.full_messages.join(', ') }, status: :unprocessable_entity
       else
+        p error
         unless @allocation_tag_id.nil?
           allocation_tag      = AllocationTag.find(@allocation_tag_id)
           @group              = allocation_tag.group
@@ -225,7 +226,7 @@ class MessagesController < ApplicationController
         @reply_to = User.where(id: params[:message][:contacts].split(',')).select("id, (name||' <'||email||'>') as resume")
         @support = params[:support]
 
-        #flash.now[:alert] = @message.errors.full_messages.join(', ')
+        flash.now[:alert] = @message.errors.full_messages.join(', ')
         render :new
       end
     end

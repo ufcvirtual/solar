@@ -16,7 +16,7 @@ class WebconferencesController < ApplicationController
     get_groups_by_tool(@webconference = Webconference.find(params[:id]))
   end
 
-  before_filter :close_expired_support_help, only: :preview
+  before_action :close_expired_support_help, only: :preview
 
   def index
     authorize! :index, Webconference, on: [at = active_tab[:url][:allocation_tag_id]]

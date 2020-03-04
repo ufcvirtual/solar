@@ -11,6 +11,6 @@
       %a{ href: '#', :"data-dropdown" => "#dropdown_origin_group" }
         =(origin_group.name == origin_group.code) ? origin_group.name : "#{origin_group.name} (#{origin_group.code})"
         %i.icon-arrow-down-triangle{:'aria-hidden' => true}
-      .dropdown.dropdown-tip{id: "dropdown_origin_group"}
+      .dropdown.dropdown-tip.dropdown-relative{id: "dropdown_origin_group"}
         %ul{ class: 'dropdown-menu' }
           = origin_group.allocation_tag.info

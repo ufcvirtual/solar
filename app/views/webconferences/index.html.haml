@@ -57,7 +57,7 @@
                       %i.icon-shuffle{:'aria-hidden' => 'true'}
                       = t('.shared_with', link: groups_codes.count)
                       %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-                    .dropdown.dropdown-tip{id: "dropdown_t_#{webconference.id}"}
+                    .dropdown.dropdown-tip.dropdown-relative{id: "dropdown_t_#{webconference.id}"}
                       %ul{ class: 'dropdown-menu', :'aria-label' => t('.groups', web: webconference.title) }
                         - groups_codes.each do |code|
                           %li= code
@@ -67,7 +67,7 @@
                       %i.icon-user{:'aria-hidden' => 'true'}
                       = t(:moderator, scope: [:webconferences, :list])
                       %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-                    .dropdown.dropdown-tip{id: "dropdown_m_#{webconference.id}"}
+                    .dropdown.dropdown-tip.dropdown-relative{id: "dropdown_m_#{webconference.id}"}
                       %ul{ class: 'dropdown-menu' }
                         = webconference.user_name
                 .equivalent
@@ -76,7 +76,7 @@
                       %i.icon-flow-parallel{:'aria-hidden' => 'true'}
                       = t('scores.info.equivalency')
                       %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-                    .dropdown.dropdown-tip{id: "dropdown_eq_#{webconference.id}"}
+                    .dropdown.dropdown-tip.dropdown-relative{id: "dropdown_eq_#{webconference.id}"}
                       %ul{ class: 'dropdown-menu' }
                         = raw t('scores.info.equivalent', name: webconference.eq_name)
                   - else
@@ -84,7 +84,7 @@
                       %i.icon-flow-parallel{:'aria-hidden' => 'true'}
                       =t('scores.info.equalities')
                       %i.icon-arrow-down-triangle{:'aria-hidden' =>'true'}
-                    .dropdown.dropdown-tip{id: "dropdown_eq_#{webconference.id}"}
+                    .dropdown.dropdown-tip.dropdown-relative{id: "dropdown_eq_#{webconference.id}"}
                       %ul{ class: 'dropdown-menu' }
               %td.center{headers: 'web_availability'}
                 %div= l(webconference.start_date.to_date)

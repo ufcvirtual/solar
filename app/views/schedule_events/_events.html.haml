@@ -33,7 +33,7 @@
                     %i.icon-flow-parallel
                     = t('scores.info.equivalency')
                     %i.icon-arrow-down-triangle
-                  .dropdown.dropdown-tip{id: "dropdown_eq_#{event.academic_tool_id}"}
+                  .dropdown.dropdown-tip.dropdown-relative{id: "dropdown_eq_#{event.academic_tool_id}"}
                     %ul{ class: 'dropdown-menu' }
                       = raw t('scores.info.equivalent', name: event.eq_name)
                 - else
@@ -41,7 +41,7 @@
                     %i.icon-flow-parallel
                     = t('scores.info.equalities')
                     %i.icon-arrow-down-triangle
-                  .dropdown.dropdown-tip{id: "dropdown_eq_#{event.academic_tool_id}"}
+                  .dropdown.dropdown-tip.dropdown-relative{id: "dropdown_eq_#{event.academic_tool_id}"}
                     %ul{ class: 'dropdown-menu' }
             %td.center{headers: 'event-data-range'}
               %div= [l(event.start_date.to_date, format: :normal), l(event.end_date.to_date, format: :normal)].join(' - ')
