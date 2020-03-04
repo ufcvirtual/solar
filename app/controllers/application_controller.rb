@@ -214,7 +214,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_remote_ip
-    request.headers['HTTP_CLIENT_IP'] || request.remote_ip
+    request.headers['Client-Ip'] || request.remote_ip
   end
 
   def get_access_token

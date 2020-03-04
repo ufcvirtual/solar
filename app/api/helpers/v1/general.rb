@@ -2,7 +2,7 @@ module V1::General
 
   def verify_ip_access!
     Rails.logger.info "[API] [WARNING] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] message: Checking for IP permission"
-    raise CanCan::AccessDenied unless YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s]['verified_addresses'].include?(request.headers['HTTP_CLIENT_IP']) || YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s]['verified_addresses'].include?(request.env['HTTP_X_FORWARDED_FOR'].to_s) || YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s]['verified_addresses'].include?(env['REMOTE_ADDR'])
+    raise CanCan::AccessDenied unless YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s]['verified_addresses'].include?(request.headers['Client-Ip']) || YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s]['verified_addresses'].include?(request.env['HTTP_X_FORWARDED_FOR'].to_s) || YAML::load(File.open('config/modulo_academico.yml'))[Rails.env.to_s]['verified_addresses'].include?(env['REMOTE_ADDR'])
 
   end
 
@@ -135,7 +135,7 @@ module V1::General
   end
 
   def get_remote_ip
-    request.headers['HTTP_CLIENT_IP'] || env['REMOTE_ADDR']
+    request.headers['Client-Ip'] || env['REMOTE_ADDR']
   end
 
 end
