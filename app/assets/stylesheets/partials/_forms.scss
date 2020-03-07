@@ -108,9 +108,9 @@
   border-color: $error_color_font;
 }
 
-#special_needs_line {
+/*#special_needs_line {
   display: none;
-}
+}*/
 
 .form_requirement, .filter_counter { // FIXME: filter_counter é usado apenas em allocations
   font-style: italic;

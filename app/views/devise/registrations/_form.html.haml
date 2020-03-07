@@ -40,7 +40,7 @@
                 = t(:form_special_needs)
               = f.select :special_needs, (@special_needs), {}, {id: 'special_needs', :onchange => "select_special_needs(this);"}
 
-          #special_needs_line.field.invisible
+          #special_needs_line.field{class: f.object.try(:special_needs) == "13" ? "" : "invisible"}
             = f.input :other_special_needs
 
           %p.required_info
