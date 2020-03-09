@@ -8,7 +8,7 @@
 
   .title-warning
     %div.ufc_title
-      = link_to raw(t('.ufc_title')), 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
+      = link_to raw(t('.ufc_title')),"#void", onclick: 'hide_or_show_info(this)', onkeydown: 'click_on_keypress(event, this);'
       = link_to content_tag(:i, nil, class: 'icon-arrow-down-triangle', :"data-tooltip" => t('editions.tools.expand')),"#void", onclick:  'hide_or_show_info(this)'
       = link_to content_tag(:i, nil, class: 'invisible icon-arrow-up-triangle', :"data-tooltip" => t('editions.tools.expand')),"#void", onclick:  'hide_or_show_info(this)'
     %div.ufc.invisible=raw t('.ufc')
