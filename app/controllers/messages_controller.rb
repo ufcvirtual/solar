@@ -171,7 +171,6 @@ class MessagesController < ApplicationController
         end
 
         emails << params[:message][:support] unless params[:message][:support].blank?
-        p emails
 
         #@message.files << original_files.dup if original_files and not original_files.empty?
         @message.save!

@@ -160,14 +160,9 @@ class ScheduleEventsController < ApplicationController
     if @event.content_exam.blank?
       render text: t("schedule_events.error.no_content")
     else
-     # html = HTMLEntities.new.decode render_to_string("print_presential_test.html.haml", formats: [:html], layout: false)
-      if @course.has_exam_header
-        unless @allocation_tags_ids.size > 1
-          coord_profiles = (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['coord_profiles'] rescue nil)
-          coord = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", ats, Allocation_Activated, coord_profiles.split(',')).first unless coord_profiles.blank?
-        end
-      end
-      if @course.use_autocomplete_header
+      #html = HTMLEntities.new.decode render_to_string("print_presential_test.html.haml", formats: [:html], layout: false)
+
+      if @course.has_exam_header && @course.use_autocomplete_header
         unless @allocation_tags_ids.size > 1
           coord_profiles = (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['coord_profiles'] rescue nil)
           coord = User.joins(:allocations).where("allocations.allocation_tag_id IN (?) AND allocations.status = ? AND allocations.profile_id IN (?)", ats, Allocation_Activated, coord_profiles.split(',')).first unless coord_profiles.blank?
@@ -182,13 +177,14 @@ class ScheduleEventsController < ApplicationController
         student = User.find(params[:student_id]) unless params[:student_id].blank?
         enrollment = Allocation.where(user_id: params[:student_id], allocation_tag_id: @allocation_tags_ids.first, status: 1).first.enrollment unless params[:student_id].blank?
 
-        normalize_exam_header(html, student, enrollment, profs, tutors, @event, allocation_tag.get_curriculum_unit, @course.name, coord)
+        normalize_exam_header(@course.header_exam, student, enrollment, profs, tutors, @event, allocation_tag.get_curriculum_unit, @course.name, coord)
       end
 
-      pictures_with_abs_path html
+      #pictures_with_abs_path html
 
-      pdf = WickedPdf.new.pdf_from_string(html)
-      send_data(pdf, filename: "#{@event.title}.pdf", type: "application/pdf",  disposition: 'inline')
+      #pdf = WickedPdf.new.pdf_from_string(html)
+      #send_data(pdf, filename: "#{@event.title}.pdf", type: "application/pdf",  disposition: 'inline')
+      render pdf: "print_presential_test"
     end
   end
 

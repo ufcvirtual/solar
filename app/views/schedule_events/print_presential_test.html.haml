@@ -8,13 +8,13 @@
   %body{class: (@accessibility=='true' ? 'body' : '')}
     -if @course.has_exam_header
       %header
-        = @course.header_exam
+        = raw pictures_with_abs_path(@header_exam)
         - if !params[:student_id].blank? && @course.use_autocomplete_header
           .signature-box
             %span.completed-by= t(:signature)
             %span.signature
     %main
-      = @event.content_exam
+      = raw pictures_with_abs_path(@event.content_exam)
 
 :css
 
