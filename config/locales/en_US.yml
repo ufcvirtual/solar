@@ -4143,6 +4143,7 @@ en_US:
       date: This webconference already happened. It's not possible to change it's period.
       started: This webconference already started. It's not possible to change it's duration.
       date_new: It's not possible to set a webconference as finished.
+      acu: It's not possible to remove this webconferences or its record. It was evaluated or have comments.
     success:
       removed: Webconference was successfully deleted.
       record: Webconference's record successfully removed.
