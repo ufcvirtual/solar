@@ -1,26 +1,12 @@
-= javascript_include_tag 'ckeditor/init'
+:javascript
+  CKEDITOR_BASEPATH  = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor_4/ckeditor/";
+
+= javascript_include_tag 'ckeditor_4/ckeditor/ckeditor', 'ckeditor_config'
 
 :javascript
+  var locale = "#{I18n.locale}";
 
   $(function(){
-    CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
-
-    CKEDITOR.editorConfig = function (config) {
-      config.toolbar =
-        [
-          { name: 'clipboard', items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-          { name: 'insert', items : ['EqnEditor'] },
-          { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
-          { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }
-        ];
-
-        config.extraPlugins = 'eqneditor,oembed';
-        config.resize_enabled = false;
-        config.height = '80px';
-        config.width = '100%';
-        config.autoParagraph = false;
-        config.pasteFromWord_inlineImages = false;
-    };
 
     change_inputs(true, "#{f.object.nil? ? false : f.object.type_question}");
 

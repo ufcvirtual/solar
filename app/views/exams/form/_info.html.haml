@@ -1,3 +1,6 @@
+:javascript
+  CKEDITOR_BASEPATH  = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor_4/ckeditor/";
+
 = f.input :name
 = f.input :description, as: :ckeditor
 
@@ -31,9 +34,12 @@
   = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox cancel', onkeypress: 'click_on_keypress(event, this)'
   = button_tag t('.continue'), :type => 'button', :onclick => "go_to_config(event)", class: 'btn btn_main btn_lightbox', id: '_continue', onkeypress: 'go_to_config(event)'
 
-= javascript_include_tag 'ckeditor/init', 'jquery-ui-timepicker-addon', 'ip'
+= javascript_include_tag 'ckeditor_4/ckeditor/ckeditor', 'ckeditor_config', 'jquery-ui-timepicker-addon', 'ip'
 
 :javascript
+
+  var locale = "#{I18n.locale}";
+  
   $(function(){
 
     var immediate_result_release = $($("[data-id='immediate_result_release']")[0]);
@@ -42,20 +48,6 @@
     }
 
     CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
-
-    CKEDITOR.editorConfig = function (config) {
-      config.toolbar =
-        [
-          { name: 'clipboard', items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-          { name: 'insert', items : ['EqnEditor'] },
-          { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
-          { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }
-        ];
-
-        config.extraPlugins = 'eqneditor,oembed';
-        config.resize_enabled = false;
-        config.autoParagraph = false;
-    };
 
     set_datetime_masked('exam_result_release');
 

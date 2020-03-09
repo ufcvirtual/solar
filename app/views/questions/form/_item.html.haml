@@ -1,3 +1,5 @@
+:javascript
+  CKEDITOR_BASEPATH  = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor_4/ckeditor/";
 #items
   - count = 0
   - count_items = f.object.question_items.count
@@ -62,28 +64,11 @@
     -else
       - count += 1
 
-= javascript_include_tag 'ckeditor/init', 'tooltip'
+= javascript_include_tag 'ckeditor_4/ckeditor/ckeditor', 'ckeditor_config', 'tooltip'
 
 :javascript
   $(function(){
-    CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
-
-    CKEDITOR.editorConfig = function (config) {
-      config.toolbar =
-        [
-          { name: 'clipboard', items : [ 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo' ] },
-          { name: 'insert', items : ['EqnEditor'] },
-          { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
-          { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }
-        ];
-
-        config.extraPlugins = 'eqneditor,oembed';
-        config.resize_enabled = false;
-        config.height = '80px';
-        config.width = '100%';
-        config.autoParagraph = false;
-        config.pasteFromWord_inlineImages = false;
-    };
+    var locale = "#{I18n.locale}";
 
     $("#items").on("fields_added.nested_form_fields", function(event) {
       change_inputs(true, "#{f.object.nil? ? false : f.object.type_question}");
