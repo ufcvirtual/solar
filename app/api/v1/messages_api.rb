@@ -88,24 +88,6 @@ module V1
           verify_user_permission_and_set_obj(:index)
         end
 
-        desc 'Listar todas as mensagens'
-        params do
-          optional :group_id, type: Integer, desc: 'Group ID.'
-          optional :box, type: String, desc: 'Box Type'
-          optional :page, type: Integer, desc: 'Page', default: 1
-        end #params
-
-        get '/', rabl: 'messages/list' do
-          @box = option_user_box(params[:box])
-          @allocation_tag_id = params[:group_id].blank? ? [] : Group.find(params[:group_id]).allocation_tag.id
-          page = (params[:page] || 1).to_i
-          @messages = Message.by_box(current_user.id, @box, @allocation_tag_id, {page: page, ignore_at: true})
-
-          limit = Rails.application.config.items_per_page
-          @total = @messages.try(:first).total_messages rescue 0
-          @pages_amount = (@total/limit).ceil.to_i + 1
-        end
-
         desc 'Exibir anexos da mensagem'
         params do
           requires :id, type: Integer
