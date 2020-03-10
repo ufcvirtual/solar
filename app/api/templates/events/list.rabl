@@ -4,11 +4,11 @@ attributes :name, :start_hour, :end_hour, :place, :evaluative, :frequency
 
 
 @events.each do |event|
- 
+
   node(:type_event) { |eve| ScheduleEvent.type_name_event(eve.type_event.to_i)}
   node(:start_date) { |eve| eve.start_date.to_date}
   node(:end_date) { |eve| eve.end_date.to_date}
-  node(:event_id) { |eve| eve.academic_tool_id}
+  node(:id) { |eve| eve.academic_tool_id}
   node(:academic_allocation_id) { |eve| eve.id}
 
   if @is_student
@@ -25,8 +25,6 @@ attributes :name, :start_hour, :end_hour, :place, :evaluative, :frequency
         }
       end
     }
-  else
-      node(:students) { |eve|  "/api/v1/events/#{eve.academic_tool_id}/participants?group=#{@group.name}"}
   end
 
 end

@@ -12,7 +12,8 @@ node(:event_files) { |user|
 		@event.acu_by_user(user.id).schedule_event_files.map do |f|
 	    {
 	      file_name: f.attachment_file_name,
-      	  url: download_schedule_event_files_url(id: f.id)
+      	 url: api_download_schedule_event_files_url(id: f.id),
+      	 sent_by: f.user.name
 	    }
 	  end
 	end

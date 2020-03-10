@@ -531,6 +531,7 @@ Solar::Application.routes.draw do
       post :upload
       get :zip_download, to: :download, defaults: {zip: true}
       get :summary
+      get :api_download
     end
   end
 

@@ -6,9 +6,8 @@ module V1
       helpers do
 
         def verify_user_permission_on_events_and_set_obj(permission, controller = :schedule_events) # permission = [:index, :create, ...]
-          @group = Group.where(name: params[:group]).first
-          @at = AllocationTag.find_by_group_id(@group.id)
-          @group.allocation_tag.related
+          @group = Group.find(params[:group_id])
+          @at = @group.allocation_tag
           @profile_id = current_user.profiles_with_access_on(permission, controller, @group.allocation_tag.related, true).first
           raise CanCan::AccessDenied if @profile_id.nil? || !(current_user.groups([@profile_id], Allocation_Activated).include?(@group))
         end
@@ -103,51 +102,55 @@ module V1
 
       segment do
 
+        guard_all!
+
         before do
           verify_user_permission_on_events_and_set_obj(:index)
         end # befor
 
         desc "Listar Eventos"
         params do
-          requires :group, type: String, desc: "Group Name"
+          requires :group_id, type: Integer, desc: "Group Id"
         end
         get "/", rabl: 'events/list' do
           @is_student  = !@at.is_observer_or_responsible?(current_user.id)
-          @events = Score.list_tool(current_user.id, @group.allocation_tag.id, 'schedule_events', false, false, true)
+          @events = Score.list_tool(current_user.id, @at.id, 'schedule_events', false, false, true)
         end
       end
 
       segment do
+        guard_all!
+
          before do
-          is_responsible(:list, :schedule_events)
+          is_responsible(:index, :schedule_events)
         end
 
         desc "Listar Sumário dos Alunos"
         params do
-          requires :event_id, type: Integer, desc: "ID do Evento"
-          requires :group, type: String, desc: "Group Name"
+          requires :id, type: Integer, desc: "ID do Evento"
+          requires :group_id, type: String, desc: "Group Id"
         end
-        get ":event_id/participants", rabl: 'events/summary' do
-          @event = ScheduleEvent.find(params[:event_id].to_i)
+        get ":id/participants", rabl: 'events/summary' do
+          @event = ScheduleEvent.find(params[:id].to_i)
           @users = AllocationTag.get_participants(@at.id, { students: true })
         end
 
-        desc "Enviar arquivo para aluno"
-        params do
-          requires :academic_allocation_id, type: Integer, desc: "ID do AcademicAllocation do Evento"
-          requires :student_id, type: Integer, desc: 'ID do Aluno'
-          requires :file, type: File
-          requires :group, type: String, desc: "Group Name"
-        end
-        post ":academic_allocation_id/students/:student_id/files" do
-          academic_allocation_user = AcademicAllocationUser.where(user_id: params[:student_id], academic_allocation_id: params[:academic_allocation_id]).first
+        # desc "Enviar arquivo para aluno"
+        # params do
+        #   requires :academic_allocation_id, type: Integer, desc: "ID do AcademicAllocation do Evento"
+        #   requires :student_id, type: Integer, desc: 'ID do Aluno'
+        #   requires :file, type: File
+        #   requires :group_id, type: String, desc: "Group Id"
+        # end
+        # post ":academic_allocation_id/students/:student_id/files" do
+        #   academic_allocation_user = AcademicAllocationUser.where(user_id: params[:student_id], academic_allocation_id: params[:academic_allocation_id]).first
 
-          sef = ScheduleEventFile.new({user_id: current_user.id, academic_allocation_user_id: academic_allocation_user.id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
-          sef.api = true
-          sef.save!
+        #   sef = ScheduleEventFile.new({user_id: current_user.id, academic_allocation_user_id: academic_allocation_user.id, attachment: ActionDispatch::Http::UploadedFile.new(params[:file])})
+        #   sef.api = true
+        #   sef.save!
 
-          {ok: :ok}
-        end
+        #   {ok: :ok}
+        # end
 
       end
 

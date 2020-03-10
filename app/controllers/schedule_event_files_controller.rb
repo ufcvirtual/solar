@@ -128,6 +128,28 @@ class ScheduleEventFilesController < ApplicationController
     end
   end
 
+  def api_download
+    api_guard_with_access_token_or_authenticate
+
+    verify_download
+
+    if !@is_observer_or_responsible && @owner && Exam.verify_blocking_content(current_user.id)
+      raise t('schedule_events.restrict_events')
+    end
+
+    begin
+      download_file(nil, @file.attachment.path, @file.attachment_file_name)
+    rescue
+      raise 'file not found'
+    end
+  rescue ActiveRecord::RecordNotFound => error
+    Rails.logger.info "[API] [ERROR] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [404] message: #{error}"
+    render json: {success: false, status: :not_found, error: error}
+  rescue => error
+    Rails.logger.info "[API] [ERROR] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [404] message: #{error}"
+    render json: {success: false, status: :unprocessable_entity, error: error}
+  end
+
   def upload
     unless params[:schedule_event_files].blank?
       errors = []
@@ -202,10 +224,12 @@ class ScheduleEventFilesController < ApplicationController
   private
 
     def verify_download
-      @event = ScheduleEvent.find(params[:event_id])
       @file = ScheduleEventFile.find(params[:id]) rescue nil
+      @event = ScheduleEvent.find(params[:event_id]) rescue ScheduleEvent.find(@file.try(:academic_allocation).try(:academic_tool_id))
 
-      @is_observer_or_responsible = AllocationTag.find(active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id)
+      at = AllocationTag.find(active_tab[:url][:allocation_tag_id]) rescue AllocationTag.find(@file.try(:academic_allocation).try(:allocation_tag_id))
+
+      @is_observer_or_responsible = at.is_observer_or_responsible?(current_user.id)
       @owner = (@file.blank? ? false : @file.academic_allocation_user.user_id == current_user.id)
 
       raise CanCan::AccessDenied if !@owner && !@is_observer_or_responsible
@@ -245,4 +269,5 @@ class ScheduleEventFilesController < ApplicationController
     rescue => error
       raise error
     end
+
 end
