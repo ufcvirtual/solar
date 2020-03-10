@@ -81,7 +81,7 @@ module V1::Contents
         replicate_public_files(from_at, to_at)
       end
 
-      LogAction.create(log_type: LogAction::TYPE[:create], user_id: nil, ip: request.headers['HTTP_CLIENT_IP'], description: "merge: transfering content from #{from_group.allocation_tag.info} to #{to_group.allocation_tag.info}, merge type: #{merge}") rescue nil
+      LogAction.create(log_type: LogAction::TYPE[:create], user_id: nil, ip: request.headers['Client-Ip'], description: "merge: transfering content from #{from_group.allocation_tag.info} to #{to_group.allocation_tag.info}, merge type: #{merge}") rescue nil
     end
   end
 

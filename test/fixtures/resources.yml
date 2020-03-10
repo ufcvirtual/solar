@@ -1275,9 +1275,15 @@ res241:
   controller: 'webconferences'
   action: 'see_help_requests'
   description: 'Visualizar chamadas de ajuda das webconferências' 
- 
+
 res242:
-  id: 242 
+  id: 242
+  controller: 'emails'
+  action: 'automatic_email_group_assignment_division'
+  description: 'Email de aviso de divisão automática de grupos de trabalho' 
+ 
+res243: 
+  id: 243 
   controller: 'lessons'
   action: 'generate_audio'
   description: 'Gerar áudio das aulas'

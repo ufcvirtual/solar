@@ -72,7 +72,11 @@ class GroupAssignment < ActiveRecord::Base
 
       assignment_group.academic_allocations.each do |academic_allocation|
         alloc_tag_ids = AllocationTag.find(academic_allocation.allocation_tag_id).related
-        responsibles_emails = User.joins(:profiles, :allocations).where(allocations: {allocation_tag_id: alloc_tag_ids}).where(profiles: {id: 3}).uniq.map{|user| user.email}
+        
+        responsibles_emails = User.joins(:profiles, :allocations)
+                                  .where(allocations: {allocation_tag_id: alloc_tag_ids})
+                                  .where(profiles: {id: Profile.with_access_on(:automatic_email_group_assignment_division, :emails)})
+                                  .uniq.map{|user| user.email}
         
         Job.send_mass_email(responsibles_emails, I18n.t("group_assignments.alert_create_assignment_group_email"), "#{I18n.t('group_assignments.automatic_one_week_before_email_split_group', assignment_group_name: assignment_group.name)}", [])
       end
@@ -92,8 +96,13 @@ class GroupAssignment < ActiveRecord::Base
       assignment_group.academic_allocations.each do |academic_allocation|
         alloc_tag_ids = AllocationTag.find(academic_allocation.allocation_tag_id).related
         students_without_group = academic_allocation.academic_tool.students_without_groups(alloc_tag_ids)
+
         unless students_without_group.blank?
-          responsibles_emails = User.joins(:profiles, :allocations).where(allocations: {allocation_tag_id: alloc_tag_ids}).where(profiles: {id: 3}).uniq.map{|user| user.email}
+          responsibles_emails = User.joins(:profiles, :allocations)
+                                    .where(allocations: {allocation_tag_id: alloc_tag_ids})
+                                    .where(profiles: {id: Profile.with_access_on(:automatic_email_group_assignment_division, :emails)})
+                                    .uniq.map{|user| user.email}
+
           students_groups = []
           Struct.new('Group_Object', :group_name, :students)
           groups_assignment_division, students_groups = GroupAssignment.get_groups_assignment_division(students_without_group, academic_allocation, alloc_tag_ids, students_groups)

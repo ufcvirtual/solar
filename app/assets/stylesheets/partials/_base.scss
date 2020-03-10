@@ -376,8 +376,8 @@ i.noscript{
     text-align: center;
   }
 }
-.colored {
-  color: $removed_permission_color;
+.colored{
+  /*color: red;*/
   font-weight: bold;
   p {
     color: $color_black;

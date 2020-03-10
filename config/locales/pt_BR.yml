@@ -3820,6 +3820,7 @@ pt_BR:
       print_acessibility: Imprimir acessibilidade
       print_exame_acessibility: Imprimir prova com acessibilidade
       has_content: Possui conteúdo
+      print2: Imprimir
     participants:
       title: Participantes
       student: Alunos
@@ -4667,6 +4668,7 @@ pt_BR:
       date: Esta webconferência já foi encerrada e possui gravação. Seu período não pode ser alterado.
       started: Esta webconferência já foi iniciada. Apenas sua duração pode ser alterada.
       date_new: Não é possível definir a webconferência como já encerrada.
+      acu: Não é possível remover a gravação ou webconferência, pois foi feita avaliação ou há comentários.
     success:
       removed: Webconferência deletada com sucesso
       record: Gravação removida com sucesso

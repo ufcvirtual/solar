@@ -3397,6 +3397,7 @@ en_US:
       print_acessibility: Print acessibility
       print_exame_acessibility: Print proof with accessibility
       has_content: Has content
+      print2: Print
     participants:
       title: Participants
       student: Students
@@ -4240,6 +4241,7 @@ en_US:
       date: This webconference already happened. It's not possible to change it's period.
       started: This webconference already started. It's not possible to change it's duration.
       date_new: It's not possible to set a webconference as finished.
+      acu: It's not possible to remove this webconferences or its record. It was evaluated or have comments.
     success:
       removed: Webconference was successfully deleted.
       record: Webconference's record successfully removed.

@@ -298,7 +298,7 @@ module Bbb
     raise 'unavailable'              unless server.blank? || bbb_online?
     raise 'not_ended'                unless !started? || is_over?
     raise 'copy'                     unless self.class.to_s != 'Webconference' || origin_meeting_id.blank?
-    raise 'acu'                      if academic_allocation_users.where(status: AcademicAllocationUser::STATUS[:evaluated]).any?
+    raise 'acu'                      if ((respond_to?(:academic_allocation_users) && academic_allocation_users.where(status: AcademicAllocationUser::STATUS[:evaluated]).any?) || (respond_to?(:academic_allocation_user) && academic_allocation_user.status == AcademicAllocationUser::STATUS[:evaluated]))
   end
 
   def meeting_info(user_id, at_id = nil, meetings = nil)
