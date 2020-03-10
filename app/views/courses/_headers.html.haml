@@ -1,3 +1,5 @@
+:javascript
+  CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor_4/ckeditor/";
 .autocomplete_header
   = f.check_box :use_autocomplete_header
   = t('courses.form.use_autocomplete_header')
@@ -21,51 +23,53 @@
   = button_tag t(:back), :type => 'button', :onclick => "back_to_info(event)", class: 'btn btn_default btn_lightbox', onkeypress: 'back_to_info(event)', alt: t(:back)
   = button_tag t(:save), class: 'btn btn_main btn_lightbox save', alt: t(:save), type: 'button'
 
-= javascript_include_tag 'ckeditor/init', 'courses'
+= javascript_include_tag 'ckeditor_4/ckeditor/ckeditor', 'courses'
 
 :javascript
-  $(function(){
-    CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
+  var locale = "#{I18n.locale}";
 
-    CKEDITOR.editorConfig = function (config) {
+  $(function(){
+    CKEDITOR.editorConfig = function( config ) {
+      language = locale=='pt_BR' ? 'pt-br' : locale;
+      config.language = language;
       /* Filebrowser routes */
       // The location of an external file browser, that should be launched when "Browse Server" button is pressed.
       config.filebrowserBrowseUrl = "/ckeditor/attachment_files";
-
       // The location of an external file browser, that should be launched when "Browse Server" button is pressed in the Flash dialog.
       config.filebrowserFlashBrowseUrl = "/ckeditor/attachment_files";
-
       // The location of a script that handles file uploads in the Flash dialog.
       config.filebrowserFlashUploadUrl = "/ckeditor/attachment_files";
-
       // The location of an external file browser, that should be launched when "Browse Server" button is pressed in the Link tab of Image dialog.
       config.filebrowserImageBrowseLinkUrl = "/ckeditor/pictures";
-
       // The location of an external file browser, that should be launched when "Browse Server" button is pressed in the Image dialog.
       config.filebrowserImageBrowseUrl = "/ckeditor/pictures";
-
       // The location of a script that handles file uploads in the Image dialog.
       config.filebrowserImageUploadUrl = "/ckeditor/pictures?";
-
       // The location of a script that handles file uploads.
       config.filebrowserUploadUrl = "/ckeditor/attachment_files";
 
+      config.toolbarGroups = [
+        { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+        { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+        { name: 'styles', groups: [ 'styles' ] },
+        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+        { name: 'colors', groups: [ 'colors' ] },
+        { name: 'paragraph', groups: [ 'align', 'list', 'indent', 'blocks', 'bidi', 'paragraph' ] },
+        { name: 'links', groups: [ 'links' ] },
+        { name: 'insert', groups: [ 'insert' ] },
+        { name: 'tools', groups: [ 'tools' ] },
+        { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+        { name: 'forms', groups: [ 'forms' ] },
+        '/',
+        '/',
+        { name: 'others', groups: [ 'others' ] },
+        { name: 'about', groups: [ 'about' ] }
+      ];
+
+      config.removeButtons = 'Save,NewPage,Preview,Print,Templates,Styles,Anchor,BidiLtr,BidiRtl,Language,Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Flash,Smiley,SpecialChar,PageBreak,Iframe,ShowBlocks,About';
+
       config.allowedContent = true;
       config.extraPlugins = 'tableresize,uploadimage,uploadfile';
-
-      config.toolbar = [
-        { name: 'document', groups: [ 'mode', 'document', 'doctools' ], items: [ 'Source', 'Print' ] },
-        { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-  			{ name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
-  			{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat', 'CopyFormatting' ] },
-  			{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-  			{ name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
-  			{ name: 'links', items: [ 'Link', 'Unlink' ] },
-  			{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv' ] },
-  			{ name: 'insert', items: [ 'EqnEditor', 'Image', 'Table', 'SpecialChar', 'HorizontalRule' ] },
-  			{ name: 'tools', items: [ 'Maximize' ] },
-  			{ name: 'editing', items: [ 'Scayt' ] }
-      ];
     };
 
   });

@@ -47,8 +47,6 @@
       change(immediate_result_release, ["#exam_result_release", ".exam_result_release", "#exam_attempts", ".exam_attempts", "#exam_attempts_correction", ".exam_attempts_correction"])
     }
 
-    CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
-
     set_datetime_masked('exam_result_release');
 
     $("#exam_start_date, #exam_end_date").mask("#{I18n.t('date.formats.mask')}");
