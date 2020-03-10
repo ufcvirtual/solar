@@ -1,3 +1,5 @@
+:javascript
+  CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor_4/ckeditor/";
 .discussion_form
   = simple_form_for(@discussion, html: {id: "discussion_form"}) do |f|
     %h1#lightBoxDialogTitle= t(@discussion.persisted? ? ".edit" : ".new")
@@ -43,11 +45,12 @@
         = button_tag t(".cancel"), type: 'button', onclick: "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(".cancel")
         = button_tag t(".save"), type: 'button', onclick: "save_discussion()", class: 'btn btn_main btn_lightbox', alt: t(".save")
 
-= javascript_include_tag 'ckeditor/init', "edition_discussions"
+= javascript_include_tag 'ckeditor_4/ckeditor/ckeditor', 'ckeditor_config', "edition_discussions"
 
 :javascript
 
   $("#from-date, #until-date").mask("#{I18n.t('date.formats.mask')}");
+  var locale = "#{I18n.locale}";
 
   var start_date = "#{escape_once(@discussion.schedule.start_date)}";
   var end_date = "#{escape_once(@discussion.schedule.end_date)}";
@@ -100,22 +103,5 @@
       e.preventDefault();
       add_new_file();
     });
-
-    CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
-
-    CKEDITOR.editorConfig = function (config) {
-      config.toolbar =
-        [
-          { name: 'clipboard', items : [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-          { name: 'insert', items : ['EqnEditor'] },
-          { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
-          { name: 'links', items : [ 'Link', 'Unlink', 'Image', 'oembed' ] },
-          { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }
-        ];
-
-        config.extraPlugins = 'eqneditor,oembed';
-        config.resize_enabled = false;
-        config.autoParagraph = false;
-    };
 
   });

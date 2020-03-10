@@ -1,7 +1,7 @@
 :javascript
-  CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
+  CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor_4/ckeditor/";
 
-= javascript_include_tag "ckeditor/init"
+= javascript_include_tag 'ckeditor_4/ckeditor/ckeditor', 'ckeditor_config'
 
 = simple_form_for(@notification, html: { multipart: true, id: 'notification_form' }) do |f|
   %span.form_requirement= t(:required_fields)
@@ -55,19 +55,7 @@
 
 
 :javascript
-  CKEDITOR.editorConfig = function(config) {
-    config.toolbar =
-      [
-        { name: 'styles', items : [ 'Styles', 'Format', 'Font', 'FontSize' ] },
-        { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Strike', 'Underline', '-', 'RemoveFormat' ] },
-        { name: 'paragraph', items : [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] },
-        { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-        { name: 'links', items : [ 'Link', 'Unlink' ] },
-      ];
-
-      config.autoParagraph = false;
-      config.AllowedContent = 'br[clear]';
-  };
+  var locale = "#{I18n.locale}";
 
   CKEDITOR.on('instanceReady', function (ev) {
 
