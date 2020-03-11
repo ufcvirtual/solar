@@ -113,7 +113,7 @@
             $('.list_lessons:first').replaceWith(data);
           });
           flash_message(data.msg, data.type);
-        }).error(function(data) {
+        }).fail(function(data) {
           if(typeof(module_id) != "undefined"){
             $.get($('.list_lessons').data('link-list'), function(data2){
               $('.list_lessons:first').replaceWith(data2);

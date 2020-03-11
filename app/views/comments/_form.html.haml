@@ -1,3 +1,6 @@
+:javascript
+  CKEDITOR_BASEPATH  = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor_4/ckeditor/";
+  
 = simple_form_for(@comment, html: { id: 'comment_form', multipart: true, class: 'common' }) do |f|
   = f.hidden_field :academic_allocation_user_id, value: f.object.academic_allocation_user_id
   = f.input :score_type, as: :hidden,  input_html: { value: @score_type }
@@ -16,26 +19,7 @@
 
     = render partial: 'common_between_pages/files', locals: { f: f, form_id:  'comment_form'}
 
-= javascript_include_tag 'ckeditor/init', 'tooltip', 'multiple_file_upload'
+= javascript_include_tag 'ckeditor_4/ckeditor/ckeditor', 'ckeditor_config', 'tooltip', 'multiple_file_upload'
 
 :javascript
-
-  $(function(){
-    CKEDITOR_BASEPATH = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
-    CKEDITOR.editorConfig = function(config) {
-      config.toolbar =
-        [
-          { name: 'clipboard', items : [ 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-          { name: 'styles', items : [ 'Styles', 'Format', 'Font', 'FontSize', 'TextColor' ] },
-          { name: 'basicstyles', items : [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
-          { name: 'links', items : [ 'Link', 'Unlink', 'Image', 'Smiley' ] },
-          { name: 'insert', items : ['EqnEditor'] }
-        ];
-
-      config.extraPlugins = 'eqneditor,smiley';
-      config.startupFocus = true;
-      config.height = '130px';
-      config.autoParagraph = false;
-    };
-
-  });
+  var locale = "#{I18n.locale}";
