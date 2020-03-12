@@ -387,3 +387,7 @@ i.noscript{
 #body_wrapper .col-sm-10{
   background-color: $color_white_base;
 }
+
+.no-click{
+  pointer-events:none; 
+}

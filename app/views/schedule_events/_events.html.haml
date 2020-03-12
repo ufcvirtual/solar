@@ -64,7 +64,7 @@
             - if @can_print
               %td.center{headers: 'event-print'}
                 - if Presential_Test == event.type_event.to_i
-                  = link_to (content_tag(:i, nil, class: 'icon-printer')), print_presential_test_schedule_events_path(id: event.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'btn btn_print jspanel', :"data-link-to-print" => print_presential_test_schedule_events_path(id: event.academic_tool_id, allocation_tags_ids: @allocation_tag_id), :"data-print-title" => t("schedule_events.list.print"), :"data-tooltip" => t("schedule_events.list.print")
+                  = link_to content_tag(:i, nil, class: 'icon-printer no-click'), print_presential_test_schedule_events_path(id: event.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'btn btn_print jspanel', :"data-link-to-print" => print_presential_test_schedule_events_path(id: event.academic_tool_id, allocation_tags_ids: @allocation_tag_id), :"data-print-title" => t("schedule_events.list.print"), :"data-tooltip" => t("schedule_events.list.print")
 
 - else
   .text_none.empty_message= t(:itens_not_found)

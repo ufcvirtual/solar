@@ -6,7 +6,6 @@ $(document).ready(function(){
     position: {
       my: 'top center',
       at: 'bottom center',
-      viewport: $(window),
       adjust: {
         y: 2
       }
