@@ -1,4 +1,4 @@
-** Projeto SOLAR Versão: ** 2.0 versão Comunitária
+## **Projeto SOLAR Versão: 2.0 versão Comunitária**
 
 Termo de Licença de Uso do Sistema Online de Aprendizagem Solar versão Comunitária
 
@@ -10,39 +10,39 @@ Este programa é distribuído na esperança que possa ser útil, mas SEM NENHUMA
 
 Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
 
-Instituto UFC Virtual
-Universidade Federal do Ceará
+### Instituto UFC Virtual
+### Universidade Federal do Ceará
 
 --
 
-Equipe:
+### Equipe:
 
-Direção do Instituto
+#### Direção do Instituto
 Prof. Dr. Antoine Lois Gabriel Paillard
 
-Coordenação de Programas Acadêmicos
-Prof. Dr. Ernesto
+#### Coordenação de Programas Acadêmicos
+Prof. Dr. Ernesto Trajano de Lima Neto
 
-Coodenador do Setor de Tecnologias Digitais
+#### Coodenador do Setor de Tecnologias Digitais
 Me. Paulo de Tarso C. Pequeno
 
-Coordenador do Centro de Produção I
+#### Coordenador do Centro de Produção I
 Profa. Nídia Barone
 
-Coordenador do Centro de Produção II
+#### Coordenador do Centro de Produção II
 Eng. Bianca Barone
 
-Coordenador de Suporte
+#### Coordenador de Suporte
 Alex Ramos
 
-# Idealização
+### Idealização
 Prof. Wellington Wagner Ferreira Sarmento
 Prof. Henrique Sérgio Lima Pequeno
 Me. Patrícia de Sousa Paula
 Prof. George Allan Gomes
 Ba. Humberto Osório Ovídeo Gomes
 
-# Equipe de Análise e Desenvolvimento
+### Equipe de Análise e Desenvolvimento
 Bianca Stephani
 Cristiano Lima Sobrinho
 Danniel Albuquerque Araújo
@@ -51,19 +51,19 @@ Pedro Ivo Freire Aragão
 
 -------
 
-# Já participaram do projeto:
+### Já participaram do projeto:
 
-## Consultoria de Metodologias Ágeis
+#### Consultoria de Metodologias Ágeis
 Ari Amaral
 Christiano Milfont
 
-## Vice-Coordenação do Centro de Produção II
+#### Vice-Coordenação do Centro de Produção II
 Lisboa Coutinho Júnior
 
-## Coordenação da Célula de Usabilidade e Design
+#### Coordenação da Célula de Usabilidade e Design
 Profa. Dra. Cátia M. Harriman
 
-## Célula de Usabilidade e Design
+#### Célula de Usabilidade e Design
 Alexia Bivar
 Andrei Bosco Bezerra Torres
 Camila Paiva
@@ -72,7 +72,7 @@ Katryne Rabelo
 Renata Gadelha 
 Yohana Almeida
 
-## Equipe de Análise e Desenvolvimento
+#### Equipe de Análise e Desenvolvimento
 Afonsina Soares
 Andrei Bosco Bezerra Torres
 Bruno Neves
