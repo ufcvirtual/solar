@@ -153,11 +153,16 @@ class Post < ActiveRecord::Base
   end
 
    # obtain and reorder posts by its "children/grandchildren"
-  def reordered_children(user_id, display_mode='three')
+  def reordered_children(user_id, display_mode='three', posts=nil)
     if display_mode == 'list'
       children.where("draft = 'f' OR (draft = 't' AND user_id = ?)", user_id)
     else
-      Post.reorder_by_latest_posts(children.where("draft = 'f' OR (draft = 't' AND user_id = ?)", user_id))
+      unless posts.blank?
+        posts.select{|post| post.parent_id == id}
+      else
+        []
+        #Post.reorder_by_latest_posts(children.where("draft = 'f' OR (draft = 't' AND user_id = ?)", user_id))
+      end
     end
   end
 

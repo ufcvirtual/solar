@@ -128,9 +128,9 @@ class Discussion < Event
     posts_by_allocation_tags_ids(allocation_tags_ids, user_id, nil, { select: 'DISTINCT ON (updated_at, parent_id) updated_at, parent_id, level' })
   end
 
-  def posts_by_allocation_tags_ids(allocation_tags_ids = nil, user_id = nil, my_list=nil, opt = { grandparent: true, query: '', order: 'updated_at desc', limit: nil, offset: nil, select: 'DISTINCT discussion_posts.id, discussion_posts.*' })
+  def posts_by_allocation_tags_ids(allocation_tags_ids = nil, user_id = nil, my_list=nil, opt = { grandparent: false, query: '', order: 'updated_at desc', limit: nil, offset: nil, select: 'DISTINCT discussion_posts.id, discussion_posts.*' })
     allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids).map(&:related).flatten.compact.uniq
-    posts_list = discussion_posts.where(opt[:query]).order(opt[:order]).limit(opt[:limit]).offset(opt[:offset]).select(opt[:select])
+    posts_list = discussion_posts.includes(:files).where(opt[:query]).order(opt[:order]).limit(opt[:limit]).offset(opt[:offset]).select(opt[:select])
     query_hash = {allocation_tags: { id: allocation_tags_ids }}
     query_hash.merge!({user_id: user_id}) unless my_list.blank?
     posts_list = posts_list.joins(academic_allocation: :allocation_tag).where(query_hash ) unless allocation_tags_ids.blank?

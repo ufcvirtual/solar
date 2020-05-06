@@ -156,7 +156,7 @@ class PostsController < ApplicationController
     @researcher = (params[:researcher] == "true" or params[:researcher] == true)
     @class_participants = AllocationTag.get_participants(allocation_tag_id, { all: true }).map(&:id)
 
-    render partial: 'post', locals: { post: post, display_mode: nil, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: (params[:new_post] ? params[:id] : nil) }
+    render partial: 'post', locals: { post: post, display_mode: nil, can_interact: can_interact, can_post: can_post, current_user: current_user, new_post: (params[:new_post] ? params[:id] : nil), posts: [] }
   end
 
   ## DELETE /posts/1

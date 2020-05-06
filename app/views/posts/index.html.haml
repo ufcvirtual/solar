@@ -88,7 +88,8 @@
       - @hash = { } unless @display_mode == 'list'
       - @posts = get_page_posts(@posts, @current_page) unless @display_mode == 'list'
       - @posts.each do |post|
-        = render partial: 'post', locals: { post: post, display_mode: @display_mode, can_interact: @can_interact, can_post: @can_post, current_user: @user, new_post: false, number: '', comments: (@acu.try(:comments).count rescue nil)}
+        - if post.parent_id.nil? || @display_mode == 'list'
+          = render partial: 'post', locals: { post: post, display_mode: @display_mode, can_interact: @can_interact, can_post: @can_post, current_user: @user, new_post: false, number: '', comments: (@acu.try(:comments).count rescue nil), posts: @posts}
 
 .block_wrapper
   = link_to t(:back), :back, class: 'btn' , id: 'back', :'aria-label' => t(:back)
