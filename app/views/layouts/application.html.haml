@@ -14,10 +14,6 @@
     /[if lte IE 7]
       <haml_loud> javascript_include_tag 'lte-ie7' </haml_loud>
       <haml_loud> stylesheet_link_tag "misc/ie7" </haml_loud>
-    / IM \
-    = javascript_include_tag "converse/converse"
-    = stylesheet_link_tag "converse/converse"
-    / IM \
     = stylesheet_link_tag "application", "fancybox"
     = stylesheet_link_tag "themes/theme_" + "#{user_session[:theme]}", id: "themes"
     / Datapicker with time
@@ -156,13 +152,6 @@
 
         #mandatory_notification.invisible= link_to "", show_mandatory_notifications_path(':notification_id'), {class: 'link_content fancybox.iframe', target: '_blank' }
 
-        - if current_user
-          #chatpanel
-            #collective-xmpp-chat-data{style: "display: none"}
-            #toggle-controlbox
-              %a.chat.toggle-online-users{href: "#"}
-                %strong.conn-feedback="Bate-Papo"
-
       %footer
         #footer_push{style: "height:35px"}
         - locales  =  %w(pt_BR en_US)
@@ -297,139 +286,6 @@
       var home_tab = $(".mysolar_unit_active_tab.general_context").length;
       if (!home_tab && $.cookie(lesson_cookie_id))
         $("#mysolar_open_lesson button").removeClass("disabled");
-    });
-
-
-    // IM
-    imageLoading = "#{image_path('spinner.gif')}"
-    xmpp_cpf = "#{current_user.cpf}";
-    xmpp_ip = "#{@_ip}";
-    xmpp_dominio = "#{@_dominio}";
-    xmpp_port = "#{@_porta}";
-    xmpp_pass = "#{current_user.encrypted_password}";
-    number_chatbox = 0;
-
-    //cookie IM_geral
-    if(($.cookie("cookie_im")) && ($.cookie("cookie_im") != "null"))
-      cookie_im = JSON.parse($.cookie("cookie_im"));
-    else
-      cookie_im = JSON.parse('{"IM" : false, "IM_toggle":true}');
-
-    $.cookie("cookie_im",JSON.stringify(cookie_im),{path : "/"});
-    function getCookie(){
-      cookie_im = JSON.parse($.cookie("cookie_im"));
-    }
-
-    function setCookie(){
-      $.cookie("cookie_im",JSON.stringify(cookie_im),{path : "/"});
-    }
-
-    //cookie IM_groups
-    if($.cookie("cookie_groups"))
-      cookie_groups = JSON.parse($.cookie("cookie_groups"));
-    else
-      cookie_groups = JSON.parse('{}');
-
-    $.cookie("cookie_groups",JSON.stringify(cookie_groups),{path : "/"});
-    function getCookieGroups(){
-      cookie_groups = JSON.parse($.cookie("cookie_groups"));
-    }
-
-    function setCookieGroups(){
-      $.cookie("cookie_groups",JSON.stringify(cookie_groups),{path : "/"});
-    }
-
-    converse.initialize({
-      prebind: false,
-      // jid: data.jid,
-      // sid: data.sid,
-      // rid: data.rid,
-      debug: false,
-      auto_list_rooms: false,
-      auto_subscribe: false,
-      bosh_service_url: 'http://'+ xmpp_ip +':' + xmpp_port + '/http-bind/',
-      hide_muc_server: false,
-      i18n: locales["pt_BR"], // Refer to ./locale/locales.js to see which locales are supported
-      allow_contact_requests: false,
-      show_only_online_users: false,
-      show_controlbox_by_default: false,
-      xhr_user_search: false
-    });
-
-    //show
-    $(document).ready(function(e){
-      if(cookie_im.IM){
-        con.showControlBox();
-        if(cookie_im.Groups){
-          var time = 0;
-          $("#chatpanel")[0].style.display = "none";
-          var id = setInterval(function(e){
-            if(!con.qtd_rosters_with_groups || !con.roster.length)
-              time++;
-            else if(con.qtd_rosters_with_groups == con.roster.length){
-              $("#order").click();
-              $("#chatpanel")[0].style.display = "block";
-              clearTimeout(id);
-            }
-          },10);
-        delete time;
-        }
-      }
-
-      var pathname = $(location).attr("pathname");
-
-      if(pathname == "/editions/repositories" ||
-         pathname == "/administrations/indication_users") {
-        $("#link_to_search_box").hide();
-      }
-    });
-
-    // trigger isShow
-    $(function(){
-      $('#toggle-controlbox').click(function(e){
-        if(cookie_im.IM){
-          cookie_im.IM=false;
-          setCookie();
-        }
-        else{
-          cookie_im.IM=true;
-          setCookie();
-          con.showControlBox();
-        }
-      });
-      //logout
-      $('.mysolar_top_link.logout').click(function(e) {
-        try {
-          alert(logout_path)
-          alert('teste ok')
-          $(".xmpp-status-menu .unavailable").click();
-          con.xmppstatus.save({'status': 'online'});
-          delete con;
-          con = null;
-          setTimeout(function(){location.href="#{logout_path}";},250); // espera 250 milesegundos para redirecionar para a pagina de logout
-          e.preventDefault();
-        } catch(err) {}
-      });
-      //IM
-      // Synchronizing user
-      $("#synchronize").click(function(){
-        $.get($(this).data("url"), function(data){
-          if (typeof(data.message) != "undefined" && typeof(data.type_message) != "undefined")
-            flash_message(data.message, data.type_message);
-          if (typeof(data.nick) != "undefined")
-            $("#mysolar_top_user_nick").html(data.nick);
-          if (typeof(data.name) != "undefined")
-            $("#mysolar_top_submenu_username").html(data.name);
-          if (typeof(data.email) != "undefined")
-            $("#mysolar_top_submenu_useremail").html(data.email);
-        }).error(function(data){
-          var data = $.parseJSON(data.responseText);
-          if (typeof(data.alert) != "undefined")
-            flash_message(data.alert, "alert");
-        });
-      });
-
-      $($("#page_title h1").children("span")[0]).removeAttr("title")
     });
 
     //Select theme function

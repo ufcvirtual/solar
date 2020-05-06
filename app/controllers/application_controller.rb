@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :authenticate_user!, except: [:verify_cpf, :api_download, :lesson_media, :tutorials, :privacy_policy, :comment_media] # devise
-  before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :init_xmpp_im, :get_theme
+  before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :get_theme
   after_filter :log_navigation
 
   # before_filter :check_concurrent_session
@@ -220,13 +220,6 @@ class ApplicationController < ActionController::Base
     def set_session_opened_tabs(hash_url, params_url)
       user_session[:tabs][:opened][params[:id]] = { breadcrumb: [{name: params[:name], tab: params[:tab] || params[:name], url: params_url}], url: hash_url }
       set_active_tab params[:id]
-    end
-
-    def init_xmpp_im
-      conf = YAML::load_file(File.join('config','im.yml'))
-      @_dominio = conf['dominio']
-      @_ip = conf['ip']
-      @_porta = conf['porta']
     end
 
     def crud_action
