@@ -24,7 +24,7 @@ module MenuHelper
     }
 
     menus.each_with_index do |menu, idx|
-      contexts = menu.contexts.pluck(:id)
+      contexts = menu.contexts.map(&:id) 
       code_to_shortcut = menu.name
       menu_item_link = link_to(t(menu.name), url_for({controller: "/#{menu.resource.controller}", action: menu.resource.action,
         bread: menu.name, contexts: contexts.join(',')}), onclick: 'focusTitle();', onkeypress: 'focusTitle();', onkeydown: 'click_on_keypress(event, this);', class: menu.parent.nil? ? 'mysolar_menu_title' : '', :'data-shortcut' => (I18n.translate!(code_to_shortcut, scope: "shortcut.vertical_menu.code", raise: true) rescue ''), :'data-shortcut-shift' => true, :'data-shortcut-complement' => (I18n.translate!(code_to_shortcut, scope: "shortcut.vertical_menu.complement", raise: true) rescue ''))

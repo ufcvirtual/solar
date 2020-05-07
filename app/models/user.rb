@@ -338,7 +338,7 @@ class User < ActiveRecord::Base
     query_contexts = 'menus_contexts.context_id IN (:contexts)' unless args[:contexts].empty?
     resources_id = Resource.joins(:profiles).where(profiles: { id: args[:profiles].flatten })
 
-    Menu.joins(:menus_contexts).includes(:resource, :parent).where(resource_id: resources_id, status: true)
+    Menu.joins(:menus_contexts).includes(:resource, :parent, :contexts).where(resource_id: resources_id, status: true)
       .where(query_contexts, contexts: args[:contexts]).order('parents_menus.order, menus.order')
 
   end
