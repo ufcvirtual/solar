@@ -24,7 +24,9 @@ class ApplicationController < ActionController::Base
 
   before_filter :authenticate_user!, except: [:verify_cpf, :api_download, :lesson_media, :tutorials, :privacy_policy, :comment_media] # devise
   before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :get_theme
-  after_filter :log_navigation
+  #after_filter :log_navigation
+
+  before_filter :verify_session_blocking_content, except: [:verify_cpf, :api_download, :lesson_media, :tutorials, :privacy_policy, :comment_media, :sign_in, :sign_out]
 
   # before_filter :check_concurrent_session
 
@@ -396,6 +398,12 @@ class ApplicationController < ActionController::Base
       redirect_to login_path, alert: t('users.errors.multiple_sessions')
     else
       return true
+    end
+  end
+
+  def verify_session_blocking_content
+    if(!user_session.nil? && (user_session[:blocking_content].is_a? Array) && user_session[:blocking_content].empty?)
+      user_session[:blocking_content] = Exam.verify_blocking_content(current_user.id)
     end
   end
 
