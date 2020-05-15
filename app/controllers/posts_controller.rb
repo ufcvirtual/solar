@@ -16,7 +16,7 @@ class PostsController < ApplicationController
     if user_session[:blocking_content]
       redirect_to :back, alert: t('exams.restrict')
     else
-      @discussion, @user = Discussion.includes(:allocation_tags, :schedule).find(params[:discussion_id]), current_user
+      @discussion, @user = Discussion.includes(:allocation_tags, :schedule, :enunciation_files).find(params[:discussion_id]), current_user
 
       @academic_allocation = AcademicAllocation.where(academic_tool_id: @discussion.id, academic_tool_type: 'Discussion', allocation_tag_id: [active_tab[:url][:allocation_tag_id], AllocationTag.find_by_offer_id(active_tab[:url][:id]).id]).first
       authorize! :index, Discussion, { on: [@allocation_tags = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.map(:id)], read: true }
@@ -49,6 +49,7 @@ class PostsController < ApplicationController
         @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags, current_user.id, my_list).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
       else
         @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags, current_user.id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
+        @posts_children = @discussion.posts_by_allocation_tags_ids(@allocation_tags, current_user.id, nil, { grandparent: true, query: '', order: 'updated_at desc', limit: nil, offset: nil, select: 'DISTINCT discussion_posts.id, discussion_posts.*' }, true)
       end
 
       if current_user.is_student?([@allocation_tags].flatten)

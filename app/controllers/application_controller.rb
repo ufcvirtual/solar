@@ -176,9 +176,12 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     if user_signed_in?
-      personal_options = PersonalConfiguration.find_or_create_by(user_id: current_user.id)
-      personal_options.update_attributes(default_locale: params[:locale]) if (params[:locale].present? && params[:locale].to_s != personal_options.default_locale.to_s)
-      params[:locale] = personal_options.default_locale
+      unless user_session[:personal_options]
+        personal_options = PersonalConfiguration.find_or_create_by(user_id: current_user.id)
+        user_session[:personal_options] = personal_options
+        personal_options.update_attributes(default_locale: params[:locale]) if (params[:locale].present? && params[:locale].to_s != personal_options.default_locale.to_s)
+      end
+      params[:locale] = user_session[:personal_options].default_locale
     end
 
     I18n.locale = ['pt_BR', 'en_US'].include?(params[:locale]) ? params[:locale] : I18n.default_locale
@@ -187,8 +190,10 @@ class ApplicationController < ActionController::Base
 
   def get_theme
     if user_signed_in?
-      current_theme = PersonalConfiguration.find_by_user_id(current_user.id)
-      user_session[:theme] = current_theme.theme
+      unless user_session[:personal_options]
+        user_session[:personal_options] = PersonalConfiguration.find_by_user_id(current_user.id)
+      end
+      user_session[:theme] = user_session[:personal_options].theme
     end
   end
 

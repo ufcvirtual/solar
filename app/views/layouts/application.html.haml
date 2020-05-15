@@ -73,7 +73,7 @@
             #mysolar_top_submenu_useremail= current_user.email
           %ul
             /  icon-cycle
-            - if current_user.can_synchronize?
+            - if user_can_synchronize?
               %li.sub_nav_menu= link_to t("mysolar.synchronize"), "#", :'data-url' => synchronize_ma_users_path, id: 'synchronize', class: "sub_nav_item"
             %li.sub_nav_menu= link_to t(:mysolar_edit_profile), edit_user_registration_path, id: 'my_data', class: "sub_nav_item"
             %li.sub_nav_menu= link_to t(:mysolar_change_picture), edit_photo_users_path, class: "fancybox.ajax sub_nav_item", id: "change_picture", :'aria-label' => t(:mysolar_change_picture) + t('fancybox.open')

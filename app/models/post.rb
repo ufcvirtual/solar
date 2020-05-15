@@ -158,10 +158,10 @@ class Post < ActiveRecord::Base
       children.where("draft = 'f' OR (draft = 't' AND user_id = ?)", user_id)
     else
       unless posts.blank?
-        posts.select{|post| post.parent_id == id}
+        posts = posts.select{|post| post.parent_id == id}
+        Post.reorder_by_latest_posts(posts)
       else
-        []
-        #Post.reorder_by_latest_posts(children.where("draft = 'f' OR (draft = 't' AND user_id = ?)", user_id))
+        Post.reorder_by_latest_posts(children.where("draft = 'f' OR (draft = 't' AND user_id = ?)", user_id))
       end
     end
   end

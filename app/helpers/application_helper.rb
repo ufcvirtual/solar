@@ -118,4 +118,15 @@ module ApplicationHelper
     render json: { success: false, alert: (message.nil? ? error_message : error.message) }, status: :unprocessable_entity
   end
 
+  def user_can_synchronize?
+    if !user_session.nil? 
+      if user_session[:can_synchronize].nil?
+        user_session[:can_synchronize] = current_user.can_synchronize?
+      end
+      user_session[:can_synchronize]
+    else
+      current_user.can_synchronize?
+    end
+  end
+
 end
