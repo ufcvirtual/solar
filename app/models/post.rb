@@ -102,13 +102,24 @@ class Post < ActiveRecord::Base
   end
 
   ## Retorna o post 'avo', ou seja, o post do nivel mais alto informado em 'post_level'
-  def grandparent(post_level=nil)
+  def grandparent(post_level=nil, posts=nil)
+    parent_1 = self.load_parent(posts)
     unless post_level.nil?
       return nil if (post_level > level)
-      (parent.nil? ? self : ((parent.level == post_level) ? parent : parent.grandparent(post_level)))
+      (parent_1.nil? ? self : ((parent_1.level == post_level) ? parent_1 : parent_1.grandparent(post_level, posts)))
     else
-      (parent.try(:grandparent) || parent || self)
+      ((!parent_1.nil? && parent_1.grandparent(nil, posts)) || parent_1 || self)
     end
+  end
+
+  def load_parent(posts)
+    parent_1 = nil
+    posts.each do |post| 
+      if self.parent_id == post.id
+        parent_1 = post
+      end
+    end
+    parent_1
   end
 
   def discussion

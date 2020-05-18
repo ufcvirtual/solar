@@ -130,15 +130,15 @@ class Discussion < Event
 
   def posts_by_allocation_tags_ids(allocation_tags_ids = nil, user_id = nil, my_list=nil, opt = { grandparent: true, query: '', order: 'updated_at desc', limit: nil, offset: nil, select: 'DISTINCT discussion_posts.id, discussion_posts.*' }, all=nil)
     allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids).map(&:related).flatten.compact.uniq
-    posts_list = discussion_posts.includes(:files, :user, :profile, :parent).where(opt[:query]).order(opt[:order]).limit(opt[:limit]).offset(opt[:offset]).select(opt[:select])
+    posts_list = discussion_posts.includes(:files, :user, :profile).where(opt[:query]).order(opt[:order]).limit(opt[:limit]).offset(opt[:offset]).select(opt[:select])
     query_hash = {allocation_tags: { id: allocation_tags_ids }}
     query_hash.merge!({user_id: user_id}) unless my_list.blank?
     posts_list = posts_list.joins(academic_allocation: :allocation_tag).where(query_hash ) unless allocation_tags_ids.blank?
     posts_list = posts_list.where("(draft = ? ) OR (draft = ? AND user_id= ?)", false, true, user_id) if my_list.blank?
     if all.nil?
-      (opt[:grandparent] ? posts_list.map(&:grandparent).uniq.compact : posts_list.compact.uniq) 
+      (opt[:grandparent] ? posts_list.map{ |p| p.grandparent(nil, posts_list)}.uniq.compact : posts_list.compact.uniq) 
     else
-      posts_list
+      posts_list.compact.uniq
     end
   end
 
