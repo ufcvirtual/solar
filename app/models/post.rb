@@ -6,6 +6,7 @@ class Post < ActiveRecord::Base
   belongs_to :profile
   belongs_to :parent, class_name: 'Post'
   belongs_to :user
+  has_many :vw_order_post_ancestry, :foreign_key => "start_of_ancestry"
 
   belongs_to :academic_allocation, -> { where academic_tool_type: 'Discussion' }
   belongs_to :academic_allocation_user

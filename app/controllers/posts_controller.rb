@@ -48,7 +48,7 @@ class PostsController < ApplicationController
         my_list = true
         @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags, current_user.id, my_list).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
       else
-        @posts = @discussion.posts_by_allocation_tags_ids(@allocation_tags, current_user.id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
+        @posts = @discussion.posts_by_allocation_tags_ids_tree(@allocation_tags, current_user.id).paginate(page: params[:page] || 1, per_page: Rails.application.config.items_per_page) # caso contrário, recupera e reordena os posts do nível 1 a partir das datas de seus descendentes
         @posts_children = @discussion.posts_by_allocation_tags_ids(@allocation_tags, current_user.id, nil, { grandparent: true, query: '', order: 'updated_at desc', limit: nil, offset: nil, select: 'DISTINCT discussion_posts.id, discussion_posts.*' }, true)
       end
 

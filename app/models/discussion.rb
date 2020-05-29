@@ -142,6 +142,16 @@ class Discussion < Event
     end
   end
 
+  def posts_by_allocation_tags_ids_tree(allocation_tags_ids = nil, user_id = nil, my_list=nil, opt = { grandparent: true, query: '', order: 'ordem ASC', limit: nil, offset: nil, select: 'start_of_ancestry, ordem, discussion_posts.*' }, all=nil)
+    allocation_tags_ids = AllocationTag.where(id: allocation_tags_ids).map(&:related).flatten.compact.uniq
+    posts_list = discussion_posts.joins(:vw_order_post_ancestry).includes(:files, :user, :profile).where(opt[:query]).order(opt[:order]).limit(opt[:limit]).offset(opt[:offset]).select(opt[:select])
+    query_hash = {allocation_tags: { id: allocation_tags_ids }}
+    query_hash.merge!({user_id: user_id}) unless my_list.blank?
+    posts_list = posts_list.joins(academic_allocation: :allocation_tag).where(query_hash ) unless allocation_tags_ids.blank?
+    posts_list = posts_list.where("(draft = ? ) OR (draft = ? AND user_id= ?)", false, true, user_id) if my_list.blank?
+    posts_list.compact.uniq
+  end
+
   def resume(allocation_tags_ids = nil)
     {
       id: id,
