@@ -15,9 +15,9 @@ module AcademicTool
 
     before_save :set_situation_date, if: 'merge.nil?', on: :update
 
-    after_update if: 'notify_change?' do
-      send_email(true)
-    end
+    #after_update if: 'notify_change?' do
+    #  send_email(true)
+    #end
 
     attr_accessor :allocation_tag_ids_associations, :merge
   end
@@ -133,13 +133,15 @@ module AcademicTool
   end
 
   def send_email(verify_type='delete', acs=nil, old_info=nil)
+    Rails.logger.info "\n\n Rails.logger.info #{acs.as_json}\n\n"
     begin
       ats = (acs.nil? ? academic_allocations : acs).map(&:allocation_tag_id).flatten.uniq
       ats = AllocationTag.where(id: ats).joins('LEFT JOIN groups ON groups.id = allocation_tags.group_id').where("group_id IS NULL OR groups.status = 't'").map(&:id).uniq
     rescue
       ats = [acs.allocation_tag]
     end
-    Thread.new do
+unless ats.blank?
+#    Thread.new do
       ActiveRecord::Base.connection
         emails = User.with_access_on('receive_academic_tool_notification','emails',ats, true).map(&:email).compact.uniq
 
@@ -163,8 +165,9 @@ module AcademicTool
             end
           end
           Job.send_mass_email(emails, subject, template_mail) unless subject.blank?
-        end
+ #       end
       ActiveRecord::Base.connection.close
+end
     end
   end
 

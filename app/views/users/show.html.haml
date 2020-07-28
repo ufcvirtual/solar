@@ -10,7 +10,8 @@
         =image_tag 'no_image.png', alt: t(:mysolar_alt_img_user) + ' ' + @user.name, class: 'block_photo'
     .block_right
       %div=@user.name
-      %div=@user.cpf
+      /%div=@user.cpf
+      %div=(current_user.admin? ? @user.cpf : 'XXX.XXX.XXX-XX')
       %div=@user.status
 
   .block_content

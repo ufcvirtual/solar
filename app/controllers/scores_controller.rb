@@ -17,11 +17,12 @@ class ScoresController < ApplicationController
 
     @group = @allocation_tag.groups.first
     @merged_group = @group.is_merged?
+    @username = params[:user_name]
 
     ats = @allocation_tag.related
     @responsibles = AllocationTag.get_participants(@allocation_tag_id, { responsibles: true, profiles: Profile.with_access_on("create", "posts").join(",") }, true) if current_user.profiles_with_access_on("responsibles", "scores", ats).any?
 
-    @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true).paginate(page: params[:page], per_page: 20)
+    @users = AllocationTag.get_participants(@allocation_tag_id, { students: true , user_name: params[:user_name]}, true).paginate(page: params[:page], per_page: 20)
     @tools = ( ats.empty? ? [] : EvaluativeTool.count_tools(ats.join(',')) )
     @tools_list = EvaluativeTool.descendants
 
@@ -30,6 +31,7 @@ class ScoresController < ApplicationController
 
   require 'will_paginate/array'
   def evaluatives_frequency
+    @username = params[:user_name]
     authorize! :index, Score, on: [@allocation_tag_id = active_tab[:url][:allocation_tag_id]]
 
     @wh = AllocationTag.find(@allocation_tag_id).get_curriculum_unit.try(:working_hours)
@@ -65,7 +67,7 @@ class ScoresController < ApplicationController
 
     @score_type = params[:type]
     if params[:report]
-      @users = Score.get_users(ats)
+      @users = Score.get_users(ats, params[:user_name])
       @ats = AllocationTag.find(@allocation_tag_id)
       @scores = Score.evaluative_frequency(ats, params[:type])
 
@@ -79,7 +81,7 @@ class ScoresController < ApplicationController
       send_data ReportsHelper.scores_evaluatives_frequency(@ats, @score_type, @users, @scores, @acs, @examidx, @assignmentidx, @scheduleEventidx, @discussionidx, @chatRoomidx, @webconferenceidx).render, :filename => "#{t("scores.reports.general_#{@score_type}")}.pdf", :type => "application/pdf", disposition: 'inline'
 
     else
-      @users = Score.get_users(ats).paginate(page: params[:page], per_page: 20)
+      @users = Score.get_users(ats, params[:user_name]).paginate(page: params[:page], per_page: 20)
       @scores = Score.evaluative_frequency(ats, params[:type])
       respond_to do |format|
         format.html { render partial: 'evaluative_frequency', locals: {score_type: params[:type] }}
@@ -102,15 +104,17 @@ class ScoresController < ApplicationController
 
     @group = @allocation_tag.groups.first
     @merged_group = @group.is_merged?
+    @username = params[:user_name]
+
 
     if params[:report]
-      @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true)
+      @users = AllocationTag.get_participants(@allocation_tag_id, { students: true, user_name: params[:user_name]}, true)
       @ats = AllocationTag.find(@allocation_tag_id)
 
       send_data ReportsHelper.scores_general(@ats, @wh, @users, @allocation_tag_id, @tools, params[:type], @merged_group).render, :filename => "#{t("scores.reports.#{params[:type]}")}.pdf", :type => "application/pdf", disposition: 'inline'
 
     else
-      @users = AllocationTag.get_participants(@allocation_tag_id, { students: true }, true).paginate(:page => params[:page], :per_page => 20)
+      @users = AllocationTag.get_participants(@allocation_tag_id, { students: true, user_name: params[:user_name] }, true).paginate(:page => params[:page], :per_page => 20)
       respond_to do |format|
         format.html { render partial: "#{params[:type]}"  }
         format.json { render json: @users }

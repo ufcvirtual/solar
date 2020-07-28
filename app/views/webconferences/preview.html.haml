@@ -1,5 +1,8 @@
 .block_wrapper.preview_webconferences
   .title-warning= t('.warning')
+  .title-warning
+    ='Esta tela carrega inicialmente apenas webconferências agendadas para iniciar hoje.'
+    = link_to 'Listar todas as webconferências', preview_webconferences_path(today: false), class: "btn btn_default", id: "all_webs"
   - unless @webconferences.blank?
     .block_title
       %h2
@@ -62,6 +65,7 @@
                 .dropdown.dropdown-tip{id: "dropdown_m_#{idx}"}
                   %ul{ class: 'dropdown-menu' }
                     = webconference.user_name
+                    %span= link_to (content_tag(:i, nil, class: 'icon-mail participants_messages', :'aria-hidden' => 'true')), new_message_path(user_id: webconference.user_id, layout: true, bread: 'menu_messages'), class: 'can-update-menu', 'data-menu-bread' => 'menu_messages', :'aria-label' => t('messages.message_to', name: webconference.user_name)
               .equivalent
                 - unless webconference.eq_name.blank?
                   %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{idx}" }

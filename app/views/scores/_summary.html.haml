@@ -39,4 +39,4 @@
       - else
         = render partial: 'pending_summary', locals: { users: @users, merged_group: @merged_group }
 - unless @users.blank?
-  = link_to content_tag(:i, nil, class: "icon-ellipsis"), summary_scores_path(page: @users.next_page), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items), :'aria-label' => t(:load_items)  if @users.next_page
+  = link_to content_tag(:i, nil, class: "icon-ellipsis"), summary_scores_path(page: @users.next_page, user_name: @username), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items), :'aria-label' => t(:load_items)  if @users.next_page

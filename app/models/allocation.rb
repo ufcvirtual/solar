@@ -184,7 +184,7 @@ class Allocation < ActiveRecord::Base
   def self.list_for_designates(allocation_tags_ids, is_admin = false)
     query = []
     query << (allocation_tags_ids.empty? ? "allocation_tag_id IS NULL" : "allocation_tag_id IN (?)")
-    query << (!!is_admin ? "not(profiles.types & #{Profile_Type_Basic})::boolean" : "(profiles.types & #{Profile_Type_Class_Responsible})::boolean")
+    query << (!!is_admin ? "not(profiles.types & #{Profile_Type_Basic})::boolean" : "((profiles.types & #{Profile_Type_Class_Responsible})::boolean OR profiles.id = 29)")
 
     joins(:profile, :user).where(query.join(' AND '), allocation_tags_ids)
   end
@@ -333,7 +333,7 @@ class Allocation < ActiveRecord::Base
           else
             # if doesnt have a final exam grade
             if final_exam_grade.blank?
-              if allocation_tag.academic_allocations.where(final_exam: true).any?
+              if allocation_tag.academic_allocations.where(final_exam: true).any? && Date.today < date
                 update_attributes grade_situation: FinalExamPending
               else
                 update_attributes grade_situation: Failed

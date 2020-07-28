@@ -242,9 +242,10 @@ module EvaluativeTool
       when 'ScheduleEvent'
         return false unless can_change?
         if groups.any?
-          academic_allocation_users.joins(:academic_allocation).where(academic_allocations: { academic_tool_id: id, academic_tool_type: 'ScheduleEvent', allocation_tag_id: groups.map(&:allocation_tag).map(&:id) }).empty?
+          academic_allocation_users.joins(:academic_allocation).where(academic_allocations: { academic_tool_id: id, academic_tool_type: 'ScheduleEvent', allocation_tag_id: groups.map(&:allocation_tag).map(&:id) }).where('academic_allocation_users.status IS NOT NULL').empty?
         else
-          academic_allocation_users.empty?
+          #academic_allocation_users.empty?
+          academic_allocation_users.where('academic_allocation_users.status IS NOT NULL').empty?
         end
       else
         true

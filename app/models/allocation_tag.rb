@@ -219,6 +219,7 @@ class AllocationTag < ActiveRecord::Base
     types << "cast( profiles.types & '#{Profile_Type_Student}' as boolean )"           if params[:students]     || params[:all]
     types << "cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )" if params[:responsibles] || params[:all]
     query << "allocations.profile_id IN (#{params[:profiles]})"                                    if params[:profiles]
+    query << "lower(unaccent(users.name)) ~ lower(unaccent('#{params[:user_name]}'))" unless params[:user_name].blank?
 
     ats = (allocation_tag_id.kind_of?(Array) ? allocation_tag_id : AllocationTag.find(allocation_tag_id).related).flatten.join(',')
 

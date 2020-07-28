@@ -9,6 +9,8 @@
     = f.input :description, input_html: {size: 50}
     = f.input :initial_time, as: :string, label: t('assignment_webconferences.form.date_label'), placeholder: t('assignment_webconferences.form.date_placeholder'), :'aria-label' => t('assignment_webconferences.form.date_aria_label'), input_html: {value: (l(f.object.initial_time, format: :mask_with_time_form) rescue ''), size: 50}
     = f.input :duration, hint: t('.minutes')
+    /- @webconference.is_recorded = false
+    /= f.input :is_recorded, as: :boolean, boolean_style: :inline, input_html:{ value: false}
     = f.input :is_recorded, as: :boolean, boolean_style: :inline
 
     - unless @groups.blank?

@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   require "em-websocket"
 
-  include SysLog::Actions
+  #include SysLog::Actions
 
   # before_filter :authenticate_user!
   before_filter :prepare_for_pagination
@@ -16,10 +16,10 @@ class PostsController < ApplicationController
     if Exam.verify_blocking_content(current_user.id)
       redirect_to :back, alert: t('exams.restrict')
     else
-      @discussion, @user = Discussion.find(params[:discussion_id]), current_user
+      @discussion, @user = Discussion.includes(:allocation_tags, :schedule).find(params[:discussion_id]), current_user
 
       @academic_allocation = AcademicAllocation.where(academic_tool_id: @discussion.id, academic_tool_type: 'Discussion', allocation_tag_id: [active_tab[:url][:allocation_tag_id], AllocationTag.find_by_offer_id(active_tab[:url][:id]).id]).first
-      authorize! :index, Discussion, { on: [@allocation_tags = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.pluck(:id)], read: true }
+      authorize! :index, Discussion, { on: [@allocation_tags = active_tab[:url][:allocation_tag_id] || @discussion.allocation_tags.map(&:id)], read: true }
 
       @researcher = current_user.is_researcher?(AllocationTag.where(id: @allocation_tags).map(&:related).flatten.uniq)
       @class_participants = AllocationTag.get_participants(active_tab[:url][:allocation_tag_id], { all: true }).map(&:id)

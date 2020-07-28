@@ -63,7 +63,7 @@ class Exam < Event
         working_hours = (acu.academic_allocation.frequency ? ({working_hours: (wh = acu.academic_allocation.max_working_hours)}) : {})
         acu.update_attributes({grade: (grade > 10 ? 10 : grade.round(2)), status: AcademicAllocationUser::STATUS[:evaluated]}.merge!(working_hours))
         acu.recalculate_final_grade(acu.allocation_tag_id)
-        send_result_emails(acu, grade.round(2))
+        #send_result_emails(acu, grade.round(2))
       end
       [grade.round(2), wh]
     else

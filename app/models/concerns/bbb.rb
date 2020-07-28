@@ -15,7 +15,6 @@ module Bbb
     assignment_webconferences = AssignmentWebconference.where(query, initial_time, end_time, initial_time, end_time, initial_time, end_time)
     webconferences            << self unless self.class == AssignmentWebconference || webconferences.include?(self)
     assignment_webconferences << self unless self.class == Webconference || assignment_webconferences.include?(self)
-
     unless webconferences.empty? && assignment_webconferences.empty?
       ats      = webconferences.map(&:allocation_tags).flatten.map(&:related).flatten
       ats      << allocation_tags_ids if allocation_tags_ids.any? && !webconferences.include?(self)
@@ -253,7 +252,7 @@ module Bbb
   end
 
   def is_over?
-    Time.now > (initial_time+duration.minutes+15.minutes)
+    Time.now > (initial_time+(duration*3).minutes)
   end
 
   def over?

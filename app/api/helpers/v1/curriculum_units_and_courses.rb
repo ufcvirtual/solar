@@ -1,8 +1,10 @@
 module V1::CurriculumUnitsAndCourses
 
   def verify_or_create_curriculum_unit(attributes)
+    attributes[:curriculum_unit_type_id] = 6 if attributes[:curriculum_unit_type_id] == 3
+
     uc = CurriculumUnit.where(code: attributes[:code]).first_or_initialize
-    uc.attributes = curriculum_unit_params(ActiveSupport::HashWithIndifferentAccess.new(uc.attributes.merge!(attributes)), true).except('id')
+    uc.attributes = curriculum_unit_params(ActiveSupport::HashWithIndifferentAccess.new(uc.attributes.merge!(attributes)), true).except('id', 'level')
     uc.save!
     uc
   end

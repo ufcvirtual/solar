@@ -31,6 +31,7 @@ class PublicFilesController < ApplicationController
 
     render partial: 'list', locals: { public_files: @public_files}
   rescue => error
+    Rails.logger.info "\n\n erro #{error}\n\n "
     render json: { success: false, alert: (@public_file.nil? ? t('public_files.error.new') : @public_file.errors.full_messages) }, status: :unprocessable_entity
   end
 

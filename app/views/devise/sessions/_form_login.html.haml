@@ -9,6 +9,8 @@
       .form-field= f.text_field :login, id: "login-input", placeholder: t(:user_place_holder), tabindex: "1", :'aria-label' => t(:user_place_holder)
       .form-field= f.password_field :password, id: "password", placeholder: t(:password_place_holder), tabindex: "2", :'aria-label' => t(:password_place_holder)
       = f.submit t(:signin), id: "submit-login", tabindex: "3"
+    #flash_message{style: 'font-size:10pt;margin-left: 2%; margin-right:2%'}=raw"Alunos e professores do presencial devem utilizar mesmo login e senha do SIGAA. Professor, para importar suas disciplinas, <a href='https://drive.google.com/file/d/1e6pxe7v8M7GelJA1ZeBA3uUGQK7pgj3A/view?usp=sharing' target='_blank'>habilite o uso do Solar no SIGAA</a>."
+    %br
     #link
       %a#link-password{href: new_user_password_path}= t(:pwd_recovery_subtitle)
   #login-register
@@ -25,6 +27,9 @@
 
   / # = link_to image_tag("help-solar-grande2.png", alt: t(:solar_faq)), faq_path, target: '_blank', :'aria-label' => t(:login_faq)+ t(:new_window), id: "faq-button"
   / # = link_to image_tag("app-solar-grande2.png", alt: t(:login_app)), apps_path, target: '_blank', :'aria-label' => t(:login_app)+ t(:new_window)
+  %br
+  = image_tag("logos_brancos6.png", alt: '',  size: "290x80")
+  %br
   .app
     %h2
       =t(:login_app2)

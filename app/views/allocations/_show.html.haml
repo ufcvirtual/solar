@@ -1,6 +1,7 @@
 %tr.lines
   %td= allocation.user.name
-  %td= allocation.user.cpf
+  /%td= allocation.user.cpf
+  %td= (current_user.admin? ? allocation.user.cpf : 'XXX.XXX.XXX-XX')
   %td= allocation.user.email
   %td= allocation.profile.name
   - unless allocation.allocation_tag.nil?

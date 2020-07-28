@@ -65,7 +65,7 @@ class User < ActiveRecord::Base
 
   validates :name, presence: true, length: { within: 6..200 }
   validates :nick, presence: true, length: { within: 3..34 }
-  validates :username, presence: true, length: { maximum: 20, minimum: 3 }, uniqueness: {case_sensitive: false}, format: { with: /\A[_.a-zA-Z0-9\-]+\Z/ }, unless: Proc.new{ |a| !a.on_blacklist? && a.integrated? && (a.synchronizing.nil? || a.synchronizing) }
+  validates :username, presence: true, length: { maximum: 20, minimum: 2 }, uniqueness: {case_sensitive: false}, format: { with: /\A[_.a-zA-Z0-9\-]+\Z/ }, unless: Proc.new{ |a| !a.on_blacklist? && a.integrated? && (a.synchronizing.nil? || a.synchronizing) }
 
   validates :password, presence: true, confirmation: true, length: { minimum: 6, maximum: 120 }, unless: Proc.new { |a| !a.encrypted_password.blank? || (a.integrated? && !a.on_blacklist?) }
   # validates :alternate_email, format: { with: email_format }, uniqueness: {case_sensitive: false}, unless: 'alternate_email.blank?'
@@ -805,8 +805,8 @@ class User < ActiveRecord::Base
   end
 
   def self.user_ma_attributes(user_data)
-    data = { name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == 'M'), cell_phone: user_data[17], nick: (user_data[7].nil? ? ([user_data[2].split(' ')[0], user_data[2].split(' ')[1]].join(' ')) : user_data[7]), telephone: user_data[18], special_needs: ((user_data[19].blank? || user_data[19].downcase == 'nenhuma') ? nil : user_data[19]), address: user_data[10], address_number: user_data[11], zipcode: user_data[13], address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]), email: user_data[8], integrated: true }
-
+    Rails.logger.info "\n\n USER DATA #{user_data}\n\n"
+    data = { name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == 'M'), cell_phone: user_data[17], nick: (user_data[7].nil? ? ([user_data[2].split(' ')[0], user_data[2].split(' ')[1]].join(' ')) : user_data[7]), telephone: nil, special_needs: ((user_data[19].blank? || user_data[19].downcase == 'nenhuma') ? nil : user_data[19]), address: user_data[10], address_number: (user_data[11].blank? ? nil : user_data[11][0..9]), zipcode: user_data[13], address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]), email: user_data[8], integrated: true }
     if !user_data[6].blank?
       data.merge!({password: user_data[6]})
     elsif data[:password].blank?
@@ -1014,7 +1014,7 @@ class User < ActiveRecord::Base
                 )
               )
             )
-            AND groups.status = 't' AND o.id NOT IN (select id from offers_collection)
+            AND groups.status = 't' AND o.id NOT IN (select id from offers_collection) AND groups.integrated != 't'
           ) -- where
         ORDER BY enroll_start_date DESC;
       SQL

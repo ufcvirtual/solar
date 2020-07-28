@@ -47,13 +47,13 @@ class AcademicAllocation < ActiveRecord::Base
 
   attr_accessor :merge, :force
 
-  after_create if: 'verify_tool' do
-    AcademicTool.send_email(academic_tool, [self], false)
-  end
+  #after_create if: 'verify_tool' do
+  #  AcademicTool.send_email(academic_tool, [self], false)
+  #end
 
-  before_destroy if: 'verify_tool', prepend: true do
-    AcademicTool.send_email(academic_tool, [self]) if academic_tool.verify_can_destroy
-  end
+  #before_destroy if: 'verify_tool', prepend: true do
+  #  AcademicTool.send_email(academic_tool, [self]) if academic_tool.verify_can_destroy
+  #end
 
   def verify_tool
     !allocation_tag_id.nil? && academic_tool.verify_start && merge.nil? && (!academic_tool.respond_to?(:status_changed?) || academic_tool.status) && (allocation_tag.group_id.nil? || allocation_tag.group.status)
@@ -72,12 +72,12 @@ class AcademicAllocation < ActiveRecord::Base
       self.final_weight = 0
       self.max_working_hours = 0
       self.frequency = false
-    else
-      if uc.try(:curriculum_unit_type_id).to_i == 2
-        self.weight = 1
-      else
-        self.final_weight = 100
-      end
+#    else
+#      if uc.try(:curriculum_unit_type_id).to_i == 2
+#        self.weight = 1
+#      else
+#        self.final_weight = 100
+#      end
     end
     unless equivalent_academic_allocation_id.nil?
       ac = AcademicAllocation.find(equivalent_academic_allocation_id)

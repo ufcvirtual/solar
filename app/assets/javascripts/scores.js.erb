@@ -65,9 +65,15 @@ function open_tool(link){
   });
 }
 
+function search_user(){
+  var tab = $('#tabs li a.active');
+  change_tab(tab);
+}
+
 function change_tab(tab){
   loading_page($(tab));
-  $.get($(tab).data('url'), function(data){
+  //$.get($(tab).data('url'), function(data){
+  $.get($(tab).data('url').replace('usernameparam', $('#user_name').val()), function(data){
     $('.tb_list_students').html(data);
     $('#tabs a.active').removeClass('active');
     $('.tabs a.active').removeClass('active');

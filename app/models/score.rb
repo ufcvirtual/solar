@@ -406,7 +406,8 @@ class Score # < ActiveRecord::Base
   end
 
 
-  def self.get_users(ats)
+  def self.get_users(ats, user_name=nil)
+    query = user_name.blank? ? '' : " AND lower(unaccent(users.name)) ~ lower(unaccent('#{user_name}'))"
     User.find_by_sql <<-SQL
       SELECT DISTINCT users.id, users.name
       FROM users
@@ -415,6 +416,7 @@ class Score # < ActiveRecord::Base
       WHERE allocations.allocation_tag_id IN (#{ats})
       AND cast( profiles.types & '#{Profile_Type_Student}' as boolean )
       AND allocations.status = #{Allocation_Activated}
+      #{query}
       ORDER BY name;
     SQL
   end
@@ -850,7 +852,7 @@ class Score # < ActiveRecord::Base
       end
 
       query = query.join(' UNION ')
-      query + 'ORDER BY academic_tool_type, start_date, situation, name;'
+      query + 'ORDER BY academic_tool_type, start_date, name, situation;'
   end
 
 

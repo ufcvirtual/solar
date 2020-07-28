@@ -1,5 +1,5 @@
 .block_wrapper.module.tools
-  - distant_course = (@curriculum_unit.try(:curriculum_unit_type_id).try(:to_i) == 2 || false)
+  - distant_course = true#@curriculum_unit.try(:curriculum_unit_type_id).try(:to_i) == 2 || false)
   .block_title_exam.block_exam
     %h2{id: tool_name }
       .icons
@@ -17,8 +17,8 @@
             %th= t('editions.tools.final_exam')
             - unless distant_course
               %th= t('editions.tools.weight')
-            - else
-              %th= t('editions.tools.final_weight')
+            /- else
+            %th= t('editions.tools.final_weight')
             %th= t('editions.tools.frequency')
             %th= t('editions.tools.frequency_automatic')
             %th= t('editions.tools.max_wh')
@@ -68,9 +68,8 @@
                 %td.ckb.fe{onclick: 'check_checkbox(event, this)'}= acf.check_box :final_exam, label: false, disabled: !ac.evaluative
                 - unless distant_course
                   %td.weight= acf.text_field :weight, label: false, disabled: !ac.evaluative || ac.final_exam, value: (ac.weight.to_i == ac.weight ? ac.try(:weight).to_i : ac.try(:weight))
-                - else
-                  %td.final_weight
-                    = acf.text_field :final_weight, label: false, disabled: !ac.evaluative  || ac.final_exam, oninput: 'initializer_analizer()', value: final_weight
+                %td.final_weight
+                  = acf.text_field :final_weight, label: false, disabled: !ac.evaluative  || ac.final_exam, oninput: 'initializer_analizer()', value: final_weight
                 %td.ckb.f{onclick: 'check_checkbox(event, this)'}= acf.check_box :frequency, label: false, disabled: (wh || ac.final_exam), :'data-change' => !wh  && !ac.final_exam
                 %td.ckb.af{onclick: 'check_checkbox(event, this)'}= acf.check_box :frequency_automatic, label: false, disabled: (!ac.frequency || ac.academic_tool_type == 'ScheduleEvent' || ac.academic_tool_type == 'Exam'), checked: (ac.academic_tool_type == 'Exam' ? true : ac.frequency_automatic)
                 %td.working_hours

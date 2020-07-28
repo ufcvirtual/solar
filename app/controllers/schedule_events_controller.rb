@@ -84,6 +84,7 @@ class ScheduleEventsController < ApplicationController
       render json: {success: false, alert: t('schedule_events.error.evaluated')}, status: :unprocessable_entity
     end
   rescue => error
+    Rails.logger.info "\n\n ERRO #{error}\n\n"
     render_json_error(error, 'schedule_events.error')
   end
 

@@ -1,6 +1,7 @@
 - @user_blacklist.each do |user_bl|
   %tr.lines
-    %td= user_bl.cpf
+    /%td= user_bl.cpf
+    %td= (current_user.admin? ? user_bl.cpf : 'XXX.XXX.XXX-XX')
     %td= user_bl.name
     %td= l user_bl.created_at, format: :normal
     %td= l user_bl.updated_at, format: :normal

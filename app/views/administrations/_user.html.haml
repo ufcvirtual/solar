@@ -1,7 +1,8 @@
 %td= user.name
 %td= user.email
 %td= user.username
-%td= user.cpf
+/%td= user.cpf
+%td= (current_user.admin? ? user.cpf : 'XXX.XXX.XXX-XX')
 %td= user.status
 %td{style: 'text-align:right'}
   %a{class: "info_list btn", :"data-dropdown"=>"#info-dropdown#{user.id}" }= content_tag(:i, nil, class: 'icon-info') + content_tag(:i, nil, class: 'icon-arrow-down-triangle')

@@ -84,9 +84,26 @@ module V1
             load_group    = params[:turmas]
             cpfs          = load_group[:professores]
             semester_name = load_group[:periodo].blank? ? load_group[:ano] : "#{load_group[:ano]}.#{load_group[:periodo]}"
-            offer_period  = { start_date: load_group[:dtInicio].to_date, end_date: (load_group[:dtFim].to_date) }
-            course        = Course.find_by_code! load_group[:codGraduacao] unless load_group[:codGraduacao].blank?
+            #offer_period  = { start_date: load_group[:dtInicio].to_date, end_date: (load_group[:dtFim].to_date) }
+course = nil
+                unless load_group["codGraduacao"].blank?
+                        course = Course.find_by_code(load_group["codGraduacao"])
+
+                        if course.blank?
+#                                course = Course.create(code: load_group["codGraduacao"], name: (load_gro
+Course.create!(code: load_group["codGraduacao"], name: (load_group["nomeGraduacao"] || load_group["codGraduacao"]))
+                        end
+                end
+#            course        = Course.find_by_code! load_group[:codGraduacao] unless load_group[:codGraduacao].blank?
             uc            = CurriculumUnit.find_by_code! load_group[:codDisciplina]
+
+            if uc.try(:curriculum_unit_type_id) == 1
+            fim = load_group[:dtFim].to_date
+            offer_period  = { start_date: load_group[:dtInicio].to_date, end_date: ((fim < '2020-10-30'.to_date) ? '2020-10-30'.to_date : fim) }
+            else
+            offer_period  = { start_date: load_group[:dtInicio].to_date, end_date: (load_group[:dtFim].to_date) }
+            end
+
             begin
               group = nil
               if load_group[:name].blank?
@@ -116,6 +133,7 @@ module V1
               end
 
               allocate_professors(group, cpfs || [])
+ allocate_professors(group, cpfs || [], 5) unless ['107', '108', '109', '110', '111', '112', '113', '115', '118'].include?(course.try(:code))
 
               { ok: :ok }
             end

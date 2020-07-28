@@ -1,5 +1,5 @@
-$('.users').append('#{escape_javascript(render partial: "pending_general", locals: { users: @users })}');
-$('a.load-more-users').attr('href', '#{general_scores_path page: @users.next_page}');
+$('.users').append('#{escape_javascript(render partial: "pending_general", locals: { users: @users, username: @username })}');
+$('a.load-more-users').attr('href', '#{general_scores_path page: @users.next_page, user_name: @username}');
 $('a.load-more-users').attr("aria-label", "#{t(:load_items)}"); 
 $(".tb_list").trigger("update");
 

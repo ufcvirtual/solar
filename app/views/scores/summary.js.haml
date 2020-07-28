@@ -1,5 +1,5 @@
-$('.users').append('#{escape_javascript(render partial: "pending_summary", locals: { users: @users, merged_group: @merged_group })}');
-$('a.load-more-users').attr('href', '#{summary_scores_path page: @users.next_page}');
+$('.users').append('#{escape_javascript(render partial: "pending_summary", locals: { users: @users, merged_group: @merged_group, username: @username })}');
+$('a.load-more-users').attr('href', '#{summary_scores_path page: @users.next_page, user_name: @username}');
 $('a.load-more-users').attr("aria-label", "#{t(:load_items)}");
 $(".tb_list").trigger("update");
 

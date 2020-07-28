@@ -30,15 +30,17 @@ class Webconference < ActiveRecord::Base
     ((on_going? && bbb_online? && have_permission?(user, at_id.to_i)) ? (url ? bbb_join(user, at_id) : ActionController::Base.helpers.link_to((title rescue name), bbb_join(user, at_id), target: '_blank')) : (title rescue name))
   end
 
-  def self.all_by_allocation_tags(allocation_tags_ids, opt = { asc: true }, user_id = nil)
+  def self.all_by_allocation_tags(allocation_tags_ids, opt = { asc: true, today: false }, user_id = nil)
     query  = allocation_tags_ids.include?(nil) ? {} : { academic_allocations: { allocation_tag_id: allocation_tags_ids } }
+    query2 = opt[:today] ? "webconferences.initial_time::date = CURRENT_DATE" : ""
 
-    select = "users.name AS user_name, academic_allocations.evaluative, academic_allocations.frequency, academic_allocations.frequency_automatic, academic_allocations.max_working_hours, academic_allocations.final_exam, eq_web.title AS eq_name, webconferences.initial_time || '' AS start_hour, webconferences.initial_time + webconferences.duration* interval '1 min' || '' AS end_hour, webconferences.initial_time AS start_date, CASE
+    select = "users.name AS user_name, users.id AS user_id, academic_allocations.evaluative, academic_allocations.frequency, academic_allocations.frequency_automatic, academic_allocations.max_working_hours, academic_allocations.final_exam, eq_web.title AS eq_name, webconferences.initial_time || '' AS start_hour, webconferences.initial_time + webconferences.duration* interval '1 min' || '' AS end_hour, webconferences.initial_time AS start_date, CASE
       WHEN acu.grade IS NOT NULL OR acu.working_hours IS NOT NULL THEN 'evaluated'
       WHEN (acu.status = 1 OR (acu.status IS NULL AND (academic_allocations.academic_tool_type = 'Webconference' AND log_actions.count > 0))) THEN 'sent'
       when NOW()>webconferences.initial_time AND NOW()<(webconferences.initial_time + webconferences.duration* interval '1 min') then 'in_progress'
       when NOW() < webconferences.initial_time then 'scheduled'
-      when (NOW()<webconferences.initial_time + webconferences.duration* interval '1 min' + interval '15 mins') then 'processing'
+      --when (NOW()<webconferences.initial_time + webconferences.duration* interval '1 min' + interval '15 mins') then 'processing'
+      when (NOW()<webconferences.initial_time + webconferences.duration* interval '4 min') then 'processing'
       else 'finish'
     END AS situation, CASE
         WHEN (acu.comments_count > 0 OR acu.grade IS NOT NULL OR acu.working_hours IS NOT NULL) THEN true
@@ -60,6 +62,7 @@ class Webconference < ActiveRecord::Base
                   .joins("LEFT JOIN academic_allocations eq_ac ON eq_ac.id = academic_allocations.equivalent_academic_allocation_id")
                   .joins("LEFT JOIN webconferences eq_web ON eq_web.id = eq_ac.academic_tool_id AND eq_ac.academic_tool_type = 'Webconference'")
                   .where(query)
+                  .where(query2)
     unless user_id.blank?
       opt[:select1] += ', acu.grade, acu.working_hours'
       opt[:select2] += ', acu.grade, acu.working_hours'
@@ -117,7 +120,7 @@ class Webconference < ActiveRecord::Base
       attendeePW: Digest::MD5.hexdigest(meeting_id),
       welcome: description + YAML::load(File.open('config/webconference.yml'))['welcome'],
       duration: duration,
-      record: true,
+      record: is_recorded,#true,
       autoStartRecording: is_recorded,
       allowStartStopRecording: true,
       logoutURL: YAML::load(File.open('config/webconference.yml'))['feedback_url'] || Rails.application.routes.url_helpers.home_url.to_s,
