@@ -133,7 +133,6 @@ module AcademicTool
   end
 
   def send_email(verify_type='delete', acs=nil, old_info=nil)
-    Rails.logger.info "\n\n Rails.logger.info #{acs.as_json}\n\n"
     begin
       ats = (acs.nil? ? academic_allocations : acs).map(&:allocation_tag_id).flatten.uniq
       ats = AllocationTag.where(id: ats).joins('LEFT JOIN groups ON groups.id = allocation_tags.group_id').where("group_id IS NULL OR groups.status = 't'").map(&:id).uniq

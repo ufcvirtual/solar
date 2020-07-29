@@ -1,5 +1,5 @@
 .block_wrapper.module.tools
-  - distant_course = true#@curriculum_unit.try(:curriculum_unit_type_id).try(:to_i) == 2 || false)
+  - distant_course = (@curriculum_unit.try(:curriculum_unit_type_id).try(:to_i) == 2 || false)
   .block_title_exam.block_exam
     %h2{id: tool_name }
       .icons

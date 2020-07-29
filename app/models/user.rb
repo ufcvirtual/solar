@@ -805,7 +805,6 @@ class User < ActiveRecord::Base
   end
 
   def self.user_ma_attributes(user_data)
-    Rails.logger.info "\n\n USER DATA #{user_data}\n\n"
     data = { name: user_data[2], cpf: user_data[0], birthdate: user_data[3], gender: (user_data[4] == 'M'), cell_phone: user_data[17], nick: (user_data[7].nil? ? ([user_data[2].split(' ')[0], user_data[2].split(' ')[1]].join(' ')) : user_data[7]), telephone: nil, special_needs: ((user_data[19].blank? || user_data[19].downcase == 'nenhuma') ? nil : user_data[19]), address: user_data[10], address_number: (user_data[11].blank? ? nil : user_data[11][0..9]), zipcode: user_data[13], address_neighborhood: user_data[12], country: user_data[16], state: user_data[15], city: user_data[14], username: (user_data[5].blank? ? user_data[0] : user_data[5]), email: user_data[8], integrated: true }
     if !user_data[6].blank?
       data.merge!({password: user_data[6]})

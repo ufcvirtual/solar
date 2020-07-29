@@ -55,7 +55,6 @@ class WebconferencesController < ApplicationController
 
     @webconference = Webconference.new(webconference_params)
     @webconference.moderator = current_user
-    Rails.logger.info "\n\n AAA #{@webconference.as_json}\n\n"
     begin
       @webconference.allocation_tag_ids_associations = @allocation_tags_ids.split(" ").flatten
       @webconference.save!
@@ -63,7 +62,6 @@ class WebconferencesController < ApplicationController
     rescue ActiveRecord::AssociationTypeMismatch
       render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
     rescue => error
-      Rails.logger.info "\n\n ERRO #{error}\n\n"
       @allocation_tags_ids = @allocation_tags_ids.join(' ')
       params[:success] = false
       render :new
@@ -74,8 +72,6 @@ class WebconferencesController < ApplicationController
   # PUT /webconferences/1.json
   def update
     authorize! :update, Webconference, on: @webconference.academic_allocations.pluck(:allocation_tag_id)
-
-    Rails.logger.info "\n\n WEB #{webconference_params.as_json}\n\n"
 
     @webconference.update_attributes!(webconference_params)
 

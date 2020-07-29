@@ -175,8 +175,6 @@ class SupportMaterialFilesController < ApplicationController
 
       @support_material_file
     rescue => error
-      Rails.logger.info "\n\n ERRO #{error}\n\n"
-
       raise error
     end
 
@@ -192,7 +190,6 @@ class SupportMaterialFilesController < ApplicationController
         end
       end
     rescue => error
-      Rails.logger.info "\n\n ERRO #{error}\n\n"
       raise error
     end
 
