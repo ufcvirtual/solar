@@ -85,10 +85,15 @@ gem "actionpack-page_caching", "~> 1.1.0"
 gem "actionpack-action_caching", "~> 1.2.0"
 
 group :development do
+  # gem "net-ssh", "~> 2.6.8" # dependencia capistrano
+
+  gem "capistrano"
+  gem "capistrano-rails"
+  gem "capistrano-rvm"
+  gem 'capistrano3-puma'
+  gem 'capistrano3-nginx'
+
   gem "rb-readline", "~> 0.5.1"
-  gem "net-ssh", "~> 2.6.8" # dependencia capistrano
-  gem "rvm-capistrano", "~> 1.5.5"
-  gem "capistrano", "~> 2.15.4"
   gem "spork", "~> 0.9.2"
   # gem "thin" # server local melhor
   gem "better_errors", "~> 2.4.0"
