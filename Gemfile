@@ -1,12 +1,12 @@
 source "http://rubygems.org"
 
-ruby "2.4.10"
+ruby "2.3.8"
 
 #gem "rails", "~> 3.2.16"
 gem 'rails', '4.0.13'
 gem "rack", "~> 1.5.2"
 gem "rake", "~> 10.1.1"
-gem "pg", "~> 0.15.0"
+gem "pg", "~> 0.21.0"
 gem "foreigner", "~> 1.4.0"
 
 gem "koala", "1.2.0" # facebook
@@ -41,6 +41,8 @@ gem "bigbluebutton-api-ruby", "~> 1.6.0"
 # gem 'unicorn-worker-killer', '~>0.4.3' # gerenciar os workers do unicorn
 # gem "passenger", "~> 5.0.8"
 gem "puma", "~> 4.3.5"
+gem "foreman", require: false
+gem "dotenv-rails"
 
 gem "rubyzip", "~> 1.0.0"
 
@@ -84,9 +86,15 @@ gem "actionpack", "4.0.13"
 gem "actionpack-page_caching", "~> 1.1.0"
 gem "actionpack-action_caching", "~> 1.2.0"
 
-group :development do
-  # gem "net-ssh", "~> 2.6.8" # dependencia capistrano
+gem "uglifier", "~> 1.3.0"
+gem "sass-rails", "~> 4.0.0"
+gem "compass-rails", "~> 1.1.7"
 
+gem "htmlentities", "~> 4.3.4"
+# new relic
+gem "newrelic_rpm"
+
+group :development do
   gem "capistrano"
   gem "capistrano-rails"
   gem "capistrano-rvm"
@@ -113,8 +121,9 @@ group :development do
 end
 
 group :development, :test do
-  gem "pry-rails", "~> 0.3.6" # console melhor
-  gem "pry-rescue", "~> 1.4.5"
+  gem "awesome_print"
+  gem "pry-rails"
+  gem "pry-rescue"
   gem "factory_girl_rails", "~> 4.2.1"
   gem "rspec-rails", "~> 3.4.0"
   gem 'test-unit', '~> 3.1.5'
@@ -132,13 +141,3 @@ group :test do
   # gem "spreewald", "0.8.4" # collection of cucumber steps
   gem "simplecov", "~> 0.15.1", require: false # cobertura de testes
 end
-
-# group :assets do
-  gem "uglifier", "~> 1.3.0"
-  gem "sass-rails", "~> 4.0.0"
-  gem "compass-rails", "~> 1.1.7"
-# end
-
-gem "htmlentities", "~> 4.3.4"
-# new relic
-gem "newrelic_rpm"
