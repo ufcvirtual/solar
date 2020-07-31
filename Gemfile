@@ -97,9 +97,10 @@ gem "newrelic_rpm"
 group :development do
   gem "capistrano"
   gem "capistrano-rails"
+  gem "capistrano-nvm"
   gem "capistrano-rvm"
-  gem 'capistrano3-puma'
-  gem 'capistrano3-nginx'
+  gem "capistrano3-puma"
+  gem "capistrano3-nginx"
 
   gem "rb-readline", "~> 0.5.1"
   gem "spork", "~> 0.9.2"

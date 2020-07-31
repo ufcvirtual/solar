@@ -34,6 +34,7 @@ install_plugin Capistrano::SCM::Git
 # require "capistrano/rails/migrations"
 # require "capistrano/passenger"
 
+require 'capistrano/nvm'
 require "capistrano/rvm"
 require 'capistrano/rails'
 # https://github.com/platanus/capistrano3-nginx
