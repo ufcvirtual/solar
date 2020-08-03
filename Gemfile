@@ -74,7 +74,8 @@ gem "rest-client", "~> 2.0.2"
 
 gem "rufus-scheduler", "~> 3.4.2"
 
-#fila de emails
+# fila de emails
+gem "daemons"
 gem "delayed_job_active_record", "~> 4.1.2"
 
 gem "activerecord-session_store", "~> 1.1.0"
@@ -97,6 +98,7 @@ gem "htmlentities", "~> 4.3.4"
 gem "newrelic_rpm"
 
 group :development do
+  gem "sshkit-sudo" # usar sudo no capistrano
   gem "capistrano"
   gem "capistrano-rails"
   gem "capistrano3-delayed-job"

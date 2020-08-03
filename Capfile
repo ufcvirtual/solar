@@ -34,17 +34,18 @@ install_plugin Capistrano::SCM::Git
 # require "capistrano/rails/migrations"
 # require "capistrano/passenger"
 
-require 'capistrano/nvm'
+require "sshkit/sudo"
+require "capistrano/nvm"
 require "capistrano/rvm"
-require 'capistrano/rails'
-require 'capistrano/delayed_job'
+require "capistrano/rails"
+require "capistrano/delayed_job"
 
 # https://github.com/platanus/capistrano3-nginx
-require 'capistrano/nginx'
+require "capistrano/nginx"
 install_plugin Capistrano::Nginx  # if you want to upload a nginx site template
 
 # https://github.com/seuros/capistrano-puma
-require 'capistrano/puma'
+require "capistrano/puma"
 install_plugin Capistrano::Puma  # Default puma tasks
 install_plugin Capistrano::Puma::Workers  # if you want to control the workers (in cluster mode)
 install_plugin Capistrano::Puma::Nginx  # if you want to upload a nginx site template
