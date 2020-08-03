@@ -38,7 +38,7 @@ gem "bigbluebutton-api-ruby", "~> 1.6.0"
 # platform adicionado para evitar que o unicorn tente ser executado no windows
 gem "puma", "~> 4.3.5"
 
-gem "rubyzip", "~> 1.0.0"
+gem "rubyzip", "~> 1.3.0"
 
 gem "doorkeeper", "~> 1.4.1"
 gem "rack-oauth2", "~> 1.0.7"
