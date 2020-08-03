@@ -9,7 +9,7 @@ gem "rake", "~> 10.1.1"
 gem "pg", "~> 0.21.0"
 gem "foreigner", "~> 1.4.0"
 
-gem "koala", "1.2.0" # facebook
+# gem "koala", "1.2.0" # facebook
 
 gem "devise", "~> 3.4.1"
 gem "devise-i18n", "~> 0.11.3"
@@ -37,12 +37,7 @@ gem "momentjs-rails", "~> 2.8.3"
 gem "bigbluebutton-api-ruby", "~> 1.6.0"
 
 # platform adicionado para evitar que o unicorn tente ser executado no windows
-# gem "unicorn", "~> 4.6.3", platform: :ruby
-# gem 'unicorn-worker-killer', '~>0.4.3' # gerenciar os workers do unicorn
-# gem "passenger", "~> 5.0.8"
 gem "puma", "~> 4.3.5"
-gem "foreman", require: false
-gem "dotenv-rails"
 
 gem "rubyzip", "~> 1.0.0"
 
@@ -94,10 +89,12 @@ gem "sass-rails", "~> 4.0.0"
 gem "compass-rails", "~> 1.1.7"
 
 gem "htmlentities", "~> 4.3.4"
-# new relic
 gem "newrelic_rpm"
 
 group :development do
+  gem "foreman", require: false
+  gem "dotenv-rails"
+
   gem "sshkit-sudo" # usar sudo no capistrano
   gem "capistrano"
   gem "capistrano-rails"

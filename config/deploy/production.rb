@@ -7,8 +7,6 @@
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
-server ENV['SOLAR_SERVER'], user: "suporte", roles: %w{app db web}
-
 # role-based syntax
 # ==================
 
@@ -21,7 +19,14 @@ server ENV['SOLAR_SERVER'], user: "suporte", roles: %w{app db web}
 # role :web, %w{user1@primary.com user2@additional.com}, other_property: :other_value
 # role :db,  %w{deploy@example.com}
 
+# Servidores de aplicacao.
+role :app, ENV['SOLAR_APP_SERVERS'].split(',') unless ENV['SOLAR_APP_SERVERS'].nil?
 
+# Servidores de banco. Usado para migrations.
+role :db, ENV['SOLAR_APP_DBS'].split(',') unless ENV['SOLAR_APP_DBS'].nil?
+
+# Onde os jobs serao executados.
+role :jobs, ENV['SOLAR_APP_JOBS'].split(',') unless ENV['SOLAR_APP_JOBS'].nil?
 
 # Configuration
 # =============
