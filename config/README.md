@@ -5,35 +5,35 @@
 ### Pacotes necessários
 
     sudo apt install build-essential \
-                    zlib1g \
-                    zlib1g-dev \
-                    libpq-dev \
-                    libssl-dev \
-                    libyaml-dev \
-                    libxml2-dev \
-                    libxslt1-dev \
-                    libc6-dev \
-                    libncurses5-dev \
-                    libreadline-dev \
-                    libtool \
-                    ncurses-term \
-                    make \
-                    automake \
-                    autoconf  \
-                    libffi-dev \
-                    unixodbc-dev \
-                    silversearcher-ag \
-                    software-properties-common \
-                    unzip \
-                    imagemagick \
-                    sed \
-                    mawk \
-                    curl \
-                    openssl \
-                    nginx \
-                    apt-transport-https \
-                    ca-certificates \
-                    postgresql-client
+                     zlib1g \
+                     zlib1g-dev \
+                     libpq-dev \
+                     libssl-dev \
+                     libyaml-dev \
+                     libxml2-dev \
+                     libxslt1-dev \
+                     libc6-dev \
+                     libncurses5-dev \
+                     libreadline-dev \
+                     libtool \
+                     ncurses-term \
+                     make \
+                     automake \
+                     autoconf  \
+                     libffi-dev \
+                     unixodbc-dev \
+                     silversearcher-ag \
+                     software-properties-common \
+                     unzip \
+                     imagemagick \
+                     sed \
+                     mawk \
+                     curl \
+                     openssl \
+                     nginx \
+                     apt-transport-https \
+                     ca-certificates \
+                     postgresql-client
 
 ### RVM package for Ubuntu
 
@@ -46,15 +46,14 @@
   #### Instalar ruby com RVM
 
     rvm install 2.3.8
-
     rvm use 2.3.8 --default
 
 ### NVM
 
   https://github.com/nvm-sh/nvm
 
-  nvm install node 14.7.0
-  nvm alias default node
+    nvm install node 14.7.0
+    nvm alias default node
 
 
 ## Deploy com capistrano
@@ -91,9 +90,6 @@
   ## Deploy
 
     foreman run cap production deploy --roles=app,db,jobs
-
     foreman run cap production puma:stop
-
     foreman run cap production puma:start
-
     foreman run cap production delayed_job:restart
