@@ -37,6 +37,8 @@ install_plugin Capistrano::SCM::Git
 require 'capistrano/nvm'
 require "capistrano/rvm"
 require 'capistrano/rails'
+require 'capistrano/delayed_job'
+
 # https://github.com/platanus/capistrano3-nginx
 require 'capistrano/nginx'
 install_plugin Capistrano::Nginx  # if you want to upload a nginx site template

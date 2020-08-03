@@ -99,6 +99,7 @@ gem "newrelic_rpm"
 group :development do
   gem "capistrano"
   gem "capistrano-rails"
+  gem "capistrano3-delayed-job"
   gem "capistrano-nvm"
   gem "capistrano-rvm"
   gem "capistrano3-puma"
