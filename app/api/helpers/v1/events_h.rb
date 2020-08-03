@@ -25,16 +25,18 @@ module V1::EventsH
     start_hour, end_hour = params[:event][:start].split(':'), params[:event][:end].split(':')
     group_events = []
 
-    event = ScheduleEvent.joins(:schedule, :academic_allocations).where(schedules: { start_date: params[:event][:date], end_date: params[:event][:date] }, title: event_info[:title], type_event: event_info[:type], place: 'Polo', start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":"), integrated: true, academic_allocations: { allocation_tag_id: ats } ).first_or_initialize
+    event = ScheduleEvent.joins(:schedule, :academic_allocations).where(schedules: { start_date: params[:event][:date], end_date: params[:event][:date] }, title: event_info[:title], type_event: event_info[:type], place: 'Polo', start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":"), academic_allocations: { allocation_tag_id: ats } ).first_or_initialize
+    event.integrated = true
 
     if event.new_record? && update_event.blank?
       schedule = Schedule.create! start_date: params[:event][:date], end_date: params[:event][:date]
       event.schedule_id = schedule.id
+      event.integrated = true
       event.save!
     elsif event.new_record? && !update_event.blank? && !existing_ac.blank?
       event = update_event
       event.schedule.update_attributes! start_date: params[:event][:date], end_date: params[:event][:date]
-      event.update_attributes! start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":")
+      event.update_attributes! start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":"), integrated: true
     end
 
     if params[:groups].present?
