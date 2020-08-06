@@ -3,13 +3,13 @@
 if ENV['RAILS_ENV'] == 'production'
   # Unicorn self-process killer
   # require 'unicorn/configuration'
-  require 'unicorn/worker_killer'
+  #require 'unicorn/worker_killer'
 
   # Max requests per worker
-  use Unicorn::WorkerKiller::MaxRequests, 500, 600, true
+  #use Unicorn::WorkerKiller::MaxRequests, 500, 600, true
 
   # Max memory size (RSS) per worker
-  use Unicorn::WorkerKiller::Oom, (192*(1024**2)), (256*(1024**2)), 16, true
+  #use Unicorn::WorkerKiller::Oom, (192*(1024**2)), (256*(1024**2)), 16, true
 end
 
 require ::File.expand_path('../config/environment',  __FILE__)
