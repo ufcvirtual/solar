@@ -61,7 +61,7 @@ module Solar
 
     config.active_record.whitelist_attributes = false
 
-
+    config.assets.paths << Rails.root.join("app", "assets", "fonts")
     # Enable the asset pipeline
     config.assets.enabled = true
     config.assets.compress = true

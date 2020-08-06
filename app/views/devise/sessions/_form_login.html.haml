@@ -38,7 +38,7 @@
     = link_to image_tag("apps/google-play-badge_#{I18n.locale}.png", alt: t(:form_google_play2) + t(:new_window)), "https://play.google.com/store/apps/details?id=br.ufc.virtual.solarmobilis&hl=#{I18n.locale}&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1", class: 'google-app', target: '_blank'
 
   .fb-like
-    %script{src: "http://connect.facebook.net/en_US/all.js#xfbml=1"}
+    %script{src: "https://connect.facebook.net/en_US/all.js#xfbml=1"}
     %fb:like{"data-href" => YAML::load(File.open('config/facebook.yml'))['data-fanpage'], layout: "button_count", "data-show_faces" => "false", "data-width" => "450"}
 
 :javascript
