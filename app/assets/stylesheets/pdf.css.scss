@@ -27,16 +27,16 @@ $new_after_evaluation_background: #e6f0fc;
 
 @font-face {
     font-family: 'Solar';
-    src:font-url('Solar.eot');
-    src:font-url('Solar.eot?#iefix') format('embedded-opentype'),
-        font-url('Solar.woff') format('woff'),
-        font-url('Solar.ttf') format('truetype'),
-        font-url('Solar.svg#Solar') format('svg');
+    src:url(asset-path('fonts/Solar.eot'));
+    src:url(asset-path('fonts/Solar.eot?#iefix')) format('embedded-opentype'),
+        url(asset-path('fonts/Solar.woff')) format('woff'),
+        url(asset-path('fonts/Solar.ttf')) format('truetype'),
+        url(asset-path('fonts/Solar.svg#Solar')) format('svg');
     font-weight: normal;
     font-style: normal;
 }
 /* Fontes e ícones */
-@import "icons.css";
+@import "fonts/icons.css";
 
 .comment-blue {
   background-color: $background_dark_gray;
