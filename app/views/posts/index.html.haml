@@ -161,7 +161,7 @@
     }
 
     /*Conexão com o WebSocket*/
-    ws = new WebSocket('ws://'+websocket_host+':'+websocket_port+'/'+ac); // file websocket_server.rb
+    ws = new WebSocket('wss://'+websocket_host+':'+websocket_port+'/'+ac); // file websocket_server.rb
     ws.onopen = function (){ }; // ao iniciar ws
     ws.onclose = function () { }; // ao perder conexão com o ws
     ws.onerror = function (err) { }; // ao receber erro no ws
