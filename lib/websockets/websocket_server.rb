@@ -9,7 +9,14 @@ class WebsocketServer
   config = YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['websocket']
   EM.run do
     @subs = {} # list with subscribed users
-    EventMachine::WebSocket.start(host: config['host'], port: config['port']) do |ws|
+    EventMachine::WebSocket.start(
+        :host => config['host'],
+        :port => config['port'],
+        :secure => true,
+        :tls_options => {
+          :private_key_file => "/private/key",
+          :cert_chain_file => "/ssl/certificate"
+      ) do |ws|
       ws.onopen do |data|
         academic_allocation_id = data.path.split('/')[1]
         ac_subs = @subs[academic_allocation_id.to_sym]

@@ -1,0 +1,1 @@
+CKEDITOR.on("dialogDefinition",function(e){var t=e.data.name,n=e.data.definition;if(t=="link"){n.removeContents("advanced");var r=e.data.definition.getContents("target"),i=r.get("linkTargetType").items;for(var s=i.length-1;s>=0;s--){var o=i[s][0];o.match(/_blank/i)||i.splice(s,1)}var u=r.get("linkTargetType");u["default"]="_blank"}});

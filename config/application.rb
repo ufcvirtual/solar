@@ -66,9 +66,6 @@ module Solar
     config.assets.compress = true
     config.assets.precompile << /(^[^_\/]|\/[^_])[^\/]*$/
     #config.assets.precompile += ['ckeditor/*']
-    config.assets.precompile += Ckeditor.assets
-    config.assets.precompile += %w( ckeditor/* )
-    config.autoload_paths += %W(#{config.root}/app/models/ckeditor)
 
     config.i18n.enforce_available_locales = true
     I18n.config.enforce_available_locales = true
