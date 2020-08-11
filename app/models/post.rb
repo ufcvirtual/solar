@@ -25,7 +25,7 @@ class Post < ActiveRecord::Base
   after_create :increment_counter
   after_destroy :decrement_counter, :remove_drafts_children, :decrement_counter_draft
   after_save :change_counter_draft, if: '!parent_id.nil? && draft_changed?'
-  after_save :send_email, unless: 'parent_id.blank? || draft || parent.user_id == user_id || !merge.nil?'
+  #after_save :send_email, unless: 'parent_id.blank? || draft || parent.user_id == user_id || !merge.nil?'
 
   validates :content, :profile_id, presence: true
 

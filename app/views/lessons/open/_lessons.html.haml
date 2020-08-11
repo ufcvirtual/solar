@@ -1,6 +1,6 @@
 - lessons   = @lessons.nil? ? lesson_module.lessons_to_open(current_user) : @lessons
 - selected  = @lesson.nil? ? lessons.first.id : @lesson.id
-- lessons_c = lessons.collect { |l| [l.name, l.id, { :'data-path' => l.path, :'data-draft' => l.is_draft? }] }
+- lessons_c = lessons.collect { |l| [l.name, l.id, { :'data-path' => l.path, :'data-draft' => l.is_draft?, :'data-type' => l.type_lesson }] }
 
 %a.btn.btn_dropdown#lesson-selected{ href: '#', :"data-dropdown" => '#lesson-options-dropdown', :'aria-label' => t('lessons.open.lesson_menu', lesson: @lesson.name) }
   = @lesson.name
@@ -8,9 +8,13 @@
 .dropdown.dropdown-tip#lesson-options-dropdown
   %ul.dropdown-menu
     - lessons_c.each do |lesson|
-      - path = lesson[2][:'data-path'].sub('&feature=youtu.be', '')
-      - path = path.sub('https://youtu.be', 'http://www.youtube.com/embed')
-      %li{role: 'menuitem'}= link_to lesson[0], '#', {:'data-path' => path, :'data-id' => lesson[1], class: (lesson[1] == @lesson.id ? 'selected' : ''), onkeydown: 'click_on_keypress(event, this);', :'data-draft' => lesson[2][:'data-draft']}
+      - if lesson[2][:'data-type'] == 1 && lesson[2][:'data-path'].match('virtual.ufc.br') == nil
+        %li{role: 'menuitem'}= link_to lesson[0], lesson[2][:'data-path'], class: (lesson[1] == @lesson.id ? 'selected' : ''), :title => lesson[0], :'aria-label'=> t('posts.post.open_site_new_tab', file: lesson[2][:'data-path']), :'data-tooltip' => t('posts.post.open_site_new_tab', file: lesson[2][:'data-path']), target: '_blank'
+      - else
+        -# - path = lesson[2][:'data-path'].sub('&feature=youtu.be', '')
+        -# - path = path.sub('https://youtu.be', 'https://www.youtube.com/embed')
+        %li{role: 'menuitem'}= link_to lesson[0], '#', {:'data-path' => lesson[2][:'data-path'], :'data-id' => lesson[1], class: (lesson[1] == @lesson.id ? 'selected' : ''), onkeydown: 'click_on_keypress(event, this);', :'data-draft' => lesson[2][:'data-draft']}
+      
 
 :javascript
   $(function(){

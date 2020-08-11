@@ -125,8 +125,8 @@ class Lesson < ActiveRecord::Base #< Event
 
   def link_path(api: false)
     raise 'not link' unless is_link?
-    return 'http://www.youtube.com/embed/' + address.split('v=')[1].split('&')[0] if !api && address.include?('youtube') && !address.include?('embed') && address.include?('list')
-    return 'http://www.youtube.com/embed/' + address.split('v=')[1] if !api && address.include?('youtube') && !address.include?('embed')
+    return 'https://www.youtube.com/embed/' + address.split('v=')[1].split('&')[0] if !api && address.include?('youtube') && !address.include?('embed') && address.include?('list')
+    return 'https://www.youtube.com/embed/' + address.split('v=')[1] if !api && address.include?('youtube') && !address.include?('embed')
     address
   end
 
