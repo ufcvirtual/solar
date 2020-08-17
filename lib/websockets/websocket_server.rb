@@ -14,8 +14,8 @@ class WebsocketServer
         :port => config['port'],
         :secure => true,
         :tls_options => {
-          :private_key_file => "/private/key",
-          :cert_chain_file => "/ssl/certificate"
+          :private_key_file => "/etc/ssl/nginx/cert.key",
+          :cert_chain_file => "/etc/ssl/nginx/cert.crt"
       ) do |ws|
       ws.onopen do |data|
         academic_allocation_id = data.path.split('/')[1]
