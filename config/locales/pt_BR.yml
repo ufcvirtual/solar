@@ -358,7 +358,7 @@ pt_BR:
         raffle_order: Sortear a ordem das questões
         auto_correction: Autocorreção
         number_questions: Quantidade de questões na prova
-        attempts: Definir quantidade de vezes que o aluno pode refazer a prova
+        attempts: Definir quantidade de vezes que o aluno pode fazer a prova
         result_email: Enviar resultado por email
         attempts_correction: Modo de cálculo de nota
         block_content: Bloquear conteúdo do Solar durante a prova
