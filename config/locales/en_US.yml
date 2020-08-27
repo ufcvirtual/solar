@@ -309,7 +309,7 @@ en_US:
         raffle_order: Raffle question's order
         auto_correction: Autocorrection
         number_questions: Amount of questions at exam
-        attempts: Define how many times student can redo the exam
+        attempts: Define how many times student can try the exam
         result_email: Send result by email
         attempts_correction: Grade calculation method
         block_content: Block Solar's content during exam
