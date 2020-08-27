@@ -14,7 +14,10 @@
             %span.block_content_gray
               = "#{t(:since)}" if (lesson.schedule.end_date.nil?)
               = [l(lesson.schedule.start_date, format: :normal), (lesson.schedule.end_date.nil? ? t(:no_end_date) : l(lesson.schedule.end_date, format: :normal))].join(" - ")
-            = link_to lesson.name, open_lesson_path(lesson.id), class: "link_content lesson", "data-fancybox-type" => "iframe", :'aria-label' => lesson.name + t('fancybox.open')
+            - if lesson.type_lesson == 1 && lesson.address.match('virtual.ufc.br') == nil
+              = link_to lesson.name, lesson.address, class: 'type_class', :title => lesson.name, :'aria-label'=> t('posts.post.open_site_new_tab', file: lesson.address), :'data-tooltip' => t('posts.post.open_site_new_tab', file: lesson.address), target: '_blank'
+            - else
+              = link_to lesson.name, open_lesson_path(lesson.id), class: "link_content lesson", "data-fancybox-type" => "iframe", :'aria-label' => lesson.name + t('fancybox.open')
             -if lesson.is_draft?
               .test_lesson= "(#{t(:lesson_test)})"
             - if lesson.will_open?
