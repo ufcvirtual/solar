@@ -28,6 +28,7 @@ class Devise::UsersController < Devise::RegistrationsController
   def update
     set_current_user
     params[:user][:birthdate] = Date.civil(params[:user][:"birthdate(1i)"].to_i,params[:user][:"birthdate(2i)"].to_i,params[:user][:"birthdate(3i)"].to_i) rescue nil
+    params[:user][:birthdate] = current_user.birthdate if params[:user][:birthdate].blank?
     super
   end
 
