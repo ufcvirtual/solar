@@ -55,7 +55,6 @@
     nvm install node 14.7.0
     nvm alias default node
 
-
 ## Deploy com capistrano
 
   ## Setup local
@@ -70,7 +69,6 @@
 
       # Onde os jobs serao executados.
       SOLAR_APP_JOBS=user@solar.jobs1
-
 
   ## Setup remoto
 
