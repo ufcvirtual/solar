@@ -179,7 +179,7 @@ class AllocationTag < ActiveRecord::Base
           params.merge!(semester_id: Semester.where(name: params[:semester]).first.try(:id)) unless params[:semester_id]
           raise ActiveRecord::RecordNotFound unless params[:semester_id]
           query << 'semester_id = :semester_id'
-          query << (params[:curriculum_unit_id].blank? ? 'curriculum_unit_id IS NULL'  : 'curriculum_unit_id = :curriculum_unit_id')
+          query << (params[:curriculum_unit_id].blank? ? 'curriculum_unit_id IS NULL'  : 'curriculum_unit_id = :curriculum_unit_id') unless (params[:curriculum_unit_id].blank? && params[:curriculum_unit_type_id].to_i == 3)
           query << (params[:course_id].blank? ? 'course_id IS NULL' : 'course_id = :course_id')
           query << 'curriculum_unit_type_id = :curriculum_unit_type_id' if params[:curriculum_unit_type_id]
           query = query.join(" AND ")
