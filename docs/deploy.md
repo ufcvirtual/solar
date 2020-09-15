@@ -74,8 +74,19 @@
 
   Configuração do puma e nginx
 
-    foreman run cap production puma:config
-    foreman run cap production puma:nginx_config
+    sudo rm /etc/nginx/sites-enabled/default
+
+  Nginx sem certificado (usar apenas um)
+
+    sudo ln -s /var/www/html/solar/shared/config/scripts/nginx/puma_solar_production /etc/nginx/sites-enabled/
+
+  Nginx com certificado
+
+    sudo ln -s /var/www/html/solar/shared/config/scripts/nginx/puma_solar_production_ssl /etc/nginx/sites-enabled/
+
+  Reinicar o nginx
+
+    sudo systemctl restart nginx
 
   Configuração inicial de diretórios
 
