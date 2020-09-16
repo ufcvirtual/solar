@@ -445,7 +445,7 @@ en_US:
         description: Description
         initial_time: Initial Time
         duration: Duration
-        is_recorded: Record
+        is_recorded: Start with Record
         shared_between_groups: Shared between groups
       user_blacklist:
         cpf: CPF
@@ -1449,7 +1449,7 @@ en_US:
       unavailable: "Unavailable"
       removed_record: Removed or empty record
       moderator: Moderator
-      recorded: Record
+      recorded: Start with record
       y: 'Yes'
       n: 'No'
       shared_between_groups: Shared between groups

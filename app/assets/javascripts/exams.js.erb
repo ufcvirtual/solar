@@ -1,12 +1,9 @@
+var t = null;
 function init_chronometer(page_question, total) {
-  if (typeof array_time == 'undefined') {array_time = new Array(total);}
-  array_time = refresh_array_time(array_time, total);
-  page = page_question;
-  start(page, array_time);
+  start(page_question);
 }
 
 function save_question(duration) {
-  get_duration(duration);
   $(".edit_exam_response").submit();
   setTimeout(function() {
     pagination_aria_label();
@@ -16,7 +13,9 @@ function save_question(duration) {
 
 function finish_exam(duration) {
   save_question(duration);
-  delete array_time;
+  window.onbeforeunload = function () {}
+  var url_for = "<%= Rails.application.routes.url_helpers.exams_path %>";
+  window.location.href=url_for;
 }
 
 function expand_or_compress(icon){
@@ -29,40 +28,17 @@ function expand_or_compress(icon){
   }
 }
 
-function get_duration(duration) {
-  if($.isNumeric(duration))
-    console.log();
-  else
-    duration = $('form.edit_exam_response').data('duration');
-
-  var time = array_time[page-1];
-  var new_duration = Math.floor(time);
-  if (new_duration > 0) {array_time[page-1] = 0;}
-  new_duration += parseInt(duration);
-  $('#duration').val(new_duration);
-}
-
 function stop_save_chronometer(duration) {
   clearTimeout(t);
   save_question(duration);
 }
 
-function start(question, array_time) {
-  var local_time = array_time[question-1];
-  local_time ++;
-
-  t = setTimeout(
-    function(){
-      array_time[question-1] = local_time;
-      start(question, array_time);
-    }, 1000);
-}
-
-function refresh_array_time(array_time, total) {
-  for (i=0; i<total; i++){
-    if (typeof array_time[i] == 'undefined') {array_time[i] = 0;}
-  }
-  return array_time;
+function start(page_question) {
+  segundos = 0;//$('form.edit_exam_response').data('duration');
+  t = setInterval(function() {
+    segundos++;
+    $('#duration').val(segundos);
+  },1000);
 }
 
 function load_components(page){
@@ -89,7 +65,9 @@ function load_components(page){
 function validation_error(resp){
   window.onbeforeunload = function () {}
   alert(resp);
-  location.reload(true);
+  //location.reload(true);
+  var url_for = "<%= Rails.application.routes.url_helpers.exams_path %>";
+  window.location.href=url_for;
 }
 
 function show_text(element){

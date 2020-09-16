@@ -59,7 +59,7 @@
       #uninterrupted= t("exams.pre.uninterrupted2")
 
   .start_button
-    = link_to @text, open_exam_path(@exam, situation: @situation), :'data-tooltip' => @exam.name, class: 'link_content link_open_exam'
+    = link_to @text, open_exam_path(@exam, situation: @situation), :'data-tooltip' => @exam.name, class: 'link_content link_open_exam_2'
 
 = javascript_include_tag "tooltip"
 
@@ -95,8 +95,8 @@
         }
         else{ 
           location.hash = 'reload';
-          location.reload();
           window.onbeforeunload = null;
+          location.reload();
         }
       }
     });

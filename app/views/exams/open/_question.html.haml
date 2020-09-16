@@ -168,7 +168,7 @@
           = t('exams.result_exam_user.true_items') + arra_correted.join(", ")
           = t('exams.result_exam_user.false_items') + arra_correted2.join(", ")
 
-    = er.hidden_field :duration, {id: 'duration'}
+    = er.text_field :duration, {id: 'duration'}
 
 - if @question_audios || audio_is==1
   .question_audios{:'aria-hidden' => 'true'}
@@ -180,7 +180,7 @@
             %span#aCurrentPbr= 1
 
 
-= javascript_include_tag 'pagination'
+= javascript_include_tag 'pagination', 'exams'
 
 :javascript
 

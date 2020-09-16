@@ -51,12 +51,14 @@ class Exam < Event
   end
 
   def recalculate_grades(user_id=nil, ats=nil, all=nil)
+    p 'teste 990'
     if ended? || (started? && immediate_result_release && !user_id.blank?)
       grade = 0.00
       wh = 0
-
+      p 'teste 991'
       # chamar metodo de correção dos itens respondidos para todos os que existem
       list_exam_correction(user_id, ats, all).each do |acu|
+        p 'teste 992'
         correct_exam(acu.id)
         grade = get_grade(acu.id)
         grade = grade ? grade : 0.00
@@ -88,7 +90,7 @@ class Exam < Event
     query = []
     query << "academic_allocation_users.user_id = :user_id "   unless user_id.blank?
     query << "academic_allocations.allocation_tag_id IN (#{ats}) "  unless ats.blank?
-    query << "exam_user_attempts.grade IS NULL" unless all.blank?
+   # query << "exam_user_attempts.grade IS NULL" unless all.blank?
     query << "exams.result_release <= NOW()" unless result_release.blank?
     query << "((schedules.end_date < current_date OR (schedules.end_date = current_date AND end_hour IS NOT NULL AND end_hour != '' AND end_hour::time < current_time)) OR ((schedules.start_date < current_date OR (schedules.start_date = current_date AND (exams.start_hour IS NULL OR exams.start_hour = '' OR start_hour::time < current_time))) AND exams.immediate_result_release=TRUE))"
 
@@ -111,7 +113,12 @@ class Exam < Event
           grade_question =  question.score
         else
           if question.type_question.to_i == Question::UNIQUE
-            grade_question = count_correct_items(exam_user_attempt, question, true) * question.score
+            acu = AcademicAllocationUser.find(acu_id)
+            if(acu.user_id == 56117)
+              p exam_user_attempt
+              p question
+            end
+            grade_question = question.question_items.where(value: true).count * question.score
           elsif question.type_question.to_i == Question::MULTIPLE
             score_item = question.score / question.question_items.where(value: true).count
             count_correct_items = count_correct_items(exam_user_attempt, question, true)
@@ -134,6 +141,15 @@ class Exam < Event
         ExamUserAttempt.update(exam_user_attempt.id, grade: grade_exam.round(2), end: DateTime.now, complete: true)
       end
     end
+  end
+
+  def count_correct_items_last(exam_user_attempt_id, question_id)
+    erqi = ExamResponsesQuestionItem.joins("LEFT JOIN exam_responses ON exam_responses_question_items.exam_response_id = exam_responses.id")
+                   .joins("LEFT JOIN question_items ON question_items.id = exam_responses_question_items.question_item_id")
+                   .where('question_items.question_id = ? AND exam_responses.exam_user_attempt_id = ?', question_id, exam_user_attempt_id)
+                   .select('exam_responses_question_items.*, question_items.value').last
+    p erqi
+    erqi.value == true ? 1 : 0
   end
 
   def count_correct_items(exam_user_attempt, question, t=nil)
@@ -204,6 +220,7 @@ class Exam < Event
     startt    = (has_hours ? (schedule.start_date.beginning_of_day + start_hour.split(':')[0].to_i.hours + start_hour.split(':')[1].to_i.minutes) : schedule.start_date.beginning_of_day)
     endt      = (has_hours ? (schedule.end_date.beginning_of_day + end_hour.split(':')[0].to_i.hours + end_hour.split(':')[1].to_i.minutes) : schedule.end_date.end_of_day)
     Time.now.between?(startt,endt)
+    #(Time.parse(startt.to_s) <= Exam.current_time_db && Time.parse(endt.to_s) >= Exam.current_time_db) ? true : false
   end
 
   def on_going_changed?

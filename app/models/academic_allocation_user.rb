@@ -279,8 +279,8 @@ class AcademicAllocationUser < ActiveRecord::Base
 
   def count_attempts
     count = (exam.uninterrupted ? exam_user_attempts.count : exam_user_attempts.where(complete: true).count)
-    count = 1 if count.zero?
-    count
+    #count = 1 if count.zero?
+    count+1
   end
 
   def find_or_create_exam_user_attempt(ip=nil, ignore_uninterrupted=false)

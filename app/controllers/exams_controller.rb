@@ -6,7 +6,7 @@ class ExamsController < ApplicationController
   before_filter :prepare_for_group_selection, only: :index
   before_filter :get_groups_by_allocation_tags, only: [:new, :create]
   before_filter :verify_exam, only: [:open]
-  layout false, except: :index
+  layout false, except: [:index, :open]
 
   def index
     @allocation_tag_id = active_tab[:url][:allocation_tag_id]
@@ -140,11 +140,13 @@ class ExamsController < ApplicationController
   def open
     @exam_questions = ExamQuestion.list(@exam, @last_attempt).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
     @total_time = (@last_attempt.try(:complete) ? 0 : @last_attempt.try(:get_total_time)) || 0
+
     # end_hour = @exam.end_hour.blank? ? '23:59:59' : @exam.end_hour
     # exam_end = @exam.schedule.end_date.to_s+' '+end_hour.to_s
     # exame_datetime_end = Time.parse(exam_end)
     # difference_minutes = (exame_datetime_end - current_time_db) / 60
     # @duration = (difference_minutes.to_i > @exam.duration.to_i) ? @exam.duration : difference_minutes
+
 
     if (@situation == 'finished' || @situation == 'corrected' || @situation == 'evaluated')
       mod_correct_exam = @exam.attempts_correction
@@ -156,7 +158,7 @@ class ExamsController < ApplicationController
 
       @list_eua = ExamUserAttempt.where(academic_allocation_user_id: @acu.id)
       if mod_correct_exam == 1 && !params[:exam_user_attempt_id]  && params[:pdf].to_i != 1
-        render :open_result
+        render :open_result, layout: false
       else
         @last_attempt = @exam.responses_question_user(@acu.id, params[:exam_user_attempt_id])
         if params[:pdf].to_i == 1
@@ -168,16 +170,25 @@ class ExamsController < ApplicationController
           send_data ReportsHelper.result_exam(@ats, @exam, @user, @grade_pdf, @exam_questions, @preview, @last_attempt, @disabled).render, :filename => "#{t('exams.result_exam.title_pdf', name: @exam.name)}.pdf", :type => "application/pdf", disposition: 'inline'
 
         else
-         render :open
+          render :open, layout: false
         end
       end
     else
+      end_hour = @exam.end_hour.blank? ? '23:59:59' : @exam.end_hour
+      exam_end = @exam.schedule.end_date.to_s+' '+end_hour.to_s
+      exame_datetime_end = Time.parse(exam_end)
+      difference_minutes = (exame_datetime_end - current_time_db) / 60
+      @duration = (difference_minutes.to_i > @exam.duration.to_i) ? @exam.duration : (difference_minutes+(@total_time/60))
       verify_ip!(@exam.id, :exam, @exam.controlled, :error_text)
-
-      respond_to do |format|
-        format.html
-        format.js
+      if params[:page].nil?
+        render layout: true
+      else
+        render layout: false
       end
+      #respond_to do |format|
+      #  format.html
+      #  format.js
+      #end
     end
   rescue CanCan::AccessDenied
     render text: t(:no_permission)
@@ -228,7 +239,8 @@ class ExamsController < ApplicationController
         end
       else
         user_session[:blocking_content] = Exam.verify_blocking_content(current_user.id)
-        render_exam_success_json('finish')
+        #render_exam_success_json('finish')
+        redirect_to exams_path, alert: t('finish', scope: 'exams.success')
       end
     end
   rescue => error
@@ -265,12 +277,14 @@ class ExamsController < ApplicationController
     ats = allocation_tags_ids.gsub(' ', ",") rescue allocation_tags_ids
 
     exam = Exam.find(params[:id])
-    raise 'not_finished' unless exam.ended? || (exam.started? && exam.
-      immediate_result_release)
-    raise 'result_release_date' unless exam.allow_calculate_grade?
+    #raise 'not_finished' unless exam.ended? || (exam.started? && exam.
+    #  immediate_result_release)
+   # raise 'result_release_date' unless exam.allow_calculate_grade?
     exam.recalculate_grades((exam.immediate_result_release ? params[:user_id] : nil), ats, true)
     if acu = AcademicAllocationUser.find_one(params[:ac_id], params[:user_id])
+      p 'teste 01'
       if params.include?(:score_type)
+         p 'teste 02'
         return_acu_result(acu, allocation_tags_ids, params[:score_type])
       else
         render json: { success: true, notice: t('calculate_grade', scope: 'exams.list'), situation: t('scores.situation.corrected'), grade: acu.grade }
