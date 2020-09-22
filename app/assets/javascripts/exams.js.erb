@@ -1,10 +1,43 @@
-var t = null;
-function init_chronometer(page_question, total) {
-  start(page_question);
+var Timer = {
+  totalSeconds: 1,
+  start: function (segundos) {
+    var self = this;
+    self.totalSeconds = segundos + 1;
+    this.interval = setInterval(function () {
+      self.totalSeconds += 1;
+      $('#duration').val(self.totalSeconds);
+    }, 1000);
+  },
+  pause: function () {
+    clearInterval(this.interval);
+    delete this.interval;
+  }
 }
 
+function init_chronometer(page_question, total) {
+  segundos = $('form.edit_exam_response').data('duration');
+  Timer.start(segundos);
+}
+  
 function save_question(duration) {
-  $(".edit_exam_response").submit();
+  Timer.pause();
+  var form = $('form.edit_exam_response');
+
+  event.preventDefault();
+  var post_url = $(form).attr("action");
+  var request_method = $(form).attr("method");
+  var form_data = $(form).serialize();
+  $.ajax({
+    url : post_url,
+    type: request_method,
+    data : form_data
+  }).done(function(response){
+  }).error(function(response){
+    var data = $.parseJSON(response.responseText);
+    if (typeof(data.alert) != "undefined")
+      flash_message(data.alert, 'alert');
+  });
+  //$(".edit_exam_response").submit();
   setTimeout(function() {
     pagination_aria_label();
   }, 400);
@@ -12,6 +45,7 @@ function save_question(duration) {
 }
 
 function finish_exam(duration) {
+  Timer.pause();
   save_question(duration);
   window.onbeforeunload = function () {}
   var url_for = "<%= Rails.application.routes.url_helpers.exams_path %>";
@@ -29,16 +63,9 @@ function expand_or_compress(icon){
 }
 
 function stop_save_chronometer(duration) {
-  clearTimeout(t);
+  Timer.pause();
   save_question(duration);
-}
-
-function start(page_question) {
-  segundos = 0;//$('form.edit_exam_response').data('duration');
-  t = setInterval(function() {
-    segundos++;
-    $('#duration').val(segundos);
-  },1000);
+  window.onbeforeunload = function () {}
 }
 
 function load_components(page){

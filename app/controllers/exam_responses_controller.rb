@@ -26,6 +26,8 @@ class ExamResponsesController < ApplicationController
         set_ip_user('exam_response')
         if @exam_response.update_attributes(exam_response_params)
           render_exam_response_success_json('updated')
+        else  
+          render json: { success: false, alert: @exam_response.errors.full_messages.join(', ')}, status: :unprocessable_entity
         end
       else
         if exam_user_attempt.complete

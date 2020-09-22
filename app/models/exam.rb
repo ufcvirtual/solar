@@ -113,11 +113,6 @@ class Exam < Event
           grade_question =  question.score
         else
           if question.type_question.to_i == Question::UNIQUE
-            acu = AcademicAllocationUser.find(acu_id)
-            if(acu.user_id == 56117)
-              p exam_user_attempt
-              p question
-            end
             grade_question = question.question_items.where(value: true).count * question.score
           elsif question.type_question.to_i == Question::MULTIPLE
             score_item = question.score / question.question_items.where(value: true).count
@@ -141,15 +136,6 @@ class Exam < Event
         ExamUserAttempt.update(exam_user_attempt.id, grade: grade_exam.round(2), end: DateTime.now, complete: true)
       end
     end
-  end
-
-  def count_correct_items_last(exam_user_attempt_id, question_id)
-    erqi = ExamResponsesQuestionItem.joins("LEFT JOIN exam_responses ON exam_responses_question_items.exam_response_id = exam_responses.id")
-                   .joins("LEFT JOIN question_items ON question_items.id = exam_responses_question_items.question_item_id")
-                   .where('question_items.question_id = ? AND exam_responses.exam_user_attempt_id = ?', question_id, exam_user_attempt_id)
-                   .select('exam_responses_question_items.*, question_items.value').last
-    p erqi
-    erqi.value == true ? 1 : 0
   end
 
   def count_correct_items(exam_user_attempt, question, t=nil)

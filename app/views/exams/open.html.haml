@@ -14,10 +14,18 @@
   $(function(){
 
     $.fancybox.update();
-
+    var click_pagination = false;
     if("#{@disabled}"=="false"){
-      window.onbeforeunload = function () {
-        return "#{I18n.t('exams.open.refresh')}";
+      $('body').on('click', function(e) {
+        click_pagination = false;
+      });
+      $(".pagination a").on("click", function() {
+        click_pagination = true;
+      });
+      if(click_pagination==false){
+        window.onbeforeunload = function () {
+          return "#{I18n.t('exams.open.refresh')}";
+        }
       }
     }
 
@@ -84,4 +92,9 @@
       }
     });
     
+  });
+
+  $(".pagination a").on("click", function() {
+    Timer.pause();
+    window.onbeforeunload = function () {}
   });

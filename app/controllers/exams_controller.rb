@@ -147,7 +147,7 @@ class ExamsController < ApplicationController
     # difference_minutes = (exame_datetime_end - current_time_db) / 60
     # @duration = (difference_minutes.to_i > @exam.duration.to_i) ? @exam.duration : difference_minutes
 
-
+    
     if (@situation == 'finished' || @situation == 'corrected' || @situation == 'evaluated')
       mod_correct_exam = @exam.attempts_correction
       @exam_user_attempt = ExamUserAttempt.where(id: params[:exam_user_attempt_id]).first
@@ -181,9 +181,9 @@ class ExamsController < ApplicationController
       @duration = (difference_minutes.to_i > @exam.duration.to_i) ? @exam.duration : (difference_minutes+(@total_time/60))
       verify_ip!(@exam.id, :exam, @exam.controlled, :error_text)
       if params[:page].nil?
-        render layout: true
+        render :open, layout: true
       else
-        render layout: false
+        render :open, layout: false
       end
       #respond_to do |format|
       #  format.html
