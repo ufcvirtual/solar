@@ -189,7 +189,12 @@
       });
     }
 
+    var clickDisabled = false;
+
     $("#submit_post, #submit_post_draft").click(function(){
+      if (clickDisabled)
+          return;
+
       var form    = $($(this).parents("form")[0]);
       try{
         var content = CKEDITOR.instances["post_content"].getData();
@@ -269,6 +274,9 @@
           }
         }
       });
+
+      clickDisabled = true;
+      setTimeout(function(){clickDisabled = false;}, 2000);
     });
 
     //files

@@ -11,7 +11,10 @@
     %header#topbar
       .container-topbar
         .solar-logo
-          = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
+          - if (ENV["SOLAR_CURSOS"] == "false")
+            = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
+          - else
+            = image_tag 'solar_logo_small_cursos.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
         %ul.topbar-options
           %li#save
             %a{href: "#"}= t(:save)

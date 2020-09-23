@@ -1,5 +1,5 @@
 - status = webconference.status
-- unavailable = exist_and_offline?(webconference.server.to_i)
+- unavailable = webconference.on_going? ? exist_and_offline?(webconference.server.to_i) : false
 - disabled_by_status = (webconference.status == t('scores.situation.scheduled') || webconference.status == t('scores.situation.in_progress') || webconference.status == t('scores.situation.processing') || unavailable)
 %tr.lines{ class: "web_#{webconference.id}" }
   %td.right{headers: "name_web" }

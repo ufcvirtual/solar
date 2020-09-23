@@ -261,7 +261,7 @@ module Bbb
   end
 
   def is_over?
-    Time.now > (initial_time+duration.minutes)
+    Time.now > (initial_time+(duration*2).minutes)
   end
 
   def over?

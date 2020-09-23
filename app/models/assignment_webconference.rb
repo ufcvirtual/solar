@@ -55,7 +55,7 @@ class AssignmentWebconference < ActiveRecord::Base
     meeting_name = [title, aw_info].join(' - ').truncate(100)
     aa_user_id = web.academic_allocation_user_id.to_s
     moderator_email = web.academic_allocation_user.user.email
-    downloadable = true
+    downloadable = false
 
     options = {
       moderatorPW: Digest::MD5.hexdigest(aa_user_id+meeting_id),
