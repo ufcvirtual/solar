@@ -38,7 +38,7 @@
           %tr.lines
             - data_url = on_going ? access_webconference_path(webconference, at_id: webconference.at_id) : ""
             %td.webconference_access{ :'data-url' => data_url, headers: 'web_name' }
-              - if webconference.on_going?
+              - if on_going
                 = link_to webconference.title, "#void", onclick: 'access_webconference(this)', class: 'link_content', :'aria-label' => t('.access_web', web: webconference.title), onkeydown: 'click_on_keypress(event, this);'
               - else
                 .title= link_to webconference.title, '#void', {disabled: true, class: 'disabled', :'aria-label' => t('.access_web', web: webconference.title) + t(:disabled)}
