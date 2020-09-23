@@ -39,7 +39,7 @@
       %tbody
         - @webconferences.each_with_index do |webconference, idx|
           - unavailable = exist_and_offline?(webconference.server)
-          - disabled = (webconference.situation == 'scheduled' || webconference.situation == 'in_progress' || webconference.situation == 'processing' || unavailable)
+          - disabled = !(webconference.is_recorded) || (webconference.situation == 'scheduled' || webconference.situation == 'in_progress' || webconference.situation == 'processing' || unavailable)
           %tr.lines
             %td{ style: 'text-align:center;' }= check_box_tag :ckb_webconference, webconference.ac_id || webconference.academic_allocations.first.id, false, { class: 'ckb_webconference' }
             %td= webconference.link_to_join(current_user, webconference.at_id)

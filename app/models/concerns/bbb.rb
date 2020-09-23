@@ -175,6 +175,15 @@ module Bbb
     ( !server.blank? && !bbb_online?(Bbb.bbb_prepare(server)) )
   end
 
+  def self.get_domain_server(server)
+    url = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
+    url = url['servers'][url['servers'].keys[server]]['url']
+    uri = URI.parse(url)
+    uri = URI.parse("http://#{url}") if uri.scheme.nil?
+    host = uri.host.downcase
+    host.start_with?('www.') ? host[4..-1] : host
+  end
+
   # def bbb_all_recordings(api = nil)
   def get_recordings(api = nil, meetingId)
     api = bbb_prepare if api.nil?
@@ -252,11 +261,17 @@ module Bbb
   end
 
   def is_over?
-    Time.now > (initial_time+(duration*3).minutes)
+    Time.now > (initial_time+duration.minutes)
   end
 
   def over?
     Time.now > (initial_time+duration.minutes)
+  end
+
+  def self.get_duration(start, final)
+    diff = final.to_time - start.to_time
+    duration = '%dh %02dm %02ds' % [ diff / 3600, (diff / 60) % 60, diff % 60 ]
+    return diff, duration
   end
 
   def can_destroy?

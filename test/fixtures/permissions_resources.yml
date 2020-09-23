@@ -2528,3 +2528,10 @@ api1:
   profile_id: 27
   resource_id: 232
   per_id: false
+
+# Webconference Download
+
+webconference_download_aluno:
+  profile_id: 1
+  resource_id: 237
+  per_id: false

@@ -33,7 +33,7 @@
       %tbody
         - @webconferences.each do |webconference|
           - unavailable = exist_and_offline?(webconference.server.to_i)
-          - disabled = (webconference.situation == 'scheduled' || webconference.situation == 'in_progress' || webconference.situation == 'processing' || unavailable)
+          - disabled = !(webconference.is_recorded) || (webconference.situation == 'scheduled' || webconference.situation == 'in_progress' || webconference.situation == 'processing' || unavailable)
           %tr.lines
             %td.webconference_access{ :'data-url' => access_webconference_path(webconference, at_id: webconference.at_id), headers: 'web_name' }
               - if webconference.on_going?

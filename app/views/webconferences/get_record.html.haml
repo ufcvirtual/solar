@@ -8,20 +8,27 @@
         %tr.lines
           %th= t('.access')
           %th= t(".start")
-          %th= t(".end")
-          - if @can_remove_record
-            %th
+          %th= t(".duration")
+          - if @can_remove_record || @can_download_record
+            %th= t(".options")
       %tbody
         - @recordings.each_with_index do |record, idx|
-          %tr.lines
-            %td= link_to t('.record', number: idx+1), Bbb.get_recording_url(record), target: '_blank', :'aria-label' => t('webconferences.index.access_web_recording', name: t('.record', number: idx+1) )
+          - diff, duration = Bbb.get_duration(record[:startTime].to_datetime, record[:endTime].to_datetime)
+          - url = Bbb.get_recording_url(record)
+          %tr.lines.lines_get_record
+            %td= link_to t('.record', number: idx+1), url, target: '_blank', :'aria-label' => t('webconferences.index.access_web_recording', name: t('.record', number: idx+1) )
             %td= l(record[:startTime].to_datetime)
-            %td= l(record[:endTime].to_datetime)
-            - if @can_remove_record
-              %td= button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution remove_record', :'data-tooltip' => t('.remove'), :'aria-label' => t('.remove'), :'data-url' => remove_record_webconference_path(webconference: @webconference.id, at: @at_id, recordID: record[:recordID])
+            %td= duration
+            %input.duration{:type=>"hidden", :value=>diff}
+            - if @can_remove_record || @can_download_record
+              %td
+                - if @can_download_record
+                  %span= link_to (content_tag(:i, nil, class: 'icon-arrow-down')), download_webconference_path(:url => url), class: "btn", :'data-tooltip' => t('.download_video'), :'aria-label' => t('.download_video'), method: :post
+                - if @can_remove_record
+                  %span= button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution remove_record', :'data-tooltip' => t('.remove'), :'aria-label' => t('.remove'), :'data-url' => remove_record_webconference_path(webconference: @webconference.id, at: @at_id, recordID: record[:recordID])
 
   - else
-    .block_content_text_list.text_none= t(".no_message")
+    .block_content_text_list.text_none= t(".still_processing")
 
 = javascript_include_tag "tooltip"
 
@@ -41,4 +48,14 @@
           flash_message(data.alert, 'alert', 'fancybox-outer');
       });
     });
+  });
+
+  $(function(){
+    let max = 0;
+    let index_max = 0;
+    $('.duration').each(function(index, item) {
+      if (max === 0) {max = item; index_max = index};
+      if (Number(item.value) > Number(max.value)) {max = item; index_max = index};
+    });
+    $(".lines_get_record").eq(index_max).css("background-color","#fefae6");
   });

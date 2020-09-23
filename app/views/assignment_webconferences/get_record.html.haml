@@ -1,4 +1,6 @@
 - view_disabled = view_disabled rescue @view_disabled
+- puts ENV["SOLAR_CURSO"].class
+- puts 'teste'
 %h1#lightBoxDialogTitle= t("webconferences.get_record.recordings", name: @assignment_webconference.title)
 .chat_messages
   .title-warning
@@ -9,20 +11,26 @@
         %tr.lines
           %th#_access= t('webconferences.get_record.access')
           %th#_start= t("webconferences.get_record.start")
-          %th#_end= t("webconferences.get_record.end")
-          - if @can_remove_record && !view_disabled
-            %th#_remove
+          %th#_end= t("webconferences.get_record.duration")
+          - if (@can_download_record || @can_remove_record) && !view_disabled
+            %th= t("webconferences.get_record.options")
       %tbody
         - @recordings.each_with_index do |record, idx|
-          %tr.lines
-            %td{headers: '_access'}= link_to t('webconferences.get_record.record', number: idx+1), Bbb.get_recording_url(record), target: '_blank', :'aria-label' => t('webconferences.index.access_web_recording', name: t('webconferences.get_record.record', number: idx+1) )
+          - diff, duration = Bbb.get_duration(record[:startTime].to_datetime, record[:endTime].to_datetime)
+          - url = Bbb.get_recording_url(record)
+          %tr.lines.lines_get_record
+            %td{headers: '_access'}= link_to t('webconferences.get_record.record', number: idx+1), url, target: '_blank', :'aria-label' => t('webconferences.index.access_web_recording', name: t('webconferences.get_record.record', number: idx+1) )
             %td{headers: '_start'}= l(record[:startTime].to_datetime)
-            %td{headers: '_end'}= l(record[:endTime].to_datetime)
-            - if @can_remove_record && !view_disabled
-              %td{headers: '_remove'}= button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution remove_record', :'data-tooltip' => t('webconferences.get_record.remove'), :'data-url' => remove_record_assignment_webconference_path(id: @assignment_webconference.id, recordID: record[:recordID]), :'aria-label' => t('webconferences.get_record.remove')
+            %td{headers: '_duration'}= duration
+            - if (@can_download_record || @can_remove_record) && !view_disabled
+              %td{headers: '_options'}
+                - if @can_download_record && !view_disabled
+                  %span= link_to (content_tag(:i, nil, class: 'icon-arrow-down')), download_webconference_path(:url => url), class: "btn", :'data-tooltip' => t('webconferences.get_record.download_video'), :'aria-label' => t('webconferences.get_record.download_video'), method: :post
+                - if @can_remove_record && !view_disabled
+                  %span= button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution remove_record', :'data-tooltip' => t('webconferences.get_record.remove'), :'data-url' => remove_record_assignment_webconference_path(id: @assignment_webconference.id, recordID: record[:recordID]), :'aria-label' => t('webconferences.get_record.remove')
 
   - else
-    .block_content_text_list.text_none= t("webconferences.get_record.no_message")
+    .block_content_text_list.text_none= t("webconferences.get_record.still_processing")
 
 = javascript_include_tag "tooltip"
 
@@ -42,4 +50,14 @@
           flash_message(data.alert, 'alert', 'fancybox-outer');
       });
     });
+  });
+
+  $(function(){
+    let max = 0;
+    let index_max = 0;
+    $('.duration').each(function(index, item) {
+      if (max === 0) {max = item; index_max = index};
+      if (Number(item.value) > Number(max.value)) {max = item; index_max = index};
+    });
+    $(".lines_get_record").eq(index_max).css("background-color","#fefae6");
   });

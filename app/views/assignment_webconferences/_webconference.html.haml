@@ -12,7 +12,7 @@
     = (unavailable ? t(:unavailable, scope: [:webconferences, :list]) : status)
   %td.center{headers: 'start_record_web'}
     =(webconference.is_recorded ? t('.aw_yes') : t('.aw_no'))
-  - if disabled_by_status || unavailable
+  - if disabled_by_status || unavailable || !(webconference.is_recorded)
     %td.center.record{headers: "record_web" ,:'data-tooltip' => t('webconferences.list.watch_disabled')}= link_to content_tag(:i, nil, class: 'icon-play disabled'), '#void', disabled: true, onclick: 'return false' , :'aria-label' => t('webconferences.list.watch_disabled'), class: 'btn'
   - else
     - if view_disabled
