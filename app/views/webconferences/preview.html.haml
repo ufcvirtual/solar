@@ -45,7 +45,7 @@
             - if webconference.on_going?
               %td= webconference.link_to_join(current_user, webconference.at_id)
             - else
-              %td= link_to webconference.title, '#void', {disabled: true, class: 'disabled', :'aria-label' => t('.access_web', web: webconference.title) + t(:disabled)}
+              %td= link_to webconference.title, '#void', {disabled: true, class: 'disabled', :'aria-label' => t('webconferences.index.access_web', web: webconference.title) + t(:disabled)}
             %td
               - location = webconference.location
               = location
