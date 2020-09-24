@@ -24,7 +24,8 @@
           %th{ align: 'center', style: 'width: 20%;' }= t('.availability')
           %th{ align: 'center', style: 'width: 15%;' }= t('.duration')
           %th=t('.recorded')
-          %th=t('.downloadable')
+          - if (ENV["DOWNLOAD_WEB"] == "true")
+            %th=t('.downloadable')
           %th.group_label.invisible=t('.shared_between_groups')
       %tbody
         - @webconferences.each do |webconference|
@@ -45,7 +46,8 @@
             %td{ style: 'text-align:center;' }= l(webconference.initial_time, format: :at_date)
             %td{ style: 'text-align:center;' }= webconference.duration
             %td{ style: 'text-align:center;' }=(webconference.is_recorded ? t('.y') : t('.n'))
-            %td{ style: 'text-align:center;' }=(webconference.downloadable ? t('.y') : t('.n'))
+            - if (ENV["DOWNLOAD_WEB"] == "true")
+              %td{ style: 'text-align:center;' }=(webconference.downloadable ? t('.y') : t('.n'))
             %td.group_label.invisible{ style: 'text-align:center;' }=(webconference.shared_between_groups ? t('.y') : t('.n'))
 
   - else

@@ -1,39 +1,29 @@
 
+common: &common
+dns: <%= ENV['DNS'] %>
+websocket:
+  port: <%= ENV['WEBSOCKET_PORT'] %>
+  host: <%= ENV['WEBSOCKET_HOST'] %>
+import_users:
+  media_path: "/media/admin/logs/users/import"
+  header: "Nome;CPF;Gênero;Email;Endereço;País;Estado;Cidade;Instituição;Cpf;Turma"
+
 production:
+  <<: *common
   devise:
     secret_key_base: ""
-  websocket:
-    host: '127.0.0.1'
-    port: 3002
-  import_users:
-    media_path: "/media/admin/logs/users/import"
-    header: "Nome;CPF;Gênero;Email;Endereço;País;Estado;Cidade;Instituição"
   url_options:
-    :host: "localhost"
-    :port: 3000
+    :host: <%= ENV['HOST'] %>
+    :port: 80
+  domain: "virtual.ufc.br"
 
 development:
+  <<: *common
   devise:
-    secret_key_base: 9d13e2147513f699dbce11eeaf65494128ffab62f576b66ae25ccee3299aca59ca16b52f79941e24410a85dfadbec716dc9fdfa82b05560f410233f54cf778ca
-  websocket:
-    host: '127.0.0.1'
-    port: 3002
-  import_users:
-    media_path: "/media/admin/logs/users/import"
-    header: "Nome;CPF;Gênero;Email;Endereço;País;Estado;Cidade;Instituição"
+    secret_key_base: ""
   url_options:
     :host: "localhost"
     :port: 3000
 
 test:
-  devise:
-    secret_key_base: 7b17ae734fd887869e90604e2b01264af687dc9335454b016c5db11185f32afa22495a4111a89b00a77ad309a5019bd336bd79a476045c6e7e0c0dd13670fac7
-  websocket:
-    host: '127.0.0.1'
-    port: 3002
-  import_users:
-    media_path: "/media/admin/logs/users/import"
-    header: "Nome;CPF;Gênero;Email;Endereço;País;Estado;Cidade;Instituição"
-  url_options:
-    :host: "localhost"
-    :port: 3000
+  <<: *common

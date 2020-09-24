@@ -1,19 +1,18 @@
-##
-# Arquivo de configuracoes de email - ficara fora do sistema por seguranca
-# Arquivo criado apenas para servir de base para o arquivo real
-##
-
 smtp_settings:
-  :address: 'smtp.something.com'
-  :authentication: 'plain'
-  :domain: 'something.com'
-  :user_name: 'user@something.com'
-  :password: 'password'
+  :address: 
+  :authentication: 
+  :domain: 
+  :user_name: 
+  :password: 
   :enable_starttls_auto: true
-  :port: 587
+  :port: 25
 
 default_sender:
-  :from: 'user@something.com'
+  :from: 
 
 default_url_options:
-  :host: 'localhost:3000'
+  :host: <%= ENV['HOST'] %>
+
+mass_emails:
+  scheduled_time: 30
+  max_amount: 300

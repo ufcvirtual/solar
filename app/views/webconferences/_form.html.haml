@@ -12,7 +12,8 @@
     = f.input :initial_time, as: :string, label: t('assignment_webconferences.form.date_label'), placeholder: t('assignment_webconferences.form.date_placeholder'), :'aria-label' => t('assignment_webconferences.form.date_aria_label'), input_html: {value: (l(f.object.initial_time, format: :mask_with_time_form) rescue ''), size: 50}, disabled: disabled
     = f.input :duration, hint: t('.minutes'), disabled: disabled
     = f.input :is_recorded, as: :boolean, boolean_style: :inline, disabled: disabled
-    = f.input :downloadable, as: :boolean, boolean_style: :inline
+    - if (ENV["DOWNLOAD_WEB"] == "true")
+      = f.input :downloadable, as: :boolean, boolean_style: :inline
 
     - unless @groups.blank?
       = f.input :shared_between_groups, as: :boolean, boolean_style: :inline, disabled: disabled
