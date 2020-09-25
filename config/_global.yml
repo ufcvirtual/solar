@@ -2,8 +2,8 @@
 common: &common
 dns: <%= ENV['DNS'] %>
 websocket:
-  port: <%= ENV['WEBSOCKET_PORT'] %>
-  host: <%= ENV['WEBSOCKET_HOST'] %>
+  port: 
+  host: 
 import_users:
   media_path: "/media/admin/logs/users/import"
   header: "Nome;CPF;Gênero;Email;Endereço;País;Estado;Cidade;Instituição;Cpf;Turma"

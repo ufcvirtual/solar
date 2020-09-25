@@ -121,7 +121,8 @@ module Bbb
     choose_server if server.blank?
     Timeout::timeout(4) do
       @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
-      bbb  = @config['servers'][@config['servers'].keys[server]]
+      bbb_servers = ENV["WEB_SERVERS"] == "bbb-scalelite" ? 'server_scalelite' : 'servers'
+      bbb  = @config[bbb_servers][@config[bbb_servers].keys[server]]
       debug   = @config['debug']
       BigBlueButton::BigBlueButtonApi.new(bbb['url'], bbb['salt'], bbb['version'].to_s, debug)
     end
@@ -132,7 +133,8 @@ module Bbb
   def self.bbb_prepare(server)
     Timeout::timeout(4) do
       @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
-      bbb  = @config['servers'][@config['servers'].keys[server]]
+      bbb_servers = ENV["WEB_SERVERS"] == "bbb-scalelite" ? 'server_scalelite' : 'servers'
+      bbb  = @config[bbb_servers][@config[bbb_servers].keys[server]]
       debug   = @config['debug']
       BigBlueButton::BigBlueButtonApi.new(bbb['url'], bbb['salt'], bbb['version'].to_s, debug)
     end
@@ -143,7 +145,8 @@ module Bbb
   def count_servers
      Timeout::timeout(4) do
       @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
-      @config['servers'].count
+      bbb_servers = ENV["WEB_SERVERS"] == "bbb-scalelite" ? 'server_scalelite' : 'servers'
+      @config[bbb_servers].count
     end
   rescue
     false
@@ -177,7 +180,8 @@ module Bbb
 
   def self.get_domain_server(server)
     url = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
-    url = url['servers'][url['servers'].keys[server]]['url']
+    bbb_servers = ENV["WEB_SERVERS"] == "bbb-scalelite" ? 'server_scalelite' : 'servers'
+    url = url[bbb_servers][url[bbb_servers].keys[server]]['url']
     uri = URI.parse(url)
     uri = URI.parse("http://#{url}") if uri.scheme.nil?
     host = uri.host.downcase
