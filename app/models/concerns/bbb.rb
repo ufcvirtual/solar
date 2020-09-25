@@ -36,7 +36,7 @@ module Bbb
 
       students += assignment_webconferences.map(&:academic_allocation_user).flatten.map(&:users_count).flatten.sum unless assignment_webconferences.empty?
 
-      if students > YAML::load(File.open('config/webconference.yml'))['max_simultaneous_users']
+      if students > YAML::load(File.open('config/webconference.yml'))['max_simultaneous_users'].to_i
         errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.limit"))
         raise false
       end

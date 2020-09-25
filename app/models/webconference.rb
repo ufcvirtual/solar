@@ -131,7 +131,7 @@ class Webconference < ActiveRecord::Base
       autoStartRecording: is_recorded,
       allowStartStopRecording: true,
       logoutURL: YAML::load(File.open('config/webconference.yml'))['feedback_url'] || Rails.application.routes.url_helpers.home_url.to_s,
-      maxParticipants: YAML::load(File.open('config/webconference.yml'))['max_simultaneous_users'],
+      maxParticipants: YAML::load(File.open('config/webconference.yml'))['max_simultaneous_users'].to_i,
       "meta_bbb-origin": "Solar",
       "meta_bbb-origin-server-name": domain,
       "meta_email": moderator_email,

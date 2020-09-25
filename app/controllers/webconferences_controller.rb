@@ -293,7 +293,6 @@ class WebconferencesController < ApplicationController
 
         if (msg.slice(URI::regexp(%w(http https))) == msg)
           path = YAML::load(File.open('config/webconference.yml'))['path_files'] + meetingID
-          puts path
           send_file( path,
           :disposition => 'attachment',
           :type => 'video/mp4',
