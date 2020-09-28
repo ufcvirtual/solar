@@ -107,24 +107,22 @@ class ExamsController < ApplicationController
     acs = @exam.academic_allocations
     ac_id = (acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: @allocation_tag_id).first.id)
     @acu = AcademicAllocationUser.find_or_create_one(ac_id, @allocation_tag_id, current_user.id, nil, true)
-
     last_attempt = @acu.exam_user_attempts.last
-
+    last_attempt.get_total_time(nil, true) unless last_attempt.end.blank?
+    total_time = (last_attempt.try(:get_total_time)/60).to_i
+    if total_time>=@exam.duration.to_i
+      last_attempt.update_attribute(:complete, true)
+      last_attempt = @acu.exam_user_attempts.last
+    end
     raise 'time' unless @exam.on_going?
     raise 'attempt' unless @acu.has_attempt(@exam)
     @total_attempts  = @acu.count_attempts rescue 0
+    @total_time = (last_attempt.try(:complete) ? 0 : last_attempt.try(:get_total_time)) || 0
+    duration = (@total_time/60).to_i
 
-    if (last_attempt.try(:uninterrupted_or_ended, @exam)) && @total_attempts == @exam.attempts
+    if(last_attempt.try(:uninterrupted_or_ended, @exam)) && @total_attempts == @exam.attempts
       redirect_to result_user_exam_path(@exam)
     else
-      @total_time = (last_attempt.try(:complete) ? 0 : last_attempt.try(:get_total_time)) || 0
-      
-      # end_hour = @exam.end_hour.blank? ? '23:59:59' : @exam.end_hour
-      # exam_end = @exam.schedule.end_date.to_s+' '+end_hour.to_s
-      # exame_datetime_end = Time.parse(exam_end)
-      # difference_minutes = (exame_datetime_end - current_time_db) / 60
-      # @duration = (difference_minutes.to_i > @exam.duration.to_i) ? (@exam.duration-(@total_time/60)) : difference_minutes
-
       @text = if !last_attempt.blank? && !last_attempt.try(:complete) && !@exam.uninterrupted
         t("exams.pre.continue")
       else
@@ -132,21 +130,14 @@ class ExamsController < ApplicationController
       end
       render :pre
     end
-
   rescue => error
     render text: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
   end
 
   def open
     @exam_questions = ExamQuestion.list(@exam, @last_attempt).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
+    @last_attempt.get_total_time(nil, true)
     @total_time = (@last_attempt.try(:complete) ? 0 : @last_attempt.try(:get_total_time)) || 0
-
-    # end_hour = @exam.end_hour.blank? ? '23:59:59' : @exam.end_hour
-    # exam_end = @exam.schedule.end_date.to_s+' '+end_hour.to_s
-    # exame_datetime_end = Time.parse(exam_end)
-    # difference_minutes = (exame_datetime_end - current_time_db) / 60
-    # @duration = (difference_minutes.to_i > @exam.duration.to_i) ? @exam.duration : difference_minutes
-
     
     if (@situation == 'finished' || @situation == 'corrected' || @situation == 'evaluated')
       mod_correct_exam = @exam.attempts_correction

@@ -12,11 +12,8 @@ class ExamResponsesController < ApplicationController
     if exam.controlled && IpReal.network_ips_permited(exam.id, get_remote_ip, :exam).blank?
       render text: t('exams.restrict_test')
     else
-      total_time = exam_user_attempt.get_total_time(params[:id], exam_response_params[:duration].to_i)
-      p '********************1**********************'
-      p total_time
-      p (exam_user_attempt.exam.duration*60)
-      p '********************2**********************'
+      total_time = exam_user_attempt.get_total_time(nil, true)
+
       user_validate     = (exam_user_attempt.user.id == current_user.id)
       attempt_validate  = (exam_user_attempt.id == params[:exam_response][:exam_user_attempt_id].to_i)
       duration_validate = (exam_user_attempt.exam.duration*60 > total_time)

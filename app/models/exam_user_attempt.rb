@@ -37,11 +37,16 @@ class ExamUserAttempt < ActiveRecord::Base
   end
 
   def get_total_time(er_id=nil, time=nil)
-    if time.blank? || er_id.blank?
-      exam_responses.sum(:duration)
-    else
-      exam_responses.where("id != #{er_id}").sum(:duration) + time
+    unless time.blank?
+      self.end = Time.zone.now
+      self.save!
     end
+    duration = self.end.nil? ? 0 : self.end - self.start
+    #if time.blank? || er_id.blank?
+    #  exam_responses.sum(:duration)
+    #else
+    #  exam_responses.where("id != #{er_id}").sum(:duration) + time
+    #end
   end
 
   def uninterrupted_or_ended(exam)

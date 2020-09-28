@@ -113,7 +113,7 @@ class Exam < Event
           grade_question =  question.score
         else
           if question.type_question.to_i == Question::UNIQUE
-            grade_question = question.question_items.where(value: true).count * question.score
+            grade_question = count_correct_items(exam_user_attempt, question, true) * question.score
           elsif question.type_question.to_i == Question::MULTIPLE
             score_item = question.score / question.question_items.where(value: true).count
             count_correct_items = count_correct_items(exam_user_attempt, question, true)
