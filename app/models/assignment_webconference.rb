@@ -58,7 +58,8 @@ class AssignmentWebconference < ActiveRecord::Base
     downloadable = false
 
     options = {
-      moderatorPW: Digest::MD5.hexdigest(aa_user_id+meeting_id),
+      moderatorPW: Digest::MD5.hexdigest(title+meeting_id),
+      # moderatorPW: Digest::MD5.hexdigest(aa_user_id+meeting_id),
       attendeePW: Digest::MD5.hexdigest(meeting_id),
       welcome: academic_allocation_user.assignment.enunciation,
       record: true,
