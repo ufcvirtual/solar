@@ -90,9 +90,10 @@ gem "compass-rails", "~> 1.1.7"
 gem "htmlentities", "~> 4.3.4"
 gem "newrelic_rpm"
 
+gem "dotenv-rails"
+
 group :development do
   gem "foreman", require: false
-  gem "dotenv-rails"
 
   gem "sshkit-sudo" # usar sudo no capistrano
   gem "capistrano"
