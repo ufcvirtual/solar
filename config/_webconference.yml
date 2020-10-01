@@ -15,7 +15,7 @@ timeout_ending: 600
 # maximum wait until the bot starts (secs)
 timeout_bot_start: 60
 
-max_simultaneous_users: <%= ENV['WEB_USERS'] %>
+max_simultaneous_users: <%= ENV['WEB_USERS'] || 1000 %>
 participant_log_date: '2015-09-03'
 allowStartStopRecording: true
 

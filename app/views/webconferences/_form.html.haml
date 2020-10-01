@@ -29,4 +29,15 @@
 :javascript
   $(function(){
     set_datetime_masked('webconference_initial_time');
+
+    if(document.getElementById('webconference_is_recorded').checked) {
+      $("#webconference_downloadable").removeAttr("disabled");
+    } else {
+      $("#webconference_downloadable").attr("disabled", true);
+    }
+
+    $("#webconference_is_recorded").click(function() {
+      $("#webconference_downloadable").attr("disabled", !this.checked);
+    });
+
   });
