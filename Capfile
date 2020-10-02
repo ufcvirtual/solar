@@ -39,6 +39,7 @@ require "capistrano/nvm"
 require "capistrano/rvm"
 require "capistrano/rails"
 require "capistrano/delayed_job"
+require "capistrano/dotenv/tasks"
 
 # https://github.com/platanus/capistrano3-nginx
 require "capistrano/nginx"
