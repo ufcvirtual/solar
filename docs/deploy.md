@@ -59,7 +59,10 @@
 
   ## Setup local
 
-  Definir variaveis de ambiente num .env
+  Definir variáveis de ambiente em um .env
+
+      # Tipo da aplicacao: solar ou solar_cursos
+      SOLAR_APP=solar
 
       # Servidores de aplicacao.
       SOLAR_APP_SERVERS=user@solar.server1,user@solar.server2,...

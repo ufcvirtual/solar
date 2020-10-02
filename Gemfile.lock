@@ -68,6 +68,8 @@ GEM
       sshkit (>= 1.9.0)
     capistrano-bundler (2.0.1)
       capistrano (~> 3.1)
+    capistrano-dotenv-tasks (0.1.5)
+      capistrano (~> 3.0)
     capistrano-nvm (0.0.7)
       capistrano (~> 3.1)
     capistrano-rails (1.6.1)
@@ -485,6 +487,7 @@ DEPENDENCIES
   binding_of_caller (~> 0.8.0)
   cancan (~> 1.6.10)
   capistrano
+  capistrano-dotenv-tasks
   capistrano-nvm
   capistrano-rails
   capistrano-rvm
