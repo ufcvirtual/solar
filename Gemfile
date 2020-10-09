@@ -102,6 +102,7 @@ group :development do
   gem "capistrano-rvm"
   gem "capistrano3-puma"
   gem "capistrano3-nginx"
+  gem 'capistrano-dotenv-tasks', require: false
 
   gem "rb-readline", "~> 0.5.1"
   gem "spork", "~> 0.9.2"
