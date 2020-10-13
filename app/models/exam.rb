@@ -25,6 +25,8 @@ class Exam < Event
   validate :can_edit?, only: :update, if: 'merge.nil?'
   validate :check_hour, if: lambda { |c| !c[:start_hour].blank? && !c[:end_hour].blank?  }
   validate :check_result_release_date, if: '!result_release.blank? && merge.nil?'
+  validates_format_of :start_hour, with: /\A\d{2}:\d{2}\z/, :allow_blank => true
+  validates_format_of :end_hour, with: /\A\d{2}:\d{2}\z/, :allow_blank => true
 
   before_save :after_immediate_result_release, if: 'immediate_result_release && merge.nil? && immediate_result_release_changed?'
 
