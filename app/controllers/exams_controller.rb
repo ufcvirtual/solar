@@ -109,8 +109,8 @@ class ExamsController < ApplicationController
     @acu = AcademicAllocationUser.find_or_create_one(ac_id, @allocation_tag_id, current_user.id, nil, true)
     last_attempt = @acu.exam_user_attempts.last
 
-    last_attempt.get_total_time(nil, true) unless last_attempt.end.blank?
-    total_time = last_attempt.nil? ? 0 : (last_attempt.try(:get_total_time)/60).to_i
+    last_attempt.get_total_time(nil, true) if !last_attempt.blank? && !last_attempt.end.blank?
+    total_time = last_attempt.blank? ? 0 : (last_attempt.try(:get_total_time)/60).to_i
     if total_time>=@exam.duration.to_i
       last_attempt.update_attribute(:complete, true)
       last_attempt = @acu.exam_user_attempts.last
@@ -274,9 +274,7 @@ class ExamsController < ApplicationController
    # raise 'result_release_date' unless exam.allow_calculate_grade?
     exam.recalculate_grades((exam.immediate_result_release ? params[:user_id] : nil), ats, true)
     if acu = AcademicAllocationUser.find_one(params[:ac_id], params[:user_id])
-      p 'teste 01'
       if params.include?(:score_type)
-         p 'teste 02'
         return_acu_result(acu, allocation_tags_ids, params[:score_type])
       else
         render json: { success: true, notice: t('calculate_grade', scope: 'exams.list'), situation: t('scores.situation.corrected'), grade: acu.grade }
