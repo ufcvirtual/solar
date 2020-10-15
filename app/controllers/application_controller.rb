@@ -400,7 +400,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_time_db
-    result = ActiveRecord::Base.connection.execute("SELECT current_time")
-    Time.parse(result.to_a[0]['current_time'])
+    result = ActiveRecord::Base.connection.execute("SELECT current_time AS current_time")
+    return Time.parse(result.to_a[0]['current_time'])
   end
 end
