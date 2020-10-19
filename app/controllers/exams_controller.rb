@@ -232,7 +232,7 @@ class ExamsController < ApplicationController
       else
         user_session[:blocking_content] = Exam.verify_blocking_content(current_user.id)
         #render_exam_success_json('finish')
-        redirect_to exams_path, alert: t('finish', scope: 'exams.success')
+        redirect_to exams_path, notice: t('finish', scope: 'exams.success')
       end
     end
   rescue => error
