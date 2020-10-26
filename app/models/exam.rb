@@ -468,4 +468,19 @@ class Exam < Event
     self.attempts = 1
   end
 
+  def get_duration(total_time)
+    end_hour = self.end_hour.blank? ? '23:59:59' : self.end_hour
+    exam_end = self.schedule.end_date.to_s+' '+end_hour.to_s
+    exame_datetime_end = Time.parse(exam_end)
+    difference_minutes = (exame_datetime_end - self.current_time_db)/60
+    past_time = (self.duration - difference_minutes)*60
+    total_time = past_time>total_time ? past_time : total_time
+    duration = (difference_minutes.to_i > self.duration.to_i) ? self.duration : total_time
+  end
+
+  def current_time_db
+    result = ActiveRecord::Base.connection.execute("SELECT current_time AS current_time")
+    return Time.parse(result.to_a[0]['current_time'])
+  end
+
 end

@@ -120,7 +120,12 @@ class ExamsController < ApplicationController
     @total_attempts  = @acu.count_attempts rescue 0
     @total_time = (last_attempt.try(:complete) ? 0 : last_attempt.try(:get_total_time)) || 0
     duration = (@total_time/60).to_i
-
+    if @total_time==0 && last_attempt.blank? && !@exam.end_hour.blank?
+      exam_end = @exam.schedule.end_date.to_s+' '+@exam.end_hour.to_s
+      difference_minutes = (Time.parse(exam_end) - current_time_db) / 60
+      @total_time = (difference_minutes.to_i > @exam.duration.to_i) ? @exam.duration : (@exam.duration.to_i-difference_minutes)
+      @total_time = @total_time*60
+    end
     if(last_attempt.try(:uninterrupted_or_ended, @exam)) && @total_attempts == @exam.attempts
       redirect_to result_user_exam_path(@exam)
     else
@@ -138,6 +143,7 @@ class ExamsController < ApplicationController
   def open
     @exam_questions = ExamQuestion.list(@exam, @last_attempt).paginate(page: params[:page], per_page: 1, total_entries: @exam.number_questions) unless @exam.nil?
     @last_attempt.get_total_time(nil, true)
+
     @total_time = (@last_attempt.try(:complete) ? 0 : @last_attempt.try(:get_total_time)) || 0
 
     if(@exam.ended? && (@situation == 'finished' || @situation == 'corrected' || @situation == 'evaluated'))
@@ -169,11 +175,14 @@ class ExamsController < ApplicationController
       if @last_attempt.complete==true
         render text: t(:no_permission)
       else
-        end_hour = @exam.end_hour.blank? ? '23:59:59' : @exam.end_hour
-        exam_end = @exam.schedule.end_date.to_s+' '+end_hour.to_s
-        exame_datetime_end = Time.parse(exam_end)
-        difference_minutes = (exame_datetime_end - current_time_db) / 60
-        @duration = (difference_minutes.to_i > @exam.duration.to_i) ? @exam.duration : (difference_minutes+(@total_time/60))
+        #end_hour = @exam.end_hour.blank? ? '23:59:59' : @exam.end_hour
+        #exam_end = @exam.schedule.end_date.to_s+' '+end_hour.to_s
+        #exame_datetime_end = Time.parse(exam_end)
+        #difference_minutes = (exame_datetime_end - current_time_db)/60
+        #past_time = (@exam.duration - difference_minutes)*60
+        #@total_time = past_time>@total_time ? past_time : @total_time
+        #@duration = (difference_minutes.to_i > @exam.duration.to_i) ? @exam.duration : @total_time
+        @total_time = @exam.get_duration(@total_time)
         verify_ip!(@exam.id, :exam, @exam.controlled, :error_text)
         if params[:page].nil?
           render :open, layout: true
