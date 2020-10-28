@@ -188,7 +188,7 @@
 
     $.fancybox.update();
 
-    $(document.body).on('change','select, input',function(){
+    $(document).on('change', 'input[type=radio]', function () {
       change();
     });
 
@@ -198,7 +198,7 @@
       });
 
       $("input[type='checkbox']#"+$(this).prop('id')).prop('checked', true);
-      change();
+      //change();
     });
 
   });
