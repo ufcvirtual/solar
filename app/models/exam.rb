@@ -475,7 +475,10 @@ class Exam < Event
     difference_minutes = (exame_datetime_end - self.current_time_db)/60
     past_time = (self.duration - difference_minutes)*60
     total_time = past_time>total_time ? past_time : total_time
-    duration = (difference_minutes.to_i > self.duration.to_i) ? self.duration : total_time
+    #p difference_minutes.to_i
+    #p self.duration.to_i
+    #p total_time
+    #duration = (difference_minutes.to_i > self.duration.to_i) ? self.duration : total_time
   end
 
   def current_time_db

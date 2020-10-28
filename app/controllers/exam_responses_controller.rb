@@ -29,9 +29,9 @@ class ExamResponsesController < ApplicationController
         if exam_user_attempt.complete
           render_exam_response_success_json('updated')
         elsif (!duration_validate || !date_validate)
-          redirect_to controller: 'exams', action: 'complete', id: exam_user_attempt.exam.id, error: 'duration'
+          redirect_to protocol: 'https://', controller: 'exams', action: 'complete', id: exam_user_attempt.exam.id, error: 'duration'
         else
-          redirect_to controller: 'exams', action: 'complete', id: exam_user_attempt.exam.id, error: 'validate'
+          redirect_to protocol: 'https://', controller: 'exams', action: 'complete', id: exam_user_attempt.exam.id, error: 'validate'
         end
       end
     end
