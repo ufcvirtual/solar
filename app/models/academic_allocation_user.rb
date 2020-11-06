@@ -153,7 +153,7 @@ class AcademicAllocationUser < ActiveRecord::Base
         acu.status = tool_type.constantize.verify_previous(acu.id) ? STATUS[:sent] : STATUS[:empty]
       end
 
-      return {id: acu.try(:id), errors: [I18n.t('academic_allocation_users.errors.final_exam')]} if (!acu.grade.blank? && acu.grade != evaluation[:grade] && !acu.can_evaluate?)
+      return {id: acu.try(:id), errors: [I18n.t('academic_allocation_users.errors.final_exam')]} if (!acu.grade.blank? && acu.grade != evaluation[:grade].to_f && !acu.can_evaluate?)
 
       ActiveRecord::Base.transaction do
         if acu.save
