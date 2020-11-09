@@ -30,7 +30,7 @@
       - else
         - if @exam.attempts_correction == Exam::AVERAGE
           - @attempts.each_with_index do |attempt, idx|
-            - total_time = attempt.exam_responses.sum(:duration)
+            - total_time = attempt.get_total_time
             .attempt{id: "#{attempt.id}", class: "#{idx == 0 ? '' : 'invisible'}"}
               .form-inputs.block_content
                 - unless attempt.complete
@@ -63,7 +63,7 @@
                   - else
                     = ' - '
         - else
-          - total_time = @attempt.exam_responses.sum(:duration)
+          - total_time = @attempt.get_total_time
           .attempt{id: "#{@attempt.id}"}
             .form-inputs.block_content
               - unless @attempt.complete
