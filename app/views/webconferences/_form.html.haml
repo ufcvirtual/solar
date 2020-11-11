@@ -2,17 +2,21 @@
   %span.form_requirement= t(:required_fields)
   %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit : :new), scope: [:webconferences, :form])
 
+  - disabled = @started
+
   .form-inputs.block_content.webconference
     = hidden_field_tag :allocation_tags_ids, @allocation_tags_ids
 
     = f.input :title, input_html: {size: 50}
     = f.input :description, input_html: {size: 50}
-    = f.input :initial_time, as: :string, label: t('assignment_webconferences.form.date_label'), placeholder: t('assignment_webconferences.form.date_placeholder'), :'aria-label' => t('assignment_webconferences.form.date_aria_label'), input_html: {value: (l(f.object.initial_time, format: :mask_with_time_form) rescue ''), size: 50}
-    = f.input :duration, hint: t('.minutes')
-    = f.input :is_recorded, as: :boolean, boolean_style: :inline
+    = f.input :initial_time, as: :string, label: t('assignment_webconferences.form.date_label'), placeholder: t('assignment_webconferences.form.date_placeholder'), :'aria-label' => t('assignment_webconferences.form.date_aria_label'), input_html: {value: (l(f.object.initial_time, format: :mask_with_time_form) rescue ''), size: 50}, disabled: disabled
+    = f.input :duration, hint: t('.minutes'), disabled: disabled
+    = f.input :is_recorded, as: :boolean, boolean_style: :inline, disabled: disabled
+    - if (ENV["WEB_DOWNLOAD"] == "true")
+      = f.input :downloadable, as: :boolean, boolean_style: :inline
 
     - unless @groups.blank?
-      = f.input :shared_between_groups, as: :boolean, boolean_style: :inline
+      = f.input :shared_between_groups, as: :boolean, boolean_style: :inline, disabled: disabled
 
     = render 'groups/codes'
 
@@ -25,4 +29,15 @@
 :javascript
   $(function(){
     set_datetime_masked('webconference_initial_time');
+
+    if(document.getElementById('webconference_is_recorded').checked) {
+      $("#webconference_downloadable").removeAttr("disabled");
+    } else {
+      $("#webconference_downloadable").attr("disabled", true);
+    }
+
+    $("#webconference_is_recorded").click(function() {
+      $("#webconference_downloadable").attr("disabled", !this.checked);
+    });
+
   });

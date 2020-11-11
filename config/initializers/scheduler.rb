@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'rufus-scheduler'
 
-if (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['run_scheduler'] rescue false)
+if (ENV["SCHEDULER"] == "true")
 
   scheduler = Rufus::Scheduler.new
 

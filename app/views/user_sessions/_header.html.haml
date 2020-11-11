@@ -4,5 +4,8 @@
     %li#li_2= link_to 'Atualize sua Barra de Governo', "https://barra.governoeletronico.gov.br/atualize.html", :target => '_blank'
 %header
   %h1
-    = image_tag("logo2.png", alt: t(:mysolar_alt_img_solar))
+    - if (ENV["SOLAR_CURSOS"] == "false")
+      = image_tag("logo2.png", alt: t(:mysolar_alt_img_solar))
+    - else
+      = image_tag("logo2_cursos.png", alt: t(:mysolar_alt_img_solar))
     .title= 'Ambiente Virtual de Aprendizagem da Universidade Federal do Ceará'

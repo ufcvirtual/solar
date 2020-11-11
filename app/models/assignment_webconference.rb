@@ -48,18 +48,29 @@ class AssignmentWebconference < ActiveRecord::Base
   end
 
   def bbb_join(user)
+
+    web = AssignmentWebconference.find(id)
+    domain = Bbb.get_domain_server(web.server)
     meeting_id   = get_mettingID
     meeting_name = [title, aw_info].join(' - ').truncate(100)
+    aa_user_id = web.academic_allocation_user_id.to_s
+    moderator_email = web.academic_allocation_user.user.email
+    downloadable = false
 
     options = {
       moderatorPW: Digest::MD5.hexdigest(title+meeting_id),
+      # moderatorPW: Digest::MD5.hexdigest(aa_user_id+meeting_id),
       attendeePW: Digest::MD5.hexdigest(meeting_id),
       welcome: academic_allocation_user.assignment.enunciation,
       record: true,
       autoStartRecording: is_recorded,
       allowStartStopRecording: true,
       logoutURL: YAML::load(File.open('config/webconference.yml'))['feedback_url'] || Rails.application.routes.url_helpers.home_url.to_s,
-      maxParticipants: academic_allocation_user.users_count + 1 # students + 1 responsible
+      maxParticipants: academic_allocation_user.users_count + 3, # students + 3 responsible
+      "meta_bbb-origin": "Solar(assignment)",
+      "meta_bbb-origin-server-name": domain,
+      "meta_email": moderator_email,
+      "meta_download": downloadable
     }
 
     @api = bbb_prepare

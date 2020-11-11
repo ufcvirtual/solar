@@ -3,6 +3,8 @@
   %h1#lightBoxDialogTitle= t((f.object.persisted? ? 'edit' : 'new'), scope: [:webconferences, :form])
   .flash_message_wrapper
 
+  - disabled = @started
+
   .form-inputs.block_content.webconference
     = f.hidden_field :academic_allocation_user_id, value: @assignment_webconference.academic_allocation_user_id
     .input
@@ -10,13 +12,13 @@
       = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline.middle', ckeditor: false, div_id: 'assignment_webconference_title', number: '', field: t('.title')}
 
     .input
-      = f.input :initial_time, as: :string, label: t('.date_label'), placeholder: t('.date_placeholder'), :'aria-label' => t('.date_aria_label'), input_html: {value: (l(f.object.initial_time, format: :mask_with_time_form) rescue '')}
+      = f.input :initial_time, as: :string, label: t('.date_label'), placeholder: t('.date_placeholder'), :'aria-label' => t('.date_aria_label'), input_html: {value: (l(f.object.initial_time, format: :mask_with_time_form) rescue '')}, disabled: disabled
 
     .input
-      = f.input :duration, label: t('.duration_label'), :'aria-label' => t('assignment_webconferences.form.time_in_minutes')
+      = f.input :duration, label: t('.duration_label'), :'aria-label' => t('assignment_webconferences.form.time_in_minutes'), disabled: disabled
       = render partial: 'extra_tools/speech2text', locals: {class_name: 'inline.middle', ckeditor: false, div_id: 'assignment_webconference_duration', number: '2', field: t('.duration')}
 
-    = f.input :is_recorded, as: :boolean, boolean_style: :inline, input_html: { :'data-tooltip' => t('.record_tooltip') }
+    = f.input :is_recorded, as: :boolean, boolean_style: :inline, input_html: { :'data-tooltip' => t('.record_tooltip') }, disabled: disabled
 
     .form-actions.right_buttons
       = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox', alt: t(:cancel)

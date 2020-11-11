@@ -32,7 +32,10 @@
       %header#mysolar_topbar
         #mysolar_identity{role: 'banner'}
           #mysolar_logo
-            = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
+            - if (ENV["SOLAR_CURSOS"] == "false")
+              = image_tag 'solar_logo_small.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
+            - else
+              = image_tag 'solar_logo_small_cursos.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
           %ul#mysolar_top_options
             %li#mysolar_top_submenu_label.mysolar_top_submenu_label_regular.nav_menu
               = link_to '#void', {onclick: "mysolarTopSubmenuToggle();return false;", class: 'mysolar_top_link nav_item', id: 'mysolar_top_user_nick'} do
@@ -170,7 +173,8 @@
                 %li= link_to t(:login_footer6), 'https://github.com/wwagner33/solar/blob/master/README', :target => '_blank', :'aria-label' => 'Equipe' + t(:new_window)
                 %li= link_to t(:license_terms), 'http://github.com/wwagner33/solar/blob/master/GPLv3', :target => '_blank', :'aria-label' => t(:license_terms)+ t(:new_window)
             %li= link_to t('privacy_policies.title'), privacy_policy_path, target: '_blank', :'aria-label' => t('privacy_policies.title') + t(:new_window)
-            %li= link_to t(:login_app), apps_path
+            - if (ENV["SOLAR_CURSOS"] == "false")
+              %li= link_to t(:login_app), apps_path
             %li= link_to t(:login_faq), faq_path, :'aria-label' => t(:login_faq)
             %li.choice-language
               = link_to t(:login_language), '#', class: "link-arrow"

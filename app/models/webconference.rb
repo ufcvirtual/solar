@@ -112,11 +112,18 @@ class Webconference < ActiveRecord::Base
   end
 
   def bbb_join(user, at_id = nil)
+
+    web = Webconference.find(id)
+    domain = Bbb.get_domain_server(web.server)
     meeting_id   = get_mettingID(at_id)
     meeting_name = [(title rescue name), location].join(' - ').truncate(100)
-
+    user_id = web.user_id.to_s
+    moderator_email = web.moderator.email
+    downloadable = web.downloadable
+    
     options = {
       moderatorPW: Digest::MD5.hexdigest((title rescue name)+meeting_id),
+      # moderatorPW: Digest::MD5.hexdigest(user_id+meeting_id),
       attendeePW: Digest::MD5.hexdigest(meeting_id),
       welcome: description + YAML::load(File.open('config/webconference.yml'))['welcome'],
       duration: duration,
@@ -124,7 +131,11 @@ class Webconference < ActiveRecord::Base
       autoStartRecording: is_recorded,
       allowStartStopRecording: true,
       logoutURL: YAML::load(File.open('config/webconference.yml'))['feedback_url'] || Rails.application.routes.url_helpers.home_url.to_s,
-      maxParticipants: YAML::load(File.open('config/webconference.yml'))['max_simultaneous_users']
+      maxParticipants: YAML::load(File.open('config/webconference.yml'))['max_simultaneous_users'].to_i,
+      "meta_bbb-origin": "Solar",
+      "meta_bbb-origin-server-name": domain,
+      "meta_email": moderator_email,
+      "meta_download": downloadable || false
     }
 
     @api = bbb_prepare

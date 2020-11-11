@@ -1215,3 +1215,9 @@ res232:
   controller: 'logs'
   action: 'index'
   description: '[API]Lista Logs por curso, disciplina e semestre'
+
+res233:
+  id: 237
+  controller: 'webconferences'
+  action: 'download_record'
+  description: 'Download gravações de webconferências'
