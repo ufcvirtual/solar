@@ -122,8 +122,7 @@ class Webconference < ActiveRecord::Base
     downloadable = web.downloadable
     
     options = {
-      moderatorPW: Digest::MD5.hexdigest((title rescue name)+meeting_id),
-      # moderatorPW: Digest::MD5.hexdigest(user_id+meeting_id),
+      moderatorPW: Digest::MD5.hexdigest(user_id+meeting_id),
       attendeePW: Digest::MD5.hexdigest(meeting_id),
       welcome: description + YAML::load(File.open('config/webconference.yml'))['welcome'],
       duration: duration,
