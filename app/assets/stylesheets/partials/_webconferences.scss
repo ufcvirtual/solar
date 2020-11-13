@@ -122,3 +122,15 @@ table.webconferences{
 .description_webconferences {
   table-layout: fixed;
 }
+
+.form-inputs.block_content.webconference {
+
+  .boolean.optional {
+    width: max-content;
+    margin: 4px -36px 2px 13px;
+
+    label {
+      margin-top: -1px;
+    }
+  }
+}

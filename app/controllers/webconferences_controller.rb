@@ -46,6 +46,7 @@ class WebconferencesController < ApplicationController
     authorize! :update, Webconference, on: @allocation_tags_ids
 
     @webconference = Webconference.find(params[:id])
+    @started = @webconference.started?
   end
 
   # POST /webconferences
@@ -253,6 +254,7 @@ class WebconferencesController < ApplicationController
       end
 
       @can_remove_record = (can? :manage_record, Webconference, { on: @webconference.academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true }) || current_user.id == @webconference.user_id
+      @can_download_record = ( (can? :download_record, Webconference, { on: @webconference.academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true }) && @webconference.downloadable ) || ( current_user.id == @webconference.user_id ) || (can? :preview, Webconference, { on: @webconference.academic_allocations.map(&:allocation_tag_id).flatten, accepts_general_profile: true, any: true } )
 
       raise 'offline'          unless bbb_online?(api)
       raise 'still_processing' unless @webconference.is_over?
@@ -268,6 +270,47 @@ class WebconferencesController < ApplicationController
     render text: error_message
     # render_json_error(error, 'webconferences.error')
   end
+
+
+  # POST /recordings/download/:URL
+  def download
+    if Exam.verify_blocking_content(current_user.id)
+      render text: t('exams.restrict')
+    else
+      require 'rest-client'
+      require 'json'
+      require 'uri'
+
+      address = YAML::load(File.open('config/webconference.yml'))['url_downloader']
+      email = current_user ? current_user.email : 'guest@example.com'
+      url = URI.extract(params[:url])[0]
+
+      begin
+        resp = RestClient.get "#{address}email=#{email}&url=#{url}"
+
+        msg = JSON.parse(resp.body)["msg"]
+        meetingID = msg.split("download/")[1]
+
+        if (msg.slice(URI::regexp(%w(http https))) == msg)
+          path = YAML::load(File.open('config/webconference.yml'))['path_files'] + meetingID
+          send_file( path,
+          :disposition => 'attachment',
+          :type => 'video/mp4',
+          :x_sendfile => true )
+        else
+          respond_to do |format|
+            format.html { redirect_to request.referer , flash: { notice: msg } }
+          end
+        end
+
+      rescue => ex
+        respond_to do |format|
+          format.html { redirect_to request.referer , flash: { notice: "Servidor indisponível no momento. Por favor, tente novamente mais tarde." } }
+        end
+      end
+
+    end
+end
 
   private
 
@@ -290,7 +333,7 @@ class WebconferencesController < ApplicationController
   end
 
   def webconference_params
-    params.require(:webconference).permit(:description, :duration, :initial_time, :title, :is_recorded, :shared_between_groups, :server)
+    params.require(:webconference).permit(:description, :duration, :initial_time, :title, :is_recorded, :downloadable, :shared_between_groups, :server)
   end
 
 end

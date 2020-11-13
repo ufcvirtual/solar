@@ -1539,7 +1539,7 @@ en_US:
       end: Recording's end
       options: Options
       download_podcast: Download Podcast
-      download_video: Download Vídeo
+      download_video: Download
       download_chat: Download Chat
       download_slides: Download Slides
       warning: '<b>Importat: </b> To each prolonged absence from webconference participants, a new recording is made.'

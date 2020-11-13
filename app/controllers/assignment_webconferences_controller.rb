@@ -42,6 +42,7 @@ class AssignmentWebconferencesController < ApplicationController
 
   def edit
     verify_ip!(@assignment_webconference.assignment.id, :assignment, @assignment_webconference.assignment.controlled, :text)
+    @started = @assignment_webconference.started?
   end
 
   def update
@@ -117,8 +118,10 @@ class AssignmentWebconferencesController < ApplicationController
     begin
       raise CanCan::AccessDenied unless @own_assignment
       @can_remove_record = true
+      @can_download_record = true
     rescue
       @can_remove_record = false
+      @can_download_record = false
     end
     @view_disabled = false
 

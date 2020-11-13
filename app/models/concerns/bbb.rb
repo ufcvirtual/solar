@@ -36,7 +36,7 @@ module Bbb
 
       students += assignment_webconferences.map(&:academic_allocation_user).flatten.map(&:users_count).flatten.sum unless assignment_webconferences.empty?
 
-      if students > YAML::load(File.open('config/webconference.yml'))['max_simultaneous_users']
+      if students > YAML::load(File.open('config/webconference.yml'))['max_simultaneous_users'].to_i
         errors.add(:initial_time, I18n.t("#{self.class.to_s.tableize}.error.limit"))
         raise false
       end
@@ -121,7 +121,8 @@ module Bbb
     choose_server if server.blank?
     Timeout::timeout(4) do
       @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
-      bbb  = @config['servers'][@config['servers'].keys[server]]
+      bbb_servers = ENV["WEB_SERVERS"] == "bbb-scalelite" ? 'server_scalelite' : 'servers'
+      bbb  = @config[bbb_servers][@config[bbb_servers].keys[server]]
       debug   = @config['debug']
       BigBlueButton::BigBlueButtonApi.new(bbb['url'], bbb['salt'], bbb['version'].to_s, debug)
     end
@@ -132,7 +133,8 @@ module Bbb
   def self.bbb_prepare(server)
     Timeout::timeout(4) do
       @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
-      bbb  = @config['servers'][@config['servers'].keys[server]]
+      bbb_servers = ENV["WEB_SERVERS"] == "bbb-scalelite" ? 'server_scalelite' : 'servers'
+      bbb  = @config[bbb_servers][@config[bbb_servers].keys[server]]
       debug   = @config['debug']
       BigBlueButton::BigBlueButtonApi.new(bbb['url'], bbb['salt'], bbb['version'].to_s, debug)
     end
@@ -143,7 +145,8 @@ module Bbb
   def count_servers
      Timeout::timeout(4) do
       @config = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
-      @config['servers'].count
+      bbb_servers = ENV["WEB_SERVERS"] == "bbb-scalelite" ? 'server_scalelite' : 'servers'
+      @config[bbb_servers].count
     end
   rescue
     false
@@ -173,6 +176,16 @@ module Bbb
 
   def exist_and_offline?(server)
     ( !server.blank? && !bbb_online?(Bbb.bbb_prepare(server)) )
+  end
+
+  def self.get_domain_server(server)
+    url = YAML.load_file(File.join(Rails.root.to_s, 'config', 'webconference.yml'))
+    bbb_servers = ENV["WEB_SERVERS"] == "bbb-scalelite" ? 'server_scalelite' : 'servers'
+    url = url[bbb_servers][url[bbb_servers].keys[server]]['url']
+    uri = URI.parse(url)
+    uri = URI.parse("http://#{url}") if uri.scheme.nil?
+    host = uri.host.downcase
+    host.start_with?('www.') ? host[4..-1] : host
   end
 
   # def bbb_all_recordings(api = nil)
@@ -252,11 +265,17 @@ module Bbb
   end
 
   def is_over?
-    Time.now > (initial_time+(duration*3).minutes)
+    Time.now > (initial_time+(duration*2).minutes)
   end
 
   def over?
     Time.now > (initial_time+duration.minutes)
+  end
+
+  def self.get_duration(start, final)
+    diff = final.to_time - start.to_time
+    duration = '%dh %02dm %02ds' % [ diff / 3600, (diff / 60) % 60, diff % 60 ]
+    return diff, duration
   end
 
   def can_destroy?

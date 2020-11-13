@@ -1,7 +1,15 @@
+var clickDisabled = false;
+
 function save_webconference(){
+  if (clickDisabled)
+    return;
+
   $('form#webconference_form').serialize_and_submit({
     replace_list: $('.list_webconferences')
   });
+
+  clickDisabled = true;
+  setTimeout(function(){clickDisabled = false;}, 2000);
 }
 
 function access_webconference(obj){

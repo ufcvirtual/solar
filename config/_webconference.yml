@@ -15,16 +15,26 @@ timeout_ending: 600
 # maximum wait until the bot starts (secs)
 timeout_bot_start: 60
 
-max_simultaneous_users: ...
+max_simultaneous_users: <%= ENV['WEB_USERS'] || 1000 %>
 participant_log_date: '2015-09-03'
 allowStartStopRecording: true
+
+# Recorder and Downloader
+url_downloader: 
+path_files: 
+
+server_scalelite:
+  bbb-0:
+    salt: "salt hash"
+    url: 'https://.../bigbluebutton/api'
+    version: '2.2'
 
 servers:
   bbb-0:
     salt: "salt hash"
     url: 'https://.../bigbluebutton/api'
-    version: '1.0'
+    version: '2.2'
   bbb-1:
     salt: "salt hash"
     url: 'https://.../bigbluebutton/api'
-    version: '1.0'
+    version: '2.2'

@@ -2,7 +2,7 @@ class Job
 
   AMOUNT = YAML::load(File.open('config/mailer.yml'))['mass_emails']['max_amount'] rescue nil
   SCHEDULEDTIME = YAML::load(File.open('config/mailer.yml'))['mass_emails']['scheduled_time'] rescue nil
-  DELAYEDJOB = YAML::load(File.open('config/global.yml'))['run_delayed_job'] rescue nil
+  DELAYEDJOB = ENV["DELAYED_JOB"] == "true"
 
   # returns a list of jobs that wasnt sent and still could
   # sums amount to be sent with the amount sent on the last SCHEDULEDTIME minutes
