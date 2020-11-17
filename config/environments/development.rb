@@ -44,9 +44,6 @@ Solar::Application.configure do
   config.active_support.deprecation = :log
   config.active_record.schema_format = :sql
 
-  # GrayLog
-  config.logger = GELF::Logger.new("graylog.example.org", 12219, "WAN", { :facility => "YOUR_APP_NAME" })
-
   # Only use best-standards-support built into browsers
   #config.action_dispatch.best_standards_support = :builtin
 

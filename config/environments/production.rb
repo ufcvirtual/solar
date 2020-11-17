@@ -26,7 +26,9 @@ Solar::Application.configure do
   # config.logger = SyslogLogger.new
 
   # GrayLog
-  config.logger = GELF::Logger.new("graylog.example.org", 12219, "WAN", { :facility => "YOUR_APP_NAME" })
+  config.lograge.enabled = true
+  config.lograge.formatter = Lograge::Formatters::Graylog2.new
+  config.logger = GELF::Logger.new("graylog.example.org", 12201, "WAN", { :host => "hostname-of-this-app", :facility => "heroku" })
 
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
