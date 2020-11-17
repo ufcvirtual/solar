@@ -200,6 +200,8 @@ GEM
     foreman (0.87.1)
     fssm (0.2.10)
     fullcalendar-rails (1.6.4.0)
+    gelf (3.1.0)
+      json
     gherkin (5.1.0)
     grape (0.17.0)
       activesupport
@@ -250,6 +252,11 @@ GEM
     launchy (2.1.0)
       addressable (~> 2.2.6)
     libv8 (3.16.14.19)
+    lograge (0.11.2)
+      actionpack (>= 4)
+      activesupport (>= 4)
+      railties (>= 4)
+      request_store (~> 1.0)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     memory_profiler (0.9.14)
@@ -343,6 +350,8 @@ GEM
     rake (10.1.1)
     rb-readline (0.5.5)
     ref (2.0.0)
+    request_store (1.5.0)
+      rack (>= 1.4)
     responders (1.1.2)
       railties (>= 3.2, < 4.2)
     rest-client (2.0.2)
@@ -519,6 +528,7 @@ DEPENDENCIES
   foreigner (~> 1.4.0)
   foreman
   fullcalendar-rails (~> 1.6.4.0)
+  gelf
   grape (~> 0.17.0)
   grape-rabl (~> 0.4.2)
   hairtrigger (~> 0.2.12)
@@ -527,6 +537,7 @@ DEPENDENCIES
   htmlentities (~> 4.3.4)
   jquery-rails (~> 2.2.2)
   launchy (= 2.1.0)
+  lograge
   memory_profiler (~> 0.9.10)
   momentjs-rails (~> 2.8.3)
   nested_form_fields (~> 0.8.2)

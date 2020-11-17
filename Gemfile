@@ -92,6 +92,10 @@ gem "newrelic_rpm"
 
 gem "dotenv-rails"
 
+# GrayLog
+gem 'gelf'
+gem 'lograge'
+
 group :development do
   gem "foreman", require: false
 
