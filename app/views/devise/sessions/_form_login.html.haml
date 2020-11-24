@@ -10,7 +10,7 @@
       .form-field= f.password_field :password, id: "password", placeholder: t(:password_place_holder), tabindex: "2", :'aria-label' => t(:password_place_holder)
       = f.submit t(:signin), id: "submit-login", tabindex: "3"
     - if (ENV["SOLAR_CURSOS"] == "false")
-      #flash_message{style: 'font-size:10pt;margin-left: 2%; margin-right:2%'}=raw"Alunos e professores do presencial devem utilizar mesmo login e senha do SIGAA. Professor, para importar suas disciplinas, <a href='https://drive.google.com/file/d/1e6pxe7v8M7GelJA1ZeBA3uUGQK7pgj3A/view?usp=sharing' target='_blank'>habilite o uso do Solar no SIGAA (A importação das turmas para Solar pode demorar até 24 h úteis)</a>."
+      #flash_message{style: 'font-size:10pt;margin-left: 2%; margin-right:2%'}=raw"Alunos e professores do presencial devem utilizar mesmo login e senha do SIGAA. Professor, para importar suas disciplinas, <a href='https://drive.google.com/file/d/1e6pxe7v8M7GelJA1ZeBA3uUGQK7pgj3A/view?usp=sharing' target='_blank'>habilite o uso do Solar no SIGAA (A importação pode levar até 24h úteis)</a>."
       #flash_message{style: 'font-size:10pt;margin-left: 2%; margin-right:2%'}=raw"<a href='http://solarcursos.virtual.ufc.br' target='_blank'>Para acessar os cursos da DIFOP/PROGEP (exceto o curso de formação de tutores), clique aqui.</a>"
 
     %br
