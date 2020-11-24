@@ -14,7 +14,7 @@
         %td{headers: 'questions'}= @exam.number_questions.to_s
       %tr.lines{:"data-tooltip" => t('exams.pre.attempts__tooltip')}
         %th.act_like_td#attempts= t("exams.pre.attempts")
-        %td{headers: 'attempts'}=  @total_attempts.to_s + t("exams.pre.of") +  @exam.attempts.to_s
+        %td{headers: 'attempts'}=  (@total_attempts+1).to_s + t("exams.pre.of") +  @exam.attempts.to_s
       %tr.lines{:"data-tooltip" => t('exams.pre.block__tooltip')}
         %th.act_like_td#block= t("exams.pre.block")
         - block_content = @exam.block_content ? t("exams.pre.aw_yes") : t("exams.pre.aw_no")
