@@ -53,14 +53,11 @@ class Exam < Event
   end
 
   def recalculate_grades(user_id=nil, ats=nil, all=nil)
-    p 'teste 990'
     if ended? || (started? && immediate_result_release && !user_id.blank?)
       grade = 0.00
       wh = 0
-      p 'teste 991'
       # chamar metodo de correção dos itens respondidos para todos os que existem
       list_exam_correction(user_id, ats, all).each do |acu|
-        p 'teste 992'
         correct_exam(acu.id)
         grade = get_grade(acu.id)
         grade = grade ? grade : 0.00
@@ -107,7 +104,7 @@ class Exam < Event
     questions_exam = ExamQuestion.list_correction(id, raffle_order)
     attempts = ExamUserAttempt.where(academic_allocation_user_id: acu_id)
     list_attempt = (uninterrupted ? attempts : attempts.where(complete: true))
-    (list_attempt.any? ? list_attempt : [attempts.first]).compact.each do |exam_user_attempt|
+    (list_attempt.any? ? list_attempt : [attempts.first]).to_a.compact.each do |exam_user_attempt|
       grade_exam = 0
 
       questions_exam.each do |question|

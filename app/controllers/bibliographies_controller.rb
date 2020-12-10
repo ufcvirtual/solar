@@ -66,12 +66,17 @@ class BibliographiesController < ApplicationController
     raise 'cant_edit_file' if @bibliography.is_file?
     authorize! :update, Bibliography, on: @bibliography.academic_allocations.pluck(:allocation_tag_id)
     @bibliography.update_attributes!(bibliography_params)
+    p 'TESTE 01'
     render json: { success: true, notice: t(:updated, scope: [:bibliographies, :success]) }
   rescue ActiveRecord::AssociationTypeMismatch
+    p 'TESTE 02'
     render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
   rescue CanCan::AccessDenied
+    p 'TESTE 03'
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue
+    p @comment.errors.full_messages
+    p 'TESTE 04'
     params[:success] = false
     render :edit
   end

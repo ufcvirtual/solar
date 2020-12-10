@@ -4,14 +4,15 @@ class NotificationFile < ActiveRecord::Base
 
   belongs_to :notification
 
-  validates :file, presence: true
   has_attached_file :file,
     path: ":rails_root/media/notifications/:id_:basename.:extension",
     url: "/media/notifications/:id_:basename.:extension"
 
+  validates :file, presence: true
   validates_attachment_size :file, less_than: 30.megabyte
   validates_attachment_content_type_in_black_list :file
-
+  do_not_validate_attachment_file_type :file
+  
   after_destroy :remove_readings
   after_create :remove_readings
 

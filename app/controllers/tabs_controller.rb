@@ -11,13 +11,14 @@ class TabsController < ApplicationController
     else
       set_active_tab(params[:id])
       # dentro da aba, podem existir links abertos
-      if active_tab[:url][:context].to_i == Context_Curriculum_Unit.to_i
-        active_tab[:breadcrumb].last[:url].delete(:page)
-        redirect = active_tab[:breadcrumb].last[:url]
-      end
+      redirect = active_tab[:breadcrumb].last[:url] if active_tab[:url][:context].to_i == Context_Curriculum_Unit.to_i
+     # if active_tab[:url][:context].to_i == Context_Curriculum_Unit.to_i
+     #   active_tab[:breadcrumb].last[:url].delete(:page)
+     #   redirect = active_tab[:breadcrumb].last[:url]
+      #end
     end
 
-    redirect_to url_for(redirect), flash: flash
+    redirect_to url_for(redirect)#, flash: flash
   end
 
   def create # add
@@ -32,8 +33,8 @@ class TabsController < ApplicationController
       set_session_opened_tabs({ id: id, context: context_id, allocation_tag_id: params[:allocation_tag_id] }, params)
       redirect = home_curriculum_unit_path(id) if context_id == Context_Curriculum_Unit
     end
-
-    redirect_to redirect, flash: flash
+    redirect_to url_for(redirect)
+    #redirect_to redirect, flash: flash
   end
 
   def destroy # close
@@ -41,7 +42,7 @@ class TabsController < ApplicationController
     set_active_tab_to_home if user_session[:tabs][:active] == tab_id
     user_session[:tabs][:opened].delete(tab_id)
 
-    redirect_to((active_tab[:url][:context] == Context_Curriculum_Unit) ? home_curriculum_unit_path(active_tab[:url][:id]) : home_path, flash: flash)
+    redirect_to((active_tab[:url][:context] == Context_Curriculum_Unit) ? home_curriculum_unit_path(active_tab[:url][:id]) : home_path) #, flash: flash
   end
 
 end

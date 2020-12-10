@@ -5,16 +5,16 @@ class PublicFile < ActiveRecord::Base
   belongs_to :user
   belongs_to :allocation_tag
 
-  validates :attachment_file_name, presence: true
 
   has_attached_file :attachment,
     path: ":rails_root/media/assignment/public_area/:id_:basename.:extension",
     url: "/media/assignment/public_area/:id_:basename.:extension"
 
+  validates :attachment_file_name, presence: true
   validates_attachment_size :attachment, less_than: 20.megabyte, message: ""
-
   validates_attachment_content_type_in_black_list :attachment
-  
+  do_not_validate_attachment_file_type :attachment
+
   before_save :verify_offer, if: 'merge.nil?'
 
   #default_scope order: 'attachment_updated_at DESC'

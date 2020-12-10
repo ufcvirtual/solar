@@ -3,30 +3,30 @@ source "http://rubygems.org"
 ruby "2.3.8"
 
 #gem "rails", "~> 3.2.16"
-gem 'rails', '4.0.13'
+gem 'rails', '4.1.8'
 gem "rack", "~> 1.5.2"
 gem "rake", "~> 10.1.1"
-gem "pg", "~> 0.21.0"
+gem "pg", "~> 0.20.0"
 gem "foreigner", "~> 1.4.0"
 
 # gem "koala", "1.2.0" # facebook
 
 gem "devise", "~> 3.4.1"
 gem "devise-i18n", "~> 0.11.3"
-gem "cancan", "~> 1.6.10"
+gem "cancancan", "~> 1.8.0"
 gem "devise-encryptable", "~> 0.2.0"
 
 gem "chronic", "0.6.1"
 #gem "brazilian-rails", "~> 3.3.0"
-gem 'simple_form', "~> 3.1.0"
+gem 'simple_form', "~> 3.2.1"
 
-gem "paperclip", "~> 3.4.2"
+gem "paperclip", "~> 4.2.1"
 gem "will_paginate", "~> 3.0.7"
 gem "jquery-rails", "~> 2.2.2"
 gem "fancybox2-rails", "~> 0.2.5"
 
 gem "haml", "~> 4.0.5"
-gem "haml-rails", "~> 0.4.0", group: :development
+gem "haml-rails", "~> 0.5.3", group: :development
 # gem "ckeditor", "~> 4.0.11"
 gem "ckeditor", ">= 4.2.4"
 
@@ -77,14 +77,14 @@ gem "activerecord-session_store", "~> 1.1.0"
 # add these gems to help with the transition:
 gem 'protected_attributes', '~> 1.0.9'
 #gem 'rails-observers'
-gem "actionpack", "4.0.13"
+gem "actionpack", "4.1.8"
 gem "actionpack-page_caching", "~> 1.1.0"
 gem "actionpack-action_caching", "~> 1.2.0"
 
 gem "execjs"
 gem "therubyracer", platforms: :ruby
 gem "uglifier", "~> 1.3.0"
-gem "sass-rails", "~> 4.0.0"
+gem "sass-rails", "~> 4.0.3"
 gem "compass-rails", "~> 1.1.7"
 
 gem "htmlentities", "~> 4.3.4"
@@ -96,7 +96,7 @@ group :development do
   gem "foreman", require: false
 
   gem "sshkit-sudo" # usar sudo no capistrano
-  gem "capistrano"
+  gem "capistrano", "~> 3.0"
   gem "capistrano-rails"
   gem "capistrano3-delayed-job"
   gem "capistrano-nvm"

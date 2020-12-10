@@ -34,7 +34,7 @@
 
             - ats_ids = ac.ats.to_s.delete('[]').split(',')
             - array_group_code = Array.new
-            - groups = Group.joins(:allocation_tag).where(allocation_tags: {id: ats_ids.map(&:to_i)}).compact
+            - groups = Group.joins(:allocation_tag).where(allocation_tags: {id: ats_ids.map(&:to_i)}).to_a.compact
             //oferta
             - if groups.empty?
               - @groups.each do |gr|
