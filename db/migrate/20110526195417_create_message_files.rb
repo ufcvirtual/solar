@@ -8,7 +8,7 @@ class CreateMessageFiles < ActiveRecord::Migration
       t.datetime "message_updated_at"
     end
 
-    add_foreign_key(:message_files, :messages)
+    add_foreign_key :message_files, :messages
   end
 
   def self.down

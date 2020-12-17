@@ -8,7 +8,7 @@ class CreateDiscussionPostFiles < ActiveRecord::Migration
       t.datetime :attachment_updated_at
     end
 
-    add_foreign_key(:discussion_post_files, :discussion_posts)
+    add_foreign_key :discussion_post_files, :discussion_posts
   end
 
   def self.down

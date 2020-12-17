@@ -9,8 +9,8 @@ class CreatePublicFiles < ActiveRecord::Migration
       t.datetime :attachment_updated_at
     end
 
-    add_foreign_key(:public_files, :allocation_tags)
-    add_foreign_key(:public_files, :users)
+    add_foreign_key :public_files, :allocation_tags
+    add_foreign_key :public_files, :users
   end
 
   def self.down

@@ -5,7 +5,7 @@ class AlterLessonToModule < ActiveRecord::Migration
       t.remove  :allocation_tag_id
     end
 
-    add_foreign_key(:lessons, :lesson_modules)
+    add_foreign_key :lessons, :lesson_modules
   end
 
   def self.down

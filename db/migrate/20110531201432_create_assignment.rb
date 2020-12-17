@@ -9,8 +9,8 @@ class CreateAssignment < ActiveRecord::Migration
       t.datetime :end_date, :null => false
     end
 
-    add_foreign_key(:assignments, :allocation_tags)
-    add_foreign_key(:assignments, :schedules)
+    add_foreign_key :assignments, :allocation_tags
+    add_foreign_key :assignments, :schedules
   end
 
   def self.down

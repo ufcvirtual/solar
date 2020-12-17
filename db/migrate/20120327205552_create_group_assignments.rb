@@ -6,7 +6,7 @@ class CreateGroupAssignments < ActiveRecord::Migration
       t.datetime :group_updated_at
     end
 
-    add_foreign_key(:group_assignments, :assignments)
+    add_foreign_key :group_assignments, :assignments
   end
 
   def self.down

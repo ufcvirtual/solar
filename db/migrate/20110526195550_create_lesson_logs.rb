@@ -6,8 +6,8 @@ class CreateLessonLogs < ActiveRecord::Migration
       t.datetime "access_date",    :null => false
     end
 
-    add_foreign_key(:lesson_logs, :lessons)
-    add_foreign_key(:lesson_logs, :allocations)
+    add_foreign_key :lesson_logs, :lessons
+    add_foreign_key :lesson_logs, :allocations
   end
 
   def self.down

@@ -7,9 +7,9 @@ class CreateAllocations < ActiveRecord::Migration
       t.integer  "status", :default => 0
     end
 
-    add_foreign_key(:allocations, :users)
-    add_foreign_key(:allocations, :allocation_tags)
-    add_foreign_key(:allocations, :profiles)
+    add_foreign_key :allocations, :users
+    add_foreign_key :allocations, :allocation_tags
+    add_foreign_key :allocations, :profiles
   end
 
   def self.down

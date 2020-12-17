@@ -251,7 +251,7 @@ class Webconference < ActiveRecord::Base
     LogAction.joins(:academic_allocation, :allocation_tag, user: [allocations: :profile] )
               .joins('LEFT JOIN academic_allocation_users acu ON acu.academic_allocation_id = log_actions.academic_allocation_id AND acu.user_id = log_actions.user_id')
               .joins("LEFT JOIN allocations students ON allocations.id = students.id AND cast( profiles.types & '#{Profile_Type_Student}' as boolean )")
-              .where(academic_allocation_id: acs, log_type: LogAction::TYPE[:access_webconference], allocations: { allocation_tag_id: at_id })
+              .where("log_actions.academic_allocation_id IN (?) AND allocations.allocation_tag_id IN (?)", acs, at_id[0]).where(log_type: LogAction::TYPE[:access_webconference])
               .where(user_query)
               .where("cast( profiles.types & '#{Profile_Type_Student}' as boolean ) OR cast( profiles.types & '#{Profile_Type_Class_Responsible}' as boolean )")
               .select("log_actions.created_at, users.name AS user_name, allocation_tags.id AS at_id, replace(replace(translate(array_agg(distinct profiles.name)::text,'{}', ''),'\"', ''),',',', ') AS profile_name, users.id AS user_id, acu.grade AS grade, acu.working_hours AS wh,

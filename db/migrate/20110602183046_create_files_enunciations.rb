@@ -4,7 +4,7 @@ class CreateFilesEnunciations < ActiveRecord::Migration
       t.integer :assignment_id, :null => false
     end
 
-    add_foreign_key(:files_enunciations, :assignments)
+    add_foreign_key :files_enunciations, :assignments
   end
 
   def self.down

@@ -6,7 +6,7 @@ class CreateGroups < ActiveRecord::Migration
       t.boolean  "status", :default => true
     end
 
-    add_foreign_key(:groups, :offers)
+    add_foreign_key :groups, :offers
   end
 
   def self.down

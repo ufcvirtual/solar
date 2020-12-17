@@ -15,9 +15,9 @@ class CreateLessons < ActiveRecord::Migration
       t.date     "end",                                  :null => false
     end
 
-    add_foreign_key(:lessons, :allocation_tags)
-    add_foreign_key(:lessons, :users)
-    add_foreign_key(:lessons, :schedules)
+    add_foreign_key :lessons, :allocation_tags
+    add_foreign_key :lessons, :users
+    add_foreign_key :lessons, :schedules
   end
 
   def self.down

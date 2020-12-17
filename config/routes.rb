@@ -70,7 +70,7 @@ Solar::Application.routes.draw do
 
     resources :profiles do
       get :permissions, on: :member
-      put "permissions/grant", to: :grant, on: :member
+      put "permissions/grant", action: :grant, on: :member
     end
 
     get "allocations/:id", to: "administrations#show_allocation", as: :admin_allocation
@@ -125,7 +125,7 @@ Solar::Application.routes.draw do
       get :mobilis_list
       get :list_informations
       get :list_participants
-      get :list_combobox, to: :index, combobox: true, as: :list_combobox
+      get :list_combobox, action: :index, combobox: true, as: :list_combobox
 
       get :participants
       get :informations
@@ -144,12 +144,12 @@ Solar::Application.routes.draw do
   resources :groups do
     resources :discussions, only: [:index] do
       collection do
-        get :mobilis_list, to: :index, mobilis: true
+        get :mobilis_list, action: :index, mobilis: true
       end
     end
     collection do
       get :list
-      get :list_to_edit, to: :list, edition: true
+      get :list_to_edit, action: :list, edition: true
       get :academic_index
       get :tags
     end
@@ -170,8 +170,8 @@ Solar::Application.routes.draw do
     get :download
     resources :posts, except: [:new, :edit] do
       collection do
-        get "user/:user_id", to: :user_posts, as: :user
-        get ":type/:date(/order/:order(/limit/:limit))", to: :index, defaults: {display_mode: 'list'} # :types => [:news, :history]; :order => [:asc, :desc]
+        get "user/:user_id", action: :user_posts, as: :user
+        get ":type/:date(/order/:order(/limit/:limit))", action: :index, defaults: {display_mode: 'list'} # :types => [:news, :history]; :order => [:asc, :desc]
       end
     end
   end
@@ -204,30 +204,30 @@ Solar::Application.routes.draw do
 
       post :create_designation # admin/editor add perfil
 
-      post "profile/:profile_id", to: :profile_request, type: :profile, profile_request: true, as: :profile_request # pedir perfil
-      post "enroll/:group_id", to: :enroll_request, type: :enroll, enroll_request: true, as: :enroll_request # pedir matricula
+      post "profile/:profile_id", action: :profile_request, type: :profile, profile_request: true, as: :profile_request # pedir perfil
+      post "enroll/:group_id", action: :enroll_request, type: :enroll, enroll_request: true, as: :enroll_request # pedir matricula
     end
     member do
       put :manage_enrolls
 
-      delete :cancel, to: :update, type: :cancel, enroll_request: true
-      delete :cancel_request, to: :update, type: :cancel_request, enroll_request: true
+      delete :cancel, action: :update, type: :cancel, enroll_request: true
+      delete :cancel_request, action: :update, type: :cancel_request, enroll_request: true
       delete :cancel_profile_request, action: :update, type: :cancel_profile_request, profile_request: true
 
-      post :request_reactivate, to: :update, type: :request_reactivate, enroll_request: true
-      put :deactivate, to: :update, type: :deactivate
-      put :activate, to: :update, type: :activate
+      post :request_reactivate, action: :update, type: :request_reactivate, enroll_request: true
+      put :deactivate, action: :update, type: :deactivate
+      put :activate, action: :update, type: :activate
 
-      put :reject, to: :update, type: :reject, acccept_or_reject_profile: true
-      put :accept, to: :update, type: :accept, acccept_or_reject_profile: true
-      put :undo_action, to: :update, type: :pending
+      put :reject, action: :update, type: :reject, acccept_or_reject_profile: true
+      put :accept, action: :update, type: :accept, acccept_or_reject_profile: true
+      put :undo_action, action: :update, type: :pending
 
       get :show_profile
     end
   end
 
   resources :semesters, except: [:show] do
-    get :list_combobox, to: :index, combobox: true, as: :list_combobox, on: :collection
+    get :list_combobox, action: :index, combobox: true, as: :list_combobox, on: :collection
     resources :offers, only: [:index, :new]
   end
 
@@ -240,13 +240,13 @@ Solar::Application.routes.draw do
     collection do
       get :info
       get :search_tool
-      get "user/:user_id/info", to: :user_info, as: :user_info
+      get "user/:user_id/info", action: :user_info, as: :user_info
       get :amount_access
-      get :evaluative, to: :evaluatives_frequency, type: 'evaluative'
-      get :frequency, to: :evaluatives_frequency, type: 'frequency'
-      get :not_evaluative, to: :evaluatives_frequency
+      get :evaluative, action: :evaluatives_frequency, type: 'evaluative'
+      get :frequency, action: :evaluatives_frequency, type: 'frequency'
+      get :not_evaluative, action: :evaluatives_frequency
       get :general, type: 'general'
-      get :summary, to: :general, type: 'summary'
+      get :summary, action: :general, type: 'summary'
       get :redirect_to_evaluate
       get :reports_pdf
       get :redirect_to_open
@@ -260,29 +260,29 @@ Solar::Application.routes.draw do
   resources :edx_courses, only: [:index, :new] do
     collection do
       post :create, as: :create
-      post "delete/:course", to: :delete, as: :delete
+      post "delete/:course", action: :delete, as: :delete
       get :my
       get :available
-      post "enroll/:course", to: :enroll, as: :enroll
-      post "unenroll/:course", to: :unenroll, as: :unenroll
+      post "enroll/:course", action: :enroll, as: :enroll
+      post "unenroll/:course", action: :unenroll, as: :unenroll
       get :content
       get :search_users
       get :items
-      get "designates/:course", to: :designates, as: :designates
-      post "allocate/:username/:course/:profile", to: :allocate, as: :allocate
-      post "deallocate/:username/:course/:profile", to: :deallocate, as: :deallocate
+      get "designates/:course", action: :designates, as: :designates
+      post "allocate/:username/:course/:profile", action: :allocate, as: :allocate
+      post "deallocate/:username/:course/:profile", action: :deallocate, as: :deallocate
     end
   end
 
   resources :enrollments, only: :index do
     collection do
-      get ":group_id", to: :show, as: :group
+      get ":group_id", action: :show, as: :group
       get :public_course, action: :show, defaults: { public: true }
     end
   end
 
   resources :courses do
-    get :list_combobox, to: :index, combobox: true, as: :list_combobox, on: :collection
+    get :list_combobox, action: :index, combobox: true, as: :list_combobox, on: :collection
   end
 
   resources :editions, only: [] do
@@ -293,12 +293,12 @@ Solar::Application.routes.draw do
       get :repositories
       post :automatic_management
       get :tool_management
-      get :discussion_tool_management, tool_name: 'Discussion', to: :tool_management
-      get :exam_tool_management, tool_name: 'Exam', to: :tool_management
-      get :assignment_tool_management, tool_name: 'Assignment', to: :tool_management
-      get :chat_tool_management, tool_name: 'ChatRoom', to: :tool_management
-      get :webconference_tool_management, tool_name: 'Webconference', to: :tool_management
-      get :schedule_event_tool_management, tool_name: 'ScheduleEvent', to: :tool_management
+      get :discussion_tool_management, tool_name: 'Discussion', action: :tool_management
+      get :exam_tool_management, tool_name: 'Exam', action: :tool_management
+      get :assignment_tool_management, tool_name: 'Assignment', action: :tool_management
+      get :chat_tool_management, tool_name: 'ChatRoom', action: :tool_management
+      get :webconference_tool_management, tool_name: 'Webconference', action: :tool_management
+      get :schedule_event_tool_management, tool_name: 'ScheduleEvent', action: :tool_management
       put :manage_tools
       get "academic/:curriculum_unit_type_id/courses", to: "editions#courses", as: :academic_courses
       get "academic/:curriculum_unit_type_id/curriculum_units", to: "editions#curriculum_units", as: :academic_uc
@@ -322,8 +322,8 @@ Solar::Application.routes.draw do
 
   resources :lessons do
     member do
-      put "change_status/:status", to: :change_status, as: :change_status
-      put "responsible_change_status/:status", to: :change_status, as: :responsible_change_status, defaults: { responsible: true }
+      put "change_status/:status", action: :change_status, as: :change_status
+      put "responsible_change_status/:status", action: :change_status, as: :responsible_change_status, defaults: { responsible: true }
       put "order/:change_id", action: :order, as: :change_order
       put :change_module
       get :edition, action: :open, defaults: { edition: true }
@@ -344,23 +344,23 @@ Solar::Application.routes.draw do
     end
     resources :files, controller: :lesson_files, except: [:index, :show, :update, :create] do
       collection do
-        get "extract/:file", to: :extract_files, as: :extract, constraints: { file: /.*/ }
-        post :folder, to: :new, defaults: { type: 'folder' }, as: :new_folder
-        post :file, to: :new, defaults: { type: 'file' }, as: :new_file
-        put :rename_node, to: :edit, defaults: { type: 'rename' }
-        put :move_nodes, to: :edit, defaults: { type: 'move' }
-        put :upload_files, to: :new, defaults: { type: 'upload' }, as: :upload
-        put :define_initial_file, to: :edit, defaults: { type: 'initial_file' }, as: :initial_file
-        delete :remove_node, to: :destroy
+        get "extract/:file", action: :extract_files, as: :extract, constraints: { file: /.*/ }
+        post :folder, action: :new, defaults: { type: 'folder' }, as: :new_folder
+        post :file, action: :new, defaults: { type: 'file' }, as: :new_file
+        put :rename_node, action: :edit, defaults: { type: 'rename' }
+        put :move_nodes, action: :edit, defaults: { type: 'move' }
+        put :upload_files, action: :new, defaults: { type: 'upload' }, as: :upload
+        put :define_initial_file, action: :edit, defaults: { type: 'initial_file' }, as: :initial_file
+        delete :remove_node, action: :destroy
       end
     end
     resources :notes, controller: :lesson_notes, only: [:index]
   end
 
   resources :lnotes, controller: :lesson_notes, except: [:index, :create, :update] do
-    put :update, to: :create_or_update, on: :member
+    put :update, action: :create_or_update, on: :member
     collection do
-      post :create, to: :create_or_update
+      post :create, action: :create_or_update
       post :create_or_update
       get :download
       get :find
@@ -373,17 +373,17 @@ Solar::Application.routes.draw do
   resources :digital_classes, except: :show do
     collection do
       get :list
-      get :list_without_layout, to: :list, defaults: { layout: true }
+      get :list_without_layout, action: :list, defaults: { layout: true }
 
       put ":tool_id/remove/group/:id" , to: 'digital_classes#change_tool', type: "remove", tool_type: "DigitalClass", as: :remove_group_from
       delete ":tool_id/remove/group/:id" , to: 'digital_classes#change_tool', type: "remove", tool_type: "DigitalClass", as: :remove_group_or_lesson
       put ":tool_id/add/group/:id"    , to: 'digital_classes#change_tool', type: "add"   , tool_type: "DigitalClass", as: :add_group_to
       get ":tool_id/group/tags"       , to: 'digital_classes#tags'                       , tool_type: "DigitalClass", as: :group_tags_from
 
-      get :update_members_and_roles, to: :update_members_and_roles_page
+      get :update_members_and_roles, action: :update_members_and_roles_page
       put :update_members_and_roles
 
-      get :lesson, to: :new, lesson: true
+      get :lesson, action: :new, lesson: true
     end
 
     member do
@@ -403,9 +403,9 @@ Solar::Application.routes.draw do
 
     collection do
       get :list
-      get :list_without_layout, to: :list, defaults: { layout: true }
+      get :list_without_layout, action: :list, defaults: { layout: true }
       get :download
-      get :zip_download, to: :download, defaults: { zip: true }
+      get :zip_download, action: :download, defaults: { zip: true }
 
       put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: "unbind", tool_type: "Assignment", as: :unbind_group_from
       put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: "remove", tool_type: "Assignment", as: :remove_group_from
@@ -425,14 +425,14 @@ Solar::Application.routes.draw do
   resources :assignment_files do
     collection do
       get :download
-      get :zip_download, to: :download, defaults: {zip: true}
+      get :zip_download, action: :download, defaults: {zip: true}
     end
   end
 
   resources :public_files, except: [:edit, :update, :show] do
     collection do
       get :download
-      get :zip_download, to: :download, defaults: {zip: true}
+      get :zip_download, action: :download, defaults: {zip: true}
     end
   end
 
@@ -444,9 +444,9 @@ Solar::Application.routes.draw do
     end
     member do
       get :participants
-      get :import_participants, to: :participants, defaults: {import: true}
-      put :remove_participant, to: :change_participant
-      put :add_participant, to: :change_participant, defaults: {add: true}
+      get :import_participants, action: :participants, defaults: {import: true}
+      put :remove_participant, action: :change_participant
+      put :add_participant, action: :change_participant, defaults: {add: true}
       post :import
     end
 
@@ -540,13 +540,13 @@ Solar::Application.routes.draw do
     member do
       put ":box/:new_status", to: "messages#update", as: :change_status, constraints: { box: /(inbox)|(outbox)|(trashbox)|(box_value)/, new_status: /(read)|(unread)|(trash)|(restore)/ }
 
-      get :reply,     to: :reply, type: "reply"
-      get :reply_all, to: :reply, type: "reply_all"
-      get :forward,   to: :reply, type: "forward"
+      get :reply,     action: :reply, type: "reply"
+      get :reply_all, action: :reply, type: "reply_all"
+      get :forward,   action: :reply, type: "forward"
     end
 
     collection do
-      put ":id", to: :create
+      put ":id", action: :create
 
       get :index,                    box: "inbox"
       get :inbox,    action: :index, box: "inbox",    as: :inbox
@@ -577,10 +577,10 @@ Solar::Application.routes.draw do
     collection do
       get :list
       get :open
-      get "at/:allocation_tag_id/download", to: :download, type: :all, as: :download_all
-      get "at/:allocation_tag_id/folder/:folder/download", to: :download, type: :folder, as: :download_folder
-      get "at/download", to: :download, type: :all, as: :download_all_1
-      get "at/folder/:folder/download", to: :download, type: :folder, as: :download_folder_1
+      get "at/:allocation_tag_id/download", action: :download, type: :all, as: :download_all
+      get "at/:allocation_tag_id/folder/:folder/download", action: :download, type: :folder, as: :download_folder
+      get "at/download", action: :download, type: :all, as: :download_all_1
+      get "at/folder/:folder/download", action: :download, type: :folder, as: :download_folder_1
       put ":tool_id/unbind/group/:id" , to: 'groups#change_tool', type: 'unbind', tool_type: 'SupportMaterialFile', as: :unbind_group_from
       put ":tool_id/remove/group/:id" , to: 'groups#change_tool', type: 'remove', tool_type: 'SupportMaterialFile', as: :remove_group_from
       put ":tool_id/add/group/:id"    , to: 'groups#change_tool', type: 'add'   , tool_type: 'SupportMaterialFile', as: :add_group_to
@@ -593,19 +593,19 @@ Solar::Application.routes.draw do
     collection do
       get :list # edicao
 
-      get :new_book           , to: :new, type_bibliography: Bibliography::TYPE_BOOK
-      get :new_periodical     , to: :new, type_bibliography: Bibliography::TYPE_PERIODICAL
-      get :new_article        , to: :new, type_bibliography: Bibliography::TYPE_ARTICLE
-      get :new_electronic_doc , to: :new, type_bibliography: Bibliography::TYPE_ELECTRONIC_DOC
-      get :new_free           , to: :new, type_bibliography: Bibliography::TYPE_FREE
-      get :new_file           , to: :new, type_bibliography: Bibliography::TYPE_FILE
+      get :new_book           , action: :new, type_bibliography: Bibliography::TYPE_BOOK
+      get :new_periodical     , action: :new, type_bibliography: Bibliography::TYPE_PERIODICAL
+      get :new_article        , action: :new, type_bibliography: Bibliography::TYPE_ARTICLE
+      get :new_electronic_doc , action: :new, type_bibliography: Bibliography::TYPE_ELECTRONIC_DOC
+      get :new_free           , action: :new, type_bibliography: Bibliography::TYPE_FREE
+      get :new_file           , action: :new, type_bibliography: Bibliography::TYPE_FILE
 
       put ':tool_id/unbind/group/:id' , to: 'groups#change_tool', type: 'unbind', tool_type: 'Bibliography', as: :unbind_group_from
       put ':tool_id/remove/group/:id' , to: 'groups#change_tool', type: 'remove', tool_type: 'Bibliography', as: :remove_group_from
       put ':tool_id/add/group/:id'    , to: 'groups#change_tool', type: 'add'   , tool_type: 'Bibliography', as: :add_group_to
       get ':tool_id/group/tags'       , to: 'groups#tags'                       , tool_type: 'Bibliography', as: :group_tags_from
 
-      get :zip_download, to: :download, zip: true
+      get :zip_download, action: :download, zip: true
     end
 
     get :download, on: :member, zip: false
@@ -679,15 +679,15 @@ Solar::Application.routes.draw do
   resources :questions do
     collection do
       get :list
-      get :search, to: :index
+      get :search, action: :index
     end
 
     member do
       put :change_status
-      put :publish, to: :change_status, status: true
+      put :publish, action: :change_status, status: true
       get :verify_owners, update: true
-      get :copy_verify_owners, to: :verify_owners, copy: true
-      get :show_verify_owners, to: :verify_owners, show: true
+      get :copy_verify_owners, action: :verify_owners, copy: true
+      get :show_verify_owners, action: :verify_owners, show: true
       get :copy
     end
   end

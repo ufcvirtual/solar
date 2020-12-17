@@ -58,7 +58,8 @@ module Solar
     config.filter_parameters += [:password, :access_token]
 
     config.active_record.whitelist_attributes = false
-
+    config.active_record.raise_in_transactional_callbacks = true
+    
     # Enable the asset pipeline
     config.assets.enabled = true
     config.assets.compress = true

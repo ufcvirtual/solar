@@ -30,7 +30,7 @@ class RemoveEnrollments < ActiveRecord::Migration
       t.date     "start",      :null => false
       t.date     "end"
     end
-    add_foreign_key(:enrollments, :offers)
+    add_foreign_key :enrollments, :offers
 
     # Passa os valores salvos em ofertas/schedules para enrollments
     Offer.all.each do |offer|
