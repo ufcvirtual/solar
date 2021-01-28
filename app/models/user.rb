@@ -56,6 +56,8 @@ class User < ActiveRecord::Base
   after_save :update_digital_class_user, if: '(!new_record? && (name_changed? || email_changed? || cpf_changed?) && !digital_class_user_id.nil?)', on: :update
 
   before_save :set_previous, if: '(!new_record? && ((username_changed? && !previous_username.blank?) || email_changed? && !previous_email.blank?)) && (!synchronizing)'
+  
+  before_save :maintain_nick, if: 'nick_changed? && synchronizing && !nick_was.blank?'
 
   @has_special_needs
 
@@ -120,6 +122,11 @@ class User < ActiveRecord::Base
     super(attributes)
     @has_special_needs = (attributes[:has_special_needs] == 'true')
   end
+
+ def maintain_nick
+   self.nick = nick_was
+ end
+
 
   # devise
 
