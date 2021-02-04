@@ -333,7 +333,7 @@ class Allocation < ActiveRecord::Base
           else
             # if doesnt have a final exam grade
             if final_exam_grade.blank?
-              if allocation_tag.academic_allocations.where(final_exam: true).any? && Date.today > date
+              if allocation_tag.academic_allocations.where(final_exam: true).any? && Date.today >= date
                 update_attributes grade_situation: FinalExamPending
               else
                 update_attributes grade_situation: Failed
