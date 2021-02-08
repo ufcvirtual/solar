@@ -4,13 +4,13 @@ class ChatRoomsController < ApplicationController
 
   layout false, except: :list
 
-  before_filter :prepare_for_group_selection, only: :list
+  before_action :prepare_for_group_selection, only: :list
 
-  before_filter :get_groups_by_allocation_tags, only: [:new, :create] do |controller|
+  before_action :get_groups_by_allocation_tags, only: [:new, :create] do |controller|
     @allocations = @groups.map(&:students_allocations).flatten.uniq
   end
 
-  before_filter only: [:edit, :update, :show] do |controller|
+  before_action only: [:edit, :update, :show] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
     get_groups_by_tool(@chat_room = ChatRoom.find(params[:id]))
     @allocations = @groups.map(&:students_allocations).flatten.uniq

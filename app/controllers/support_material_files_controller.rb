@@ -4,11 +4,11 @@ class SupportMaterialFilesController < ApplicationController
   include FilesHelper
 
   layout false, except: :index
-  before_filter :prepare_for_group_selection, only: :index
+  before_action :prepare_for_group_selection, only: :index
 
-  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
+  before_action :get_groups_by_allocation_tags, only: [:new, :create]
 
-  before_filter only: [:edit, :update] do |controller|
+  before_action only: [:edit, :update] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
     get_groups_by_tool(@support_material_file = SupportMaterialFile.find(params[:id]))
   end

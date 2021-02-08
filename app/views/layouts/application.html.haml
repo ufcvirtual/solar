@@ -14,7 +14,7 @@
     /[if lte IE 7]
       <haml_loud> javascript_include_tag 'lte-ie7' </haml_loud>
       <haml_loud> stylesheet_link_tag "misc/ie7" </haml_loud>
-    = stylesheet_link_tag "application", "fancybox"
+    = stylesheet_link_tag "application", "fancyBox"
     = stylesheet_link_tag "themes/theme_" + "#{user_session[:theme]}", id: "themes"
     / Datapicker with time
     = stylesheet_link_tag 'jquery-ui-timepicker-addon'

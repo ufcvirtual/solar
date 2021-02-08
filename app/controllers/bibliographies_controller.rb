@@ -4,10 +4,10 @@ class BibliographiesController < ApplicationController
   include FilesHelper
 
   layout false, except: :index # define todos os layouts do controller como falso
-  before_filter :prepare_for_group_selection, only: [:index]
+  before_action :prepare_for_group_selection, only: [:index]
 
-  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
-  before_filter only: [:edit, :update] do |controller|
+  before_action :get_groups_by_allocation_tags, only: [:new, :create]
+  before_action only: [:edit, :update] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
     get_groups_by_tool(@bibliography = Bibliography.find(params[:id]))
   end

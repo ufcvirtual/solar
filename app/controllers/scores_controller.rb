@@ -3,8 +3,8 @@ class ScoresController < ApplicationController
   include Bbb
   include SysLog::Actions
 
-  before_filter :prepare_for_group_selection, only: :index
-  before_filter :prepare_for_pagination, only: :index
+  before_action :prepare_for_group_selection, only: :index
+  before_action :prepare_for_pagination, only: :index
 
   layout false, only: :search_tool
 

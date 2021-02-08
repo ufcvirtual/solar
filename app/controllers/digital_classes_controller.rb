@@ -3,12 +3,12 @@ class DigitalClassesController < ApplicationController
   include EdxHelper
   include SysLog::Actions
 
-  before_filter :verify_digital_class
-  before_filter :prepare_for_group_selection, only: :index
-  before_filter :get_groups_by_allocation_tags, only: [:new, :create, :list]
+  before_action :verify_digital_class
+  before_action :prepare_for_group_selection, only: :index
+  before_action :get_groups_by_allocation_tags, only: [:new, :create, :list]
 
   layout false, except: [:index, :update_members_and_roles_page]
-  before_filter only: [:edit, :update] do |controller|
+  before_action only: [:edit, :update] do |controller|
     @groups = Group.get_group_from_lesson(DigitalClass.get_lesson(params[:id]))
   end
 

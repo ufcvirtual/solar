@@ -3,7 +3,7 @@ class MessagesController < ApplicationController
   include MessagesHelper
   include SysLog::Actions
 
-  before_filter :prepare_for_group_selection, only: [:index]
+  before_action :prepare_for_group_selection, only: [:index]
 
   ## [inbox, outbox, trashbox]
   def index

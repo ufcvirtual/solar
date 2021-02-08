@@ -3,9 +3,9 @@ class PostsController < ApplicationController
 
   #include SysLog::Actions
 
-  # before_filter :authenticate_user!
-  before_filter :prepare_for_pagination
-  before_filter :set_current_user, only: [:destroy, :create, :update, :publish, :post_files]
+  # before_action :authenticate_user!
+  before_action :prepare_for_pagination
+  before_action :set_current_user, only: [:destroy, :create, :update, :publish, :post_files]
 
   load_and_authorize_resource except: [:index, :user_posts, :create, :show, :evaluate, :publish, :post_files]
 
