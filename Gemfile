@@ -3,7 +3,7 @@ source "http://rubygems.org"
 ruby "2.3.8"
 
 #gem "rails", "~> 3.2.16"
-gem 'rails', '4.1.8'
+gem 'rails', '4.1.16'
 gem "rack", "~> 1.5.2"
 gem "rake", "~> 10.1.1"
 gem "pg", "~> 0.20.0"
@@ -77,7 +77,7 @@ gem "activerecord-session_store", "~> 1.1.0"
 # add these gems to help with the transition:
 gem 'protected_attributes', '~> 1.0.9'
 #gem 'rails-observers'
-gem "actionpack", "4.1.8"
+#gem "actionpack", "4.1.8"
 gem "actionpack-page_caching", "~> 1.1.0"
 gem "actionpack-action_caching", "~> 1.2.0"
 
