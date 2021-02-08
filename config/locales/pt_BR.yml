@@ -955,7 +955,7 @@ pt_BR:
       \n    Login: %{login}
       \n    Nova Senha: %{password}
         \n\nAtenciosamente,\nAdministração do ambiente.
-      \n\n\nAmbiente Virtual SOLAR: http://www.solar2.virtual.ufc.br
+      \n\n\nAmbiente Virtual SOLAR: https://www.solar.virtual.ufc.br
       \n\n\n[Esta é uma mensagem automática. Por favor, não a responda.]"
 
 # Página de alterar foto"
@@ -1149,7 +1149,7 @@ pt_BR:
       link: Link
       status: Status
       enable_end_date: Habilitar data final
-      example: "(exemplo: http://www.suaurl.com.br)"
+      example: "(exemplo: https://www.suaurl.com.br)"
       continue: Prosseguir
       save: Salvar
     notifications:
@@ -1709,9 +1709,9 @@ pt_BR:
       access_web_recording: Acessar %{name} da webconferência (abrirá uma nova janela)
       summary: Tabela cujo conteúdo há links de acesso às webconferências, com seus dados de moderação, compartilhamento entre turmas, equivalências, data e horário, nota, frequência, situação, quantidade de usuários online e link para acessar gravação.
       accessibility_title: <b>Acessibilidade (acesso com leitor de tela)</b>
-      accessibility: "<p> Para participar da webconferência utilizando leitores de tela, recomendamos a versão mais recente do navegador e os seguintes leitores de tela: <strong><a href='http://docs.bigbluebutton.org/html/html5-accessibility.html#nvda' target='_blank'>NVDA</a> ou <a href='http://docs.bigbluebutton.org/html/html5-accessibility.html#jaws' target='_blank'>JAWS</a>.</strong> </p>"
+      accessibility: "<p> Para participar da webconferência utilizando leitores de tela, recomendamos a versão mais recente do navegador e os seguintes leitores de tela: <strong><a href='https://docs.bigbluebutton.org/html/html5-accessibility.html#nvda' target='_blank'>NVDA</a> ou <a href='https://docs.bigbluebutton.org/html/html5-accessibility.html#jaws' target='_blank'>JAWS</a>.</strong> </p>"
       information_title: <b>Informações básicas</b>
-      information: "<p> Para participar da webconferência, seu computador deve ter, no mínimo, um processador dual-core com pelo menos 2G de memória, uma conexão de 1 Mbits de download e 0.5 Mbits de upload. Você pode testar sua conexão usando o <a href='http://speedtest.net' target='_blank'>speedtest.net</a>. </p> <p> São recomendadas as últimas versões dos navegadores  <a href='https://www.mozilla.org/pt-BR/firefox/new/' target='_blank'>Firefox</a> ou <a href='https://www.google.com.br/chrome/browser/desktop/' target='_blank'>Chrome</a>. </p> <p> Também é possível acessar utilizando smartphones e tablets Android e dispositivos Apple (a partir do IOS 11). Nos dispositivos android, recomendamos o uso do navegador Firefox. </p> <p> Escolha como você quer entrar na conferência de voz: Somente ouvir ou utilizando o seu microfone. Caso escolha com o uso do microfone, permita que o seu navegador acesse o mesmo e realize o teste de som. </p> <p> Se a webconferência tiver sido gravada, após o encerramento, será possível reassisti-la através do botão 'acessar lista de gravações' na tabela abaixo. </p>"
+      information: "<p> Para participar da webconferência, seu computador deve ter, no mínimo, um processador dual-core com pelo menos 2G de memória, uma conexão de 1 Mbits de download e 0.5 Mbits de upload. Você pode testar sua conexão usando o <a href='https://speedtest.net' target='_blank'>speedtest.net</a>. </p> <p> São recomendadas as últimas versões dos navegadores  <a href='https://www.mozilla.org/pt-BR/firefox/new/' target='_blank'>Firefox</a> ou <a href='https://www.google.com.br/chrome/browser/desktop/' target='_blank'>Chrome</a>. </p> <p> Também é possível acessar utilizando smartphones e tablets Android e dispositivos Apple (a partir do IOS 11). Nos dispositivos android, recomendamos o uso do navegador Firefox. </p> <p> Escolha como você quer entrar na conferência de voz: Somente ouvir ou utilizando o seu microfone. Caso escolha com o uso do microfone, permita que o seu navegador acesse o mesmo e realize o teste de som. </p> <p> Se a webconferência tiver sido gravada, após o encerramento, será possível reassisti-la através do botão 'acessar lista de gravações' na tabela abaixo. </p>"
     list_access:
       no_log: Nenhum participante acessou esta webconferência
       too_old: Esta webconferência ocorreu antes dos acessos começarem a ser gravados
@@ -5179,7 +5179,7 @@ pt_BR:
       cant_access_uc_too_many: "Quando um usuário tem muitas disciplinas em aberto, a área de 'Disciplina' da home usa uma barra de rolagem para mantê-las dentro de um espaço limitado. Localize a barra de rolagem para verificar se sua disciplina não está ao fim da lista. O Solar 2.0 também permite, na Home, pesquisar por disciplinas, basta clicar no ícone de engrenagem e informar os dados desejados."
       cant_access_uc_canceled: "Verifique se você ainda está matriculado no menu 'Matrícula' ou verifique se seu perfil para a disciplina continua ativo clicando no seu nome ao lado do relógio e em 'Perfis'."
       cant_access_uc_deactivated: "Informe-se com os responsáveis pelo curso, eles poderão ajudá-lo."
-      cant_access_uc_javascript: "No Solar 2.0, muitas ferramentas e ações fazem uso de javascript, portanto é necessário que seu navegador esteja com ele ativo. Para verificar se está ativo ou não, sugerimos que acesse <a href='http://enable-javascript.com/pt/' target='_blank'>esta url</a>. Uma mensagem verde irá aparecer caso esteja ativo e vermelha caso esteja desativado. Se desativado, o próprio site fornece todas as instruções para ativá-lo. <br/>Caso seu javascript esteja desativado e você não tenha conseguido ativá-lo, entre em contato com o atendimento@virtual.ufc.br, informando seu navegador, a versão e as medidas tomadas para que nossa equipe tentará ajudá-lo. "
+      cant_access_uc_javascript: "No Solar 2.0, muitas ferramentas e ações fazem uso de javascript, portanto é necessário que seu navegador esteja com ele ativo. Para verificar se está ativo ou não, sugerimos que acesse <a href='https://enable-javascript.com/pt/' target='_blank'>esta url</a>. Uma mensagem verde irá aparecer caso esteja ativo e vermelha caso esteja desativado. Se desativado, o próprio site fornece todas as instruções para ativá-lo. <br/>Caso seu javascript esteja desativado e você não tenha conseguido ativá-lo, entre em contato com o atendimento@virtual.ufc.br, informando seu navegador, a versão e as medidas tomadas para que nossa equipe tentará ajudá-lo. "
       cant_access_uc_what_else: "Entre em contato com o atendimento@virtual.ufc.br relatando sua situação. Lembre-se de informar seu cpf, a disciplina que gostaria de acessar, um relato detalhado do problema e as medidas que já foram tomadas."
       activity_date: "Atividades encerradas ou não iniciadas não podem receber participações."
       activity_error: "Verifique se sua participação atende aos requisitos especificados na mensagem de erro."
@@ -5408,7 +5408,7 @@ pt_BR:
       find_my_ip_title: '<b>Como descubro o IP da minha rede?</b>'
       find_my_ip: '<p>Se você estiver no local (laboratório, por exemplo) no qual a atividade deverá ser realizada, basta clicar em "Usar IP da rede atual", que o Solar irá detectar o IP da sua rede.</p>'
       find_other_ip_title: '<b>Como descubro o IP de outra rede?</b>'
-      find_other_ip: '<p>É importante que alguém esteja disponível na rede desejada para te informar o IP dela. Para a pessoa, que estiver em uma outra rede a ser cadastrada nesta atividade, descubra seu IP, basta acessar sites como <a target="_blank" href="http://whatismyipaddress.com/">http://whatismyipaddress.com/</a> e informar o número que irá aparecer na tela.</p>'
+      find_other_ip: '<p>É importante que alguém esteja disponível na rede desejada para te informar o IP dela. Para a pessoa, que estiver em uma outra rede a ser cadastrada nesta atividade, descubra seu IP, basta acessar sites como <a target="_blank" href="https://whatismyipaddress.com/">https://whatismyipaddress.com/</a> e informar o número que irá aparecer na tela.</p>'
       ipv_title: '<b>IPV4 ou IPV6?</b>'
       ipv: '<p>IPV4 e IPV6 são versões do protocolo de internet.</p><p>Se você clicar em "Usar IP da rede atual", o IP encontrado já irá alterar para o tipo de IP correto. Ao acessar o site informado em "Como descubro o IP de outra rede?", você poderá saber se o endereço não é IPV4 se ele não for compatível com a formatação do campo. Se não for compatível, basta clicar no seletor e alterar para IPV6.</p>'
       ufc_title: '<b>O local da atividade fica na UFC</b>'

@@ -53,8 +53,8 @@ class AssignmentWebconference < ActiveRecord::Base
     domain = Bbb.get_domain_server(web.server)
     meeting_id   = get_mettingID
     meeting_name = [title, aw_info].join(' - ').truncate(100)
-    aa_user_id = web.academic_allocation_user_id.to_s
-    moderator_email = web.academic_allocation_user.user.email
+    #aa_user_id = web.academic_allocation_user_id.to_s
+    moderator_email = web.academic_allocation_user.user.email rescue web.academic_allocation_user.group_assignment.users.map(&:email).compact.join(',')
     downloadable = false
 
     options = {
