@@ -22,21 +22,21 @@ class Group < ActiveRecord::Base
 
   validates :code, :offer_id, presence: true
 
-  validate :unique_code_on_offer_by_name, unless: 'offer_id.nil? || code.nil? || !code_changed?'
-  validate :unique_name_on_offer, unless: 'offer_id.nil? || name.blank? || !name_changed?'
+  validate :unique_code_on_offer_by_name, unless: -> {offer_id.nil? || code.nil? || !saved_change_to_code?}
+  validate :unique_name_on_offer, unless: -> {offer_id.nil? || name.blank? || !saved_change_to_name?}
 
   validates :code, length: { maximum: 40 }
   validates :name, :location, length: { maximum: 100 }
 
-  validates :digital_class_directory_id, uniqueness: true, on: :update, unless: 'digital_class_directory_id.blank?'
+  validates :digital_class_directory_id, uniqueness: true, on: :update, unless: -> {digital_class_directory_id.blank?}
 
-  before_save :set_empty_name, if: 'name.blank?'
+  before_save :set_empty_name, if: -> {name.blank?}
 
-  validate :name_mandatory_if_distant, if: 'name.blank?'
+  validate :name_mandatory_if_distant, if: -> {name.blank?}
 
-  after_save :update_digital_class, if: "code_changed?"
+  after_save :update_digital_class, if: -> {saved_change_to_code?}
 
-  validate :block_fields_if_integrated, if: 'integrated && api.blank?'
+  validate :block_fields_if_integrated, if: -> {integrated && api.blank?}
 
   def order
    'groups.status, groups.code'

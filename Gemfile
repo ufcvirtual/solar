@@ -87,7 +87,7 @@ gem "execjs"
 gem "therubyracer", platforms: :ruby
 gem "uglifier", "~> 4.1.10"
 gem "sass-rails", "~> 5.0.7"
-gem "compass-rails", "~> 3.0.2"
+gem "compass-rails", "~> 4.0.0"
 
 gem "htmlentities", "~> 4.3.4"
 gem "newrelic_rpm"

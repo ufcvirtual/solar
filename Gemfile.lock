@@ -140,7 +140,7 @@ GEM
       sass (>= 3.3.0, < 3.5)
     compass-import-once (1.0.5)
       sass (>= 3.2, < 3.5)
-    compass-rails (3.0.2)
+    compass-rails (4.0.0)
       compass (~> 1.0.0)
       sass-rails (< 5.1)
       sprockets (< 4.0)
@@ -558,7 +558,7 @@ DEPENDENCIES
   chronic (= 0.6.1)
   ckeditor (>= 4.2.4)
   coffee-rails (~> 4.2.2)
-  compass-rails (~> 3.0.2)
+  compass-rails (~> 4.0.0)
   cpf_utils (~> 1.2.1)
   cucumber-rails (~> 2.2.0)
   daemons

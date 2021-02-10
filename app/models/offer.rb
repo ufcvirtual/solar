@@ -25,16 +25,16 @@ class Offer < ActiveRecord::Base
     record.enrollment_schedule.destroy if record.enrollment_schedule.try(:can_destroy?)
   }
 
-  validates :course, presence: true, if: "curriculum_unit.nil?"
-  validates :curriculum_unit, presence: true, if: "course.nil?"
+  validates :course, presence: true, if: -> {curriculum_unit.nil?}
+  validates :curriculum_unit, presence: true, if: -> {course.nil?}
   validates :semester, presence: true
 
-  validate :define_curriculum_unit, if: "!course.nil? && type_id == 3"
+  validate :define_curriculum_unit, if: -> {!course.nil? && type_id == 3}
   validate :check_period, :must_be_unique
 
   accepts_nested_attributes_for :period_schedule, :enrollment_schedule, reject_if: proc { |s| s[:start_date].blank? && s[:end_date].blank? }, allow_destroy: true
 
-  after_save :update_digital_class, if: "curriculum_unit_id_changed? || course_id_changed? || semester_id_changed?"
+  after_save :update_digital_class, if: -> {saved_change_to_curriculum_unit_id? || saved_change_to_course_id? || saved_change_to_semester_id?}
 
   attr_accessor :type_id, :verify_current_date
 

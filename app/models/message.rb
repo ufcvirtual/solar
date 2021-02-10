@@ -10,7 +10,7 @@ class Message < ActiveRecord::Base
   has_many :message_labels, -> { uniq }, through: :user_message_labels
 
   before_save proc { |record| record.subject = I18n.t(:no_subject, scope: :messages) if record.subject == '' }
-  before_save :set_sender_and_recipients, if: 'sender'
+  before_save :set_sender_and_recipients, if: -> {sender}
 
   scope :by_user, ->(user_id) { joins(:user_messages).where(user_messages: { user_id: user_id }) }
 

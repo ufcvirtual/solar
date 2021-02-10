@@ -102,7 +102,7 @@ module Solar
 
     #config.action_controller.allow_forgery_protection = false
     #config.gem "koala"
-
+    config.assets.paths << Rails.root.join("app", "assets", "fonts")
     config.middleware.use(Rack::Config) do |env|
       env['api.tilt.root'] = Rails.root.join "app", "api", "templates"
     end

@@ -22,24 +22,24 @@ class Exam < Event
   validates :start_hour, presence: true, if: lambda { |c| c[:start_hour].blank?  && !c[:end_hour].blank? }
   validates :end_hour  , presence: true, if: lambda { |c| !c[:start_hour].blank? && c[:end_hour].blank?  }
 
-  validate :can_edit?, on: :update, if: 'merge.nil?'
+  validate :can_edit?, on: :update, if: -> {merge.nil?}
   validate :check_hour, if: lambda { |c| !c[:start_hour].blank? && !c[:end_hour].blank?  }
-  validate :check_result_release_date, if: '!result_release.blank? && merge.nil?'
+  validate :check_result_release_date, if: -> {!result_release.blank? && merge.nil?}
   validates_format_of :start_hour, with: /\A\d{2}:\d{2}\z/, :allow_blank => true
   validates_format_of :end_hour, with: /\A\d{2}:\d{2}\z/, :allow_blank => true
 
-  before_save :after_immediate_result_release, if: 'immediate_result_release && merge.nil? && immediate_result_release_changed?'
+  before_save :after_immediate_result_release, if: -> {immediate_result_release && merge.nil? && saved_change_to_immediate_result_release?}
 
   accepts_nested_attributes_for :schedule
 
-  before_destroy :can_destroy?, if: 'merge.nil?'
+  before_destroy :can_destroy?, if: -> {merge.nil?}
 
   before_save :set_status, :set_can_publish, on: :update
 
-  after_save :set_random_questions, if: 'status_changed? || random_questions_changed? || number_questions_changed?'
-  after_save :recalculate_grades,   if: 'attempts_correction_changed? || (result_email_changed? && result_email)'
+  after_save :set_random_questions, if: -> {saved_change_to_status? || saved_change_to_random_questions? || saved_change_to_number_questions?}
+  after_save :recalculate_grades,   if: -> {saved_change_to_attempts_correction? || (saved_change_to_result_email? && result_email)}
 
-  after_save :redefine_management, if: 'status_changed? && !status'
+  after_save :redefine_management, if: -> {saved_change_to_status? && !status}
 
   def redefine_management
     return true if academic_allocations.blank?

@@ -17,7 +17,9 @@ class TabsController < ApplicationController
      #   redirect = active_tab[:breadcrumb].last[:url]
       #end
     end
-
+    unless(redirect.class.to_s == "String")
+     redirect.permit!
+    end
     redirect_to url_for(redirect)#, flash: flash
   end
 

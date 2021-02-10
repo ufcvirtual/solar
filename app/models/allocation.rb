@@ -20,18 +20,18 @@ class Allocation < ActiveRecord::Base
   has_many :chat_participants
 
   validates :profile_id, :user_id, presence: true
-  validate :valid_profile_in_allocation_tag?, if: '!allocation_tag_id.nil?'
+  validate :valid_profile_in_allocation_tag?, if: -> {!allocation_tag_id.nil?}
 
-  validate :can_cancel?, if: "!allocation_tag_id.nil? && status_changed?"
+  validate :can_cancel?, if: -> {!allocation_tag_id.nil? && saved_change_to_status?}
 
   validates_uniqueness_of :profile_id, scope: [:user_id, :allocation_tag_id]
 
-  after_save :update_digital_class_members, if: '(!new_record? && (status_changed? || profile_id_changed?))', on: :update
-  after_save :update_digital_class_user_role, if: '(!new_record? && profile_id_changed?)', on: :update
+  after_save :update_digital_class_members, if: -> {(!new_record? && (saved_change_to_status? || profile_id_changed?))}, on: :update
+  after_save :update_digital_class_user_role, if: -> {(!new_record? && saved_change_to_profile_id?)}, on: :update
 
   after_create :calculate_grade_and_hours
 
-  validate :verify_profile, if: 'new_record? || profile_id_changed?'
+  validate :verify_profile, if: -> {new_record? || saved_change_to_profile_id?}
 
   def can_change_group?
     not [Allocation_Cancelled, Allocation_Rejected].include?(status)

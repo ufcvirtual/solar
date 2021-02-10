@@ -25,8 +25,8 @@ class User < ActiveRecord::Base
   belongs_to :oauth_application
 
   has_many :allocations
-  has_many :allocation_tags, -> { uniq }, through: :allocations
-  has_many :profiles, -> { where(profiles: { status: true }, allocations: { status: 1 }).uniq }, through: :allocations # allocation.status = Allocation_Activated
+  has_many :allocation_tags, -> { distinct }, through: :allocations
+  has_many :profiles, -> { where(profiles: { status: true }, allocations: { status: 1 }).distinct }, through: :allocations # allocation.status = Allocation_Activated
   has_many :log_access
   has_many :log_actions
   has_many :lessons
@@ -51,13 +51,13 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :recoverable, :encryptable#, :timeoutable, :validatable
 
   before_save :ensure_authentication_token!, :downcase_username
-  before_save :downcase_email, unless: 'email.blank?'
+  before_save :downcase_email, unless: -> {email.blank?}
   after_save :log_update_user
-  after_save :update_digital_class_user, if: '(!new_record? && (name_changed? || email_changed? || cpf_changed?) && !digital_class_user_id.nil?)', on: :update
+  after_save :update_digital_class_user, if: -> {(!new_record? && (saved_change_to_name? || saved_change_to_email? || saved_change_to_cpf?) && !digital_class_user_id.nil?)}, on: :update
 
-  before_save :set_previous, if: '(!new_record? && ((username_changed? && !previous_username.blank?) || email_changed? && !previous_email.blank?)) && (!synchronizing)'
+  before_save :set_previous, if: -> {(!new_record? && ((saved_change_to_username? && !previous_username.blank?) || saved_change_to_email? && !previous_email.blank?)) && (!synchronizing)}
   
-  before_save :maintain_nick, if: 'nick_changed? && synchronizing && !nick_was.blank?'
+  before_save :maintain_nick, if: -> {saved_change_to_nick? && synchronizing && !nick_was.blank?}
 
   @has_special_needs
 
@@ -80,7 +80,7 @@ class User < ActiveRecord::Base
 
   validates :email, uniqueness: {case_sensitive: false}, unless: Proc.new { |a| (a.integrated && !a.on_blacklist?) || a.email.blank?}
 
-  validates :email, confirmation: true, if: "(email_changed? || new_record?) && !(integrated && !on_blacklist?)"
+  validates :email, confirmation: true, if: -> {(email_changed? || new_record?) && !(integrated && !on_blacklist?)}
 
   validates :special_needs, presence: true, if: :has_special_needs?
 
@@ -97,12 +97,12 @@ class User < ActiveRecord::Base
   validate :integration, if: Proc.new{ |a| !a.new_record? && !a.on_blacklist? && a.integrated? && (a.synchronizing.nil? || !a.synchronizing) }
   validate :data_integration, if: Proc.new{ |a| (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO["integrated"]) && (a.new_record? || username_changed? || email_changed? || cpf_changed?) && (a.synchronizing.nil? || !a.synchronizing) }
 
-  validate :unique_cpf, if: "cpf_changed?"
+  validate :unique_cpf, if: -> { saved_change_to_cpf }
   validate :login_differ_from_cpf
-  validate :only_admin, if: '!new_record? && (cpf_changed? || active_changed?)'
+  validate :only_admin, if: -> {!new_record? && (cpf_changed? || active_changed?)}
 
-  before_save :set_empty_email, if: 'email.blank?'
-  after_save :remove_association_app, if: '!oauth_application_id.blank? && api.blank?'
+  before_save :set_empty_email, if: -> {email.blank?}
+  after_save :remove_association_app, if: -> {!oauth_application_id.blank? && api.blank?}
 
   # paperclip uses: file_name, content_type, file_size e updated_at
 
@@ -429,7 +429,7 @@ class User < ActiveRecord::Base
   def activated_allocation_tag_ids(related = true, interacts = false)
     query = interacts ? "cast(profiles.types & #{Profile_Type_Student} as boolean) OR cast(profiles.types & #{Profile_Type_Class_Responsible} as boolean)" : ''
     allocation_tags = AllocationTag.joins(allocations: :profile).where(allocations: {user_id: id, status: Allocation_Activated.to_i}).where(query)
-    (related ? allocation_tags.collect!{ |at| at.related }.flatten.uniq : allocation_tags.pluck(:id))
+    (related ? allocation_tags.to_a.collect!{ |at| at.related }.flatten.uniq : allocation_tags.pluck(:id))
   end
 
   # Returns all allocation_tags_ids with activated access on informed actions of controller

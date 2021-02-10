@@ -18,9 +18,9 @@ class QuestionItem < ActiveRecord::Base
 
   validates :description, presence: true
 
-  validates :img_alt, presence: true, if: '(!item_image_file_name.blank? && img_alt.blank?)'
+  validates :img_alt, presence: true, if: -> {(!item_image_file_name.blank? && img_alt.blank?)}
 
-  validates :audio_description, presence: true, if: '(!item_audio_file_name.blank?)'
+  validates :audio_description, presence: true, if: -> {(!item_audio_file_name.blank?)}
 
   validates_attachment_size :item_audio, less_than: 10.megabyte, message: ''
   validates_attachment_content_type :item_audio, content_type: /^audio\/(mpeg|x-mpeg|mp3|x-mp3|mpeg3|x-mpeg3|mpg|x-mpg|x-mpegaudio)$/, message: I18n.t('questions.error.wrong_type_audio')
@@ -28,8 +28,8 @@ class QuestionItem < ActiveRecord::Base
 
   before_destroy :can_destroy?
 
-  before_save :replace_audio, if: '(!item_audio_file_name.blank? && (new_record? || item_audio_file_name_changed?))'
-  before_save :replace_image, if: '(!item_image_file_name.blank? && (new_record? || item_image_file_name_changed?))'
+  before_save :replace_audio, if: -> {(!item_audio_file_name.blank? && (new_record? || item_audio_file_name_changed?))}
+  before_save :replace_image, if: -> {(!item_image_file_name.blank? && (new_record? || item_image_file_name_changed?))}
 
   def can_destroy?
     raise 'in_use' if exam_responses.any?
