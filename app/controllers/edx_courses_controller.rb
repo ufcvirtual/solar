@@ -63,7 +63,7 @@ class EdxCoursesController < ApplicationController
 
     redirect_to enrollments_path
   rescue => error
-    redirect_to :back, alert: t("edx.errors.cant_connect")
+    redirect_back fallback_location: :back, alert: t("edx.errors.cant_connect")
   end
 
   #Edição Conteúdo

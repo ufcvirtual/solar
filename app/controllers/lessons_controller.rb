@@ -37,7 +37,7 @@ class LessonsController < ApplicationController
     if @not_offer_area
       render json: { alert: t(:no_permission) }, status: :unauthorized
     else
-      redirect_to :back, alert: t(:no_permission)
+      redirect_back fallback_location: :back, alert: t(:no_permission)
     end
   end
 

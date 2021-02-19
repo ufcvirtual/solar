@@ -90,7 +90,7 @@ if(jQuery) (function($) {
 
   function hide(event) {
     // In some cases we don't hide them
-    var targetGroup = event ? $(event.target).parents().andSelf() : null;
+    var targetGroup = event ? $(event.target).parents().addBack() : null;
 
     // Are we clicking anywhere in a dropdown?
     if( targetGroup && targetGroup.is('.dropdown') ) {

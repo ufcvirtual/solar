@@ -69,7 +69,7 @@
           if (typeof(response) != "undefined" && typeof(response.msg) != "undefined")
             flash_message(response.msg, 'notice');
         });
-      }).error(function(data){
+      }).fail(function(data){
         var response = JSON.parse(data.responseText);
         if (typeof(response.msg) != "undefined"){
           erase_flash_messages();

@@ -77,7 +77,7 @@ class SupportMaterialFilesController < ApplicationController
 
   def open
     if Exam.verify_blocking_content(current_user.id)
-        redirect_to :back, alert: t('exams.restrict')
+        redirect_back fallback_location: :back, alert: t('exams.restrict')
     else
       @file = SupportMaterialFile.find(params[:id]) unless params[:id].blank?
       if @file.url.blank? && !File.exist?(@file.attachment.path)
@@ -114,7 +114,7 @@ class SupportMaterialFilesController < ApplicationController
 
   def download
     if Exam.verify_blocking_content(current_user.id)
-        redirect_to :back, alert: t('exams.restrict')
+        redirect_back fallback_location: :back, alert: t('exams.restrict')
     else
       file = SupportMaterialFile.find(params[:id]) unless params[:id].blank?
 

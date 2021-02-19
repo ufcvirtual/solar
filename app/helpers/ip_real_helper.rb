@@ -6,7 +6,7 @@ module IpRealHelper
       when :json
         render json: { success: false, alert: t('ip_control.errors.restrict') }, status: :unprocessable_entity
       when :html
-        redirect_to :back, alert: t('ip_control.errors.restrict')
+        redirect_back fallback_location: :back, alert: t('ip_control.errors.restrict')
       when :text
         render text: t('ip_control.errors.restrict')
       when :raise

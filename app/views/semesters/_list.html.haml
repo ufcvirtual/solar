@@ -56,7 +56,7 @@
           flash_message(data.notice, 'notice');
           offers.parents('tr').fadeOut().remove();
           $('.btn_del').attr("disabled", true);
-        }).error(function(data){
+        }).fail(function(data){
           var data = $.parseJSON(data.responseText);
           if (typeof(data.alert) != "undefined")
             flash_message(data.alert, 'alert');

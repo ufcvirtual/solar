@@ -73,7 +73,7 @@ $(function() {
             $.get($('.list_lessons').data('link-list'), function(data){
               $('.list_lessons:first').replaceWith(data);
             });
-          }).error(function(data){
+          }).fail(function(data){
             flash_message(data.msg, 'alert');
           });
         }
@@ -103,7 +103,7 @@ $(function() {
             $('.list_lessons:first').replaceWith(data);
             focus_element($(data));
           });
-        }).error(function(data) {
+        }).fail(function(data) {
           if(typeof(module_id) != "undefined"){
             $.get($('.list_lessons').data('link-list'), function(data2){
               $('.list_lessons:first').replaceWith(data2);

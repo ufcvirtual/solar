@@ -168,7 +168,7 @@ class AssignmentsController < ApplicationController
       assignment = Assignment.find(file.assignment_id)
     end
     if Exam.verify_blocking_content(current_user.id)
-      redirect_to :back, alert: t('exams.restrict')
+      redirect_back fallback_location: :back, alert: t('exams.restrict')
     else
       verify_ip!(assignment.id, :assignment, assignment.controlled, :raise) unless AllocationTag.find(allocation_tag_id = active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id) || assignment.ended?
       authorize! :download, Assignment, on: [allocation_tag_id]
@@ -184,7 +184,7 @@ class AssignmentsController < ApplicationController
     rescue CanCan::AccessDenied
       redirect_to list_assignments_path, alert: t(:no_permission)
     rescue => error
-      redirect_to :back, alert: (error.to_s == 'not_started' ? t('assignments.error.not_started') : t('assignments.error.download'))
+      redirect_back fallback_location: :back, alert: (error.to_s == 'not_started' ? t('assignments.error.not_started') : t('assignments.error.download'))
   end
 
   def participants

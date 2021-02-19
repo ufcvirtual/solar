@@ -36,7 +36,7 @@
     $.put("#{export_exam_questions_path}", {questions: questions.join(';'), exam_id: "#{@exam_id}"}, function(data){
       $.fancybox.close();
       flash_message(data.msg, 'notice', 'block_wrapper:first');      
-    }).error(function(data){
+    }).fail(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
         flash_message(data.alert, 'alert');

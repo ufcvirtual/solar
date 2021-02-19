@@ -80,13 +80,12 @@ class AssignmentWebconferencesController < ApplicationController
     verify_ip!(@assignment_webconference.assignment.id, :assignment, @assignment_webconference.assignment.controlled, :raise)
     @assignment_webconference.can_remove_records?
 
-
     if params.include?(:recordID)
-      @assignment_webconference.remove_record(params[:recordID])
-      save_log(@assignment_webconference)
+      #@assignment_webconference.remove_record(params[:recordID])
+      #save_log(@assignment_webconference)
     else
-      @assignment_webconference.remove_records
-      save_log(@assignment_webconference)
+      #@assignment_webconference.remove_records
+      #save_log(@assignment_webconference)
     end
 
     render json: { success: true, notice: t('assignment_webconferences.success.record') }

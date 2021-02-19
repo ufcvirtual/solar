@@ -3,7 +3,8 @@ class DiscussionsController < ApplicationController
   include SysLog::Actions
   include FilesHelper
 
-  doorkeeper_for :api_download
+  #doorkeeper_for :api_download
+  before_action :doorkeeper_authorize!, only: [:api_download]
 
   layout false, except: :index
 

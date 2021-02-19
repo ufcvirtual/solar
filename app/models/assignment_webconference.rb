@@ -20,7 +20,7 @@ class AssignmentWebconference < ActiveRecord::Base
 
   validate :cant_change_date, on: :update, if: -> {(!duration.nil? && !initial_time.nil?) && (saved_change_to_initial_time? || saved_change_to_duration?)}
 
-  validate :verify_quantity_users, :verify_time, if: -> {(((saved_change_to_initial_time? || duration_changed?)) || new_record?) && merge.nil? && (!duration.nil? && !initial_time.nil?)}
+  validate :verify_quantity_users, :verify_time, if: -> {(((saved_change_to_initial_time? || saved_change_to_duration?)) || new_record?) && merge.nil? && (!duration.nil? && !initial_time.nil?)}
 
   validate :verify_assignment_time, if: -> {(!duration.nil? && !initial_time.nil?) && (saved_change_to_duration? || saved_change_to_initial_time? || new_record?) && merge.nil?}
 

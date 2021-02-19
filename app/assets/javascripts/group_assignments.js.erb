@@ -65,7 +65,7 @@ function remove_group(icon, event){
           new_table.html(data);
           update_tables_with_no_data();
         });
-      }).error(function(data){
+      }).fail(function(data){
         show_error(data, null, "group_assignments.header");
       });
     }
@@ -103,7 +103,7 @@ function rename_group(icon, event){
         label.html(data);
         select_group(label);
       });
-    }).error(function(data){
+    }).fail(function(data){
       show_error(data, null, "group_assignments.header");
     });
   }
@@ -124,7 +124,7 @@ function select_assignment(element, event){
       $(".groups_column tbody").html(data);
       $(".groups_column h2").text("<%=I18n.t('group_assignments.import_list.groups')%> ( "+$(label).text()+" )");
       clear_participant_list();
-    }).error(function(data){
+    }).fail(function(data){
       show_error(data, null, "group_assignments.header");
     });
   }
@@ -135,7 +135,7 @@ function import_group(button){
   $.post($(button).data("url").replace("aid", from_group_id), function(data1){
     $.fancybox.close();
     update_list(data1.notice);
-  }).error(function(data){
+  }).fail(function(data){
     show_error(data, null, "group_assignments.header");
   });
 }
@@ -166,7 +166,7 @@ function change_participant(td, url, tbody, icon, method){
           $(".groups_column .labels").prepend(data);
         });
       }
-    }).error(function(data){
+    }).fail(function(data){
       show_error(data, null, "group_assignments.header");
     });
   }

@@ -32,7 +32,7 @@ function save_question(duration) {
     type: request_method,
     data : form_data
   }).done(function(response){
-  }).error(function(response){
+  }).fail(function(response){
     var data = $.parseJSON(response.responseText);
     if (typeof(data.alert) != "undefined")
       flash_message(data.alert, 'alert');

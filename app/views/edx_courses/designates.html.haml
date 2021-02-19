@@ -78,7 +78,7 @@ $(function(){
         });
 
         flash_message('#{I18n.t(:deallocated, :scope => [:edx, :success])}', 'notice');
-      }).error(function(){
+      }).fail(function(){
         flash_message('#{I18n.t(:not_deallocated, :scope => [:edx, :error])}', 'alert');
       });
     });

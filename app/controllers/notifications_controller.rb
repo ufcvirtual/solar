@@ -148,9 +148,9 @@ class NotificationsController < ApplicationController
 
     download_file(:back, file.file.path, file.file_file_name)
   rescue CanCan::AccessDenied
-    redirect_to :back, alert: t(:no_permission)
+    redirect_back fallback_location: :back, alert: t(:no_permission)
   rescue => error
-    redirect_to :back, alert: t('notifications.error.download')
+    redirect_back fallback_location: :back, alert: t('notifications.error.download')
   end
 
   private

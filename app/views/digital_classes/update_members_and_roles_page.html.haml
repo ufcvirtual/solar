@@ -78,7 +78,7 @@
       data = $.extend(data, {initial_date: $('#initial_date').val()});
       $.put($(link).data('url'), data, function(data){
         flash_message(data.notice, 'notice');
-      }).error(function(data){
+      }).fail(function(data){
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")
           flash_message(data.alert, 'alert');

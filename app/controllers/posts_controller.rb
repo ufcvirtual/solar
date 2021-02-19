@@ -14,7 +14,7 @@ class PostsController < ApplicationController
   require 'will_paginate/array'
   def index
     if Exam.verify_blocking_content(current_user.id)
-      redirect_to :back, alert: t('exams.restrict')
+      redirect_back fallback_location: :back, alert: t('exams.restrict')
     else
       @discussion, @user = Discussion.includes(:allocation_tags, :schedule).find(params[:discussion_id]), current_user
 

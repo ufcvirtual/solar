@@ -222,7 +222,7 @@ class DigitalClassesController < ApplicationController
       if params.include?(:allocation_tags_ids)
         render json: { alert: t('digital_classes.error.unavailable') }, status: :unprocessable_entity
       else
-        redirect_to :back, alert: t('digital_classes.error.unavailable')
+        redirect_back fallback_location: :back, alert: t('digital_classes.error.unavailable')
       end
     end
   end

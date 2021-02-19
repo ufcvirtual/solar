@@ -38,7 +38,7 @@
           flash_message(data.notice, 'notice');
         $.fancybox.close();
       });
-    }).error(function(data){
+    }).fail(function(data){
       try{
         var response = JSON.parse(data.responseText);
         if (typeof(response.alert) != "undefined")

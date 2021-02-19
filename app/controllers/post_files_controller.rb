@@ -2,7 +2,8 @@ include FilesHelper
 
 class PostFilesController < ApplicationController
 
-  doorkeeper_for :api_download
+  #doorkeeper_for :api_download
+  before_action :doorkeeper_authorize!, only: [:api_download]
 
   load_and_authorize_resource except: [:new, :create, :api_download]
   authorize_resource only: [:new, :create]

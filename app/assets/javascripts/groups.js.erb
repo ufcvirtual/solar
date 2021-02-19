@@ -48,7 +48,7 @@ $(function(){
         var url = $(".list_groups").data("link").replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
 
         $.get(url, function(data) { $(".groups_list").html(data); });
-      }).error(result_error);
+      }).fail(result_error);
     }
   });
 
@@ -68,7 +68,7 @@ $(function(){
         var url = $(".list_groups").data("link").replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
 
         $.get(url, function(data){ $(".groups_list").html(data); });
-      }).error(result_error);
+      }).fail(result_error);
     }
   });
 
@@ -80,7 +80,7 @@ $(function(){
 
       $.get(url, function(data){ $(".groups_list").html(data); });
       return false;
-    }).error(result_error);
+    }).fail(result_error);
   });
 
 });

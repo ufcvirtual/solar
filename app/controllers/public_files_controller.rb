@@ -36,7 +36,7 @@ class PublicFilesController < ApplicationController
 
   def download
     if Exam.verify_blocking_content(current_user.id)
-      redirect_to :back, alert: t('exams.restrict')
+      redirect_back fallback_location: :back, alert: t('exams.restrict')
     else
       authorize! :index, PublicFile, { on: [allocation_tag_id = active_tab[:url][:allocation_tag_id]] }
 

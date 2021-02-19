@@ -26,7 +26,7 @@ class Allocation < ActiveRecord::Base
 
   validates_uniqueness_of :profile_id, scope: [:user_id, :allocation_tag_id]
 
-  after_save :update_digital_class_members, if: -> {(!new_record? && (saved_change_to_status? || profile_id_changed?))}, on: :update
+  after_save :update_digital_class_members, if: -> {(!new_record? && (saved_change_to_status? || saved_change_to_profile_id?))}, on: :update
   after_save :update_digital_class_user_role, if: -> {(!new_record? && saved_change_to_profile_id?)}, on: :update
 
   after_create :calculate_grade_and_hours

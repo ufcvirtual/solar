@@ -1,4 +1,4 @@
-class AddExamResponsesQuestionItemToTimestamps < ActiveRecord::Migration
+class AddExamResponsesQuestionItemToTimestamps < ActiveRecord::Migration[5.0]
   def change
     change_table :exam_responses_question_items do |t|
       t.timestamps

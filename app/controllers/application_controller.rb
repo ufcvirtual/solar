@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
         begin
           active_tab[:breadcrumb].delete_at(-1) if active_tab[:breadcrumb].count > 1 # not home
           raise 'error' if request.referer == request.original_url
-          redirect_to :back, alert: t(:no_permission)
+          redirect_back fallback_location: :back, alert: t(:no_permission)
         rescue # ActionController::RedirectBackError
           redirect_to home_path, alert: t(:no_permission)
         end

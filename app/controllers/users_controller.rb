@@ -113,7 +113,7 @@ class UsersController < ApplicationController
         else # exibicao de erros conhecidos
           error_msg << error.message
         end
-        format.html { redirect_to :back, alert: error_msg }
+        format.html { redirect_back fallback_location: :back, alert: error_msg }
       end
     end
   end
@@ -124,13 +124,13 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.json { render json: {succes: true, notice: t(:remove_photo_msg) } }
-      format.html { redirect_to :back, notice: t(:remove_photo_msg) }
+      format.html { redirect_back fallback_location: :back, notice: t(:remove_photo_msg) }
     end
   rescue
     errors = current_user.errors.full_messages.join(',')
     respond_to do |format|
       format.json { render json: {succes: false, alert: errors }, status: :unprocessable_entity }
-      format.html { redirect_to :back, alert: errors }
+      format.html { redirect_back fallback_location: :back, alert: errors }
     end
   end
 
