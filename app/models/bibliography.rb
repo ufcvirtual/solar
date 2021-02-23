@@ -108,7 +108,7 @@ class Bibliography < ActiveRecord::Base
   end
 
   def self.all_by_allocation_tags(allocation_tag)
-    joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: RelatedTaggable.related({group_at_id: allocation_tag}, {upper: true})}).uniq
+    joins(academic_allocations: :allocation_tag).where(allocation_tags: {id: RelatedTaggable.related({group_at_id: allocation_tag}, {upper: true})}).distinct
   end
 
 end

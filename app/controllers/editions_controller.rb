@@ -17,6 +17,7 @@ class EditionsController < ApplicationController
     
     render partial: 'items'
   rescue=> error
+    p error
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 

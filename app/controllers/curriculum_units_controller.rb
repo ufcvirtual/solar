@@ -43,7 +43,7 @@ class CurriculumUnitsController < ApplicationController
         end
       end
 
-      render json: { html: render_to_string(partial: 'select_curriculum_unit.html', locals: { curriculum_units: @curriculum_units.uniq! }) }
+      render json: { html: render_to_string(partial: 'select_curriculum_unit.html', locals: { curriculum_units: @curriculum_units.distinct! }) }
     else # list
       authorize! :index, CurriculumUnit
       if not(params[:curriculum_unit_id].blank?)
@@ -110,7 +110,7 @@ class CurriculumUnitsController < ApplicationController
 
   # PUT /curriculum_units/1
   def update
-    @curriculum_unit.attributes = @curriculum_unit.attributes.merge!(curriculum_unit_params)
+    @curriculum_unit.attributes = @curriculum_unit.attributes.merge!(curriculum_unit_params).to_h
     set_course_data
     if @curriculum_unit.save
       message = @curriculum_unit.verify_evaluative_tools ? ['warning', t('curriculum_units.warning.working_hours')] : ['notice', t('curriculum_units.success.updated')]

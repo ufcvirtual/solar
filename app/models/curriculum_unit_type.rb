@@ -2,9 +2,9 @@ class CurriculumUnitType < ActiveRecord::Base
   include Taggable
 
   has_many :curriculum_units
-  has_many :offers,  -> { uniq }, through: :curriculum_units
-  has_many :groups,  -> { uniq }, through: :offers
-  has_many :courses, -> { uniq }, through: :offers
+  has_many :offers,  -> { distinct }, through: :curriculum_units
+  has_many :groups,  -> { distinct }, through: :offers
+  has_many :courses, -> { distinct }, through: :offers
 
   def tool_name
     tn = case id

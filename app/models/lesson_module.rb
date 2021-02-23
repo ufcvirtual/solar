@@ -77,7 +77,7 @@ class LessonModule < ActiveRecord::Base
   end
 
   def self.by_ats(allocation_tags_ids)
-    joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }).order('id').uniq
+    joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }).order('id').distinct
   end
 
   def approved_lessons(user_id)
@@ -89,7 +89,7 @@ class LessonModule < ActiveRecord::Base
   end
 
   def self.by_name_and_allocation_tags_ids(name, allocation_tags_ids)
-    joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }, name: name).uniq
+    joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }, name: name).distinct
   end
 
   def lessons(user_id = nil)

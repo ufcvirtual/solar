@@ -42,7 +42,7 @@ module V1
 
       desc "Todos os semestres"
       get :semesters, rabl: "semesters/list" do
-        @semesters = Semester.order('name desc').uniq
+        @semesters = Semester.order('name desc').distinct
       end
 
     end # segment

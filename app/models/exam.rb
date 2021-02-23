@@ -343,7 +343,7 @@ class Exam < Event
   end
 
   def self.by_name_and_allocation_tags_ids(name, allocation_tags_ids)
-    joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }, name: name).uniq
+    joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }, name: name).distinct
   end
 
   def next_question_order

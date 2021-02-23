@@ -10,7 +10,7 @@ class CoursesController < ApplicationController
 
     if params[:combobox]
       @courses = (@type_id == 3 ? Course.all_associated_with_curriculum_unit_by_name : Course.where("id NOT IN (#{except_courses})"))
-      render json: { html: render_to_string(partial: 'select_course', locals: { curriculum_units: @courses.uniq! }) }
+      render json: { html: render_to_string(partial: 'select_course', locals: { curriculum_units: @courses.distinct! }) }
     else # list
       authorize! :index, Course
       @courses = if params[:course_id].present?

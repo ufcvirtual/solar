@@ -35,7 +35,7 @@ class DigitalClassesController < ApplicationController
 
     if params[:lesson]
       ats = AllocationTag.where(id: @allocation_tags_ids).map(&:related).flatten.uniq
-      @lmodules = LessonModule.joins(:academic_allocations, :lessons).where(academic_allocations: {allocation_tag_id: ats }).uniq
+      @lmodules = LessonModule.joins(:academic_allocations, :lessons).where(academic_allocations: {allocation_tag_id: ats }).distinct
       render :lesson
     end
   rescue CanCan::AccessDenied
