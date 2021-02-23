@@ -40,9 +40,9 @@
             %li#mysolar_top_submenu_label.mysolar_top_submenu_label_regular.nav_menu
               = link_to '#void', {onclick: "mysolarTopSubmenuToggle();return false;", class: 'mysolar_top_link nav_item', id: 'mysolar_top_user_nick'} do
                 = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", :'aria-hidden' => 'true'
-                = current_user.nick
-            %li#server_clock_wrapper.nav_menu
-              %span#server_clock.nav_item{name: "server_clock"}
+                %span#student-name.dont-show-in-mobile= current_user.nick
+            %li#server_clock_wrapper.nav_menu.dont-show-in-mobile
+              %span#server_clock.nav_item.dont-show-in-mobile{name: "server_clock"}
             %li#accessibility_top_menu.mysolar_top_submenu_label_regular.nav_menu
               %a#accessibility_top.mysolar_top_link.nav_item{ href: "", onclick: "mysolarAccessibilitySubmenuToggle();return false;", :'aria-label' =>  t(:accessibility_menu)}
                 = t(:accessibility)
