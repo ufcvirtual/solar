@@ -37,7 +37,6 @@ module MenuHelper
         menu_list[:parents][menu.parent_id][:children] << menu_item
       end
     end # menu list - each
-
     to_html(menu_list)
   end
 

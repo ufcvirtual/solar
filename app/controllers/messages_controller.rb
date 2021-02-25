@@ -130,7 +130,8 @@ class MessagesController < ApplicationController
 
     begin
       Message.transaction do
-        @message = Message.new(message_params, without_validation: true)
+        #@message = Message.new(message_params, without_validation: true)
+        @message = Message.new(message_params)
         @message.sender = current_user
         @message.allocation_tag_id = @allocation_tag_id
 
@@ -161,6 +162,7 @@ class MessagesController < ApplicationController
 
       redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages)
     rescue => error
+      p error
       unless @allocation_tag_id.nil?
         allocation_tag      = AllocationTag.find(@allocation_tag_id)
         @group              = allocation_tag.group
