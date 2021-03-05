@@ -1,4 +1,6 @@
-@import "compass";
+//@import "compass";
+
+@import "../../../bourbon/bourbon";
 @import "fonts/fonts";
 @import "fonts/icons";
 
@@ -147,10 +149,9 @@ a img {
 #login-form, #login-register {
   width: $login_width;
   box-shadow:0px 2px 8px $login_box_shadow;
-  @include filter-gradient($login_background_gradient_start, $login_background_gradient_end); /* IE */
-  @include background-image(linear-gradient($login_background_gradient_start, $login_background_gradient_end));
-  @include border-bottom-right-radius(10px);
-  @include border-bottom-left-radius(10px);
+  background-image: linear-gradient($login_background_gradient_start, $login_background_gradient_end);
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
   text-align: center;
 }
 
@@ -167,7 +168,7 @@ a img {
   padding-bottom: 12px;
   border:1px solid $field_border_color;
   background-color: $field_background;
-  @include border-radius(5px);
+  border-radius: 5px;
   font-family: Ubuntu;
   font-size: 16px;
   padding-left: 10px;
@@ -175,15 +176,14 @@ a img {
 
 /*Botões de submissão da tela de login*/
 #submit-login, #submit-cpf {
-  @include filter-gradient($filter_gradient_hover_start, $filter_gradient_hover_end); /* IE */
-  @include background-image(linear-gradient($filter_gradient_hover_start, $filter_gradient_hover_end));
+  background-image: linear-gradient($filter_gradient_hover_start, $filter_gradient_hover_end);
   width: 205px;
   height: 40px;
   font-family: Ubuntu Condensed;
   font-size: 25px;
   color:$login_dark_yellow;
   border:1px solid $login_border_yellow;
-  @include border-radius(5px);
+  border-radius: 5px;
   margin-top: 28px;
   margin-bottom: 20px;
   padding-top: 2px;
@@ -194,8 +194,7 @@ a img {
 }
 
 #submit-login:hover, #submit-cpf:hover{
-  @include filter-gradient($filter_gradient_hover_start, $filter_gradient_hover_end_light); /* IE */
-  @include background-image(linear-gradient($filter_gradient_hover_start, $filter_gradient_hover_end_light));
+  background-image: linear-gradient($filter_gradient_hover_start, $filter_gradient_hover_end);
   cursor: pointer;
   border:1px solid $login_border_yellow;
 }
@@ -224,8 +223,8 @@ a img {
 }
 
 #login-bt, #register-bt, #register-header {
-  @include border-top-right-radius(5px);
-  @include border-top-left-radius(5px);
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
   border:1px solid $login_border_light;
   background-color: $login_background_gradient_start
 }
@@ -318,10 +317,9 @@ $header-tab-height: 36px;
   width: 400px;
   overflow: hidden;
   border:1px solid $login_password_recovery;
-  @include border-radius(10px);
+  border-radius: 10px;
   background: $login_background_gradient_start; /* Old browsers */
-  @include filter-gradient($color_white, $login_background_gradient_end); /* IE */
-  @include background-image(linear-gradient($color_white, $login_background_gradient_end));
+  background-image: linear-gradient($color_white, $login_background_gradient_end);
   -webkit-box-shadow:0px 3px 6px rgba($login_box_shadow_light, 0.64);
   -moz-box-shadow:0px 3px 6px rgba($login_box_shadow_light, 0.64);
   box-shadow:0px 3px 6px rgba($login_box_shadow_light, 0.64);
@@ -383,7 +381,7 @@ $header-tab-height: 36px;
 .btn_password_recovery {
   font-family: Ubuntu Condensed;
   font-size: 20px;
-  @include border-radius(5px);
+  border-radius: 5px;
   display: inline-block;
   outline: none;
   cursor: pointer;
@@ -397,28 +395,24 @@ $header-tab-height: 36px;
 
 #send {
   background-color: $login_button_background;
-  @include filter-gradient($filter_gradient_hover_start, $filter_gradient_hover_end); /* IE */
-  @include background-image(linear-gradient($filter_gradient_hover_start, $filter_gradient_hover_end));
+  background-image: linear-gradient($filter_gradient_hover_start, $filter_gradient_hover_end);
   color:$login_dark_yellow;
   border: 1px solid $login_border_yellow;
 }
 
 #send:hover{
-  @include filter-gradient($filter_gradient_hover_start, $filter_gradient_hover_end_light); /* IE */
-  @include background-image(linear-gradient($filter_gradient_hover_start, $filter_gradient_hover_end_light));
+  background-image: linear-gradient($filter_gradient_hover_start, $filter_gradient_hover_end_light);
   cursor: pointer;
 }
 
 .btn_default {
-  @include filter-gradient($btn_default_gradient_start, $btn_default_gradient_end); /* IE */
-  @include background-image(linear-gradient($btn_default_gradient_start, $btn_default_gradient_end));
+  background-image: linear-gradient($btn_default_gradient_start, $btn_default_gradient_end);
   color:$login_button_default_color;
   border:1px solid $login_button_default_color;
 }
 
 #give-up:hover {
-  @include filter-gradient($btn_default_gradient_start, $btn_default_gradient_end_hover); /* IE */
-  @include background-image(linear-gradient($btn_default_gradient_start, $btn_default_gradient_end_hover));
+  background-image: linear-gradient($btn_default_gradient_start, $btn_default_gradient_end_hover);
   cursor: pointer;
 }
 
@@ -434,9 +428,8 @@ $header-tab-height: 36px;
   color: $login_error_color;
   margin: 0 auto;
   width: 400px;
-  @include filter-gradient($login_background_gradient_start, $login_background_gradient_end); /* IE */
-  @include background-image(linear-gradient($login_background_gradient_start, $login_background_gradient_end)); /* CSS3 */
-  @include border-radius(6px);
+  background-image: linear-gradient($login_background_gradient_start, $login_background_gradient_end); /* CSS3 */
+  border-radius: 6px;
   box-shadow:0px 2px 8px $login_box_shadow;
 }
 
@@ -583,9 +576,9 @@ footer{
   padding: 20px 25px;
   background-color: $login_background_gradient_start;
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$login_background_gradient_start', endColorstr='$login_background_gradient_end',GradientType=0 );
-  @include border-bottom-right-radius(8px);
-  @include border-bottom-left-radius(8px);
-  @include border-top-right-radius(8px);
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 .buttons{
@@ -596,7 +589,7 @@ footer{
 .buttons .next, .buttons .back, #complete{
   font-family: 'Ubuntu Condensed';
   font-size: 20px;
-  @include border-radius(5px);
+  border-radius: 5px;
   text-decoration: none;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -613,15 +606,13 @@ footer{
 }
 
 .buttons .next, #complete{
-  @include filter-gradient($filter_gradient_hover_start, $filter_gradient_hover_end); /* IE */
-  @include background-image(linear-gradient($filter_gradient_hover_start, $filter_gradient_hover_end)); /* CSS3 */
+  background-image: linear-gradient($filter_gradient_hover_start, $filter_gradient_hover_end);
   color:$login_dark_yellow;
   border: 1px solid $login_border_yellow;
 }
 
 .buttons .next:hover, #complete:hover{
-  @include filter-gradient($filter_gradient_hover_start, $filter_gradient_hover_end_light); /* IE */
-  @include background-image(linear-gradient($filter_gradient_hover_start, $filter_gradient_hover_end_light)); /* CSS3 */
+  background-image: linear-gradient($filter_gradient_hover_start, $filter_gradient_hover_end_light);
   cursor: pointer;
 }
 
@@ -634,15 +625,13 @@ footer{
 }
 
 .buttons .back{
-  @include filter-gradient($btn_default_gradient_start, $btn_default_gradient_end); /* IE */
-  @include background-image(linear-gradient($btn_default_gradient_start, $btn_default_gradient_end)); /* CSS3 */
+  background-image: linear-gradient($btn_default_gradient_start, $btn_default_gradient_end);
   color:$login_button_default_color;
   border:1px solid $login_button_default_color;
 }
 
 .buttons .back:hover{
-  @include filter-gradient($btn_default_gradient_start, $btn_default_gradient_end_hover); /* IE */
-  @include background-image(linear-gradient($btn_default_gradient_start, $btn_default_gradient_end_hover)); /* CSS3 */
+  background-image: linear-gradient($btn_default_gradient_start, $btn_default_gradient_end_hover);
   cursor: pointer;
 }
 
@@ -678,7 +667,7 @@ footer{
   font-family: 'Ubuntu';
   border:1px solid $field_border_color;
   background-color: $field_background;
-  @include border-radius(5px);
+  border-radius: 5px;
   font-size: 16px;
 }
 
@@ -778,9 +767,8 @@ select option{
 .flash_message_wrapper {
   margin: 20px auto 20px auto;
   width: $login_width;
-  @include filter-gradient($login_background_gradient_start, $login_background_gradient_end); /* IE */
-  @include background-image(linear-gradient($login_background_gradient_start, $login_background_gradient_end)); /* CSS3 */
-  @include border-radius(6px);
+  background-image: linear-gradient($login_background_gradient_start, $login_background_gradient_end);
+  border-radius: 6px;
   box-shadow:0px 2px 8px $login_box_shadow;
 }
 

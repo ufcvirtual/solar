@@ -1,6 +1,6 @@
 function solar_help() {
   var solar_contextual_help = introJs();
-
+  
   solar_contextual_help.setOptions({
     showStepNumbers: false,
     nextLabel: "<%= I18n.t(:tutorial_next) %>",
@@ -13,58 +13,58 @@ function solar_help() {
       },
       {
         element: '#mysolar_identity',
-        intro: 'Barra superior: Nesta barra você visualiza informações sobre o seu usuário, hora do sistema, ajuda e sair do Solar'
+        intro: "<%= 'Barra superior: Nesta barra você visualiza informações sobre o seu usuário, hora do sistema, ajuda e sair do Solar'.force_encoding('UTF-8') %>"
       },
       {
         element: '#mysolar_top_submenu_label',
-        intro: 'Seu usuário atual. Clique para visualizar mais informações, editar seu perfil ou alterar sua foto'
+        intro: "<%= 'Seu usuário atual. Clique para visualizar mais informações, editar seu perfil ou alterar sua foto'.force_encoding('UTF-8') %>"
       },
       {
         element: '#mysolar_tabs',
-        intro: 'Abas onde você pode navegar entre o MeuSolar e os Cursos que tiver acessado na sessão'
+        intro: "<%= 'Abas onde você pode navegar entre o MeuSolar e os Cursos que tiver acessado na sessão'.force_encoding('UTF-8') %>"
       },
       {
         element: '#mysolar_suggestions',
         position: 'left',
-        intro: 'Aqui você pode enviar suas críticas, sugestões e comentários para que possamos melhorar o Solar 2.0'
+        intro: "<%= 'Aqui você pode enviar suas críticas, sugestões e comentários para que possamos melhorar o Solar 2.0'.force_encoding('UTF-8') %>"
       },
       {
         element: '#mysolar_open_lesson',
         position: 'left',
-        intro: "Aqui você pode acessar a aula que você tiver minimizado"
+        intro: "<%= 'Aqui você pode acessar a aula que você tiver minimizado'.force_encoding('UTF-8') %>"
       },
       {
         element: '#mysolar_sidebar',
         position: 'right',
-        intro: 'Menu de navegação: através deste menu você acessa as funcionalidades do ambiente Solar 2.0.<br><br>Note que os itens disponíveis se adaptam de acordo com a página que você está acessando.'
+        intro: "<%= 'Menu de navegação: através deste menu você acessa as funcionalidades do ambiente Solar 2.0.<br><br>Note que os itens disponíveis se adaptam de acordo com a página que você está acessando.'.force_encoding('UTF-8') %>"
       },
       {
         element: '#mysolar_content',
-        intro: 'Área de conteúdo. Nesta região será exibido o conteúdo da página que você acessar.'
+        intro: "<%= 'Área de conteúdo. Nesta região será exibido o conteúdo da página que você acessar.'.force_encoding('UTF-8') %>"
       },
       {
         element: '#mysolar_curriculum_unit_portlet',
-        intro: 'Este bloco exibe sua lista de disciplinas, permitindo que você as acesse.'
+        intro: "<%= 'Este bloco exibe sua lista de disciplinas, permitindo que você as acesse.'.force_encoding('UTF-8') %>"
       },
       {
         element: '#block_schedule',
-        intro: 'Este bloco de agenda permite que você visualize facilmente quais dias possuem atividades agendadas.'
+        intro: "<%= 'Este bloco de agenda permite que você visualize facilmente quais dias possuem atividades agendadas.'.force_encoding('UTF-8') %>"
       },
       {
         element: '#mysolar_notification_portlet',
-        intro: 'Este bloco exibe os últimos avisos do sistema (como previsões de manutenção, etc).'
+        intro: "<%= 'Este bloco exibe os últimos avisos do sistema (como previsões de manutenção, etc).'.force_encoding('UTF-8') %>"
       },
       {
         element: '.block_facebook',
-        intro: 'Este bloco lhe permite acessar seu facebook, exibindo sua timeline, grupos, etc. Estas informações serão visíveis apenas para você.'
+        intro: "<%= 'Este bloco lhe permite acessar seu facebook, exibindo sua timeline, grupos, etc. Estas informações serão visíveis apenas para você.'.force_encoding('UTF-8') %>"
       },
       {
         element: '#mysolar_top_help',
         position: 'left',
-        intro: 'Note que cada página possui um tutorial contextual específico. Caso deseje visualizá-lo, basta acessar o item de Ajuda Contextual. Este menu também possui links para vídeo-tutoriais e tutoriais em pdf para várias áreas do Solar. Também temos um FAQ com as dúvidas mais frequentes sobre o ambiente e um email para contato com nosso atendimento.'
+        intro: "<%= 'Note que cada página possui um tutorial contextual específico. Caso deseje visualizá-lo, basta acessar o item de Ajuda Contextual. Este menu também possui links para vídeo-tutoriais e tutoriais em pdf para várias áreas do Solar. Também temos um FAQ com as dúvidas mais frequentes sobre o ambiente e um email para contato com nosso atendimento.'.force_encoding('UTF-8') %>"
       },
       {
-        intro: 'Aproveite o novo <b>Solar 2.0!</b>'
+        intro: "<%= 'Aproveite o novo <b>Solar 2.0!</b>'.force_encoding('UTF-8') %>"
       }
     ]
     })

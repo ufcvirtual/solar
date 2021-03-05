@@ -9,24 +9,24 @@ function solar_help() {
     doneLabel: "<%= I18n.t(:tutorial_done) %>",
     steps: [
       {
-        intro: 'Nesta página são listados os arquivos e links de material complementar desta disciplina.'
+        intro: "<%= 'Nesta página são listados os arquivos e links de material complementar desta disciplina.'.force_encoding('UTF-8') %>"
       },
       {
         element: '.support_material_folder',
-        intro: 'Os itens estão divididos por categorias.'
+        intro: "<%= 'Os itens estão divididos por categorias.'.force_encoding('UTF-8') %>"
       },
       {
         element: 'table td a+a',
-        intro: 'Você pode acessar os itens diretamente...'
+        intro: "<%= 'Você pode acessar os itens diretamente...'.force_encoding('UTF-8') %>"
       },
       {
         element: '.block_actions button',
         position: 'left',
-        intro: '... ou realizar o download de toda a categoria ...'
+        intro: "<%= '... ou realizar o download de toda a categoria ...'.force_encoding('UTF-8') %>"
       },
       {
         element: '#download_all',
-        intro: '... ou realizar o download de <b>TODOS</b> os arquivos.'
+        intro: "<%= '... ou realizar o download de <b>TODOS</b> os arquivos.'.force_encoding('UTF-8') %>"
       }
     ]
   })

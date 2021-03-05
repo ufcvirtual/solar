@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-ruby "2.5.7"
+ruby "2.7.2"
 
 #gem "rails", "~> 3.2.16"
 gem 'rails', '5.1.7'
@@ -38,7 +38,7 @@ gem "momentjs-rails", "~> 2.9.0"
 gem "bigbluebutton-api-ruby", "~> 1.6.0"
 
 # platform adicionado para evitar que o unicorn tente ser executado no windows
-gem "puma", "~> 4.3.5"
+gem "puma", "~> 5.1.1"
 
 gem "rubyzip", "~> 1.2.1"
 
@@ -50,7 +50,7 @@ gem "grape-rabl", "~> 0.4.3"
 
 gem "savon", "~> 2.0.0" # comunicação com ws
 
-gem "roo", "~> 1.13.2"  # csv, excel
+gem "roo", "~> 2.7.1"  # csv, excel
 gem "prawn", "~> 2.0.1" # pdf
 gem "prawn-table", "~> 0.2.2"
 #gem "pdfkit" #pdf
@@ -85,9 +85,14 @@ gem "actionpack-action_caching", "~> 1.2.0"
 
 gem "execjs"
 gem "therubyracer", platforms: :ruby
-gem "uglifier", "~> 4.1.10"
-gem "sass-rails", "~> 5.0.7"
-gem "compass-rails", "~> 4.0.0"
+
+group :assets do
+  gem "uglifier", "~> 4.1.10"
+  #gem "sassc-rails", "~> 2.1.2"
+  gem "sass-rails", "~> 6.0.0"
+  #gem "compass-rails", "~> 4.0.0"
+  gem "bourbon", "~> 7.0.0"
+end
 
 gem "htmlentities", "~> 4.3.4"
 gem "newrelic_rpm"

@@ -64,8 +64,9 @@ module Solar
     # Enable the asset pipeline
     config.assets.enabled = true
     config.assets.compress = true
-    config.assets.precompile << /(^[^_\/]|\/[^_])[^\/]*$/
+    #config.assets.precompile << /(^[^_\/]|\/[^_])[^\/]*$/
     #config.assets.precompile += ['ckeditor/*']
+    config.assets.check_precompiled_asset = false
 
     config.i18n.enforce_available_locales = true
     I18n.config.enforce_available_locales = true

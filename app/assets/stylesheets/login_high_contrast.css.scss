@@ -1,4 +1,5 @@
-@import "compass";
+//@import "compass";
+@import "../../../bourbon/bourbon";
 @import "fonts/fonts";
 @import "fonts/icons";
 
@@ -121,15 +122,14 @@ a img {
 
 /*Botões de submissão da tela de login*/
 #submit-login, #submit-cpf {
-  @include filter-gradient(#000, #000); /* IE */
-  @include background-image(linear-gradient(#000, #000));
+  background-image: linear-gradient(#000, #000);
   width: 205px;
   height: 40px;
   font-family: Ubuntu Condensed;
   font-size: 25px;
   color:#fff;
   border:1px solid #fff;
-  @include border-radius(5px);
+  border-radius: 5px;
   margin-top: 28px;
   margin-bottom: 20px;
   padding-top: 2px;
@@ -140,8 +140,7 @@ a img {
 }
 
 #submit-login:hover, #submit-cpf:hover{
-  @include filter-gradient(#fff, #fff); /* IE */
-  @include background-image(linear-gradient(#1a3e79, #1a3e79));
+  background-image: linear-gradient(#1a3e79, #1a3e79);
   cursor: pointer;
   border:1px solid #ffffff;
 }
@@ -170,8 +169,8 @@ a img {
 }
 
 #login-bt, #register-bt, #register-header {
-  @include border-top-right-radius(5px);
-  @include border-top-left-radius(5px);
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
   border:1px solid #F4F4F5;
   background-color: #000
 }
@@ -264,10 +263,9 @@ $header-tab-height: 36px;
   width: 400px;
   overflow: hidden;
   border:1px solid #D5D5D5;
-  @include border-radius(10px);
+  border-radius: 10px;
   background: #000; /* Old browsers */
-  @include filter-gradient(#ffffff, #e6e8ec); /* IE */
-  @include background-image(linear-gradient(#000, #000));
+  background-image: linear-gradient(#000, #000);
   -webkit-box-shadow:0px 3px 6px rgba(50, 50, 50, 0.64);
   -moz-box-shadow:0px 3px 6px rgba(50, 50, 50, 0.64);
   box-shadow:0px 3px 6px rgba(50, 50, 50, 0.64);
@@ -329,7 +327,7 @@ $header-tab-height: 36px;
 .btn_password_recovery {
   font-family: Ubuntu Condensed;
   font-size: 20px;
-  @include border-radius(5px);
+  border-radius: 5px;
   display: inline-block;
   outline: none;
   cursor: pointer;
@@ -343,28 +341,24 @@ $header-tab-height: 36px;
 
 #send {
   background-color: #000;
-  @include filter-gradient(#000, #000); /* IE */
-  @include background-image(linear-gradient(#000, #000));
+  background-image: linear-gradient(#000, #000);
   color:#fff;
   border: 1px solid #fff;
 }
 
 #send:hover{
-  @include filter-gradient(#000, #000); /* IE */
-  @include background-image(linear-gradient(#000, #000));
+  background-image: linear-gradient(#000, #000);
   cursor: pointer;
 }
 
 .btn_default {
-  @include filter-gradient(#000, #000); /* IE */
-  @include background-image(linear-gradient(#000, #000));
+  background-image: linear-gradient(#000, #000);
   color:#7A7A7A;
   border:1px solid #ffffff;
 }
 
 #give-up:hover {
-  @include filter-gradient(#000, #000); /* IE */
-  @include background-image(linear-gradient(#000, #000));
+  background-image: linear-gradient(#000, #000);
   cursor: pointer;
 }
 
@@ -380,9 +374,8 @@ $header-tab-height: 36px;
   color: #ffffff;
   margin: 0 auto;
   width: 400px;
-  @include filter-gradient(#f5f5f5, #e6e8ec); /* IE */
-  @include background-image(linear-gradient(#000, #000)); /* CSS3 */
-  @include border-radius(6px);
+  background-image: linear-gradient(#000, #000); /* CSS3 */
+  border-radius: 6px;
   box-shadow:0px 2px 8px #222427;
 }
 
@@ -528,9 +521,9 @@ footer{
   padding: 20px 25px;
   background-color: #000;
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000', endColorstr='#000',GradientType=0 );
-  @include border-bottom-right-radius(8px);
-  @include border-bottom-left-radius(8px);
-  @include border-top-right-radius(8px);
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 .buttons{
@@ -541,7 +534,7 @@ footer{
 .buttons .next, .buttons .back, #complete{
   font-family: 'Ubuntu Condensed';
   font-size: 20px;
-  @include border-radius(5px);
+  border-radius: 5px;
   text-decoration: none;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -558,15 +551,13 @@ footer{
 }
 
 .buttons .next, #complete{
-  @include filter-gradient(#EBE2C0, #F0CF65); /* IE */
-  @include background-image(linear-gradient(#EBE2C0, #F0CF65)); /* CSS3 */
+  background-image: linear-gradient(#EBE2C0, #F0CF65); /* CSS3 */
   color:#a38322;
   border: 1px solid #AE8711;
 }
 
 .buttons .next:hover, #complete:hover{
-  @include filter-gradient(#EBE2C0, #FFD242); /* IE */
-  @include background-image(linear-gradient(#EBE2C0, #FFD242)); /* CSS3 */
+  background-image: linear-gradient(#EBE2C0, #FFD242); /* CSS3 */
   cursor: pointer;
 }
 
@@ -579,15 +570,13 @@ footer{
 }
 
 .buttons .back{
-  @include filter-gradient(#EEEEEE, #BFBFBF); /* IE */
-  @include background-image(linear-gradient(#EEEEEE, #BFBFBF)); /* CSS3 */
+  background-image: linear-gradient(#EEEEEE, #BFBFBF); /* CSS3 */
   color:#7A7A7A;
   border:1px solid #7A7A7A;
 }
 
 .buttons .back:hover{
-  @include filter-gradient(#EEEEEE, #B5B5B5); /* IE */
-  @include background-image(linear-gradient(#EEEEEE, #B5B5B5)); /* CSS3 */
+  background-image: linear-gradient(#EEEEEE, #B5B5B5); /* CSS3 */
   cursor: pointer;
 }
 
@@ -623,7 +612,7 @@ footer{
   font-family: 'Ubuntu';
   border:1px solid #fff;
   background-color: #000;
-  @include border-radius(5px);
+  border-radius: 5px;
   font-size: 16px;
 }
 
@@ -723,9 +712,8 @@ select option{
 .flash_message_wrapper {
   margin: 20px auto 20px auto;
   width: $login_width;
-  @include filter-gradient(#f5f5f5, #e6e8ec); /* IE */
-  @include background-image(linear-gradient(#000, #000)); /* CSS3 */
-  @include border-radius(6px);
+  background-image: linear-gradient(#000, #000); /* CSS3 */
+  border-radius: 6px;
   box-shadow:0px 2px 8px #222427;
 }
 
