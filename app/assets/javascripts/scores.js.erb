@@ -1,3 +1,4 @@
+<%# @encoding: UTF-8 %>
 function open_evaluation(link){
   if($(link).data('url') != undefined && !$(link).hasClass('disabled')){
     $.get($(link).data('url'), function(data){

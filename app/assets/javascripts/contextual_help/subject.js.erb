@@ -1,3 +1,4 @@
+<%# @encoding: UTF-8 %>
 function solar_help() {
   var solar_contextual_help = introJs();
   
@@ -10,35 +11,35 @@ function solar_help() {
     steps: [
       {
         element: '#page_title',
-        intro: "<%= 'Nome da Unidade Curricular (disciplina) que você está acessando.'.force_encoding('UTF-8') %>"
+        intro: 'Nome da Unidade Curricular (disciplina) que você está acessando.'
       },
       {
         element: '#page_title .block_content_text',
         position: 'left',
-        intro: "<%= 'Sua turma atual. Caso tenha acesso a várias turmas você poderá selecionar aqui a turma que desejar acessar.'.force_encoding('UTF-8') %>"
+        intro: 'Sua turma atual. Caso tenha acesso a várias turmas você poderá selecionar aqui a turma que desejar acessar.'
       },
       {
         element: '#subject_info_portlet',
-        intro: "<%= 'Neste bloco são exibidas as informações básicas da disciplina: a ementa e lista de responsáveis.'.force_encoding('UTF-8') %>"
+        intro: 'Neste bloco são exibidas as informações básicas da disciplina: a ementa e lista de responsáveis.'
       },
       {
         element: '.lesson_portlet',
-        intro: "<%= 'Aqui você pode acessar as aulas que estão disponíveis para visualização.'.force_encoding('UTF-8') %>"
+        intro: 'Aqui você pode acessar as aulas que estão disponíveis para visualização.'
       },
       {
         element: '#block_messages',
         position: 'top',
-        intro: "<%= 'Este é o bloco de mensagens, onde são listadas as últimas mensagens recebidas.'.force_encoding('UTF-8') %>"
+        intro: 'Este é o bloco de mensagens, onde são listadas as últimas mensagens recebidas.'
       },
       {
         element: '#forum_portlet',
         position: 'top',
-        intro: "<%= 'Neste bloco são listadas as postagens mais recentes nos fóruns desta disciplina.'.force_encoding('UTF-8') %>"
+        intro: 'Neste bloco são listadas as postagens mais recentes nos fóruns desta disciplina.'
       },
       {
         element: '#block_schedule',
         position: 'top',
-        intro: "<%= 'Este bloco de agenda permite que você visualize facilmente quais dias possuem atividades agendadas para esta disciplina.'.force_encoding('UTF-8') %>"
+        intro: 'Este bloco de agenda permite que você visualize facilmente quais dias possuem atividades agendadas para esta disciplina.'
       }
     ]
   })

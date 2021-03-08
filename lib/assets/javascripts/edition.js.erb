@@ -1,3 +1,4 @@
+<%# @encoding: UTF-8 %>
 function clear_combo(combo_name, disable) {
   $('[name="' + combo_name + '"]:last').combobox('value', null);
   $('[name="' + combo_name + '"]:last').combobox("option", { disabled: disable });

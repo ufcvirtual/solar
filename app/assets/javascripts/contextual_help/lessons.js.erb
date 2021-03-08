@@ -1,3 +1,4 @@
+<%# @encoding: UTF-8 %>
 function solar_help() {
   var solar_contextual_help = introJs();
 
@@ -10,10 +11,10 @@ function solar_help() {
     steps: [
       {
         element: '.list_lessons',
-        intro: "<%= 'Neste bloco são listados os módulos desta disciplina (caso existam) e as aulas disponíveis para visualização.'.force_encoding('UTF-8') %>"
+        intro: 'Neste bloco são listados os módulos desta disciplina (caso existam) e as aulas disponíveis para visualização.'
       },
       {
-        intro: "<%= 'Caso alguma aula possua uma data final de acesso então sua visualização será <b>bloqueada</b> após esta data.'.force_encoding('UTF-8') %>"
+        intro: 'Caso alguma aula possua uma data final de acesso então sua visualização será <b>bloqueada</b> após esta data.'
       }
     ]
   })

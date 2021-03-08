@@ -1,3 +1,4 @@
+<%# @encoding: UTF-8 %>
 function solar_help() {
   var solar_contextual_help = introJs();
 
@@ -10,21 +11,21 @@ function solar_help() {
     steps: [
       {
         element: '#forum_description',
-        intro: "<%= 'Neste bloco é exibida a descrição do fórum'.force_encoding('UTF-8') %>"
+        intro: 'Neste bloco é exibida a descrição do fórum'
       },
       {
         element: '#forum_pagination',
-        intro: "<%= 'Barra de comandos do fórum, onde você pode...'.force_encoding('UTF-8') %>"
+        intro: 'Barra de comandos do fórum, onde você pode...'
       },
       {
         element: '#button_new_post',
         position: 'right',
-        intro: "<%= '... criar uma nova postagem ...'.force_encoding('UTF-8') %>"
+        intro: '... criar uma nova postagem ...'
       },
       {
         element: '#forum_view_mode',
         position: 'left',
-        intro: "<%= '... e alternar a visualização entre modo lista ou árvore.'.force_encoding('UTF-8') %>"
+        intro: '... e alternar a visualização entre modo lista ou árvore.'
       }
     ]
   });
@@ -35,12 +36,12 @@ function solar_help() {
     discussion_steps.push(
       {
         element: '.forum_posts_wrapper',
-        intro: "<%= 'Nesta região são exibidas as postagens existentes.'.force_encoding('UTF-8') %>"
+        intro: 'Nesta região são exibidas as postagens existentes.'
       },
       {
         element: '.forum_post_buttons .btn-group',
         position: 'left',
-        intro: "<%= 'E no canto inferior direito das postagens localizam-se os comandos relacionados à postagem, onde você pode respondê-la ou adicionar anexos, apagá-la e editá-la (caso seja o autor).'.force_encoding('UTF-8') %>"
+        intro: 'E no canto inferior direito das postagens localizam-se os comandos relacionados à postagem, onde você pode respondê-la ou adicionar anexos, apagá-la e editá-la (caso seja o autor).'
       }
     );
     solar_contextual_help.setOptions({
