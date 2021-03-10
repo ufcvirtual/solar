@@ -38,7 +38,8 @@
                 - if q_image.image.exists?
                   .zoom
                     %p= t('exams.open.image_zoom')
-                    = image_tag q_image.image.url(get_image_size(question_images.count)), class: 'item_image', alt: q_image.img_alt, :'aria-label' => t('exams.open.image', alt: q_image.img_alt) + (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend)), :"data-zoom-url" => q_image.image.url(:original)
+                    = image_tag q_image.image.url(get_image_size(question_images.length)), class: 'item_image', alt: q_image.img_alt, :'aria-label' => t('exams.open.image', alt: q_image.img_alt) + (q_image.legend.blank? ? '' : t('exams.open.legend', legend: q_image.legend)), :"data-zoom-url" => q_image.image.url(:original)
+
                 - else
                   - img_url = q_image.image.url
                   - img_url.gsub!('_original.', '.')

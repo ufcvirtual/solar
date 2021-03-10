@@ -161,8 +161,15 @@ class MessagesController < ApplicationController
       end
 
       redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages)
+    rescue ActiveRecord::RecordInvalid
+      @message.errors.each do |attribute, erro|
+        @attribute = attribute
+      end
+      @support = params[:message][:support]
+      @reply_to = [{resume: t("messages.support")}] unless params[:message][:support].nil?
+
+      render :new
     rescue => error
-      p error
       unless @allocation_tag_id.nil?
         allocation_tag      = AllocationTag.find(@allocation_tag_id)
         @group              = allocation_tag.group

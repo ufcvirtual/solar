@@ -10,7 +10,7 @@ class Webconference < ActiveRecord::Base
 
   belongs_to :moderator, class_name: 'User', foreign_key: :user_id
 
-  has_many :academic_allocations, as: :academic_tool, dependent: :destroy
+  #has_many :academic_allocations, as: :academic_tool, dependent: :destroy
   has_many :allocation_tags, through: :academic_allocations
   has_many :groups, through: :allocation_tags
   has_many :offers, through: :allocation_tags

@@ -176,7 +176,7 @@ $(function() {
           success: function(){
             window.location.href = link_download;
           },
-          error: function() {
+          fail: function() {
             flash_message("<%=I18n.t(:invalid_lesson_to_download, :scope => [:lessons, :errors])%>", "alert");
           }
         });

@@ -144,7 +144,7 @@ img.fancytree-icon {
  * Expander icon
  *
  * Note: IE6 doesn't correctly evaluate multiples class names,
- *		 so we create combined class names that can be used in the CSS.
+ *     so we create combined class names that can be used in the CSS.
  *
  * Prefix: fancytree-exp-
  * 1st character: 'e': expanded, 'c': collapsed, 'n': no children
@@ -188,7 +188,7 @@ span.fancytree-checkbox {
 /*------------------------------------------------------------------------------
  * Node type icon
  * Note: IE6 doesn't correctly evaluate multiples class names,
- *		 so we create combined class names that can be used in the CSS.
+ *     so we create combined class names that can be used in the CSS.
  *
  * Prefix: fancytree-ico-
  * 1st character: 'e': expanded, 'c': collapsed

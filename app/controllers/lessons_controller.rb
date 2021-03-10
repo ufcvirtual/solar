@@ -49,7 +49,7 @@ class LessonsController < ApplicationController
 
     @academic_allocations = LessonModule.academic_allocations_by_ats(@allocation_tags_ids.split(' '), page: params[:page])
   rescue
-    render nothing: true, status: 500
+    head :ok, status: 500
   end
 
   def open_module
@@ -211,14 +211,14 @@ class LessonsController < ApplicationController
         redirect_to redirect, alert: t(:file_error_nonexistent_file)
       end
     else
-      render nothing: true
+      head :ok
     end
   end
 
   # este método serve apenas para retornar um erro ou prosseguir com o download através da chamada ajax da página
   def verify_download
     status = verify_lessons_to_download(params[:lessons_ids]) ? :ok : :not_found
-    render nothing: true, status: status
+    head :ok, status: status
   end
 
   ## PUT lessons/:id/order/:change_id
