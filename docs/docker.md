@@ -44,7 +44,7 @@
 
   Para rodar as migrations
 
-    docker-compose exec app bundle exec rake db:migrate
+    docker-compose exec app bundle exec rails db:migrate
 
   Acessar o banco
 
