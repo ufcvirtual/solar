@@ -61,3 +61,5 @@ ship.sh
 config/digital_class_access_token.txt
 .ruby-version
 .env
+/node_modules
+/yarn-error.log
