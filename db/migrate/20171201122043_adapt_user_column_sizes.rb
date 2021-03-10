@@ -1,4 +1,4 @@
-class AdaptUserColumnSizes < ActiveRecord::Migration
+class AdaptUserColumnSizes < ActiveRecord::Migration[5.1]
   def up
   	change_column :users, :email, :string, limit: 200
   	change_column :users, :address, :string, limit: 150

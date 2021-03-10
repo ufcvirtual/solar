@@ -1,4 +1,4 @@
-class CreateRelatedViews < ActiveRecord::Migration
+class CreateRelatedViews < ActiveRecord::Migration[5.1]
   def up
     # create_view :related_curriculum_units, File.read(Rails.root.join("db/views/at_related_curriculum_units.sql"))
     # create_view :related_offers, File.read(Rails.root.join("db/views/at_related_offers.sql"))

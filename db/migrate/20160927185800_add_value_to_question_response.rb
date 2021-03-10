@@ -1,4 +1,4 @@
-class AddValueToQuestionResponse < ActiveRecord::Migration
+class AddValueToQuestionResponse < ActiveRecord::Migration[5.1]
   def up
     add_column :exam_responses_question_items, :value, :boolean
     add_column :exam_responses_question_items, :id, :primary_key

@@ -1,4 +1,4 @@
-class CreateRelatedTaggables < ActiveRecord::Migration
+class CreateRelatedTaggables < ActiveRecord::Migration[5.1]
   def change
     create_table :related_taggables do |t|
       t.boolean :group_status

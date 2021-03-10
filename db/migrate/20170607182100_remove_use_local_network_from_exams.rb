@@ -1,4 +1,4 @@
-class RemoveUseLocalNetworkFromExams < ActiveRecord::Migration
+class RemoveUseLocalNetworkFromExams < ActiveRecord::Migration[5.1]
   def up
     remove_column :exams, :use_local_network
   end

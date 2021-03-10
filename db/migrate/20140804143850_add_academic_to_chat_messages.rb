@@ -1,4 +1,4 @@
-class AddAcademicToChatMessages < ActiveRecord::Migration
+class AddAcademicToChatMessages < ActiveRecord::Migration[5.1]
   def up
     change_table :chat_messages do |t|
       t.references :academic_allocation

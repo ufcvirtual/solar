@@ -1,4 +1,4 @@
-class CreateAssignmentEnunciationFilesAndRemoveFilesEnunciation < ActiveRecord::Migration
+class CreateAssignmentEnunciationFilesAndRemoveFilesEnunciation < ActiveRecord::Migration[5.1]
   def up
   	drop_table :files_enunciations
 

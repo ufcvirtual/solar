@@ -1,4 +1,4 @@
-class RemoveColumnUseLocalNetwork < ActiveRecord::Migration
+class RemoveColumnUseLocalNetwork < ActiveRecord::Migration[5.1]
   def up
   	remove_column :ip_reals, :use_local_network
   end

@@ -1,11 +1,11 @@
-class CreateUserContacts < ActiveRecord::Migration
+class CreateUserContacts < ActiveRecord::Migration[5.1]
   def self.up
     create_table "user_contacts", :id => false do |t|
     end
 
     execute <<-SQL
       ALTER TABLE user_contacts ADD COLUMN user_id INTEGER NOT NULL REFERENCES users(id);
-      ALTER TABLE user_contacts ADD COLUMN user_related_id INTEGER NOT NULL REFERENCES users(id)
+      ALTER TABLE user_contacts ADD COLUMN user_related_id INTEGER NOT NULL REFERENCES users(id);
     SQL
 
     execute <<-SQL

@@ -1,4 +1,4 @@
-class AddForeignKeyToGaAtAcu < ActiveRecord::Migration
+class AddForeignKeyToGaAtAcu < ActiveRecord::Migration[5.1]
   def change
     # add_index :group_assignments, [:group_participant_id, :group_assignment_id, :academic_allocation_id], name: 'user_group_ac_idx', unique: true
     # add_index :academic_allocation_users, [:user_id, :group_assignment_id, :academic_allocation_id], name: 'user_group_ac_idx', unique: true

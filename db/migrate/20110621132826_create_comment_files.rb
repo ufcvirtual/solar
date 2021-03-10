@@ -1,4 +1,4 @@
-class CreateCommentFiles < ActiveRecord::Migration
+class CreateCommentFiles < ActiveRecord::Migration[5.1]
   def self.up
     create_table :comment_files do |t|
       t.integer :assignment_comment_id, :null => false

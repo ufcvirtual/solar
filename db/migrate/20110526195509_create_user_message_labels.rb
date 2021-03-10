@@ -1,4 +1,4 @@
-class CreateUserMessageLabels < ActiveRecord::Migration
+class CreateUserMessageLabels < ActiveRecord::Migration[5.1]
   def self.up
     create_table "user_message_labels", :id => false do |t|
       t.integer "user_message_id",  :null => false

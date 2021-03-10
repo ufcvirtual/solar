@@ -1,4 +1,4 @@
-class RenameTableLogToLogAccess < ActiveRecord::Migration
+class RenameTableLogToLogAccess < ActiveRecord::Migration[5.1]
   def up
     rename_table :logs, :log_accesses
 

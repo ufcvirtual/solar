@@ -1,4 +1,4 @@
-class CreateEducationalTools < ActiveRecord::Migration
+class CreateEducationalTools < ActiveRecord::Migration[5.1]
   #Tabela que vincula a allocation_tag a [discussion,assignment, lesson etc]
   def up
     create_table :educational_tools do |t|

@@ -1,4 +1,4 @@
-class CreateUserMessages < ActiveRecord::Migration
+class CreateUserMessages < ActiveRecord::Migration[5.1]
   def self.up
     create_table "user_messages" do |t|
       t.integer "message_id"

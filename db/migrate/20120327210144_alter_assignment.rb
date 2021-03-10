@@ -1,4 +1,4 @@
-class AlterAssignment < ActiveRecord::Migration
+class AlterAssignment < ActiveRecord::Migration[5.1]
   def self.up
     change_table :assignments do |t|
       t.integer :type_assignment, :null => false, :default => 1 # 1:individual / 2:grupo

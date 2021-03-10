@@ -1,4 +1,4 @@
-class DropExamParticipants < ActiveRecord::Migration
+class DropExamParticipants < ActiveRecord::Migration[5.1]
   def up
     drop_table :exam_participants
   end

@@ -1,4 +1,4 @@
-class AlterScheduleDate < ActiveRecord::Migration
+class AlterScheduleDate < ActiveRecord::Migration[5.1]
   def self.up
     change_column :schedules, :start_date, :datetime
     change_column :schedules, :end_date,   :datetime

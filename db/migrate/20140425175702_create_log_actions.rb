@@ -1,4 +1,4 @@
-class CreateLogActions < ActiveRecord::Migration
+class CreateLogActions < ActiveRecord::Migration[5.1]
   def up
     create_table :log_actions do |t|
       t.integer :log_type, null: false

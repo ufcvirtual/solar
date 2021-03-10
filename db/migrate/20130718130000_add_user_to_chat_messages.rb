@@ -1,4 +1,4 @@
-class AddUserToChatMessages < ActiveRecord::Migration
+class AddUserToChatMessages < ActiveRecord::Migration[5.1]
   def up
     change_table :chat_messages do |t|
       t.references :user, null: true

@@ -1,4 +1,4 @@
-class CreateNotificationFiles < ActiveRecord::Migration
+class CreateNotificationFiles < ActiveRecord::Migration[5.1]
   def change
     create_table :notification_files do |t|
       t.references :notification

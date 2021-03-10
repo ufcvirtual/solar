@@ -2,7 +2,7 @@
 # While you can edit this file, any changes you make to the definitions here
 # will be undone by the next auto-generated trigger migration.
 
-class CreateTriggersGroupsUpdateAndOffersUpdateAndCurriculumUnitsUpdate < ActiveRecord::Migration
+class CreateTriggersGroupsUpdateAndOffersUpdateAndCurriculumUnitsUpdate < ActiveRecord::Migration[5.1]
   def up
     create_trigger("groups_after_update_of_offer_id_status_row_tr", :generated => true, :compatibility => 1).
         on("groups").

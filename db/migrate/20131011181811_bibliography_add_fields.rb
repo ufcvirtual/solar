@@ -1,4 +1,4 @@
-class BibliographyAddFields < ActiveRecord::Migration
+class BibliographyAddFields < ActiveRecord::Migration[5.1]
 
   # como a tabela muda, é necessário esse código junto com o código de reset
   class Bibliography < ActiveRecord::Base

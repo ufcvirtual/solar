@@ -1,4 +1,4 @@
-class CreateMessageFiles < ActiveRecord::Migration
+class CreateMessageFiles < ActiveRecord::Migration[5.1]
   def self.up
     create_table "message_files" do |t|
       t.integer  "message_id"      

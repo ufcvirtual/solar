@@ -1,5 +1,4 @@
-class RemoveChatRoomIdFromChatMessages < ActiveRecord::Migration
-  def up
+class RemoveChatRoomIdFromChatMessages < ActiveRecord::Migration[5.1]
     remove_column :chat_messages, :chat_room_id
   end
 

@@ -1,4 +1,4 @@
-class AddDefaultLessonModuleForGroup < ActiveRecord::Migration
+class AddDefaultLessonModuleForGroup < ActiveRecord::Migration[5.1]
   def up
     change_table :lesson_modules do |t|
       t.boolean :is_default, default: false, null: false

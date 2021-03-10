@@ -1,4 +1,4 @@
-class ChangFinalWeightTypeInAcademicAllocations < ActiveRecord::Migration
+class ChangFinalWeightTypeInAcademicAllocations < ActiveRecord::Migration[5.1]
   def up
   	change_column :academic_allocations, :final_weight, :decimal, default: 100, :precision => 5, :scale => 2
   end

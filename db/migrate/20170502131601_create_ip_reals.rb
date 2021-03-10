@@ -1,4 +1,4 @@
-class CreateIpReals < ActiveRecord::Migration
+class CreateIpReals < ActiveRecord::Migration[5.1]
   def change
     create_table :ip_reals do |t|
       t.string :ip_v4

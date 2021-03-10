@@ -1,4 +1,4 @@
-class CreatePermissionsResources < ActiveRecord::Migration
+class CreatePermissionsResources < ActiveRecord::Migration[5.1]
   def self.up
     create_table "permissions_resources", :id => false do |t|
       t.integer "profile_id",   :null => false

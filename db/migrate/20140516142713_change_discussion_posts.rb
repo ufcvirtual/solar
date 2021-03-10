@@ -1,4 +1,4 @@
-class ChangeDiscussionPosts < ActiveRecord::Migration
+class ChangeDiscussionPosts < ActiveRecord::Migration[5.1]
   def up
     change_table :discussion_posts do |t|
       t.references :academic_allocation

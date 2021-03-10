@@ -1,4 +1,4 @@
-class AlterTableDiscussions < ActiveRecord::Migration
+class AlterTableDiscussions < ActiveRecord::Migration[5.1]
   def self.up
 
     change_table :discussions do |t|

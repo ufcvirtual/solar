@@ -1,4 +1,4 @@
-class CreateDiscussionEnunciationFiles < ActiveRecord::Migration
+class CreateDiscussionEnunciationFiles < ActiveRecord::Migration[5.1]
   def change
     create_table :discussion_enunciation_files do |t|
       t.references :discussion

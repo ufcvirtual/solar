@@ -1,4 +1,4 @@
-class CreateGroups < ActiveRecord::Migration
+class CreateGroups < ActiveRecord::Migration[5.1]
   def self.up
     create_table "groups" do |t|
       t.integer  "offer_id", :null => false

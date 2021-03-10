@@ -1,4 +1,4 @@
-class AddTimestampToTaggables < ActiveRecord::Migration
+class AddTimestampToTaggables < ActiveRecord::Migration[5.1]
   def change
     [:groups, :offers, :semesters, :courses, :curriculum_units, :curriculum_unit_types].each do |table|
       change_table table do |t|

@@ -1,4 +1,4 @@
-class CreateMenusContexts < ActiveRecord::Migration
+class CreateMenusContexts < ActiveRecord::Migration[5.1]
   def self.up
      create_table "menus_contexts", :id => false do |t|
       t.integer "menu_id",    :null => false

@@ -1,4 +1,4 @@
-class CreateNotificationProfiles < ActiveRecord::Migration
+class CreateNotificationProfiles < ActiveRecord::Migration[5.1]
   def change
     create_table :notification_profiles do |t|
       t.references :profile

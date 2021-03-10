@@ -1,4 +1,4 @@
-class CreatePersonalConfigurations < ActiveRecord::Migration
+class CreatePersonalConfigurations < ActiveRecord::Migration[5.1]
   def self.up
     create_table "personal_configurations" do |t|
       t.integer  "user_id", :null => false

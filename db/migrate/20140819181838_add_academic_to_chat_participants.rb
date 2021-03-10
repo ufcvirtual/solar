@@ -1,4 +1,4 @@
-class AddAcademicToChatParticipants < ActiveRecord::Migration
+class AddAcademicToChatParticipants < ActiveRecord::Migration[5.1]
   def up
     change_table :chat_participants do |t|
       t.references :academic_allocation

@@ -1,4 +1,4 @@
-class AutomaticStudentStatus < ActiveRecord::Migration
+class AutomaticStudentStatus < ActiveRecord::Migration[5.1]
   def up
     add_column :courses, :min_grade_to_final_exam, :float
     add_column :courses, :min_hours, :integer

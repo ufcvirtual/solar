@@ -1,4 +1,4 @@
-class RenameAssignmentController < ActiveRecord::Migration
+class RenameAssignmentController < ActiveRecord::Migration[5.1]
   def up
   	rename_column :assignments, :controller, :controlled
   end

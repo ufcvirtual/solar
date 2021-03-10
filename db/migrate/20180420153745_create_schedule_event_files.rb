@@ -1,4 +1,4 @@
-class CreateScheduleEventFiles < ActiveRecord::Migration
+class CreateScheduleEventFiles < ActiveRecord::Migration[5.1]
   def self.up
     create_table :schedule_event_files do |t|
       t.integer :user_id

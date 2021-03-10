@@ -1,4 +1,4 @@
-class TransferDataOfAssignmentToAcademicAllocation < ActiveRecord::Migration
+class TransferDataOfAssignmentToAcademicAllocation < ActiveRecord::Migration[5.1]
   def up
     
     drop_table :educational_tools

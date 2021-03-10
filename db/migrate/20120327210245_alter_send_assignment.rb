@@ -1,4 +1,4 @@
-class AlterSendAssignment < ActiveRecord::Migration
+class AlterSendAssignment < ActiveRecord::Migration[5.1]
   def self.up
     change_table :send_assignments do |t|
       t.integer :group_assignment_id

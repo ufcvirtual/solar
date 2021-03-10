@@ -1,4 +1,4 @@
-class AddMandatoryReadingToNotifications < ActiveRecord::Migration
+class AddMandatoryReadingToNotifications < ActiveRecord::Migration[5.1]
   def change
   	add_column :notifications, :mandatory_reading, :boolean, default: false
   end

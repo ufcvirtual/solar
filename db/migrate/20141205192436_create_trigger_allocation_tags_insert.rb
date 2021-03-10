@@ -2,7 +2,7 @@
 # While you can edit this file, any changes you make to the definitions here
 # will be undone by the next auto-generated trigger migration.
 
-class CreateTriggerAllocationTagsInsert < ActiveRecord::Migration
+class CreateTriggerAllocationTagsInsert < ActiveRecord::Migration[5.1]
   def up
     drop_trigger("allocation_tags_after_insert_row_tr", "allocation_tags", :generated => true)
 

@@ -1,4 +1,4 @@
-class AddTimestamps < ActiveRecord::Migration
+class AddTimestamps < ActiveRecord::Migration[5.1]
   def up
     change_table(:discussions) { |t| t.timestamps }
     change_table(:assignments) { |t| t.timestamps }

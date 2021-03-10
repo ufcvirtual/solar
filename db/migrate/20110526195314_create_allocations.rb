@@ -1,4 +1,4 @@
-class CreateAllocations < ActiveRecord::Migration
+class CreateAllocations < ActiveRecord::Migration[5.1]
   def self.up
     create_table "allocations" do |t|
       t.integer  "user_id", :null => false

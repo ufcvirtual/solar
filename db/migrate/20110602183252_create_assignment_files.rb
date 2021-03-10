@@ -1,4 +1,4 @@
-class CreateAssignmentFiles < ActiveRecord::Migration
+class CreateAssignmentFiles < ActiveRecord::Migration[5.1]
   def self.up
     create_table :assignment_files do |t|
       t.integer :send_assignment_id, :null => false
