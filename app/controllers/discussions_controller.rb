@@ -43,7 +43,7 @@ class DiscussionsController < ApplicationController
 
     authorize! :list, Discussion, on: @allocation_tags_ids
 
-    @discussions = Discussion.joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).uniq.select("discussions.*, schedules.start_date AS start_date").order("start_date")
+    @discussions = Discussion.joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).distinct.select("discussions.*, schedules.start_date AS start_date").order("start_date")
   rescue
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end

@@ -45,9 +45,7 @@
       });
     }
 
-    $.put("#{import_exam_questions_path}", {questions: questions.join(';'), allocation_tags_ids: "#{raw
- @ats}", exam_id: "#{raw
- @exam_id}"}, function(data){
+  $.put("#{import_exam_questions_path}", {questions: questions.join(';'), allocation_tags_ids: "#{raw @ats}", exam_id: "#{raw @exam_id}"}, function(data){
       $.fancybox.close();
       var msg = data.msg;
       
