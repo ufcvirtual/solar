@@ -19,7 +19,7 @@ class Schedule < ActiveRecord::Base
 
   validate :start_date_before_end_date
   validate :verify_by_current_date, if: -> {verify_current_date && (saved_change_to_start_date? || saved_change_to_end_date?)}
-  validate :verify_by_today, if: -> {verify_today && (saved_change_to_start_date? || saved_change_to_nd_date?)}
+  validate :verify_by_today, if: -> {verify_today && (saved_change_to_start_date? || saved_change_to_end_date?)}
 
   validate :verify_offer, unless: -> {verify_offer_ats.blank?}
 
