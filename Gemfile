@@ -98,6 +98,7 @@ gem "htmlentities", "~> 4.3.4"
 gem "newrelic_rpm"
 
 gem "dotenv-rails"
+gem 'tzinfo-data'
 
 group :development do
   gem "foreman", require: false

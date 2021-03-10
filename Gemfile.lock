@@ -485,6 +485,8 @@ GEM
     ttfunk (1.4.0)
     tzinfo (1.2.9)
       thread_safe (~> 0.1)
+    tzinfo-data (1.2021.1)
+      tzinfo (>= 1.0.0)
     uglifier (4.1.20)
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
@@ -601,6 +603,7 @@ DEPENDENCIES
   stackprof (~> 0.2.11)
   test-unit (~> 3.1.5)
   therubyracer
+  tzinfo-data
   uglifier (~> 4.1.10)
   webrat (= 0.7.3)
   wicked_pdf (~> 1.1.0)
@@ -611,4 +614,4 @@ RUBY VERSION
    ruby 2.7.2p137
 
 BUNDLED WITH
-   1.17.3
+   2.1.4
