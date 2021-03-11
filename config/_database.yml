@@ -11,6 +11,7 @@ common: &common
   adapter: postgresql
   username:
   password:
+  host: <%= ENV['DB_HOST'] %>
 
 development:
   <<: *common
