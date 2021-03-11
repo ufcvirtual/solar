@@ -22,7 +22,7 @@ class Notification < ActiveRecord::Base
   validates :title, :description, :schedule, presence: true
   validates :title, length: { maximum: 255 }
 
-  after_save :remove_readings, on: :update, if: 'title_changed? || description_changed? || (mandatory_reading_changed? && mandatory_reading)'
+  after_save :remove_readings, on: :update, if: 'saved_change_to_title? || saved_change_to_description? || (saved_change_to_mandatory_reading? && mandatory_reading)'
 
   def reject_files(file)
     (file[:file].blank? && (new_record? || file[:id].blank?))
