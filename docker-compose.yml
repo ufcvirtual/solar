@@ -19,7 +19,7 @@ services:
       RAILS_ENV: development
 
   database:
-    image: postgres:9.6
+    image: postgres:9.5
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
