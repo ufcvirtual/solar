@@ -2,7 +2,7 @@ class AddAcademicToChatParticipants < ActiveRecord::Migration[5.1]
   def up
     change_table :chat_participants do |t|
       t.references :academic_allocation
-      t.index :academic_allocation_id
+      #t.index :academic_allocation_id # erro de indice ja criado, pois o metodo t:references já cria um indice para este campo
     end
 
     execute "DROP INDEX IF EXISTS index_chat_participants_on_chat_room_id_and_allocation_id;"

@@ -6,6 +6,6 @@ class CreateNotificationFiles < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
-    add_index :notification_files, :notification_id
+    #add_index :notification_files, :notification_id # erro de indice ja criado, pois o metodo t:references já cria um indice para este campo
   end
 end

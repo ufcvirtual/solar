@@ -13,7 +13,7 @@ class CreateLogActions < ActiveRecord::Migration[5.1]
       t.datetime :created_at
     end
 
-    add_index :log_actions, :user_id
+    #add_index :log_actions, :user_id
     add_index :log_actions, :tool_id
   end
 

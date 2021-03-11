@@ -33,7 +33,7 @@ class AddRelationshipsToAcu < ActiveRecord::Migration[5.1]
     change_table :assignment_webconferences do |t|
       t.rename :sent_assignment_id, :academic_allocation_user_id
     end
-    add_foreign_key :assignment_webconferences, :academic_allocation_users]
+    add_foreign_key :assignment_webconferences, :academic_allocation_users
 
     change_table :log_actions do |t|
       t.integer :academic_allocation_user_id

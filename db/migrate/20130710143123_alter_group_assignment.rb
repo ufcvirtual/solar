@@ -4,7 +4,7 @@ class AlterGroupAssignment < ActiveRecord::Migration[5.1]
     change_table :group_assignments do |t|
       t.references :academic_allocation
     end
-    add_foreign_key :group_assignments, :academic_allocations
+    #add_foreign_key :group_assignments, :academic_allocations # erro de indice ja criado, pois o metodo t:references já cria um indice para este campo
     
     group_assignments = GroupAssignment.all
 

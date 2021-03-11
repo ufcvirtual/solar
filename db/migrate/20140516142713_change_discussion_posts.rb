@@ -2,7 +2,7 @@ class ChangeDiscussionPosts < ActiveRecord::Migration[5.1]
   def up
     change_table :discussion_posts do |t|
       t.references :academic_allocation
-      t.index :academic_allocation_id
+      #t.index :academic_allocation_id # erro de indice ja criado, pois o metodo t:references já cria um indice para este campo
     end
 
     Post.where(parent_id: nil).each do |post|

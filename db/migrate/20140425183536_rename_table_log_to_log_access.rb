@@ -11,7 +11,7 @@ class RenameTableLogToLogAccess < ActiveRecord::Migration[5.1]
     end
 
     add_index :log_accesses, :user_id
-    add_index :log_accesses, :allocation_tag_id
+    #add_index :log_accesses, :allocation_tag_id # erro de indice ja criado, pois o metodo t:references já cria um indice para este campo
 
     ## quem era 2 vira um outro log (new_user)
     old_log = LogAccess.where(log_type: 2)
