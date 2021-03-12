@@ -17,7 +17,6 @@ class EditionsController < ApplicationController
     
     render partial: 'items'
   rescue=> error
-    p error
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end
 
@@ -148,8 +147,7 @@ class EditionsController < ApplicationController
 
     @tools = EvaluativeTool.find_tools(@allocation_tags_ids)
     @tools = @tools.group_by { |t| t['academic_tool_type'] }
-
-    @groups = Group.joins(:allocation_tag).where(allocation_tags: { id: @allocation_tags_ids })
+    @groups = Group.joins(:allocation_tag).where(allocation_tags: { id: @allocation_tags_ids.flatten })
     @curriculum_unit = @groups.first.curriculum_unit
     @course = @groups.first.course
     @working_hours = @curriculum_unit.try(:working_hours)
@@ -157,7 +155,9 @@ class EditionsController < ApplicationController
   end
 
   def manage_tools
-    params[:academic_allocations] = params[:academic_allocations].collect{|key,value| value}
+    ActionController::Parameters.permit_all_parameters = true
+
+    params[:academic_allocations] = params[:academic_allocations].to_h.collect{|key,value| value}
     params[:academic_allocations] = params[:academic_allocations].delete_if{|a| a.nil? || a['acs'].blank?}
     allocation_tags_ids = params[:academic_allocations].collect{|data| data['allocation_tags_ids'].delete('[]').split(',')}.flatten.map(&:to_i).uniq
 
@@ -222,9 +222,9 @@ class EditionsController < ApplicationController
       allocation_tags.where('group_id IS NOT NULL').each do |at|
         # getting errors to working_hours
         unless max_working_hours.nil?
-          acs = AcademicAllocation.where(allocation_tag_id: at.related, frequency: true).where('final_exam = false AND equivalent_academic_allocation_id IS NULL').pluck(:max_working_hours)
+          acs = AcademicAllocation.where(allocation_tag_id: at.related, frequency: true).where('final_exam = false AND equivalent_academic_allocation_id IS NULL').pluck("SUM(max_working_hours) AS max_working_hours")
           if acs.any?
-            wh = acs.sum(:max_working_hours)
+            wh = acs.first
             if wh != max_working_hours
               working_hours_errors << {at: at, wh: wh}
               ats_errors << at.id

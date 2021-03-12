@@ -228,7 +228,7 @@ class AcademicAllocation < ActiveRecord::Base
     def verify_uniqueness
       # na criacao ou algum campo modificado na atualizacao
       error = (
-        (new_record? || (allocation_tag_id_changed? || academic_tool_type_changed? || academic_tool_id_changed?)) &&
+        (new_record? || (saved_change_to_allocation_tag_id? || saved_change_to_academic_tool_type? || saved_change_to_academic_tool_id?)) &&
         AcademicAllocation.where(allocation_tag_id: allocation_tag_id, academic_tool_type: academic_tool_type, academic_tool_id: academic_tool_id).any?
       )
 
@@ -312,7 +312,7 @@ class AcademicAllocation < ActiveRecord::Base
     end
 
     def update_acus
-      if frequency_automatic_changed?
+      if saved_change_to_frequency_automatic?
         # set all previously evaluated acus as evaluated_by_responsible
         academic_allocation_users.where(evaluated_by_responsible: false).where("status = #{AcademicAllocationUser::STATUS[:evaluated]} AND working_hours IS NOT NULL").update_all evaluated_by_responsible: true
 
@@ -320,7 +320,7 @@ class AcademicAllocation < ActiveRecord::Base
         academic_allocation_users.where(evaluated_by_responsible: false, working_hours: nil).where("status = #{AcademicAllocationUser::STATUS[:sent]} OR ( (grade > 0) AND (status = #{AcademicAllocationUser::STATUS[:evaluated]}))").update_all working_hours: max_working_hours, status: AcademicAllocationUser::STATUS[:evaluated]
       end
 
-      if max_working_hours_changed?
+      if saved_change_to_max_working_hours?
         # update max_working_hours
         academic_allocation_users.where(evaluated_by_responsible: false).where("status = #{AcademicAllocationUser::STATUS[:evaluated]} AND working_hours IS NOT NULL").update_all working_hours: max_working_hours
       end

@@ -57,7 +57,7 @@ class Discussion < Event
   # => Se eu criar um novo forum em que uma de suas allocation_tags seja a 3 e tenha o mesmo nome que o Forum 1, eh pra dar erro
   def unique_name
     discussions_with_same_name = self.class.joins(:allocation_tags).where(allocation_tags: { id: allocation_tag_ids_associations || academic_allocations.map(&:allocation_tag_id) }, name: name)
-    errors.add(:name, I18n.t('discussions.error.existing_name')) if (@new_record == true || name_changed?) && discussions_with_same_name.size > 0
+    errors.add(:name, I18n.t('discussions.error.existing_name')) if (@new_record == true || saved_change_to_name?) && discussions_with_same_name.size > 0
   end
 
   def statuses(user_id = nil)
