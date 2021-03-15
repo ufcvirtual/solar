@@ -8,13 +8,13 @@ class CurriculumUnitType < ActiveRecord::Base
 
   def tool_name
     tn = case id
-      when 3; "course"
-      when 7; "course"
-      when 4; "module"
+      when 3; "curriculum_units.index.course"
+      when 7; "course.curriculum_units.index.course"
+      when 4; "module.curriculum_units.index.course"
       else
-       "curriculum_unit"
-     end
-    I18n.t(tn, "curriculum_units.index")
+       "curriculum_units.index.curriculum_unit"
+    end
+    I18n.t(tn)
   end
 
   def detailed_info
