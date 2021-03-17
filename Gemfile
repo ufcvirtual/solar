@@ -20,7 +20,7 @@ gem "chronic", "0.6.1"
 #gem "brazilian-rails", "~> 3.3.0"
 gem 'simple_form', "~> 4.0.1"
 
-gem "paperclip", "~> 4.3.7"
+gem "kt-paperclip", "~> 6.4.1"
 gem "will_paginate", "~> 3.1.6"
 gem "jquery-rails", "~> 4.3.3"
 gem 'jquery-ui-rails', '~> 6.0.1'

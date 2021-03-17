@@ -666,7 +666,7 @@ Solar::Application.routes.draw do
       get :open
       get :pre, to: 'exams#pre'
       get :preview
-      get :result_user, to: :result_exam_user
+      get :result_user, action: :result_exam_user
       get :complete
       get :percentage
       put :calculate_grade

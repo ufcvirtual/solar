@@ -99,7 +99,8 @@
   var clock_switch;
 
   $(function() {
-    tempo();
+    let time_inicial = parseInt(#{@total_time});
+    tempo(time_inicial, 0);
     $.fancybox.update();
   });
 
@@ -112,13 +113,15 @@
 
   var intervalo;
 
-  function tempo() {
-    let time_inicial = parseInt(#{@total_time});
+  function tempo(time_inicial, clear) {
     var s = (time_inicial%60) + 1;
     let mm = Math.trunc((time_inicial/60));
     var m = (mm%60);
     var h = Math.trunc(mm/60);
     if(document.getElementById("clock") != null){
+      if(clear==1){
+        clearInterval(intervalo);
+      }
       intervalo = window.setInterval(function() {
         if (s == 60) { m++; s = 0; }
         if (m == 60) { h++; s = 0; m = 0; }
@@ -128,6 +131,8 @@
         if (m < 10) tm = "0" + m + ":"; else tm = m + ":";  
         document.getElementById("clock").innerHTML = th + tm + ts; 
         s++;
+        
       },1000);
+
     }
   }
