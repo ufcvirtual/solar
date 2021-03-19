@@ -1,63 +1,74 @@
-.import_something{
-  .block_content{
+.import_something {
+  .block_content {
     margin-top: 0px;
     padding-top: 1px;
     background-color: $color_white_base;
   }
 
-  .block_title{
-    span.form_requirement.original_lesson{
-      padding-top: 12px;
-    }
-  }
+  // .block_title{
+  //   span.form_requirement.original_lesson{
+  //     padding-top: 12px;
+  //   }
+  // }
 
-  #steps{
-    width: auto;
-    margin: 20px;
+  #steps {
+    // width: auto;
+    width: 98%;
+    margin: 20px auto;
 
     ul {
       border-radius: 5px;
     }
   }
-  .edition block_content{
+
+  .edition block_content {
     margin: 10px;
   }
 
-  .block_content_toolbar{
+  .block_content_toolbar {
     min-height: 25px;
   }
 
-  .step-conclude, .step-preview{
+  .step-conclude,
+  .step-preview {
     display: none;
   }
 
-  .step-preview{
+  .step-preview {
     min-height: 400px;
-    iframe{
+
+    iframe {
       min-height: 390px;
       margin-bottom: 10px;
     }
   }
 
-  .step-list{
-    span.add_something{
+  .step-list {
+    span.add_something {
       float: left;
       margin-left: 70%;
     }
-    tr.disabled, [id^='exam_'].disabled{
-      i, label{
+
+    tr.disabled,
+    [id^='exam_'].disabled {
+
+      i,
+      label {
         color: $step_list_color_import;
       }
-      .collection_check_boxes{
+
+      .collection_check_boxes {
         background-color: $step_list_color_import_black;
       }
     }
-    .text_none.disabled{
+
+    .text_none.disabled {
       color: $step_list_color_import;
     }
   }
 
-  .questions_import, .questions_export{
+  .questions_import,
+  .questions_export {
     overflow-y: auto;
     height: 300px;
   }
@@ -67,13 +78,28 @@
     padding-top: 15px;
   }
 
-  table{
-    td.icon{
+  table {
+    td.icon {
       text-align: center;
-      a{
+
+      a {
         text-decoration: none;
       }
     }
   }
 
+}
+
+.import_something.questions {
+  .block_content_toolbar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+  }
+}
+
+.add_lesson {
+  float: left;
 }

@@ -5,52 +5,52 @@
     %h2
       %i.icon-docs
       = t(:curriculum_unit_information_title)
-
-  %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%", summary: t('.summary')}
-    %tbody
-      %tr.lines
-        %th.act_like_td#syllabus{:style => "width: 20%;"}= t(:syllabus)
-        %td{headers: 'syllabus'}= @curriculum_unit.try(:syllabus)
-      %tr.lines
-        %th.act_like_td#objectives= t(:objectives)
-        %td{headers: 'objectives'}= @curriculum_unit.try(:objectives)
-      %tr.lines
-        %th.act_like_td#prerequisites= t(:prerequisites)
-        %td{headers: 'prerequisites'}= @curriculum_unit.try(:prerequisites)
-      %tr.lines
-        %th.act_like_td#resume= t(:resume)
-        %td{headers: 'resume'}= @curriculum_unit.try(:resume)
-      - unless @offer.nil?
+  .responsive-table
+    %table.tb_list{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%", summary: t('.summary')}
+      %tbody
         %tr.lines
-          %th.act_like_td#semester= t(:semester_date)
-          %td{headers: 'semester'}= [l(@offer.start_date), l(@offer.end_date)].join(" - ")
-      %tr.lines
-        %th.act_like_td#grade= t('.passing_grade')
-        %td{headers: 'grade'}= @course.try(:passing_grade)
-      %tr.lines
-        %th.act_like_td#min_grade= t('.min_grade_to_final_exam')
-        %td{headers: 'min_grade'}= @course.try(:min_grade_to_final_exam)
-      %tr.lines
-        %th.act_like_td#min_final_exam= t('.min_final_exam_grade')
-        %td{headers: 'min_final_exam'}= @course.try(:min_final_exam_grade)
-      %tr.lines
-        %th.act_like_td#final_exam= t('.final_exam_passing_grade')
-        %td{headers: 'final_exam'}= @course.try(:final_exam_passing_grade)
-      %tr.lines
-        %th.act_like_td#wh= t(:working_hours)
-        %td{headers: 'wh'}= @curriculum_unit.try(:working_hours)
-      %tr.lines
-        %th.act_like_td#min_hours= t('.min_hours')
-        %td{headers: 'min_hours'}= (@curriculum_unit.try(:min_hours) || @course.try(:min_hours))
-      - unless @group.blank? || @group.location.blank?
+          %th.act_like_td#syllabus{:style => "width: 20%;"}= t(:syllabus)
+          %td{headers: 'syllabus'}= @curriculum_unit.try(:syllabus)
         %tr.lines
-          %th.act_like_td#location= t('.group_location')
-          %td{headers: 'location'}= @group.location
-      %tr.lines.responsibles
-        %th.act_like_td#responsibles= t(:curriculum_unit_responsible)
-        %td{headers: 'responsibles'}
-          - if @responsible
-            - @responsible.each do |resp|
-              %p
-                = resp.name + ' (' + resp.profile_name + ') '
-                = link_to (content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true')), new_message_path(user_id: resp.id), class: 'nodecoration', :'aria-label' => t('messages.message_to', name: resp.name)
+          %th.act_like_td#objectives= t(:objectives)
+          %td{headers: 'objectives'}= @curriculum_unit.try(:objectives)
+        %tr.lines
+          %th.act_like_td#prerequisites= t(:prerequisites)
+          %td{headers: 'prerequisites'}= @curriculum_unit.try(:prerequisites)
+        %tr.lines
+          %th.act_like_td#resume= t(:resume)
+          %td{headers: 'resume'}= @curriculum_unit.try(:resume)
+        - unless @offer.nil?
+          %tr.lines
+            %th.act_like_td#semester= t(:semester_date)
+            %td{headers: 'semester'}= [l(@offer.start_date), l(@offer.end_date)].join(" - ")
+        %tr.lines
+          %th.act_like_td#grade= t('.passing_grade')
+          %td{headers: 'grade'}= @course.try(:passing_grade)
+        %tr.lines
+          %th.act_like_td#min_grade= t('.min_grade_to_final_exam')
+          %td{headers: 'min_grade'}= @course.try(:min_grade_to_final_exam)
+        %tr.lines
+          %th.act_like_td#min_final_exam= t('.min_final_exam_grade')
+          %td{headers: 'min_final_exam'}= @course.try(:min_final_exam_grade)
+        %tr.lines
+          %th.act_like_td#final_exam= t('.final_exam_passing_grade')
+          %td{headers: 'final_exam'}= @course.try(:final_exam_passing_grade)
+        %tr.lines
+          %th.act_like_td#wh= t(:working_hours)
+          %td{headers: 'wh'}= @curriculum_unit.try(:working_hours)
+        %tr.lines
+          %th.act_like_td#min_hours= t('.min_hours')
+          %td{headers: 'min_hours'}= (@curriculum_unit.try(:min_hours) || @course.try(:min_hours))
+        - unless @group.blank? || @group.location.blank?
+          %tr.lines
+            %th.act_like_td#location= t('.group_location')
+            %td{headers: 'location'}= @group.location
+        %tr.lines.responsibles
+          %th.act_like_td#responsibles= t(:curriculum_unit_responsible)
+          %td{headers: 'responsibles'}
+            - if @responsible
+              - @responsible.each do |resp|
+                %p
+                  = resp.name + ' (' + resp.profile_name + ') '
+                  = link_to (content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true')), new_message_path(user_id: resp.id), class: 'nodecoration', :'aria-label' => t('messages.message_to', name: resp.name)
