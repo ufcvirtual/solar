@@ -20,11 +20,11 @@ fieldset {
   }
 }
 
-.block_toolbar_left{
+.block_toolbar_left {
   margin-left: 6px;
 }
 
-#semester-4{
+#semester-4 {
   margin-top: 10px;
 }
 
@@ -34,18 +34,23 @@ fieldset {
   overflow-y: auto;
 }
 
-.filter_type .ui-autocomplete, .filter .ui-autocomplete, li.ui-menu-item {
+.filter_type .ui-autocomplete,
+.filter .ui-autocomplete,
+li.ui-menu-item {
   width: 306px !important;
   background-color: $color_white_base;
+
   a {
     color: $color_main;
   }
+
   a:hover {
     color: $color_main;
   }
 }
 
-.offer_course .ui-autocomplete, .offer_curriculum_unit .ui-autocomplete{
+.offer_course .ui-autocomplete,
+.offer_curriculum_unit .ui-autocomplete {
   width: 300px !important;
 }
 
@@ -54,7 +59,7 @@ fieldset {
   @include item_button;
 }
 
-.ucs_list .block_wrapper{
+.ucs_list .block_wrapper {
   margin-bottom: 0;
 }
 
@@ -72,43 +77,56 @@ fieldset {
   color: $color_gray_font;
 }
 
-.edition .filter .groups{
+.edition .filter .groups {
   @include tags_div;
-  margin-left:20px;
+  // margin-left:20px;
 }
 
-.edition p{
+@media (min-width: 576px) {
+  .edition .filter .groups {
+    width: 300px;
+    margin-left: 20px;
+  }
+}
+
+.edition p {
   text-align: right;
   color: $edition_color;
   margin-bottom: 0;
 }
 
-.edition #search, #digital_class_update{
+.edition #search,
+#digital_class_update {
   margin-left: 415px;
 }
 
-.edition.block_content{
+.edition.block_content {
   background-color: $color_white_base;
 }
 
 .offer_groups_options {
   overflow: hidden;
+  display: flex;
 
   .collection_check_boxes {
     color: $color_white;
   }
 }
 
-label[for="all"], .type_description {
+label[for="all"],
+.type_description {
   color: $color_gray_text;
 }
 
-label[for="all"]{
+label[for="all"] {
   font-size: 10pt;
 }
 
-.radio_options { // FIXME: nome genérico demais
+.radio_options {
+  // FIXME: nome genérico demais
   float: left;
+  display: inline-flex;
+  align-items: center;
 }
 
 /**
@@ -132,96 +150,126 @@ label[for="all"]{
 }
 */
 
-
 .repository_item {
   @include item_button;
 }
 
-.repository{
+.repository {
   height: 111px;
 }
 
-.repository_text{
+.repository_text {
   padding-top: 13px;
   color: $color_black;
 }
 
-.edition_items{
-  .tool_management{
+.edition_items {
+  .tool_management {
     margin-bottom: 20px;
   }
 }
 
-.tool_management{
-  .management{
+.tool_management {
+  .management {
     text-align: center;
-    .block_wrapper.groups h2{
+
+    .block_wrapper.groups h2 {
       text-align: left;
     }
-    .block_wrapper.tools{
+
+    .block_wrapper.tools {
       text-align: left;
-      table{
-        td.desc, select{
+
+      table {
+
+        td.desc,
+        select {
           max-width: 150px;
         }
-        td.working_hours{
+
+        td.working_hours {
           width: 70px;
         }
-        th.name{
+
+        th.name {
           width: 20%
         }
-        th:not(.name), td:not(.desc){
+
+        th:not(.name),
+        td:not(.desc) {
           text-align: center;
         }
-        .minimun a{
+
+        .minimun a {
           text-decoration: none;
         }
-        input[type='text']{
+
+        input[type='text'] {
           width: 25px;
         }
-        tbody{
-          td.ckb{
+
+        tbody {
+          td.ckb {
             cursor: pointer;
           }
         }
       }
-      .tools_by_tool_type.invisible{
+
+      .tools_by_tool_type.invisible {
         display: none;
       }
-      .tools_by_tool_type{
-        tr.red{
+
+      .tools_by_tool_type {
+        tr.red {
           background-color: $background_light_red_editions;
         }
       }
-      .icons{
+
+      .icons {
         display: inline-block;
         vertical-align: bottom;
-        a i.invisible{
+
+        a i.invisible {
           display: none;
         }
       }
 
-      a.show_ac{
+      a.show_ac {
         text-decoration: none;
       }
     }
-    .expand_hide, .frequency_equally, .frequency_automatic, .set_weight, .set_final_weight{
+
+    .expand_hide,
+    .frequency_equally,
+    .frequency_automatic,
+    .set_weight,
+    .set_final_weight {
       padding-bottom: 15px;
       display: inline-block;
       text-align: center;
-      .expand_link, .compress_link, .frequency_link, a, .weight_link{
+
+      .expand_link,
+      .compress_link,
+      .frequency_link,
+      a,
+      .weight_link {
         vertical-align: bottom;
         display: inline-block;
       }
     }
-    .groups{
+
+    .groups {
       margin-bottom: 20px;
-      table{
-        th.ch, td.ch{
+
+      table {
+
+        th.ch,
+        td.ch {
           text-align: center;
           width: 95px;
         }
-        tbody{
+
+        tbody {
           max-height: 100px;
           overflow-y: auto;
         }
@@ -230,13 +278,13 @@ label[for="all"]{
   }
 }
 
-.list_exams{
-  .btn_group{
-    width: 775px;
+.list_exams {
+  .btn_group {
+    // width: 775px;
     text-align: center;
     margin: 20px 0px 20px 0px;
 
-    .btn_item{
+    .btn_item {
       @include item_button;
       text-decoration: underline;
       float: none;
@@ -247,62 +295,75 @@ label[for="all"]{
       border: 1px dashed $color_gray_font;
     }
   }
-  .exam_box{
+
+  .exam_box {
     width: 775px;
     padding: 5px 0px 5px 4px;
     border-left: 6px solid $btn_main_color;
     background-color: $block_groups_background;
   }
-  .block_wrapper .block_content_toolbar{
+
+  .block_wrapper .block_content_toolbar {
     margin-top: 10px;
-      .btn{
-        font-size: 25pt;
-      }
+
+    .btn {
+      font-size: 25pt;
+    }
   }
-  .block_wrapper .tablesorter-headerRow{
+
+  .block_wrapper .tablesorter-headerRow {
     font-size: 9pt;
   }
-  .icons{
+
+  .icons {
     display: inline-block;
     vertical-align: bottom;
-    a i.invisible{
+
+    a i.invisible {
       display: none;
     }
   }
 }
 
-.block_wrapper .block_title{
-  .tool_managmenet_link{
+.block_wrapper .block_title {
+  .tool_managmenet_link {
     float: right;
     margin-top: 10px;
   }
 }
 
-
-.filter, .filter_type, .contacts-type{
-  li.ui-menu-item a{
-    color: $color_black;
-  }
-  label{
+.filter,
+.filter_type,
+.contacts-type {
+  li.ui-menu-item a {
     color: $color_black;
   }
 
-  .ui-state-hover, .ui-widget-content .ui-state-hover,
-  .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus{
+  label {
+    color: $color_black;
+  }
+
+  .ui-state-hover,
+  .ui-widget-content .ui-state-hover,
+  .ui-widget-header .ui-state-hover,
+  .ui-state-focus,
+  .ui-widget-content .ui-state-focus,
+  .ui-widget-header .ui-state-focus {
     color: $color_black_buttons;
   }
 }
 
-.request_profile_form .curriculum_unit .ui-combobox .ui-autocomplete, .request_profile_form .course .ui-combobox .ui-autocomplete {
+.request_profile_form .curriculum_unit .ui-combobox .ui-autocomplete,
+.request_profile_form .course .ui-combobox .ui-autocomplete {
   max-height: 118px;
 }
 
-.request_profile_form .semester .ui-combobox .ui-autocomplete{
+.request_profile_form .semester .ui-combobox .ui-autocomplete {
   max-height: 80px;
 }
 
-.list_groups{
-  a.show_group{
+.list_groups {
+  a.show_group {
     text-decoration: none;
   }
 }

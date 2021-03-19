@@ -1,15 +1,16 @@
 - unless @users.blank?
 
-  %table.tb_list.tb_allocation
-    %thead
-      %tr.lines
-        %th= t(".name")
-        %th{style: 'width:80px'}= t(".cpf")
-        %th{style: 'width:200px'}= t(".email")
-        %th.no_sort{style: 'width:120px'}= t(".profile")
-        %th.no_sort{style: 'width:100px'}= ""
-    %tbody.users
-      = render partial: 'users', locals: { users: @users, is_admin: current_user.admin? }
+  .responsive-table
+    %table.tb_list.tb_allocation
+      %thead
+        %tr.lines
+          %th= t(".name")
+          %th{style: 'width:80px'}= t(".cpf")
+          %th{style: 'width:200px'}= t(".email")
+          %th.no_sort{style: 'width:120px'}= t(".profile")
+          %th.no_sort{style: 'width:100px'}= ""
+      %tbody.users
+        = render partial: 'users', locals: { users: @users, is_admin: current_user.admin? }
 
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), search_users_allocations_path(page: @users.next_page, user: @text_search, admin: @admin, allocation_tags_ids: @allocation_tags_ids), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @users.next_page
 

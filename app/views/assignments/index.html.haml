@@ -14,55 +14,56 @@
 
   - unless @assignments.blank?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
-    %table.tb_list
-      %thead
-        %tr.lines
-          %th.center.no_sort
-            %input#all_assignments{type: "checkbox", :"data-children-names" => "ckb_assignment"}
-          %th{style: 'text-align:left;'}= t(".name")
-          %th.center= t(".type")
-          %th.center.no_sort{style: "width: 21%"}= t(".availability")
-          %th.center{style: "width: 12%"}= t(".answers")
-          %th.center{style: "width: 12%"}= t(".controlled")
+    .responsive-table
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th.center.no_sort
+              %input#all_assignments{type: "checkbox", :"data-children-names" => "ckb_assignment"}
+            %th{style: 'text-align:left;'}= t(".name")
+            %th.center= t(".type")
+            %th.center.no_sort{style: "width: 21%"}= t(".availability")
+            %th.center{style: "width: 12%"}= t(".answers")
+            %th.center{style: "width: 12%"}= t(".controlled")
 
-      %tbody
-        - @assignments.each do |assignment|
-          - can_delete = assignment.academic_allocation_users.count.zero?
-          - has_file = (not assignment.enunciation_files.empty?)
-          %tr.lines{id: "tr_#{assignment.id}"}
-            %td{style: 'text-align:center;'}
-              = check_box_tag("ckb_assignment", assignment.id, false, {class: "ckb_assignment", :"data-can-delete" => can_delete})
-            %td{style: "max-width: 150px"}
-              %div
-                .title
-                  = assignment.name
-                  - if has_file
-                    %i.icon-paperclip
-                .description
-                  .minimun
-                    = assignment.enunciation.truncate(200)
-                    - if assignment.enunciation.size>200 or has_file
-                      = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_enunciation"))
-                  .complete.invisible
-                    = assignment.enunciation
+        %tbody
+          - @assignments.each do |assignment|
+            - can_delete = assignment.academic_allocation_users.count.zero?
+            - has_file = (not assignment.enunciation_files.empty?)
+            %tr.lines{id: "tr_#{assignment.id}"}
+              %td{style: 'text-align:center;'}
+                = check_box_tag("ckb_assignment", assignment.id, false, {class: "ckb_assignment", :"data-can-delete" => can_delete})
+              %td{style: "max-width: 150px"}
+                %div
+                  .title
+                    = assignment.name
                     - if has_file
-                      .attached_files=t(".attached_files")
-                      - assignment.enunciation_files.each do |file|
-                        .file
-                          = image_tag( icon_attachment(file.attachment_file_name) )
-                          = file.attachment_file_name
-                    = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_enunciation"))
-                .group_label.invisible= render "groups/groups_tags", groups: assignment.groups, tool: assignment, all_groups: all_groups, paths: {add: add_group_to_assignments_path(id: "param_id", tool_id: assignment.id), remove: remove_group_from_assignments_path(id: "param_id", tool_id: assignment.id), unbind: unbind_group_from_assignments_path(id: "param_id", tool_id: assignment.id), tags: group_tags_from_assignments_path(tool_id: assignment.id)}
+                      %i.icon-paperclip
+                  .description
+                    .minimun
+                      = assignment.enunciation.truncate(200)
+                      - if assignment.enunciation.size>200 or has_file
+                        = content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_enunciation"))
+                    .complete.invisible
+                      = assignment.enunciation
+                      - if has_file
+                        .attached_files=t(".attached_files")
+                        - assignment.enunciation_files.each do |file|
+                          .file
+                            = image_tag( icon_attachment(file.attachment_file_name) )
+                            = file.attachment_file_name
+                      = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_enunciation"))
+                  .group_label.invisible= render "groups/groups_tags", groups: assignment.groups, tool: assignment, all_groups: all_groups, paths: {add: add_group_to_assignments_path(id: "param_id", tool_id: assignment.id), remove: remove_group_from_assignments_path(id: "param_id", tool_id: assignment.id), unbind: unbind_group_from_assignments_path(id: "param_id", tool_id: assignment.id), tags: group_tags_from_assignments_path(tool_id: assignment.id)}
 
-            %td{style: 'text-align:center;'}
-              %div.title= t(((assignment.type_assignment.to_i == Assignment_Type_Individual) ? ".individual" : ".group"))
-            %td{style: 'text-align:center;'}
-              %div= [l(assignment.schedule.start_date, format: :normal), l(assignment.schedule.end_date, format: :normal)].join(" - ")
-              %div= t(".hour_period", start_hour: assignment.start_hour, end_hour: assignment.end_hour) unless assignment.start_hour.blank?
+              %td{style: 'text-align:center;'}
+                %div.title= t(((assignment.type_assignment.to_i == Assignment_Type_Individual) ? ".individual" : ".group"))
+              %td{style: 'text-align:center;'}
+                %div= [l(assignment.schedule.start_date, format: :normal), l(assignment.schedule.end_date, format: :normal)].join(" - ")
+                %div= t(".hour_period", start_hour: assignment.start_hour, end_hour: assignment.end_hour) unless assignment.start_hour.blank?
 
-            %td{style: 'text-align:center;'}
-              %div= can_delete ? t('.no_answers') : t('.has_answers')
-            %td{style: 'text-align:center;'}= assignment.controlled ? t('.has_answers') : t('.no_answers')
+              %td{style: 'text-align:center;'}
+                %div= can_delete ? t('.no_answers') : t('.has_answers')
+              %td{style: 'text-align:center;'}= assignment.controlled ? t('.has_answers') : t('.no_answers')
 
   - else
     .block_content_text_list.text_none= t(".none")

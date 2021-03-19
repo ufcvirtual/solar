@@ -2,7 +2,7 @@
 .enrollment_list {
 
   label {
-  margin: 5px 0 3px 0;
+    margin: 5px 0 3px 0;
   }
 
   tr.lines td {
@@ -14,7 +14,7 @@
 
   tr.lines td {
 
-    a.allocation_cancel_enroll.btn_caution:hover{
+    a.allocation_cancel_enroll.btn_caution:hover {
       color: $color_white_base;
     }
   }
@@ -32,25 +32,27 @@
 }
 
 .filter_enrollment {
+  display: flex;
+  align-items: center;
 
   label {
     width: auto;
   }
 
-  width:800px;
+  // width:800px;
 
-  input#type{
+  input#type {
     width: 33%;
     color: $exclusive_background_color;
   }
 
-  input#search{
+  input#search {
     width: 50%;
     color: $exclusive_background_color;
   }
 }
 
-.any_found{
+.any_found {
   padding: 5px;
   padding-right: 5px;
   border-bottom: solid 1px;
@@ -100,37 +102,42 @@
 .allocations_list {
   max-height: 260px;
   overflow: auto;
- }
+}
 
-.allocations.list{
+.allocations.list {
   .block_content {
-      label.enrollment_label {
-        font-size: 10pt;
-        width: auto;
-        color: $color_black;
-      }
+    label.enrollment_label {
+      font-size: 10pt;
+      width: auto;
+      color: $color_black;
+    }
   }
 }
 
-#show_enrollment_info{
-  .input{
+#show_enrollment_info {
+  .input {
     margin-bottom: 10px;
   }
-  .form_label{
+
+  .form_label {
     width: 75px;
   }
-  .right_buttons{
+
+  .right_buttons {
     margin-right: auto;
   }
 }
 
-.tb_list.enrollments{
-  %tr.lines{
-    %th.student, %th.group{
+.tb_list.enrollments {
+  %tr.lines {
+
+    %th.student,
+    %th.group {
       width: 130px;
     }
   }
-  select#group_id{
+
+  select#group_id {
     width: 130px;
   }
 }

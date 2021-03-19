@@ -1,10 +1,11 @@
-#block_schedule.block_small
-  .block_title
-    %h2
-      %i.icon-calendar
-      = t(:mysolar_agenda)
-  .calendar#agenda{ :url_for => (url_for :agendas) }
-  .calendar_events
+.col-xs-12.col-sm-3
+  #block_schedule.block_small
+    .block_title
+      %h2
+        %i.icon-calendar
+        = t(:mysolar_agenda)
+    .calendar#agenda{ :url_for => (url_for :agendas) }
+    .calendar_events
 
 :javascript
   //--------------------------------------------
