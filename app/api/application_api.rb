@@ -1,4 +1,6 @@
+require 'doorkeeper/grape/helpers'
 class ApplicationAPI < Grape::API
+  helpers Doorkeeper::Grape::Helpers
   include APIGuard
 
   format :json
