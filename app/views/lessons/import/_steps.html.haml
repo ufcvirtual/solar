@@ -4,10 +4,11 @@
     %h2
       %i.icon-book2
       = t('.title')
-    %span.form_requirement= t(:required_fields)
-    %span.form_requirement.original_lesson= t('.original_lesson')
+    .position_correction
+      %span.form_requirement= t(:required_fields)
+      %span.form_requirement.original_lesson= t('.original_lesson')
   .block_content
-    
+
     #steps
       %ul
         %li.active
@@ -51,7 +52,7 @@
       $('.step-conclude').hide('slide', { direction: 'left' }, 500);
       $('.step-list').show('slide', { direction: 'left' }, 500);
     }
-    
+
   }
 
   function open_lesson(icon){

@@ -1,7 +1,7 @@
 - if current_user.blank? || @verify_route_tutorial
   = render '/user_sessions/header'
-#faq  
-  #tutorials 
+#faq
+  #tutorials
     - locale = I18n.locale
     = set_title(t('tutorials.menu'))
     - if current_user.blank? || @verify_route_tutorial
@@ -25,7 +25,7 @@
             %i.icon-folder
             = t('tutorials.titles.access')
           %span.block_actions
-        .block_content
+        .block_content.responsive-table
           %table.tb_list
             %thead
               %tr.lines
@@ -53,7 +53,7 @@
             %i.icon-folder
             = t(:student)
           %span.block_actions
-        .block_content
+        .block_content.responsive-table
           %table.tb_list
             %thead
               %tr.lines
@@ -86,7 +86,7 @@
             %i.icon-folder
             = t(:edition)
           %span.block_actions
-        .block_content
+        .block_content.responsive-table
           %table.tb_list
             %thead
               %tr.lines
@@ -121,22 +121,22 @@
                 %td.description_tutorials{align: "left"}
                   %p= t('tutorials.texts.bind_unbind_groups')
                   %img{alt: t('tutorials.files.bind_unbind_groups'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
-                  = raw get_file(locale, 'bind_unbind_groups', t('tutorials.files.bind_unbind_groups'))     
+                  = raw get_file(locale, 'bind_unbind_groups', t('tutorials.files.bind_unbind_groups'))
               %tr.lines
                 %td.description_tutorials{align: "left"}
                   %p= t('tutorials.texts.chat_edition')
                   %img{alt: t('tutorials.files.chat_edition'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
-                  = raw get_file(locale, 'chat_edition', t('tutorials.files.chat_edition')) 
+                  = raw get_file(locale, 'chat_edition', t('tutorials.files.chat_edition'))
               %tr.lines
                 %td.description_tutorials{align: "left"}
                   %p= t('tutorials.texts.webconference_edition')
                   %img{alt: t('tutorials.files.webconference_edition'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
-                  = raw get_file(locale, 'webconference_edition', t('tutorials.files.webconference_edition'))     
+                  = raw get_file(locale, 'webconference_edition', t('tutorials.files.webconference_edition'))
               %tr.lines
                 %td.description_tutorials{align: "left"}
                   %p= t('tutorials.texts.support_material_edition')
                   %img{alt: t('tutorials.files.support_material_edition'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
-                  = raw get_file(locale, 'support_material_edition', t('tutorials.files.support_material_edition')) 
+                  = raw get_file(locale, 'support_material_edition', t('tutorials.files.support_material_edition'))
               %tr.lines
                 %td.description_tutorials{align: "left"}
                   %p= t('tutorials.texts.assignment_edition')
@@ -161,9 +161,9 @@
                 %td.description_tutorials{align: "left"}
                   %p= t('tutorials.texts.user_allocation_edition')
                   %img{alt: t('tutorials.files.user_allocation_edition'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
-                  = raw get_file(locale, 'user_allocation_edition', t('tutorials.files.user_allocation_edition'))                    
-              
-                 
+                  = raw get_file(locale, 'user_allocation_edition', t('tutorials.files.user_allocation_edition'))
+
+
 
       .tutorial.block_wrapper
         .block_title
@@ -171,7 +171,7 @@
             %i.icon-folder
             = t(:enrollment)
           %span.block_actions
-        .block_content
+        .block_content.responsive-table
           %table.tb_list
             %thead
               %tr.lines
@@ -194,7 +194,7 @@
             %i.icon-folder
             = t('tutorials.titles.responsibles')
           %span.block_actions
-        .block_content
+        .block_content.responsive-table
           %table.tb_list
             %thead
               %tr.lines
@@ -219,23 +219,23 @@
                 %td.description_tutorials{align: "left"}
                   %p= t('tutorials.texts.bind_unbind_groups')
                   %img{alt: t('tutorials.files.bind_unbind_groups'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
-                  = raw get_file(locale, 'bind_unbind_groups', t('tutorials.files.bind_unbind_groups'))      
+                  = raw get_file(locale, 'bind_unbind_groups', t('tutorials.files.bind_unbind_groups'))
               %tr.lines
                 %td.description_tutorials{align: "left"}
                   %p= t('tutorials.texts.chat_edition')
                   %img{alt: t('tutorials.files.chat_edition'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
-                  = raw get_file(locale, 'chat_edition', t('tutorials.files.chat_edition')) 
+                  = raw get_file(locale, 'chat_edition', t('tutorials.files.chat_edition'))
               %tr.lines
                 %td.description_tutorials{align: "left"}
                   %p= t('tutorials.texts.webconference_edition')
                   %img{alt: t('tutorials.files.webconference_edition'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
-                  = raw get_file(locale, 'webconference_edition', t('tutorials.files.webconference_edition'))     
+                  = raw get_file(locale, 'webconference_edition', t('tutorials.files.webconference_edition'))
               %tr.lines
                 %td.description_tutorials{align: "left"}
                   %p= t('tutorials.texts.support_material_edition')
                   %img{alt: t('tutorials.files.support_material_edition'), src: "/assets/mimetypes/pdf.png", :'aria-hidden' => 'true'}
-                  = raw get_file(locale, 'support_material_edition', t('tutorials.files.support_material_edition')) 
-                            
+                  = raw get_file(locale, 'support_material_edition', t('tutorials.files.support_material_edition'))
+
 
 
 :javascript
