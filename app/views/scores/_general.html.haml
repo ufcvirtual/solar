@@ -2,23 +2,24 @@
   = link_to t('scores.index.print_pdf'), general_scores_path(report: true, format: :pdf), :target => "_blank", class: "btn"
 
 .parent
-  %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('scores.index.list_of_students')}
-    %thead
-      %tr.lines
-        %th#student{style: "width: 100px;"}= t("scores.index.student")
-        %th#public_files= t('scores.index.public_files')
-        %th#assignment= t("activerecord.models.assignment")
-        %th#exam= t("activerecord.models.exam")
-        %th#discussion= t("activerecord.models.discussion")
-        %th#chat_room= t("activerecord.models.chat_room")
-        %th#webconference= t("activerecord.models.webconference")
-        %th#schedule_event= t("activerecord.models.schedule_event")
-
-    %tbody.users
-      - if @users.blank?
+  .responsive-table
+    %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('scores.index.list_of_students')}
+      %thead
         %tr.lines
-          %td{colspan: 10}= t('scores.index.no_data')
-      - else
-        = render partial: 'pending_general', locals: { users: @users }
+          %th#student{style: "width: 100px;"}= t("scores.index.student")
+          %th#public_files= t('scores.index.public_files')
+          %th#assignment= t("activerecord.models.assignment")
+          %th#exam= t("activerecord.models.exam")
+          %th#discussion= t("activerecord.models.discussion")
+          %th#chat_room= t("activerecord.models.chat_room")
+          %th#webconference= t("activerecord.models.webconference")
+          %th#schedule_event= t("activerecord.models.schedule_event")
+
+      %tbody.users
+        - if @users.blank?
+          %tr.lines
+            %td{colspan: 10}= t('scores.index.no_data')
+        - else
+          = render partial: 'pending_general', locals: { users: @users }
 - unless @users.blank?
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), general_scores_path(page: @users.next_page, user_name: @username), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items), :'aria-label' => t(:load_items)  if @users.next_page
