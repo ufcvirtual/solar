@@ -41,9 +41,9 @@
   float: right;
 }
 
-#subject_info_portlet {
-  display: flex;
-}
+// #subject_info_portlet {
+//   display: flex;
+// }
 
 /**
 * Tratando dos titulos dos conteudos
@@ -166,6 +166,7 @@ div.block_exam {
     font-size: 9pt;
     // padding: 4px 0 0 4px;
     padding: 0;
+    margin-top: -5px;
     color: $color_almost_gray;
     // position: absolute;
     // right: 0;

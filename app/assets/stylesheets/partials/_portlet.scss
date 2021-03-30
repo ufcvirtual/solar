@@ -49,8 +49,10 @@ table tr.block_title th {
 .block_small {
   height: 195px;
   // width: 255px;
+  width: 100%;
   float: left;
-  margin-right: 10px;
+  // margin-right: 10px;
+  // margin-left: 10px;
   overflow: hidden;
 }
 
@@ -60,7 +62,8 @@ table tr.block_title th {
   position: relative;
   display: inline-block;
   height: 195px;
-  width: 520px;
+  // width: 520px;
+  width: 98%;
   margin-right: 10px;
 }
 

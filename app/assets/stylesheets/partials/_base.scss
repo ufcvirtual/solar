@@ -80,7 +80,7 @@ h3 {
   width: 100%;
   max-width: 980px;
   margin: 0 auto;
-  height: calc(100% - 40px);
+  // height: calc(100% - 40px);
   min-height: 99.5%;
   position: relative;
   background-color: $color_white_base;
@@ -193,6 +193,7 @@ footer {
   // margin: 0 auto;
   text-align: center;
   padding: 10px 0;
+  width: 100%;
   // width: 980px;
   // bottom: 0;
   // position: absolute;
@@ -385,6 +386,7 @@ a.disabled {
 
 .dropdown-menu {
   color: $color_black_buttons;
+  width: max-content;
 }
 
 i.noscript {

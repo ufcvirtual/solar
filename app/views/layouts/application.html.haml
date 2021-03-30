@@ -158,7 +158,7 @@
                   %h1#main_content_accesskey{ tabindex: "0", :'aria-label' => t(name, default: name) + t('lessons.index.lesson_number_modules', modules: @lessons_modules.size) }= t(name, default: name)
                 - else
                   %h1#main_content_accesskey{ tabindex: "0" }=t(name, default: name)
-                .block_content_text
+                .block_content_text.position_correction.no-float-mobile
                   %span.views#classes{role: 'menubar'}= raw(group_selection)
             - elsif not(in_mysolar?)
               #page_title
