@@ -1,5 +1,5 @@
 module V1::EventsH
-
+  extend Grape::API::Helpers
   def get_event_type_and_description(type)
     case type.to_i
       when 1; {type: 2, title: "Encontro Presencial"} # encontro presencial

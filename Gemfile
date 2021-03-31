@@ -4,14 +4,14 @@ ruby "2.7.2"
 
 #gem "rails", "~> 3.2.16"
 gem 'rails', '5.1.7'
-gem "rack", "~> 2.0.0"
+gem "rack", "~> 2.0.9"
 gem "rake", "~> 13.0.3"
 gem "pg", "~> 1.2.3"
 #gem "foreigner", "~> 1.4.0"
 
 # gem "koala", "1.2.0" # facebook
 
-gem "devise", "~> 4.4.3"
+gem "devise", "~> 4.7.3"
 gem "devise-i18n", "~> 1.6.5"
 gem "cancancan", "~> 2.2.0"
 gem "devise-encryptable", "~> 0.2.0"
@@ -43,10 +43,10 @@ gem "puma", "~> 5.1.1"
 gem "rubyzip", "~> 1.2.1"
 
 gem "doorkeeper", "~> 4.3.2"
-gem "rack-oauth2", "~> 1.9.3"
-gem "grape", "~> 1.0.3"
-gem "rabl", "~> 0.13.1"
-gem "grape-rabl", "~> 0.4.3"
+gem "rack-oauth2", "~> 1.9.1"
+gem "grape", "~> 1.0.2"
+gem "rabl", "~> 0.14.3"
+gem "grape-rabl", "~> 0.5.0"
 
 gem "savon", "~> 2.0.0" # comunicação com ws
 

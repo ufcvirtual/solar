@@ -1,5 +1,5 @@
 module V1::GroupsH
-
+  extend Grape::API::Helpers
   def get_groups_by_code(curriculum_unit_code, course_code, code, semester)
     # besides the name, groups are searched by its name
     group = Group.joins(offer: :semester).where(code: code, offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first, course_id: Course.where(code: course_code).first}, semesters: {name: semester})

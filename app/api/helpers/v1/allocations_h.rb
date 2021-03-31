@@ -1,5 +1,5 @@
 module V1::AllocationsH
-
+  extend Grape::API::Helpers
   ## remover
   def allocate_professors(group, cpfs, profile_id=17)
     group.allocations.where(profile_id: profile_id).update_all(status: 2) # cancel all previous allocations

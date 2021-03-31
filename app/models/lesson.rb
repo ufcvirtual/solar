@@ -3,9 +3,10 @@ class Lesson < ActiveRecord::Base #< Event
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 
+  belongs_to :lesson_module
+  
   has_many :academic_allocations, through: :lesson_module
 
-  belongs_to :lesson_module
   belongs_to :user
   belongs_to :schedule
   belongs_to :imported_from, class_name: 'Lesson'

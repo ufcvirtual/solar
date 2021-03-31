@@ -1,4 +1,6 @@
 require 'doorkeeper/grape/helpers'
+Dir["#{File.dirname(__FILE__)}/app/helpers/**/*.rb"].each { |f| require f }
+
 class ApplicationAPI < Grape::API
   helpers Doorkeeper::Grape::Helpers
   include APIGuard
@@ -15,7 +17,8 @@ class ApplicationAPI < Grape::API
   rescue_from Grape::Exceptions::ValidationErrors do |error|
     Rails.logger.info "[API] [ERROR] [#{Time.now}] [#{env["REQUEST_METHOD"]} #{env["PATH_INFO"]}] [400] message: #{error} #{error.try(:errors).try(:as_json)}"
     rack_response(error.try(:errors).try(:as_json), 400)
-    error!({ error: error.try(:errors).try(:as_json) }, 400)
+    error!({ error: error.full_messages.map { |msg| msg }}, 400)
+    #error!({ error: error.try(:errors).try(:as_json) }, 400)
   end
 
   rescue_from CanCan::AccessDenied do |error|

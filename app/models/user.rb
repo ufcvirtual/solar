@@ -131,7 +131,7 @@ class User < ActiveRecord::Base
   # devise
 
   def ensure_authentication_token!
-    reset_authentication_token! if authentication_token.blank?
+    restore_authentication_token! if authentication_token.blank?
   end
 
   def active_for_authentication?

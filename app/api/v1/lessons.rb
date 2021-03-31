@@ -24,8 +24,7 @@ module V1
       ## api/v1/lessons
       get "/" do
         verify_ip_access_and_guard!
-        raise 'exam' if Exam.verify_blocking_content(current_user.id) || false
-
+        raise 'exam' if current_user && Exam.verify_blocking_content(current_user.id) || false
         if params[:disconsider].present?
           disconsider = params[:disconsider]
           query_not = 'id > ?'
