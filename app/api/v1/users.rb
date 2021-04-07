@@ -59,6 +59,8 @@ module V1
               user_data = nil
               if (!User::MODULO_ACADEMICO.nil? && User::MODULO_ACADEMICO['integrated'])
                 user_data = User.connect_and_import_user(cpf) # try to import
+                p user_data
+                p 'teste user data 1'
                 user.synchronize(user_data) # synchronize user with new MA data
               end
 
@@ -70,9 +72,10 @@ module V1
                 blacklist = UserBlacklist.where(cpf: user.cpf).first_or_initialize
                 blacklist.name = params[:name] if blacklist.new_record?
               end
+
               can_add_or_exists_blacklist = !blacklist.nil? && (blacklist.valid? || !blacklist.new_record?)
 
-              blacklist.save if blacklist.new_record? && !user.nil? && user.integrated && can_add_or_exists_blacklist && !user.selfregistration
+              blacklist.save if !blacklist.nil? && blacklist.new_record? && !user.nil? && user.integrated && can_add_or_exists_blacklist && !user.selfregistration
 
               if new_user || can_add_or_exists_blacklist
                 ActiveRecord::Base.transaction do

@@ -701,7 +701,7 @@ class User < ActiveRecord::Base
     return nil unless (!MODULO_ACADEMICO.nil? && MODULO_ACADEMICO['integrated'])
     user_data = User.connect_and_import_user(cpf, nil, true) if user_data.nil?
 
-    unless user_data.blank? # if user exists
+    if !user_data.blank? && user_data != 'não pode ser alterado no momento. Conexão incompleta com o Sigaa.'# if user exists
       ma_attributes = User.user_ma_attributes(user_data)
       errors.clear # clear all errors, so the system can import and save user's data
 
