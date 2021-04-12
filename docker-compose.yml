@@ -26,6 +26,8 @@ services:
     environment:
       POSTGRES_DB: "solar"
       POSTGRES_HOST_AUTH_METHOD: "trust"
+    ports:
+      - "5433:5432"
 
   # sidekiq:
   #   build:
