@@ -26,6 +26,14 @@ services:
     environment:
       POSTGRES_DB: "solar"
       POSTGRES_HOST_AUTH_METHOD: "trust"
+    ports:
+      - "5433:5432"
+
+  mailcatcher:
+    image: yappabe/mailcatcher
+    ports:
+        - "1025:1025"
+        - "1080:1080"
 
   # sidekiq:
   #   build:
