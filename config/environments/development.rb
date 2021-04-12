@@ -33,6 +33,10 @@ Solar::Application.configure do
   config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 } #Mailcatcher
+
+  # Utilizando Serviço Mailcatcher com Docker
+  # config.action_mailer.smtp_settings = { :address => "mailcatcher", :port => 1025 } 
 
   # Not logging any DEBUG message
   config.log_level = :info
