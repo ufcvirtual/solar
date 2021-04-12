@@ -34,8 +34,7 @@ RUN apt-get update && \
   musl-dev \
   postgresql-client \
   gnupg2 \
-  git \
-  curl
+  git
 
 RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash -
 RUN apt-get install -y nodejs
