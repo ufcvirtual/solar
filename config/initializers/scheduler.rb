@@ -27,5 +27,15 @@ if (ENV["SCHEDULER"] == "true")
     end
   end
 
+  #minutos e horas * * * 14:06
+  scheduler.cron '06 14 * * *' do
+    GroupAssignment.split_students_in_groups #criação automática de grupos de trabalho
+  end
+
+  #minutos e horas * * * 15:05
+  scheduler.cron '05 15 * * *' do
+    GroupAssignment.send_email_one_week_before_start_assignment_in_group
+  end
+
 end
 
