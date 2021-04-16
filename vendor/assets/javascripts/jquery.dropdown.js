@@ -136,14 +136,15 @@ if(jQuery) (function($) {
     if( dropdown.length === 0 || !trigger ) return;
      
     // Position the jq-dropdown relative-to-parent...
-    if (!dropdown.hasClass('dropdown-relative')) {
+    
+    /*if (!dropdown.hasClass('dropdown-relative')) {
       dropdown.css({
         left: dropdown.hasClass('dropdown-anchor-right') ?
           trigger.position().left - (dropdown.outerWidth(true) - trigger.outerWidth(true)) - parseInt(trigger.css('margin-right'),10) + hOffset :
           trigger.position().left + parseInt(trigger.css('margin-left'), 10 ) + hOffset,
         top: trigger.position().top + trigger.outerHeight(true) - parseInt(trigger.css('margin-top'), 10) + vOffset
       });
-    } 
+    } */
   }
 
 
