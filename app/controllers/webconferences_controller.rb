@@ -108,7 +108,7 @@ class WebconferencesController < ApplicationController
   # GET /webconferences/preview
   def preview
     params[:today] = false if (params[:today] == 'false')
-    ats = current_user.allocation_tags_ids_with_access_on('preview', 'webconferences', false, true)
+    ats = current_user.allocation_tags_ids_with_access_on(['preview'], 'webconferences', false, true)
     @webconferences = Webconference.all_by_allocation_tags(ats, { asc: false, today: (params[:today].nil? ? true : params[:today]) }).paginate(page: params[:page] , per_page: 30)# }).paginate(page: params[:page])
     @can_see_access = can? :list_access, Webconference, { on: ats, accepts_general_profile: true }
     @can_remove_record = (can? :manage_record, Webconference, { on: ats, accepts_general_profile: true })

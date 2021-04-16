@@ -111,7 +111,7 @@ class Allocation < ActiveRecord::Base
   end
 
   def can_cancel?
-    if status_was == Allocation_Activated && status != Allocation_Activated && self.allocation_tag.allocation_tag_owners.any? && profile_id == Profile.student_profile
+    if status_before_last_save == Allocation_Activated && status != Allocation_Activated && self.allocation_tag.allocation_tag_owners.any? && profile_id == Profile.student_profile
       evaluative_acs = AcademicAllocation.where(allocation_tag_id: allocation_tag_id, evaluative: true)
       raise I18n.t("enrollments.index.evaluative_activities") if self.user.academic_allocation_users.where(academic_allocation_id: evaluative_acs.map(&:id)).any?
     end

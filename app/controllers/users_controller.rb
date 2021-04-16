@@ -103,7 +103,7 @@ class UsersController < ApplicationController
       begin
         raise t(:user_error_no_file_sent) unless params.include?(:user) && user_params.include?(:photo)
         @user.update_attributes!(user_params)
-        format.html { redirect_to :back, notice: t(:successful_update_photo) }
+        format.html { redirect_back fallback_location: :back, notice: t(:successful_update_photo) }
       rescue Exception => error
         error_msg = ''
         if error.message.index("not recognized by the 'identify'") # erro que nao teve tratamento

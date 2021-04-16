@@ -14,7 +14,7 @@ class UserBlacklist < ActiveRecord::Base
   end
 
   def self.search(text)
-    text = [URI.unescape(text).split(' ').compact.join("%"), "%"].join
+    text = [URI.decode_www_form_component(text).split(' ').compact.join("%"), "%"].join
     where("lower(unaccent(cpf || ' ' || name)) LIKE lower(unaccent(?))", "%#{self.cpf_without_mask(text)}")
   end
 

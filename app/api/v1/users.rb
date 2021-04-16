@@ -59,8 +59,7 @@ module V1
               user_data = nil
               if (!User::MODULO_ACADEMICO.nil? && User::MODULO_ACADEMICO['integrated'])
                 user_data = User.connect_and_import_user(cpf) # try to import
-                p user_data
-                p 'teste user data 1'
+
                 user.synchronize(user_data) # synchronize user with new MA data
               end
 

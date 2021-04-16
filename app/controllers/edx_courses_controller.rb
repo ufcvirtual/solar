@@ -126,7 +126,7 @@ class EdxCoursesController < ApplicationController
   # Método, chamado por ajax, para buscar usuários para alocação
   def search_users
     @uri_course  = Base64.decode64(params[:course])
-    text         = URI.unescape(params[:user])
+    text         = URI.decode_www_form_component(params[:user])
     @text_search = text
     @users       = User.where("lower(name) ~ ?", text.downcase)
   end

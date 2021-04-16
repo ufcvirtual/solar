@@ -48,9 +48,7 @@
       });
     }
 
-    $.put("#{import_lessons_path}", {lessons: lessons.join(';'), allocation_tags_ids: "#{raw
- @ats}", lesson_module_id: "#{raw
- @lesson_module_id}"}, function(data){
+    $.put("#{import_lessons_path}", {lessons: lessons.join(';'), allocation_tags_ids: "#{raw @ats}", lesson_module_id: "#{raw @lesson_module_id}"}, function(data){
       $.fancybox.close();
       var msg = data.msg;
       
