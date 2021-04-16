@@ -82,12 +82,12 @@ li.ui-menu-item {
   // margin-left:20px;
 }
 
-@media (min-width: 576px) {
-  .edition .filter .groups {
-    width: 300px;
-    margin-left: 20px;
-  }
-}
+// @media (min-width: 576px) {
+//   .edition .filter .groups {
+//     width: 300px;
+//     margin-left: 20px;
+//   }
+// }
 
 .edition p {
   text-align: right;
@@ -297,7 +297,7 @@ label[for="all"] {
   }
 
   .exam_box {
-    width: 775px;
+    // width: 775px;
     padding: 5px 0px 5px 4px;
     border-left: 6px solid $btn_main_color;
     background-color: $block_groups_background;

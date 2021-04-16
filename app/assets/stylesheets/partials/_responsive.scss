@@ -460,8 +460,15 @@
         width: fit-content;
     }
 
+    #mysolar_content,
     #mysolar_top_options {
-        padding: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    #mysolar_content {
+        margin-left: auto;
+        margin-right: auto;
     }
 
     #block_schedule {
@@ -522,7 +529,8 @@
         margin-left: 0 !important;
     }
 
-    .padding-checkbox {
+    .padding-checkbox,
+    .title_link {
         width: 100%;
     }
 

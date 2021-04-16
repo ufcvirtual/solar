@@ -1,10 +1,10 @@
 // CONTEUDO GERAL E BLOCOS
 
 #mysolar_content {
-  padding-left: 5px;
+  padding-left: 10px;
   // width: 785px;
   width: 98%;
-  // padding-right: 10px;
+  padding-right: 10px;
   display: inline-block;
   zoom: 1;
   *display: inline;
@@ -308,17 +308,17 @@ div.block_title {
   }
 }
 
-.block_left {
+// .block_left {
 
-  .block_title,
-  .block_content {
-    padding-left: .5em;
-  }
+//   .block_title,
+//   .block_content {
+//     padding-left: .5em;
+//   }
 
-  .block_content {
-    padding-right: 0.5em;
-  }
-}
+//   .block_content {
+//     padding-right: 0.5em;
+//   }
+// }
 
 .block_left,
 .block_right {
