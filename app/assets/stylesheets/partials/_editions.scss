@@ -107,6 +107,7 @@ li.ui-menu-item {
 .offer_groups_options {
   overflow: hidden;
   display: flex;
+  gap: 25px;
 
   .collection_check_boxes {
     color: $color_white;
@@ -205,7 +206,8 @@ label[for="all"] {
         }
 
         input[type='text'] {
-          width: 25px;
+          // width: 25px;
+          width: 37px;
         }
 
         tbody {

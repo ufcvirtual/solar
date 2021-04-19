@@ -44,6 +44,11 @@
 
 .responsive-table {
     overflow-x: auto;
+    overflow-y: hidden;
+
+    table {
+        overflow-y: scroll;
+    }
 }
 
 .tabs_score {
@@ -375,6 +380,18 @@
         transition: left 0.3s ease-out;
     }
 
+    #mysolar_content {
+        width: 100%;
+    }
+
+    .block_wrapper,
+    .block_content,
+    .block_title {
+        width: 98%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     .active-menu .responsive-menu-sidebar {
         left: 0;
     }
@@ -594,7 +611,8 @@
         display: inline !important;
     }
 
-    .responsive_group_label {
+    .responsive_group_label,
+    .form_label {
         text-align: left;
     }
 
@@ -961,6 +979,17 @@
 
     .offer_groups_options {
         overflow-x: auto;
+        flex-direction: column;
+        gap: 0;
+
+        form {
+            display: table-cell;
+
+            .select_all_box {
+                display: flex;
+                gap: 8px;
+            }
+        }
     }
 
     .group-assignment-content {
@@ -993,6 +1022,12 @@
                 width: 100%;
             }
         }
+    }
+
+    .to_mobile {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
     }
 }
 

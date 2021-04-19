@@ -18,7 +18,7 @@
       = content_tag(:i, nil, class: 'icon-clock', :'data-tooltip' => t('.updated_at', date: l(ip.object.updated_at, format: :clock)), :'aria-label' => t('.updated_at', date: l(ip.object.updated_at, format: :clock)))
     = ip.hidden_field :very_ipv6, value: very_ipv6, class: "_very_ipv6"
     - if can_destroy
-      = ip.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash btn')
+      = ip.remove_nested_fields_link content_tag(:i, nil, class: 'icon-trash', style: 'float:right')
 
 
 = javascript_include_tag 'tooltip', 'ip', 'jquery.mask'
