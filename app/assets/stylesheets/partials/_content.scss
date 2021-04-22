@@ -1,9 +1,13 @@
 // CONTEUDO GERAL E BLOCOS
 
 #mysolar_content {
+  margin-left: 5px;
   padding-left: 10px;
   // width: 785px;
   width: 98%;
+  max-width: -webkit-fill-available;
+  max-width: -moz-available;
+  max-width: fill-available;
   padding-right: 10px;
   display: inline-block;
   zoom: 1;
