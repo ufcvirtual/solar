@@ -32,4 +32,9 @@
 :javascript
   $(function(){
     find_and_open_sav();
+
+    if($('#mysolar_content').width() > 576) {
+      height_content = $('#subject_info_portlet').height();
+      $(this).find('.block_content').css('height', height_content);
+    }
   });

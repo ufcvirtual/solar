@@ -45,9 +45,13 @@
   float: right;
 }
 
-// #subject_info_portlet {
-//   display: flex;
-// }
+#subject_info_portlet {
+  .block_left {
+    .block_content {
+      padding-right: 20px;
+    }
+  }
+}
 
 /**
 * Tratando dos titulos dos conteudos
