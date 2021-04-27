@@ -105,7 +105,7 @@ module Bbb
   end
 
   def bbb_online?(api = nil)
-    Timeout::timeout(4) do
+    Timeout::timeout(2) do
       api = bbb_prepare if api.nil?
       url = URI.parse(api.url)
       http = Net::HTTP.new(url.host, url.port)
