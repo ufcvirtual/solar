@@ -569,7 +569,26 @@
         overflow-x: auto;
     }
 
+    #scores {
+        .info {
+            padding: 24px;
+        }
+    }
+
+    .info_right {
+        .links {
+            margin-left: 0;
+        }
+    }
+
+    #list_tools {
+        .tab_all {
+            width: fit-content !important;
+        }
+    }
+
     .scores_menu {
+        text-align: center;
         margin-left: 0 !important;
     }
 
