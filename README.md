@@ -1,12 +1,12 @@
-## Ambiente Virtual de Aprendizagem Solar Versão Comunitária
+## Ambiente Virtual de Aprendizagem Solar
 
 O Ambiente Virtual de aprendizagem (AVA) Solar foi concebido em 2003 como ambiente para cursos a distância promovidos pela Universidade Federal do Ceará (UFC), tendo sido planejado e desenvolvido pela equipe do Prof. Mauro C. Pequeno. Ele foi desenvolvido usando a linguagem Visual Basic e a tecnologias ASP e ASP.Net, por Patrícia de Sousa Paula, Ricardo Palácio, Henrique Sérgio Lima Pequeno e Wellington Wagner F. Sarmento. Em 2009, iniciou-se a concepção de uma nova versão do Solar a qual se deu o nome de **Solar 2.0**, sendo a proposta inicial dada por Wellington Wagner F. Sarmento, Patrícia de Sousa Paula, Henrique S. L. Pequeno, George A. Gomes e Mauro C. Pequeno. O Solar foi então completamente reformulado e desenvolvido com a linguagem Ruby e o _framework_ Ruby on Rails. O código que consta neste repositório é justamente o do "Solar 2.0", que passou a ser chamado, simplesmente, por Solar ou AVA Solar. Seu primeiro _release_ foi lançado em 2014, sendo adotado pela UFC em seus cursos semi-presenciais relacionados a Universidade Aberta do Brasil (UAB).
 
 ### Licença
 
-O **Ambiente Virtual de Aprendizagem Solar versão comunitária** foi desenvolvido pela equipe de Desenvolvimento de Sistemas (Centro de Produção II) do [Instituto UFC Virtual](https://www.virtual.ufc.br), pertencente à [Universidade Federal do Ceará](http://www.ufc.br). Seu código-fonte se encontra licenciado segundo termos da **GNU General Public License (GPL) version 3.0**, conforme texto presente no endereço https://www.gnu.org/licenses/.
+O **Ambiente Virtual de Aprendizagem Solar** foi desenvolvido pela equipe de Desenvolvimento de Sistemas (Centro de Produção II) do [Instituto UFC Virtual](https://www.virtual.ufc.br), pertencente à [Universidade Federal do Ceará](http://www.ufc.br). Seu código-fonte se encontra licenciado segundo termos da **GNU General Public License (GPL) version 3.0**, conforme texto presente no endereço https://www.gnu.org/licenses/.
 
-O Ambiente Virtual de Aprendizagem Solar versão comunitária é um software livre; você pode redistribui-lo e/ou modificá-lo dentro dos termos da GNU General Public License como publicada pela Fundação do Software Livre (FSF); na versão 3 da Licença.
+O Ambiente Virtual de Aprendizagem Solar é um software livre; você pode redistribui-lo e/ou modificá-lo dentro dos termos da GNU General Public License como publicada pela Fundação do Software Livre (FSF); na versão 3 da Licença.
 
 Este programa é distribuído na esperança que possa ser útil, mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a GNU General Public License (GPLv3) para maiores detalhes. 
 
