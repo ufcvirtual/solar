@@ -51,6 +51,33 @@
     }
 }
 
+.group_assignment_responsive {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .groups_column {
+        .labels {
+            .label {
+                display: flex;
+                justify-content: space-between;
+
+                a {
+                    flex-grow: 1;
+                }
+
+                .buttons {
+                    width: fit-content;
+
+                    a:first-child {
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
 .tabs_score {
     margin-left: 20%;
 }
@@ -1028,6 +1055,27 @@
         display: flex;
         flex-direction: row;
         gap: 5px;
+    }
+
+    .assignments {
+
+        .participants,
+        .manage_groups {
+            margin-bottom: 10px;
+        }
+    }
+
+    .group_assignment_responsive {
+        flex-direction: column;
+
+        .groups_column,
+        .participants_column,
+        .edit_group_assignment,
+        .students_without_groups_column {
+            width: 100% !important;
+            margin-left: 0;
+            margin-right: 0;
+        }
     }
 }
 
