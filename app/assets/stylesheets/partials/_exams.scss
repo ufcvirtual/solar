@@ -673,6 +673,7 @@
   .ckb {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin: 20px;
 
     .input.boolean:not(.exam_controlled) {
@@ -719,7 +720,9 @@
     .exam_attempts_correction {
       width: 100%;
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
+      align-items: center;
     }
   }
 
