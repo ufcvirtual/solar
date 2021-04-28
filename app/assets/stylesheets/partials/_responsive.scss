@@ -1096,6 +1096,20 @@
             margin-right: 0;
         }
     }
+
+    .list_exams {
+        .block_exam h2 {
+            .block_buttons {
+                label {
+                    margin-bottom: 10px;
+                }
+
+                a {
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
 }
 
 @media (max-width: 768px) {
