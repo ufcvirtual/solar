@@ -109,14 +109,6 @@
   $("#button_new_post").focus();
 
   $(function(){
-    if($('#mysolar_content').width() <= 576) {
-      $('article.forum_post').each(function() {
-        var post_form_width = $('#mysolar_content').width() - $(this).find('.forum_post_wrapper').offset().left - 10;
-
-        $(this).find('.forum_post_reply').css('width', post_form_width);
-      });
-    }
-
     $('.draft_version_explain').call_fancybox({
       'maxWidth': '700px',
       content: $('#fv_explain').html()
