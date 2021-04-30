@@ -946,6 +946,16 @@
 
     #images .info {
         text-align: left;
+
+        label {
+            text-align: center;
+        }
+    }
+
+    #audios .info {
+        label {
+            text-align: center;
+        }
     }
 
     #audios .upload-preview {

@@ -13,9 +13,10 @@
     .block_content_toolbar {
       display: flex;
       flex-direction: row;
-      // flex-wrap: wrap;
+      flex-wrap: nowrap;
       justify-content: space-around;
       align-items: center;
+      gap: 3px;
 
       padding: 9px;
       text-align: center;
@@ -617,10 +618,10 @@
       border-bottom: none;
     }
 
-    label {
-      // width: 75px;
-      text-align: right;
-    }
+    // label {
+    //   width: 75px;
+    //   text-align: right;
+    // }
 
     label#only_owner {
       text-align: left;
