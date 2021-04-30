@@ -231,7 +231,7 @@ class Allocation < ActiveRecord::Base
       )
       SELECT SUM(ac.grade) as grade
       FROM (
-        SELECT (academic_allocations.final_weight::float/100)*SUM(COALESCE(acu.grade, acu_eq.max_grade, 0)*academic_allocations.weight)/SUM(academic_allocations.weight) AS grade
+        SELECT (academic_allocations.final_weight::float/100)*SUM(COALESCE((case when acu.ignore=true then NULL else acu.grade end), acu_eq.max_grade, 0)*academic_allocations.weight)/SUM(academic_allocations.weight) AS grade
         FROM academic_allocations
         LEFT JOIN academic_allocation_users acu    ON acu.academic_allocation_id = academic_allocations.id AND (acu.user_id = #{user_id} OR acu.group_assignment_id IN (select group_id from groups))
         LEFT JOIN (
@@ -239,7 +239,7 @@ class Allocation < ActiveRecord::Base
           FROM academic_allocation_users acu2
           LEFT JOIN academic_allocations equivalent ON acu2.academic_allocation_id = equivalent.id
           WHERE (acu2.user_id = #{user_id} OR acu2.group_assignment_id IN (select group_id from groups))
-          AND equivalent.equivalent_academic_allocation_id IS NOT NULL
+          AND equivalent.equivalent_academic_allocation_id IS NOT NULL AND acu2.ignore = false
           GROUP BY equivalent_academic_allocation_id
         ) acu_eq ON academic_allocations.id = acu_eq.equivalent_academic_allocation_id
         WHERE
@@ -269,7 +269,7 @@ class Allocation < ActiveRecord::Base
           FROM group_participants
           WHERE user_id = #{user_id}
         )
-        SELECT SUM(COALESCE(acu.grade, acu_eq.max_grade, 0))/COUNT(academic_allocations.id) AS grade
+        SELECT SUM(COALESCE((case when acu.ignore=true then NULL else acu.grade end), acu_eq.max_grade, 0))/COUNT(academic_allocations.id) AS grade
         FROM academic_allocations
         LEFT JOIN academic_allocation_users acu  ON acu.academic_allocation_id = academic_allocations.id AND (acu.user_id = #{user_id} OR acu.group_assignment_id IN (select group_id from groups))
         LEFT JOIN (
@@ -277,7 +277,7 @@ class Allocation < ActiveRecord::Base
             FROM academic_allocation_users acu2
             LEFT JOIN academic_allocations equivalent ON acu2.academic_allocation_id = equivalent.id
             WHERE (acu2.user_id = #{user_id} OR acu2.group_assignment_id IN (select group_id from groups))
-            AND equivalent.equivalent_academic_allocation_id IS NOT NULL
+            AND equivalent.equivalent_academic_allocation_id IS NOT NULL AND acu2.ignore = false
             GROUP BY equivalent_academic_allocation_id
           ) acu_eq ON academic_allocations.id = acu_eq.equivalent_academic_allocation_id
         WHERE
@@ -289,7 +289,7 @@ class Allocation < ActiveRecord::Base
           AND
           academic_allocations.equivalent_academic_allocation_id IS NULL
           AND
-          (acu.grade IS NOT NULL OR acu_eq.max_grade IS NOT NULL);
+          ((acu.ignore = false AND acu.grade IS NOT NULL) OR acu_eq.max_grade IS NOT NULL);
       SQL
       update_attributes final_exam_grade: ((afs.empty? || afs.first[:grade].blank?) ? nil : afs.first[:grade].to_f.round(2))
     elsif !final_exam_grade.blank?
@@ -341,7 +341,7 @@ class Allocation < ActiveRecord::Base
           else
             # if doesnt have a final exam grade
             if final_exam_grade.blank?
-              if allocation_tag.academic_allocations.where(final_exam: true).any? && Date.today > date
+              if allocation_tag.academic_allocations.where(final_exam: true).any? #&& Date.today >= date
                 update_attributes grade_situation: FinalExamPending
               else
                 update_attributes grade_situation: Failed

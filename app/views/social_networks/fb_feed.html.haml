@@ -26,7 +26,7 @@
     .post
       .post_header
         .user_avatar
-          = image_tag "http://graph.facebook.com/#{fb_post['from']['id']}/picture", :size => "26x26", :alt => "User Image"
+          = image_tag "https://graph.facebook.com/#{fb_post['from']['id']}/picture", :size => "26x26", :alt => "User Image"
         .user_info
           %span.username
             = fb_post['from']['name']
@@ -46,7 +46,7 @@
     .post
       .post_header
         .user_avatar
-          = image_tag "http://graph.facebook.com/#{fb_msg_group['from']['id']}/picture", :size => "26x26", :alt => "User Image"
+          = image_tag "https://graph.facebook.com/#{fb_msg_group['from']['id']}/picture", :size => "26x26", :alt => "User Image"
         .user_info
           %span.username
             = fb_msg_group['name']

@@ -46,7 +46,11 @@ class GroupAssignment < ActiveRecord::Base
   def copy_participants(group_id, ac_id)
     all_participants = GroupAssignment.where(academic_allocation_id: ac_id).map(&:users).flatten.map(&:id)
     group_participants.each do |participant|
-      GroupParticipant.where(user_id: participant.user_id, group_assignment_id: group_id).first_or_create! unless all_participants.include? participant.user_id
+      unless all_participants.include? participant.user_id
+        gp = GroupParticipant.where(user_id: participant.user_id, group_assignment_id: group_id).first_or_initialize
+        gp.merge = true
+        gp.save!
+      end
     end
   end
 

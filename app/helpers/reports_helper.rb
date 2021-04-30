@@ -99,7 +99,7 @@ module ReportsHelper
     pdf.move_down 10
     pdf.text  I18n.t(:report, scope: [:scores, :info]) + I18n.t('exams.result_exam.title_pdf', name: exam.name), size: 12, align: :center
 
-    pdf.image "#{Rails.root}/app/assets/images/#{user.user_photo(:medium)}", width: 110, height: 100, alt: I18n.t(:mysolar_alt_img_user)
+    #pdf.image "#{Rails.root}/app/assets/images/#{user.user_photo(:medium)}", width: 110, height: 100, alt: I18n.t(:mysolar_alt_img_user)
 
     pdf.bounding_box([125, pdf.cursor + 100], width: 290, height: 100) do
       pdf.move_down 10
