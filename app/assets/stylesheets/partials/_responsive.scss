@@ -1120,6 +1120,12 @@
             }
         }
     }
+
+    .messages {
+        .block_white {
+            height: auto !important;
+        }
+    }
 }
 
 @media (max-width: 768px) {
