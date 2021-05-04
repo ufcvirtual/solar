@@ -96,6 +96,7 @@ Course.create!(code: load_group["codGraduacao"], name: (load_group["nomeGraduaca
                 end
 #            course        = Course.find_by_code! load_group[:codGraduacao] unless load_group[:codGraduacao].blank?
             uc            = CurriculumUnit.find_by_code! load_group[:codDisciplina]
+            course = Course.find_by_code("CPRES") if course.blank? && uc.try(:curriculum_unit_type_id) == 1
 
             if uc.try(:curriculum_unit_type_id) == 1
             fim = load_group[:dtFim].to_date
@@ -151,6 +152,8 @@ Course.create!(code: load_group["codGraduacao"], name: (load_group["nomeGraduaca
 
               @groups = @groups.collect do |group_info|
                 group_info["nome"] = group_info["codigo"] if group_info["nome"].blank?
+                uc = CurriculumUnit.find_by_code(group_info["codDisciplina"]) unless group_info["codDisciplina"].blank?
+                group_info["codGraduacao"] = "CPRES" if group_info["codGraduacao"].blank? && uc.try(:curriculum_unit_type_id) == 1 && !!Course.find_by_code("CPRES")
 
                 [get_group_by_names(group_info["codDisciplina"], group_info["codGraduacao"], group_info["nome"], (group_info["periodo"].blank? ? group_info["ano"] : "#{group_info["ano"]}.#{group_info["periodo"]}"), true), (group_info["codigoOrigem"].blank? || group_info["codDiscOrigem"].blank?) ? nil : get_group_by_names(group_info["codDiscOrigem"], group_info["codGradOrigem"], group_info["codigoOrigem"], group_info["semestreOrigem"], true)] unless group_info["codDisciplina"] == 78
               end # Se cód. graduação for 78, desconsidera (por hora, vem por engano).
