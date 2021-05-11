@@ -60,24 +60,28 @@ module V1::Contents
 
     ActiveRecord::Base.transaction do
       # cant unmerge if never merged
-      raise 'not merged' if !merge && !Merge.where(main_group_id: main_group.id, secundary_group_id: secundary_group.id).last.try(:type_merge)
+      #raise 'not merged' if !merge && !Merge.where(main_group_id: main_group.id, secundary_group_id: secundary_group.id).last.try(:type_merge)
 
       Merge.create! main_group_id: main_group.id, secundary_group_id: secundary_group.id, type_merge: merge
 
-      secundary_group.update_attributes main_group_id: (merge ? main_group.id : nil)
+      unless !merge && !Merge.where(main_group_id: main_group.id, secundary_group_id: secundary_group.id).last.try(:type_merge)
 
-      remove_all_content(to_at) unless merge
+        secundary_group.update_attributes main_group_id: (merge ? main_group.id : nil)
 
-      replicate_discussions(from_academic_allocations, to_at)
-      replicate_chats(from_academic_allocations, to_at)
-      replicate_assignments(from_academic_allocations, to_at)
-      replicate_webconferences(from_academic_allocations, to_at, from_group.allocation_tag.id, merge)
-      replicate_exams(from_academic_allocations, to_at)
-      replicate_schedule_events(from_academic_allocations, from_group.allocation_tag.id, to_at)
+        remove_all_content(to_at) unless merge
 
-      from_ats.each do |from_at|
-        replicate_messages(from_at, to_at)
-        replicate_public_files(from_at, to_at)
+        replicate_discussions(from_academic_allocations, to_at)
+        replicate_chats(from_academic_allocations, to_at)
+        replicate_assignments(from_academic_allocations, to_at)
+        replicate_webconferences(from_academic_allocations, to_at, from_group.allocation_tag.id, merge)
+        replicate_exams(from_academic_allocations, to_at)
+        replicate_schedule_events(from_academic_allocations, from_group.allocation_tag.id, to_at)
+
+        from_ats.each do |from_at|
+          replicate_messages(from_at, to_at)
+          replicate_public_files(from_at, to_at)
+        end
+
       end
 
       LogAction.create(log_type: LogAction::TYPE[:create], user_id: 0, ip: request.headers['HTTP_CLIENT_IP'], description: "merge: transfering content from #{from_group.allocation_tag.info} to #{to_group.allocation_tag.info}, merge type: #{merge}") rescue nil
