@@ -202,8 +202,8 @@ class Score # < ActiveRecord::Base
       CASE
         #{evaluated_status}
         WHEN #{sent_status} THEN 'sent'
-        WHEN current_date<schedules.start_date OR (current_date = schedules.start_date AND current_time<to_timestamp(start_hour, 'HH24:MI:SS')::time)  THEN 'not_started'
-        WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND (start_hour IS NULL OR current_time>=to_timestamp(start_hour, 'HH24:MI:SS')::time AND current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN 'to_send'
+        WHEN current_date<schedules.start_date OR (current_date = schedules.start_date AND (NULLIF(start_hour, '') IS NOT NULL AND current_time<to_timestamp(start_hour, 'HH24:MI:SS')::time))  THEN 'not_started'
+        WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND (NULLIF(start_hour,'') IS NULL OR current_time>=to_timestamp(start_hour, 'HH24:MI:SS')::time AND current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN 'to_send'
         ELSE
           'not_sent'
         END AS situation
@@ -368,8 +368,8 @@ class Score # < ActiveRecord::Base
             CASE
               #{evaluated_status}
               WHEN #{sent_status} THEN 'sent'
-              WHEN current_date<schedules.start_date OR (current_date = schedules.start_date AND current_time<to_timestamp(start_hour, 'HH24:MI:SS')::time)  THEN 'not_started'
-              WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND (start_hour IS NULL OR current_time>=to_timestamp(start_hour, 'HH24:MI:SS')::time AND current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN 'to_send'
+              WHEN current_date<schedules.start_date OR (current_date = schedules.start_date AND (NULLIF(start_hour,'') IS NOT NULL AND current_time<to_timestamp(start_hour, 'HH24:MI:SS')::time))  THEN 'not_started'
+              WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND (NULLIF(start_hour,'') IS NULL OR current_time>=to_timestamp(start_hour, 'HH24:MI:SS')::time AND current_time<=to_timestamp(end_hour, 'HH24:MI:SS')::time) THEN 'to_send'
               ELSE
                 'not_sent'
               END AS situation
@@ -756,20 +756,20 @@ class Score # < ActiveRecord::Base
             NULL as server,
             NULL::timestamp as release_date,
             CASE
-              WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (schedule_events.start_hour IS NULL OR current_time > to_timestamp(schedule_events.start_hour, 'HH24:MI:SS')::time) AND (schedule_events.end_hour IS NULL OR current_time<=to_timestamp(schedule_events.end_hour, 'HH24:MI:SS')::time) THEN true
+              WHEN (current_date >= schedules.start_date AND current_date <= schedules.end_date) AND (NULLIF(schedule_events.start_hour, '') IS NULL OR current_time > to_timestamp(schedule_events.start_hour, 'HH24:MI:SS')::time) AND (NULLIF(schedule_events.end_hour,'') IS NULL OR current_time<=to_timestamp(schedule_events.end_hour, 'HH24:MI:SS')::time) THEN true
               ELSE
                 false
               END AS opened,
             CASE
-              WHEN (current_date > schedules.end_date) AND (schedule_events.end_hour IS NULL OR current_time>to_timestamp(schedule_events.start_hour, 'HH24:MI:SS')::time) THEN true
+              WHEN (current_date > schedules.end_date) AND (NULLIF(schedule_events.end_hour,'') IS NULL OR current_time>to_timestamp(schedule_events.start_hour, 'HH24:MI:SS')::time) THEN true
               ELSE
                 false
               END AS closed,
             CASE
             #{evaluated_status}
             WHEN #{sent_status} OR academic_allocation_users.status = 1 then 'sent'
-            WHEN current_date>schedules.end_date OR (current_date=schedules.end_date AND current_time>to_timestamp(schedule_events.end_hour, 'HH24:MI:SS')::time) THEN 'closed'
-            WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND schedule_events.start_hour IS NULL THEN 'started'
+            WHEN current_date>schedules.end_date OR (current_date=schedules.end_date AND (NULLIF(schedule_events.end_hour,'') IS NOT NULL AND current_time>to_timestamp(schedule_events.end_hour, 'HH24:MI:SS')::time)) THEN 'closed'
+            WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND NULLIF(schedule_events.start_hour,'') IS NULL THEN 'started'
             WHEN current_date>=schedules.start_date AND current_date<=schedules.end_date AND current_time>=to_timestamp(schedule_events.start_hour, 'HH24:MI:SS')::time AND current_time<=to_timestamp(schedule_events.end_hour, 'HH24:MI:SS')::time THEN 'started'
             ELSE 'not_started'
             END AS situation,
