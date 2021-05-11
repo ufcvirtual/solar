@@ -85,6 +85,7 @@ class Event < ActiveRecord::Base
               when Presential_Meeting; 'presential_meeting'
               when WebConferenceLesson; 'web_conference_lesson'
               when Other; 'other'
+              when RemoteEvaluation; 'remote_evaluation'
               else 'recess_or_holiday'; end
     end
     api_t
@@ -101,6 +102,7 @@ class Event < ActiveRecord::Base
     when 'web_conference_lesson'; '#F5DA81'
     when 'recess_or_holiday'; '#E3E3E3'
     when 'exam'; '#E4FFA5'
+    when 'remote_evaluation'; '#BBFF33'
     else
       '#CCCCFF'
     end

@@ -8,6 +8,7 @@ module V1::EventsH
       when 4; {type: 1, title: "Prova Presencial: AF - 1ª chamada"} # prova presencial - AF - 1ª chamada
       when 5; {type: 1, title: "Prova Presencial: AF - 2ª chamada"} # prova presencial - AF - 2ª chamada
       when 6; {type: 5, title: "Aula por Web Conferência"} # aula por webconferência
+      when 7; {type: 6, title: "Avaliação Remota"}  
     end
   end
 

@@ -1,4 +1,4 @@
-- show_fields = [Presential_Meeting, Presential_Test, WebConferenceLesson, Other].include?(@schedule_event.type_event)
+- show_fields = [Presential_Meeting, Presential_Test, WebConferenceLesson, Other, RemoteEvaluation].include?(@schedule_event.type_event)
 - required_fields = [Presential_Meeting, Presential_Test, WebConferenceLesson].include?(@schedule_event.type_event)
 - exam_content = Presential_Test == @schedule_event.type_event.to_i
 - can_change = @schedule_event.can_change?
@@ -13,7 +13,8 @@
   :"#{t(:webconference_lesson, scope: [:schedule_events, :types])}" => WebConferenceLesson,
   :"#{t(:recess, scope: [:schedule_events, :types])}" => Recess,
   :"#{t(:holiday, scope: [:schedule_events, :types])}" => Holiday,
-  :"#{t(:other, scope: [:schedule_events, :types])}" => Other}
+  :"#{t(:other, scope: [:schedule_events, :types])}" => Other,
+  :"#{t(:remote_evaluation, scope: [:schedule_events, :types])}" => RemoteEvaluation}
 - if @schedule_event.persisted?
   .input
     = f.label :type_event
