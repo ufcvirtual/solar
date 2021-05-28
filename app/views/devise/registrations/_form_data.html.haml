@@ -41,7 +41,7 @@
       %ul.form_user_content
         %li
           %span.form_label= f.label :name
-          %span.form_field= f.text_field :name, id: 'name', size: field_size, :'data-previous-value' => @user.name
+          %span.form_field= f.text_field :name, id: 'name', size: field_size, :'data-previous-value' => @user.name, disabled: @user.integrated?
           %span.form_error= msg_name
         %li
           %span.form_label= f.label :cpf
@@ -49,7 +49,7 @@
           %span.form_error= msg_cpf
         %li
           %span.form_label= f.label :birthdate, class: 'label_usuario', id: 'birthdate', :'data-previous-value' => [@user.birthdate.try(:day), @user.birthdate.try(:month), @user.birthdate.try(:year)]
-          %span.form_field= f.date_select :birthdate, start_year: Time.now.year - 2, end_year: 1900, include_blank: true
+          %span.form_field= f.date_select :birthdate, start_year: Time.now.year - 2, end_year: 1900, include_blank: true, disabled: @user.integrated?
         %li
           %span.form_label= f.label :gender, class: 'label_gender'
           %span.form_field= f.select :gender, ([["M", true], ["F", false]]) , id: 'gender', size: 2, :'data-previous-value' => @user.gender
@@ -65,7 +65,7 @@
           - display_special_needs_line = "display: inline-block;"
         %li#special_needs_line{:style => "#{display_special_needs_line}"}
           %span.form_label= f.label "#{t(:which)}*"
-          %span.form_field= f.text_field :special_needs, size: field_size
+          %span.form_field= f.text_field :special_needs, size: field_size, disabled: @user.integrated?
           %td.form_error= msg_special_needs
 
   / Dados de acesso
@@ -82,31 +82,31 @@
       %ul
         %li
           %span.form_label= f.label :username
-          %span.form_field= f.text_field :username, id: 'login', size: field_size, :'data-previous-value' => @user.username
+          %span.form_field= f.text_field :username, id: 'login', size: field_size, :'data-previous-value' => @user.username, disabled: @user.integrated?
           %span.form_error= msg_login
       %ul
         %li
           %span.form_label= f.label :current_password
-          %span.form_field= f.password_field :current_password, size: "15"
+          %span.form_field= f.password_field :current_password, size: "15", disabled: @user.integrated?
           %span.form_error= msg_current_password
       %ul
         %li
           %span.form_label= f.label :new_password
-          %span.form_field= f.password_field :password, size: "15", id: 'new_password'
+          %span.form_field= f.password_field :password, size: "15", id: 'new_password', disabled: @user.integrated?
           %span.form_error= msg_password
       %ul
         %li
           %span.form_label= f.label :password_confirmation
-          %span.form_field= f.password_field :password_confirmation, size: "15"
+          %span.form_field= f.password_field :password_confirmation, size: "15", disabled: @user.integrated?
       %ul
         %li
           %span.form_label= f.label :email
-          %span.form_field= f.text_field :email, id: 'email', size: field_size, :'data-previous-value' => @user.email
+          %span.form_field= f.text_field :email, id: 'email', size: field_size, :'data-previous-value' => @user.email, disabled: @user.integrated?
           %span.form_error= msg_email
       %ul
         %li
           %span.form_label= f.label :email_confirmation, :class=>'label_usuario'
-          %span.form_field= f.text_field :email_confirmation, id: 'email_confirmation', size: field_size
+          %span.form_field= f.text_field :email_confirmation, id: 'email_confirmation', size: field_size, disabled: @user.integrated?
       %ul
         %li
           %span.form_label= f.label :alternate_email, :class=>'label_usuario'
@@ -148,9 +148,9 @@
           %span.form_field= f.text_field :city, id: 'city', size: field_size, :'data-previous-value' => @user.city
         %li
           %span.form_label= f.label :telephone
-          %span.form_field= f.text_field :telephone, size: 10, id: 'telephone', :'data-previous-value' => @user.telephone
+          %span.form_field= f.text_field :telephone, size: 10, id: 'telephone', :'data-previous-value' => @user.telephone, disabled: @user.integrated?
           %span.form_label= f.label :cell_phone
-          %span.form_field= f.text_field :cell_phone, size: 16, id: 'cell_phone', :'data-previous-value' => @user.cell_phone
+          %span.form_field= f.text_field :cell_phone, size: 16, id: 'cell_phone', :'data-previous-value' => @user.cell_phone, disabled: @user.integrated?
 
   / Dados de Instituição
   .block_wrapper
