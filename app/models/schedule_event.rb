@@ -34,6 +34,7 @@ class ScheduleEvent < Event
       when Recess; :recess
       when Holiday; :holiday
       when Other; :other
+      when RemoteEvaluation; :remote_evaluation
     end
 
     I18n.t(te, scope: "schedule_events.types")
@@ -47,6 +48,7 @@ class ScheduleEvent < Event
       when Recess; :recess
       when Holiday; :holiday
       when Other; :other
+      when RemoteEvaluation; :remote_evaluation
     end
 
     I18n.t(te, scope: "schedule_events.types")

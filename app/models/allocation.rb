@@ -293,8 +293,8 @@ class Allocation < ActiveRecord::Base
       SQL
       update_attributes final_exam_grade: ((afs.empty? || afs.first[:grade].blank?) ? nil : afs.first[:grade].to_f.round(2))
     elsif !final_exam_grade.blank?
-      raise 'af'
-      # update_attributes final_exam_grade: nil
+      #raise 'af'
+      update_attributes final_exam_grade: nil
     end
     update_attributes final_grade: (final_exam_grade.blank? ? parcial_grade : ((parcial_grade+final_exam_grade)/2).to_f.round(2))
 

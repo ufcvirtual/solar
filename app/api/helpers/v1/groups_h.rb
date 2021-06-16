@@ -1,8 +1,11 @@
 module V1::GroupsH
   extend Grape::API::Helpers
   def get_groups_by_code(curriculum_unit_code, course_code, code, semester)
+    uc = CurriculumUnit.find_by_code(curriculum_unit_code) unless curriculum_unit_code.blank?
+    course_code = "CPRES" if course_code.blank? && uc.try(:curriculum_unit_type_id) == 1 && !!Course.find_by_code("CPRES")
     # besides the name, groups are searched by its name
-    group = Group.joins(offer: :semester).where(code: code, offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first, course_id: Course.where(code: course_code).first}, semesters: {name: semester})
+    #group = Group.joins(offer: :semester).where(code: code, offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first, course_id: Course.where(code: course_code).first}, semesters: {name: semester})
+    group = Group.joins(offer: :semester).where(code: code, offers: {curriculum_unit_id: uc.try(:id), course_id: Course.where(code: course_code).first}, semesters: {name: semester})
 
     raise "group not found to uc: #{curriculum_unit_code}; course: #{course_code}; semester: #{semester} with code: #{code}" if group.blank?
 
@@ -10,9 +13,12 @@ module V1::GroupsH
   end
 
   def get_group_by_names(curriculum_unit_code, course_code, name, semester, dont_raise_error=false)
+    uc = CurriculumUnit.find_by_code(curriculum_unit_code) unless curriculum_unit_code.blank?
+    course_code = "CPRES" if course_code.blank? && uc.try(:curriculum_unit_type_id) == 1 && !!Course.find_by_code("CPRES")
     # besides the name, groups are searched by its name
     query = course_code.blank? ? {} : {course_id: Course.where(code: course_code).first}
-    offer_query = {offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first}.merge!(query)}
+    #offer_query = {offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first}.merge!(query)}
+    offer_query = {offers: {curriculum_unit_id: uc.try(:id)}.merge!(query)}
     basic_query = {name: name, semesters: {name: semester}}.merge!(offer_query)
     basic_query.merge!({status: true}) if course_code.blank?
 
@@ -30,8 +36,11 @@ module V1::GroupsH
   end
 
   def get_group_by_code_and_name(curriculum_unit_code, course_code, name, semester, code)
+    uc = CurriculumUnit.find_by_code(curriculum_unit_code) unless curriculum_unit_code.blank?
+    course_code = "CPRES" if course_code.blank? && uc.try(:curriculum_unit_type_id) == 1 && !!Course.find_by_code("CPRES")
     # besides the name, groups are searched by its name
-    group = Group.joins(offer: :semester).where(name: name, code: code, offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first, course_id: Course.where(code: course_code).first}, semesters: {name: semester}).first
+    #group = Group.joins(offer: :semester).where(name: name, code: code, offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first, course_id: Course.where(code: course_code).first}, semesters: {name: semester}).first
+    group = Group.joins(offer: :semester).where(name: name, code: code, offers: {curriculum_unit_id: uc.try(:id), course_id: Course.where(code: course_code).first}, semesters: {name: semester}).first
 
     raise "group not found to uc: #{curriculum_unit_code}; course: #{course_code}; semester: #{semester} with name: #{name} and code: #{code}" if group.blank?
 

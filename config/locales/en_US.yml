@@ -3164,6 +3164,7 @@ en_US:
       holiday: Holiday
       webconference_lesson: Webconference Lesson
       other: Other
+      remote_evaluation: Remote Evaluation
     form:
       groups: Groups
       new: New event

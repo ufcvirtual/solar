@@ -56,6 +56,8 @@ module V1::General
   end
 
   def get_destination(curriculum_unit_code, course_code, group_name, semester, group_code=nil)
+    uc = CurriculumUnit.find_by_code(curriculum_unit_code) unless curriculum_unit_code.blank?
+    course_code = "CPRES" if course_code.blank? && uc.try(:curriculum_unit_type_id) == 1 && !!Course.find_by_code("CPRES")
     case
       when !group_name.blank? && !group_code.blank?
         get_group_by_code_and_name(curriculum_unit_code, course_code, group_name, semester, group_code)
@@ -66,7 +68,8 @@ module V1::General
       when !semester.blank?
         get_offer(curriculum_unit_code, course_code, semester)
       when !curriculum_unit_code.blank?
-        CurriculumUnit.find_by_code(curriculum_unit_code)
+        #CurriculumUnit.find_by_code(curriculum_unit_code)
+        uc
       when !course_code.blank?
         Course.find_by_code(course_code)
       else
@@ -76,8 +79,10 @@ module V1::General
 
   def get_group_destination_randomly(curriculum_unit_code, course_code, start_date, end_date, cpf=nil, profile=nil, all=false)
     group_id = nil
+    uc = CurriculumUnit.find_by_code(curriculum_unit_code) unless curriculum_unit_code.blank?
+    course_code = "CPRES" if course_code.blank? && uc.try(:curriculum_unit_type_id) == 1 && !!Course.find_by_code("CPRES")
     course = Course.find_by_code!(course_code)
-    uc = CurriculumUnit.find_by_code!(curriculum_unit_code)
+    #uc = CurriculumUnit.find_by_code!(curriculum_unit_code)
     offers = Offer.joins("JOIN semesters ON semesters.id = offers.semester_id")
                   .joins("LEFT JOIN schedules AS oschedules ON oschedules.id = offers.offer_schedule_id")
                   .joins("LEFT JOIN schedules AS sschedules ON sschedules.id = semesters.offer_schedule_id")

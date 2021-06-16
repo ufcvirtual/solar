@@ -29,7 +29,7 @@
         %span.enunciation{id: "radio_#{number_question}"}= raw [question.enunciation, anull, score].compact.join(' ')
       - question_images = get_question_images(question.id)
       - @question_audios = get_question_audios(question.id)
-
+      - count = question_images.length
       - unless question_images.nil?
         %ul.question_images
           - question_images.each do |q_image|
