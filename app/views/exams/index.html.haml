@@ -73,13 +73,15 @@
               %td.center{headers: 'e_duration'}= [exam.duration, t('.min')].join(' ')
               %td.center.situation{headers: 'e_status'}
                 - if @can_open
-                  - if exam.situation == 'not_finished'
-                    .equivalent
-                      %a{ href: '#', :"data-dropdown" => "#dropdown_#{exam.id}", :'data-url' => percentage_exam_path(exam.academic_tool_id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);', :'aria-label' => exam.name + I18n.t("scores.situation.#{exam.situation}") }
-                        %span{class: "#{exam.situation}"}= I18n.t("scores.situation.#{exam.situation}")
-                        %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-                      .dropdown.dropdown-tip{id: "dropdown_#{exam.id}"}
-                        %ul{ class: 'dropdown-menu' }
+                  - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
+                    .title= link_to exam.name, '#', disabled: true, :'aria-label' => exam.name + t('fancybox.open') +  t(:disabled), class: 'disabled'
+                    - if (exam.closed == true || exam.situation == 'corrected')
+                      = link_to t('.result'), result_user_exam_path(exam.academic_tool_id), class: 'link_content open-exam-result', :'aria-label' => t('.result', exam: exam.name) + t('fancybox.open')
+                      - if exam.situation == 'corrected' && exam.closed == true
+                        |
+                        = link_to t('.mirror_results'), open_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), class: 'link_open_exam', :'aria-label' => t('.mirror_results_alt', exam: exam.name) + t('fancybox.open')
+                  - elsif exam.opened == true && exam.closed ==  false
+                    = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', :'aria-label' => exam.name + t('fancybox.open')
                   - else
                     %div{class: "#{exam.situation}"}= I18n.t("scores.situation.#{exam.situation}", count: exam.count, count_all: exam.count_all)
                 - else

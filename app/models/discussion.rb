@@ -136,7 +136,7 @@ class Discussion < Event
     posts_list = posts_list.joins(academic_allocation: :allocation_tag).where(query_hash ) unless allocation_tags_ids.blank?
     posts_list = posts_list.where("(draft = ? ) OR (draft = ? AND user_id= ?)", false, true, user_id) if my_list.blank?
 
-    (opt[:grandparent] ? posts_list.map(&:grandparent).uniq.compact : posts_list.compact.uniq)
+    (opt[:grandparent] ? posts_list.map(&:grandparent).uniq.compact : posts_list.to_a.compact.uniq)
   end
 
   def posts_by_allocation_tags_ids_to_api(allocation_tags_ids = nil, user_id = nil, my_list=nil, opt = { grandparent: true, query: '', order: 'updated_at desc', limit: nil, offset: nil, select: 'DISTINCT discussion_posts.id, discussion_posts.*' })

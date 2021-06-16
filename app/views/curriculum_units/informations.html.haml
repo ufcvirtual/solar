@@ -53,4 +53,4 @@
               - @responsible.each do |resp|
                 %p
                   = resp.name + ' (' + resp.profile_name + ') '
-                  = link_to (content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true')), new_message_path(user_id: resp.id), class: 'nodecoration', :'aria-label' => t('messages.message_to', name: resp.name)
+                  = link_to (content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true')), new_message_path(user_id: resp.id, layout: true), class: 'nodecoration', :'aria-label' => t('messages.message_to', name: resp.name)

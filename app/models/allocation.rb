@@ -54,9 +54,17 @@ class Allocation < ActiveRecord::Base
     self.status = Allocation_Activated
     self.save!
 
-    calculate_working_hours unless allocation_tag.nil?
-    calculate_final_grade unless allocation_tag.nil?
-
+    #calculate_working_hours unless allocation_tag.nil?
+    #calculate_final_grade unless allocation_tag.nil?
+    unless self.allocation_tag.nil?
+      course = allocation_tag.get_course
+      uc = allocation_tag.get_curriculum_unit
+      if((!course.blank? && !course.min_hours.blank?) || (!uc.blank? && !uc.min_hours.blank?))
+        calculate_working_hours unless allocation_tag.nil?
+        calculate_final_grade unless allocation_tag.nil?
+      end 
+    end  
+    
     send_email_to_enrolled_user
   end
 
@@ -285,8 +293,8 @@ class Allocation < ActiveRecord::Base
       SQL
       update_attributes final_exam_grade: ((afs.empty? || afs.first[:grade].blank?) ? nil : afs.first[:grade].to_f.round(2))
     elsif !final_exam_grade.blank?
-      raise 'af'
-      # update_attributes final_exam_grade: nil
+      #raise 'af'
+      update_attributes final_exam_grade: nil
     end
     update_attributes final_grade: (final_exam_grade.blank? ? parcial_grade : ((parcial_grade+final_exam_grade)/2).to_f.round(2))
 

@@ -64,6 +64,11 @@ class User < ActiveRecord::Base
   attr_accessor :login, :has_special_needs, :synchronizing, :api
 
   email_format = %r{\A((?:[_a-z0-9-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-zA-Z0-9\-\.]+)*(\.[a-z]{2,4}))?\z}i
+  has_attached_file :photo,
+    styles: { medium: '120x120#', small: '30x30#', forum: '40x40#' },
+    path: ':rails_root/media/:class/:id/photos/:style.:extension',
+    url: '/media/:class/:id/photos/:style.:extension',
+    default_url: '/assets/no_image_:style.png'
 
   validates :name, presence: true, length: { within: 6..200 }
   validates :nick, presence: true, length: { within: 3..34 }
@@ -100,11 +105,6 @@ class User < ActiveRecord::Base
   after_save :remove_association_app, if: '!oauth_application_id.blank? && api.blank?'
 
   # paperclip uses: file_name, content_type, file_size e updated_at
-  has_attached_file :photo,
-    styles: { medium: '120x120#', small: '30x30#', forum: '40x40#' },
-    path: ':rails_root/media/:class/:id/photos/:style.:extension',
-    url: '/media/:class/:id/photos/:style.:extension',
-    default_url: '/assets/no_image_:style.png'
 
   validates_attachment_size :photo, less_than: 700.kilobyte, message: '' # Esse message vazio deve permanecer dessa forma enquanto nao descobrirmos como passar a mensagem de forma correta. Se o message for vazio a validacao nao eh feita.
   validates_attachment_content_type :photo,
@@ -639,10 +639,10 @@ class User < ActiveRecord::Base
 
   def self.open_spreadsheet(file, sep = ';')
     case File.extname(file.original_filename)
-    when ".csv"  then Roo::CSV.new(file.path, csv_options: { col_sep: sep, encoding: Encoding::ISO_8859_1 })
-    when ".xls"  then Roo::Excel.new(file.path, nil, :ignore)
-    when ".xlsx" then Roo::Excelx.new(file.path, nil, :ignore)
-    when ".ods"  then Roo::OpenOffice.new(file.path, nil, :ignore)
+    when ".csv" then Roo::Csv.new(file.path, packed: nil, file_warning: :ignore, csv_options: { col_sep: sep, encoding: Encoding::ISO_8859_1 })
+    when ".xls" then Roo::Excel.new(file.path, packed: nil, file_warning: :ignore)
+    when ".xlsx" then Roo::Excelx.new(file.path, packed: nil, file_warning: :ignore)
+    when ".ods"  then Roo::OpenOffice.new(file.path, packed: nil, file_warning: :ignore)   
     else raise I18n.t('administrations.import_users.unknown_file')
     end
   end

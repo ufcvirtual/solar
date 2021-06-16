@@ -1,12 +1,20 @@
 class QuestionItem < ActiveRecord::Base
 
   belongs_to :question
+  has_attached_file :item_image,
+                    styles: { medium: '350x350>' },
+                    path: ':rails_root/media/questions/items/:id_:basename_:style.:extension',
+                    url: '/media/questions/items/:id_:basename_:style.:extension'
+  has_attached_file :item_audio,
+                    path: ':rails_root/media/questions/items/:id_:normalized_item_audio_file_name',
+                    url: '/media/questions/items/:id_:normalized_item_audio_file_name'
 
   has_many :exam_responses_question_items
   has_many :exam_responses, through: :exam_responses_question_items
 
   validates_attachment_size :item_image, less_than: 2.megabyte, message: ''
   validates_attachment_content_type :item_image, content_type: /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/, message: I18n.t('questions.error.wrong_type')
+  do_not_validate_attachment_file_type :item_image
 
   validates :description, presence: true
 
@@ -14,17 +22,9 @@ class QuestionItem < ActiveRecord::Base
 
   validates :audio_description, presence: true, if: '(!item_audio_file_name.blank?)'
 
-  has_attached_file :item_image,
-                    styles: { medium: '350x350>' },
-                    path: ':rails_root/media/questions/items/:id_:basename_:style.:extension',
-                    url: '/media/questions/items/:id_:basename_:style.:extension'
-
   validates_attachment_size :item_audio, less_than: 10.megabyte, message: ''
   validates_attachment_content_type :item_audio, content_type: /^audio\/(mpeg|x-mpeg|mp3|x-mp3|mpeg3|x-mpeg3|mpg|x-mpg|x-mpegaudio)$/, message: I18n.t('questions.error.wrong_type_audio')
-
-  has_attached_file :item_audio,
-                    path: ':rails_root/media/questions/items/:id_:normalized_item_audio_file_name',
-                    url: '/media/questions/items/:id_:normalized_item_audio_file_name'
+  do_not_validate_attachment_file_type :item_audio
 
   before_destroy :can_destroy?
 

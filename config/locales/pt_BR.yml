@@ -3476,6 +3476,7 @@ pt_BR:
       holiday: Feriado
       webconference_lesson: Aula de Webconferência
       other: Outros
+      remote_evaluation: Avaliação Remota
     form:
       groups: Turmas
       new: Novo evento

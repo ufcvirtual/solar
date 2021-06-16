@@ -64,7 +64,7 @@ class DiscussionsController < ApplicationController
     if @discussion.save
       render_discussion_success_json('created')
     else
-      @files_errors = @discussion.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
+      @files_errors = @discussion.enunciation_files.to_a.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       @discussion.enunciation_files.build if @discussion.enunciation_files.empty?
       render :new
     end
@@ -84,7 +84,7 @@ class DiscussionsController < ApplicationController
     if @discussion.update_attributes(discussion_params)
       render_discussion_success_json('updated')
     else
-      @files_errors = @discussion.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
+      @files_errors = @discussion.enunciation_files.to_a.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
       @discussion.enunciation_files.build if @discussion.enunciation_files.empty?
       @allocation_tags_ids = params[:allocation_tags_ids]
       render :edit

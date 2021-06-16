@@ -16,6 +16,10 @@ class ScheduleEventFile < ActiveRecord::Base
   before_destroy :can_destroy?
   before_save :replace_attachment_file_name
 
+  has_attached_file :attachment,
+    path: ":rails_root/media/schedule_event/schedule_event_files/:id_:basename.:extension",
+    url: "/media/schedule_event/schedule_event_files/:id_:basename.:extension"
+    
   validates :attachment, presence: true
   validates :academic_allocation_user_id, presence: true
   validate :verify_type
@@ -23,10 +27,6 @@ class ScheduleEventFile < ActiveRecord::Base
   validate :verify_dates
 
   serialize :file_correction, JSON
-
-  has_attached_file :attachment,
-    path: ":rails_root/media/schedule_event/schedule_event_files/:id_:basename.:extension",
-    url: "/media/schedule_event/schedule_event_files/:id_:basename.:extension"
 
   validates_attachment_size :attachment, less_than: FILESIZE, message: I18n.t('schedule_event_files.error.attachment_file_size_too_big', file: FILESIZE/1000/1000)
   validates_attachment_content_type :attachment, content_type: /(^image\/(jpeg|jpg|gif|png)$)|\Aapplication\/pdf/, message: I18n.t('schedule_event_files.error.wrong_type')

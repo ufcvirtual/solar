@@ -234,7 +234,7 @@ class MessagesController < ApplicationController
     @reply_to = (params[:reply_to].blank? ? [] : User.where(id: params[:reply_to].split(',')).map(&:to_msg))
 
     unless params[:reply_to].blank? || @contacts.blank?
-      @list = @contacts.find_all_by_id(params[:reply_to].split(','))
+      @list = @contacts.where(id: params[:reply_to].split(',')).to_a
       @content_student = @list.any? { |u| u.types.to_i==Profile_Type_Student }
       @content_responsibles = @list.any? { |u| u.types.to_i==Profile_Type_Class_Responsible }
     end
