@@ -621,6 +621,11 @@
 
     .block_content {
       justify-content: center;
+
+      .lesson_note_name {
+        display: flex !important;
+        flex-direction: column;
+      }
     }
   }
 
@@ -638,6 +643,7 @@
     }
   }
 
+  .speech2text,
   .forum_post_icon img {
     display: none;
   }
