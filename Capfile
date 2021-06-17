@@ -48,11 +48,8 @@ install_plugin Capistrano::Nginx  # if you want to upload a nginx site template
 # https://github.com/seuros/capistrano-puma
 require "capistrano/puma"
 install_plugin Capistrano::Puma  # Default puma tasks
-<<<<<<< HEAD
-install_plugin Capistrano::Puma::Systemd  # if you use SystemD 
-=======
+#install_plugin Capistrano::Puma::Systemd  # if you use SystemD
 install_plugin Capistrano::Puma::Daemon
->>>>>>> 59480c84e34414816ebdbbaff41d702eca944d2c
 install_plugin Capistrano::Puma::Workers  # if you want to control the workers (in cluster mode)
 install_plugin Capistrano::Puma::Nginx  # if you want to upload a nginx site template
 
