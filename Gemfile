@@ -11,7 +11,7 @@ gem "pg", "~> 1.2.3"
 
 # gem "koala", "1.2.0" # facebook
 
-gem "devise", "~> 4.7.3"
+gem "devise", "~> 4.8.0"
 gem "devise-i18n", "~> 1.6.5"
 gem "cancancan", "~> 2.2.0"
 gem "devise-encryptable", "~> 0.2.0"
