@@ -1,7 +1,7 @@
 class Devise::LoginController < Devise::SessionsController
 
-  prepend_before_action :verify_user_data
   skip_before_action :check_concurrent_session, raise: false
+  prepend_before_action :verify_user_data
 
   def create
     # @return = verify_user_data
