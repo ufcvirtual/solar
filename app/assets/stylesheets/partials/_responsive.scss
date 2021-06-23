@@ -8,7 +8,7 @@
 
 .open-menu,
 .close-menu {
-  padding: 0 5px;
+  padding: 0 1rem;
 }
 
 .bar1,
@@ -510,8 +510,8 @@
 
   #mysolar_content,
   #mysolar_top_options {
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 
   #mysolar_content {
@@ -897,7 +897,9 @@
     width: 200px !important;
   }
 
+  #webconference_is_recorded,
   .webconference_is_recorded,
+  [for="webconference_is_recorded"],
   .webconference_shared_between_groups {
     display: inline-flex;
   }
