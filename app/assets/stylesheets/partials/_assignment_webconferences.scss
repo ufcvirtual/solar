@@ -1,5 +1,4 @@
 .student_webconferences {
-
   padding-top: 10px;
 
   .title-warning {
@@ -39,7 +38,7 @@
       }
 
       td {
-        [class^='icon-'] {
+        [class^="icon-"] {
           font-size: 18px;
           padding-top: 7px;
         }
@@ -48,7 +47,6 @@
       td.record {
         width: 22px;
       }
-
     }
   }
 
@@ -58,14 +56,12 @@
       text-decoration: none;
     }
   }
-
 }
 
 .simple_form.awebconference_form {
-
   // min-width: 500px;
   .input {
-    display: inline-flex;
+    display: flex;
 
     .assignment_webconference_title,
     .assignment_webconference_duration,
