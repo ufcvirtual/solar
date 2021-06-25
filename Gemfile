@@ -38,8 +38,8 @@ gem "momentjs-rails", "~> 2.9.0"
 gem "bigbluebutton-api-ruby", "~> 1.6.0"
 
 # platform adicionado para evitar que o unicorn tente ser executado no windows
-gem 'puma-daemon', require: false
-gem "puma", "~> 5.1.1"
+# gem 'puma-daemon', require: false
+gem "puma" #, "~> 5.1.1"
 
 gem "rubyzip", "~> 1.2.1"
 

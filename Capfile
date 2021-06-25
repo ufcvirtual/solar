@@ -43,14 +43,13 @@ require "capistrano/dotenv/tasks"
 
 # https://github.com/platanus/capistrano3-nginx
 require "capistrano/nginx"
-install_plugin Capistrano::Nginx  # if you want to upload a nginx site template
+install_plugin Capistrano::Nginx # if you want to upload a nginx site template
 
 # https://github.com/seuros/capistrano-puma
 require "capistrano/puma"
-install_plugin Capistrano::Puma  # Default puma tasks
-install_plugin Capistrano::Puma::Systemd  # if you use SystemD 
-install_plugin Capistrano::Puma::Workers  # if you want to control the workers (in cluster mode)
-install_plugin Capistrano::Puma::Nginx  # if you want to upload a nginx site template
+install_plugin Capistrano::Puma # Default puma tasks
+install_plugin Capistrano::Puma::Workers # if you want to control the workers (in cluster mode)
+install_plugin Capistrano::Puma::Nginx # if you want to upload a nginx site template
 
 # Load custom tasks from `lib/capistrano/tasks` if you have any defined
 Dir.glob("lib/capistrano/tasks/*.rake").each { |r| import r }

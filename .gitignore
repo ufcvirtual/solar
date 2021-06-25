@@ -49,6 +49,7 @@ config/sav.yml
 config/sav.deploy.yml
 config/newrelic.yml
 config/digital_class.yml
+config/puma.rb
 sink.sh
 commit.sh
 sink_master.sh

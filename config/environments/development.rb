@@ -36,7 +36,7 @@ Solar::Application.configure do
   config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 } #Mailcatcher
 
   # Utilizando Serviço Mailcatcher com Docker
-  # config.action_mailer.smtp_settings = { :address => "mailcatcher", :port => 1025 } 
+  # config.action_mailer.smtp_settings = { :address => "mailcatcher", :port => 1025 }
 
   # Not logging any DEBUG message
   config.log_level = :info
