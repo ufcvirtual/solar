@@ -409,6 +409,14 @@
 
   #mysolar_content {
     width: 100%;
+
+    #scores {
+      .info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
   }
 
   .block_wrapper,
