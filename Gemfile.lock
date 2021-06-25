@@ -446,6 +446,7 @@ GEM
       nokogiri (>= 1.4.0)
       nori (~> 2.0.3)
       wasabi (~> 3.0.0)
+    sd_notify (0.1.1)
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
@@ -598,6 +599,7 @@ DEPENDENCIES
   rufus-scheduler (~> 3.4.2)
   sass-rails (~> 6.0.0)
   savon (~> 2.0.0)
+  sd_notify
   selenium-webdriver (~> 3.142.7)
   simple_form (~> 4.0.1)
   simplecov (~> 0.15.1)
