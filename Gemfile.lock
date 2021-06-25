@@ -283,6 +283,7 @@ GEM
       terrapin (~> 0.6.0)
     launchy (2.5.0)
       addressable (~> 2.7)
+    libv8-node (15.14.0.1)
     loofah (2.10.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -299,6 +300,8 @@ GEM
       rake
     mini_mime (1.1.0)
     mini_portile2 (2.5.3)
+    mini_racer (0.4.0)
+      libv8-node (~> 15.14.0.0)
     minitest (5.14.4)
     momentjs-rails (2.9.0)
       railties (>= 3.1)
@@ -568,6 +571,7 @@ DEPENDENCIES
   kt-paperclip (~> 6.4.1)
   launchy (= 2.5.0)
   memory_profiler (~> 0.9.10)
+  mini_racer
   momentjs-rails (~> 2.9.0)
   nested_form_fields (~> 0.8.4)
   newrelic_rpm

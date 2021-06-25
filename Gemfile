@@ -87,6 +87,7 @@ gem "actionpack-action_caching", "~> 1.2.0"
 
 # gem "execjs"
 # gem "therubyracer", platforms: :ruby
+gem "mini_racer"
 
 gem "bigdecimal", "1.4.2"
 
