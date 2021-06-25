@@ -85,8 +85,8 @@ gem "activerecord-session_store", "~> 1.1.3"
 gem "actionpack-page_caching", "~> 1.2.3"
 gem "actionpack-action_caching", "~> 1.2.0"
 
-gem "execjs"
-gem "therubyracer", platforms: :ruby
+# gem "execjs"
+# gem "therubyracer", platforms: :ruby
 
 gem "bigdecimal", "1.4.2"
 

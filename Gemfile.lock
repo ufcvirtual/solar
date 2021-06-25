@@ -283,7 +283,6 @@ GEM
       terrapin (~> 0.6.0)
     launchy (2.5.0)
       addressable (~> 2.7)
-    libv8 (3.16.14.19)
     loofah (2.10.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -400,7 +399,6 @@ GEM
     rainbow (3.0.0)
     rake (13.0.3)
     rb-readline (0.5.5)
-    ref (2.0.0)
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
@@ -479,9 +477,6 @@ GEM
       climate_control (>= 0.0.3, < 1.0)
     test-unit (3.1.9)
       power_assert
-    therubyracer (0.12.3)
-      libv8 (~> 3.16.14.15)
-      ref
     thor (1.1.0)
     thread_safe (0.3.6)
     tilt (2.0.10)
@@ -556,7 +551,6 @@ DEPENDENCIES
   doorkeeper (~> 4.3.2)
   dotenv-rails
   em-websocket (~> 0.5.1)
-  execjs
   factory_girl_rails (~> 4.2.1)
   faker (~> 1.8.7)
   fast_stack (~> 0.2.0)
@@ -606,7 +600,6 @@ DEPENDENCIES
   sshkit-sudo
   stackprof (~> 0.2.11)
   test-unit (~> 3.1.5)
-  therubyracer
   tzinfo-data
   uglifier (~> 4.1.10)
   webrat (= 0.7.3)
