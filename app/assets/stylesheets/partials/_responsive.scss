@@ -99,6 +99,23 @@
   height: 0;
 }
 
+.search_messages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.display_messages {
+  display: flex;
+  align-content: stretch;
+  align-items: stretch;
+  width: 100%;
+}
+
+.list_messages {
+  width: 100%;
+}
+
 /* Grid
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
@@ -1163,6 +1180,11 @@
     .block_white {
       height: auto !important;
     }
+  }
+
+  .message_layout {
+    display: flex;
+    flex-direction: column;
   }
 }
 

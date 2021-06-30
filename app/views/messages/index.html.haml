@@ -15,13 +15,15 @@
             %li{role: 'menuitem'}= link_to t('messages.select_unread'), '#void', class: 'unreads', id: "unreads",  :'data-search-for'=>'only_unread',onclick: 'change_messages_view(this);', onkeydown: 'click_on_keypress(event, this);', :'data-shortcut' => t("shortcut.message.code.unreads"), :'data-shortcut-name' => t("shortcut.message.name.unreads"), :'data-url' => anybox_messages_path(page: 1, box: 'box_value', subject: 'subject_value', user: 'user_value', search_for: 'only_unread')
 
     .align-middle.search_messages.no-float-mobile
-      .hide_label#search_box_accesskey
-        = label_tag :subject, t('.placeholder_subject')
-        = text_field_tag :subject, nil, placeholder: t('.placeholder_subject'), class: "search_box_focus"
-      .hide_label
-        = label_tag :user, t('.placeholder_user')
-        = text_field_tag :user, nil, placeholder: t('.placeholder_user')
-      = link_to (content_tag(:i, nil, class: 'icon-search')), '#void', class: 'btn', :'data-tooltip' => t('.search'), id: 'search_messages', :'data-url' => search_messages_path, :'aria-label' => t('.search')
+      .search_messages_mobile_left
+        .hide_label#search_box_accesskey
+          = label_tag :subject, t('.placeholder_subject')
+          = text_field_tag :subject, nil, placeholder: t('.placeholder_subject'), class: "search_box_focus"
+      .search_messages_mobile_right
+        .hide_label
+          = label_tag :user, t('.placeholder_user')
+          = text_field_tag :user, nil, placeholder: t('.placeholder_user')
+        = link_to (content_tag(:i, nil, class: 'icon-search')), '#void', class: 'btn', :'data-tooltip' => t('.search'), id: 'search_messages', :'data-url' => search_messages_path, :'aria-label' => t('.search')
 
     .align-right.btn-group.no-float-mobile
       %ul
@@ -32,7 +34,7 @@
         %li.except-trash= link_to content_tag(:i, nil, class: 'icon-trash', :'aria-hidden' => 'true'), '#void', class: 'btn remove_btn', id: 'remove_message', :"data-tooltip" => t(:delete, scope: :messages), :"data-new-status" => 'trash', :"data-link-udpate-status" => change_status_message_path(id: ':id', new_status: 'trash', box: 'box_value', page: 1), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:delete, scope: :messages)
         %li.only-trash= link_to content_tag(:i, nil, class: 'icon-restore', :'aria-hidden' => 'true'), '#void', id: 'restore_message', class: 'btn', :"data-tooltip" => t(:restore, scope: :messages), :"data-new-status" => 'restore', :"data-link-udpate-status" => change_status_message_path(id: ':id', new_status: 'restore', box: 'box_value', page: 1), onkeydown: 'click_on_keypress(event, this);', :'aria-label' => t(:restore, scope: :messages)
 
-  .messages_list
+  .messages_list.clearfix
     = render partial: 'list'
 
 = javascript_include_tag 'messages'

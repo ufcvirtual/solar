@@ -1,6 +1,6 @@
-.block_content
+.block_content.display_messages
   - if @messages.any?
-    .responsive-table
+    .responsive-table.list_messages
       %table.tb_list.message_div_list{summary: t('messages.index.summary')}
         %thead
           %tr
