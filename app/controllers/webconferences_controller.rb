@@ -218,16 +218,17 @@ class WebconferencesController < ApplicationController
 
     @can_evaluate = can? :evaluate, Webconference, {on: @allocation_tag_id}
     acs = AcademicAllocation.where(id: academic_allocations_ids)
-    @evaluative = (acs.where(evaluative: true).size == acs.size)
-    @frequency = (acs.where(frequency: true).size == acs.size)
 
     @academic_allocation = acs.where(allocation_tag_id: @allocation_tag_id).first
+
+    @evaluative = @academic_allocation.evaluative
+    @frequency = @academic_allocation.frequency
 
     @acu = AcademicAllocationUser.find_one(@academic_allocation.id, params[:user_id],nil, false, @can_evaluate)
 
     @is_student = @user.is_student?([@allocation_tag_id].flatten)
 
-    @maxwh = acs.first.max_working_hours
+    @maxwh = @academic_allocation.max_working_hours
     @back = params.include?(:back)
 
     render partial: 'user_access'
