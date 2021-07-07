@@ -7,16 +7,16 @@
       = f.input :offer_id, as: :hidden
 
       %div
-        = f.label t(:course)
+        = f.label t(:course), class: 'responsive_group_label'
         #text_as_label= @group.offer.course.try(:name)
 
       - if @type_id != "3"
         %div
-          = f.label t(:curriculum_unit)
+          = f.label t(:curriculum_unit), class: 'responsive_group_label'
           #text_as_label= @group.offer.curriculum_unit.try(:name)
 
       %div
-        = f.label t(:semester)
+        = f.label t(:semester), class: 'responsive_group_label'
         #text_as_label= @group.offer.semester.name
 
       = f.input :name

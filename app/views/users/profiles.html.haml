@@ -5,7 +5,7 @@
     .block_toolbar_left
       = link_to content_tag(:i, nil, class: 'icon-plus'), request_profile_users_path, class: " btn btn_main", id: "request_profile", :"data-tooltip" => t(".request_profile"), :'aria-label' => t(".request_profile") + t('fancybox.open')
   - unless @allocations.blank?
-    .block_content
+    .block_content.responsive-table
       %table.tb_list
         %thead
           %tr.lines
@@ -26,5 +26,5 @@
 
 :javascript
   $(function(){
-    $('#request_profile').call_fancybox({element_selector_back: '.profiles_list h2'});    
+    $('#request_profile').call_fancybox({element_selector_back: '.profiles_list h2'});
   });

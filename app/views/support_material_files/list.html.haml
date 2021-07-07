@@ -18,35 +18,36 @@
           = link_to (content_tag(:i, nil, class: 'icon-trash')), "#void", class: 'btn btn_del delete_material', :"data-link-delete" => support_material_file_path(':id', allocation_tags_ids: @allocation_tags_ids), disabled: true, :'data-tooltip' => t(".delete")
 
     - unless @support_materials.empty?
-      %table.tb_list
-        %thead
-          %tr.lines
-            %th.center.no_sort{style: 'width: 25px;'}= check_box_tag :all_support_material, false, false, :"data-children-names" => "c_", class: "all_support_material"
-            %th.center= t(".title")
-            %th{style: 'text-align:left;'}= t(".name")
-            %th.center.date= t(".date")
-            %th.center= t(".type")
+      .responsive-table
+        %table.tb_list
+          %thead
+            %tr.lines
+              %th.center.no_sort{style: 'width: 25px;'}= check_box_tag :all_support_material, false, false, :"data-children-names" => "c_", class: "all_support_material"
+              %th.center= t(".title")
+              %th{style: 'text-align:left;'}= t(".name")
+              %th.center.date= t(".date")
+              %th.center= t(".type")
 
-        %tbody
-          - @support_materials.each do |material|
-            - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
-            %tr.lines{id: "tr_#{material.id}"}
-              %td{style: 'text-align:center;'}
-                = check_box_tag("c_#{material.id}", material.id, false, {class: "ckb_material", :"data-is-link" => (material.material_type == Material_Type_Link)})
-              %td{style: 'text-align:center;  max-width: 400px; overflow: hidden; word-wrap: break-word'}= material.title
-              %td
-                %div
-                  - if material.is_link?
-                    %span= image_tag('icon_file_link.png')
-                    %span= link_to material.name, material.name, target: '_blank'
-                  - else
-                    %span= image_tag(icon_attachment(material.name))
-                    %span= link_to material.name, download_support_material_file_path(id: material.id)
-                  .group_label.invisible= render "groups/groups_tags", groups: material.groups, tool: material, all_groups: all_groups, paths: {add: add_group_to_support_material_files_path(id: "param_id", tool_id: material.id), remove: remove_group_from_support_material_files_path(id: "param_id", tool_id: material.id), unbind: unbind_group_from_support_material_files_path(id: "param_id", tool_id: material.id), tags: group_tags_from_support_material_files_path(tool_id: material.id)}
-              %td{style: 'text-align:center;'}
-                %div= l(material.attachment_updated_at, format: :normal)
-              %td{style: 'text-align:center;'}
-                %div= (material.is_link?) ? t(".link") : t(".file")
+          %tbody
+            - @support_materials.each do |material|
+              - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
+              %tr.lines{id: "tr_#{material.id}"}
+                %td{style: 'text-align:center;'}
+                  = check_box_tag("c_#{material.id}", material.id, false, {class: "ckb_material", :"data-is-link" => (material.material_type == Material_Type_Link)})
+                %td{style: 'text-align:center;  max-width: 400px; overflow: hidden; word-wrap: break-word'}= material.title
+                %td
+                  %div
+                    - if material.is_link?
+                      %span= image_tag('icon_file_link.png')
+                      %span= link_to material.name, material.name, target: '_blank'
+                    - else
+                      %span= image_tag(icon_attachment(material.name))
+                      %span= link_to material.name, download_support_material_file_path(id: material.id)
+                    .group_label.invisible= render "groups/groups_tags", groups: material.groups, tool: material, all_groups: all_groups, paths: {add: add_group_to_support_material_files_path(id: "param_id", tool_id: material.id), remove: remove_group_from_support_material_files_path(id: "param_id", tool_id: material.id), unbind: unbind_group_from_support_material_files_path(id: "param_id", tool_id: material.id), tags: group_tags_from_support_material_files_path(tool_id: material.id)}
+                %td{style: 'text-align:center;'}
+                  %div= l(material.attachment_updated_at, format: :normal)
+                %td{style: 'text-align:center;'}
+                  %div= (material.is_link?) ? t(".link") : t(".file")
     - else
       .block_content_text_list.text_none= t(".none")
 

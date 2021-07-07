@@ -67,7 +67,7 @@
 
             = link_to content_tag(:i, nil, class: 'icon-clipboard', :"data-tooltip" => t('.default_final_weight')), "#void", onclick: 'set_final_weight()'
             .weight_link= link_to t('.default_final_weight'), "#void", onclick: 'set_final_weight()'
-          .analyzer
+          .analyzer.dont-show-in-mobile
             = link_to content_tag(:i, nil, class: 'icon-popup', :"data-tooltip" => t('.window_analyzer_home')), "#void", onclick: 'slideDraggable()'
             = link_to t('.analyzer'), "#void", onclick: 'slideDraggable()'
 

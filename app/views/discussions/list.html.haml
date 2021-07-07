@@ -15,34 +15,35 @@
 
   - unless @discussions.blank?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
-    %table.tb_list
-      %thead
-        %tr.lines
-          %th.no_sort{style: 'text-align:center; width: 8%;'}= check_box_tag :all_discussions, false, false, :"data-children-names" => "ckb_discussion", class: "all_discussions"
-          %th{align: "left"}=t :title
-          %th.no_sort{align: "center", style: "width: 26%;"}=t :forum_table_date
-      %tbody
-        - @discussions.each do |discussion|
-          - has_file = (not discussion.enunciation_files.empty?)
-          %tr.lines{id: "tr_#{discussion.id}"}
-            %td{style: 'text-align:center;'}= check_box_tag :ckb_discussion, discussion.id, false, {class: "ckb_discussion"}
-            %td
-              %div
-                .title
-                  = discussion.name
-                  - if has_file
-                    %i.icon-paperclip
-                .description
-                  - description_text = strip_tags discussion.description
-                  .minimun
-                    = raw(truncate description_text, length: 200)
-                    - if description_text.size > 200
-                      =content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))
-                  .complete.invisible
-                    = description_text
-                    = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
-                .group_label.invisible= render "groups/groups_tags", groups: discussion.groups, tool: discussion, all_groups: all_groups, paths: {add: add_group_to_discussions_path(id: "param_id", tool_id: discussion.id), remove: remove_group_from_discussions_path(id: "param_id", tool_id: discussion.id), unbind: unbind_group_from_discussions_path(id: "param_id", tool_id: discussion.id), tags: group_tags_from_discussions_path(tool_id: discussion.id)}
-            %td{style: 'text-align:center;'}= [l(discussion.schedule.start_date, format: :normal), l(discussion.schedule.end_date, format: :normal)].join(" - ")
+    .responsive-table
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th.no_sort{style: 'text-align:center; width: 8%;'}= check_box_tag :all_discussions, false, false, :"data-children-names" => "ckb_discussion", class: "all_discussions"
+            %th{align: "left"}=t :title
+            %th.no_sort{align: "center", style: "width: 26%;"}=t :forum_table_date
+        %tbody
+          - @discussions.each do |discussion|
+            - has_file = (not discussion.enunciation_files.empty?)
+            %tr.lines{id: "tr_#{discussion.id}"}
+              %td{style: 'text-align:center;'}= check_box_tag :ckb_discussion, discussion.id, false, {class: "ckb_discussion"}
+              %td
+                %div
+                  .title
+                    = discussion.name
+                    - if has_file
+                      %i.icon-paperclip
+                  .description
+                    - description_text = strip_tags discussion.description
+                    .minimun
+                      = raw(truncate description_text, length: 200)
+                      - if description_text.size > 200
+                        =content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))
+                    .complete.invisible
+                      = description_text
+                      = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                  .group_label.invisible= render "groups/groups_tags", groups: discussion.groups, tool: discussion, all_groups: all_groups, paths: {add: add_group_to_discussions_path(id: "param_id", tool_id: discussion.id), remove: remove_group_from_discussions_path(id: "param_id", tool_id: discussion.id), unbind: unbind_group_from_discussions_path(id: "param_id", tool_id: discussion.id), tags: group_tags_from_discussions_path(tool_id: discussion.id)}
+              %td{style: 'text-align:center;'}= [l(discussion.schedule.start_date, format: :normal), l(discussion.schedule.end_date, format: :normal)].join(" - ")
 
   - else
     .block_content_text.block_content_text_list.text_none= t(:forum_message)

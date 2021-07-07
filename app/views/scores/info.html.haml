@@ -57,7 +57,7 @@
         %span= button_tag t(".search"), id: "bt-amount-history-access", class: "btn"
         #amount_found
           %h2=t('.access_info')
-      #history-body
+      #history-body.responsive-table
         %table.tb_list
           = render partial: "access", locals: {access: @access}
 
@@ -66,18 +66,19 @@
       %h2= t(".public_files")
     .block_content.public_files_info
       - no_files = (@public_files.blank?)
-      %table.tb_list
-        %thead{style: (no_files ? "display: none" : "")}
-          %tr.lines
-            %th.no_sort
-            %th#file= t(".file")
-            %th#size= t(".size")
-            %th#sent_on= t(".sent_on")
-            %th.no_sort
-        %tbody.public_files
-          - unless no_files
-            - @public_files.each do |file|
-              = render partial: "public_files/file", locals: {file: file, destroy: false}
+      .responsive-table
+        %table.tb_list
+          %thead{style: (no_files ? "display: none" : "")}
+            %tr.lines
+              %th.no_sort
+              %th#file= t(".file")
+              %th#size= t(".size")
+              %th#sent_on= t(".sent_on")
+              %th.no_sort
+          %tbody.public_files
+            - unless no_files
+              - @public_files.each do |file|
+                = render partial: "public_files/file", locals: {file: file, destroy: false}
       .text_none.empty_message{class: (no_files ? "" : "hide_message")}= t(:itens_not_found)
 
   .block_wrapper{style: "float:left"}

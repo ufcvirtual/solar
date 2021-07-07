@@ -10,15 +10,16 @@
     = link_to link, import_users_log_path(@log_file), type: "button", class: "btn", id: "download_logs"
 
   .block_content.block_content_alt
-    %table.tb_list.tb_log
-      %tbody
-        - if (@count_imported > 0)
-          %tr.lines
-            %td.success= t(:registered_success, scope: [:administrations, :import_users], count: @count_imported)
+    .responsive-table
+      %table.tb_list.tb_log
+        %tbody
+          - if (@count_imported > 0)
+            %tr.lines
+              %td.success= t(:registered_success, scope: [:administrations, :import_users], count: @count_imported)
 
-        - @log[:error].each do |error|
-          %tr.lines
-            %td.error= error
+          - @log[:error].each do |error|
+            %tr.lines
+              %td.error= error
 
 :css
 

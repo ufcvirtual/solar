@@ -53,7 +53,7 @@ $(function() {
   });
 
   $("body").click(function(e) {
-    if((e.target.id !== 'mysolar_top_submenu') && (e.target.id !== 'mysolar_top_user_nick') && (e.target.id !== 'image_user')){
+    if((e.target.id !== 'mysolar_top_submenu') && (e.target.id !== 'mysolar_top_user_nick') && (e.target.id !== 'image_user') && (e.target.id !== 'student-name')){
       $("#mysolar_top_submenu").slideUp(150);
       $('#mysolar_top_submenu_label').removeClass('mysolar_top_submenu_label_selected');
       $('#mysolar_top_submenu_label').addClass('mysolar_top_submenu_label_regular');
@@ -61,7 +61,7 @@ $(function() {
   });
 
   $("body").click(function(e) {
-    if((e.target.id !== 'mysolar_submenu_help') && (e.target.id !== 'help_top')){
+    if((e.target.id !== 'mysolar_submenu_help') && (e.target.id !== 'help_top') && (e.target.id !== 'help-link') && (e.target.id !== 'image_help')){
       $("#mysolar_submenu_help").slideUp(150);
       $('#mysolar_top_help').removeClass('mysolar_top_submenu_label_selected');
       $('#mysolar_top_help').addClass('mysolar_top_submenu_label_regular');
@@ -69,7 +69,7 @@ $(function() {
   });
 
   $("body").click(function(e) {
-    if((e.target.id !== 'mysolar_accessibility_submenu') && (e.target.id !== 'accessibility_top')){
+    if((e.target.id !== 'mysolar_accessibility_submenu') && (e.target.id !== 'accessibility_top') && (e.target.id !== 'accessibility-link') && (e.target.id !== 'image_accessibility')){
       $("#mysolar_accessibility_submenu").slideUp(150);
       $('#accessibility_top_menu').removeClass('mysolar_top_submenu_label_selected');
       $('#accessibility_top_menu').addClass('mysolar_top_submenu_label_regular');

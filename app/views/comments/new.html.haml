@@ -1,11 +1,12 @@
-%table.comment
-  %tr
-    %td.comment_head
-      .user_comment= current_user.nick
-      .comment_date=l Date.current
-  %tr
-    %td.comment_form{ colspan: "2" }
-      = render "form"
+.responsive-table
+  %table.comment
+    %tr
+      %td.comment_head
+        .user_comment= current_user.nick
+        .comment_date=l Date.current
+    %tr
+      %td.comment_form{ colspan: "2" }
+        = render "form"
 
 :javascript
   $(function(){

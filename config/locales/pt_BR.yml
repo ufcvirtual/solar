@@ -1057,7 +1057,7 @@ pt_BR:
   curriculum_unit_information_title: "Informações da Disciplina"
   curriculum_unit_responsible: "Responsáveis"
   curriculum_unit_participants: "Participantes da turma"
-  curriculum_access_alert: "Número de abas excedido. Por favor, feche uma aba para abrir uma nova."
+  curriculum_access_alert: "Número de disciplinas abertas excedidas. Por favor, feche uma disciplina para abrir uma nova."
   curriculum_access_lesson: "Aulas"
   curriculum_access_message: "Mensagens"
   curriculum_access_message_inbox: "Caixa de Entrada"

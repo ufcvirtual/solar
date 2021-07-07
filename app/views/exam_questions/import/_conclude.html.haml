@@ -3,21 +3,22 @@
     %h2
       %i.icon-class
       = t('.title')
-  %table.tb_list
-    %thead
-      %tr.lines
-        %th.no_sort.icon= t('.order')
-        %th= t('.exam')
-        %th= t('.enun')
-        %th= t('.type')
-        %th= t('.source')
-        %th= t('.score')
-        %th.icon= t('.preview')
-        %th.no_sort.icon= t('.delete')
+  .responsive-table
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th.no_sort.icon= t('.order')
+          %th= t('.exam')
+          %th= t('.enun')
+          %th= t('.type')
+          %th= t('.source')
+          %th= t('.score')
+          %th.icon= t('.preview')
+          %th.no_sort.icon= t('.delete')
 
-    %tbody.questions_to_import
-      %tr.text_none
-        %td.text_none{ colspan: 10 }= t('.no_question')
+      %tbody.questions_to_import
+        %tr.text_none
+          %td.text_none{ colspan: 10 }= t('.no_question')
 
 .right_buttons
   = link_to t('.back'), "#void", onclick: 'back_to_list()', class: 'btn', alt: t('.back')
@@ -48,14 +49,14 @@
     $.put("#{import_exam_questions_path}", {questions: questions.join(';'), allocation_tags_ids: "#{@ats}", exam_id: "#{@exam_id}"}, function(data){
       $.fancybox.close();
       var msg = data.msg;
-      
+
       var to_replace = $(".list_exams");
       $.get(to_replace.data('link-list'), function(data2){
         to_replace.replaceWith(data2);
       }).done(function(){
         flash_message(msg, 'notice', 'block_wrapper:first');
       });
-      
+
     }).error(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")

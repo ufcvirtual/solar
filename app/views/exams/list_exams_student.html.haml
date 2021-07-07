@@ -3,7 +3,7 @@
     %h2= t(".list_exam")
 
   - unless @list_exam.empty?
-    .tb_list_students
+    .tb_list_students.responsive-table
       %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('.responsibles')}
         %thead
           %tr.lines

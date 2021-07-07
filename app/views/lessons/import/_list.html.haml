@@ -10,20 +10,21 @@
           .input.groups_tags= render 'groups/groups_tags', groups: lmodule.groups, tool: lmodule, all_groups: nil, paths: nil
       - lessons = lmodule.approved_lessons(current_user.id)
       - unless lessons.blank?
-        %table.tb_list
-          %thead
-            %tr.lines
-              %th.no_sort{ style: 'width: 25px;' }= check_box_tag "all_lessons_#{lmodule.id}", false, false, :"data-children-names" => "c_#{lmodule.id}_"
-              %th= t('.name')
-              %th= t('.type')
-              %th.icon= t('.preview')
-          %tbody
-            - lessons.each do |lesson|
-              %tr.lines{ :'data-id' => lesson.id }
-                %td= check_box_tag("c_#{lmodule.id}_#{lesson.id}", lesson.id, false, { class: 'cbx_value' })
-                %td= lesson.name
-                %td= lesson.type_lesson.zero? ? t('lessons.new.archive') : t('lessons.new.link')
-                %td= link_to content_tag(:i, nil, class: 'icon-eye'), "#void", onclick: 'open_lesson(this)', :'data-tooltip' => t('.preview_tooltip')
+        .responsive-table
+          %table.tb_list
+            %thead
+              %tr.lines
+                %th.no_sort{ style: 'width: 25px;' }= check_box_tag "all_lessons_#{lmodule.id}", false, false, :"data-children-names" => "c_#{lmodule.id}_"
+                %th= t('.name')
+                %th= t('.type')
+                %th.icon= t('.preview')
+            %tbody
+              - lessons.each do |lesson|
+                %tr.lines{ :'data-id' => lesson.id }
+                  %td= check_box_tag("c_#{lmodule.id}_#{lesson.id}", lesson.id, false, { class: 'cbx_value' })
+                  %td= lesson.name
+                  %td= lesson.type_lesson.zero? ? t('lessons.new.archive') : t('lessons.new.link')
+                  %td= link_to content_tag(:i, nil, class: 'icon-eye'), "#void", onclick: 'open_lesson(this)', :'data-tooltip' => t('.preview_tooltip')
       - else
         .block_content_text_list.text_none= t('.no_lesson')
   - else

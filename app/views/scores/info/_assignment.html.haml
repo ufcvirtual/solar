@@ -5,7 +5,7 @@
 
   .block_content
     .tools.show.evaluative#evaluative_assignment
-      .block_content
+      .block_content.responsive-table
         - unless @assigments_evaluative.blank?
           %table.tb_list{:summary=> t("assignments.list.summary_evaluative")}
             %thead
@@ -72,7 +72,7 @@
           .block_content.block_content_text= t(:itens_not_found)
 
     .tools.frequency#frequency_assignment
-      .block_content
+      .block_content.responsive-table
         - unless @assigments_frequency.blank?
           %table.tb_list{:summary=> t("assignments.list.summary_frequency")}
             %thead
@@ -139,7 +139,7 @@
           .block_content.block_content_text= t(:itens_not_found)
 
     .tools.notevaluative#notevaluative_assignment
-      .block_content
+      .block_content.responsive-table
         - unless @assigments_not_evaluative.blank?
           %table.tb_list{:summary=> t("assignments.list.summary_notevaluative")}
             %thead

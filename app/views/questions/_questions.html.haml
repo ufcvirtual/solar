@@ -1,18 +1,19 @@
 - unless @questions.blank?
-  %table.tb_list.tb_questions{:'data-link-list' => search_questions_path(search: @search, verify_privacy: @verify_privacy, replace: true)}
-    %thead
-      %tr.lines
-        %th.center.preview.no_sort
-          %input#all_questions{ type: 'checkbox', :"data-children-names" => 'ckb_question' }
-        %th.name= t('.enun')
-        %th.center.type= t('.type')
-        %th.center.updated_at= t('.updated_at')
-        %th.center.preview= t('.preview')
-        %th.center.privacy= t('.privacy')
-        %th.center.used_at_exams= t('.used_at_exams')
-        %th.center.published= t('.published')
-    %tbody
-      = render partial: 'questions_table'
+  .responsive-table
+    %table.tb_list.tb_questions{:'data-link-list' => search_questions_path(search: @search, verify_privacy: @verify_privacy, replace: true)}
+      %thead
+        %tr.lines
+          %th.center.preview.no_sort
+            %input#all_questions{ type: 'checkbox', :"data-children-names" => 'ckb_question' }
+          %th.name= t('.enun')
+          %th.center.type= t('.type')
+          %th.center.updated_at= t('.updated_at')
+          %th.center.preview= t('.preview')
+          %th.center.privacy= t('.privacy')
+          %th.center.used_at_exams= t('.used_at_exams')
+          %th.center.published= t('.published')
+      %tbody
+        = render partial: 'questions_table'
 
 - else
   .block_content_text_list.text_none= t('.none')

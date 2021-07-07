@@ -10,7 +10,7 @@
       %span.right_buttons
         = button_tag content_tag(:i, nil, class: 'icon-plus'), id: "new_file-#{@allocation_tag_id}", class: "btn btn_main btn_new_file #{tool.offer_opened? ? '' : 'disabled'}", onclick: 'new_file(this)', :'data-url' => new_schedule_event_file_path(tool_id: tool.id, tool: tool_type, student_id: student_id, group_id: @group_id, score_type: @score_type),  disabled: !tool.offer_opened?
   .file_form{ class: "new_file-#{@allocation_tag_id}" }
-  .block_content
+  .block_content.responsive-table
     - no_files = files.nil? || files.empty? ? true : false
     %table.tb_list#tb_lf{ :summary=> t("schedule_events.list.summary_student_files"), style: (no_files ? 'display: none' : '') }
       %thead{ style: (no_files ? 'display: none' : '')}

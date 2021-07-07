@@ -1,8 +1,14 @@
 // CONTEUDO GERAL E BLOCOS
 
 #mysolar_content {
-  padding-left: 5px;
-  width: 785px;
+  margin-left: 5px;
+  padding-left: 10px;
+  // width: 785px;
+  width: 98%;
+  min-height: calc(100vh - 7.5rem);
+  max-width: -webkit-fill-available;
+  max-width: -moz-available;
+  max-width: fill-available;
   padding-right: 10px;
   display: inline-block;
   zoom: 1;
@@ -21,56 +27,66 @@
   }
 }
 
-#block_locale > ul {
+#block_locale>ul {
   list-style-type: none;
   padding: 0;
 }
 
-#block_locale > ul > li {
+#block_locale>ul>li {
   display: inline-block;
   zoom: 1;
   *display: inline;
   margin-right: 5px;
 }
 
-#my_personal_data_button { // FIXME: parece que não está mais sendo utilizado, verificar
+#my_personal_data_button {
+  // FIXME: parece que não está mais sendo utilizado, verificar
   margin-top: 40px;
   width: 220px;
   float: right;
+}
+
+#subject_info_portlet {
+  .block_left {
+    .block_content {
+      padding-right: 20px;
+    }
+  }
 }
 
 /**
 * Tratando dos titulos dos conteudos
 */
 
-div.block_module, div.block_exam{
+div.block_module,
+div.block_exam {
 
   padding-top: 6px !important;
   overflow: visible !important;
   border-bottom: 1px solid;
   border-bottom-color: rgba($color_main, 0.3);
 
-  h2{
+  h2 {
     position: relative !important;
     display: block !important;
     border-bottom: 2px solid;
     border-bottom-color: $color_main;
   }
-  .block_buttons{
+
+  .block_buttons {
     display: inline-block;
   }
 
-  .groups_tags{
+  .groups_tags {
     background-color: $block_groups_background;
     min-height: 28px;
     font-size: 12px !important;
 
-    .title label{
+    .title label {
       color: $color_black;
     }
   }
 }
-
 
 .mysolar_header {
   font-variant: small-caps;
@@ -88,7 +104,8 @@ div.block_module, div.block_exam{
   padding-top: 8px;
 }
 
-.mysolar_title { // FIXME: parece ser utilizado em uma única página, verificar se é mesmo necessário
+.mysolar_title {
+  // FIXME: parece ser utilizado em uma única página, verificar se é mesmo necessário
   vertical-align: middle;
   font-variant: small-caps;
   padding: 2px 0 0 0;
@@ -132,7 +149,8 @@ div.block_module, div.block_exam{
 */
 .block_wrapper {
   margin-top: 15px;
-  width: 785px;
+  // width: 785px;
+  // padding-right: 10px;
   margin-bottom: 15px;
 }
 
@@ -143,34 +161,42 @@ div.block_module, div.block_exam{
 /**
 * Titulo geral da página
 */
-#page_title  {
+#page_title {
   @extend %page-title;
 }
 
 #page_title {
   word-break: break-word;
-  > .block_content_text {
+
+  >.block_content_text {
     border: none;
     font-size: 9pt;
-    padding: 4px 0 0 4px;
+    // padding: 4px 0 0 4px;
+    padding: 0;
+    margin-top: -5px;
     color: $color_almost_gray;
-    position: absolute;
-    right: 0;
-    bottom: 5px;
-    float: right;
+    // position: absolute;
+    // right: 0;
+    // bottom: 5px;
+    // float: right;
   }
-  > .block_content_text:hover, > .block_content_text:hover li {
+
+  >.block_content_text:hover,
+  >.block_content_text:hover li {
     color: $color_black;
   }
-  ul{
+
+  ul {
     min-width: 80px;
   }
+
   li {
     font-size: 9pt;
     border: none;
     color: $color_almost_gray_content;
     max-width: 145px;
-    a{
+
+    a {
       font-size: 9pt;
     }
   }
@@ -199,36 +225,42 @@ div.block_title {
     font-size: 12pt;
     font-weight: normal;
   }
+
   h2 {
     display: inline;
     vertical-align: bottom;
     bottom: 2px;
     color: $exclusive_font_color;
+
     /*position: absolute;*/
-    .offer_period{
+    .offer_period {
       display: inline-block;
       vertical-align: bottom;
     }
 
-    .offer_period.hide{
+    .offer_period.hide {
       display: none;
     }
   }
 
-  > .block_right {
+  >.block_right {
     padding-left: 6px;
   }
 }
 
 /* zerando o espaçamento do titulo do bloco */
-.block_title, .block_title > .block_left, .block_title > .block_right {
+.block_title,
+.block_title>.block_left,
+.block_title>.block_right {
   padding-top: 0;
   padding-bottom: 0;
   margin: 0;
 }
 
 /* definindo as divs de conteudo como inline-table */
-.block_title > div, .block_content > .block_left, .block_content > .block_right {
+.block_title>div,
+.block_content>.block_left,
+.block_content>.block_right {
   display: inline-block;
   zoom: 1;
   *display: inline;
@@ -236,12 +268,14 @@ div.block_title {
   vertical-align: top;
 }
 
-.block_content > .block_left img, .block_content > .block_right img {
+.block_content>.block_left img,
+.block_content>.block_right img {
   vertical-align: text-bottom;
 }
 
 /* icone que fica ao lado do titulo do bloco */
-.block_title_icon { // FIXME: parece ser utilizado em uma única página, verificar se é mesmo necessário
+.block_title_icon {
+  // FIXME: parece ser utilizado em uma única página, verificar se é mesmo necessário
   margin-right: 5px;
   margin-bottom: 2px;
   width: 18px;
@@ -256,26 +290,53 @@ div.block_title {
   background-color: $color_main_light;
   color: $exclusive_font_color;
   font-size: 10pt;
+  box-sizing: border-box;
 
-  > block_left {
-    width: 369px;
+  >block_left {
+    // width: 369px;
     border-right: 1px solid;
-    border-right-color: $border_color; /* adicionando a borda divisoria */
+    border-right-color: $border_color;
+    /* adicionando a borda divisoria */
   }
-  > block_right {
-    padding: 6px 10px 6px 8px; /* ajustando o espaçamento do bloco direito */
+
+  >block_right {
+    padding: 6px 10px 6px 8px;
+    /* ajustando o espaçamento do bloco direito */
   }
-  > block_left, > block_right {
-    vertical-align: top; /* garantindo que o conteudo do bloco fique proximo a linha superior */
+
+  >block_left,
+  >block_right {
+    vertical-align: top;
+    /* garantindo que o conteudo do bloco fique proximo a linha superior */
   }
+
   label {
     color: $color_main;
   }
 }
 
-.block_left, .block_right { /* largura dos blocos internos */
-  width: 370px;
-  padding: 6px 10px;
+// .block_left {
+
+//   .block_title,
+//   .block_content {
+//     padding-left: .5em;
+//   }
+
+//   .block_content {
+//     padding-right: 0.5em;
+//   }
+// }
+
+.block_left,
+.block_right {
+
+  /* largura dos blocos internos */
+  // width: 370px;
+  // padding: 6px 10px;
+  .block_content {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+  }
 }
 
 .block_content_overflow {
@@ -303,7 +364,8 @@ div.block_title {
   color: $color_black;
 }
 
-.block_content_text, .block_content_toolbar.block_content_text {
+.block_content_text,
+.block_content_toolbar.block_content_text {
   /*    font-size: 10pt;*/
   padding: 6px 10px;
   color: $color_black;
@@ -318,11 +380,11 @@ div.block_title {
   background-color: $color_main_light;
 }
 
-#mysolar_curriculum_unit_portlet .block_title a{
+#mysolar_curriculum_unit_portlet .block_title a {
   color: $color_black;
 }
 
-#mysolar_curriculum_unit_portlet .block_title a{
+#mysolar_curriculum_unit_portlet .block_title a {
   color: $color_black_base;
 }
 
@@ -339,34 +401,48 @@ div.block_title {
     vertical-align: middle;
     padding: 2px 0;
   }
+
   a.btn {
     padding: 3px 5px;
     min-width: 20px;
   }
-  .btn + .btn {
+
+  .btn+.btn {
     margin-left: -5px;
     border-left-width: 0px;
   }
+
   .btn {
     img {
       padding: 0;
     }
-    .icon-checkbox-checked, .icon-checkbox-unchecked {
+
+    .icon-checkbox-checked,
+    .icon-checkbox-unchecked {
       font-size: 14px;
     }
   }
-  span, label {
+
+  span,
+  label {
     font-size: 10pt;
     width: auto;
     padding: 0 5px;
   }
 }
 
-.block_content_toolbar label{
+.enroll_correct {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.block_content_toolbar label {
   color: $color_black;
 }
 
-.block_toolbar_left, .block_toolbar_right {
+.block_toolbar_left,
+.block_toolbar_right {
   display: inline-block;
   position: relative;
   padding: 0;
@@ -388,7 +464,6 @@ form .right_buttons {
   float: none;
 }
 
-
 .retreat {
   margin-left: -7px;
 }
@@ -398,11 +473,11 @@ form .right_buttons {
   font-size: 11px;
 }
 
-.label_right{
+.label_right {
   margin-top: 6px;
 }
 
-.count_icon{
+.count_icon {
   font-size: 8pt;
   position: relative;
   right: 8px;
@@ -415,9 +490,8 @@ form .right_buttons {
 }
 
 a.disabled {
- cursor: default;
+  cursor: default;
 }
-
 
 /*Steps*/
 
@@ -427,12 +501,14 @@ a.disabled {
   margin: 0 auto;
   padding: 0;
   border-radius: 5px;
-  ul{
+
+  ul {
     padding: 0;
     list-style: none;
     margin: 0 auto;
     text-align: center;
-    li{
+
+    li {
       display: inline-block;
       width: 117px;
       margin: 0px;
@@ -442,13 +518,15 @@ a.disabled {
       font-size: 12px;
       color: $steps_list_color;
     }
-    li.active{
+
+    li.active {
       color: $color_main_base_link;
       background-color: $color_white_base;
       border-radius: 5px;
       box-shadow: 0px 0px 4px $steps_list_box_shadow;
     }
   }
+
   .dot {
     width: 22px;
     height: 18px;
@@ -466,23 +544,24 @@ a.disabled {
   }
 }
 
-.equivalent{
-  ul.dropdown-menu{
+.equivalent {
+  ul.dropdown-menu {
     max-height: 190px;
     overflow-y: auto;
     color: $exclusive_background_color;
   }
 }
 
-.shortcut_floating_box{
+.shortcut_floating_box {
   color: $color_black_buttons;
   font-family: 'PT Sans', sans-serif;
+
   h2 {
     color: $color_black_buttons;
   }
 }
 
-.close_dropdown{
+.close_dropdown {
   float: right;
   padding-right: 3px;
   margin-top: -30px;
@@ -490,4 +569,10 @@ a.disabled {
 
 .close_dropdown.link_element {
   float: none;
+}
+
+.class-position {
+  float: right;
+  position: relative;
+  top: -5px;
 }

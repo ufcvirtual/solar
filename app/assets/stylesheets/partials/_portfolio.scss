@@ -1,6 +1,7 @@
 // PORTFOLIO E TAREFAS (ASSIGNMENTS)
 
-.enunciation_complete, .enunciation_less {
+.enunciation_complete,
+.enunciation_less {
   display: none;
 }
 
@@ -12,7 +13,8 @@
   width: 20%;
 }
 
-.assignment_without_group, td.assignment_without_group a {
+.assignment_without_group,
+td.assignment_without_group a {
   white-space: nowrap;
   color: $without_group_color;
 }
@@ -25,19 +27,26 @@
 * Situacao das tarefas
 */
 
-.assignment_corrected, .assignment_evaluated {
+.assignment_corrected,
+.assignment_evaluated {
   color: $color_green_font;
 }
 
-a.assignment_corrected, a.assignment_evaluated {
+a.assignment_corrected,
+a.assignment_evaluated {
   color: $color_green_link;
 }
 
-.assignment_sent, .assignment_finished, .assignment_finish, .assignment_processing {
+.assignment_sent,
+.assignment_finished,
+.assignment_finish,
+.assignment_processing {
   color: $sent_color;
 }
 
-a.assignment_sent, a.assignment_corrected, td.assignment_as a {
+a.assignment_sent,
+a.assignment_corrected,
+td.assignment_as a {
   color: $sent_color_link;
 }
 
@@ -49,7 +58,10 @@ a.assignment_as {
   color: $sent_color_link;
 }
 
-.assignment_not_sent, .expired, .assignment_closed, .assignment_not_answered {
+.assignment_not_sent,
+.expired,
+.assignment_closed,
+.assignment_not_answered {
   color: $not_sent_color_font;
 }
 
@@ -57,23 +69,34 @@ a.assignment_not_sent {
   color: $not_sent_color !important;
 }
 
-.assignment_to_be_sent, .assignment_to_be_sent a, .assignment_started,
-.assignment_pending, .assignment_to_answer, .assignment_not_finished, .assignment_opened, .assignment_in_progress, .assignment_to_send, .assignment_retake, td.assignment_an a {
+.assignment_to_be_sent,
+.assignment_to_be_sent a,
+.assignment_started,
+.assignment_pending,
+.assignment_to_answer,
+.assignment_not_finished,
+.assignment_opened,
+.assignment_in_progress,
+.assignment_to_send,
+.assignment_retake,
+td.assignment_an a {
   color: $color_main;
 }
 
-.assignment_not_started, .assignment_scheduled {
+.assignment_not_started,
+.assignment_scheduled {
   color: $color_almost_gray_content;
 }
 
-.assignment_an{
+.assignment_an {
   color: $color_main;
 }
 .assignment_without_group {
   color: $without_group_color;
 }
 
-.assignment_without_group a, td.assignment_without_group a {
+.assignment_without_group a,
+td.assignment_without_group a {
   color: $without_group_color_link;
 }
 
@@ -89,8 +112,7 @@ a.assignment_not_sent {
 .expired,
 td.assignment_as a,
 td.assignment_an a,
-td.assignment_without_group a
-{
+td.assignment_without_group a {
   white-space: nowrap;
 }
 
@@ -98,19 +120,19 @@ td.assignment_without_group a
   font-weight: bold;
 }
 
-.tb_list{
-  tr > td > .participants_box:not(.invisible){
+.tb_list {
+  tr > td > .participants_box:not(.invisible) {
     border-bottom: 1px solid $step_list_color_import;
   }
 
-  td{
-    .participants_box{
+  td {
+    .participants_box {
       padding: 10px;
       max-height: 200px;
       overflow: auto;
-      tbody{
+      tbody {
         background-color: $color_white_base;
-        td{
+        td {
           padding: 6px 10px 4px 10px;
           vertical-align: middle;
         }
@@ -119,30 +141,33 @@ td.assignment_without_group a
   }
 }
 
-.comment_wrapper, .assignment_files > .block_content{
+.comment_wrapper,
+.assignment_files > .block_content {
   max-height: 300px;
   overflow-y: auto;
   background-color: $color_main_light;
 }
 
-.assignment_files.files td, .student_files.files td, .student_webconferences.files td{
+.assignment_files.files td,
+.student_files.files td,
+.student_webconferences.files td {
   color: $color_gray_text;
 }
 
-.upload_files{
-  .add_file{
+.upload_files {
+  .add_file {
     margin-left: 25%;
     margin-bottom: 5px;
   }
 }
 
-.student_files.files{
-  i{
+.student_files.files {
+  i {
     cursor: pointer;
   }
 }
 
-.block_wrapper_groups{
+.block_wrapper_groups {
   img {
     vertical-align: middle;
     position: absolute;
@@ -151,25 +176,28 @@ td.assignment_without_group a
     border-radius: 30px;
     box-shadow: 4px 4px 7px $color_gray;
   }
-  .block_user{
+  .block_user {
     background-color: $event_assignment_background_portfolio;
     color: $exclusive_font_color;
     font-size: 10pt;
   }
 
-  .block_user{
+  .block_user {
     display: inline-block;
     width: 93%;
+    max-width: -webkit-fill-available;
+    max-width: -moz-available;
+    max-width: fill-available;
     margin-left: 19px;
     margin-top: 1%;
     padding: 8px 0px 5px 44px;
   }
 
-  .block_user.fancybox{
+  .block_user.fancybox {
     margin-left: 0;
   }
 
-  .title_user{
+  .title_user {
     float: left;
     font-weight: bold;
     margin-right: 7px;
@@ -177,11 +205,11 @@ td.assignment_without_group a
   }
 }
 
-.block_user .participants_list{
+.block_user .participants_list {
   margin-left: 85px;
 }
 
-.assignment_info{
+.assignment_info {
   .title {
     border-bottom: 2px solid;
     border-bottom-color: $color_main;
@@ -189,11 +217,11 @@ td.assignment_without_group a
     overflow: hidden; // FIXME: em outro local estava definido como auto, verificar se está ok assim
     padding-top: 13px;
     word-break: break-word;
-
   }
 }
 
-.assignment_summarized .student_files.files, .assignment_summarized .student_webconferences.files{
+.assignment_summarized .student_files.files,
+.assignment_summarized .student_webconferences.files {
   width: 99%;
 }
 
@@ -202,20 +230,20 @@ td.assignment_without_group a
 }*/
 
 /* assignment webconference's table */
-#tb_lw{
+#tb_lw {
   text-align: center;
 }
 
-.assignment_summarized{
-  .recordings{
-    .title{
+.assignment_summarized {
+  .recordings {
+    .title {
       padding: 1%;
     }
-    .back{
+    .back {
       float: right;
       margin-top: 1%;
     }
-    h3{
+    h3 {
       padding: 2%;
       display: inline-block;
       max-width: 70%;
@@ -223,4 +251,3 @@ td.assignment_without_group a
     }
   }
 }
-

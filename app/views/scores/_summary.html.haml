@@ -17,26 +17,27 @@
 %br
 
 .parent
-  %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('scores.index.list_of_students')}
-    %thead
-      %tr.lines
-        %th#student{style: "width: 100px;"}= t("scores.index.student")
-        %th#access_to_the_course= t('scores.index.access_to_the_course')
-        - unless @wh.nil?
-          %th#frequency= t('scores.index.frequency')
-          %th#faults= t('scores.index.faults')
-        %th#partial_grade= t('scores.index.partial_grade')
-        %th#af_grade= t('scores.index.af_grade')
-        %th#final_grade= t('scores.index.final_grade')
-        %th#situation= t('scores.index.situation')
-        - if @merged_group
-          %th#main_group= t('scores.index.origin_group')
-
-    %tbody.users
-      - if @users.blank?
+  .responsive-table
+    %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('scores.index.list_of_students')}
+      %thead
         %tr.lines
-          %td{colspan: 10}= t('scores.index.no_data')
-      - else
-        = render partial: 'pending_summary', locals: { users: @users, merged_group: @merged_group }
+          %th#student{style: "width: 100px;"}= t("scores.index.student")
+          %th#access_to_the_course= t('scores.index.access_to_the_course')
+          - unless @wh.nil?
+            %th#frequency= t('scores.index.frequency')
+            %th#faults= t('scores.index.faults')
+          %th#partial_grade= t('scores.index.partial_grade')
+          %th#af_grade= t('scores.index.af_grade')
+          %th#final_grade= t('scores.index.final_grade')
+          %th#situation= t('scores.index.situation')
+          - if @merged_group
+            %th#main_group= t('scores.index.origin_group')
+
+      %tbody.users
+        - if @users.blank?
+          %tr.lines
+            %td{colspan: 10}= t('scores.index.no_data')
+        - else
+          = render partial: 'pending_summary', locals: { users: @users, merged_group: @merged_group }
 - unless @users.blank?
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), summary_scores_path(page: @users.next_page, user_name: @username), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items), :'aria-label' => t(:load_items)  if @users.next_page

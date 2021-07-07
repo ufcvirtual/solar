@@ -1,5 +1,5 @@
 /*Páginas dos paineis do rodapé*/
-.panel{
+.panel {
   display: none;
   position: absolute;
   top: 0;
@@ -7,9 +7,9 @@
   width: 100%;
   height: 100%;
   background-color: $panel_background;
-  -webkit-box-shadow:0px -5px 19px rgba($panel_box_shadow, 0.75);
-  -moz-box-shadow:0px -5px 19px rgba($panel_box_shadow, 0.75);
-  box-shadow:0px -5px 19px rgba($panel_box_shadow, 0.75);
+  -webkit-box-shadow: 0px -5px 19px rgba($panel_box_shadow, 0.75);
+  -moz-box-shadow: 0px -5px 19px rgba($panel_box_shadow, 0.75);
+  box-shadow: 0px -5px 19px rgba($panel_box_shadow, 0.75);
   z-index: 50;
 }
 
@@ -19,17 +19,18 @@
   overflow: auto;
   margin: 30px auto;
   text-align: left;
-  background-color: rgba($color_white_base,0.8);
+  background-color: rgba($color_white_base, 0.8);
   padding: 5px 10px;
 }
 
-.content, #login_wrapper #tutorials{
-  width: 535px;
+.content,
+#login_wrapper #tutorials {
+  // width: 535px;
   height: 85%;
   overflow: auto;
   margin: 30px auto;
   text-align: left;
-  background-color: rgba($color_white_base,0.8);
+  background-color: rgba($color_white_base, 0.8);
   padding: 5px 10px;
   padding-bottom: 5%;
   margin-bottom: 5%;
@@ -43,6 +44,7 @@
   height: 85px;
   cursor: pointer;
 }
+
 .arrow {
   position: absolute;
   top: 5%;
@@ -52,50 +54,68 @@
   cursor: pointer;
 }
 
-#faq h4, #privacy h4{
+#faq h4,
+#privacy h4 {
   margin-bottom: 2px;
 }
 
-#faq p, #privacy p{
+#faq p,
+#privacy p {
   margin-top: 10px;
   margin-bottom: 0;
   text-align: initial;
 }
 
-#faq h4.title_child_first, #privacy h4.title_child_first{
+#faq h4.title_child_first,
+#privacy h4.title_child_first {
   padding-bottom: 0px;
 }
 
-#faq p.title_child_second{
+#faq p.title_child_second {
   margin-top: 2px;
 }
 
-#faq .content, #privacy .content{
+@media (max-width: 576px) {
+
+  #faq .content,
+  #privacy .content {
+    width: 93% !important;
+  }
+}
+
+#faq .content,
+#privacy .content {
   width: 650px;
 }
 
-#faq h1, #privacy h1{
+#faq h1,
+#privacy h1 {
   font-weight: bold;
   margin-top: 5%;
 
 }
 
-#faq .search, .tutorials .search, #privacy .search{
+#faq .search,
+.tutorials .search,
+#privacy .search {
   text-align: center;
   color: $font_color_buttons;
   font-weight: bold;
-  input{
+
+  input {
     vertical-align: middle;
     width: 293px;
   }
 }
 
-#faq .question a, #privacy .policy a{
+#faq .question a,
+#privacy .policy a {
   text-decoration: none;
   color: $font_color_buttons;
 }
 
-#faq h4.title, #privacy h4.title{
+#faq h4.title,
+#privacy h4.title {
   border: 1px solid $panel_border_color;
   background: $background_light;
   background: -moz-linear-gradient(top, $background_light 0%, $background_light 100%);
@@ -112,55 +132,57 @@
   border-radius: 4px;
 }
 
-.title_child_first{
+.title_child_first {
   margin-left: 15px;
 }
 
-.title_child_second{
+.title_child_second {
   margin: 5px 0 0 30px;
 }
 
-.title_child_third{
+.title_child_third {
   margin: 5px 0 0 45px;
 }
 
-.title_child_fourth{
+.title_child_fourth {
   margin: 5px 0 0 60px;
 }
 
-.title_child_fifth{
+.title_child_fifth {
   margin: 5px 0 0 75px;
 }
 
-.panel h1{
+.panel h1 {
   font-family: Ubuntu Condensed;
   font-size: 25px;
   color: $panel_title_color;
   padding-bottom: 10px;
 }
 
-.panel h4{
+.panel h4 {
   font-weight: bold;
   padding-top: 15px;
   padding-bottom: 25px;
 }
 
-.panel h4, .panel p{
-  font-family:PT Sans;
+.panel h4,
+.panel p {
+  font-family: PT Sans;
   font-size: 16px;
   color: $color_almost_gray_content;
 }
 
-.panel .menu_footer ul li a{
+.panel .menu_footer ul li a {
   text-decoration: none;
   font-family: Ubuntu;
   font-size: 14px;
   color: $current_color;
 }
 
-.dropdown-panel .close{
+.dropdown-panel .close {
   float: right;
-  button{
+
+  button {
     background-color: $color_white_base;
     border: none;
     cursor: pointer;

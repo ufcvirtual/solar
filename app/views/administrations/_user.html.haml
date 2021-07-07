@@ -4,7 +4,7 @@
 /%td= user.cpf
 %td= (current_user.admin? ? user.cpf : 'XXX.XXX.XXX-XX')
 %td= user.status
-%td{style: 'text-align:right'}
+%td{class: 'to_mobile', style: 'text-align:right'}
   %a{class: "info_list btn", :"data-dropdown"=>"#info-dropdown#{user.id}" }= content_tag(:i, nil, class: 'icon-info') + content_tag(:i, nil, class: 'icon-arrow-down-triangle')
   .dropdown.dropdown-tip{ class: 'info_list', id: "info-dropdown#{user.id}" }
     %ul{ class: 'dropdown-menu' }

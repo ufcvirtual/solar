@@ -14,14 +14,15 @@
   .groups_column.middle_column
     .block_title
       %h2= t(".groups")
-    %table.tb_list
-      %tbody
-        %td.text_none{colspan: 2}= t(".select_an_assignment")
+    .responsive-table
+      %table.tb_list
+        %tbody
+          %td.text_none{colspan: 2}= t(".select_an_assignment")
 
   .participants_column.last_column.of_three
     .block_title
       %h2= t(".participants")
-    .block_content
+    .block_content.responsive-table
       %table.tb_list
         %tbody
           %td.text_none{colspan: 2}= t(".select_a_group")

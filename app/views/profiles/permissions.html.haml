@@ -15,19 +15,20 @@
 
   .block_content
     - unless @resources.blank?
-      %table.tb_list.permissions
-        %thead
-          %tr.lines
-            %th= t(".category")
-            %th= t(".permission")
-            %th.no_sort= t(".enable")
-        %tbody
-          - @resources.each do |r|
-            - permission = not(r[:permission].blank?)
-            %tr.lines{class: permission ? "permission" : ""}
-              %td= t(r[:controller].singularize, scope: [:activerecord, :models])
-              %td= r[:description]
-              %td= check_box_tag "resource", r.id, permission, disabled: true, onchange: "javascript:profile_permissions_change_status_of_permission(this);", class: "ckb_resource"
+      .responsive-table
+        %table.tb_list.permissions
+          %thead
+            %tr.lines
+              %th= t(".category")
+              %th= t(".permission")
+              %th.no_sort= t(".enable")
+          %tbody
+            - @resources.each do |r|
+              - permission = not(r[:permission].blank?)
+              %tr.lines{class: permission ? "permission" : ""}
+                %td= t(r[:controller].singularize, scope: [:activerecord, :models])
+                %td= r[:description]
+                %td= check_box_tag "resource", r.id, permission, disabled: true, onchange: "javascript:profile_permissions_change_status_of_permission(this);", class: "ckb_resource"
 
 = javascript_include_tag "tablesorter", "profiles"
 

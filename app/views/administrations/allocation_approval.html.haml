@@ -8,19 +8,20 @@
       = button_tag t(:search, scope: [:administrations, :users]), type: :button, class: "btn btn_default", id: "search_allocation", :"data-link" => search_allocation_administrations_path
   .block_content
     - unless @allocations.empty?
-      %table.tb_list
-        %thead
-          %tr.lines
-            %th{style: "width: 11%"}= t(".name")
-            %th= t(".profile")
-            %th= t(".type")
-            %th= t(".course")
-            %th= t(".curriculum_unit")
-            %th= t(".semester")
-            %th= t(".group")
-            %th.no_sort{style: "width: 11%"}
-        %tbody.allocations
-          = render partial: 'pending_allocations', locals: { allocations: @allocations }
+      .responsive-table
+        %table.tb_list
+          %thead
+            %tr.lines
+              %th{style: "width: 11%"}= t(".name")
+              %th= t(".profile")
+              %th= t(".type")
+              %th= t(".course")
+              %th= t(".curriculum_unit")
+              %th= t(".semester")
+              %th= t(".group")
+              %th.no_sort{style: "width: 11%"}
+          %tbody.allocations
+            = render partial: 'pending_allocations', locals: { allocations: @allocations }
       = link_to content_tag(:i, nil, class: "icon-ellipsis"), search_allocation_administrations_path(page: @allocations.next_page, type: @type_search, value: @text_search), class: 'load-more-allocations', remote: true, :"data-tooltip" => t(:load_items) if @allocations.next_page
     - else
       .block_content_text_list.text_none= t(".none_pending_allocation")

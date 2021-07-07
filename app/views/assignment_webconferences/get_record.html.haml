@@ -4,28 +4,29 @@
   .title-warning
     = raw t('webconferences.get_record.warning')
   - unless @recordings.empty?
-    %table.tb_list
-      %thead
-        %tr.lines
-          %th#_access= t('webconferences.get_record.access')
-          %th#_start= t("webconferences.get_record.start")
-          %th#_end= t("webconferences.get_record.duration")
-          - if ((@can_download_record && ENV["WEB_DOWNLOAD"] == "true") || @can_remove_record) && !view_disabled
-            %th= t("webconferences.get_record.options")
-      %tbody
-        - @recordings.each_with_index do |record, idx|
-          - diff, duration = Bbb.get_duration(record[:startTime].to_datetime, record[:endTime].to_datetime)
-          - url = Bbb.get_recording_url(record)
-          %tr.lines.lines_get_record
-            %td{headers: '_access'}= link_to t('webconferences.get_record.record', number: idx+1), url, target: '_blank', :'aria-label' => t('webconferences.index.access_web_recording', name: t('webconferences.get_record.record', number: idx+1) )
-            %td{headers: '_start'}= l(record[:startTime].to_datetime)
-            %td{headers: '_duration'}= duration
+    .responsive-table
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th#_access= t('webconferences.get_record.access')
+            %th#_start= t("webconferences.get_record.start")
+            %th#_end= t("webconferences.get_record.duration")
             - if ((@can_download_record && ENV["WEB_DOWNLOAD"] == "true") || @can_remove_record) && !view_disabled
-              %td{headers: '_options'}
-                - if @can_download_record && !view_disabled && ENV["WEB_DOWNLOAD"] == "true"
-                  %span= link_to (content_tag(:i, nil, class: 'icon-arrow-down')), download_webconference_path(:url => url), class: "btn", :'data-tooltip' => t('webconferences.get_record.download_video'), :'aria-label' => t('webconferences.get_record.download_video'), method: :post
-                - if @can_remove_record && !view_disabled
-                  %span= button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution remove_record', :'data-tooltip' => t('webconferences.get_record.remove'), :'data-url' => remove_record_assignment_webconference_path(id: @assignment_webconference.id, recordID: record[:recordID]), :'aria-label' => t('webconferences.get_record.remove')
+              %th= t("webconferences.get_record.options")
+        %tbody
+          - @recordings.each_with_index do |record, idx|
+            - diff, duration = Bbb.get_duration(record[:startTime].to_datetime, record[:endTime].to_datetime)
+            - url = Bbb.get_recording_url(record)
+            %tr.lines.lines_get_record
+              %td{headers: '_access'}= link_to t('webconferences.get_record.record', number: idx+1), url, target: '_blank', :'aria-label' => t('webconferences.index.access_web_recording', name: t('webconferences.get_record.record', number: idx+1) )
+              %td{headers: '_start'}= l(record[:startTime].to_datetime)
+              %td{headers: '_duration'}= duration
+              - if ((@can_download_record && ENV["WEB_DOWNLOAD"] == "true") || @can_remove_record) && !view_disabled
+                %td{headers: '_options'}
+                  - if @can_download_record && !view_disabled && ENV["WEB_DOWNLOAD"] == "true"
+                    %span= link_to (content_tag(:i, nil, class: 'icon-arrow-down')), download_webconference_path(:url => url), class: "btn", :'data-tooltip' => t('webconferences.get_record.download_video'), :'aria-label' => t('webconferences.get_record.download_video'), method: :post
+                  - if @can_remove_record && !view_disabled
+                    %span= button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution remove_record', :'data-tooltip' => t('webconferences.get_record.remove'), :'data-url' => remove_record_assignment_webconference_path(id: @assignment_webconference.id, recordID: record[:recordID]), :'aria-label' => t('webconferences.get_record.remove')
 
   - else
     .block_content_text_list.text_none= t("webconferences.get_record.still_processing")

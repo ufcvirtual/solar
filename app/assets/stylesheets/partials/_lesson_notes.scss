@@ -1,21 +1,23 @@
-.fancybox-inner > .lesson_notes{
+.fancybox-inner > .lesson_notes {
   max-width: 770px;
   overflow: hidden;
 }
 
-.lesson_notes{
-
-  width: 770px;
+.lesson_notes {
+  // width: 770px;
+  width: 100%;
   min-height: 400px;
 
-  .block_title{
+  .block_title {
     word-break: break-word;
-    h2{
+    h2 {
       position: relative;
     }
   }
 
-  .block_content{
+  .block_content {
+    display: flex;
+    flex-wrap: wrap;
 
     background-color: $color_white_base;
 
@@ -26,7 +28,7 @@
       display: table !important;
     }
 
-    .note{
+    .note {
       background-color: $lesson_notes_background;
       align-items: center;
       justify-content: center;
@@ -43,28 +45,27 @@
       -webkit-column-break-inside: avoid; /* will prevent breaking blocks across columns */
       column-break-inside: avoid;
 
-      label{
+      label {
         color: $panel_box_shadow;
         width: auto;
         margin-right: 4%;
       }
 
-      .description{
+      .description {
         word-break: break-word;
         color: $color_black_buttons;
         font-size: 10pt;
 
-        p{
+        p {
           color: $color_black_buttons;
         }
-
       }
 
-      form{
-        padding-bottom: 25px;
-      }
+      // form {
+      //   padding-bottom: 25px;
+      // }
 
-      .title{
+      .title {
         text-align: center;
         font-weight: bold;
         padding: 2px;
@@ -72,24 +73,23 @@
         color: $color_black_buttons;
         word-break: break-word;
 
-        .lesson_note_name{
+        .lesson_note_name {
           display: inline;
         }
 
-        input{
+        input {
           width: 120px;
         }
-
       }
 
-      .bottom{
+      .bottom {
         position: absolute;
         bottom: 0;
         left: 0;
         background-color: $color_black_buttons;
         height: 20px;
         opacity: 0.7;
-        width: 98.6%;
+        width: 100%;
         margin-top: 6px;
         text-align: right;
         float: left;
@@ -97,20 +97,15 @@
         display: block;
         margin-bottom: -1px;
 
-        li{
+        li {
           display: inline-block;
         }
 
-        i{
+        i {
           color: $color_white;
-          margin-left: 2px;
+          margin-left: 5px;
         }
-
       }
-
     }
-
   }
-
-
 }

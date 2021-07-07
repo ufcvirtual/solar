@@ -14,35 +14,35 @@
   .block_wrapper
     .block_title
       %h2= t('.enrolled')
-    .block_content
+    .block_content.responsive-table
       %table.tb_list.enrollment_list_enrolled.table_ucs
         = render 'enrollments/requests', status: [Allocation_Activated]
 
   .block_wrapper
     .block_title
       %h2= t('.merged')
-    .block_content
+    .block_content.responsive-table
       %table.tb_list.enrollment_list_enrolled.table_ucs
         = render 'enrollments/requests', status: [Allocation_Merged]
 
   .block_wrapper
     .block_title
       %h2= t('.pending')
-    .block_content
+    .block_content.responsive-table
       %table.tb_list.enrollment_list_pending.table_ucs
         = render 'enrollments/requests', status: [Allocation_Pending, Allocation_Pending_Reactivate]
 
   .block_wrapper
     .block_title
       %h2= t('.cancelled_rejected')
-    .block_content
+    .block_content.responsive-table
       %table.tb_list.enrollment_list_pending.table_ucs
         = render 'enrollments/requests', status: [Allocation_Cancelled, Allocation_Rejected]
 
   .block_wrapper
     .block_title
       %h2= t(".ucs_available")
-    .block_content
+    .block_content.responsive-table
       %table.tb_list.enrollment_list.table_ucs
         - if @groups.any?
           %thead.thead_ucs

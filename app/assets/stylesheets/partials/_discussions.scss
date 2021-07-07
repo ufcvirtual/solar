@@ -1,4 +1,8 @@
-.discussion_form .schedule_dates .input input{
+.list_discussions {
+  width: 100%;
+}
+
+.discussion_form .schedule_dates .input input {
   width: 85px;
 }
 
@@ -18,7 +22,7 @@
   }
 }
 
-.discussion_form{
+.discussion_form {
   text-align: left;
 }
 
@@ -27,18 +31,20 @@
     padding: 10px;
     margin-left: -150px;
   }
-  .new_file, .remove_file {
+
+  .new_file,
+  .remove_file {
     cursor: pointer;
   }
 }
 
-.forum_post_content{
-  .forum_post_wrapper{
-    .forum_post_inner_content{
+.forum_post_content {
+  .forum_post_wrapper {
+    .forum_post_inner_content {
       margin-bottom: 10px;
       overflow: hidden;
 
-      p img{
+      p img {
         max-height: 500px;
         max-width: 400px;
       }
@@ -46,31 +52,35 @@
   }
 }
 
-.user_posts{
-  form#academic_allocation_user_grade_form{
+.user_posts {
+  form#academic_allocation_user_grade_form {
     background-color: $color_main_light_highlight;
   }
-  .form-inputs.block_content{
-    .btn{
+
+  .form-inputs.block_content {
+    .btn {
       margin-left: 10px;
     }
-    .input{
+
+    .input {
       vertical-align: middle;
-      label{
+
+      label {
         vertical-align: middle;
       }
     }
   }
 }
 
-.hide{
- display: none;
+.hide {
+  display: none;
 }
 
-#post_new_file{
+#post_new_file {
   float: left;
 }
-.list_files_to_send_{
+
+.list_files_to_send_ {
 
   margin-left: -126px;
   margin-top: 5px;
@@ -79,7 +89,8 @@
   width: 700px;
   font-size: 10pt;
 }
-.attachment_title_{
+
+.attachment_title_ {
   text-align: left;
   width: 242px;
   padding-left: 21px;

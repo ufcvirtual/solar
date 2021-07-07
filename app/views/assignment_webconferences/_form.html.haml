@@ -1,5 +1,6 @@
 = simple_form_for(@assignment_webconference, html: { id: 'awebconference_form', class: 'awebconference_form' }) do |f|
-  %span.form_requirement= t(:required_fields)
+  .position_correction
+    %span.form_requirement= t(:required_fields)
   %h1#lightBoxDialogTitle= t((f.object.persisted? ? 'edit' : 'new'), scope: [:webconferences, :form])
   .flash_message_wrapper
 

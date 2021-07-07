@@ -1,23 +1,24 @@
 - show_fields = [Presential_Meeting, Presential_Test, WebConferenceLesson].include?(@schedule_event.type_event)
 .user_schedule_event
   %h1#lightBoxDialogTitle= t(".title", user: @user.name, type: @schedule_event.type_name, event: @schedule_event.title)
-  %table.tb_list
-    %thead
-      %tr.lines
-        %th= t(".description")
-        %th.center= t(".date")
-        - unless @schedule_event.start_hour.blank?
-          %th.center= t(".time")
-        -if show_fields
-          %th= t(".place")
-    %tbody
-      %tr.lines
-        %td= @schedule_event.description
-        %td.center= [l(@schedule_event.schedule.start_date.to_date, format: :datepicker), l(@schedule_event.schedule.end_date.to_date, format: :datepicker)].join(' - ')
-        - unless @schedule_event.start_hour.blank?
-          %td= [@schedule_event.start_hour, @schedule_event.end_hour].join(t(".to"))
-        - if show_fields
-          %td= @schedule_event.place
+  .responsive-table
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th= t(".description")
+          %th.center= t(".date")
+          - unless @schedule_event.start_hour.blank?
+            %th.center= t(".time")
+          -if show_fields
+            %th= t(".place")
+      %tbody
+        %tr.lines
+          %td= @schedule_event.description
+          %td.center= [l(@schedule_event.schedule.start_date.to_date, format: :datepicker), l(@schedule_event.schedule.end_date.to_date, format: :datepicker)].join(' - ')
+          - unless @schedule_event.start_hour.blank?
+            %td= [@schedule_event.start_hour, @schedule_event.end_hour].join(t(".to"))
+          - if show_fields
+            %td= @schedule_event.place
 
   .files
     = render partial: 'schedule_event_files/list', locals: { files: @acu.try(:schedule_event_files), tool: @schedule_event, tool_type: 'ScheduleEvent', student_id: @student_id }

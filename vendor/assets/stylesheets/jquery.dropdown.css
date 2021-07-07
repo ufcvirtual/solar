@@ -1,4 +1,5 @@
-.dropdown, .dropdown-alt {
+.dropdown,
+.dropdown-alt {
   position: absolute;
   z-index: 9999999;
   display: none;
@@ -26,12 +27,12 @@
 }
 
 .dropdown.dropdown-tip,
-.dropdown-alt.dropdown-tip{
+.dropdown-alt.dropdown-tip {
   margin-top: 8px;
 }
 
 .dropdown.dropdown-tip:before,
-.dropdown-alt.dropdown-tip:before{
+.dropdown-alt.dropdown-tip:before {
   position: absolute;
   top: -6px;
   left: 9px;
@@ -44,13 +45,13 @@
 }
 
 .dropdown.dropdown-tip.dropdown-anchor-right:before,
-.dropdown-alt.dropdown-tip.dropdown-anchor-right:before{
+.dropdown-alt.dropdown-tip.dropdown-anchor-right:before {
   left: auto;
   right: 9px;
 }
 
 .dropdown.dropdown-tip:after,
-.dropdown-alt.dropdown-tip:after{
+.dropdown-alt.dropdown-tip:after {
   position: absolute;
   top: -5px;
   left: 10px;
@@ -62,11 +63,10 @@
 }
 
 .dropdown.dropdown-tip.dropdown-anchor-right:after,
-.dropdown-alt.dropdown-tip.dropdown-anchor-right:after{
+.dropdown-alt.dropdown-tip.dropdown-anchor-right:after {
   left: auto;
   right: 10px;
 }
-
 
 .dropdown.dropdown-scroll .dropdown-menu,
 .dropdown.dropdown-scroll .dropdown-panel {
@@ -81,7 +81,7 @@
   line-height: 18px;
 }
 
-.dropdown .dropdown-menu LI > A,
+.dropdown .dropdown-menu LI>A,
 .dropdown .dropdown-menu LABEL {
   display: block;
   color: #555;
@@ -91,8 +91,10 @@
   word-wrap: break-word;
 }
 
-.dropdown .dropdown-menu LI > A:hover, .dropdown .dropdown-menu LI > A:focus, .dropdown .dropdown-menu LI > A.selected ,
- .dropdown .dropdown-menu LABEL:hover {
+.dropdown .dropdown-menu LI>A:hover,
+.dropdown .dropdown-menu LI>A:focus,
+.dropdown .dropdown-menu LI>A.selected,
+.dropdown .dropdown-menu LABEL:hover {
   background-color: #0074F3;
   color: #FFF;
   cursor: pointer;
@@ -106,40 +108,57 @@
 }
 
 /* Icon Examples - icons courtesy of http://p.yusukekamiyamane.com/ */
-.dropdown.has-icons LI > A {
+.dropdown.has-icons LI>A {
   padding-left: 30px;
   background-position: 8px center;
   background-repeat: no-repeat;
 }
 
-.dropdown .undo A { background-image: url(icons/arrow-curve-180-left.png); }
-.dropdown .redo A { background-image: url(icons/arrow-curve.png); }
-.dropdown .cut A { background-image: url(icons/scissors.png); }
-.dropdown .copy A { background-image: url(icons/document-copy.png); }
-.dropdown .paste A { background-image: url(icons/clipboard.png); }
-.dropdown .delete A { background-image: url(icons/cross-script.png); }
+.dropdown .undo A {
+  background-image: url(icons/arrow-curve-180-left.png);
+}
 
-#lesson_header .breadcrumb .dropdown-menu{
+.dropdown .redo A {
+  background-image: url(icons/arrow-curve.png);
+}
+
+.dropdown .cut A {
+  background-image: url(icons/scissors.png);
+}
+
+.dropdown .copy A {
+  background-image: url(icons/document-copy.png);
+}
+
+.dropdown .paste A {
+  background-image: url(icons/clipboard.png);
+}
+
+.dropdown .delete A {
+  background-image: url(icons/cross-script.png);
+}
+
+#lesson_header .breadcrumb .dropdown-menu {
   overflow-x: auto;
   width: auto;
   max-width: 450px;
 }
 
-#lesson_header .breadcrumb .dropdown-menu li{
+#lesson_header .breadcrumb .dropdown-menu li {
   white-space: normal;
 }
 
-#lesson_header .breadcrumb .dropdown-menu li a{
+#lesson_header .breadcrumb .dropdown-menu li a {
   word-wrap: break-word;
   white-space: normal;
 }
 
-.dropdown.right{
+.dropdown.right {
   max-height: 300px;
-  right: -10%;
+  /* right: -10%; */
 }
 
-.dropdown.right ul{
+.dropdown.right ul {
   overflow-y: auto;
   max-height: 300px;
 }

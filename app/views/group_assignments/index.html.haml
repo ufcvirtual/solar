@@ -1,6 +1,7 @@
 .group_assignments.header.title{:"data-score" => @score_type}
+  .position_correction
+    %span.form_requirement= t(".warning")
   %h1= t(".title", name: @assignment.name)
-  %span.form_requirement= t(".warning")
 
 .shortcut_groups
   .title-warning
@@ -13,7 +14,7 @@
       %p= t("shortcut.assignment.name.participants")
       %p= t("shortcut.assignment.name.students_without_group")
 
-.block_wrapper.label_display
+.block_wrapper.label_display.group_assignment_responsive
   .groups_column.first_column.of_three
     .block_title
       %h2{:'data-shortcut'=> t("shortcut.assignment.code.group_assignments"), :'data-shortcut-focus' => 'true'}= t(".groups")
@@ -29,7 +30,7 @@
   .participants_column.middle_column
     .block_title
       %h2{:'data-shortcut'=> t("shortcut.assignment.code.participants"), :'data-shortcut-focus' => 'true'}= t(".participants")
-    .block_content
+    .block_content.responsive-table
       %table.tb_list
         %tbody
           %td.text_none{colspan: 2}= t(".select_a_group")
@@ -37,7 +38,7 @@
   .students_without_groups_column.last_column.of_three
     .block_title
       %h2{:'data-shortcut'=> t("shortcut.assignment.code.students_without_group"), :'data-shortcut-focus' => 'true'}= t(".students_without_groups")
-    .block_content
+    .block_content.responsive-table
       %table.tb_list
         %tbody{:"data-assignment-id" => @assignment.id}
           = render partial: "students_with_no_group", locals: {students: @students_without_group}

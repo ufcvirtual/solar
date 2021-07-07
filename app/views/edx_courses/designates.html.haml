@@ -5,7 +5,7 @@
     .block_title
       %h2= t("allocations.designates.designate_users")
 
-    .block_content.allocations_list
+    .block_content.allocations_list.responsive-table
       %table.tb_list
         %thead
           %tr.lines
@@ -15,12 +15,12 @@
             %th{style: 'width:120px'}= t("allocations.designates.profile")
             %th.no_sort
         %tbody
-          - unless @instructors.empty?  
+          - unless @instructors.empty?
             - @instructors.each do |instructor|
               %tr.lines
                 - instructor_uri = instructor.split("/")
                 - instructor_username = instructor_uri[5]
-                - instructor = User.find_by_username(instructor_username) 
+                - instructor = User.find_by_username(instructor_username)
                 %td= instructor.name
                 %td= instructor.cpf
                 %td= instructor.email
@@ -29,19 +29,19 @@
                 %td
                   = button_tag t("edx.designates.deallocate"), type: :button, class: "btn btn_caution btn_deallocate", alt: t("edx.designates.deallocate"),:'data-link-delete' =>  deallocate_edx_courses_path(instructor.username, @uri_course, "instructor"), :"data-link-list" => designates_edx_courses_path(@uri_course)
 
-          - unless @staffs.empty?  
+          - unless @staffs.empty?
             - @staffs.each do |staff|
               %tr.lines
                 - staff_uri = staff.split("/")
                 - staff_username = staff_uri[5]
-                - staff = User.find_by_username(staff_username) 
+                - staff = User.find_by_username(staff_username)
                 %td= staff.name
                 %td= staff.cpf
                 %td= staff.email
-                %td= t(".tutor")    
+                %td= t(".tutor")
 
                 %td
-                  = button_tag t("edx.designates.deallocate"), type: :button, class: "btn btn_caution btn_deallocate", alt: t("edx.designates.deallocate"),:'data-link-delete' =>  deallocate_edx_courses_path(staff.username, @uri_course, "staff"), :"data-link-list" => designates_edx_courses_path(@uri_course) 
+                  = button_tag t("edx.designates.deallocate"), type: :button, class: "btn btn_caution btn_deallocate", alt: t("edx.designates.deallocate"),:'data-link-delete' =>  deallocate_edx_courses_path(staff.username, @uri_course, "staff"), :"data-link-list" => designates_edx_courses_path(@uri_course)
 
 
   .block_wrapper.search

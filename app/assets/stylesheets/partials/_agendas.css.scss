@@ -1,321 +1,353 @@
   /* Calendário */
 
-#calendar .block_wrapper{
-  margin-top: 0;
-  margin-bottom: 5px;
-}
+  #calendar .block_wrapper {
+    margin-top: 0;
+    margin-bottom: 5px;
+    width: 100%;
+  }
 
-.list_events{
-  font-family: 'PT Sans', sans-serif;
-  font-size: 10pt;
-}
+  .list_events {
+    font-family: 'PT Sans', sans-serif;
+    font-size: 10pt;
+  }
 
-.list_events h3{
-  padding-left: 5px;
-  padding-right: 5px;
-  padding-top: 3px;
-}
+  .list_events h3 {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+  }
 
-.list_events h4, .fc-widget-header{
-  font-family: 'Ubuntu Condensed', sans-serif;
-}
+  .list_events h4,
+  .fc-widget-header {
+    font-family: 'Ubuntu Condensed', sans-serif;
+  }
 
-.list_events .day h3{
-  background-color: $background_gray;
-  color: $color_almost_black;
-}
-
-.list_events .day_events{
-  border: solid 1px $color_gray_light;
-  padding: 3px;
-}
-
-a.fc-event-title{
-  color: $color_black;
-  word-break: break-word;
-}
-
-.list_events .day.today{
-  border: solid 1px $color_contrast;
-  background-color: $color_contrast_light;
-  h3{
-    background-color: $color_contrast_light;
-    border-bottom: solid 1px $color_contrast;
+  .list_events .day h3 {
+    background-color: $background_gray;
     color: $color_almost_black;
   }
-}
 
-.list_events .day_events.today{
-  border: none;
-}
-
-.list_events .day_events.today{
-  background-color: $color_contrast_light;
-}
-
-.list_events .line{
-  border-bottom: dashed 1px $color_gray_light;
-}
-
-.list_events .line.today{
-  border-bottom: dashed 1px $color_contrast;
-}
-
-.list_events .time h2{
-  background-color: $exclusive_background_color;
-}
-
-.list_events .time h2, .list_events .time h4{
-  margin-top: 10px;
-  margin-left: 10px;
-}
-
-.day_events a.event{
-  margin-left: 80px;
-  top: -16px;
-  position: relative;
-  margin-top: 4px;
-  display: block;
-}
-
-.fc-event.assignment{
-  background-color: $event_assignment_background;
-  border-color: $event_assignment_border;
-}
-.fc-event.chat{
-  background-color: $event_chat_background;
-  border-color: $event_chat_border;
-}
-.fc-event.discussion{
-  background-color: $event_discussion_background;
-  border-color: $event_discussion_border;
-}
-.fc-event.presential_test{
-  background-color: $event_presential_test_background;
-  border-color: $event_presential_test_border;
-}
-.fc-event.presential_meeting{
-  background-color: $event_presential_meeting_background;
-  border-color: $event_presential_meeting_border;
-}
-.fc-event.recess_holiday{
-  background-color: $event_recess_holiday_background;
-  border-color: $event_recess_holiday_border;
-}
-.fc-event.webconferencelesson{
-  background-color: $event_webconferencelesson_background;
-  border-color: $event_webconferencelesson_border;
-}
-.fc-event.lessons{
-  background-color: $event_lessons_background;
-  border-color: $event_lessons_border;
-}
-.fc-event.other{
-  background-color: $event_other_background;
-  border-color: $event_other_border;
-}
-.fc-event.exam{
-  background-color: $event_exam_background;
-  border-color: $event_exam_background;
-}
-
-.fc-event.fc-event-title{
-  color: $color_black_buttons;
-}
-
-.list_events .fc-event.fc-event-title{
-  font-size: 10pt;
-  cursor: pointer;
-  background-color: $exclusive_background_color;
-  word-break: break-word;
-}
-
-.calendar_schedules .legend{
-  font-size: 11pt;
-  text-align: center;
-  label{
-    color: $color_gray_text;
-    font-size: 10pt;
-    width: auto;
-    text-align: center;
+  .list_events .day_events {
+    border: solid 1px $color_gray_light;
+    padding: 3px;
   }
-}
 
-/* Dropdown */
+  a.fc-event-title {
+    color: $color_black;
+    word-break: break-word;
+  }
 
-#calendar {
-  .dropdown-tip{
-    width: 435px;
-    .dropdown-panel{
-        margin-bottom: 10px;
-        background-color: $color_white;
-      }
-    .event_details_dropdown{
-      word-break: break-word;
-      h1, h2, h3, h4, .group_label label{
-        font-family: 'PT Sans', sans-serif;
-        background-color: $color_white;
-        color: $color_black_buttons;
-        border-bottom: none;
-      }
-      h2{
-        font-weight: bold;
-        text-align: left;
-        font-size: 11pt;
-      }
+  .list_events .day.today {
+    border: solid 1px $color_contrast;
+    background-color: $color_contrast_light;
 
-      h3, .group_label label, h3 p{
-        color: $color_gray_text_custom_icons;
-        font-size: 10pt;
-        font-weight: normal;
-        text-align: left;
-      }
-      h4{
-        margin: 6px;
-      }
-      .line{
-        border-bottom: solid 1px $background_gray;
-        padding-bottom: 5px;
-        margin-bottom: 5px;
-      }
-      .btn-group .left{
-        float: left;
-      }
-      .btn-group .right{
-        float: right;
-      }
-      .group_label label{
-        width: 40px;
-        vertical-align: top;
-        padding-top: 5px;
-      }
+    h3 {
+      background-color: $color_contrast_light;
+      border-bottom: solid 1px $color_contrast;
+      color: $color_almost_black;
     }
   }
 
-  .dropdown-panel{
-    max-height: 600px;
-    overflow-y: auto;
+  .list_events .day_events.today {
+    border: none;
   }
-}
 
-
-.label_info{
-  color: $color_black;
-  margin-left: 5px;
-  display: inline-block;
-  font-size: 10pt;
-  width: 300px;
-  word-break: break-word;
-}
-
-.show_exam{
-  min-width: 300px;
-  .label_info{
-    width: auto;
+  .list_events .day_events.today {
+    background-color: $color_contrast_light;
   }
-}
 
-.show label{
-  vertical-align: top;
-}
+  .list_events .line {
+    border-bottom: dashed 1px $color_gray_light;
+  }
 
-.label_info.files{
-  text-decoration: underline;
-}
+  .list_events .line.today {
+    border-bottom: dashed 1px $color_contrast;
+  }
 
-.show .group_label label{
-  margin-top: 5px;
-}
+  .list_events .time h2 {
+    background-color: $exclusive_background_color;
+  }
 
-/* Lista atual para interagentes */
+  .list_events .time h2,
+  .list_events .time h4 {
+    margin-top: 10px;
+    margin-left: 10px;
+  }
 
-.schedule_link_more {
-  font-size: 11px;
-  margin-right: 2px;
-  float: right;
-  color: $agenda_color;
-}
+  .day_events a.event {
+    margin-left: 80px;
+    top: -16px;
+    position: relative;
+    margin-top: 4px;
+    display: block;
+  }
 
-.agenda_left {
-  float: left;
-  min-height: 65px;
-  width: 160px;
-  font-size: 11pt;
-  background-color: $color_main_light;
-}
+  .fc-event.assignment {
+    background-color: $event_assignment_background;
+    border-color: $event_assignment_border;
+  }
 
-.agenda_right {
-  white-space: normal;
-  min-height: 60px;
-  overflow: hidden;
-  font-weight: normal;
-  font-size: 10pt;
-  padding-top: 10px;
-  text-align: justify;
-}
+  .fc-event.chat {
+    background-color: $event_chat_background;
+    border-color: $event_chat_border;
+  }
 
-.agenda_right p {
-  padding: 5px 5px 5px 10px;
-}
+  .fc-event.discussion {
+    background-color: $event_discussion_background;
+    border-color: $event_discussion_border;
+  }
 
-.agenda_right .title {
-  padding-left: 10px;
-  font-weight: bold;
-  font-size: 10pt;
-}
+  .fc-event.presential_test {
+    background-color: $event_presential_test_background;
+    border-color: $event_presential_test_border;
+  }
 
-.agenda_left_date {
-  margin-top: 7px;
-  text-align: center;
-}
+  .fc-event.presential_meeting {
+    background-color: $event_presential_meeting_background;
+    border-color: $event_presential_meeting_border;
+  }
 
-.agenda_left_interval, .agenda_left_day, .agenda_left_day_and_month {
-  font-size: 12pt;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
+  .fc-event.recess_holiday {
+    background-color: $event_recess_holiday_background;
+    border-color: $event_recess_holiday_border;
+  }
 
-.block_title_icon.discussions {
-  display: inline-block;
-  background: url('/assets/images/schedule/meeting_attendance_16x16.png') no-repeat;
-}
+  .fc-event.webconferencelesson {
+    background-color: $event_webconferencelesson_background;
+    border-color: $event_webconferencelesson_border;
+  }
 
-.block_title_icon.lesson,
-.block_title_icon.assignments,
-.block_title_icon.schedule_events {
-  display: inline-block;
-  background: url('/assets/images/schedule/assignments_16x16.png') no-repeat;
-}
+  .fc-event.lessons {
+    background-color: $event_lessons_background;
+    border-color: $event_lessons_border;
+  }
 
-.block_title_icon.chat {
-  display: inline-block;
-  background: url('/assets/images/schedule/chat_16x16.png') no-repeat;
-}
+  .fc-event.other {
+    background-color: $event_other_background;
+    border-color: $event_other_border;
+  }
 
-.block_title_icon.meeting_attendance {
-  display: inline-block;
-  background: url('/assets/images/schedule/meeting_attendance_16x16.png') no-repeat;
-}
+  .fc-event.exam {
+    background-color: $event_exam_background;
+    border-color: $event_exam_background;
+  }
 
-.agenda_ajax {
-  font-size: 9pt;
-  color: $agenda_color;
-}
+  .fc-event.fc-event-title {
+    color: $color_black_buttons;
+  }
 
-a.agenda_ajax:hover{
-  color: $color_main_base_link;
-}
+  .list_events .fc-event.fc-event-title {
+    font-size: 10pt;
+    cursor: pointer;
+    background-color: $exclusive_background_color;
+    word-break: break-word;
+  }
 
-.agenda_left_month_year .year_left {
-  margin-right: 30px;
-}
+  .calendar_schedules .legend {
+    font-size: 11pt;
+    text-align: center;
 
-// Dias do mês e da semana na visão mensal
-.fc-day-number, .fc-widget-header {
-  color: $color_black_calendar;
-}
+    label {
+      color: $color_gray_text;
+      font-size: 10pt;
+      width: auto;
+      text-align: center;
+    }
+  }
 
-//A data atual deve ser preto para contrastar com o fundo branco. Tanto para o alto contraste quanto o tema padrão.
-.fc-today .fc-day-number {
-  color: black;
-}
+  /* Dropdown */
+
+  #calendar {
+    .dropdown-tip {
+      width: 435px;
+
+      .dropdown-panel {
+        margin-bottom: 10px;
+        background-color: $color_white;
+      }
+
+      .event_details_dropdown {
+        word-break: break-word;
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .group_label label {
+          font-family: 'PT Sans', sans-serif;
+          background-color: $color_white;
+          color: $color_black_buttons;
+          border-bottom: none;
+        }
+
+        h2 {
+          font-weight: bold;
+          text-align: left;
+          font-size: 11pt;
+        }
+
+        h3,
+        .group_label label,
+        h3 p {
+          color: $color_gray_text_custom_icons;
+          font-size: 10pt;
+          font-weight: normal;
+          text-align: left;
+        }
+
+        h4 {
+          margin: 6px;
+        }
+
+        .line {
+          border-bottom: solid 1px $background_gray;
+          padding-bottom: 5px;
+          margin-bottom: 5px;
+        }
+
+        .btn-group .left {
+          float: left;
+        }
+
+        .btn-group .right {
+          float: right;
+        }
+
+        .group_label label {
+          width: 40px;
+          vertical-align: top;
+          padding-top: 5px;
+        }
+      }
+    }
+
+    .dropdown-panel {
+      max-height: 600px;
+      overflow-y: auto;
+    }
+  }
+
+  .label_info {
+    color: $color_black;
+    margin-left: 5px;
+    display: inline-block;
+    font-size: 10pt;
+    width: 300px;
+    word-break: break-word;
+  }
+
+  .show_exam {
+    min-width: 300px;
+
+    .label_info {
+      width: auto;
+    }
+  }
+
+  .show label {
+    vertical-align: top;
+  }
+
+  .label_info.files {
+    text-decoration: underline;
+  }
+
+  .show .group_label label {
+    margin-top: 5px;
+  }
+
+  /* Lista atual para interagentes */
+
+  .schedule_link_more {
+    font-size: 11px;
+    margin-right: 2px;
+    float: right;
+    color: $agenda_color;
+  }
+
+  .agenda_left {
+    float: left;
+    min-height: 65px;
+    width: 160px;
+    font-size: 11pt;
+    background-color: $color_main_light;
+  }
+
+  .agenda_right {
+    white-space: normal;
+    min-height: 60px;
+    overflow: hidden;
+    font-weight: normal;
+    font-size: 10pt;
+    padding-top: 10px;
+    text-align: justify;
+  }
+
+  .agenda_right p {
+    padding: 5px 5px 5px 10px;
+  }
+
+  .agenda_right .title {
+    padding-left: 10px;
+    font-weight: bold;
+    font-size: 10pt;
+  }
+
+  .agenda_left_date {
+    margin-top: 7px;
+    text-align: center;
+  }
+
+  .agenda_left_interval,
+  .agenda_left_day,
+  .agenda_left_day_and_month {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .block_title_icon.discussions {
+    display: inline-block;
+    background: url('/assets/images/schedule/meeting_attendance_16x16.png') no-repeat;
+  }
+
+  .block_title_icon.lesson,
+  .block_title_icon.assignments,
+  .block_title_icon.schedule_events {
+    display: inline-block;
+    background: url('/assets/images/schedule/assignments_16x16.png') no-repeat;
+  }
+
+  .block_title_icon.chat {
+    display: inline-block;
+    background: url('/assets/images/schedule/chat_16x16.png') no-repeat;
+  }
+
+  .block_title_icon.meeting_attendance {
+    display: inline-block;
+    background: url('/assets/images/schedule/meeting_attendance_16x16.png') no-repeat;
+  }
+
+  .agenda_ajax {
+    font-size: 9pt;
+    color: $agenda_color;
+  }
+
+  a.agenda_ajax:hover {
+    color: $color_main_base_link;
+  }
+
+  .agenda_left_month_year .year_left {
+    margin-right: 30px;
+  }
+
+  // Dias do mês e da semana na visão mensal
+  .fc-day-number,
+  .fc-widget-header {
+    color: $color_black_calendar;
+  }
+
+  //A data atual deve ser preto para contrastar com o fundo branco. Tanto para o alto contraste quanto o tema padrão.
+  .fc-today .fc-day-number {
+    color: black;
+  }

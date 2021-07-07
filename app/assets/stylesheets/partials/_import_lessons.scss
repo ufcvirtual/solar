@@ -1,32 +1,38 @@
-.list_lessons_import.block_wrapper, .list_lessons_conclude{
-  width: auto;
+.list_lessons_import.block_wrapper,
+.list_lessons_conclude {
+  // width: auto;
+  width: 99%;
 
-  table{
-    th, td{
+  table {
+
+    th,
+    td {
       text-align: center;
-      input.hasDatepicker{
+
+      input.hasDatepicker {
         width: 70px;
       }
     }
 
-    th.icon{
+    th.icon {
       width: 5%;
     }
 
-    a{
+    a {
       text-decoration: none;
     }
   }
 
 }
 
-.lesson_form{
-  .imported{
-    input{
+.lesson_form {
+  .imported {
+    input {
       margin-top: 12px;
     }
   }
-  .hint{
+
+  .hint {
     vertical-align: bottom;
   }
 }

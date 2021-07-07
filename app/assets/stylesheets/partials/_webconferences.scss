@@ -1,66 +1,85 @@
-form{
-  .webconference > .input > select {
+.list_webconferences {
+  width: 100%;
+}
+
+form {
+  .webconference>.input>select {
     width: initial;
     max-width: 100px;
   }
+
+  #save_automatically_message {
+    max-width: 400px;
+    display: inline-block;
+    padding-bottom: 1rem;
+    margin-left: 2rem;
+  }
 }
 
-.preview_webconferences{
-  .block_toolbar_right{
-    .delete_record_btn{
+.preview_webconferences {
+  .block_toolbar_right {
+    .delete_record_btn {
       margin-top: 7px;
     }
   }
-  [id^="groups_codes"]{
-    .dropdown-menu{
+
+  [id^="groups_codes"] {
+    .dropdown-menu {
       max-height: 250px;
       overflow-y: auto;
     }
   }
 }
 
-.block_wrapper{
-  .title-warning:first-of-type{
+.block_wrapper {
+  .title-warning:first-of-type {
     margin-bottom: 0;
   }
 }
 
-.title-warning{
+.title-warning {
+
   /* text-align: center; */
-  p:last-of-type{
+  p:last-of-type {
     margin-bottom: 0;
   }
-  p:first-of-type{
+
+  p:first-of-type {
     margin-top: 3px;
   }
 }
 
-table.webconferences{
-  thead{
-    tr.lines{
-      th.no_sort{
+table.webconferences {
+  thead {
+    tr.lines {
+      th.no_sort {
         text-align: center;
         width: 5px;
       }
-      th.default_width{
+
+      th.default_width {
         width: 20%;
       }
-      th.bigger_width{
+
+      th.bigger_width {
         width: 25%;
       }
-      th.smaller_width{
+
+      th.smaller_width {
         width: 10%;
       }
-      th.medium_width{
+
+      th.medium_width {
         width: 15%;
       }
-      th.greater_width{
+
+      th.greater_width {
         width: 30%;
       }
     }
   }
 
-  a.disabled{
+  a.disabled {
     pointer-events: none;
     text-decoration: none;
     color: $score_tbody_link;
@@ -71,39 +90,48 @@ table.webconferences{
   }
 }
 
-.webconference_access{
-  table{
-    th{
+.webconference_access {
+  table {
+    th {
       text-align: center;
     }
+
     text-align: center;
-    td.profile{
+
+    td.profile {
       color: $color_almost_gray_content;
       font-size: 9pt;
       font-style: italic;
       padding-right: 0;
       text-align: center;
     }
-    th.profile{
+
+    th.profile {
       text-align: center;
     }
-    tr.evaluative_form{
+
+    tr.evaluative_form {
       background-color: $color_main_light_highlight;
       height: 70px;
-      .left{
+
+      .left {
         float: left;
       }
-      .right{
+
+      .right {
         float: right;
       }
-      .middle{
+
+      .middle {
         float: left;
         padding-left: 13%;
       }
-      form{
+
+      form {
         padding-left: 20px;
         padding-right: 20px;
-        label{
+
+        label {
           width: auto;
         }
       }
@@ -112,8 +140,8 @@ table.webconferences{
 
 }
 
-.title-warning + .webconference_access{
-  .text_none{
+.title-warning+.webconference_access {
+  .text_none {
     border-top: solid 1px;
     border-top-color: $border_color;
   }

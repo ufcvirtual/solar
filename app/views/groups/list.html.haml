@@ -19,9 +19,9 @@
 
   - unless @groups.nil? or @groups.empty?
     .block_content.groups
-      .block_left
+      .block_left.col-xs-12.col-sm-5-80
         = render "group_list", groups: part1, hide_edition: false
-      .block_right
+      .block_right.col-xs-12.col-sm-5-80.position_correction
         = render "group_list", groups: part2, hide_edition: false
   - else
     .block_content_text_list.text_none= t(".none")

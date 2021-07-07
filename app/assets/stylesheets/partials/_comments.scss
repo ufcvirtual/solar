@@ -19,14 +19,18 @@
   white-space: normal;
   font-family: 'Ubuntu';
   width: 100%;
-  display: block;
+  // display: block;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   text-align: left;
   border-bottom: 1px solid;
   border-bottom-color: $color_main;
   background-color: $color_white_base;
 }
 
-.comment_files_info, .comment_date {
+.comment_files_info,
+.comment_date {
   font-family: 'PT Sans', sans-serif;
   font-weight: normal;
   font-size: 8pt;
@@ -44,6 +48,7 @@
   height: 22px;
   padding: 0 2px;
   vertical-align: bottom;
+
   img {
     width: 20px;
     padding: 0;
@@ -51,7 +56,8 @@
   }
 }
 
-.comment_form, li.comment {
+.comment_form,
+li.comment {
   width: 100%;
   font-family: 'PT Sans', sans-serif;
   font-size: 10pt;
@@ -69,24 +75,24 @@
   margin: 0px 10px 10px 0px;
 }
 
-.fancybox-outer .comments .block_wrapper{
+.fancybox-outer .comments .block_wrapper {
   width: 99%;
-  min-width: 400px;
+  // min-width: 400px;
 }
 
-.fancybox-outer .comment_wrapper{
+.fancybox-outer .comment_wrapper {
   overflow-y: hidden;
   max-height: none;
 }
 
-.comment_button{
+.comment_button {
   text-align: right;
 }
 
-.summary{
-  .info{
-    
-    .label_info{
+.summary {
+  .info {
+
+    .label_info {
       width: auto;
     }
   }

@@ -4,22 +4,23 @@
   - if evaluate
     .title-warning= raw t('.evaluation_info')
   - unless @posts.empty?
-    %table.tb_list
-      %thead
-        %tr.lines
-          %th= t(".message")
-          %th.center= t(".date")
-          %th.center= t(".time")
-      %tbody
-        - @posts.each do |post|
-          - files    = post.files
+    .responsive-table
+      %table.tb_list
+        %thead
           %tr.lines
-            %td.profile
-              = sanitize post.content
-              - if files.any?
-                = render partial: 'file_post', locals: { post: post, files: files, editable: false, can_interact: false, display_name: true}
-            %td.center= l(post.updated_at.to_datetime, format: :normal)
-            %td.center= l(post.updated_at.to_datetime, format: :clock_time)
+            %th= t(".message")
+            %th.center= t(".date")
+            %th.center= t(".time")
+        %tbody
+          - @posts.each do |post|
+            - files    = post.files
+            %tr.lines
+              %td.profile
+                = sanitize post.content
+                - if files.any?
+                  = render partial: 'file_post', locals: { post: post, files: files, editable: false, can_interact: false, display_name: true}
+              %td.center= l(post.updated_at.to_datetime, format: :normal)
+              %td.center= l(post.updated_at.to_datetime, format: :clock_time)
 
   - else
     .block_content_text_list.text_none= t(".no_posts")

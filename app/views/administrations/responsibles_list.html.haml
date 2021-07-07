@@ -7,30 +7,31 @@
       = text_field_tag :search, nil, :"data-column" => "all", type: :search, class: "search"
   .block_content
     - unless @allocations.empty?
-      %table.tb_list
-        %thead
-          %tr.lines
-            %th{style: "width: 11%"}= t(".name")
-            %th= t(".profile")
-            %th= t(".type")
-            %th= t(".course")
-            %th= t(".curriculum_unit")
-            %th= t(".semester")
-            %th= t(".group")
-        %tbody.allocations
-          - @allocations.each do |allocation|
-            - allocation_tag_info = allocation.allocation_tag.nil? ? nil : allocation.allocation_tag.detailed_info
+      .responsive-table
+        %table.tb_list
+          %thead
             %tr.lines
-              %td= allocation.user.name
-              %td= allocation.profile.name
-              %td= allocation_tag_info[:curriculum_unit_type]
-              %td= allocation_tag_info[:course]
-              %td= allocation_tag_info[:curriculum_unit]
-              %td= allocation_tag_info[:semester]
-              %td
-                - unless allocation_tag_info[:group].nil? or allocation_tag_info[:group] == t(".not_specified")
-                  .groups_tags
-                    .collection_check_boxes= allocation_tag_info[:group]
+              %th{style: "width: 11%"}= t(".name")
+              %th= t(".profile")
+              %th= t(".type")
+              %th= t(".course")
+              %th= t(".curriculum_unit")
+              %th= t(".semester")
+              %th= t(".group")
+          %tbody.allocations
+            - @allocations.each do |allocation|
+              - allocation_tag_info = allocation.allocation_tag.nil? ? nil : allocation.allocation_tag.detailed_info
+              %tr.lines
+                %td= allocation.user.name
+                %td= allocation.profile.name
+                %td= allocation_tag_info[:curriculum_unit_type]
+                %td= allocation_tag_info[:course]
+                %td= allocation_tag_info[:curriculum_unit]
+                %td= allocation_tag_info[:semester]
+                %td
+                  - unless allocation_tag_info[:group].nil? or allocation_tag_info[:group] == t(".not_specified")
+                    .groups_tags
+                      .collection_check_boxes= allocation_tag_info[:group]
     - else
       .block_content_text_list.text_none= t(".none_responsible")
 
