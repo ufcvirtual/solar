@@ -1,4 +1,4 @@
-class CreateIndexesCalendar < ActiveRecord::Migration
+class CreateIndexesCalendar < ActiveRecord::Migration[5.1]
   def up
     ActiveRecord::Base.connection.execute <<-SQL
       CREATE INDEX start_date_idx ON schedules (start_date);

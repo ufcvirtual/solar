@@ -1,4 +1,4 @@
-class AddAttachmentAttachmentToDiscussionEnunciationFiles < ActiveRecord::Migration
+class AddAttachmentAttachmentToDiscussionEnunciationFiles < ActiveRecord::Migration[5.1]
   def self.up
     change_table :discussion_enunciation_files do |t|
       t.attachment :attachment

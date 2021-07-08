@@ -6,8 +6,8 @@ class QuestionAudio < ActiveRecord::Base
                     url: '/media/questions/audios/:id_:normalized_audio_file_name'  
 
   validates :audio, presence: true
-  validates :audio_description, presence: true, if: 'description.blank?'
-  validates :description, presence: true, if: 'audio_description.blank?'
+  validates :audio_description, presence: true, if: -> {description.blank?}
+  validates :description, presence: true, if: -> {audio_description.blank?}
 
   validates_attachment_size :audio, less_than: 26.megabyte, message: ''
   validates_attachment_content_type :audio, content_type: /^audio\/(mpeg|x-mpeg|mp3|x-mp3|mpeg3|x-mpeg3|mpg|x-mpg|x-mpegaudio)$/, message: I18n.t('questions.error.wrong_type_audio')            

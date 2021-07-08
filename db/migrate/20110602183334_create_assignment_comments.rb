@@ -1,4 +1,4 @@
-class CreateAssignmentComments < ActiveRecord::Migration
+class CreateAssignmentComments < ActiveRecord::Migration[5.1]
   def self.up
     create_table :assignment_comments do |t|
       t.integer :send_assignment_id, :null => false
@@ -6,8 +6,8 @@ class CreateAssignmentComments < ActiveRecord::Migration
       t.text :comment
     end
 
-    add_foreign_key(:assignment_comments, :send_assignments)
-    add_foreign_key(:assignment_comments, :users)
+    add_foreign_key :assignment_comments, :send_assignments
+    add_foreign_key :assignment_comments, :users
   end
 
   def self.down

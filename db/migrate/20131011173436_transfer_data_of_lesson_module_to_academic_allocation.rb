@@ -1,4 +1,4 @@
-class TransferDataOfLessonModuleToAcademicAllocation < ActiveRecord::Migration
+class TransferDataOfLessonModuleToAcademicAllocation < ActiveRecord::Migration[5.1]
   def up
     lesson_modules = LessonModule.all
    

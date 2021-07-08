@@ -18,7 +18,7 @@ class LogAction < ActiveRecord::Base
     access_digital_class_lesson: 8
   }
 
-  before_save :set_acu, if: '!academic_allocation_user_id.nil? && log_type != 7'
+  before_save :set_acu, if: -> {!academic_allocation_user_id.nil? && log_type != 7}
 
   attr_accessor :merge
 

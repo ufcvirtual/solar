@@ -1,4 +1,4 @@
-class AddFieldsToScheduleEvent < ActiveRecord::Migration
+class AddFieldsToScheduleEvent < ActiveRecord::Migration[5.1]
   def change
     change_table :schedule_events do |t|
       t.integer :type_event, null: false, default: 2

@@ -1,3 +1,4 @@
+<%# @encoding: UTF-8 %>
 $(function(){
 
   var options = $.extend($.datepicker.regional['<%=I18n.locale%>']);
@@ -182,7 +183,7 @@ $(function(){
             events.parents('tr').fadeOut().remove();
 
             $(".btn_edit, .btn_del").attr("disabled", true);
-          }).error(function(data){
+          }).fail(function(data){
             var data = $.parseJSON(data.responseText);
             if (typeof(data.alert) != "undefined")
             flash_message(data.alert, 'alert');

@@ -1,4 +1,4 @@
-class AddEvaluationPeriodToAssignment < ActiveRecord::Migration
+class AddEvaluationPeriodToAssignment < ActiveRecord::Migration[5.1]
    def up
   	add_column :assignments, :end_evaluation_date, :date
 

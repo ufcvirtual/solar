@@ -1,4 +1,4 @@
-class RemoveColumnFromSendAssignment < ActiveRecord::Migration
+class RemoveColumnFromSendAssignment < ActiveRecord::Migration[5.1]
   def up
   	remove_column :send_assignments, :comment
   end

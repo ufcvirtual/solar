@@ -4,10 +4,10 @@ class BibliographiesController < ApplicationController
   include FilesHelper
 
   layout false, except: :index # define todos os layouts do controller como falso
-  before_filter :prepare_for_group_selection, only: [:index]
+  before_action :prepare_for_group_selection, only: [:index]
 
-  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
-  before_filter only: [:edit, :update] do |controller|
+  before_action :get_groups_by_allocation_tags, only: [:new, :create]
+  before_action only: [:edit, :update] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
     get_groups_by_tool(@bibliography = Bibliography.find(params[:id]))
   end
@@ -66,17 +66,12 @@ class BibliographiesController < ApplicationController
     raise 'cant_edit_file' if @bibliography.is_file?
     authorize! :update, Bibliography, on: @bibliography.academic_allocations.pluck(:allocation_tag_id)
     @bibliography.update_attributes!(bibliography_params)
-    p 'TESTE 01'
     render json: { success: true, notice: t(:updated, scope: [:bibliographies, :success]) }
   rescue ActiveRecord::AssociationTypeMismatch
-    p 'TESTE 02'
     render json: { success: false, alert: t(:not_associated) }, status: :unprocessable_entity
   rescue CanCan::AccessDenied
-    p 'TESTE 03'
     render json: { success: false, alert: t(:no_permission) }, status: :unauthorized
   rescue
-    p @comment.errors.full_messages
-    p 'TESTE 04'
     params[:success] = false
     render :edit
   end
@@ -97,14 +92,14 @@ class BibliographiesController < ApplicationController
 
   def download
     if Exam.verify_blocking_content(current_user.id)
-      redirect_to :back, alert: t('exams.restrict')
+      redirect_back fallback_location: :back, alert: t('exams.restrict')
     else
       if params.include?(:id)
         bibliographies_to_download = Bibliography.find(params[:id])
         allocation_tags_ids        = (active_tab[:url][:allocation_tag_id].blank? ? (params[:allocation_tags_ids] || bibliographies_to_download.allocation_tags.pluck(:id)) : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
       else
         allocation_tags_ids        = (active_tab[:url][:allocation_tag_id].blank? ? params[:allocation_tags_ids] : AllocationTag.find(active_tab[:url][:allocation_tag_id]).related)
-        bibliographies_to_download = Bibliography.joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }, type_bibliography: Bibliography::TYPE_FILE).uniq
+        bibliographies_to_download = Bibliography.joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids }, type_bibliography: Bibliography::TYPE_FILE).distinct
       end
 
       authorize! :download, Bibliography, on: [allocation_tags_ids].flatten, read: true

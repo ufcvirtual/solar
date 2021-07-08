@@ -13,19 +13,27 @@ services:
     volumes:
       - .:/app
       - gem_cache:/usr/local/bundle/gems
-      # - node_modules:/app/node_modules
+      - node_modules:/app/node_modules
     env_file: .env
     environment:
       RAILS_ENV: development
 
   database:
-    image: postgres:9.6
+    image: postgres:9.5
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       POSTGRES_DB: "solar"
       POSTGRES_HOST_AUTH_METHOD: "trust"
+    ports:
+      - "5433:5432"
+
+  mailcatcher:
+    image: yappabe/mailcatcher
+    ports:
+        - "1025:1025"
+        - "1080:1080"
 
   # sidekiq:
   #   build:
@@ -47,4 +55,4 @@ services:
 volumes:
   gem_cache:
   db_data:
-  # node_modules:
+  node_modules:

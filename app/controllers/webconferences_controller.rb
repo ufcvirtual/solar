@@ -7,10 +7,10 @@ class WebconferencesController < ApplicationController
 
   layout false, except: [:index, :preview]
 
-  before_filter :prepare_for_group_selection, only: :index
+  before_action :prepare_for_group_selection, only: :index
 
-  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
-  before_filter only: [:edit, :update] do |controller| # futuramente show aqui também
+  before_action :get_groups_by_allocation_tags, only: [:new, :create]
+  before_action only: [:edit, :update] do |controller| # futuramente show aqui também
     @allocation_tags_ids = params[:allocation_tags_ids]
     get_groups_by_tool(@webconference = Webconference.find(params[:id]))
   end
@@ -108,7 +108,7 @@ class WebconferencesController < ApplicationController
   # GET /webconferences/preview
   def preview
     params[:today] = false if (params[:today] == 'false')
-    ats = current_user.allocation_tags_ids_with_access_on('preview', 'webconferences', false, true)
+    ats = current_user.allocation_tags_ids_with_access_on(['preview'], 'webconferences', false, true)
     @webconferences = Webconference.all_by_allocation_tags(ats, { asc: false, today: (params[:today].nil? ? true : params[:today]) }).paginate(page: params[:page] , per_page: 30)# }).paginate(page: params[:page])
     @can_see_access = can? :list_access, Webconference, { on: ats, accepts_general_profile: true }
     @can_remove_record = (can? :manage_record, Webconference, { on: ats, accepts_general_profile: true })

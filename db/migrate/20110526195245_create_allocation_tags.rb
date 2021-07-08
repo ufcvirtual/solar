@@ -1,4 +1,4 @@
-class CreateAllocationTags < ActiveRecord::Migration
+class CreateAllocationTags < ActiveRecord::Migration[5.1]
   def self.up
     create_table "allocation_tags" do |t|
       t.integer "group_id"
@@ -7,10 +7,10 @@ class CreateAllocationTags < ActiveRecord::Migration
       t.integer "course_id"
     end
 
-    add_foreign_key(:allocation_tags, :groups)
-    add_foreign_key(:allocation_tags, :offers)
-    add_foreign_key(:allocation_tags, :curriculum_units)
-    add_foreign_key(:allocation_tags, :courses)
+    add_foreign_key :allocation_tags, :groups
+    add_foreign_key :allocation_tags, :offers
+    add_foreign_key :allocation_tags, :curriculum_units
+    add_foreign_key :allocation_tags, :courses
   end
 
   def self.down

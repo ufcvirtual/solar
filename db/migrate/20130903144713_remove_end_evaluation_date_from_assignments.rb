@@ -1,4 +1,4 @@
-class RemoveEndEvaluationDateFromAssignments < ActiveRecord::Migration
+class RemoveEndEvaluationDateFromAssignments < ActiveRecord::Migration[5.1]
   def up
     remove_column :assignments, :end_evaluation_date
   end

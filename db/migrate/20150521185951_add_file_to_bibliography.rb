@@ -1,4 +1,4 @@
-class AddFileToBibliography < ActiveRecord::Migration
+class AddFileToBibliography < ActiveRecord::Migration[5.1]
   def self.up
     add_attachment :bibliographies, :attachment
     change_column :bibliographies, :title, :text, null: true

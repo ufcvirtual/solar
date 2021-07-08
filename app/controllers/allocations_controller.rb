@@ -5,15 +5,15 @@ class AllocationsController < ApplicationController
 
   layout false, except: :index
 
-  before_filter only: [:enroll_request, :profile_request] do
+  before_action only: [:enroll_request, :profile_request] do
     authorize! :create, Allocation
   end
 
-  before_filter only: [:create_designation, :profile_request] do
+  before_action only: [:create_designation, :profile_request] do
     @allocation_tags_ids = AllocationTag.get_by_params(params)[:allocation_tags]
   end
 
-  before_filter only: [:show, :edit, :update] do
+  before_action only: [:show, :edit, :update] do
     @allocation = Allocation.find(params[:id])
 
     # editor/aluno
@@ -112,7 +112,7 @@ class AllocationsController < ApplicationController
   def search_users
     authorize! :manage_profiles, Allocation
 
-    @text_search, @admin = URI.unescape(params[:user]), params[:admin]
+    @text_search, @admin = URI.decode_www_form_component(params[:user]), params[:admin]
 
     text = [@text_search.split(' ').compact.join('%'), '%'].join if params[:user].present?
     @allocation_tags_ids = params[:allocation_tags_ids]

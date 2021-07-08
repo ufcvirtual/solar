@@ -10,7 +10,7 @@ class AllocationTag < ActiveRecord::Base
   has_many :allocations, dependent: :destroy
   has_many :academic_allocations, dependent: :restrict_with_error # nao posso deletar uma ferramenta academica se tiver conteudo
 
-  has_many :users, -> { uniq }, through: :allocations
+  has_many :users, -> { distinct }, through: :allocations
 
   has_many :savs, dependent: :destroy
 
@@ -202,7 +202,7 @@ class AllocationTag < ActiveRecord::Base
       end
 
       unless query.blank?
-        rts = RelatedTaggable.where(query, params.slice(:groups_ids, :offer_id, :semester_id, :course_id, :curriculum_unit_id, :curriculum_unit_type_id))
+        rts = RelatedTaggable.where(query, params.permit!.slice(:groups_ids, :offer_id, :semester_id, :course_id, :curriculum_unit_id, :curriculum_unit_type_id).to_h)
         raise ActiveRecord::RecordNotFound if rts.empty?
 
         offer_id = rts.map(&:offer_id).first if offer
@@ -344,7 +344,7 @@ class AllocationTag < ActiveRecord::Base
 
   def set_students_situations(manually = false)
     ats = lower_related if group.nil?
-    alls = Allocation.includes(:profile).references(:profile).where(status: Allocation_Activated, allocation_tag_id: (ats || id)).where('cast(profiles.types & ? as boolean) AND final_grade IS NOT NULL', Profile_Type_Student)
+    alls = Allocation.includes(:profile).references(:profile).where(status: Allocation_Activated, allocation_tag_id: (ats || id)).where('cast(profiles.types & ? as boolean) AND final_grade IS NOT NULL', Profile_Type_Student).to_a
 
     if alls.empty?
       alls = []

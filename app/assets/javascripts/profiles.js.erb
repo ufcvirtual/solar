@@ -1,3 +1,4 @@
+<%# @encoding: UTF-8 %>
 function profile_save() {
   $('form#profile_form').serialize_and_submit({
     replace_list: $('.list_profiles')
@@ -79,7 +80,7 @@ function profile_permission_save() {
     if (typeof(data) != "undefined" && typeof(data.msg) != "undefined" && typeof(data.type_msg) != "undefined")
       flash_message(data.msg, data.type_msg);
 
-  }).error(function(data){
+  }).fail(function(data){
     var response = JSON.parse(data.responseText);
     if (typeof(response.alert) != "undefined")
       flash_message(response.alert, 'alert');

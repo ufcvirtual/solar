@@ -1,4 +1,4 @@
-class ChangeCodeForCurriculumUnits < ActiveRecord::Migration
+class ChangeCodeForCurriculumUnits < ActiveRecord::Migration[5.1]
   def self.up
     change_column :curriculum_units, :code, :string, :limit => 10, :null => true
     change_column :curriculum_units, :objectives, :text, :null => false

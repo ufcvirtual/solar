@@ -2524,6 +2524,11 @@ email4:
   resource_id: 231
   per_id: false
 
+email5:
+  profile_id: 3
+  resource_id: 242
+  per_id: false
+
 api1:
   profile_id: 27
   resource_id: 232

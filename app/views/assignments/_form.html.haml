@@ -22,7 +22,7 @@
             = f.input :end_hour
 
       - types = {:"#{t('.individual')}" => Assignment_Type_Individual, :"#{t('.group')}" => Assignment_Type_Group}
-      = f.input :type_assignment, collection: types, include_blank: false, required: true
+      = f.input :type_assignment, collection: types, required: true
 
       .input.files
         = f.label t(".files")
@@ -59,7 +59,7 @@
 
       .right_buttons.clear.invisible#with_control
         = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox'
-        = button_tag t('.continue'), :type => 'button', :onclick => "controls()", class: 'btn btn_default btn_lightbox', id: '_continue', class: 'btn btn_main btn_lightbox', alt: t('.continue')
+        = button_tag t('.continue'), :type => 'button', :onclick => "controls()", class: 'btn btn_default btn_main btn_lightbox', id: '_continue', alt: t('.continue')
 
 
     .form-control.block_content.invisible#control_info

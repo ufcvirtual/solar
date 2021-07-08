@@ -1,4 +1,4 @@
-class CreateDiscussionPosts < ActiveRecord::Migration
+class CreateDiscussionPosts < ActiveRecord::Migration[5.1]
   def self.up
     create_table "discussion_posts" do |t|
       t.integer  "user_id", :null => false
@@ -13,9 +13,9 @@ class CreateDiscussionPosts < ActiveRecord::Migration
       ALTER TABLE discussion_posts ADD COLUMN father_id INTEGER NULL REFERENCES discussion_posts(id)
     SQL
 
-    add_foreign_key(:discussion_posts, :users)
-    add_foreign_key(:discussion_posts, :discussions)
-    add_foreign_key(:discussion_posts, :profiles)
+    add_foreign_key :discussion_posts, :users
+    add_foreign_key :discussion_posts, :discussions
+    add_foreign_key :discussion_posts, :profiles
   end
 
   def self.down

@@ -1,4 +1,4 @@
-class CreateMerges < ActiveRecord::Migration
+class CreateMerges < ActiveRecord::Migration[5.1]
   def change
     create_table :merges do |t|
       t.references :main_group, null: false

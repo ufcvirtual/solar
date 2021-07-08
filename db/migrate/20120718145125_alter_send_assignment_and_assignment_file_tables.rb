@@ -1,4 +1,4 @@
-class AlterSendAssignmentAndAssignmentFileTables < ActiveRecord::Migration
+class AlterSendAssignmentAndAssignmentFileTables < ActiveRecord::Migration[5.1]
   def up
   	change_column :send_assignments, :user_id, :integer, :null => true
   	add_column :assignment_files, :user_id, :integer, :default => 1, :null => true

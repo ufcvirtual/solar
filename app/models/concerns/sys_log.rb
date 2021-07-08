@@ -10,7 +10,7 @@ module SysLog
     extend ActiveSupport::Concern
 
     included do
-      after_filter :log_create, unless: Proc.new {|c| request.get? }, except: [:change_participant, :import, :export, :annul, :remove_record]
+      after_action :log_create, unless: Proc.new {|c| request.get? }, except: [:change_participant, :import, :export, :annul, :remove_record]
     end
 
     def log_create
@@ -102,8 +102,8 @@ module SysLog
 
     included do
       # request reset (create/reset_password_user) and  actually reset (update) user password
-      after_filter :log_update, only: [:update]
-      after_filter :log_request, only: [:create, :reset_password_user]
+      after_action :log_update, only: [:update]
+      after_action :log_request, only: [:create, :reset_password_user]
     end
 
     def log_update

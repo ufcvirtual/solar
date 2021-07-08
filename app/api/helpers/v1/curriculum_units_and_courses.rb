@@ -1,5 +1,5 @@
 module V1::CurriculumUnitsAndCourses
-
+  extend Grape::API::Helpers
   def verify_or_create_curriculum_unit(attributes)
     attributes[:curriculum_unit_type_id] = 6 if attributes[:curriculum_unit_type_id] == 3
 

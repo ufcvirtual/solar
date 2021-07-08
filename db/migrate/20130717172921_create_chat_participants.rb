@@ -1,4 +1,4 @@
-class CreateChatParticipants < ActiveRecord::Migration
+class CreateChatParticipants < ActiveRecord::Migration[5.1]
   def change
     create_table :chat_participants, id: false do |t|
       t.references :chat_room, null: false

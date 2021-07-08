@@ -1,6 +1,7 @@
 module BreadCrumbHelper
 
   def show_breadcrumb
+    ActionController::Parameters.permit_all_parameters = true
     active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
 
     breadcrumb = if active_tab[:url][:context].to_i == Context_General.to_i
@@ -12,7 +13,7 @@ module BreadCrumbHelper
     text_bread = ''
     [breadcrumb].flatten.each_with_index do |bread, idx|
       unless bread.nil?
-        link = link_to(t((bread[:name].to_sym rescue nil), default: (bread[:name].titleize rescue nil)), bread[:url])
+        link = link_to(t((bread[:name].to_sym rescue nil), default: (bread[:name].titleize rescue nil)), params.permit(bread[:url]))
 
         text_bread << '&nbsp;>&nbsp;' if idx > 0
         text_bread << %{<span data-level="#{idx}">#{link}</span>}
@@ -24,6 +25,7 @@ module BreadCrumbHelper
   end
 
   def show_breadcrumb_title
+    ActionController::Parameters.permit_all_parameters = true
     active_tab = user_session[:tabs][:opened][user_session[:tabs][:active]]
     breadcrumb = active_tab[:breadcrumb]
     

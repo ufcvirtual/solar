@@ -1,4 +1,4 @@
-class CreateGroups < ActiveRecord::Migration
+class CreateGroups < ActiveRecord::Migration[5.1]
   def self.up
     create_table "groups" do |t|
       t.integer  "offer_id", :null => false
@@ -6,7 +6,7 @@ class CreateGroups < ActiveRecord::Migration
       t.boolean  "status", :default => true
     end
 
-    add_foreign_key(:groups, :offers)
+    add_foreign_key :groups, :offers
   end
 
   def self.down

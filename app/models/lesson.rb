@@ -3,9 +3,10 @@ class Lesson < ActiveRecord::Base #< Event
 
   GROUP_PERMISSION = OFFER_PERMISSION = true
 
+  belongs_to :lesson_module
+  
   has_many :academic_allocations, through: :lesson_module
 
-  belongs_to :lesson_module
   belongs_to :user
   belongs_to :schedule
   belongs_to :imported_from, class_name: 'Lesson'
@@ -19,14 +20,14 @@ class Lesson < ActiveRecord::Base #< Event
   before_create :set_order
 
   before_save :url_protocol,        if: :is_link?
-  before_save :set_receive_updates, if: 'receive_updates_changed?'
+  before_save :set_receive_updates, if: -> {saved_change_to_receive_updates?}
   before_save :receive_changes,     if: :must_receive_changes?
 
-  before_validation :set_schedule, if: 'schedule'
+  before_validation :set_schedule, if: -> {schedule}
 
   after_save :send_changes,         if: :must_send_changes?
   after_save :create_or_update_folder
-  after_save :lesson_privacy,       if: 'privacy_changed?'
+  after_save :lesson_privacy,       if: -> {saved_change_to_privacy?}
   after_save :remove_dir_files,     if: :must_receive_changes?
 
   before_destroy :can_destroy?, :verify_files_before_destroy
@@ -36,11 +37,11 @@ class Lesson < ActiveRecord::Base #< Event
   validates :lesson_module, :schedule, presence: true
   validates :name, :type_lesson, presence: true
   validates :name, length: { maximum: 200 }
-  validates :address, presence: true, if: '!is_draft? && persisted?'
+  validates :address, presence: true, if: -> {!is_draft? && persisted?}
 
   validate :address_is_ok?
-  validate :can_change_privacy?, if: '!new_record? && privacy_changed?'
-  validate :can_change_status?, if: '!new_record? && status_changed? && !is_draft?'
+  validate :can_change_privacy?, if: -> {!new_record? && saved_change_to_privacy?}
+  validate :can_change_status?, if: -> {!new_record? && saved_change_to_status? && !is_draft?}
 
   # Na expressao regular os protocolos http, https e ftp podem aparecer somente uma vez ou nao aparecer
   validates_format_of :address, with: /\A((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?\z/ix,

@@ -1,4 +1,4 @@
-class CreatePersonalConfigurations < ActiveRecord::Migration
+class CreatePersonalConfigurations < ActiveRecord::Migration[5.1]
   def self.up
     create_table "personal_configurations" do |t|
       t.integer  "user_id", :null => false
@@ -6,7 +6,7 @@ class CreatePersonalConfigurations < ActiveRecord::Migration
       t.string   "default_locale"
     end
 
-    add_foreign_key(:personal_configurations, :users)
+    add_foreign_key :personal_configurations, :users
   end
 
   def self.down

@@ -9,6 +9,6 @@
 :javascript
 
   $(function() {
-    var dates_with_events = eval(#{@scheduled_events.as_json});
+    var dates_with_events = eval(#{raw @scheduled_events.as_json});
     showAgenda(dates_with_events);
   });

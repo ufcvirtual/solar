@@ -1,4 +1,4 @@
-class CreateLogNavigations < ActiveRecord::Migration
+class CreateLogNavigations < ActiveRecord::Migration[5.1]
   def change
     create_table :log_navigations do |t|
       t.integer :user_id

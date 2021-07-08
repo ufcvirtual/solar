@@ -1,7 +1,9 @@
 class AccessControlController < ApplicationController
   include AccessControlHelper
+
   protect_from_forgery except: :lesson_media
-  before_filter :set_current_user
+  before_action :set_current_user
+
 
   ## Verificação de acesso ao realizar download de um arquivo relacionado à atividades ou um arquivo público
   def assignment

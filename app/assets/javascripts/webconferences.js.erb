@@ -1,3 +1,4 @@
+<%# @encoding: UTF-8 %>
 var clickDisabled = false;
 
 function save_webconference(){
@@ -17,7 +18,7 @@ function access_webconference(obj){
     var web = window.open(data.url,'_blank');
     if(!web || web.closed || typeof web.closed=='undefined')
       flash_message("<%= I18n.t('webconferences.warning.blocked')%>", 'warning');
-  }).error(function(data){
+  }).fail(function(data){
     var response = JSON.parse(data.responseText);
     if (typeof(response.alert) != "undefined")
       flash_message(response.alert, 'alert');
@@ -36,7 +37,7 @@ function list_access(obj){
       content: data
     });
     $(obj).parent().removeClass('disabled');
-  }).error(function(data){
+  }).fail(function(data){
     $(obj).parent().removeClass('disabled');
     var response = JSON.parse(data.responseText);
     if (typeof(response.alert) != "undefined")
@@ -83,7 +84,7 @@ $(function(){
         webconferences.parents('tr').fadeOut().remove();
 
         $(".btn_edit, .btn_del").attr("disabled", true);
-      }).error(function(data){
+      }).fail(function(data){
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")
           flash_message(data.alert, 'alert');
@@ -113,7 +114,7 @@ $(function(){
         webconferences.parents('tr').find(".status_webconference").html("<%=I18n.t(:removed_record, scope: 'webconferences.list')%>");
         $(".all_webconferences").prop("checked", false);
         flash_message(data.notice, 'notice');
-      }).error(function(data){
+      }).fail(function(data){
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")
           flash_message(data.alert, 'alert');

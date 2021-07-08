@@ -208,7 +208,7 @@ module Taggable
   end
 
   def update_digital_class(ignore_changes=false)
-    DigitalClass.update_taggable(self, ignore_changes) unless created_at_changed?
+    DigitalClass.update_taggable(self, ignore_changes) unless saved_change_to_created_at?
   end
 
   def self.descendants

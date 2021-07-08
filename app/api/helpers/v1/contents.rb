@@ -1,5 +1,5 @@
 module V1::Contents
-
+  extend Grape::API::Helpers
   def copy_posts(from_posts, to_at, parent_id=nil)
     from_posts.each do |from_post|
       to_ac    = AcademicAllocation.where(allocation_tag_id: to_at, academic_tool_type: 'Discussion', academic_tool_id: from_post.academic_allocation.academic_tool_id).first

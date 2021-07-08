@@ -3,7 +3,7 @@ include EdxHelper
 class EdxCoursesController < ApplicationController
 
   layout false, except: [:index, :items]
-  before_filter :verify_integration
+  before_action :verify_integration
 
   def verify_integration
     if ((!EDX.nil? && !EDX["integrated"]) || (EDX.nil? || EDX_URLS.nil?))
@@ -63,7 +63,7 @@ class EdxCoursesController < ApplicationController
 
     redirect_to enrollments_path
   rescue => error
-    redirect_to :back, alert: t("edx.errors.cant_connect")
+    redirect_back fallback_location: :back, alert: t("edx.errors.cant_connect")
   end
 
   #Edição Conteúdo
@@ -126,7 +126,7 @@ class EdxCoursesController < ApplicationController
   # Método, chamado por ajax, para buscar usuários para alocação
   def search_users
     @uri_course  = Base64.decode64(params[:course])
-    text         = URI.unescape(params[:user])
+    text         = URI.decode_www_form_component(params[:user])
     @text_search = text
     @users       = User.where("lower(name) ~ ?", text.downcase)
   end

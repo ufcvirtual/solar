@@ -1,4 +1,4 @@
-class CreateUserBlacklist < ActiveRecord::Migration
+class CreateUserBlacklist < ActiveRecord::Migration[5.1]
   def self.up
   	create_table "user_blacklist" do |t|
   		t.string   "cpf", :limit => 14

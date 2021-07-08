@@ -1,4 +1,4 @@
-class CreateContexts < ActiveRecord::Migration
+class CreateContexts < ActiveRecord::Migration[5.1]
   def self.up
     create_table "contexts" do |t|
       t.string "name",      :limit => 100, :null => false

@@ -14,7 +14,7 @@ class AssignmentFile < ActiveRecord::Base
   has_one :assignment, through: :academic_allocation_user
   has_one :allocation_tag, through: :academic_allocation
 
-  before_save :can_change?, if: 'merge.nil?'
+  before_save :can_change?, if: -> {merge.nil?}
   before_destroy :can_destroy?
 
   validates :attachment_file_name, presence: true

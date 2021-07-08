@@ -1,4 +1,4 @@
-class ChangeLessonDescriptionType < ActiveRecord::Migration
+class ChangeLessonDescriptionType < ActiveRecord::Migration[5.1]
   def up
   	change_column :lessons, :description, :text
   end

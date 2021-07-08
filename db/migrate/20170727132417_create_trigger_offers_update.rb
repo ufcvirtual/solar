@@ -2,7 +2,7 @@
 # While you can edit this file, any changes you make to the definitions here
 # will be undone by the next auto-generated trigger migration.
 
-class CreateTriggerOffersUpdate < ActiveRecord::Migration
+class CreateTriggerOffersUpdate < ActiveRecord::Migration[5.1]
   def up
     drop_trigger("offers_after_update_of_curriculum_unit_id_course_id_semester_tr", "offers", :generated => true)
 

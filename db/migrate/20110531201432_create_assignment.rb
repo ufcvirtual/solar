@@ -1,4 +1,4 @@
-class CreateAssignment < ActiveRecord::Migration
+class CreateAssignment < ActiveRecord::Migration[5.1]
   def self.up
     create_table :assignments do |t|
       t.integer :allocation_tag_id, :null => false
@@ -9,8 +9,8 @@ class CreateAssignment < ActiveRecord::Migration
       t.datetime :end_date, :null => false
     end
 
-    add_foreign_key(:assignments, :allocation_tags)
-    add_foreign_key(:assignments, :schedules)
+    add_foreign_key :assignments, :allocation_tags
+    add_foreign_key :assignments, :schedules
   end
 
   def self.down

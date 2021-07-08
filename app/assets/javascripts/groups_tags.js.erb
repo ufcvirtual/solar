@@ -1,3 +1,4 @@
+<%# @encoding: UTF-8 %>
 $(function(){
 
   if ($(".offer_groups_options:last [id^='radio_option_group']").prop("checked"))
@@ -33,7 +34,7 @@ $(function(){
         if (typeof(data.message) != "undefined")
           flash_message(data.message, data.type_message);
       });
-    }).error(function(data){
+    }).fail(function(data){
       var response = JSON.parse(data.responseText);
       if (typeof(response.alert) != "undefined")
         flash_message(response.alert, 'alert');
@@ -70,7 +71,7 @@ $(function(){
           flash_message(data.message, data.type_message);
       });
 
-    }).error(function(data){
+    }).fail(function(data){
       var response = JSON.parse(data.responseText);
       if (typeof(response.alert) != "undefined")
         flash_message(response.alert, 'alert');

@@ -1,3 +1,4 @@
+<%# @encoding: UTF-8 %>
 $(function(){ 
 
   $('[id^="enrollment_info"]').call_fancybox({
@@ -28,7 +29,7 @@ $(function(){
       td.html(enroll_link);
 
       flash_message(data.msg, 'notice');
-    }).error(enroll_error_request);
+    }).fail(enroll_error_request);
   });
 
   // pediu matricula e quer cancelar
@@ -59,7 +60,7 @@ $(function(){
       }
 
       flash_message(data.msg, 'notice');
-    }).error(enroll_error_request);
+    }).fail(enroll_error_request);
   });
 
   // pedir matricula
@@ -80,7 +81,7 @@ $(function(){
       td.html(cancel_link);
       flash_message(data.msg, 'notice');
 
-    }).error(enroll_error_request);
+    }).fail(enroll_error_request);
   });
 
 }); // end function jquery

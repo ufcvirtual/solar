@@ -17,16 +17,16 @@
 ##########
 
 class ApplicationController < ActionController::Base
-
+  # force_ssl
   include ApplicationHelper
 
   protect_from_forgery
 
-  before_filter :authenticate_user!, except: [:verify_cpf, :api_download, :lesson_media, :tutorials, :privacy_policy, :comment_media] # devise
-  before_filter :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :get_theme
-#  after_filter :log_navigation
+  before_action :authenticate_user!, except: [:verify_cpf, :api_download, :lesson_media, :tutorials, :privacy_policy, :comment_media] # devise
+  before_action :set_locale, :start_user_session, :current_menu_context, :another_level_breadcrumb, :get_theme
+#  after_action :log_navigation
 
-  # before_filter :check_concurrent_session
+  # before_action :check_concurrent_session
 
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
         begin
           active_tab[:breadcrumb].delete_at(-1) if active_tab[:breadcrumb].count > 1 # not home
           raise 'error' if request.referer == request.original_url
-          redirect_to :back, alert: t(:no_permission)
+          redirect_back fallback_location: :back, alert: t(:no_permission)
         rescue # ActionController::RedirectBackError
           redirect_to home_path, alert: t(:no_permission)
         end

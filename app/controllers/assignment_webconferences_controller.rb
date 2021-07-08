@@ -5,10 +5,10 @@ class AssignmentWebconferencesController < ApplicationController
   include Bbb
   include IpRealHelper
 
-  before_filter :set_current_user, except: [:edit, :show]
-  before_filter :get_ac, only: :new
+  before_action :set_current_user, except: [:edit, :show]
+  before_action :get_ac, only: :new
 
-  before_filter only: [:edit, :update, :destroy, :remove_record, :show, :change_status, :access] do |controller|
+  before_action only: [:edit, :update, :destroy, :remove_record, :show, :change_status, :access] do |controller|
     @assignment_webconference = AssignmentWebconference.find(params[:id])
   end
 
@@ -80,13 +80,12 @@ class AssignmentWebconferencesController < ApplicationController
     verify_ip!(@assignment_webconference.assignment.id, :assignment, @assignment_webconference.assignment.controlled, :raise)
     @assignment_webconference.can_remove_records?
 
-
     if params.include?(:recordID)
-      @assignment_webconference.remove_record(params[:recordID])
-      save_log(@assignment_webconference)
+      #@assignment_webconference.remove_record(params[:recordID])
+      #save_log(@assignment_webconference)
     else
-      @assignment_webconference.remove_records
-      save_log(@assignment_webconference)
+      #@assignment_webconference.remove_records
+      #save_log(@assignment_webconference)
     end
 
     render json: { success: true, notice: t('assignment_webconferences.success.record') }

@@ -1,4 +1,4 @@
-class CreateOffers < ActiveRecord::Migration
+class CreateOffers < ActiveRecord::Migration[5.1]
   def self.up
     create_table "offers" do |t|
       t.integer  "curriculum_unit_id"
@@ -8,8 +8,8 @@ class CreateOffers < ActiveRecord::Migration
       t.date     "end",   :null => false
     end
 
-    add_foreign_key(:offers, :curriculum_units)
-    add_foreign_key(:offers, :courses)
+    add_foreign_key :offers, :curriculum_units
+    add_foreign_key :offers, :courses
   end
 
   def self.down

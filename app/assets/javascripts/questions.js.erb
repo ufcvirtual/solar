@@ -1,3 +1,4 @@
+<%# @encoding: UTF-8 %>
 $(function(){
   $("form#question_form .form-inputs").keypress(function(e) { if (e.which == 13) e.preventDefault(); });
 
@@ -12,7 +13,7 @@ $(function(){
       }
     }, function(data){
       $('.questions_content:last').html(data);
-    }).error(function(data){
+    }).fail(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
         flash_message(data.alert, 'alert');
@@ -152,7 +153,7 @@ function change_status(icon, replace_list){
         });
       }
       $(".block_toolbar_right a").attr('disabled', true);
-    }).error(function(data){
+    }).fail(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
         flash_message(data.alert, 'alert');
@@ -176,7 +177,7 @@ function change_status_single(icon){
         $(icon).html('<img alt="Rejected" src="/assets/rejected.png"/>')
         $(icon).addClass('rejected').removeClass('released');
       }
-  }).error(function(data){
+  }).fail(function(data){
     var response = $.parseJSON(data.responseText);
     if (typeof(response.alert) != "undefined")
      flash_message(response.alert, 'alert');
@@ -211,7 +212,7 @@ function edit_question(icon, replace_list){
           //maxHeight: '70%',
           beforeClose: function() { clear_ckeditor(); }
       });
-    }).error(function(data){
+    }).fail(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
         flash_message(data.alert, 'alert');
@@ -246,7 +247,7 @@ function copy_question(icon, replace_list){
           update_nice_checkbox();
         });
       }
-    }).error(function(data){
+    }).fail(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
        flash_message(data.alert, 'alert');
@@ -274,7 +275,7 @@ function delete_question(icon){
       questions.parents('tr').fadeOut().remove();
       update_tables_with_no_data();
       update_nice_checkbox();
-    }).error(function(data){
+    }).fail(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
         flash_message(data.alert, 'alert');
@@ -301,7 +302,7 @@ function delete_exam_questions(icon, exam_id){
       questions.parents('tr').fadeOut().remove();
       update_tables_with_no_data();
       update_nice_checkbox();
-    }).error(function(data){
+    }).fail(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != 'undefined')
         flash_message(data.alert, 'alert');
@@ -330,7 +331,7 @@ function up_or_down(icon){
       var id2 = row.prevAll("tr:first").attr('exam_question_id');
       var url = $(icon).data('url').replace(':id1', id1).replace(':id2', id2);
 
-      $.put(url, function(){ row.insertBefore(row.prevAll("tr:first")); }).error(f_error);
+      $.put(url, function(){ row.insertBefore(row.prevAll("tr:first")); }).fail(f_error);
 
     } else { // down
       if (row.nextAll("tr:first").attr('order') == undefined) return false;
@@ -338,7 +339,7 @@ function up_or_down(icon){
       var id2 = row.nextAll("tr:first").attr('exam_question_id');
       var url = $(icon).data('url').replace(':id1', id1).replace(':id2', id2);
 
-      $.put(url, function(data, t, x){ row.insertAfter(row.nextAll("tr:first")); }).error(f_error);
+      $.put(url, function(data, t, x){ row.insertAfter(row.nextAll("tr:first")); }).fail(f_error);
     }
     return false;
 
@@ -377,7 +378,7 @@ function annul(icon){
   $.put($(icon).data('url'), function(data){
     flash_message(data.notice, 'notice');
     $(icon).prop('disabled', true);
-  }).error(function(data){
+  }).fail(function(data){
     $(icon).prop('checked', false);
     var data = $.parseJSON(data.responseText);
     if (typeof(data.alert) != "undefined")
@@ -439,7 +440,7 @@ function change_status_exam(link){
     }else{
       flash_message(data.alert, 'alert');
     }  
-  }).error(function(data){
+  }).fail(function(data){
     var response = $.parseJSON(data.responseText);
     if (typeof(response.alert) != "undefined")
      flash_message(response.alert, 'alert');
@@ -452,7 +453,7 @@ function calcule_grade_exam(link){
     flash_message(data.notice, 'notice');
 
     $(link).html("<%=I18n.t('exams.list.calculate')%>");
-  }).error(function(data){
+  }).fail(function(data){
     var response = $.parseJSON(data.responseText);
     if (typeof(response.alert) != "undefined")
      flash_message(response.alert, 'alert');
@@ -510,7 +511,7 @@ function preview_question(icon){
   if(!$('.import_something').length)
     $.get("<%=Rails.application.routes.url_helpers.show_verify_owners_question_path(':id')%>".replace(':id', $(icon).parents('tr').data('id')), function(data){
       $(icon).call_fancybox({ href: $(icon).data('url'), open: true, 'autoDimensions': false, 'autoSize': false, width: '700', height: 'auto', });
-    }).error(function(data){
+    }).fail(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")
        flash_message(data.alert, 'alert');

@@ -1,4 +1,4 @@
-class AddSemesterToSav < ActiveRecord::Migration
+class AddSemesterToSav < ActiveRecord::Migration[5.1]
   def up
     unless SavConfig::CONFIG.nil?
         add_column :savs, :semester_id, :integer, null: true

@@ -3,14 +3,15 @@ class DiscussionsController < ApplicationController
   include SysLog::Actions
   include FilesHelper
 
-  doorkeeper_for :api_download
+  #doorkeeper_for :api_download
+  before_action :doorkeeper_authorize!, only: [:api_download]
 
   layout false, except: :index
 
-  before_filter :prepare_for_group_selection, only: :index
-  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
+  before_action :prepare_for_group_selection, only: :index
+  before_action :get_groups_by_allocation_tags, only: [:new, :create]
 
-  before_filter only: [:edit, :update, :show] do |controller|
+  before_action only: [:edit, :update, :show] do |controller|
     get_groups_by_tool(@discussion = Discussion.find(params[:id]))
   end
 
@@ -42,7 +43,7 @@ class DiscussionsController < ApplicationController
 
     authorize! :list, Discussion, on: @allocation_tags_ids
 
-    @discussions = Discussion.joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).uniq.select("discussions.*, schedules.start_date AS start_date").order("start_date")
+    @discussions = Discussion.joins(:schedule, academic_allocations: :allocation_tag).where(allocation_tags: {id: @allocation_tags_ids.split(" ").flatten}).distinct.select("discussions.*, schedules.start_date AS start_date").order("start_date")
   rescue
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
   end

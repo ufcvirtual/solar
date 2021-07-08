@@ -1,3 +1,4 @@
+<%# @encoding: UTF-8 %>
 function edit_awebconference(td){
   if (!!$(td).hasClass('disabled')){
     flash_message("<%= I18n.t('assignment_webconferences.error.unavailable_or_date_range') %>", "alert");
@@ -24,13 +25,13 @@ function remove_record_awebconference(td){
       $($(td).parents('tr:first')).remove();
       $(".student_webconferences tbody").prepend(data);
       flash_message(notice, "notice", 'block_wrapper:first');
-    }).error(function(data){
+    }).fail(function(data){
       var response = JSON.parse(data.responseText);
       if (typeof(response.alert) != "undefined")
         flash_message(response.alert, 'alert', 'block_wrapper:first');
     });;
 
-  }).error(function(data){
+  }).fail(function(data){
     var response = JSON.parse(data.responseText);
     if (typeof(response.alert) != "undefined")
       flash_message(response.alert, 'alert', 'block_wrapper:first');
@@ -51,7 +52,7 @@ function delete_awebconference(td){
     $(td).parents('tr:first').remove();
     flash_message(data.notice, 'notice');
     update_tables_with_no_data();
-  }).error(function(data){
+  }).fail(function(data){
     var response = JSON.parse(data.responseText);
     if (typeof(response.alert) != "undefined")
       flash_message(response.alert, 'alert');
@@ -65,7 +66,7 @@ function get_record(obj){
     var web = window.open(data.url,'_blank');
     if(!web || web.closed || typeof web.closed=='undefined')
       flash_message("<%= I18n.t('webconferences.warning.blocked')%>", 'warning');
-  }).error(function(data){
+  }).fail(function(data){
     var response = JSON.parse(data.responseText);
     if (typeof(response.alert) != "undefined")
       flash_message(response.alert, 'alert');
@@ -85,7 +86,7 @@ function access_awebconference(obj){
     var web = window.open(data.url,'_blank');
     if(!web || web.closed || typeof web.closed=='undefined')
       flash_message("<%= I18n.t('webconferences.warning.blocked')%>", 'warning');
-  }).error(function(data){
+  }).fail(function(data){
     var response = JSON.parse(data.responseText);
     if (typeof(response.alert) != "undefined")
       flash_message(response.alert, 'alert');

@@ -181,7 +181,7 @@ table tr.block_title th {
       top: 3px;
       right: 5px;
       padding: 2px 5px 1px 5px;
-      @include rounded-corners(3px);
+      rounded-corners: 3px;
       font-size: 11px;
       background-color: $color_black_buttons;
       color: $slide_settings_counter_color_portlets;

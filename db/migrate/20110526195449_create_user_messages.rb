@@ -1,4 +1,4 @@
-class CreateUserMessages < ActiveRecord::Migration
+class CreateUserMessages < ActiveRecord::Migration[5.1]
   def self.up
     create_table "user_messages" do |t|
       t.integer "message_id"
@@ -6,8 +6,8 @@ class CreateUserMessages < ActiveRecord::Migration
       t.integer "status"
     end
 
-    add_foreign_key(:user_messages, :messages)
-    add_foreign_key(:user_messages, :users)
+    add_foreign_key :user_messages, :messages
+    add_foreign_key :user_messages, :users
   end
 
   def self.down

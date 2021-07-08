@@ -1221,3 +1221,9 @@ res233:
   controller: 'webconferences'
   action: 'download_record'
   description: 'Download gravações de webconferências'
+
+res242:
+  id: 242
+  controller: 'emails'
+  action: 'automatic_email_group_assignment_division'
+  description: 'Email de aviso de divisão automática de grupos de trabalho'

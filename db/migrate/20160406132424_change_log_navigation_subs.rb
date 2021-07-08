@@ -1,4 +1,4 @@
-class ChangeLogNavigationSubs < ActiveRecord::Migration
+class ChangeLogNavigationSubs < ActiveRecord::Migration[5.1]
   def change
     change_table :log_navigation_subs do |t|
       t.rename :group_id, :group_assignment_id

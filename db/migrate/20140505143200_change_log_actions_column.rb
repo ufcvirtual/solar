@@ -1,4 +1,4 @@
-class ChangeLogActionsColumn < ActiveRecord::Migration
+class ChangeLogActionsColumn < ActiveRecord::Migration[5.1]
   def up
     # remove_index :log_actions, :tool_id # doesn't exist
     change_table :log_actions do |t|

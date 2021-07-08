@@ -3,18 +3,18 @@ class NotificationsController < ApplicationController
   include SysLog::Actions
   include FilesHelper
 
-  before_filter only: [:edit, :new, :create] do |controller|
+  before_action only: [:edit, :new, :create] do |controller|
     @allocation_tags_ids = params[:allocation_tags_ids]
   end
 
-  before_filter only: [:edit, :update] do |controller|
+  before_action only: [:edit, :update] do |controller|
     get_groups_by_tool(@notification = Notification.find(params[:id]))
     ats = @notification.academic_allocations.pluck(:allocation_tag_id)
     authorize! :update, Notification, {on: ats, accepts_general_profile: true}
     @can_mark_as_mandatory = current_user.profiles_with_access_on(:mark_as_mandatory, :notifications, (ats rescue nil), false, false, true).any?
   end
 
-  before_filter only: [:new, :create] do |controller|
+  before_action only: [:new, :create] do |controller|
     get_groups_by_allocation_tags
     authorize! :create, Notification, {on: @allocation_tags_ids, accepts_general_profile: true}
     @can_mark_as_mandatory = current_user.profiles_with_access_on(:mark_as_mandatory, :notifications, (@allocation_tags_ids.split(' ') rescue nil), false, false, true).any?
@@ -148,9 +148,9 @@ class NotificationsController < ApplicationController
 
     download_file(:back, file.file.path, file.file_file_name)
   rescue CanCan::AccessDenied
-    redirect_to :back, alert: t(:no_permission)
+    redirect_back fallback_location: :back, alert: t(:no_permission)
   rescue => error
-    redirect_to :back, alert: t('notifications.error.download')
+    redirect_back fallback_location: :back, alert: t('notifications.error.download')
   end
 
   private

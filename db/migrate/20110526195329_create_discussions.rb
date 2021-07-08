@@ -1,4 +1,4 @@
-class CreateDiscussions < ActiveRecord::Migration
+class CreateDiscussions < ActiveRecord::Migration[5.1]
   def self.up
     create_table "discussions" do |t|
       t.string  "name", :limit => 120
@@ -9,8 +9,8 @@ class CreateDiscussions < ActiveRecord::Migration
       t.date    "end"
     end
 
-    add_foreign_key(:discussions, :allocation_tags)
-    add_foreign_key(:discussions, :schedules)
+    add_foreign_key :discussions, :allocation_tags
+    add_foreign_key :discussions, :schedules
   end
 
   def self.down

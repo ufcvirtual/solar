@@ -1,4 +1,4 @@
-class PopulateRelatedTaggables < ActiveRecord::Migration
+class PopulateRelatedTaggables < ActiveRecord::Migration[5.1]
   def up
 
     ## groups

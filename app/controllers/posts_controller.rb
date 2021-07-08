@@ -3,9 +3,9 @@ class PostsController < ApplicationController
 
   #include SysLog::Actions
 
-  # before_filter :authenticate_user!
-  before_filter :prepare_for_pagination
-  before_filter :set_current_user, only: [:destroy, :create, :update, :publish, :post_files]
+  # before_action :authenticate_user!
+  before_action :prepare_for_pagination
+  before_action :set_current_user, only: [:destroy, :create, :update, :publish, :post_files]
 
   load_and_authorize_resource except: [:index, :user_posts, :create, :show, :evaluate, :publish, :post_files]
 
@@ -14,7 +14,7 @@ class PostsController < ApplicationController
   require 'will_paginate/array'
   def index
     if Exam.verify_blocking_content(current_user.id)
-      redirect_to :back, alert: t('exams.restrict')
+      redirect_back fallback_location: :back, alert: t('exams.restrict')
     else
       @discussion, @user = Discussion.includes(:allocation_tags, :schedule).find(params[:discussion_id]), current_user
 

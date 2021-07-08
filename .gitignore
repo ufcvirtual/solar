@@ -49,6 +49,7 @@ config/sav.yml
 config/sav.deploy.yml
 config/newrelic.yml
 config/digital_class.yml
+config/puma.rb
 sink.sh
 commit.sh
 sink_master.sh
@@ -61,3 +62,5 @@ ship.sh
 config/digital_class_access_token.txt
 .ruby-version
 .env
+/node_modules
+/yarn-error.log

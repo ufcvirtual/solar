@@ -1,4 +1,4 @@
-class CreateAssignmentEnunciationFilesAndRemoveFilesEnunciation < ActiveRecord::Migration
+class CreateAssignmentEnunciationFilesAndRemoveFilesEnunciation < ActiveRecord::Migration[5.1]
   def up
   	drop_table :files_enunciations
 
@@ -10,7 +10,7 @@ class CreateAssignmentEnunciationFilesAndRemoveFilesEnunciation < ActiveRecord::
       t.datetime :attachment_updated_at
     end
 
-    add_foreign_key(:assignment_enunciation_files, :assignments)
+    add_foreign_key :assignment_enunciation_files, :assignments
   end
 
   def down
@@ -18,7 +18,7 @@ class CreateAssignmentEnunciationFilesAndRemoveFilesEnunciation < ActiveRecord::
       t.integer :assignment_id, :null => false
     end
 
-    add_foreign_key(:files_enunciations, :assignments)
+    add_foreign_key :files_enunciations, :assignments
 
     drop_table :assignment_enunciation_files
   end

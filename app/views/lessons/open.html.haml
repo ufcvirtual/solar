@@ -48,7 +48,7 @@
 
     $.post("#{create_or_update_lnotes_path}", data, function(data){
       alert("#{t('lesson_notes.success.created_updated')}");
-    }).error(function(data){
+    }).fail(function(data){
       alert("#{t('lesson_notes.error.cant_create_note')}");
     });   
   }

@@ -1,4 +1,4 @@
-class CreateCommentFiles < ActiveRecord::Migration
+class CreateCommentFiles < ActiveRecord::Migration[5.1]
   def self.up
     create_table :comment_files do |t|
       t.integer :assignment_comment_id, :null => false
@@ -8,7 +8,7 @@ class CreateCommentFiles < ActiveRecord::Migration
       t.datetime :attachment_updated_at
     end
 
-    add_foreign_key(:comment_files, :assignment_comments)
+    add_foreign_key :comment_files, :assignment_comments
   end
 
   def self.down

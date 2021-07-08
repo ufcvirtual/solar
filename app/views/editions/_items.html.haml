@@ -110,7 +110,7 @@
         $(".edition_items").html(data);
         $(".back").removeClass("invisible");
         loadFocus();
-      }).error(function(data){
+      }).fail(function(data){
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")
           flash_message(data.alert, 'alert');
@@ -119,18 +119,18 @@
     });
 
     // se nenhuma opção estiver disponível
-    if( !$("#uc_education .block_content").children().size() && !$("#uc_comunication .block_content").children().size() && !$("#uc_informations .block_content").children().size()){
+    if( !$("#uc_education .block_content").children().length && !$("#uc_comunication .block_content").children().length && !$("#uc_informations .block_content").children().length){
       flash_message("#{t(".no_permission_info")}", "warning");
       $(".edition_items").html("");
     }
 
-    if( !$("#uc_education .block_content").children().size() )
+    if( !$("#uc_education .block_content").children().length )
       $("#uc_education").remove();
 
-    if( !$("#uc_comunication .block_content").children().size() )
+    if( !$("#uc_comunication .block_content").children().length )
       $("#uc_comunication").remove();
 
-    if( !$("#uc_informations .block_content").children().size() )
+    if( !$("#uc_informations .block_content").children().length )
       $("#uc_informations").remove();
 
   });

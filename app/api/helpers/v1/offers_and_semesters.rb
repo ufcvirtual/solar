@@ -1,5 +1,5 @@
 module V1::OffersAndSemesters
-
+  extend Grape::API::Helpers
   def creates_offer_and_semester(name, offer_period, enrollment_period, params)
     semester = verify_or_create_semester(name, offer_period, enrollment_period)
     offer    = verify_or_create_offer(semester, params, offer_period, enrollment_period)

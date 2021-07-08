@@ -95,7 +95,6 @@ class ReportsController < ApplicationController
 
       pdf.font("PT Sans", :style => :italic ,:size => 12)
       # key
-
       models_info = Report.query(params[:query_type], params[:allocation_tags_ids], params[:groups])
       @options_array = Report.get_options_array
       

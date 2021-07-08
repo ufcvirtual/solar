@@ -17,7 +17,7 @@ Solar::Application.configure do
   # as classes são "requeridas" pela aplicação em cada requisição
   config.eager_load = false
   config.eager_load_paths += Dir['app/models/*.rb']
-  ActionDispatch::Reloader.to_prepare do
+  ActiveSupport::Reloader.to_prepare do
     Dir['app/models/*.rb'].each {|file| require_dependency file}
   end
 
@@ -33,6 +33,10 @@ Solar::Application.configure do
   config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 } #Mailcatcher
+
+  # Utilizando Serviço Mailcatcher com Docker
+  # config.action_mailer.smtp_settings = { :address => "mailcatcher", :port => 1025 }
 
   # Not logging any DEBUG message
   config.log_level = :info
@@ -46,6 +50,7 @@ Solar::Application.configure do
 
   # Only use best-standards-support built into browsers
   #config.action_dispatch.best_standards_support = :builtin
+  #config.assets.quiet = true
 
   # Desabilitando compressão de assets
   config.assets.debug = true

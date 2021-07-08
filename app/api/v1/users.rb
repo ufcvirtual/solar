@@ -56,23 +56,25 @@ module V1
               user_exist = User.where(cpf: cpf).first
               user = user_exist.nil? ? User.new(cpf: cpf) : user_exist
 
-
               user_data = nil
               if (!User::MODULO_ACADEMICO.nil? && User::MODULO_ACADEMICO['integrated'])
                 user_data = User.connect_and_import_user(cpf) # try to import
+
                 user.synchronize(user_data) # synchronize user with new MA data
               end
 
               new_user = (user.new_record? && !user.integrated)
+
               raise CanCan::AccessDenied if !new_user && ((!@ip && (user.oauth_application_id.blank? || user.oauth_application_id != @current_client.id)) || (@ip && !user.oauth_application_id.blank?))
 
               if user_data.blank? || !user.selfregistration
                 blacklist = UserBlacklist.where(cpf: user.cpf).first_or_initialize
                 blacklist.name = params[:name] if blacklist.new_record?
               end
+
               can_add_or_exists_blacklist = !blacklist.nil? && (blacklist.valid? || !blacklist.new_record?)
 
-              blacklist.save if blacklist.new_record? && !user.nil? && user.integrated && can_add_or_exists_blacklist && !user.selfregistration
+              blacklist.save if !blacklist.nil? && blacklist.new_record? && !user.nil? && user.integrated && can_add_or_exists_blacklist && !user.selfregistration
 
               if new_user || can_add_or_exists_blacklist
                 ActiveRecord::Base.transaction do
@@ -268,7 +270,7 @@ module V1
               query.merge!({ allocation_tags: { id: allocation_tags_ids } }) unless allocation_tags_ids.blank?
               query[:allocations].merge!({ status: Allocation_Activated }) if params[:only_active]
 
-              @users = User.joins(allocations: :allocation_tag).where(query).uniq
+              @users = User.joins(allocations: :allocation_tag).where(query).distinct
             rescue => error
               log_error(error, code = (allocation_tags_ids.nil? ? 404 : 422))
               error!(error, code)

@@ -1,4 +1,4 @@
-class CreateSendAssignments < ActiveRecord::Migration
+class CreateSendAssignments < ActiveRecord::Migration[5.1]
   def self.up
     create_table :send_assignments do |t|
       t.integer :assignment_id, :null => false
@@ -11,8 +11,8 @@ class CreateSendAssignments < ActiveRecord::Migration
       ALTER TABLE send_assignments ADD CONSTRAINT unq_send_assignment UNIQUE(assignment_id, user_id);
     SQL
 
-    add_foreign_key(:send_assignments, :assignments)
-    add_foreign_key(:send_assignments, :users)
+    add_foreign_key :send_assignments, :assignments
+    add_foreign_key :send_assignments, :users
   end
 
   def self.down

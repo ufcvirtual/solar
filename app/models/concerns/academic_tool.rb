@@ -9,11 +9,11 @@ module AcademicTool
     has_many :groups, through: :allocation_tags
     has_many :offers, through: :allocation_tags
 
-    after_create :define_academic_associations, unless: 'allocation_tag_ids_associations.nil?'
+    after_create :define_academic_associations, unless: -> {allocation_tag_ids_associations.nil?}
 
-    before_validation :set_schedule, if: 'respond_to?(:schedule) && merge.nil?'
+    before_validation :set_schedule, if: -> {respond_to?(:schedule) && merge.nil?}
 
-    after_save :set_situation_date, if: 'merge.nil?', on: :update
+    after_save :set_situation_date, if: -> {merge.nil?}, on: :update
 
     #after_update if: 'notify_change?' do
     #  send_email(true)

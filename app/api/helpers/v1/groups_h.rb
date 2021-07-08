@@ -1,5 +1,5 @@
 module V1::GroupsH
-
+  extend Grape::API::Helpers
   def get_groups_by_code(curriculum_unit_code, course_code, code, semester)
     uc = CurriculumUnit.find_by_code(curriculum_unit_code) unless curriculum_unit_code.blank?
     course_code = "CPRES" if course_code.blank? && uc.try(:curriculum_unit_type_id) == 1 && !!Course.find_by_code("CPRES")

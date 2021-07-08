@@ -2,13 +2,13 @@ class LessonModulesController < ApplicationController
 
   include SysLog::Actions
 
-  before_filter :get_groups_by_allocation_tags, only: [:new, :create]
+  before_action :get_groups_by_allocation_tags, only: [:new, :create]
 
-  before_filter only: [:new, :create, :edit, :update] do |controller|
+  before_action only: [:new, :create, :edit, :update] do |controller|
     authorize! crud_action, LessonModule, on: @allocation_tags_ids = params[:allocation_tags_ids].split(' ').flatten
   end
 
-  before_filter only: [:edit, :update] do |controller|
+  before_action only: [:edit, :update] do |controller|
     get_groups_by_tool(@lesson_module = LessonModule.find(params[:id]))
   end
 

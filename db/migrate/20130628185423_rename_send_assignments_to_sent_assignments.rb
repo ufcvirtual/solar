@@ -1,5 +1,5 @@
-class RenameSendAssignmentsToSentAssignments < ActiveRecord::Migration
-  def up
+class RenameSendAssignmentsToSentAssignments < ActiveRecord::Migration[5.1]
+  def self.up
     remove_foreign_key :send_assignments, :assignments
     remove_foreign_key :send_assignments, :users
 
@@ -12,17 +12,19 @@ class RenameSendAssignmentsToSentAssignments < ActiveRecord::Migration
     
     add_foreign_key :sent_assignments, :assignments
     add_foreign_key :sent_assignments, :users
-
-    remove_foreign_key :assignment_files, :send_assignments
+   
+    # remove_foreign_key :assignment_files, :send_assignments #o nome da tabela referenciada eh sent_assignments, pois nesse ponto ja tinha sido renomeada no metodo rename_table mais acima.
+    remove_foreign_key :assignment_files, :sent_assignments
     rename_column :assignment_files, :send_assignment_id, :sent_assignment_id
     add_foreign_key :assignment_files, :sent_assignments
 
-    remove_foreign_key :assignment_comments, :send_assignments
+    # remove_foreign_key :assignment_comments, :send_assignments
+    remove_foreign_key :assignment_comments, :sent_assignments
     rename_column :assignment_comments, :send_assignment_id, :sent_assignment_id    
     add_foreign_key :assignment_comments, :sent_assignments
   end 
 
-  def down
+  def self.down
     remove_foreign_key :sent_assignments, :assignments
     remove_foreign_key :sent_assignments, :users
 

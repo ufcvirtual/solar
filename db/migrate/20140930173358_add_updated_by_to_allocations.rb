@@ -1,4 +1,4 @@
-class AddUpdatedByToAllocations < ActiveRecord::Migration
+class AddUpdatedByToAllocations < ActiveRecord::Migration[5.1]
   def up
     add_column :allocations, :updated_by_user_id, :integer
 

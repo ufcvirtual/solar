@@ -3,7 +3,7 @@ class MessagesController < ApplicationController
   include MessagesHelper
   include SysLog::Actions
 
-  before_filter :prepare_for_group_selection, only: [:index]
+  before_action :prepare_for_group_selection, only: [:index]
 
   ## [inbox, outbox, trashbox]
   def index
@@ -111,7 +111,7 @@ class MessagesController < ApplicationController
         @reply_to = [@original.sent_by.to_msg]
         @message.subject = "#{t(:reply, scope: [:messages, :subject])} #{@message.subject}"
       when "reply_all"
-        @reply_to = @original.users.uniq.map(&:to_msg)
+        @reply_to = @original.users.distinct.map(&:to_msg)
         @message.subject = "#{t(:reply, scope: [:messages, :subject])} #{@message.subject}"
       when "forward"
         # sem contato default
@@ -130,7 +130,8 @@ class MessagesController < ApplicationController
 
     begin
       Message.transaction do
-        @message = Message.new(message_params, without_validation: true)
+        #@message = Message.new(message_params, without_validation: true)
+        @message = Message.new(message_params)
         @message.sender = current_user
         @message.allocation_tag_id = @allocation_tag_id
 
@@ -160,6 +161,14 @@ class MessagesController < ApplicationController
       end
 
       redirect_to outbox_messages_path, notice: t(:mail_sent, scope: :messages)
+    rescue ActiveRecord::RecordInvalid
+      @message.errors.each do |attribute, erro|
+        @attribute = attribute
+      end
+      @support = params[:message][:support]
+      @reply_to = [{resume: t("messages.support")}] unless params[:message][:support].nil?
+
+      render :new
     rescue => error
       unless @allocation_tag_id.nil?
         allocation_tag      = AllocationTag.find(@allocation_tag_id)

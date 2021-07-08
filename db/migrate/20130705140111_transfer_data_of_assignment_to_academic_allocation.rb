@@ -1,19 +1,18 @@
-class TransferDataOfAssignmentToAcademicAllocation < ActiveRecord::Migration
-  def up
+class TransferDataOfAssignmentToAcademicAllocation < ActiveRecord::Migration[5.1]
+  def self.up
     
     drop_table :educational_tools
 
     create_table :academic_allocations do |t|
       t.references :allocation_tag
       t.foreign_key :allocation_tags
-      t.references :academic_tool, :polymorphic => true
+      t.references :academic_tool, :polymorphic => true, index: { name: 'index_acad_alloc_on_acad_tool_type_and_acad_tool_id' } # renomendo o indice pois gerado automatica estava ultrapassando a quantidade de caracteres permitidos ocasionando erro.
     end
 
     change_table :sent_assignments do |t|
       t.references :academic_allocation
-      t.foreign_key :academic_allocations
     end
-
+    add_foreign_key :sent_assignments, :academic_allocations
     assignments = Assignment.all
    
     assignments.each do |assignment|
@@ -38,7 +37,7 @@ class TransferDataOfAssignmentToAcademicAllocation < ActiveRecord::Migration
 
   end
 
-  def down   
+  def self.down   
 
     #Para funcionar a reversão é necessário alterar os relacionamentos do model adequadamente.
     change_table :assignments do |t|

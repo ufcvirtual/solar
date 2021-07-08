@@ -1,4 +1,4 @@
-class ChangeSavs < ActiveRecord::Migration
+class ChangeSavs < ActiveRecord::Migration[5.1]
   def up
     drop_table :savs if table_exists? :savs
 

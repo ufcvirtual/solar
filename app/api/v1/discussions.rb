@@ -8,11 +8,11 @@ module V1
       get ":id/discussions", rabl: "discussions/list" do
         @group = Group.find(params[:id])
         raise ActiveRecord::RecordNotFound if @group.nil?
-
-        @discussions = Discussion.all_by_allocation_tags(@group.allocation_tag.id)
-        ats = @group.allocation_tag.related
-        @researcher = current_user.is_researcher?(ats)
-        @can_post   = current_user.profiles_with_access_on('create', 'posts', ats).any?
+        #ats = @group.allocation_tag.related
+        at_ids = AllocationTag.find(@group.allocation_tag.id).related
+        @discussions = Discussion.all_by_allocation_tags(at_ids)
+        @researcher = current_user.is_researcher?(at_ids)
+        @can_post   = current_user.profiles_with_access_on('create', 'posts', at_ids).any?
       end
     end
 

@@ -1,4 +1,4 @@
-class CreateDiscussionPostFiles < ActiveRecord::Migration
+class CreateDiscussionPostFiles < ActiveRecord::Migration[5.1]
   def self.up
     create_table :discussion_post_files do |t|
       t.integer :discussion_post_id, :null => false
@@ -8,7 +8,7 @@ class CreateDiscussionPostFiles < ActiveRecord::Migration
       t.datetime :attachment_updated_at
     end
 
-    add_foreign_key(:discussion_post_files, :discussion_posts)
+    add_foreign_key :discussion_post_files, :discussion_posts
   end
 
   def self.down

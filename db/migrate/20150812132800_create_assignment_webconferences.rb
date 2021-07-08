@@ -1,4 +1,4 @@
-class CreateAssignmentWebconferences < ActiveRecord::Migration
+class CreateAssignmentWebconferences < ActiveRecord::Migration[5.1]
   def change
     create_table :assignment_webconferences do |t|
       t.datetime :initial_time, null: false

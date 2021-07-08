@@ -1,4 +1,4 @@
-class CreateSavs < ActiveRecord::Migration
+class CreateSavs < ActiveRecord::Migration[5.1]
   def up
     unless SavConfig::CONFIG.nil?
       create_table :savs do |t|

@@ -1,5 +1,5 @@
 module V1::FileDownload
-
+	extend Grape::API::Helpers
   def send_file(filepath, filename, disposition = 'inline')
     raise ActiveRecord::RecordNotFound unless File.exist?(filepath)
 

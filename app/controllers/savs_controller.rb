@@ -1,6 +1,6 @@
 class SavsController < ApplicationController
 
-  before_filter :prepare_for_pagination
+  before_action :prepare_for_pagination
   
   def index
     if !SavConfig::CONFIG.nil? && active_tab[:url][:allocation_tag_id]

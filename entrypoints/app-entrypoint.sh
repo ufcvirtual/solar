@@ -8,7 +8,7 @@ if [ -f tmp/pids/server.pid ]; then
 fi
 
 # If the database exists, migrate. Otherwise setup (create and migrate)
-bundle exec rake db:migrate 2>/dev/null || bundle exec rake db:create db:migrate 2>/dev/null || echo "ok"
+bundle exec rails db:migrate 2>/dev/null || bundle exec rails db:create db:migrate 2>/dev/null || echo "ok"
 echo "Database created & migrated!"
 
 # Run the Rails server

@@ -57,7 +57,7 @@ class Discussion < Event
   # => Se eu criar um novo forum em que uma de suas allocation_tags seja a 3 e tenha o mesmo nome que o Forum 1, eh pra dar erro
   def unique_name
     discussions_with_same_name = self.class.joins(:allocation_tags).where(allocation_tags: { id: allocation_tag_ids_associations || academic_allocations.map(&:allocation_tag_id) }, name: name)
-    errors.add(:name, I18n.t('discussions.error.existing_name')) if (@new_record == true || name_changed?) && discussions_with_same_name.size > 0
+    errors.add(:name, I18n.t('discussions.error.existing_name')) if (@new_record == true || saved_change_to_name?) && discussions_with_same_name.size > 0
   end
 
   def statuses(user_id = nil)
@@ -81,7 +81,7 @@ class Discussion < Event
 
   def posts(opts = {}, allocation_tags_ids = nil, user_id=nil)
     opts = { 'type' => 'new', 'order' => 'desc', 'limit' => Rails.application.config.items_per_page.to_i,
-      'display_mode' => 'list', 'page' => 1 }.merge(opts)
+      'display_mode' => 'list', 'page' => 1 }.merge(opts.to_h)
     type = (opts['type'] == 'history') ? '<' : '>'
 
     query = []
@@ -97,7 +97,7 @@ class Discussion < Event
 
   def posts_not_limit(opts = {}, allocation_tags_ids = nil, user_id=nil)
     opts = { 'type' => 'new', 'order' => 'desc', 'limit' => Rails.application.config.items_per_page.to_i,
-      'display_mode' => 'list', 'page' => 1, 'select' => 'DISTINCT discussion_posts.id, discussion_posts.*' }.merge(opts)
+      'display_mode' => 'list', 'page' => 1, 'select' => 'DISTINCT discussion_posts.id, discussion_posts.*' }.merge(opts.to_h)
     type = (opts['type'] == 'history') ? '<' : '>'
 
     query = []
@@ -177,13 +177,13 @@ class Discussion < Event
     joins(:schedule, academic_allocations: :allocation_tag)
       .joins("LEFT JOIN discussion_posts AS dp ON dp.academic_allocation_id = academic_allocations.id AND dp.user_id = #{student_id}")
       .where(allocation_tags: { id: AllocationTag.find(allocation_tag_id).related }).select('discussions.id, discussions.name, COUNT(dp.id) AS posts_count, schedules.start_date AS start_date, schedules.end_date AS end_date')
-      .group('discussions.id, discussions.name, start_date, end_date').order('start_date').uniq
+      .group('discussions.id, discussions.name, start_date, end_date').order('start_date').distinct
   end
 
-  def self.all_by_allocation_tags(allocation_tag_id)
+  def self.all_by_allocation_tags(allocation_tag_ids)
     joins(:schedule, academic_allocations: :allocation_tag)
     .joins('LEFT JOIN discussion_posts ON discussion_posts.academic_allocation_id = academic_allocations.id')
-    .where(allocation_tags: { id: AllocationTag.find(allocation_tag_id).related })
+    .where(allocation_tags: { id: allocation_tag_ids})
     .select('discussions.*, academic_allocations.id AS ac_id, COUNT(discussion_posts.id) AS posts_count, schedules.start_date AS start_date, schedules.end_date AS end_date')
     .group('discussions.id, schedules.start_date, schedules.end_date, name, academic_allocations.id')
     .order('start_date, end_date, name')

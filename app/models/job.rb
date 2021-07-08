@@ -32,7 +32,7 @@ class Job
     end
   end
 
-  def self.send_mass_email(emails, subject, new_msg_template, files=[], email=nil)
+  def self.send_mass_email(emails, subject, new_msg_template, files=[], email=nil, with_template_view = false)
     unless AMOUNT.nil?
       # Thread.new do
       #   ActiveRecord::Base.forbid_implicit_checkout_for_thread!
@@ -40,7 +40,7 @@ class Job
           emails_in_jobs = emails.in_groups_of(AMOUNT, false).to_a rescue []
 
           emails_in_jobs.each do |e|
-            job = Notifier.delay.send_mail(e, subject, new_msg_template, files, email)
+            job = Notifier.delay.send_mail(e, subject, new_msg_template, files, email, with_template_view)
             job.amount = e.count
             job.save!
 

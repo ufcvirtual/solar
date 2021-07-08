@@ -15,7 +15,7 @@ Solar::Application.config.black_list = {:mime_types => [
     'text/x-java',
     'application/x-java' # class
   ], :extensions => [
-    'jsp',
+    "jsp",
     'exe',
     'msi',
     'php'
@@ -60,4 +60,3 @@ ActiveRecord::Base.class_eval do
   end
 
 end
-

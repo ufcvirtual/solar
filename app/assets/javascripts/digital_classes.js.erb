@@ -1,3 +1,4 @@
+<%# @encoding: UTF-8 %>
 function list_access(obj){
   if($(obj).parent().hasClass('disabled'))
     return false;
@@ -10,7 +11,7 @@ function list_access(obj){
       content: data
     });
     $(obj).parent().removeClass('disabled');
-  }).error(function(data){
+  }).fail(function(data){
     $(obj).parent().removeClass('disabled');
     var response = JSON.parse(data.responseText);
     if (typeof(response.alert) != "undefined")
@@ -57,7 +58,7 @@ $(function(){
           digital_classes.parents('tr').fadeOut().remove();
 
           $(".btn_edit, .btn_del").attr("disabled", true);
-        }).error(function(data){
+        }).fail(function(data){
           var data = $.parseJSON(data.responseText);
           if (typeof(data.alert) != "undefined")
             flash_message(data.alert, 'alert');

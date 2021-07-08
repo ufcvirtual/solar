@@ -1,3 +1,4 @@
+<%# @encoding: UTF-8 %>
 function save_notification(){
   var content = $('div.ckeditor .cke_contents iframe').contents().find('body').html();
 
@@ -49,7 +50,7 @@ $(function(){
 
         $(".btn_edit, .btn_del").attr("disabled", true);
         update_tables_with_no_data();
-      }).error(function(data){
+      }).fail(function(data){
         var data = $.parseJSON(data.responseText);
         if (typeof(data.alert) != "undefined")
           flash_message(data.alert, 'alert');

@@ -1,4 +1,4 @@
-class RemoveDefaultFromWh < ActiveRecord::Migration
+class RemoveDefaultFromWh < ActiveRecord::Migration[5.1]
   def up
   	change_column :allocations, :working_hours, :integer, default: nil
 

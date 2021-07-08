@@ -1,4 +1,4 @@
-class CreateScheduleEvents < ActiveRecord::Migration
+class CreateScheduleEvents < ActiveRecord::Migration[5.1]
   def self.up
     create_table :schedule_events do |t|
       t.string :title , :limit => 100
@@ -7,8 +7,8 @@ class CreateScheduleEvents < ActiveRecord::Migration
       t.integer :schedule_id
     end
 
-    add_foreign_key(:schedule_events, :allocation_tags)
-    add_foreign_key(:schedule_events, :schedules)
+    add_foreign_key :schedule_events, :allocation_tags
+    add_foreign_key :schedule_events, :schedules
   end
 
   def self.down
