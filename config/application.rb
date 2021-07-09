@@ -54,14 +54,19 @@ module Solar
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
 
-    config.public_file_server.enabled = true
-    
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password, :access_token]
 
     #config.active_record.whitelist_attributes = true
     #config.active_record.raise_in_transactional_callbacks = true
     config.action_view.embed_authenticity_token_in_remote_forms = true
+
+    # Enable the asset pipeline
+    config.assets.enabled = true
+    config.assets.compress = true
+    #config.assets.precompile << /(^[^_\/]|\/[^_])[^\/]*$/
+    #config.assets.precompile += ['ckeditor/*']
+    config.assets.check_precompiled_asset = false
     
     config.i18n.enforce_available_locales = true
     I18n.config.enforce_available_locales = true
@@ -95,6 +100,8 @@ module Solar
 
     #config.action_controller.allow_forgery_protection = false
     #config.gem "koala"
+    # Version of your assets, change this if you want to expire all your assets
+    config.assets.version = '1.0'
 
     config.middleware.use(Rack::Config) do |env|
       env['api.tilt.root'] = Rails.root.join "app", "api", "templates"
