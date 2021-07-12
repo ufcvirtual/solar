@@ -1124,10 +1124,6 @@
     }
   }
 
-  .mysolar_unit_tab {
-    display: inline-flex;
-  }
-
   .lesson {
     .content {
       video {
@@ -1194,6 +1190,16 @@
   .ui-datepicker-calendar {
     tr {
       height: 30px;
+    }
+  }
+
+  .dropdown-menu {
+    display: flex;
+    flex-direction: column;
+
+    .mysolar_unit_tab {
+      margin-top: 10px !important;
+      display: inline-flex;
     }
   }
 
