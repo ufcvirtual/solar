@@ -1186,6 +1186,20 @@
     display: flex;
     flex-direction: column;
   }
+
+  #block_schedule {
+    min-height: 17.8125rem;
+  }
+
+  .ui-datepicker-calendar {
+    tr {
+      height: 30px;
+    }
+  }
+
+  .dropdown-panel {
+    width: 15.625rem !important;
+  }
 }
 
 @media (max-width: 768px) {
