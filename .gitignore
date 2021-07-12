@@ -6,6 +6,7 @@ log/*
 *.swp
 *-min.js
 .DS_Store
+.vscode/
 .project
 .bundle/
 .idea/
