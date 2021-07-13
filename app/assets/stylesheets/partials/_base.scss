@@ -16,7 +16,7 @@ body {
   margin: 0;
   padding: 0;
   cursor: default;
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
   height: 100%;
   background-color: $body_background;
 }
@@ -42,7 +42,7 @@ h2,
 h3,
 h4,
 h5 {
-  font-family: 'Ubuntu Light', sans-serif;
+  font-family: "Ubuntu Light", sans-serif;
 }
 
 h1 {
@@ -63,12 +63,12 @@ h1 {
 
 h2,
 .shortcut_title {
-  font-family: 'Ubuntu Condensed', sans-serif;
+  font-family: "Ubuntu Condensed", sans-serif;
   font-weight: 500;
 }
 
 h3 {
-  font-family: 'Ubuntu', sans-serif;
+  font-family: "Ubuntu", sans-serif;
   font-weight: bold;
 }
 
@@ -108,11 +108,13 @@ a.link_content,
 .forum_post_attachment_list a {
   text-decoration: underline;
   color: $color_contrast_text;
+  word-break: break-word;
 }
 
 a.link_content:visited,
 .forum_post_attachment_list a:visited {
   color: $color_main;
+  word-break: break-word;
 }
 
 a.link_content_gray {
@@ -135,7 +137,7 @@ a.menor {
 */
 
 select {
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
   border-width: 1px;
   border-style: solid;
   padding-top: 2px;
@@ -149,14 +151,14 @@ input {
   border-width: 1px;
   border-style: solid;
   padding: 5px;
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
   color: $color_almost_black_base;
   /*    font-size: 13px;*/
   border-color: $border_color_another_gray;
 }
 
 button {
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
 }
 
 input[type="file"] {
@@ -169,7 +171,7 @@ textarea {
   border-width: 1px;
   border-style: solid;
   padding: 5px;
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
   font-size: 10pt;
   color: $color_almost_black_base;
   background-color: $color_white;
@@ -210,7 +212,7 @@ footer {
     text-decoration: underline;
   }
 
-  &>ul>li {
+  & > ul > li {
     margin: 0 5px;
     display: inline-block;
     zoom: 1;
@@ -227,7 +229,7 @@ footer {
   margin-bottom: 10px;
 }
 
-.date_text_field+.field_with_errors {
+.date_text_field + .field_with_errors {
   line-height: 26px;
 }
 
@@ -322,7 +324,6 @@ a.disabled {
 
 .choice-language,
 .choice-tutorial {
-
   .link-arrow {
     background: url("/assets/language-arrow.png") right no-repeat;
     padding-right: 15px;
