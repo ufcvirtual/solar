@@ -66,7 +66,6 @@ tr#activities {
       display: inline;
     }
   }
-
 }
 
 .tb_list_students {
@@ -74,7 +73,6 @@ tr#activities {
   margin-top: 10px;
 
   table {
-
     th,
     td {
       text-align: center;
@@ -134,12 +132,10 @@ tr#activities {
     font-size: 10pt;
     color: $color_almost_gray;
   }
-
 }
 
 #scores_notes.legend_score_footer,
 .tb_list_students {
-
   .evaluated,
   .evaluated a,
   .approved,
@@ -238,7 +234,6 @@ table#list_of_students thead {
   height: 48px;
 
   ul.dropdown-menu {
-
     label:hover,
     label {
       background-color: transparent;
@@ -390,10 +385,11 @@ tbody {
   li a:last-of-type {
     border-right: solid 2px $color_main;
   }
-
 }
 
 .tabs {
+  display: flex !important;
+  justify-content: center;
 
   // margin-left: 28%;
   li {
@@ -429,7 +425,6 @@ tbody {
   li a:last-of-type {
     border-right: solid 2px $color_main;
   }
-
 }
 
 .tb_list_students {
