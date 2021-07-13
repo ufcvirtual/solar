@@ -2,7 +2,6 @@
 */
 
 .open-menu {
-  // float: left;
   display: inline-block;
 }
 
@@ -610,12 +609,6 @@
     }
   }
 
-  #list_tools {
-    .tab_all {
-      width: fit-content !important;
-    }
-  }
-
   .scores_menu {
     text-align: center;
     margin-left: 0 !important;
@@ -1220,13 +1213,6 @@
     overflow-x: auto;
   }
 }
-
-// @media (max-width: 980px) {
-//     .class-position {
-//         float: none;
-//         position: static;
-//     }
-// }
 
 /* Larger than mobile */
 @media (min-width: 577px) {
