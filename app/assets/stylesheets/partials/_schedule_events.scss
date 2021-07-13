@@ -3,25 +3,31 @@
     display: none;
   }
 
-  .ckb{
+  .ckb {
     margin: 20px;
-    .input.boolean{
+
+    .input.boolean {
       display: none;
     }
-    label{
+
+    label {
       display: inline;
     }
-    a, input, select {
+
+    a,
+    input,
+    select {
       display: inline-block;
-      float: right;
+      // float: right;
     }
   }
 
-  .steps, .steps_print {
+  .steps,
+  .steps_print {
     margin-bottom: 20px;
   }
 
-  .steps{
+  .steps {
     width: 127px;
   }
 
@@ -29,7 +35,7 @@
     width: 259px;
   }
 
-  #save_automatically_message{
+  #save_automatically_message {
     max-width: 400px;
     display: inline-block;
     padding-bottom: 1rem;
@@ -38,14 +44,82 @@
 
 }
 
-#event_file_form{
-  input[type='file']{
+#event_file_form {
+  input[type='file'] {
     display: none;
   }
 }
 
-.user_schedule_event, .summary{
-  .info.block_wrapper{
+.user_schedule_event,
+.summary {
+  .info.block_wrapper {
     width: unset;
   }
+}
+
+.list_schedule_events {
+  width: 100%;
+}
+
+.autism {
+  color: $color_green_font;
+}
+
+.low_vision {
+  color: $sent_color; // Blue
+}
+
+.blindness {
+  color: $without_group_color; // Reds
+}
+
+.hearing_deficiency {
+  color: $notice_color;
+}
+
+.physical_disability {
+  color: $not_sent_color_font; // Reds
+}
+
+.intellectual_deficiency {
+  color: $color_gray; // Grays
+}
+
+.multiple_disability {
+  color: $color_main; // Blues
+}
+
+.deafness {
+  color: $color_black;
+}
+
+.deafblindness {
+  color: $color_contrast_text_font;
+}
+
+.aspergers_syndrome {
+  color: $alert_color;
+}
+
+.rett_syndrome {
+  color: $btn_border_dark_blue;
+}
+
+.other a {
+  background-color: $blue_warning_background_bkg;
+  text-decoration: none !important;
+}
+
+.autism,
+.low_vision,
+.blindness,
+.hearing_deficiency,
+.physical_disability,
+.intellectual_deficiency,
+.multiple_disability,
+.deafness,
+.deafblindness,
+.aspergers_syndrome,
+.rett_syndrome {
+  white-space: nowrap;
 }

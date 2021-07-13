@@ -1,0 +1,1373 @@
+/* The Mobile First is the design strategy that takes priority development for mobile devices like smartphones and tablets. It means all styles outside of a media queries apply to all devices, then larger screens are targeted for enhancement. This prevents small devices from having to parse tons of unused CSS.
+*/
+
+.open-menu {
+  // float: left;
+  display: inline-block;
+}
+
+.open-menu,
+.close-menu {
+  padding: 0 1rem;
+}
+
+.bar1,
+.bar2,
+.bar3 {
+  width: 25px;
+  height: 3px;
+  background-color: $color_main;
+  margin: 6px 0;
+  transition: 0.4s;
+  border-radius: 15px;
+}
+
+.change .bar1 {
+  -webkit-transform: rotate(-45deg) translate(-8px, 6px);
+  transform: rotate(-45deg) translate(-8px, 6px);
+}
+
+.change .bar2 {
+  opacity: 0;
+}
+
+.change .bar3 {
+  -webkit-transform: rotate(45deg) translate(-6px, -6px);
+  transform: rotate(45deg) translate(-6px, -6px);
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.responsive-table {
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  table {
+    overflow-y: scroll;
+  }
+}
+
+.group_assignment_responsive {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .groups_column {
+    .labels {
+      .label {
+        display: flex;
+        justify-content: space-between;
+
+        a {
+          flex-grow: 1;
+        }
+
+        .buttons {
+          width: fit-content;
+
+          a:first-child {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.tabs_score {
+  margin-left: 20%;
+}
+
+.position_correction {
+  float: right;
+
+  .form_requirement {
+    position: relative;
+  }
+}
+
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  font-size: 0;
+  height: 0;
+}
+
+.search_messages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.display_messages {
+  display: flex;
+  align-content: stretch;
+  align-items: stretch;
+  width: 100%;
+}
+
+.list_messages {
+  width: 100%;
+}
+
+/* Grid
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.col-xs-1,
+.col-sm-1,
+.col-md-1,
+.col-lg-1,
+.col-xs-2,
+.col-sm-2,
+.col-md-2,
+.col-lg-2,
+.col-xs-3,
+.col-sm-3,
+.col-md-3,
+.col-lg-3,
+.col-xs-4,
+.col-sm-4,
+.col-md-4,
+.col-lg-4,
+.col-xs-5,
+.col-sm-5,
+.col-md-5,
+.col-lg-5,
+.col-xs-6,
+.col-sm-6,
+.col-md-6,
+.col-lg-6,
+.col-xs-7,
+.col-sm-7,
+.col-md-7,
+.col-lg-7,
+.col-xs-8,
+.col-sm-8,
+.col-md-8,
+.col-lg-8,
+.col-xs-9,
+.col-sm-9,
+.col-md-9,
+.col-lg-9,
+.col-xs-10,
+.col-sm-10,
+.col-md-10,
+.col-lg-10,
+.col-xs-11,
+.col-sm-11,
+.col-md-11,
+.col-lg-11,
+.col-xs-12,
+.col-sm-12,
+.col-md-12,
+.col-lg-12 {
+  position: relative;
+  min-height: 1px;
+}
+
+.col-xs-1,
+.col-xs-2,
+.col-xs-3,
+.col-xs-4,
+.col-xs-5,
+.col-xs-6,
+.col-xs-7,
+.col-xs-8,
+.col-xs-9,
+.col-xs-10,
+.col-xs-11,
+.col-xs-12 {
+  float: left;
+}
+
+.col-xs-12 {
+  width: 100%;
+}
+
+.col-xs-11 {
+  width: 91.66666667%;
+}
+
+.col-xs-10 {
+  width: 83.33333333%;
+}
+
+.col-xs-9 {
+  width: 75%;
+}
+
+.col-xs-8 {
+  width: 66.66666667%;
+}
+
+.col-xs-7 {
+  width: 58.33333333%;
+}
+
+.col-xs-6 {
+  width: 50%;
+}
+
+.col-xs-5 {
+  width: 41.66666667%;
+}
+
+.col-xs-4 {
+  width: 33.33333333%;
+}
+
+.col-xs-3 {
+  width: 25%;
+}
+
+.col-xs-2 {
+  width: 16.66666667%;
+}
+
+.col-xs-1 {
+  width: 8.33333333%;
+}
+
+.col-xs-pull-12 {
+  right: 100%;
+}
+
+.col-xs-pull-11 {
+  right: 91.66666667%;
+}
+
+.col-xs-pull-10 {
+  right: 83.33333333%;
+}
+
+.col-xs-pull-9 {
+  right: 75%;
+}
+
+.col-xs-pull-8 {
+  right: 66.66666667%;
+}
+
+.col-xs-pull-7 {
+  right: 58.33333333%;
+}
+
+.col-xs-pull-6 {
+  right: 50%;
+}
+
+.col-xs-pull-5 {
+  right: 41.66666667%;
+}
+
+.col-xs-pull-4 {
+  right: 33.33333333%;
+}
+
+.col-xs-pull-3 {
+  right: 25%;
+}
+
+.col-xs-pull-2 {
+  right: 16.66666667%;
+}
+
+.col-xs-pull-1 {
+  right: 8.33333333%;
+}
+
+.col-xs-pull-0 {
+  right: auto;
+}
+
+.col-xs-push-12 {
+  left: 100%;
+}
+
+.col-xs-push-11 {
+  left: 91.66666667%;
+}
+
+.col-xs-push-10 {
+  left: 83.33333333%;
+}
+
+.col-xs-push-9 {
+  left: 75%;
+}
+
+.col-xs-push-8 {
+  left: 66.66666667%;
+}
+
+.col-xs-push-7 {
+  left: 58.33333333%;
+}
+
+.col-xs-push-6 {
+  left: 50%;
+}
+
+.col-xs-push-5 {
+  left: 41.66666667%;
+}
+
+.col-xs-push-4 {
+  left: 33.33333333%;
+}
+
+.col-xs-push-3 {
+  left: 25%;
+}
+
+.col-xs-push-2 {
+  left: 16.66666667%;
+}
+
+.col-xs-push-1 {
+  left: 8.33333333%;
+}
+
+.col-xs-push-0 {
+  left: auto;
+}
+
+.col-xs-offset-12 {
+  margin-left: 100%;
+}
+
+.col-xs-offset-11 {
+  margin-left: 91.66666667%;
+}
+
+.col-xs-offset-10 {
+  margin-left: 83.33333333%;
+}
+
+.col-xs-offset-9 {
+  margin-left: 75%;
+}
+
+.col-xs-offset-8 {
+  margin-left: 66.66666667%;
+}
+
+.col-xs-offset-7 {
+  margin-left: 58.33333333%;
+}
+
+.col-xs-offset-6 {
+  margin-left: 50%;
+}
+
+.col-xs-offset-5 {
+  margin-left: 41.66666667%;
+}
+
+.col-xs-offset-4 {
+  margin-left: 33.33333333%;
+}
+
+.col-xs-offset-3 {
+  margin-left: 25%;
+}
+
+.col-xs-offset-2 {
+  margin-left: 16.66666667%;
+}
+
+.col-xs-offset-1 {
+  margin-left: 8.33333333%;
+}
+
+.col-xs-offset-0 {
+  margin-left: 0;
+}
+
+/* Media Queries
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+@media (min-width: 577px) {
+  .show-only-in-mobile {
+    display: none !important;
+  }
+
+  .open-menu,
+  .close-menu {
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .responsive-menu-sidebar {
+    background: $background_light;
+    margin: 0;
+
+    height: 100%;
+    width: 100%;
+    max-width: 320px;
+
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    left: 100%;
+
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    transition: left 0.3s ease-out;
+  }
+
+  #mysolar_content {
+    width: 100%;
+
+    #scores {
+      .info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  }
+
+  .block_wrapper,
+  .block_content,
+  .block_title {
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .active-menu .responsive-menu-sidebar {
+    left: 0;
+  }
+
+  .active-menu:after {
+    content: "";
+    display: inline-block;
+    z-index: 8;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  .dont-show-in-mobile {
+    display: none !important;
+  }
+
+  .show-only-in-mobile {
+    display: inline-block !important;
+  }
+
+  .fancybox-wrap {
+    min-width: 280px !important;
+  }
+
+  .fancybox-inner,
+  .embeddedContent iframe {
+    width: 100% !important;
+  }
+
+  table.tb_list {
+    tbody,
+    td,
+    tr.lines th.act_like_td,
+    a {
+      word-break: keep-all !important;
+    }
+  }
+
+  table.user-courses tbody.offers {
+    .offer,
+    .open-edx-class {
+      word-break: keep-all !important;
+    }
+  }
+
+  #steps {
+    width: 120px !important;
+    margin: 20px auto !important;
+
+    ul {
+      width: 120px !important;
+
+      li {
+        display: block;
+        width: 120px !important;
+      }
+    }
+  }
+
+  #image_user,
+  #image_help,
+  #image_exit,
+  #image_accessibility,
+  #mysolar_tabs_wrapper_with_dropdown,
+  #mysolar_suggestions_for_mobile {
+    margin-left: 0;
+    margin-right: 0;
+    display: inline-block;
+    background-color: transparent;
+  }
+
+  #mysolar_tabs {
+    display: inline-block;
+    width: fit-content;
+  }
+
+  #mysolar_top_options #mysolar_top_submenu_label:hover,
+  #mysolar_top_options #mysolar_top_logout:hover,
+  #mysolar_top_options #mysolar_top_help:hover,
+  #mysolar_top_options #accessibility_top_menu:hover {
+    border: none !important;
+  }
+
+  #mysolar_content,
+  #mysolar_top_options {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  #mysolar_content {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #block_schedule {
+    margin-bottom: 15px;
+  }
+
+  #amount_found {
+    float: none;
+    margin: 5px 0;
+    max-width: 100%;
+  }
+
+  #link_upload {
+    margin-left: 0 !important;
+  }
+
+  .block_large {
+    overflow: visible;
+    margin-bottom: 15px;
+  }
+
+  .block_small {
+    margin-top: 15px;
+  }
+
+  .preview_webconferences {
+    .block_content_toolbar {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+    }
+
+    #search {
+      width: 90%;
+    }
+
+    .block_toolbar_right {
+      margin-left: 12px;
+    }
+  }
+
+  .message_new_textbox {
+    display: block;
+  }
+
+  .message_new_upload {
+    margin-top: 10px;
+  }
+
+  .tabs_score {
+    white-space: nowrap;
+    display: block !important;
+    margin-left: 0 !important;
+    overflow-x: auto;
+  }
+
+  #scores {
+    .info {
+      padding: 24px;
+    }
+  }
+
+  .info_right {
+    .links {
+      margin-left: 0;
+    }
+  }
+
+  #list_tools {
+    .tab_all {
+      width: fit-content !important;
+    }
+  }
+
+  .scores_menu {
+    text-align: center;
+    margin-left: 0 !important;
+  }
+
+  .padding-checkbox,
+  .title_link {
+    width: 100%;
+  }
+
+  .no-float-mobile {
+    float: none !important;
+    margin-top: 5px !important;
+  }
+
+  .lesson_notes {
+    .block_title {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+
+      .right_buttons {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        margin-left: auto;
+      }
+    }
+
+    .block_content {
+      justify-content: center;
+
+      .lesson_note_name {
+        display: flex !important;
+        flex-direction: column;
+      }
+    }
+  }
+
+  .forum_post img,
+  .forum_post_wrapper img,
+  .forum_post_inner_content img {
+    max-width: 100% !important;
+  }
+
+  .forum_post_inner_content {
+    width: 100%;
+
+    p {
+      text-align: justify;
+    }
+  }
+
+  .speech2text,
+  .forum_post_icon img {
+    display: none;
+  }
+
+  .responsive_curse_input,
+  #curriculum_unit_name,
+  #curriculum_unit_code,
+  #curriculum_unit_resume,
+  #curriculum_unit_objectives,
+  #curriculum_unit_syllabus,
+  #curriculum_unit_prerequisites,
+  #curriculum_unit_working_hours,
+  #curriculum_unit_min_hours,
+  #group_name,
+  #group_code,
+  #group_location {
+    width: 100% !important;
+  }
+
+  .course_min_hours label,
+  .course_passing_grade label,
+  .course_name label,
+  .course_code label,
+  .course_min_grade_to_final_exam label,
+  .course_min_final_exam_grade label,
+  .course_final_exam_passing_grade label,
+  .label_curse_input,
+  .curriculum_unit_name label,
+  .curriculum_unit_code label,
+  .curriculum_unit_resume label,
+  .curriculum_unit_objectives label,
+  .curriculum_unit_syllabus label,
+  .curriculum_unit_prerequisites label,
+  .curriculum_unit_working_hours label,
+  .curriculum_unit_min_hours label,
+  .group_name label,
+  .group_code label,
+  .group_location label {
+    display: inline !important;
+  }
+
+  .responsive_group_label,
+  .form_label {
+    text-align: left;
+  }
+
+  label {
+    display: block;
+  }
+
+  #autocomplete-input-curriculum_unit_type,
+  #autocomplete-input-course,
+  #autocomplete-input-curriculum_unit,
+  #autocomplete-input-semester,
+  #autocomplete-input-contacts_type,
+  [id^="autocomplete-input-"],
+  .ui-combobox {
+    width: 98% !important;
+  }
+
+  #content-div {
+    width: 100% !important;
+  }
+
+  .edition #search {
+    margin-left: 0;
+    float: right;
+  }
+
+  .edition_content,
+  .bibliography_title,
+  .nested_exam_ip_reals {
+    clear: both;
+  }
+
+  .bibliography_authors_name,
+  .group_label,
+  .bibliography_address {
+    min-width: 155px !important;
+  }
+
+  #bibliography_publisher,
+  #bibliography_count_pages,
+  #bibliography_volume,
+  #bibliography_edition,
+  #bibliography_publication_year,
+  #bibliography_fascicle,
+  #bibliography_pages,
+  #bibliography_publication_month,
+  #bibliography_periodicity,
+  #bibliography_issn,
+  #bibliography_periodicity_year_start,
+  #bibliography_periodicity_year_end,
+  #bibliography_subtitle,
+  #bibliography_address,
+  #bibliography_article_periodicity_title,
+  #assignment_name,
+  #assignment_enunciation,
+  #chat_room_title,
+  #chat_room_description,
+  #webconference_title,
+  #webconference_description,
+  #webconference_initial_time,
+  #schedule_event_title,
+  #schedule_event_type_event,
+  #schedule_event_place,
+  #schedule_event_description,
+  #support_material_file_title,
+  #lesson_description,
+  #profile_description,
+  .bibliography_publisher,
+  .bibliography_volume,
+  .bibliography_edition,
+  .bibliography_publication_year,
+  .bibliography_address,
+  .bibliography_count_pages,
+  .bibliography_pages,
+  .bibliography_article_periodicity_title,
+  .bibliography_publication_month,
+  .bibliography_fascicle,
+  .bibliography_periodicity,
+  .bibliography_issn,
+  .bibliography_periodicity_year_start,
+  .bibliography_periodicity_year_end,
+  .assignment_name,
+  .assignment_enunciation,
+  .chat_room_title,
+  .chat_room_description,
+  .webconference_title,
+  .webconference_description,
+  .webconference_initial_time,
+  .schedule_event_title,
+  .schedule_event_type_event,
+  .schedule_event_place,
+  .schedule_event_description,
+  .support_material_file_title {
+    width: 100% !important;
+    min-width: 155px !important;
+  }
+
+  .bibliography_title label,
+  .bibliography_subtitle label,
+  .bibliography_issn label,
+  .bibliography_volume label,
+  .bibliography_fascicle label,
+  .bibliography_publisher label,
+  .bibliography_edition label,
+  .bibliography_article_periodicity_title label,
+  .bibliography_pages label,
+  .bibliography_publication_month label,
+  .bibliography_count_pages label,
+  .bibliography_periodicity label,
+  .bibliography_additional_information label,
+  .bibliography_accessed_in label,
+  .bibliography_url label,
+  .bibliography_periodicity_year_start label,
+  .assignment_name label,
+  .assignment_enunciation label,
+  .assignment_schedule_start_date label,
+  .assignment_schedule_end_date label,
+  .assignment_start_hour label,
+  .assignment_end_hour label,
+  .assignment_type_assignment label,
+  .chat_room_title label,
+  .chat_room_description label,
+  .chat_room_schedule_start_date label,
+  .chat_room_start_hour label,
+  .schedule_event_title label,
+  .schedule_event_type_event label,
+  .schedule_event_place label,
+  .schedule_event_description label,
+  .schedule_event_schedule_start_date label,
+  .schedule_event_start_hour label,
+  .discussion_name label,
+  .discussion_description label,
+  .discussion_schedule_start_date label,
+  .notification_title label,
+  .notification_schedule_start_date label,
+  .support_material_file_title label,
+  .support_material_file_url label,
+  .exam_name label,
+  .exam_description label,
+  .exam_schedule_start_date label,
+  .exam_schedule_end_date label,
+  .exam_start_hour label,
+  .exam_end_hour label,
+  .exam_duration label,
+  .exam_result_release label,
+  .lesson_module label,
+  .lesson_name label,
+  .lesson_description label,
+  .lesson_schedule_start_date label,
+  .lesson_type label,
+  .privacy label,
+  .responsive label,
+  .lesson_address label,
+  .question_type label,
+  .labels label {
+    text-align: left !important;
+  }
+
+  .responsive,
+  .checkbox_label,
+  .box label,
+  .profiles label {
+    display: inline-flex;
+  }
+
+  #all,
+  .profile_ckb input {
+    min-width: 15px !important;
+  }
+
+  #bibliography_additional_information,
+  #bibliography_title,
+  #bibliography_form .files,
+  #support_material_form .files,
+  #event_file_form .files,
+  #participants_box,
+  .box {
+    width: 100% !important;
+  }
+
+  .files_list {
+    overflow-y: auto;
+  }
+
+  .duplicate_nested_form {
+    margin-top: 16px;
+  }
+
+  #participants_box {
+    margin-left: 20px !important;
+  }
+
+  #save_automatically_message {
+    margin-left: 0 !important;
+    text-align: justify !important;
+  }
+
+  .schedule_dates .right_form {
+    margin-left: 0px !important;
+  }
+
+  .discussion_description,
+  #until-date {
+    margin: 0 !important;
+  }
+
+  #profiles_box {
+    width: 200px !important;
+  }
+
+  #webconference_is_recorded,
+  .webconference_is_recorded,
+  [for="webconference_is_recorded"],
+  .webconference_shared_between_groups {
+    display: inline-flex;
+    max-width: 12rem;
+  }
+
+  .profile_ckb {
+    margin-left: 5px !important;
+    margin-bottom: 5px !important;
+
+    input {
+      margin-right: 5px !important;
+    }
+  }
+
+  .destroy_duplicate_nested_form {
+    position: relative !important;
+    top: 22px !important;
+  }
+
+  .questions .radio label {
+    display: inline-block;
+  }
+
+  .exam_question_score {
+    display: block !important;
+    margin-top: 10px;
+  }
+
+  .import_something.questions,
+  .questions,
+  [class^="list_questions_exam_"] {
+    .search {
+      .block_content_toolbar {
+        flex-direction: column;
+
+        label {
+          text-align: center;
+        }
+
+        .owner {
+          display: inline-flex;
+          margin-bottom: 10px;
+        }
+
+        .enum {
+          margin-bottom: 10px;
+        }
+
+        .author {
+          margin-bottom: 10px;
+        }
+
+        .hint {
+          margin-bottom: 10px;
+        }
+
+        .year {
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+
+  #associated_radio div {
+    display: inline-flex !important;
+
+    input {
+      margin-left: 0 !important;
+    }
+
+    label {
+      display: inline !important;
+    }
+  }
+
+  #images .info {
+    text-align: left;
+
+    label {
+      text-align: center;
+    }
+  }
+
+  #audios .info {
+    label {
+      text-align: center;
+    }
+  }
+
+  #audios .upload-preview {
+    audio {
+      max-width: 160px;
+    }
+  }
+
+  .audio.legend {
+    .audio audio {
+      max-width: 200px;
+    }
+  }
+
+  .items_wrap {
+    flex-direction: column !important;
+
+    .audio {
+      .upload-preview {
+        audio {
+          max-width: 160px;
+        }
+      }
+
+      .info .input {
+        width: 100% !important;
+      }
+    }
+
+    .image {
+      .info {
+        .input {
+          width: 100% !important;
+
+          input {
+            width: 100% !important;
+          }
+        }
+
+        label.alt {
+          display: inline !important;
+        }
+      }
+    }
+  }
+
+  .radio_theme label {
+    display: inline-flex;
+  }
+
+  .personal_configuration_message label,
+  .personal_configuration_post label,
+  .personal_configuration_exam label,
+  .personal_configuration_academic_tool label {
+    text-align: justify;
+
+    input {
+      min-width: 40px !important;
+    }
+  }
+
+  .form_user_content label,
+  .form_user_for_mobile label {
+    text-align: left;
+  }
+
+  .form_field input[type="text"],
+  .form_user_content textarea {
+    width: 100%;
+    min-width: 150px;
+  }
+
+  .request_profile {
+    width: 100% !important;
+    min-width: 250px;
+  }
+
+  .offer_groups_options {
+    overflow-x: auto;
+    flex-direction: column;
+    gap: 0;
+
+    form {
+      display: table-cell;
+
+      .select_all_box {
+        display: flex;
+        gap: 8px;
+      }
+    }
+  }
+
+  .group-assignment-content {
+    flex-direction: column !important;
+
+    .first_column,
+    .middle_column,
+    .last_column {
+      width: 100% !important;
+      margin: 10px 0 !important;
+    }
+  }
+
+  .dropdown .select_all_box,
+  .dropdown .no_tags {
+    display: flex;
+
+    input {
+      margin-right: 5px;
+    }
+  }
+
+  .lesson {
+    .content {
+      video {
+        width: 100%;
+      }
+    }
+  }
+
+  .to_mobile {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+  }
+
+  .assignments {
+    .participants,
+    .manage_groups {
+      margin-bottom: 10px;
+    }
+  }
+
+  .group_assignment_responsive {
+    flex-direction: column;
+
+    .groups_column,
+    .participants_column,
+    .edit_group_assignment,
+    .students_without_groups_column {
+      width: 100% !important;
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  .list_exams {
+    .block_exam h2 {
+      .block_buttons {
+        label {
+          margin-bottom: 10px;
+        }
+
+        a {
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
+
+  .messages {
+    .block_white {
+      height: auto !important;
+    }
+  }
+
+  .message_layout {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #block_schedule {
+    min-height: 17.8125rem;
+  }
+
+  .ui-datepicker-calendar {
+    tr {
+      height: 30px;
+    }
+  }
+
+  .dropdown-menu {
+    display: flex;
+    flex-direction: column;
+
+    .mysolar_unit_tab {
+      margin-top: 10px !important;
+      display: inline-flex;
+    }
+  }
+
+  .dropdown-panel {
+    width: 15.625rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  #mysolar_open_shortcut {
+    display: none !important;
+  }
+
+  .tabs_index {
+    white-space: nowrap;
+    display: block !important;
+    margin-left: 0 !important;
+    overflow-x: auto;
+  }
+}
+
+// @media (max-width: 980px) {
+//     .class-position {
+//         float: none;
+//         position: static;
+//     }
+// }
+
+/* Larger than mobile */
+@media (min-width: 577px) {
+  .col-sm-1,
+  .col-sm-2,
+  .col-sm-3,
+  .col-sm-4,
+  .col-sm-5,
+  .col-sm-6,
+  .col-sm-7,
+  .col-sm-8,
+  .col-sm-9,
+  .col-sm-10,
+  .col-sm-11,
+  .col-sm-12 {
+    float: left;
+  }
+
+  .col-sm-12 {
+    width: 100%;
+  }
+
+  .col-sm-11 {
+    width: 91.66666667%;
+  }
+
+  .col-sm-10 {
+    width: 83.33333333%;
+  }
+
+  .col-sm-9 {
+    width: 75%;
+  }
+
+  .col-sm-8 {
+    width: 66.66666667%;
+  }
+
+  .col-sm-7 {
+    width: 58.33333333%;
+  }
+
+  .col-sm-6 {
+    width: 50%;
+    margin-right: 0;
+  }
+
+  .col-sm-5-80 {
+    width: 49%;
+    margin-right: 1%;
+  }
+
+  .col-sm-5 {
+    width: 41.66666667%;
+  }
+
+  .col-sm-4 {
+    width: 33.33333333%;
+  }
+
+  .col-sm-3 {
+    width: 25%;
+  }
+
+  .col-sm-2 {
+    width: 16.66666667%;
+  }
+
+  .col-sm-1 {
+    width: 8.33333333%;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .col-md-1,
+  .col-md-2,
+  .col-md-3,
+  .col-md-4,
+  .col-md-5,
+  .col-md-6,
+  .col-md-7,
+  .col-md-8,
+  .col-md-9,
+  .col-md-10,
+  .col-md-11,
+  .col-md-12 {
+    float: left;
+  }
+
+  .col-md-12 {
+    width: 100%;
+  }
+
+  .col-md-11 {
+    width: 91.66666667%;
+  }
+
+  .col-md-10 {
+    width: 83.33333333%;
+  }
+
+  .col-md-9 {
+    width: 75%;
+  }
+
+  .col-md-8 {
+    width: 66.66666667%;
+  }
+
+  .col-md-7 {
+    width: 58.33333333%;
+  }
+
+  .col-md-6 {
+    width: 50%;
+  }
+
+  .col-md-5 {
+    width: 41.66666667%;
+  }
+
+  .col-md-4 {
+    width: 33.33333333%;
+    margin-right: 0;
+  }
+
+  .col-md-4-30 {
+    width: 32.33333333%;
+    margin-right: 1%;
+  }
+
+  .col-md-3 {
+    width: 25%;
+  }
+
+  .col-md-2 {
+    width: 16.66666667%;
+  }
+
+  .col-md-1 {
+    width: 8.33333333%;
+  }
+}

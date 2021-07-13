@@ -26,28 +26,29 @@
 
   - unless @bibliographies.nil? or @bibliographies.empty?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
-    %table.tb_list
-      %thead
-        %tr.lines
-          %th.center.no_sort{ style: 'width: 25px;' }= check_box_tag :all_bibliographies, false, false, :"data-children-names" => 'ckb_bibliography', class: 'all_bibliographies'
-          %th{ align: 'left' }= t('.item')
-          %th{ align: 'center', style: 'width: 26%;' }=t('.type')
-      %tbody
-        - @bibliographies.each do |bibliography|
-          %tr.lines{ id: "tr_#{bibliography.id}" }
-            %td{ style: 'text-align:center;' }= check_box_tag :ckb_bibliography, bibliography.id, false, { class: 'ckb_bibliography', :'data-file' => bibliography.is_file? }
-            %td
-              %div
-                .description
-                  - resume = bibliography.resume
-                  - if bibliography.is_file?
-                    = link_to image_tag(icon_attachment(bibliography.attachment_file_name)), download_bibliography_path(bibliography), class: 'file_icon'
-                    = link_to resume, download_bibliography_path(bibliography), class: 'file_icon'
-                  - else
-                    =raw resume
-                .group_label.invisible= render 'groups/groups_tags', groups: bibliography.groups, tool: bibliography, all_groups: all_groups, paths: {add: add_group_to_bibliographies_path(id: 'param_id', tool_id: bibliography.id), remove: remove_group_from_bibliographies_path(id: 'param_id', tool_id: bibliography.id), unbind: unbind_group_from_bibliographies_path(id: 'param_id', tool_id: bibliography.id), tags: group_tags_from_bibliographies_path(tool_id: bibliography.id)}
-            %td
-              = bibliography.type
+    .responsive-table
+      %table.tb_list
+        %thead
+          %tr.lines
+            %th.center.no_sort{ style: 'width: 25px;' }= check_box_tag :all_bibliographies, false, false, :"data-children-names" => 'ckb_bibliography', class: 'all_bibliographies'
+            %th{ align: 'left' }= t('.item')
+            %th{ align: 'center', style: 'width: 26%;' }=t('.type')
+        %tbody
+          - @bibliographies.each do |bibliography|
+            %tr.lines{ id: "tr_#{bibliography.id}" }
+              %td{ style: 'text-align:center;' }= check_box_tag :ckb_bibliography, bibliography.id, false, { class: 'ckb_bibliography', :'data-file' => bibliography.is_file? }
+              %td
+                %div
+                  .description
+                    - resume = bibliography.resume
+                    - if bibliography.is_file?
+                      = link_to image_tag(icon_attachment(bibliography.attachment_file_name)), download_bibliography_path(bibliography), class: 'file_icon'
+                      = link_to resume, download_bibliography_path(bibliography), class: 'file_icon'
+                    - else
+                      =raw resume
+                  .group_label.invisible= render 'groups/groups_tags', groups: bibliography.groups, tool: bibliography, all_groups: all_groups, paths: {add: add_group_to_bibliographies_path(id: 'param_id', tool_id: bibliography.id), remove: remove_group_from_bibliographies_path(id: 'param_id', tool_id: bibliography.id), unbind: unbind_group_from_bibliographies_path(id: 'param_id', tool_id: bibliography.id), tags: group_tags_from_bibliographies_path(tool_id: bibliography.id)}
+              %td
+                = bibliography.type
 
   - else
     .block_content_text.block_content_text_list.text_none= t('.no_data')

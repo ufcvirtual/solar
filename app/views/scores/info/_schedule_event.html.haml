@@ -5,7 +5,7 @@
 
   .block_content
     .tools.show.evaluative#evaluative_schedule_event
-      .block_content
+      .block_content.responsive-table
         - unless @schedules_event_evaluative.blank?
           %table.tb_list{:summary=> t("schedule_events.list.summary_evaluative")}
             %thead
@@ -67,7 +67,7 @@
           .block_content.block_content_text= t(:itens_not_found)
 
     .tools.frequency#frequency_schedule_event
-      .block_content
+      .block_content.responsive-table
         - unless @schedules_event_frequency.blank?
           %table.tb_list{:summary=> t("schedule_events.list.summary_frequency")}
             %thead
@@ -129,7 +129,7 @@
           .block_content.block_content_text= t(:itens_not_found)
 
     .tools.notevaluative#notevaluative_schedule_event
-      .block_content
+      .block_content.responsive-table
         - unless @schedules_event_not_evaluative.blank?
           %table.tb_list{:summary=> t("schedule_events.list.summary_notevaluative")}
             %thead

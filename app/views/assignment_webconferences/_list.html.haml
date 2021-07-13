@@ -20,29 +20,30 @@
   %div.accessibility.invisible{tabindex: 0}= raw t('webconferences.index.accessibility')
 .block_content
   - no_webconferences = (webconferences.blank?)
-  %table.tb_list#tb_lw{summary: t("assignments.list.summary_web"), style: (no_webconferences ? "display: none" : "") }
-    %thead{style: (no_webconferences ? "display: none" : "")}
-      %tr.lines
-        %th.center#name_web= t('.name')
-        %th.date_column.center#period_web= t('.period')
-        %th.center.aw_status#status_web= t('.status')
-        %th.center#start_record_web= t('.start_recordding')
-        %th.aw_record#record_web= t('.record')
-        - if disabled
-          %th.aw_final#final_web= raw t('.final_tr')
-        - else
-          %th.aw_final#final_web= raw t('.final', aria: t('.final2') + t('fancybox.open'))
-        - if @own_assignment && !disabled
-          %th.no_sort.options{id: "edit_web"}
-            .visuallyhidden=t('assignment_webconferences.webconference.edit')
-          %th.no_sort.options{id: "record_link_web"}
-            .visuallyhidden=t('webconferences.get_record.remove')
-          %th.no_sort.options{id: "delete_web"}
-            .visuallyhidden=t('assignment_webconferences.webconference.delete')
-    %tbody.assign_web
-      - unless no_webconferences
-        - webconferences.each do |webconference|
-          = render partial: 'assignment_webconferences/webconference', locals: { webconference: webconference, view_disabled: disabled }
+  .responsive-table
+    %table.tb_list#tb_lw{summary: t("assignments.list.summary_web"), style: (no_webconferences ? "display: none" : "") }
+      %thead{style: (no_webconferences ? "display: none" : "")}
+        %tr.lines
+          %th.center#name_web= t('.name')
+          %th.date_column.center#period_web= t('.period')
+          %th.center.aw_status#status_web= t('.status')
+          %th.center#start_record_web= t('.start_recordding')
+          %th.aw_record#record_web= t('.record')
+          - if disabled
+            %th.aw_final#final_web= raw t('.final_tr')
+          - else
+            %th.aw_final#final_web= raw t('.final', aria: t('.final2') + t('fancybox.open'))
+          - if @own_assignment && !disabled
+            %th.no_sort.options{id: "edit_web"}
+              .visuallyhidden=t('assignment_webconferences.webconference.edit')
+            %th.no_sort.options{id: "record_link_web"}
+              .visuallyhidden=t('webconferences.get_record.remove')
+            %th.no_sort.options{id: "delete_web"}
+              .visuallyhidden=t('assignment_webconferences.webconference.delete')
+      %tbody.assign_web
+        - unless no_webconferences
+          - webconferences.each do |webconference|
+            = render partial: 'assignment_webconferences/webconference', locals: { webconference: webconference, view_disabled: disabled }
   - if disabled
     .recordings.invisible
       .title

@@ -1,45 +1,44 @@
-.student_webconferences{
-
+.student_webconferences {
   padding-top: 10px;
 
-  .title-warning{
+  .title-warning {
     margin-bottom: 0;
   }
 
-  .right_buttons{
-    .btn{
+  .right_buttons {
+    .btn {
       cursor: pointer;
     }
   }
 
-  .tb_list{
-    th.aw_status{
+  .tb_list {
+    th.aw_status {
       width: 20%;
       text-align: center;
     }
 
-    th.aw_record{
+    th.aw_record {
       width: 13%;
       text-align: center;
     }
 
-    th.aw_final{
+    th.aw_final {
       width: 16%;
       text-align: center;
     }
 
-    th.options{
+    th.options {
       width: 5%;
     }
 
-    tbody{
-      td.icon{
+    tbody {
+      td.icon {
         cursor: pointer;
         padding: 0;
       }
 
-      td{
-        [class^='icon-']{
+      td {
+        [class^="icon-"] {
           font-size: 18px;
           padding-top: 7px;
         }
@@ -48,26 +47,30 @@
       td.record {
         width: 22px;
       }
-
     }
   }
 
-  td{
-    a.title{
+  td {
+    a.title {
       color: $score_tbody_link;
       text-decoration: none;
     }
   }
-
 }
 
-.simple_form.awebconference_form{
-  min-width: 500px;
-  .input.assignment_webconference_title, .input.assignment_webconference_duration, .input.assignment_webconference_initial_time{
-    display: inline-block;
+.simple_form.awebconference_form {
+  // min-width: 500px;
+  .input {
+    display: flex;
+
+    .assignment_webconference_title,
+    .assignment_webconference_duration,
+    .assignment_webconference_initial_time {
+      margin-right: 10px;
+    }
   }
 }
 
-a#final_version_explain{
+a#final_version_explain {
   color: $current_color_back;
 }

@@ -1,15 +1,18 @@
-.general_shortcuts{
-  ul.left{
+.general_shortcuts {
+  ul.left {
     float: left;
   }
-  ul.right{
+
+  ul.right {
     float: right;
   }
-  ul{
+
+  ul {
     padding: 5px;
     width: 47%;
     background-color: $form_background_color;
   }
+
   .tag {
     color: $font_color;
     border: 1px solid $language_border_color;
@@ -21,13 +24,15 @@
     width: 30%;
 
   }
-  .title{
+
+  .title {
     width: 60%;
     display: inline-block;
     word-break: break-word;
     vertical-align: middle;
   }
-  li{
+
+  li {
     padding: 2px;
   }
 }
@@ -36,7 +41,6 @@
   border-right: 1px solid $contacts_list_border_color;
   width: 5%;
 }
-
 
 /* The Close Button */
 .close {
@@ -51,76 +55,98 @@
   text-decoration: none;
   cursor: pointer;
 }
-#draggable{
+
+#draggable {
   z-index: 1;
   position: fixed;
   left: 28.5em;
   padding: 0.8em;
   top: 75%;
 
-  .ui-widget-content_title{
+  .ui-widget-content_title {
     z-index: 1;
-    margin-left: -10px;
-    margin-top: -9px;
+    // margin-left: -10px;
+    // margin-top: -9px;
     border-bottom: 1px dotted gray;
     padding: 0.7em;
     background-color: #E9EEF6;
     margin-bottom: 0.3em;
     width: 100%;
-    h2 { 
-      text-align: center; 
-      margin: 0; 
-      font-weight: bold; 
+
+    h2 {
+      text-align: center;
+      margin: 0;
+      font-weight: bold;
     }
-    .close_draggable{
+
+    .close_draggable {
       margin-top: -20px;
       float: right;
       padding-right: 3px;
     }
-    a{
+
+    a {
       margin-top: -19px;
       float: right;
       padding-right: 20px;
     }
-    #dropdown_eq_draggable{
+
+    #dropdown_eq_draggable {
       top: 2em !important;
     }
   }
-  .error_t{
+
+  .error_t {
     color: $color_red;
     background-color: #E9EEF6;
     font-weight: bold;
     padding: 0.3em;
     margin-top: 0.3em;
   }
-  .correct_t{
+
+  .correct_t {
     color: $color_green_font;
     background-color: #E9EEF6;
     font-weight: bold;
     padding: 0.3em;
     margin-top: 0.3em;
   }
-  .not_correct_t{
+
+  .not_correct_t {
     color: $color_contrast_text;
     background-color: #E9EEF6;
     font-weight: bold;
     padding: 0.3em;
     margin-top: 0.3em;
   }
-  h2{
-    text-align: center; 
-    margin: 0; 
-    font-weight: bold; 
+
+  h2 {
+    text-align: center;
+    margin: 0;
+    font-weight: bold;
   }
-  .analise_child_li{
+
+  .analise_child_li {
     color: $color_black;
     font-weight: normal;
     padding-left: 0.7em;
   }
 }
-#draggable{ 
-  min-width: 200px;
-  ul li { margin: 0.1em 0; padding: 0.1em 0; } * html #draggable ul li { height: 1%; }
-}
-#content_draggable{ max-height: 400px; overflow: auto; }
 
+#draggable {
+  min-width: 200px;
+
+  ul li {
+    margin: 0.1em 0;
+    padding: 0.1em 0;
+  }
+
+  * html #draggable ul li {
+    height: 1%;
+  }
+}
+
+#content_draggable {
+  max-height: 400px;
+  overflow: auto;
+}
