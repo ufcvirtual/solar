@@ -108,11 +108,13 @@ a.link_content,
 .forum_post_attachment_list a {
   text-decoration: underline;
   color: $color_contrast_text;
+  word-break: break-word;
 }
 
 a.link_content:visited,
 .forum_post_attachment_list a:visited {
   color: $color_main;
+  word-break: break-word;
 }
 
 a.link_content_gray {
