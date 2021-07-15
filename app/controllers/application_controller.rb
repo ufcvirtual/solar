@@ -17,7 +17,6 @@
 ##########
 
 class ApplicationController < ActionController::Base
-  # force_ssl
   include ApplicationHelper
 
   protect_from_forgery

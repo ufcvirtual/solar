@@ -91,10 +91,10 @@ gem "mini_racer"
 
 gem "bigdecimal", "1.4.2"
 
+gem "uglifier", "~> 4.1.10"
+gem "sass-rails", "~> 6.0.0"
 group :assets do
-  gem "uglifier", "~> 4.1.10"
   #gem "sassc-rails", "~> 2.1.2"
-  gem "sass-rails", "~> 6.0.0"
   #gem "compass-rails", "~> 4.0.0"
   gem "bourbon", "~> 7.0.0"
 end
