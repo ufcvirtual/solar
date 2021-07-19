@@ -54,5 +54,5 @@ Solar::Application.configure do
   routes.default_url_options = YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["url_options"] rescue {}
 
   WillPaginate.per_page = 100
-  #config.force_ssl = true
+  config.force_ssl = true
 end
