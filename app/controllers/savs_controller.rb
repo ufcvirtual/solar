@@ -23,7 +23,7 @@ class SavsController < ApplicationController
         end
       end
 
-      render json: { url: ((sav_url.nil? || sav_url.include?('https')) ? sav_url : 'https://'+sav_url).gsub('www.', '') || '' }
+      render json: { url: !sav_url.nil? ? ((sav_url.include?('https') ? sav_url : 'https://'+sav_url).gsub('www.', '')) : '' }
     else
       render json: { url: '' }
     end

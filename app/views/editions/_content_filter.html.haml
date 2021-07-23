@@ -71,7 +71,7 @@
         .user_contacts
           %h3.select= t('messages.contacts.select')
           .contacts-list
-            = render partial: 'messages/users', object: @users = @contacts, object: @allocation_tags_ids = ''
+            = render partial: 'messages/users', object: @users = @contacts, object_aloc: @allocation_tags_ids = ''
 
       - if back
         .back.invisible
