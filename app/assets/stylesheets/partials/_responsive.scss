@@ -1199,6 +1199,10 @@
   .dropdown-panel {
     width: 15.625rem !important;
   }
+
+  .cke_button__eqneditor {
+    display: none !important;
+  }
 }
 
 @media (max-width: 768px) {
