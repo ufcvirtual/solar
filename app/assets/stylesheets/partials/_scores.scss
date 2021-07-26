@@ -10,25 +10,28 @@
   max-height: 200px;
   overflow: auto;
 }
-.shortcut{
+
+.shortcut {
   font-size: 10pt;
 }
 
-tr#activities{
-  th{
+tr#activities {
+  th {
     text-align: center;
   }
 }
 
-.info_right{
+.info_right {
   font-size: 10pt;
   height: 100%;
   text-align: center;
   margin-top: 14px;
-  .links{
+
+  .links {
     margin-left: -28%;
   }
-  label{
+
+  label {
     font-weight: bold;
     display: block;
     margin-left: 20%;
@@ -36,89 +39,107 @@ tr#activities{
   }
 }
 
-.info_left{
+.info_left {
   float: left;
   width: 30%;
   font-size: 10pt;
   color: $color_black;
 
-  a.tool_dropdown{
+  a.tool_dropdown {
     float: left;
 
     margin-top: 6px;
   }
-  ul.dropdown-menu{
-    li{
+
+  ul.dropdown-menu {
+    li {
       padding: 10px;
       padding-bottom: 0px;
       padding-top: 8px;
     }
-    label:hover, label{
+
+    label:hover,
+    label {
       background-color: transparent;
       color: $color_almost_gray_content;
       cursor: pointer;
       display: inline;
     }
   }
-
 }
 
-.tb_list_students{
+.tb_list_students {
   overflow-y: auto;
   margin-top: 10px;
 
-  table{
-    th, td{
+  table {
+    th,
+    td {
       text-align: center;
       min-width: 25px;
     }
-    th.td_student{
+
+    th.td_student {
       text-align: left;
       width: 25%;
     }
-    th.tool{
+
+    th.tool {
       min-width: 20px;
     }
+
     th#student {
       width: 120px;
     }
+
     th#profile {
       width: 100px;
     }
+
     th#assignment {
       width: 15px;
       text-decoration: underline;
     }
-    th.access_history, th#public_files,  th#exams{
+
+    th.access_history,
+    th#public_files,
+    th#exams {
       width: 5%;
     }
+
     th.participation {
       width: 80px;
     }
-    th#main_group{
+
+    th#main_group {
       width: 15%;
     }
 
-    .dropdown-menu{
+    .dropdown-menu {
       min-width: auto;
     }
-    td.main_group{
-      a{
+
+    td.main_group {
+      a {
         text-decoration: none;
       }
     }
   }
-  #assignment_title{
+
+  #assignment_title {
     background-color: $color_white_base;
     float: right;
     font-size: 10pt;
     color: $color_almost_gray;
   }
-
 }
 
-#scores_notes.legend_score_footer, .tb_list_students{
-  .evaluated, .evaluated a, .approved, .final_exam_approved {
+#scores_notes.legend_score_footer,
+.tb_list_students {
+  .evaluated,
+  .evaluated a,
+  .approved,
+  .final_exam_approved {
     color: $color_green_font;
   }
 
@@ -126,7 +147,8 @@ tr#activities{
     color: $sent_color;
   }
 
-  .sent a, td.assignment_as a {
+  .sent a,
+  td.assignment_as a {
     color: $sent_color_link;
   }
 
@@ -134,24 +156,31 @@ tr#activities{
     color: $sent_color;
   }
 
-  .assignment_as a{
+  .assignment_as a {
     color: $sent_color_link;
   }
 
-  .not_sent, .failed, .failed_working_hours {
+  .not_sent,
+  .failed,
+  .failed_working_hours {
     color: $not_sent_color_font;
   }
 
-  .not_sent a{
-   color: $not_sent_color;
+  .not_sent a {
+    color: $not_sent_color;
   }
 
-  .not_started, .not_started a, .undefined, .pending {
+  .not_started,
+  .not_started a,
+  .undefined,
+  .pending {
     color: $color_almost_gray_content;
     text-decoration: none;
   }
 
-  .to_send, .to_send a, .final_exam_pending {
+  .to_send,
+  .to_send a,
+  .final_exam_pending {
     color: $color_main;
     text-decoration: none;
   }
@@ -160,15 +189,20 @@ tr#activities{
     color: $without_group_color;
   }
 
-  .without_group a{
+  .without_group a {
     color: $without_group_color_link;
   }
 
-  .evaluated, .sent, .not_sent, .not_started, .to_send, .without_group{
+  .evaluated,
+  .sent,
+  .not_sent,
+  .not_started,
+  .to_send,
+  .without_group {
     white-space: nowrap;
   }
 
-  li.new_after_evaluation{
+  li.new_after_evaluation {
     padding: 5px;
     background-color: $blue_warning_background_bkg;
     color: $color_black;
@@ -176,30 +210,32 @@ tr#activities{
   }
 }
 
-table.scores#list_of_students{
+table.scores#list_of_students {
   overflow-x: auto;
   display: inline-block;
 }
 
-table.users#list_of_students{
+table.users#list_of_students {
   width: 20%;
   display: inline-block;
-  th{
+
+  th {
     height: 64px;
   }
 }
 
-table#list_of_students{
-  td.new_after_evaluation{
+table#list_of_students {
+  td.new_after_evaluation {
     background-color: $blue_warning_background_bkg;
   }
 }
 
-
-table#list_of_students thead{
+table#list_of_students thead {
   height: 48px;
-  ul.dropdown-menu{
-    label:hover, label{
+
+  ul.dropdown-menu {
+    label:hover,
+    label {
       background-color: transparent;
       color: $color_almost_gray_content;
       cursor: pointer;
@@ -208,49 +244,61 @@ table#list_of_students thead{
   }
 }
 
-table.general{
-  th{
+table.general {
+  th {
     min-width: 40px;
   }
 }
 
-#scores{
-  .evaluation_info{
+#scores {
+  .evaluation_info {
     margin: 15px;
     width: 50%;
     padding-right: 0;
     display: inline-block;
   }
-  .scores_menu{
+
+  .scores_menu {
     margin-left: 28%;
   }
-  .info{
+
+  .info {
     padding: 24px;
     padding-left: 22%;
     padding-right: 17%;
-    .left{
+
+    .left {
       float: left;
-      .grade,.frequency, .final_exam_grade, .situation, .main_group{
+
+      .grade,
+      .frequency,
+      .final_exam_grade,
+      .situation,
+      .main_group {
         text-align: center;
       }
-      .main_group a{
+
+      .main_group a {
         display: block;
       }
     }
-    img{
+
+    img {
       border-radius: 58px;
       box-shadow: 4px 4px 7px $color_gray;
       margin-bottom: 10px;
     }
   }
 
-  ul.dropdown-menu{
-    li{
+  ul.dropdown-menu {
+    li {
       padding: 10px;
       padding-bottom: 0px;
       padding-top: 8px;
     }
-    label:hover, label{
+
+    label:hover,
+    label {
       background-color: transparent;
       color: $panel_box_shadow;
       cursor: pointer;
@@ -259,46 +307,58 @@ table.general{
     }
   }
 
-  #list_tools, #resp_list{
-    section{
-      .tools{
+  #list_tools {
+    .tab_all {
+      // width: 90%;
+      text-align: center;
+    }
+  }
+
+  #list_tools,
+  #resp_list {
+    section {
+      .tools {
         display: none;
       }
+
       padding-top: 11px;
-      .tools.show{
+
+      .tools.show {
         display: block;
       }
     }
   }
 
-  .block_title h2{
+  .block_title h2 {
     position: initial;
     word-break: break-word;
   }
 }
 
-tbody{
-  .equivalent{
-    a{
+tbody {
+  .equivalent {
+    a {
       text-decoration: none;
       color: $score_tbody_link;
       font-size: 9pt;
     }
-    .dropdown-menu{
+
+    .dropdown-menu {
       padding: 10px;
     }
   }
 }
 
-
-#tabs{
+#tabs {
   margin-left: 20%;
-  li{
+
+  li {
     display: inline-block;
     padding: 2px;
     padding-right: 5px;
   }
-  li a{
+
+  li a {
     color: $color_almost_gray_content;
     cursor: pointer;
     border-top: solid 2px $color_main;
@@ -308,30 +368,37 @@ tbody{
     padding-bottom: 11px;
     background-color: $background_gray;
   }
-  li a:not(.ui-tabs-anchor){
+
+  li a:not(.ui-tabs-anchor) {
     border-left: solid 2px $color_main;
   }
-  li a.active{
+
+  li a.active {
     background-color: $color_main;
     color: $color_white_base;
   }
-  a{
+
+  a {
     text-decoration: none;
   }
-  li a:last-of-type{
+
+  li a:last-of-type {
     border-right: solid 2px $color_main;
   }
-
 }
 
-.tabs{
-  margin-left: 28%;
-  li{
+.tabs {
+  display: flex !important;
+  justify-content: center;
+
+  // margin-left: 28%;
+  li {
     display: inline-block;
     padding: 2px;
     padding-right: 5px;
   }
-  li a{
+
+  li a {
     color: $color_almost_gray_content;
     cursor: pointer;
     border-top: solid 2px $color_main;
@@ -341,49 +408,59 @@ tbody{
     padding-bottom: 11px;
     background-color: $background_gray;
   }
-  li a:not(.ui-tabs-anchor){
+
+  li a:not(.ui-tabs-anchor) {
     border-left: solid 2px $color_main;
   }
-  li a.active{
+
+  li a.active {
     background-color: $color_main;
     color: $color_white_base;
   }
-  a{
+
+  a {
     text-decoration: none;
   }
-  li a:last-of-type{
+
+  li a:last-of-type {
     border-right: solid 2px $color_main;
   }
-
 }
 
-.tb_list_students{
-  .top_elements{
-    margin-left: 35%;
-    display: inline-block;
-    a, .print_pdf, form{
+.tb_list_students {
+  .top_elements {
+    // margin-left: 35%;
+    // display: inline-block;
+    display: flex;
+    justify-content: center;
+
+    a,
+    .print_pdf,
+    form {
       display: inline-block;
+      margin-left: 5px;
     }
   }
 
-  .link_btns_scores{
+  .link_btns_scores {
     text-align: center;
   }
 
-  .dropdown-menu{
+  .dropdown-menu {
     display: inline-block;
     padding-left: 10px;
     padding-right: 10px;
-    label{
+
+    label {
       display: inline-block;
     }
   }
 }
 
-.tools table{
-  a.disabled{
+.tools table {
+  a.disabled {
     cursor: default;
-    text-decoration:none;
+    text-decoration: none;
     color: $score_tbody_link;
     padding-left: 0;
     padding-right: 0;
@@ -392,8 +469,8 @@ tbody{
 
 .public_files_info {
   table {
-    thead{
-      tr.lines{
+    thead {
+      tr.lines {
         th {
           background-color: $exclusive_background_color;
           color: $exclusive_font_color;
@@ -403,7 +480,7 @@ tbody{
   }
 }
 
-#amount_found{
+#amount_found {
   float: right;
   max-width: 57%;
 }

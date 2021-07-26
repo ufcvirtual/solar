@@ -7,43 +7,44 @@
   .title-warning= raw t('webconferences.user_access.evaluation_info')
 .webconference_access
   - unless @logs.empty? || @too_old
-    %table.tb_list
-      %thead
-        %tr.lines
-          - if (@can_evaluate || @can_comment) && !@too_old
-            %th#evaluate=t('chat_rooms.messages.to_evaluate')
-          %th#profile= t('.profile')
-          %th#user= t('.user')
-          %th#group= t('.group')
-          %th#date= t('.date')
-          %th#time= t('.time')
-          - if @evaluative
-            %th#grade= t('.grade')
-          - if @frequency
-            %th#wh= t('.frequency')
-      %tbody
-        - @logs.each_with_index do |log, idx|
-          %tr.lines{:'data-user-id' => log.user_id}
+    .responsive-table
+      %table.tb_list
+        %thead
+          %tr.lines
             - if (@can_evaluate || @can_comment) && !@too_old
-              %td{headers:'evaluate'}
-
-                - if log.is_student == true 
-                  = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: 'evaluate_web(this)', :'data-url' => user_access_webconference_path(@webconference, user_id: log.user_id, back:true), class: 'btn evaluate', :'data-tooltip'=> t('.evaluate')
-            %td.profile{headers:'profile'}= '(' + log.profile_name + ')'
-            %td.user{headers:'user'}= (@researcher ? t(:hidden_info) : log.user_name)
-            %td{headers:'group'}= AllocationTag.find(log.at_id).info
-            %td{headers:'date'}
-              %date{datetime: l(log.created_at.to_datetime, format: :normal)}= l(log.created_at.to_datetime, format: :normal)
-            %td{headers:'time'}
-              %date{datetime: l(log.created_at.to_datetime, format: :clock_time)}= l(log.created_at.to_datetime, format: :clock_time)
+              %th#evaluate=t('chat_rooms.messages.to_evaluate')
+            %th#profile= t('.profile')
+            %th#user= t('.user')
+            %th#group= t('.group')
+            %th#date= t('.date')
+            %th#time= t('.time')
             - if @evaluative
-              %td.grade{class: "user_#{log.user_id} at_#{log.at_id}", headers:'grade'}
-                - if @can_evaluate || log.user_id == current_user.id
-                  = log.try(:grade)
-            -if @frequency
-              %td.frequency{class: "user_#{log.user_id} at_#{log.at_id}", headers:'wh'}
-                - if @can_evaluate || log.user_id == current_user.id
-                  = log.try(:wh)
+              %th#grade= t('.grade')
+            - if @frequency
+              %th#wh= t('.frequency')
+        %tbody
+          - @logs.each_with_index do |log, idx|
+            %tr.lines{:'data-user-id' => log.user_id}
+              - if (@can_evaluate || @can_comment) && !@too_old
+                %td{headers:'evaluate'}
+
+                  - if log.is_student == true
+                    = link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: 'evaluate_web(this)', :'data-url' => user_access_webconference_path(@webconference, user_id: log.user_id, back:true), class: 'btn evaluate', :'data-tooltip'=> t('.evaluate')
+              %td.profile{headers:'profile'}= '(' + log.profile_name + ')'
+              %td.user{headers:'user'}= (@researcher ? t(:hidden_info) : log.user_name)
+              %td{headers:'group'}= AllocationTag.find(log.at_id).info
+              %td{headers:'date'}
+                %date{datetime: l(log.created_at.to_datetime, format: :normal)}= l(log.created_at.to_datetime, format: :normal)
+              %td{headers:'time'}
+                %date{datetime: l(log.created_at.to_datetime, format: :clock_time)}= l(log.created_at.to_datetime, format: :clock_time)
+              - if @evaluative
+                %td.grade{class: "user_#{log.user_id} at_#{log.at_id}", headers:'grade'}
+                  - if @can_evaluate || log.user_id == current_user.id
+                    = log.try(:grade)
+              -if @frequency
+                %td.frequency{class: "user_#{log.user_id} at_#{log.at_id}", headers:'wh'}
+                  - if @can_evaluate || log.user_id == current_user.id
+                    = log.try(:wh)
   - else
     - if @too_old
       .block_content_text_list.text_none= t('.too_old')

@@ -1,30 +1,56 @@
-.label_display{
-  .groups_column.middle_column, .students_without_groups_column{
-    td i{
+.group_assignments {
+  min-width: 250px;
+}
+
+#group_assignment_group_name {
+  width: 85%;
+}
+
+.label_display {
+
+  .groups_column.middle_column,
+  .students_without_groups_column {
+    td i {
       color: $color_main;
     }
   }
 
-  .students_without_groups_column{
-    input{
+  .students_without_groups_column {
+    input {
       width: 105px;
     }
-    .text_none.empty_message{
+
+    .text_none.empty_message {
       margin-top: -50px;
     }
   }
 }
 
-td.icon > a {
+.group-assignment-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.fix-display {
+  display: inline-block;
+}
+
+td.icon>a {
   text-decoration: none;
 }
 
-.group_assignments.header.title{
+.group_assignments.header.title {
   border-bottom: 1px solid;
   border-bottom-color: #d0d0d0;
   padding-bottom: 5px;
   position: relative;
-  h1{
+
+  h1 {
     max-width: 67%;
   }
+}
+
+.assignment-selected {
+  background-color: #fefae6 !important;
+  border: 1px solid #f9c143 !important;
 }

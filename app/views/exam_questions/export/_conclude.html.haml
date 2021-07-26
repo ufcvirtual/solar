@@ -3,20 +3,21 @@
     %h2
       %i.icon-class
       = t('.title')
-  %table.tb_list
-    %thead
-      %tr.lines
-        %th= t('.exam')
-        %th= t('.enun')
-        %th= t('.type')
-        %th= t('.source')
-        %th= t('questions.questions.privacy')
-        %th= t('.score')
-        %th.no_sort.icon= t('.delete')
+  .responsive-table
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th= t('.exam')
+          %th= t('.enun')
+          %th= t('.type')
+          %th= t('.source')
+          %th= t('questions.questions.privacy')
+          %th= t('.score')
+          %th.no_sort.icon= t('.delete')
 
-    %tbody.exams_to_export_to
-      %tr.text_none
-        %td.text_none{ colspan: 10 }= t('.no_question')
+      %tbody.exams_to_export_to
+        %tr.text_none
+          %td.text_none{ colspan: 10 }= t('.no_question')
 
 .right_buttons
   = link_to t('.back'), "#void", onclick: 'back_to_list()', class: 'btn', alt: t('.back')
@@ -35,7 +36,7 @@
 
     $.put("#{export_exam_questions_path}", {questions: questions.join(';'), exam_id: "#{@exam_id}"}, function(data){
       $.fancybox.close();
-      flash_message(data.msg, 'notice', 'block_wrapper:first');      
+      flash_message(data.msg, 'notice', 'block_wrapper:first');
     }).fail(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")

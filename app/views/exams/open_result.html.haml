@@ -1,21 +1,22 @@
 .event_details_dropdown
   %h1#lightBoxDialogTitle=  @exam.name
   - unless  @list_eua.blank?
-    %table.tb_list
-      %thead
-        %tr.lines
-          %th{style: 'text-align:left;'}= t(".name")
-
-      %tbody
-        - i = 0
-        - @list_eua.each do |leua|
-          - link = open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, situation: @situation, exam_user_attempt_id: leua.id, user_id: leua.academic_allocation_user.user_id)
-          - i += 1
+    .responsive-table
+      %table.tb_list
+        %thead
           %tr.lines
-            %td
-              %div
-                .title
-                  = link_to I18n.t('exams.open_result.link', grade: leua.grade, number: i.to_s), link, class: 'link_content link_open_exam'
+            %th{style: 'text-align:left;'}= t(".name")
+
+        %tbody
+          - i = 0
+          - @list_eua.each do |leua|
+            - link = open_exam_path(@exam, allocation_tag_id: @allocation_tag_id, situation: @situation, exam_user_attempt_id: leua.id, user_id: leua.academic_allocation_user.user_id)
+            - i += 1
+            %tr.lines
+              %td
+                %div
+                  .title
+                    = link_to I18n.t('exams.open_result.link', grade: leua.grade, number: i.to_s), link, class: 'link_content link_open_exam'
 
 :javascript
   $(function(){

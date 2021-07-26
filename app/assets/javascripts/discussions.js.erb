@@ -29,6 +29,14 @@ function form_post_reset_parameters() {
   $('form#new_post_form').attr('action', action);
   $('form#new_post_form #discussion_post_parent_id').val(null);
   $('form#new_post_form input[name=_method]').val('put');
+
+  if($('#mysolar_content').width() <= 576) {
+    $('article.forum_post').each(function() {
+      var post_form_width = $('#mysolar_content').width() - $(this).find('.forum_post_wrapper').offset().left - 10;
+
+      $(this).find('.forum_post_reply').css('width', post_form_width);
+    });
+  }
 }
 
 function destroy_editor() {
@@ -48,7 +56,7 @@ function append_rich_text(container) {
 }
 
 function cancel_posting() {
-  if (!confirm("<%= I18n.t('posts.index.confirm_cancel') %>")) return; 
+  if (!confirm("<%= I18n.t('posts.index.confirm_cancel') %>")) return;
   remove_ckeditor();
   clear_input_file();
 }
@@ -65,9 +73,9 @@ function remove_ckeditor(){
 
 function new_post(obj, parent) {
   if($("#new_post:visible").length > 0)
-    if (!confirm("<%= I18n.t('posts.index.confirm_ckeditor') %>")) return; 
+    if (!confirm("<%= I18n.t('posts.index.confirm_ckeditor') %>")) return;
   form_post_reset_parameters();
-  
+
   $('form#new_post_form input[name=_method]').val('post');
   if (parent > 0) { $('form#new_post_form #discussion_post_parent_id').val(parent); } // resposta
 
@@ -89,7 +97,7 @@ function new_post(obj, parent) {
 
 function update_post(obj, post, parent) {
   if($("#new_post:visible").length > 0)
-    if (!confirm("<%= I18n.t('posts.index.confirm_ckeditor') %>")) return; 
+    if (!confirm("<%= I18n.t('posts.index.confirm_ckeditor') %>")) return;
   form_post_reset_parameters();
 
   if (parent > 0) { $('form#new_post_form #discussion_post_parent_id').val(parent); } // post com parent
@@ -104,18 +112,18 @@ function update_post(obj, post, parent) {
   CKEDITOR.instances['post_content'].setData($(obj).closest('.forum_post_wrapper').children('.forum_post_inner_content').html());
   clear_input_file();
 
-  
+
   var url_for = "<%= Rails.application.routes.url_helpers.post_files_post_path(id: ':id') %>";
-  $.get(url_for.replace(':id', post), function(data) { 
-    if(data.length>0 && data != "undefined") {  
+  $.get(url_for.replace(':id', post), function(data) {
+    if(data.length>0 && data != "undefined") {
       $(".attachment_title_", $('.posts')).removeClass("invisible");
       $(".attachment_title_").show();
       for(var i = 0; i < data.length; i++) {
         var file = data[i];
         add_up_file(file.id, file.attachment_file_name, file.attachment_file_size)
       }
-    }  
-  });  
+    }
+  });
 
   return false;
 }
@@ -142,10 +150,10 @@ function delete_post(button) {
             id_pai = $(elemento).attr('id');
             label = label +"<%= I18n.t('posts.post.answer_post') %>"+ id_pai+"<%= I18n.t('posts.post.res_post') %>";
             $(this).attr("aria-label", label);
-          }else{      
+          }else{
             $(this).attr("aria-label", label);
           }
-        }); 
+        });
         flash_message("<%= I18n.t('posts.post.remove_post') %>", 'notice');
       });
     },
@@ -168,7 +176,7 @@ function add_post_count_warning(current_page){
       erase_flash_messages();
 
   $(".blue_warning").prepend('<i class="icon-plus-circle"></i>');
-  
+
   var arrow_class = "";
   var first_new_post = $($(".forum_post_head.new")[0]);
 
@@ -246,7 +254,7 @@ function add_up_file(id, input_value, size) {
   $(attachment).attr("name", input_name);
   $(_destroy).attr("data-file-id", id);
   $(_destroy).attr("id", input_id_destroy);
-  $(_destroy).attr("name", input_name_destroy); 
+  $(_destroy).attr("name", input_name_destroy);
 
   $(new_form).insertAfter( nested_form.last() );
   $('#'+input_id_destroy).after(input_id);
@@ -268,12 +276,12 @@ function add_up_file(id, input_value, size) {
     if( keynum == 13 || event.type == 'click'){
       var span_file = $(this).parents('span.file');
       $("input[data-file-id=" + span_file.data("input-file-id") + "]").val(1);
-      
+
       $(span_file).parents('div.input.files').remove();
 
       if (!$(".list_files_to_send_").children().length)
         $(".attachment_title_").addClass("invisible");
-    }    
+    }
   });
 }
 
