@@ -1074,7 +1074,7 @@ class User < ActiveRecord::Base
 
     def verify_column(user, column)
       same_column = User.where("lower(#{column}) = '#{user.send(column.to_sym).try(:downcase)}' AND users.cpf != '#{user.cpf}'")
-      same_column.delete_if{|user| user.integrated && !user.on_blacklist?} unless same_column.blank?
+      same_column.to_a.delete_if{|user| user.integrated && !user.on_blacklist?} unless same_column.blank?
       # ver se tem mais de um usuario com esse login
       if same_column.any?
         # se sim, é integrado e não tá na blacklist?
