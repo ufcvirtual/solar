@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   require "em-websocket"
 
-  #include SysLog::Actions
+  include SysLog::Actions
 
   # before_filter :authenticate_user!
   before_filter :prepare_for_pagination
