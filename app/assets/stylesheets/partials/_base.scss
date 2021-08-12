@@ -94,10 +94,10 @@ a.link_content {
   color: $color_main_base_link;
 }
 
-.show_notification a:not(.prev),
-.show_notification a:not(.next) {
-  text-decoration: underline;
-}
+// .show_notification a:not(.prev),
+// .show_notification a:not(.next) {
+//   text-decoration: underline;
+// }
 
 .show_notification a.prev,
 .show_notification a.next {
