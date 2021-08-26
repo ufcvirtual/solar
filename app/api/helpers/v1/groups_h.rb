@@ -64,6 +64,7 @@ module V1::GroupsH
     group
   end
 
+=begin
   def verify_previous_groups(semester, curriculum_unit_id, course_id, name)
     if name.size < 4
       offers = Offer.where(curriculum_unit_id: curriculum_unit_id, semester_id: semester.id).where('course_id != ?', course_id).map(&:id)
@@ -85,6 +86,7 @@ module V1::GroupsH
       end
     end
   end
+=end
 
   def group_params(params)
     ActionController::Parameters.new(params).except("route_info").permit("code", "offer_id", "location", "name")
