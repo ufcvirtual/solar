@@ -117,11 +117,11 @@ Course.create!(code: load_group["codGraduacao"], name: (load_group["nomeGraduaca
                 if course.nil?
                   offer    = verify_or_create_offer(semester, {curriculum_unit_id: uc.id, course_id: nil}, offer_period)
                   load_group[:code] = get_group_code(load_group[:code], load_group[:name], load_group[:year].to_i) unless load_group[:name].blank?
-                  verify_previous_groups(semester, uc.id, nil, load_group[:name])
+                  #verify_previous_groups(semester, uc.id, nil, load_group[:name])
                 else  
                   offer    = verify_or_create_offer(semester, {curriculum_unit_id: uc.id, course_id: course.id}, offer_period)
                   load_group[:code] = get_group_code(load_group[:code], load_group[:name], load_group[:year].to_i) unless load_group[:name].blank?
-                  verify_previous_groups(semester, uc.id, course.id, load_group[:name])
+                  #verify_previous_groups(semester, uc.id, course.id, load_group[:name])
                 end
 
                 group    = verify_or_create_group({offer_id: offer.id, code: load_group[:code], name: load_group[:name], location_name: load_group[:location_name], location_office: load_group[:location_office]})
