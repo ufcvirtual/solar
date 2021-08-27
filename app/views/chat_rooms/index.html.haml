@@ -18,35 +18,36 @@
 
   - unless @chat_rooms.blank?
     - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
-    %table.tb_list.description_chat_rooms
-      %thead
-        %tr.lines
-          %th.no_sort.center{style: 'width: 25px;'}= check_box_tag :all_chats, false, false, :"data-children-names" => "c_"
-          %th{style: 'text-align:left;'}= t(".chat_name")
-          %th.no_sort.center{style: 'width: 21%;'}= t(".availability")
+    .responsive-table
+      %table.tb_list.description_chat_rooms
+        %thead
+          %tr.lines
+            %th.no_sort.center{style: 'width: 25px;'}= check_box_tag :all_chats, false, false, :"data-children-names" => "c_"
+            %th{style: 'text-align:left;'}= t(".chat_name")
+            %th.no_sort.center{style: 'width: 21%;'}= t(".availability")
 
-      %tbody
-        - @chat_rooms.each do |chat|
-          %tr.lines{id: "tr_#{chat.id}"}
-            %td{style: 'text-align:center;'}
-              = check_box_tag("c_#{chat.id}", chat.id, false, {class: "ckb_chat"})
-            %td
-              %div
-                .title
-                  = chat.title
-                .description
-                  .minimun
-                    = raw(truncate chat.description, length: 200)
-                    - if chat.description.size > 200
-                      =content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))
-                  .complete.invisible
-                    = chat.description
-                    = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
-                .group_label.invisible= render "groups/groups_tags", groups: chat.groups, tool: chat, all_groups: all_groups, paths: {add: add_group_to_chat_rooms_path(id: "param_id", tool_id: chat.id), remove: remove_group_from_chat_rooms_path(id: "param_id", tool_id: chat.id), unbind: unbind_group_from_chat_rooms_path(id: "param_id", tool_id: chat.id), tags: group_tags_from_chat_rooms_path(tool_id: chat.id)}
+        %tbody
+          - @chat_rooms.each do |chat|
+            %tr.lines{id: "tr_#{chat.id}"}
+              %td{style: 'text-align:center;'}
+                = check_box_tag("c_#{chat.id}", chat.id, false, {class: "ckb_chat"})
+              %td
+                %div
+                  .title
+                    = chat.title
+                  .description
+                    .minimun
+                      = raw(truncate chat.description, length: 200)
+                      - if chat.description.size > 200
+                        =content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t(".expand_description"))
+                    .complete.invisible
+                      = chat.description
+                      = content_tag(:i, nil, class: "compress icon-arrow-up-triangle", :"data-tooltip" => t(".compress_description"))
+                  .group_label.invisible= render "groups/groups_tags", groups: chat.groups, tool: chat, all_groups: all_groups, paths: {add: add_group_to_chat_rooms_path(id: "param_id", tool_id: chat.id), remove: remove_group_from_chat_rooms_path(id: "param_id", tool_id: chat.id), unbind: unbind_group_from_chat_rooms_path(id: "param_id", tool_id: chat.id), tags: group_tags_from_chat_rooms_path(tool_id: chat.id)}
 
-            %td{style: 'text-align:center;'}
-              %div= [l(chat.schedule.start_date, format: :normal), l(chat.schedule.end_date, format: :normal)].join(" - ")
-              %div= t(".hour_period", start_hour: chat.start_hour, end_hour: chat.end_hour)
+              %td{style: 'text-align:center;'}
+                %div= [l(chat.schedule.start_date, format: :normal), l(chat.schedule.end_date, format: :normal)].join(" - ")
+                %div= t(".hour_period", start_hour: chat.start_hour, end_hour: chat.end_hour)
 
   - else
     .block_content_text_list.text_none= t(".no_chats")

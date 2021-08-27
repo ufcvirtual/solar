@@ -1,5 +1,5 @@
 .block_title_exam.block_exam
-  %h2
+  %h2.clearfix
     .text
       - if ckb.nil? || ckb
         = check_box_tag("ckb_exam_#{exam.id}", exam.id, false, { class: 'ckb_exam' })

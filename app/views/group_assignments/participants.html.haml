@@ -1,12 +1,13 @@
-%table.tb_list
-  %tbody
-    - @participants.each do |participant|
-      %tr.lines{ :"data-user-id" => participant.id }
-        %td{tabindex: 0, :'aria-label' => participant.name}= participant.name
-        - unless @import
-          %td.icon
-            %a{href: "#", onclick: "remove_participant(this)", onkeydown: "remove_participant(this, event)", :"data-tooltip" => t('group_assignments.index.remove'), :'aria-label' => t('group_assignments.index.remove')}
-              = content_tag(:i, nil, class: "icon-cross-square")
-  .text_none.empty_message{ class: @participants.any? ? 'hide_message' : '' }=t('group_assignments.index.no_participants')
+.responsive-table
+  %table.tb_list
+    %tbody
+      - @participants.each do |participant|
+        %tr.lines{ :"data-user-id" => participant.id }
+          %td{tabindex: 0, :'aria-label' => participant.name}= participant.name
+          - unless @import
+            %td.icon
+              %a{href: "#", onclick: "remove_participant(this)", onkeydown: "remove_participant(this, event)", :"data-tooltip" => t('group_assignments.index.remove'), :'aria-label' => t('group_assignments.index.remove')}
+                = content_tag(:i, nil, class: "icon-cross-square")
+    .text_none.empty_message{ class: @participants.any? ? 'hide_message' : '' }=t('group_assignments.index.no_participants')
 
 = javascript_include_tag "tooltip"

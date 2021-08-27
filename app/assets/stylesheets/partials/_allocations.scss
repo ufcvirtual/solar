@@ -1,4 +1,12 @@
 // ALOCAÇÃO DE USUÁRIOS
+.users {
+  width: 100%;
+}
+
+.search {
+  width: 100%;
+}
+
 .tb_allocation {
 
   tr.lines {
@@ -10,8 +18,8 @@
   }
 }
 
-td.allocation_status_info{
-  a{
+td.allocation_status_info {
+  a {
     text-decoration: none;
   }
 }

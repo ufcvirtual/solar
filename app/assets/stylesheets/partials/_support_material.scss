@@ -3,7 +3,8 @@ h2.support_material_title {
   bottom: 1px;
 }
 
-.new_link input { // FIXME: classe está com nome muito genérico
+.new_link input {
+  // FIXME: classe está com nome muito genérico
   width: 200px;
 }
 
@@ -12,39 +13,42 @@ h2.support_material_title {
   margin-bottom: 6px;
 }
 
-.new_support_material_buttons{
+.new_support_material_buttons {
   margin-top: 15px;
   text-align: right;
 }
 
-.new_support_material_form .form_label{
-  width: 30px !important;
-}
+// .new_support_material_form .form_label{
+//   width: 30px !important;
+// }
 
-#support_material_file_url, #support_material_file_title{
+#support_material_file_url,
+#support_material_file_title {
   width: 206px;
 }
 
-.new_support_material_form .input .groups{
+.new_support_material_form .input .groups {
   width: 200px;
 }
 
-#support_material_form{
-  .files{
-    #support_material_file_title{
-       width: 500px;
+#support_material_form {
+  .files {
+    #support_material_file_title {
+      width: 500px;
     }
   }
 }
 
-.support_material.open{
+.support_material.open {
   text-align: center;
   vertical-align: middle;
   height: 100%;
-  video{
+
+  video {
     vertical-align: middle;
   }
-  div{
+
+  div {
     height: 100%;
   }
 }

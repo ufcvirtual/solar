@@ -12,7 +12,7 @@
         = link_to (content_tag(:i, nil, class: 'icon-trash')), "#void", class: 'btn btn_del delete_notification',  :"data-link-delete" => notification_path(id: ':id', :allocation_tags_ids => @allocation_tags_ids), disabled: true, :'data-tooltip' => t(".delete")
 
   - all_groups = Offer.find(params[:offer_id]).try(:groups) if params.include?(:offer_id)
-  .block_content
+  .block_content.responsive-table
     %table.tb_list.tb_notifications
       %thead{style: (@notifications.blank? ? "display: none" : "")}
         %tr.lines

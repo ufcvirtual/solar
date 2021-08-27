@@ -8,77 +8,78 @@
       = link_to t(tool_name.tableize.singularize, scope: [:activerecord, :models]), "##{tool_name}", onclick: 'hide_or_show(this)'
   .tools_by_tool_type{class: (@tool_name == tool_name ? '' : 'invisible')}
     - if tools.any?
-      %table.tb_list
-        %thead
-          %tr.lines
-            %th.name= t('editions.tools.name')
-            %th= t('editions.tools.period')
-            %th= t('editions.tools.evaluative')
-            %th= t('editions.tools.final_exam')
-            - unless distant_course
-              %th= t('editions.tools.weight')
-            /- else
-            %th= t('editions.tools.final_weight')
-            %th= t('editions.tools.frequency')
-            %th= t('editions.tools.frequency_automatic')
-            %th= t('editions.tools.max_wh')
-            %th= t('editions.tools.equivalent')
+      .responsive-table
+        %table.tb_list
+          %thead
+            %tr.lines
+              %th.name= t('editions.tools.name')
+              %th= t('editions.tools.period')
+              %th= t('editions.tools.evaluative')
+              %th= t('editions.tools.final_exam')
+              - unless distant_course
+                %th= t('editions.tools.weight')
+              /- else
+              %th= t('editions.tools.final_weight')
+              %th= t('editions.tools.frequency')
+              %th= t('editions.tools.frequency_automatic')
+              %th= t('editions.tools.max_wh')
+              %th= t('editions.tools.equivalent')
 
-        %tbody
-          - tools.each do |ac|
-            - final_weight = ac.final_weight
-            - if distant_course && !ac.evaluative
-              - final_weight = (ac.academic_tool_type == 'ScheduleEvent' && ScheduleEvent.find(ac.academic_tool_id).type_event == Presential_Test) ? 60 : 40
+          %tbody
+            - tools.each do |ac|
+              - final_weight = ac.final_weight
+              - if distant_course && !ac.evaluative
+                - final_weight = (ac.academic_tool_type == 'ScheduleEvent' && ScheduleEvent.find(ac.academic_tool_id).type_event == Presential_Test) ? 60 : 40
 
-            - final_weight = (final_weight.to_i == final_weight ? final_weight.to_i : final_weight)
+              - final_weight = (final_weight.to_i == final_weight ? final_weight.to_i : final_weight)
 
-            - ats_ids = ac.ats.to_s.delete('[]').split(',')
-            - array_group_code = Array.new
-            - groups = Group.joins(:allocation_tag).where(allocation_tags: {id: ats_ids.map(&:to_i)}).to_a.compact
-            //oferta
-            - if groups.empty?
-              - @groups.each do |gr|
-                - array_group_code.push(gr.code+',') if gr.status
+              - ats_ids = ac.ats.to_s.delete('[]').split(',')
+              - array_group_code = Array.new
+              - groups = Group.joins(:allocation_tag).where(allocation_tags: {id: ats_ids.map(&:to_i)}).to_a.compact
+              //oferta
+              - if groups.empty?
+                - @groups.each do |gr|
+                  - array_group_code.push(gr.code+',') if gr.status
 
-            - groups.each do |g|
-              - array_group_code.push(g.code+',')
+              - groups.each do |g|
+                - array_group_code.push(g.code+',')
 
-            = fields_for 'academic_allocations[]', ac do |acf|
-              %tr.lines{ class: [ats_ids.map{|at| 'at_'+at}, ac.acs.map{|ac| 'ac_'+ac}, tool_name].join(' ') }
-                = hidden_field_tag 'groups', array_group_code, class: 'groups_analyzer'
-                %td.desc
-                  %div
-                    .title= ac.name
-                    .description
-                      .minimun
-                        = raw ac.description.to_s.truncate(200)
-                        - if ac.description.try(:size).to_i > 200
-                          = link_to content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('editions.evaluative_tools.expand_description')), "#void", onclick: 'expand_or_compress(this)'
-                      .complete.invisible
-                        = raw ac.description
-                        = link_to content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('editions.evaluative_tools.compress_description')), "#void", onclick: 'expand_or_compress(this)'
-                    - if groups.blank?
-                      = t('editions.tools.offer')
-                    - else
-                      .group_label= render "groups/groups_tags", groups: groups, tool: ac.academic_tool_id, all_groups: nil, paths: nil
-                %td
-                  - hours = (ac.start_hour.blank?) ? '' : (ac.end_hour.blank?) ? ac.start_hour : [ac.start_hour, ac.end_hour].join(I18n.t('schedules.to'))
-                  = t('editions.evaluative_tools.full_period', dstart: ac.start_date.to_date, dend: ac.end_date.to_date , hours: hours)
-                %td.ckb.ev{onclick: 'check_checkbox(event, this)'}= acf.check_box :evaluative, label: false
-                %td.ckb.fe{onclick: 'check_checkbox(event, this)'}= acf.check_box :final_exam, label: false, disabled: !ac.evaluative
-                - unless distant_course
-                  %td.weight= acf.text_field :weight, label: false, disabled: !ac.evaluative || ac.final_exam, value: (ac.weight.to_i == ac.weight ? ac.try(:weight).to_i : ac.try(:weight))
-                %td.final_weight
-                  = acf.text_field :final_weight, label: false, disabled: !ac.evaluative  || ac.final_exam, oninput: 'initializer_analizer()', value: final_weight
-                %td.ckb.f{onclick: 'check_checkbox(event, this)'}= acf.check_box :frequency, label: false, disabled: (wh || ac.final_exam), :'data-change' => !wh  && !ac.final_exam
-                %td.ckb.af{onclick: 'check_checkbox(event, this)'}= acf.check_box :frequency_automatic, label: false, disabled: (!ac.frequency || ac.academic_tool_type == 'ScheduleEvent' || ac.academic_tool_type == 'Exam'), checked: (ac.academic_tool_type == 'Exam' ? true : ac.frequency_automatic)
-                %td.working_hours
-                  = acf.text_field :max_working_hours, label: false, disabled: (!ac.frequency || ac.final_exam || !ac.equivalent_academic_allocation_id.blank?), oninput: 'initializer_analizer()', value: (ac.try(:max_working_hours).try(:to_i) == ac.try(:max_working_hours) ? ac.max_working_hours.to_i : ac.max_working_hours)
-                  = t('editions.tools.wh')
-                - select_tools = AcademicAllocation.where(id: (tools_ids - ac.acs), allocation_tag_id: ats_ids.map(&:to_i)).select('DISTINCT ON(academic_tool_id, academic_tool_type) id, academic_tool_id, academic_tool_type')
-                %td= select_tools.blank? ? '-' : acf.collection_select(:equivalent_academic_allocation_id, select_tools, :id, :tool_type_name,  {include_blank: true}, {disabled: (!ac.evaluative && !ac.frequency),  oninput: 'selected_equiv()'})
-                = acf.hidden_field "allocation_tags_ids", value: ats_ids.map(&:to_i)
-                = acf.hidden_field "acs", value: ac.acs.map(&:to_i)
+              = fields_for 'academic_allocations[]', ac do |acf|
+                %tr.lines{ class: [ats_ids.map{|at| 'at_'+at}, ac.acs.map{|ac| 'ac_'+ac}, tool_name].join(' ') }
+                  = hidden_field_tag 'groups', array_group_code, class: 'groups_analyzer'
+                  %td.desc
+                    %div
+                      .title= ac.name
+                      .description
+                        .minimun
+                          = raw ac.description.to_s.truncate(200)
+                          - if ac.description.try(:size).to_i > 200
+                            = link_to content_tag(:i, nil, class: 'expand icon-ellipsis', :"data-tooltip" => t('editions.evaluative_tools.expand_description')), "#void", onclick: 'expand_or_compress(this)'
+                        .complete.invisible
+                          = raw ac.description
+                          = link_to content_tag(:i, nil, class: 'compress icon-arrow-up-triangle', :"data-tooltip" => t('editions.evaluative_tools.compress_description')), "#void", onclick: 'expand_or_compress(this)'
+                      - if groups.blank?
+                        = t('editions.tools.offer')
+                      - else
+                        .group_label= render "groups/groups_tags", groups: groups, tool: ac.academic_tool_id, all_groups: nil, paths: nil
+                  %td
+                    - hours = (ac.start_hour.blank?) ? '' : (ac.end_hour.blank?) ? ac.start_hour : [ac.start_hour, ac.end_hour].join(I18n.t('schedules.to'))
+                    = t('editions.evaluative_tools.full_period', dstart: ac.start_date.to_date, dend: ac.end_date.to_date , hours: hours)
+                  %td.ckb.ev{onclick: 'check_checkbox(event, this)'}= acf.check_box :evaluative, label: false
+                  %td.ckb.fe{onclick: 'check_checkbox(event, this)'}= acf.check_box :final_exam, label: false, disabled: !ac.evaluative
+                  - unless distant_course
+                    %td.weight= acf.text_field :weight, label: false, disabled: !ac.evaluative || ac.final_exam, value: (ac.weight.to_i == ac.weight ? ac.try(:weight).to_i : ac.try(:weight))
+                  %td.final_weight
+                    = acf.text_field :final_weight, label: false, disabled: !ac.evaluative  || ac.final_exam, oninput: 'initializer_analizer()', value: final_weight
+                  %td.ckb.f{onclick: 'check_checkbox(event, this)'}= acf.check_box :frequency, label: false, disabled: (wh || ac.final_exam), :'data-change' => !wh  && !ac.final_exam
+                  %td.ckb.af{onclick: 'check_checkbox(event, this)'}= acf.check_box :frequency_automatic, label: false, disabled: (!ac.frequency || ac.academic_tool_type == 'ScheduleEvent' || ac.academic_tool_type == 'Exam'), checked: (ac.academic_tool_type == 'Exam' ? true : ac.frequency_automatic)
+                  %td.working_hours
+                    = acf.text_field :max_working_hours, label: false, disabled: (!ac.frequency || ac.final_exam || !ac.equivalent_academic_allocation_id.blank?), oninput: 'initializer_analizer()', value: (ac.try(:max_working_hours).try(:to_i) == ac.try(:max_working_hours) ? ac.max_working_hours.to_i : ac.max_working_hours)
+                    = t('editions.tools.wh')
+                  - select_tools = AcademicAllocation.where(id: (tools_ids - ac.acs), allocation_tag_id: ats_ids.map(&:to_i)).select('DISTINCT ON(academic_tool_id, academic_tool_type) id, academic_tool_id, academic_tool_type')
+                  %td= select_tools.blank? ? '-' : acf.collection_select(:equivalent_academic_allocation_id, select_tools, :id, :tool_type_name,  {include_blank: true}, {disabled: (!ac.evaluative && !ac.frequency),  oninput: 'selected_equiv()'})
+                  = acf.hidden_field "allocation_tags_ids", value: ats_ids.map(&:to_i)
+                  = acf.hidden_field "acs", value: ac.acs.map(&:to_i)
 
 
 = javascript_include_tag "tablesorter", "tooltip", "groups_tags", 'shortcut'

@@ -1,11 +1,13 @@
 ul.notifications {
-  li.unread{
+  li.unread {
     background-color: $background_light_beige;
   }
-  li{
+
+  li {
     padding: 4px;
     word-break: break-word;
-    a{
+
+    a {
       word-break: break-word;
     }
   }
@@ -23,52 +25,65 @@ ul.notifications {
     word-break: break-word;
   }
 
-  ul.dropdown-menu{
+  ul.dropdown-menu {
     padding: 10px;
     color: $font_color;
   }
 }
 
-.show_notification{
-  #lightBoxDialogTitle{
-    .prev, .next{
+.show_notification {
+  #lightBoxDialogTitle {
+
+    .prev,
+    .next {
       float: right;
     }
-    h1{
+
+    h1 {
       word-break: break-word;
     }
   }
 }
 
-#notification_form{
+#notification_form {
   overflow-y: hidden;
-  .input.notification_mandatory_reading{
+
+  .input.notification_mandatory_reading {
     vertical-align: bottom;
     width: 12%;
   }
-  .files, .profiles{
-    label{
+
+  .files,
+  .profiles {
+    label {
       width: 76px;
     }
   }
-  #files{
+
+  #files {
     display: inline-block;
-    .info, .file{
+
+    .info,
+    .file {
       display: inline-block;
     }
-    input[type='file']{
+
+    input[type='file'] {
       display: none;
     }
-    .info.invisible{
+
+    .info.invisible {
       display: none;
     }
   }
-  .profiles{
-    #all{
+
+  .profiles {
+    #all {
       margin-left: -1.6%;
       vertical-align: bottom;
     }
-    #profiles_box{
+
+    #profiles_box {
       vertical-align: top;
       border: 1px solid $color_gray_font;
       background-color: $color_white_base;
@@ -79,22 +94,27 @@ ul.notifications {
       padding-right: 15px;
       width: 40%;
       margin-left: 13%;
-      .profile_ckb{
+
+      .profile_ckb {
         margin-left: -13px;
-        label{
+
+        label {
           vertical-align: top;
           width: auto;
         }
       }
     }
-    span{
+
+    span {
       display: block;
     }
   }
 }
 
-.list_notifications{
-  a.preview{
+.list_notifications {
+  width: 100%;
+
+  a.preview {
     text-decoration: none;
   }
 }
