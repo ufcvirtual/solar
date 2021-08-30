@@ -23,7 +23,7 @@ function save_question(duration) {
   Timer.pause();
   var form = $('form.edit_exam_response');
 
-  event.preventDefault();
+  //event.preventDefault();
   var post_url = $(form).attr("action");
   var request_method = $(form).attr("method");
   var form_data = $(form).serialize();
