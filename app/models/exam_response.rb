@@ -13,6 +13,7 @@ class ExamResponse < ActiveRecord::Base
   accepts_nested_attributes_for :exam_responses_question_items
 
   validate :unique, if: -> {question.type_question == 0}
+
   validate :arrow_last_answer_for_single_choice_questions
 
   def unique

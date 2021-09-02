@@ -13,7 +13,7 @@ class Notifier < ActionMailer::Base
 
     unless with_template_view
       config_mail[:body] = message
-      config_mail[:content_type] = "text/html"
+      config_mail[:content_type] = "text/html" if files.blank?
 
       mail(config_mail)
     else
