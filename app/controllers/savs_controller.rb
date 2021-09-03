@@ -16,7 +16,7 @@ class SavsController < ApplicationController
         if savs.any?
           client   = Savon.client wsdl: SavConfig::WSDL
           response = client.call SavConfig::METHOD.to_sym, message: { "name" => encrypt(current_user.name), "cpf" => encrypt(current_user.cpf), "group_id" => encrypt(group.try(:id).to_s), "offer_id" => encrypt(group.offer.try(:id).to_s), "course_id" => encrypt(group.course.try(:id).to_s), "curriculum_unit_id" => encrypt(group.curriculum_unit.try(:id).to_s), "curriculum_unit_type_id"=> encrypt(group.curriculum_unit_type.try(:id).to_s), "semester_id" => encrypt(group.semester.try(:id).to_s), "perfis_id" => { "string" => user_profiles.map{ |id| encrypt(id.to_s) }.flatten } }
-          response_url = response.as_json[:url_questionario_response][:url_questionario_result]
+          response_url = response.as_json['url_questionario_response']['url_questionario_result']
 
           sav_url = URI.parse(response_url).path rescue nil
           (sav_url.nil? ? (Rails.logger.info "[ERROR] [SAV] [#{Time.now}] message: #{response_url}" ) : (sav_url = response_url))
