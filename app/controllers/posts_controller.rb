@@ -52,7 +52,7 @@ class PostsController < ApplicationController
       end
 
       if current_user.is_student?([@allocation_tags].flatten)
-        @acu = AcademicAllocationUser.find_or_create_one(@academic_allocation.id, [@allocation_tags].flatten, current_user.id, nil)
+        @acu = AcademicAllocationUser.find_or_create_one(@academic_allocation.id, [@allocation_tags].flatten, current_user.id, nil, false, AcademicAllocationUser::STATUS[:empty])
       end
 
       respond_to do |format|

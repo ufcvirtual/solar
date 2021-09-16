@@ -183,7 +183,7 @@ class AcademicAllocationUser < ActiveRecord::Base
       acu.academic_allocation.academic_tool_type.constantize.update_previous(academic_allocation_id, user_id, acu.id) if acu.try(:created_at) == acu.try(:updated_at) && !user_id.nil?
 
       unless status.nil?
-        if acu.grade.blank? && acu.working_hours.blank?
+        if acu.grade.blank? && acu.working_hours.blank? && acu.try(:status).blank?
           acu.update_attributes status: status
         else
           acu.update_attributes new_after_evaluation: new_object
