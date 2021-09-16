@@ -1,27 +1,28 @@
 - unless @users.nil? or @users.empty?
-  %table.tb_list.tb_allocation
-    %thead
-      %tr.lines
-        %th= t(".name")
-        %th{style: 'width:80px'}= t("allocations.designates.cpf")
-        %th{style: 'width:200px'}= t("allocations.designates.email")
-        %th.no_sort{style: 'width:120px'}= t("allocations.designates.profile")
-        %th.no_sort{style: 'width:100px'}= ""
-    %tbody
-      - profile_types = [[t("edx.designates.instructor"), "instructor"], [t("edx.designates.staff"), "staff"]]
-
-      - @users.each do |user|
+  .responsive-table
+    %table.tb_list.tb_allocation
+      %thead
         %tr.lines
-          %td= user.name
-          %td{style: 'width:80px'}= user.cpf
-          %td{style: 'width:200px'}= user.email
-          %td{style: 'width:120px'}
-            = select_tag(:profile_id, options_for_select(profile_types), prompt: t("allocations.search_users.select_profile"), class: :profile_id)
-          %td{style: 'width:100px'}
-            = hidden_field_tag(:user_id, user.id)
-            = button_tag t("allocations.search_users.designate"), type: "button", class: "btn btn_default btn_designate", alt: t("allocations.search_users.designate_user", user_name: user.name), :"data-link-create" => allocate_edx_courses_path(user.username, Base64.encode64(@uri_course), ":profile"), :"data-link-list" => designates_edx_courses_path(Base64.encode64(@uri_course))
+          %th= t(".name")
+          %th{style: 'width:80px'}= t("allocations.designates.cpf")
+          %th{style: 'width:200px'}= t("allocations.designates.email")
+          %th.no_sort{style: 'width:120px'}= t("allocations.designates.profile")
+          %th.no_sort{style: 'width:100px'}= ""
+      %tbody
+        - profile_types = [[t("edx.designates.instructor"), "instructor"], [t("edx.designates.staff"), "staff"]]
+
+        - @users.each do |user|
+          %tr.lines
+            %td= user.name
+            %td{style: 'width:80px'}= user.cpf
+            %td{style: 'width:200px'}= user.email
+            %td{style: 'width:120px'}
+              = select_tag(:profile_id, options_for_select(profile_types), prompt: t("allocations.search_users.select_profile"), class: :profile_id)
+            %td{style: 'width:100px'}
+              = hidden_field_tag(:user_id, user.id)
+              = button_tag t("allocations.search_users.designate"), type: "button", class: "btn btn_default btn_designate", alt: t("allocations.search_users.designate_user", user_name: user.name), :"data-link-create" => allocate_edx_courses_path(user.username, Base64.encode64(@uri_course), ":profile"), :"data-link-list" => designates_edx_courses_path(Base64.encode64(@uri_course))
 - else
-  .block_content_text_list.text_none 
+  .block_content_text_list.text_none
     = t(".designate_search_no_found")
 
 = javascript_include_tag "tablesorter"

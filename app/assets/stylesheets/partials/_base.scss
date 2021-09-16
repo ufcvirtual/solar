@@ -1,14 +1,22 @@
 // Layout Básico
 
-html, body {
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+html,
+body {
   height: 100%;
+  position: relative;
 }
 
 body {
   margin: 0;
   padding: 0;
   cursor: default;
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
   height: 100%;
   background-color: $body_background;
 }
@@ -29,12 +37,17 @@ ul {
   list-style-type: none;
 }
 
-h1, h2, h3, h4, h5 {
-  font-family: 'Ubuntu Light', sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Ubuntu Light", sans-serif;
 }
 
 h1 {
   font-weight: 300;
+
   &.page_title {
     /*font-weight: bold;*/
     /*font-variant: small-caps;*/
@@ -48,13 +61,14 @@ h1 {
   }
 }
 
-h2, .shortcut_title {
-  font-family: 'Ubuntu Condensed', sans-serif;
+h2,
+.shortcut_title {
+  font-family: "Ubuntu Condensed", sans-serif;
   font-weight: 500;
 }
 
 h3 {
-  font-family: 'Ubuntu', sans-serif;
+  font-family: "Ubuntu", sans-serif;
   font-weight: bold;
 }
 
@@ -63,9 +77,9 @@ h3 {
 */
 
 #body_wrapper {
-  width: 980px;
+  width: 100%;
+  max-width: 980px;
   margin: 0 auto;
-  min-height: 99.5%;
   position: relative;
   background-color: $color_white_base;
 }
@@ -73,26 +87,34 @@ h3 {
 /**
 * Tratando links
 */
-a, a.menor, a.link_content {
+a,
+a.menor,
+a.link_content {
   text-decoration: none;
   color: $color_main_base_link;
 }
 
-.show_notification a:not(.prev), .show_notification a:not(.next){
-  text-decoration: underline;
-}
+// .show_notification a:not(.prev),
+// .show_notification a:not(.next) {
+//   text-decoration: underline;
+// }
 
-.show_notification a.prev, .show_notification a.next{
+.show_notification a.prev,
+.show_notification a.next {
   text-decoration: none;
 }
 
-a.link_content, .forum_post_attachment_list a{
+a.link_content,
+.forum_post_attachment_list a {
   text-decoration: underline;
   color: $color_contrast_text;
+  word-break: break-word;
 }
 
-a.link_content:visited, .forum_post_attachment_list a:visited {
+a.link_content:visited,
+.forum_post_attachment_list a:visited {
   color: $color_main;
+  word-break: break-word;
 }
 
 a.link_content_gray {
@@ -100,7 +122,7 @@ a.link_content_gray {
   text-decoration: underline;
 }
 
-a.menor{
+a.menor {
   font-size: 8pt;
   text-decoration: underline;
 }
@@ -110,13 +132,12 @@ a.menor{
   display: block;
 }
 
-
 /**
 * Formulários (inputs, botões, etc)
 */
 
 select {
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
   border-width: 1px;
   border-style: solid;
   padding-top: 2px;
@@ -130,14 +151,14 @@ input {
   border-width: 1px;
   border-style: solid;
   padding: 5px;
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
   color: $color_almost_black_base;
   /*    font-size: 13px;*/
   border-color: $border_color_another_gray;
 }
 
 button {
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
 }
 
 input[type="file"] {
@@ -150,31 +171,47 @@ textarea {
   border-width: 1px;
   border-style: solid;
   padding: 5px;
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
   font-size: 10pt;
   color: $color_almost_black_base;
   background-color: $color_white;
   border-color: $border_color_another_gray;
 }
 
+footer {
+  clear: both;
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
 #footer {
   overflow: visible;
-  margin: 0 auto;
+  // margin: 0 auto;
   text-align: center;
   padding: 10px 0;
-  width: 980px;
-  bottom: 0;
-  position: absolute;
+  width: 100%;
+  // width: 980px;
+  // bottom: 0;
+  // position: absolute;
+  position: relative;
+  display: inline-block;
   background-color: $body_background;
   color: $color_almost_gray;
 
-  &, & a {
+  &,
+  & a {
     color: $color_almost_gray;
     font-size: 9pt;
   }
-  a:hover{
+
+  a:hover {
     text-decoration: underline;
   }
+
   & > ul > li {
     margin: 0 5px;
     display: inline-block;
@@ -204,9 +241,11 @@ textarea {
   margin-left: 5px;
 }
 
-.lines.period_ended, .period_ended {
+.lines.period_ended,
+.period_ended {
   background-color: $period_ended_background; //#000;
   color: $color_almost_gray_content; //#fff;
+
   a {
     color: $color_almost_gray; //#fff333;
   }
@@ -225,14 +264,17 @@ textarea {
   color: $current_color;
 }
 
-a.disabled{
+a.disabled {
   text-decoration: none;
   color: $disabled_color;
 }
+
 .disabled {
   color: $disabled_color;
 }
-.current, .fnavigation {
+
+.current,
+.fnavigation {
   font-size: 12px;
   text-decoration: underline;
   cursor: pointer;
@@ -246,7 +288,8 @@ a.disabled{
   cursor: pointer;
 }
 
-.disabled, .message_div_navigation {
+.disabled,
+.message_div_navigation {
   font-size: 10pt;
   text-decoration: none;
   padding-left: 5px;
@@ -268,6 +311,7 @@ a.disabled{
   margin-bottom: 10px;
   margin-top: 10px;
   color: $color_almost_gray;
+
   a {
     text-decoration: underline;
     color: $color_almost_gray;
@@ -278,9 +322,9 @@ a.disabled{
 /* Menu de idiomas
 */
 
-.choice-language, .choice-tutorial {
-
-  .link-arrow{
+.choice-language,
+.choice-tutorial {
+  .link-arrow {
     background: url("/assets/language-arrow.png") right no-repeat;
     padding-right: 15px;
   }
@@ -313,9 +357,9 @@ a.disabled{
   }
 }
 
-.choice-tutorial{
-  ul{
-    li{
+.choice-tutorial {
+  ul {
+    li {
       padding: 5px 6px 5px 6px;
     }
   }
@@ -335,26 +379,27 @@ a.disabled{
   position: absolute;
 }
 
-.fancybox-nav{
+.fancybox-nav {
   display: none;
 }
 
-.dropdown-menu{
+.dropdown-menu {
   color: $color_black_buttons;
+  width: max-content;
 }
 
-i.noscript{
+i.noscript {
   color: $removed_permission_color;
 }
 
-#loading{
+#loading {
   text-align: center;
   margin-top: 18%;
   display: none;
 }
 
-.fancybox-opened{
-  .fancybox-title{
+.fancybox-opened {
+  .fancybox-title {
     word-break: break-word;
     text-align: center;
   }

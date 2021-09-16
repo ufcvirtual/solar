@@ -25,6 +25,7 @@
 .lesson_module .hint {
   display: inline-block;
   padding-top: 5px;
+  margin-left: 76px;
 }
 
 #folder_dropdown .dropdown-panel {
@@ -45,7 +46,6 @@
 }
 
 #lesson_dropdown {
-
   .control_buttons {
     padding-top: 5px;
 
@@ -77,46 +77,49 @@
   }
 }
 
-#btn-finish { // FIXME utilizado apenas em lesson_files, mudar seletor para ser menos genérico
+#btn-finish {
+  // FIXME utilizado apenas em lesson_files, mudar seletor para ser menos genérico
   float: right;
 }
-
 
 #tree {
   max-height: 235px;
   overflow-y: auto;
   background-color: $background_blue;
   color: $color_black;
-  ul.dynatree-container{
+  ul.dynatree-container {
     background-color: $background_blue;
     color: $color_black;
-    a.dynatree-title{
+    a.dynatree-title {
       color: $color_black;
       word-break: break-word;
     }
-    #initial_file > a.dynatree-title{
+    #initial_file > a.dynatree-title {
       color: #e7aa3f;
       font-weight: bold;
     }
-    #some_child_selected, span.dynatree-selected > a.dynatree-title{
+    #some_child_selected,
+    span.dynatree-selected > a.dynatree-title {
       color: $color_green;
       font-style: italic;
     }
   }
 
   ul.dynatree-container a:hover,
-  span.dynatree-focused a:link{
+  span.dynatree-focused a:link {
     color: $color_black_buttons;
   }
 }
 
-#save_automatically_message {  // FIXME utilizado apenas em lesson_files, mudar seletor para ser menos genérico
+#save_automatically_message {
+  // FIXME utilizado apenas em lesson_files, mudar seletor para ser menos genérico
   font-size: 10pt;
   margin-top: 13px;
   color: $edition_color;
 }
 
-#attention_message { // FIXME utilizado apenas em lesson_files, mudar seletor para ser menos genérico
+#attention_message {
+  // FIXME utilizado apenas em lesson_files, mudar seletor para ser menos genérico
   font-weight: bold;
 }
 

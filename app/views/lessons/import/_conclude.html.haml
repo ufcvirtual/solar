@@ -3,23 +3,24 @@
     %h2
       %i.icon-class
       = t('.title')
-  %table.tb_list
-    %thead
-      %tr.lines
-        %th.no_sort.icon= t('.order')
-        %th= t('.module')
-        %th= t('.name')
-        %th= t('.type')
-        %th= t('.source')
-        %th.date= t('.begin')
-        %th.date= t('.end')
-        %th{ :'data-tooltip' => t('.receive_updates_tooltip') }= t('.receive_updates')
-        %th.icon= t('.preview')
-        %th.no_sort.icon= t('.delete')
+  .responsive-table
+    %table.tb_list
+      %thead
+        %tr.lines
+          %th.no_sort.icon= t('.order')
+          %th= t('.module')
+          %th= t('.name')
+          %th= t('.type')
+          %th= t('.source')
+          %th.date= t('.begin')
+          %th.date= t('.end')
+          %th{ :'data-tooltip' => t('.receive_updates_tooltip') }= t('.receive_updates')
+          %th.icon= t('.preview')
+          %th.no_sort.icon= t('.delete')
 
-    %tbody.lessons_to_import
-      %tr.text_none
-        %td.text_none{ colspan: 10 }= t('lessons.import.list.no_lesson')
+      %tbody.lessons_to_import
+        %tr.text_none
+          %td.text_none{ colspan: 10 }= t('lessons.import.list.no_lesson')
 
 .right_buttons
   = link_to t('.back'), "#void", onclick: 'back()', class: 'btn', alt: t('.back')
@@ -51,14 +52,14 @@
     $.put("#{import_lessons_path}", {lessons: lessons.join(';'), allocation_tags_ids: "#{raw @ats}", lesson_module_id: "#{raw @lesson_module_id}"}, function(data){
       $.fancybox.close();
       var msg = data.msg;
-      
+
       var to_replace = $(".list_lessons");
       $.get(to_replace.data('link-list'), function(data2){
         to_replace.replaceWith(data2);
       }).done(function(){
         flash_message(msg, 'notice', 'block_wrapper:first');
       });
-      
+
     }).fail(function(data){
       var data = $.parseJSON(data.responseText);
       if (typeof(data.alert) != "undefined")

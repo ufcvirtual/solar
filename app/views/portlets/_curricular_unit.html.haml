@@ -1,38 +1,40 @@
-.block_large#mysolar_curriculum_unit_portlet
-  .block_title
-    %h2#main_content_accesskey{ tabindex: "0" }
-      %i.icon-docs{:'aria-hidden' => 'true'}
-      = t(:my_solar_curriculum_units)
-      .offer_period= t(".opened_short")
-      .offer_period.hide= t('.closed_short')
-    %div{style: 'float: right; margin-top: 6.5px; font-size: 12px; '}
-      %a.change_offer#history{ href: '#', :'data-url' => get_history_offers_users_path(history: true)}
-        %i.icon-history{:"data-tooltip" => t('.closed_complete'), :'aria-label' => t('.closed_complete')}
-        = t('.closed')
-      %a.change_offer.hide#current{ href: '#', :'data-url' => get_history_offers_users_path}
-        %i.icon-history{:"data-tooltip" => t('.opened_complete'), :'aria-label' => t('.opened_complete')}
-        = t('.opened')
-        
-    .slider-block{style: 'float: right; margin-top: 6.5px; font-size: 12px;margin-right: 10px'}
-      %a#search_box_accesskey{ href: '#'}
-        %i.icon-search{:"data-tooltip" => t(".filter_data"), :'aria-label' => t(".filter_data_open")}
-        =t(".search2")
-  .mysolar_portlets_content
+.col-xs-12.col-sm-8
+  .block_large#mysolar_curriculum_unit_portlet
+    .block_title
+      %h2#main_content_accesskey{ tabindex: "0" }
+        %i.icon-docs{:'aria-hidden' => 'true'}
+        = t(:my_solar_curriculum_units)
+        .offer_period= t(".opened_short")
+        .offer_period.hide= t('.closed_short')
+      .position_correction
+        %div{style: 'float: right; margin-top: 6.5px; font-size: 12px; '}
+          %a.change_offer#history{ href: '#', :'data-url' => get_history_offers_users_path(history: true)}
+            %i.icon-history{:"data-tooltip" => t('.closed_complete'), :'aria-label' => t('.closed_complete')}
+            = t('.closed')
+          %a.change_offer.hide#current{ href: '#', :'data-url' => get_history_offers_users_path}
+            %i.icon-history{:"data-tooltip" => t('.opened_complete'), :'aria-label' => t('.opened_complete')}
+            = t('.opened')
 
-    .block_wrapper#mysolar_curriculum_unit_wrapper
-      .block_content
-        %table.tb_list.user-courses
-          %thead
-            %tr.lines
-              %th.center#tb_type.no_sort{style: "width: 9.5%"}= t(".type")
-              %th.center#tb_none{style: "display: none"}
-              %th.center#tb_curricular_unit{style: "width: 40%"}= t(".curricular_unit")
-              %th.center#tb_course{style: "width: 33%"}= t(".course")
-              %th.center#tb_semester{style: "width: 15%"}= t(".semester")
-              %th.center#tb_link.no_sort{style: "width: 9.5%"}= t(".link")
-              %th.center#tb_search{style: "display: none"}
-          = render partial: 'portlets/curriculum_units_list'
-          
+      .slider-block{style: 'float: right; margin-top: 6.5px; font-size: 12px;margin-right: 10px'}
+        %a#search_box_accesskey{ href: '#'}
+          %i.icon-search{:"data-tooltip" => t(".filter_data"), :'aria-label' => t(".filter_data_open")}
+          =t(".search2")
+    .mysolar_portlets_content
+
+      .block_wrapper#mysolar_curriculum_unit_wrapper
+        .block_content.responsive-table
+          %table.tb_list.user-courses
+            %thead
+              %tr.lines
+                %th.center#tb_type.no_sort{style: "width: 9.5%"}= t(".type")
+                %th.center#tb_none{style: "display: none"}
+                %th.center#tb_curricular_unit{style: "width: 40%"}= t(".curricular_unit")
+                %th.center#tb_course{style: "width: 33%"}= t(".course")
+                %th.center#tb_semester{style: "width: 15%"}= t(".semester")
+                %th.center#tb_link.no_sort{style: "width: 9.5%"}= t(".link")
+                %th.center#tb_search{style: "display: none"}
+            = render partial: 'portlets/curriculum_units_list'
+
 = javascript_include_tag "tooltip"
 
 :javascript
@@ -56,9 +58,4 @@
         focus_element(".mysolar_portlets_content tbody.offers");
       });
     });
-
-    $.get("#{my_edx_courses_path}", function(data){
-      $("#mysolar_curriculum_unit_wrapper").append(data);
-    });
   });
- 

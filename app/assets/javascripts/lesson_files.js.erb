@@ -1,6 +1,6 @@
 <%# @encoding: UTF-8 %>
 // = require jquery.cookie
-// = require jquery.dynatree
+// = require jquery.dynatree-1.2.3
 // = require jquery.qtip.min
 
 jQuery(function($){
@@ -191,9 +191,12 @@ jQuery(function($){
     deleteNodes([jQuery("#tree").dynatree("getTree").getNodeByKey("_2")]); // deleta todos os nós
   });
 
-  jQuery("#btn-rename").click(function(){
-    if (folder_or_file_selected())
+  jQuery("#btn-rename").click(function(e){
+    e.preventDefault();
+    let is_file = folder_or_file_selected();
+    if (is_file==true){
       editNode(selNodes[0]);
+    }
     else
       flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
   });
@@ -290,14 +293,19 @@ jQuery(function($){
       flash_message("<%=I18n.t(:bad_extension_error, :scope => [:lesson_files])%>", "alert", "flash_messages");
   });
 
-  jQuery("#btn-initial-file").click(function(){
-    if(folder_or_file_selected()){
-      if(selNodes[0].data.isFolder)
+  jQuery("#btn-initial-file").on('click',function(e){
+    e.preventDefault();
+    let is_file = folder_or_file_selected();
+    if (is_file==true){
+      if(selNodes[0].data.isFolder){
         flash_message("<%=I18n.t(:must_be_a_file, :scope => [:lesson_files])%>", "alert", "flash_messages");
-      else
+      }
+      else{
         defineInitialFile(selNodes[0]);
-    }else
+      }
+    }else{
       flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
+    }
   });
 
   /* Define estilo do nó para caso algum dos filhos esteja selecionado ou nenhum 
@@ -567,10 +575,12 @@ function hide_checkboxes(flag, node){
 }
 
 function deselect_all(){
-  root = jQuery("#tree").dynatree("getRoot");
-  if(!root.isSelected())
-    root.select(true); // seleciona toda a árvore
-  root.select(false); // para deselecionar (se for só este direto, ele não executa pois a raiz pode não estar previamente selecionada)
+  setTimeout(function (){
+    root = jQuery("#tree").dynatree("getRoot");
+    if(!root.isSelected())
+      root.select(true); // seleciona toda a árvore
+    root.select(false); // para deselecionar (se for só este direto, ele não executa pois a raiz pode não estar previamente selecionada)
+  }, 1000);
 }
 
 /**** Métodos AJAX ****/

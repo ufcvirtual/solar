@@ -4,9 +4,10 @@
     %h2
       %i.icon-book2
       = t('.title')
-    %span.form_requirement= t(:required_fields)
+    .position_correction
+      %span.form_requirement= t(:required_fields)
   .block_content
-    
+
     #steps
       %ul
         %li.active
@@ -55,7 +56,7 @@
       $('.step-conclude').hide('slide', { direction: 'left' }, 500);
       $('.step-list').show('slide', { direction: 'left' }, 500);
     }
-    
+
   }
 
   function back_to_list(){
@@ -153,7 +154,7 @@
     });
 
     $('#search_questions').click(function(e){
-      e.preventDefault();    
+      e.preventDefault();
       $.get($(this).data('url'), {
         search: {
           only_owner: $('#only_owner').prop('checked'),
@@ -176,6 +177,6 @@
       setTimeout(function(){
         $(".step-preview").siblings(".footer").css("display", "block");
        }, 500);
-    });    
+    });
 
   });

@@ -1,76 +1,80 @@
-  /* Calendário */
+/* Calendário */
 
-#calendar .block_wrapper{
+#calendar .block_wrapper {
   margin-top: 0;
   margin-bottom: 5px;
+  width: 100%;
 }
 
-.list_events{
-  font-family: 'PT Sans', sans-serif;
+.list_events {
+  font-family: "PT Sans", sans-serif;
   font-size: 10pt;
 }
 
-.list_events h3{
+.list_events h3 {
   padding-left: 5px;
   padding-right: 5px;
   padding-top: 3px;
 }
 
-.list_events h4, .fc-widget-header{
-  font-family: 'Ubuntu Condensed', sans-serif;
+.list_events h4,
+.fc-widget-header {
+  font-family: "Ubuntu Condensed", sans-serif;
 }
 
-.list_events .day h3{
+.list_events .day h3 {
   background-color: $background_gray;
   color: $color_almost_black;
 }
 
-.list_events .day_events{
+.list_events .day_events {
   border: solid 1px $color_gray_light;
   padding: 3px;
 }
 
-a.fc-event-title{
+a.fc-event-title {
   color: $color_black;
   word-break: break-word;
 }
 
-.list_events .day.today{
+.list_events .day.today {
   border: solid 1px $color_contrast;
   background-color: $color_contrast_light;
-  h3{
+
+  h3 {
     background-color: $color_contrast_light;
     border-bottom: solid 1px $color_contrast;
     color: $color_almost_black;
   }
 }
 
-.list_events .day_events.today{
+.list_events .day_events.today {
   border: none;
 }
 
-.list_events .day_events.today{
+.list_events .day_events.today {
   background-color: $color_contrast_light;
 }
 
-.list_events .line{
+.list_events .line {
   border-bottom: dashed 1px $color_gray_light;
 }
 
-.list_events .line.today{
+.list_events .line.today {
   border-bottom: dashed 1px $color_contrast;
 }
 
-.list_events .time h2{
+.list_events .time h2 {
   background-color: $exclusive_background_color;
 }
 
-.list_events .time h2, .list_events .time h4{
+.list_events .time h2,
+.list_events .time h4 {
   margin-top: 10px;
   margin-left: 10px;
 }
 
-.day_events a.event{
+.day_events a.event {
   margin-left: 80px;
   top: -16px;
   position: relative;
@@ -78,62 +82,72 @@ a.fc-event-title{
   display: block;
 }
 
-.fc-event.assignment{
+.fc-event.assignment {
   background-color: $event_assignment_background;
   border-color: $event_assignment_border;
 }
-.fc-event.chat{
+
+.fc-event.chat {
   background-color: $event_chat_background;
   border-color: $event_chat_border;
 }
-.fc-event.discussion{
+
+.fc-event.discussion {
   background-color: $event_discussion_background;
   border-color: $event_discussion_border;
 }
-.fc-event.presential_test{
+
+.fc-event.presential_test {
   background-color: $event_presential_test_background;
   border-color: $event_presential_test_border;
 }
-.fc-event.presential_meeting{
+
+.fc-event.presential_meeting {
   background-color: $event_presential_meeting_background;
   border-color: $event_presential_meeting_border;
 }
-.fc-event.recess_holiday{
+
+.fc-event.recess_holiday {
   background-color: $event_recess_holiday_background;
   border-color: $event_recess_holiday_border;
 }
-.fc-event.webconferencelesson{
+
+.fc-event.webconferencelesson {
   background-color: $event_webconferencelesson_background;
   border-color: $event_webconferencelesson_border;
 }
-.fc-event.lessons{
+
+.fc-event.lessons {
   background-color: $event_lessons_background;
   border-color: $event_lessons_border;
 }
-.fc-event.other{
+
+.fc-event.other {
   background-color: $event_other_background;
   border-color: $event_other_border;
 }
-.fc-event.exam{
+
+.fc-event.exam {
   background-color: $event_exam_background;
   border-color: $event_exam_background;
 }
 
-.fc-event.fc-event-title{
+.fc-event.fc-event-title {
   color: $color_black_buttons;
 }
 
-.list_events .fc-event.fc-event-title{
+.list_events .fc-event.fc-event-title {
   font-size: 10pt;
   cursor: pointer;
   background-color: $exclusive_background_color;
   word-break: break-word;
 }
 
-.calendar_schedules .legend{
+.calendar_schedules .legend {
   font-size: 11pt;
   text-align: center;
-  label{
+
+  label {
     color: $color_gray_text;
     font-size: 10pt;
     width: auto;
@@ -144,47 +158,62 @@ a.fc-event-title{
 /* Dropdown */
 
 #calendar {
-  .dropdown-tip{
+  .dropdown-tip {
     width: 435px;
-    .dropdown-panel{
-        margin-bottom: 10px;
-        background-color: $color_white;
-      }
-    .event_details_dropdown{
+
+    .dropdown-panel {
+      margin-bottom: 10px;
+      background-color: $color_white;
+    }
+
+    .event_details_dropdown {
       word-break: break-word;
-      h1, h2, h3, h4, .group_label label{
-        font-family: 'PT Sans', sans-serif;
+
+      h1,
+      h2,
+      h3,
+      h4,
+      .group_label label {
+        font-family: "PT Sans", sans-serif;
         background-color: $color_white;
         color: $color_black_buttons;
         border-bottom: none;
       }
-      h2{
+
+      h2 {
         font-weight: bold;
         text-align: left;
         font-size: 11pt;
       }
 
-      h3, .group_label label, h3 p{
+      h3,
+      .group_label label,
+      h3 p {
         color: $color_gray_text_custom_icons;
         font-size: 10pt;
         font-weight: normal;
         text-align: left;
       }
-      h4{
+
+      h4 {
         margin: 6px;
       }
-      .line{
+
+      .line {
         border-bottom: solid 1px $background_gray;
         padding-bottom: 5px;
         margin-bottom: 5px;
       }
-      .btn-group .left{
+
+      .btn-group .left {
         float: left;
       }
-      .btn-group .right{
+
+      .btn-group .right {
         float: right;
       }
-      .group_label label{
+
+      .group_label label {
         width: 40px;
         vertical-align: top;
         padding-top: 5px;
@@ -192,38 +221,38 @@ a.fc-event-title{
     }
   }
 
-  .dropdown-panel{
+  .dropdown-panel {
     max-height: 600px;
     overflow-y: auto;
   }
 }
 
-
-.label_info{
+.label_info {
   color: $color_black;
   margin-left: 5px;
   display: inline-block;
   font-size: 10pt;
-  width: 300px;
+  // width: 300px;
   word-break: break-word;
 }
 
-.show_exam{
+.show_exam {
   min-width: 300px;
-  .label_info{
+
+  .label_info {
     width: auto;
   }
 }
 
-.show label{
+.show label {
   vertical-align: top;
 }
 
-.label_info.files{
+.label_info.files {
   text-decoration: underline;
 }
 
-.show .group_label label{
+.show .group_label label {
   margin-top: 5px;
 }
 
@@ -269,7 +298,9 @@ a.fc-event-title{
   text-align: center;
 }
 
-.agenda_left_interval, .agenda_left_day, .agenda_left_day_and_month {
+.agenda_left_interval,
+.agenda_left_day,
+.agenda_left_day_and_month {
   font-size: 12pt;
   font-weight: bold;
   margin-bottom: 5px;
@@ -277,24 +308,26 @@ a.fc-event-title{
 
 .block_title_icon.discussions {
   display: inline-block;
-  background: url('/assets/images/schedule/meeting_attendance_16x16.png') no-repeat;
+  background: url("/assets/images/schedule/meeting_attendance_16x16.png")
+    no-repeat;
 }
 
 .block_title_icon.lesson,
 .block_title_icon.assignments,
 .block_title_icon.schedule_events {
   display: inline-block;
-  background: url('/assets/images/schedule/assignments_16x16.png') no-repeat;
+  background: url("/assets/images/schedule/assignments_16x16.png") no-repeat;
 }
 
 .block_title_icon.chat {
   display: inline-block;
-  background: url('/assets/images/schedule/chat_16x16.png') no-repeat;
+  background: url("/assets/images/schedule/chat_16x16.png") no-repeat;
 }
 
 .block_title_icon.meeting_attendance {
   display: inline-block;
-  background: url('/assets/images/schedule/meeting_attendance_16x16.png') no-repeat;
+  background: url("/assets/images/schedule/meeting_attendance_16x16.png")
+    no-repeat;
 }
 
 .agenda_ajax {
@@ -302,7 +335,7 @@ a.fc-event-title{
   color: $agenda_color;
 }
 
-a.agenda_ajax:hover{
+a.agenda_ajax:hover {
   color: $color_main_base_link;
 }
 
@@ -311,7 +344,8 @@ a.agenda_ajax:hover{
 }
 
 // Dias do mês e da semana na visão mensal
-.fc-day-number, .fc-widget-header {
+.fc-day-number,
+.fc-widget-header {
   color: $color_black_calendar;
 }
 

@@ -322,7 +322,8 @@ class AcademicAllocation < ActiveRecord::Base
 
       if saved_change_to_max_working_hours?
         # update max_working_hours
-        academic_allocation_users.where(evaluated_by_responsible: false).where("status = #{AcademicAllocationUser::STATUS[:evaluated]} AND working_hours IS NOT NULL").update_all working_hours: max_working_hours
+        # academic_allocation_users.where(evaluated_by_responsible: false).where("status = #{AcademicAllocationUser::STATUS[:evaluated]} AND working_hours IS NOT NULL").update_all working_hours: max_working_hours
+        academic_allocation_users.where("status = #{AcademicAllocationUser::STATUS[:evaluated]} AND working_hours IS NOT NULL AND working_hours > #{max_working_hours}").update_all working_hours: max_working_hours
       end
     end
 

@@ -4,67 +4,68 @@
       %h2
         %i.icon-forum
         = t(:forum_table_title)
-    %table.discussions.tb_list{summary: t(:forum_table_summary)}
-      %thead
-        %tr.lines
-          %th{style: "width: 20%;", id: "discussions"}= t(:discussions, scope: [:scores, :info])
-          %th.center.date{style: "width: 22%;", id: "date_range"}= t(:date_range, scope: [:scores, :info])
-          %th.center{style: "width: 2%;", id: "amount"}= t(:amount, scope: [:scores, :info])
-          %th.center{style: "width: 15%;", id: "situation"}= t(:situation, :scope => [:scores, :info])
-          %th.center{style: "width: 10%;", id: "evaluative"}= t(:evaluative, scope: [:scores, :index])
-          %th.center{style: "width: 2%;", id: "frequency"}= t(:frequency, scope: [:scores, :info])
-          - if @is_student
-            %th.center{style: "width: 2%;", id: 'summary'}=t(:info_evaluation, scope: [:scores, :info])
+    .responsive-table
+      %table.discussions.tb_list{summary: t(:forum_table_summary)}
+        %thead
+          %tr.lines
+            %th{style: "width: 45%;", id: "discussions"}= t(:discussions, scope: [:scores, :info])
+            %th.center.date{style: "width: 22%;", id: "date_range"}= t(:date_range, scope: [:scores, :info])
+            %th.center{style: "width: 2%;", id: "amount"}= t(:amount, scope: [:scores, :info])
+            %th.center{style: "width: 15%;", id: "situation"}= t(:situation, :scope => [:scores, :info])
+            %th.center{style: "width: 10%;", id: "evaluative"}= t(:evaluative, scope: [:scores, :index])
+            %th.center{style: "width: 2%;", id: "frequency"}= t(:frequency, scope: [:scores, :info])
+            - if @is_student
+              %th.center{style: "width: 2%;", id: 'summary'}=t(:info_evaluation, scope: [:scores, :info])
 
-      %tbody
-        - @discussions.each do |discussion|
-          %tr{class: "lines #{(discussion.closed == true && (!discussion.situation.include?("extra_time"))) ? 'period_ended' : '' } "}
-            %td{headers: 'discussions' }
-              - if discussion.opened == true
-                = link_to discussion.name, discussion_posts_path(discussion_id: discussion.academic_tool_id), {class: 'link_content'}
-              - elsif discussion.closed == true
-                = link_to discussion.name, discussion_posts_path(discussion_id: discussion.academic_tool_id)
-              - else
-                .title= discussion.name
-              .description
-                - discussion_text = strip_tags discussion.description
-                .enunciation_slice= raw sanitize(discussion_text.truncate(180, omission: '...'))
-                .enunciation_complete= raw sanitize(discussion_text)
-                .more_or_less
-                  %a.enunciation_more.link_content{ href: '#', :'aria-label' => t("discussions.list.more", forum: discussion.name), onkeydown: 'click_on_keypress(event, this);' }= t('assignments.list.more')
-                  %a.enunciation_less.link_content{ href: '#', :'aria-label' => t("discussions.list.less", forum: discussion.name), onkeydown: 'click_on_keypress(event, this);' }= t('assignments.list.less')
-              .equivalent
-                - unless discussion.eq_name.blank?
-                  %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{discussion.id}", onkeydown: 'click_on_keypress(event, this);' }
-                    %i.icon-flow-parallel
-                    = t('scores.info.equivalency')
-                    %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
-                  .dropdown.dropdown-tip{id: "dropdown_eq_#{discussion.id}"}
-                    %ul{ class: 'dropdown-menu' }
-                      = raw t('scores.info.equivalent', name: discussion.eq_name)
+        %tbody
+          - @discussions.each do |discussion|
+            %tr{class: "lines #{(discussion.closed == true && (!discussion.situation.include?("extra_time"))) ? 'period_ended' : '' } "}
+              %td{headers: 'discussions' }
+                - if discussion.opened == true
+                  = link_to discussion.name, discussion_posts_path(discussion_id: discussion.academic_tool_id), {class: 'link_content'}
+                - elsif discussion.closed == true
+                  = link_to discussion.name, discussion_posts_path(discussion_id: discussion.academic_tool_id)
                 - else
-                  %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{discussion.id}", :'data-url' => equalities_tools_path(tool_type: discussion.academic_tool_type, ac_id: discussion.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
-                    %i.icon-flow-parallel{:'aria-hidden'=>'true'}
-                    =t('scores.info.equalities')
-                    %i.icon-arrow-down-triangle{:'aria-hidden'=>'true'}
-                  .dropdown.dropdown-tip{id: "dropdown_eq_#{discussion.id}"}
-                    %ul{ class: 'dropdown-menu' }
-            %td.center{headers: 'date_range' }= [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(" - ")
-            %td.center{headers: 'amount' }= discussion.count_all
-            - if @is_student
-              %td.center{class: "assignment_#{discussion.situation}", headers: 'situation'}= t("scores.situation.#{discussion.situation}")
-            - else
-              - if discussion.closed == true
-                %td.center{class: "assignment_closed", headers: 'situation'}= t("scores.situation.closed")
-              - elsif discussion.opened == true
-                %td.center{class: "assignment_opened", headers: 'situation'}= t("scores.situation.opened")
-              -else
-                %td.center{class: "assignment_not_started", headers: 'situation'}= t("scores.situation.not_started")
+                  .title= discussion.name
+                .description
+                  - discussion_text = strip_tags discussion.description
+                  .enunciation_slice= raw sanitize(discussion_text.truncate(180, omission: '...'))
+                  .enunciation_complete= raw sanitize(discussion_text)
+                  .more_or_less
+                    %a.enunciation_more.link_content{ href: '#', :'aria-label' => t("discussions.list.more", forum: discussion.name), onkeydown: 'click_on_keypress(event, this);' }= t('assignments.list.more')
+                    %a.enunciation_less.link_content{ href: '#', :'aria-label' => t("discussions.list.less", forum: discussion.name), onkeydown: 'click_on_keypress(event, this);' }= t('assignments.list.less')
+                .equivalent
+                  - unless discussion.eq_name.blank?
+                    %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{discussion.id}", onkeydown: 'click_on_keypress(event, this);' }
+                      %i.icon-flow-parallel
+                      = t('scores.info.equivalency')
+                      %i.icon-arrow-down-triangle{:'aria-hidden' => 'true'}
+                    .dropdown.dropdown-tip{id: "dropdown_eq_#{discussion.id}"}
+                      %ul{ class: 'dropdown-menu' }
+                        = raw t('scores.info.equivalent', name: discussion.eq_name)
+                  - else
+                    %a{ href: '#', :"data-dropdown" => "#dropdown_eq_#{discussion.id}", :'data-url' => equalities_tools_path(tool_type: discussion.academic_tool_type, ac_id: discussion.id), onclick: 'open_dropdown(this);', onkeydown: 'click_on_keypress(event, this);' }
+                      %i.icon-flow-parallel{:'aria-hidden'=>'true'}
+                      =t('scores.info.equalities')
+                      %i.icon-arrow-down-triangle{:'aria-hidden'=>'true'}
+                    .dropdown.dropdown-tip{id: "dropdown_eq_#{discussion.id}"}
+                      %ul{ class: 'dropdown-menu' }
+              %td.center{headers: 'date_range' }= [l(discussion.start_date.to_date), l(discussion.end_date.to_date)].join(" - ")
+              %td.center{headers: 'amount' }= discussion.count_all
+              - if @is_student
+                %td.center{class: "assignment_#{discussion.situation}", headers: 'situation'}= t("scores.situation.#{discussion.situation}")
+              - else
+                - if discussion.closed == true
+                  %td.center{class: "assignment_closed", headers: 'situation'}= t("scores.situation.closed")
+                - elsif discussion.opened == true
+                  %td.center{class: "assignment_opened", headers: 'situation'}= t("scores.situation.opened")
+                -else
+                  %td.center{class: "assignment_not_started", headers: 'situation'}= t("scores.situation.not_started")
 
-            %td.center{headers: 'evaluative' }=raw (discussion.final_exam == true ? t(discussion.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(discussion.evaluative, scope: [:scores, :info]))
-            %td.center{headers: 'frequency' }= raw t(discussion.frequency, scope: [:common_between_pages, :frequency], hours: discussion.max_working_hours, automatic: (!@is_student && discussion.frequency_automatic == true ? t("common_between_pages.frequency.automatic").delete('()') : ""))
-            - if @is_student
-              %td.center{headers: 'summary'}=  link_to content_tag(:i, nil, class: 'icon-comment'), "#void", onclick: "open_summary(this); return false", class: "btn #{discussion.has_info == true ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt', tool: discussion.name, count: discussion.count_comments), :'data-url' => summary_discussions_path(ac_id: discussion.id, tool_id: discussion.academic_tool_id), :'aria-label' => t('comments.summary.title_alt', tool: discussion.name, count: discussion.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
+              %td.center{headers: 'evaluative' }=raw (discussion.final_exam == true ? t(discussion.evaluative, scope: [:common_between_pages, :ev_final_exam]) : t(discussion.evaluative, scope: [:scores, :info]))
+              %td.center{headers: 'frequency' }= raw t(discussion.frequency, scope: [:common_between_pages, :frequency], hours: discussion.max_working_hours, automatic: (!@is_student && discussion.frequency_automatic == true ? t("common_between_pages.frequency.automatic").delete('()') : ""))
+              - if @is_student
+                %td.center{headers: 'summary'}=  link_to content_tag(:i, nil, class: 'icon-comment'), "#void", onclick: "open_summary(this); return false", class: "btn #{discussion.has_info == true ? 'btn_main' : ''}", :'data-tooltip' => t('comments.summary.title_alt', tool: discussion.name, count: discussion.count_comments), :'data-url' => summary_discussions_path(ac_id: discussion.id, tool_id: discussion.academic_tool_id), :'aria-label' => t('comments.summary.title_alt', tool: discussion.name, count: discussion.count_comments) + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);'
 
   - else
     .block_content.block_content_text= t(:forum_message)

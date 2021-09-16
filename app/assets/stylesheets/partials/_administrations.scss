@@ -2,22 +2,27 @@
   .block_left {
     width: auto;
   }
+
   .block_left {
     vertical-align: top;
   }
+
   .block_photo {
     border: 1px solid $border_color_another_gray;
     margin-top: 3px;
   }
+
   div {
     padding-top: 3px;
   }
 }
+
 tr.lines {
   td {
     padding: 6px 8px 4px;
   }
 }
+
 .border {
   border-top: 1px solid $border_color_another_gray;
 }
@@ -44,20 +49,22 @@ label.permissions-search-text {
   color: $color_black;
 }
 
-table.tb_allocation .dropdown ul li a{
+table.tb_allocation .dropdown ul li a {
   white-space: inherit;
 }
 
-.allocation_requested_list{
-  .block_toolbar_left{
-    select{
+.allocation_requested_list {
+  .block_toolbar_left {
+    select {
       vertical-align: top;
     }
-    input{
+
+    input {
       padding: 2px;
       vertical-align: middle;
     }
-    .btn{
+
+    .btn {
       padding-bottom: 2px;
     }
   }
@@ -78,56 +85,71 @@ table.tb_allocation .dropdown ul li a{
   margin-bottom: 15px;
 }
 
-.responsibles_list .block_content_toolbar{
-  padding: 0;
-  input#search{
-    margin-left: 0;
+.responsibles_list {
+  width: 100%;
+
+  .block_content_toolbar {
+    padding: 0;
+
+    input#search {
+      margin-left: 0;
+    }
   }
 }
 
-#list_users{
-  input{
+#list_users {
+  input {
     font-size: 9pt;
   }
-  input#name{
+
+  input#name {
     width: 120px;
   }
-  input#username{
+
+  input#username {
     width: 69px;
   }
-  input#email{
+
+  input#email {
     width: 145px;
   }
 }
 
-.indication{
+.indication {
   color: $color_black;
-  .global_item, .specific_item {
+
+  .global_item,
+  .specific_item {
     @include item_button;
   }
 
-  .global, .specific{
+  .global,
+  .specific {
     height: 111px;
   }
 
-  .global_text, .specific_text{
+  .global_text,
+  .specific_text {
     padding-top: 13px;
   }
 }
 
-.import-users{
-  .inline, .input{
+.import-users {
+
+  .inline,
+  .input {
     display: inline-block;
   }
-  .block_content{
+
+  .block_content {
     background-color: $color_white_base;
   }
 }
 
-.tb_list{
-  tr.allocations{
-    td.all_status{
-      a{
+.tb_list {
+  tr.allocations {
+    td.all_status {
+      a {
         text-decoration: none;
       }
     }

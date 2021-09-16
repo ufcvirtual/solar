@@ -71,7 +71,7 @@ class NotificationsController < ApplicationController
   # POST /notifications
   def create
     @notification = Notification.new notification_params
-    @notification.allocation_tag_ids_associations = @allocation_tags_ids.split(" ").flatten
+    @notification.allocation_tag_ids_associations = @allocation_tags_ids.split(" ").flatten unless @allocation_tags_ids.blank?
 
     raise CanCan::AccessDenied if @notification.mandatory_reading && !@can_mark_as_mandatory
 

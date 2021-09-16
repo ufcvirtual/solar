@@ -1,38 +1,45 @@
-.description, .description p{
+.list_chat_rooms {
+  width: 100%;
+}
+
+.description,
+.description p {
   font-size: 11px;
   color: $color_gray_text;
   text-align: left;
 }
 
-.complete{
+.complete {
   border-left: 2px solid $complete_border_left_color;
   padding-left: 10px;
   padding-top: 5px;
   padding-bottom: 5px;
 }
 
-.description .hide{
-  float:right;
+.description .hide {
+  float: right;
 }
 
 .new_chat .schedule_dates .input input {
   width: 85px;
 }
 
-.input textarea{
+.input textarea {
   width: 310px;
 }
 
-.new_chat .schedule_dates .left, .right {
+.new_chat .schedule_dates .left,
+.right {
   float: left;
 }
 
-.box, #tab label{
+.box,
+#tab label {
   border: 1px solid $color_gray_font;
   background-color: $color_white_base;
 }
 
-#tab label{
+#tab label {
   padding-top: 2px;
   color: $color_main;
   border-bottom: none;
@@ -43,7 +50,7 @@
   z-index: 2;
 }
 
-.box{
+.box {
   padding: 5px;
   padding-top: -5px;
   margin-bottom: 5px;
@@ -52,7 +59,8 @@
   overflow: auto;
   width: 300px;
   z-index: 1;
-  label{
+
+  label {
     width: auto;
     max-width: 260px;
     vertical-align: top;
@@ -64,57 +72,61 @@
   margin-top: -25px;
 }
 
-#define_participants label{
+#define_participants label {
   color: $color_gray_text;
 }
 
-#chat_room_type{
+#chat_room_type {
   margin-top: 7px;
 }
 
-#participants_box{
+#participants_box {
   width: 312px;
   margin-left: 108px;
   position: relative;
   bottom: 20px;
 }
 
-.new_chat .required + .error, .new_chat .optional + .error{
+.new_chat .required+.error,
+.new_chat .optional+.error {
   margin-left: 70px;
 }
 
-.chat_list .dropdown-menu{
+.chat_list .dropdown-menu {
   overflow-y: scroll;
   max-height: 100px;
   padding: 3px;
   padding-top: 6px;
 }
 
-.chat_list .dropdown-menu li{
+.chat_list .dropdown-menu li {
   white-space: nowrap;
 }
 
-.chat_list .dropdown-link a{
-  vertical-align:bottom;
+.chat_list .dropdown-link a {
+  vertical-align: bottom;
 }
 
 a.chat_list {
   cursor: pointer;
 }
 
-.chat_messages{
-  table{
-    th{
+.chat_messages {
+  table {
+    th {
       text-align: center;
     }
+
     text-align: center;
-    td.profile{
+
+    td.profile {
       color: $color_almost_gray_content;
       font-size: 9pt;
       font-style: italic;
       padding-right: 0;
     }
-    td.message{
+
+    td.message {
       width: 40%;
       text-align: left;
     }
@@ -125,8 +137,8 @@ a.chat_list {
   table-layout: fixed;
 }
 
-.tb_list{
-  td[headers="frequency_my_chats"]{
+.tb_list {
+  td[headers="frequency_my_chats"] {
     padding: 6px 5px 4px;
   }
 }

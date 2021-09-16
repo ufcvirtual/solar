@@ -187,9 +187,39 @@
   $(function(){
 
     $.fancybox.update();
+    var count = 0;
+    var last_question_id = null;
+    var array_timeout = [];
 
-    $(document).on('change', 'input[type=radio]', function () {
-      change();
+    $(window).on('beforeunload', function(){
+      if(array_timeout.length>0){
+        change();
+      }
+    });
+
+    $(document).on('change', 'input[type=radio]', function (e) {
+      e.preventDefault();
+      var question_id = $("#exam_response_question_id").val(); 
+      if(last_question_id!=question_id){
+        count = 0;
+      }
+      if(count==0){
+        change();
+        count++;
+        last_question_id = question_id
+      }else{
+        // já temos algum agendamento?
+        // cancela o agendamento feito anteriormente
+        array_timeout.forEach(function (id, index, array) {
+          clearTimeout(id);
+          array_timeout.splice(index, 1);
+        });
+        // agenda a função e guarda o valor retornado
+        timeout_id = setTimeout(function() {
+          change();
+        }, 5000);
+        array_timeout.push(timeout_id);
+      }
     });
 
     $(".unique input[type='checkbox']").click(function(){
@@ -205,8 +235,9 @@
 
 
   function change(){
-    if("#{@disabled}" != 'true')
+    if("#{@disabled}" != 'true'){
       save_question('#{@exam_responses.try(:duration)}');
+    }
   }
 
   function update_radio(checkbox){

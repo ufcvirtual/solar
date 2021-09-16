@@ -79,7 +79,6 @@
         config.extraPlugins = 'eqneditor,oembed';
         config.resize_enabled = false;
         config.height = '80px';
-        config.width = '500px';
         config.autoParagraph = false;
         config.pasteFromWord_inlineImages = false;
     };
@@ -135,7 +134,7 @@
       $(link).next().show();
 
       remove_file_item_tmp($(link), type);
-      
+
     }).fail(function(data){
       var response = $.parseJSON(data.responseText);
       if (typeof(response.alert) != "undefined")

@@ -4,7 +4,7 @@ class ExamResponsesQuestionItem < ActiveRecord::Base
 
   default_scope { order(:id) }
 
-  before_save :set_all_unique, on: :update
+  #before_save :set_all_unique, on: :update
 
   validates_uniqueness_of :exam_response_id, scope: [:question_item_id]
 

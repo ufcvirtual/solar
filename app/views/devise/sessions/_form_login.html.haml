@@ -43,9 +43,6 @@
   - else
     #fail
     %br
-  .fb-like
-    %script{src: "https://connect.facebook.net/en_US/all.js#xfbml=1"}
-    %fb:like{"data-href" => YAML::load(File.open('config/facebook.yml'))['data-fanpage'], layout: "button_count", "data-show_faces" => "false", "data-width" => "450"}
 
 :javascript
   function access_without_problems(){

@@ -116,7 +116,7 @@
 
     $("#lesson_type_lesson").change(function(){
       t = $('#lesson_type_lesson').val();
-      if (t == "#{Lesson_Type_Link}"){papp
+      if (t == "#{Lesson_Type_Link}"){
         $(".url_lesson").show();
         $("#save_button").html('#{I18n.t(:save, :scope => [:lessons, :new])}');
       }else{

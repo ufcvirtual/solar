@@ -23,13 +23,16 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  select{
+
+  select {
     max-width: 400px;
   }
+
   .header {
     display: table-row;
     height: 32px;
-    .btn_dropdown{
+
+    .btn_dropdown {
       padding: 4px;
       padding-top: 2px;
       padding-bottom: 2px;
@@ -37,11 +40,13 @@
       max-width: 40%;
       word-break: break-word;
     }
-    .inline{
+
+    .inline {
       display: inline-block;
       width: 80%;
     }
   }
+
   .content {
     display: table-row;
     height: 100%;
@@ -55,6 +60,10 @@
   background-color: $lesson_area_background;
 }
 
+.block_wrapper.module {
+  width: 100%;
+}
+
 #lesson_header {
   font-size: 12pt;
   font-family: 'PT Sans';
@@ -65,50 +74,62 @@
   padding: 6px 0px 7px 8px;
   background-color: $lesson_header_title_background;
   color: $color_white;
-  select{
+
+  select {
     margin-left: 3px;
     margin-right: 3px;
     margin-bottom: 3px;
   }
-  .lesson_status{
+
+  .lesson_status {
     display: inline-block;
     color: $color_white;
     /*width: 131px;*/
     text-align: right;
     width: 19%;
-    .draft{
+
+    .draft {
       background-color: $lesson_status_draft_background;
     }
-    .released{
+
+    .released {
       background-color: $lesson_status_released_background;
     }
-    .draft, .released{
+
+    .draft,
+    .released {
       padding: 11px 10px 9px 4px;
       height: 38px;
-      img{
+
+      img {
         margin-right: 5px;
         vertical-align: middle;
       }
-      .type{
+
+      .type {
         font-size: 11pt;
         margin-right: 7px;
       }
     }
   }
-  .buttons{
+
+  .buttons {
     display: inline-block;
-    float: right;
+    // float: right;
     margin-right: 10px;
-    li{
+
+    li {
       display: inline-block;
-      a{
+
+      a {
         padding: 4px;
         padding-top: 2px;
         padding-bottom: 2px;
       }
     }
   }
-  .breadcrumb{
+
+  .breadcrumb {
     display: inline;
   }
 }
@@ -130,7 +151,8 @@
   height: 22px;
 }
 
-.lesson_back, .lesson_next {
+.lesson_back,
+.lesson_next {
   width: 9px;
   display: inline-block;
   cursor: pointer;
@@ -148,7 +170,8 @@
   min-height: 15px;
 }
 
-.lesson_arrow_up, .lesson_arrow_down {
+.lesson_arrow_up,
+.lesson_arrow_down {
   display: block;
   margin: 0;
   padding: 0;
@@ -189,17 +212,17 @@
   height: 25px;
 }
 
-.lesson_dates{
+.lesson_dates {
   display: inline-block;
   color: $color_main;
 }
 
-.test_lesson{
+.test_lesson {
   display: inline-block;
   color: $color_gray_light;
 }
 
-.lesson_portlet .module{
+.lesson_portlet .module {
   background-color: $background_gray;
   font-family: 'Ubuntu Condensed';
   padding: 4px;
@@ -208,71 +231,84 @@
   font-size: 11pt;
 }
 
-.lesson_list .collection_check_boxes{
+.lesson_list .collection_check_boxes {
   font-size: 9pt;
   margin-top: 4px;
 }
 
-.title_link{
+.title_link {
   text-decoration: underline;
-  width: 775px;
+  // width: 775px;
+  width: 100%;
   display: block;
   padding: 5px;
   border: 1px dashed $color_gray_font;
   text-align: center;
 }
 
-.link_content.lesson{
+.link_content.lesson {
   display: inline;
 }
 
-#lesson_form{
-  .lesson_privacy{
+#lesson_form {
+  .lesson_privacy {
     display: inline;
   }
 }
 
 @media only screen and (max-width: 641px) {
-  .lesson .header{
-    display:none;
+  .lesson .header {
+    display: none;
   }
 }
 
-.list_lessons{
-  table.tb_list{
+.list_lessons {
+  table.tb_list {
     cellpadding: 10;
     cellspacing: 0;
     width: 100%;
     border: 0;
 
-    th[id^=name]{
+    th[id^=name] {
       align: left;
     }
-    th[id^=period]{
+
+    th[id^=period] {
       width: 30%;
     }
-    th[id^=notes]{
+
+    th[id^=notes] {
       width: 10%;
       text-align: center;
     }
-    th[id^=accept]{
+
+    th[id^=accept] {
       width: '12%';
     }
 
   }
-  a.disabled{
+
+  a.disabled {
     pointer-events: none;
     text-decoration: none;
   }
 }
+
 .lesson_responsive{
   display: inline-block;
   position: absolute;
   left: -30px;
   top: -5px;
 }
+
 .responsive_input{
   display: inline-block;
   position: relative;
   padding-top: 5px;
+}
+
+.lesson-file-download {
+  // float: right;
+  margin-left: 5px;
+  display: inline-block;
 }

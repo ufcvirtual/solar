@@ -4,30 +4,31 @@
     %h2= t(:courses, scope: [:editions, :academic])
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus'), new_edx_course_path(courses_names: @edx_courses.collect{|course| course["display_name"]}), class: " btn btn_main", id: "new_edx_course", :'data-tooltip' => t("courses.index.new") 
+      = link_to content_tag(:i, nil, class: 'icon-plus'), new_edx_course_path(courses_names: @edx_courses.collect{|course| course["display_name"]}), class: " btn btn_main", id: "new_edx_course", :'data-tooltip' => t("courses.index.new")
 
-  %table.tb_list
-    %thead
-      %tr.lines
-        %th= t("courses.index.code")
-        %th= t("courses.index.name")
-        %th.no_sort{width: "12%"}
-    %tbody
-      - edx = YAML::load(File.open('config/edx.yml'))[Rails.env.to_s]
-      - @edx_courses.each do |course|
+  .responsive-table
+    %table.tb_list
+      %thead
         %tr.lines
-          - course_edx_id = course["course_id"].split("/")
-          - course_resource_uri = (@resource_uri ? Base64.encode64(@resource_uri) : Base64.encode64(course["resource_uri"]))
-          %td= course_edx_id[1]
-          %td= course["display_name"]
-          %td
-            = link_to (content_tag(:i, nil, class: 'icon-trash')), "#void", class: 'btn btn_caution delete_edx_course', :"data-link-delete" => delete_edx_courses_path(course_resource_uri), :'data-tooltip' => t("courses.index.delete")
-            - action = "#{edx['login']}?next=#{course['course_absolute_url_studio']}"
-            %form{action: action, method: "post", target:"_blank"}
-              %input{name: "username", type: "hidden", value: current_user.username}/
-              %input{name: "token", type: "hidden", value: Digest::HMAC.hexdigest(current_user.username, edx['hash_key'], Digest::SHA1)}/
+          %th= t("courses.index.code")
+          %th= t("courses.index.name")
+          %th.no_sort{width: "12%"}
+      %tbody
+        - edx = YAML::load(File.open('config/edx.yml'))[Rails.env.to_s]
+        - @edx_courses.each do |course|
+          %tr.lines
+            - course_edx_id = course["course_id"].split("/")
+            - course_resource_uri = (@resource_uri ? Base64.encode64(@resource_uri) : Base64.encode64(course["resource_uri"]))
+            %td= course_edx_id[1]
+            %td= course["display_name"]
+            %td
+              = link_to (content_tag(:i, nil, class: 'icon-trash')), "#void", class: 'btn btn_caution delete_edx_course', :"data-link-delete" => delete_edx_courses_path(course_resource_uri), :'data-tooltip' => t("courses.index.delete")
+              - action = "#{edx['login']}?next=#{course['course_absolute_url_studio']}"
+              %form{action: action, method: "post", target:"_blank"}
+                %input{name: "username", type: "hidden", value: current_user.username}/
+                %input{name: "token", type: "hidden", value: Digest::HMAC.hexdigest(current_user.username, edx['hash_key'], Digest::SHA1)}/
 
-          
+
 :javascript
 
   $(function(){
@@ -36,7 +37,7 @@
     $('.delete_edx_course').click(function(e){
       e.preventDefault();
       $(this).nice_delete({
-        parent: 'tr.lines', 
+        parent: 'tr.lines',
         method_delete: "POST",
         complement_success: function(data) {
           var flash_notice = data.notice;
