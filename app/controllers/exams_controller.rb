@@ -106,7 +106,7 @@ class ExamsController < ApplicationController
     verify_ip!(@exam.id, :exam, @exam.controlled, :error_text_min)
     acs = @exam.academic_allocations
     ac_id = (acs.size == 1 ? acs.first.id : acs.where(allocation_tag_id: @allocation_tag_id).first.id)
-    @acu = AcademicAllocationUser.find_or_create_one(ac_id, @allocation_tag_id, current_user.id, nil, true)
+    @acu = AcademicAllocationUser.find_or_create_one(ac_id, @allocation_tag_id, current_user.id, nil, true, nil)
     last_attempt = @acu.exam_user_attempts.last
 
     last_attempt.get_total_time(nil, true) if !last_attempt.blank? && !last_attempt.end.blank?
@@ -175,6 +175,7 @@ class ExamsController < ApplicationController
       if @last_attempt.complete==true
         render plain: t(:no_permission)
       else
+        @acu.update_attribute(:status, AcademicAllocationUser::STATUS[:sent]) if @acu.status.blank?
         #end_hour = @exam.end_hour.blank? ? '23:59:59' : @exam.end_hour
         #exam_end = @exam.schedule.end_date.to_s+' '+end_hour.to_s
         #exame_datetime_end = Time.parse(exam_end)
@@ -188,7 +189,7 @@ class ExamsController < ApplicationController
           render :open, layout: true
         else
           render :open, layout: false
-        end        
+        end
       end
     end
   rescue CanCan::AccessDenied
