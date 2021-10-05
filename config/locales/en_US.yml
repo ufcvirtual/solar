@@ -598,6 +598,8 @@ en_US:
   dont_destroy_with_content: "It has content"
   item_search_no_found: "No item found"
   no_javascript: "Your browser does not support JavaScript or it's disabled."
+  googleformtitle: How has it been your experience with Solar 2.0?
+  support_button: Do you need any help or want to do a complaint? Write to our support team.
   other: Other
   login_description1: "Solar is a virtual learning environment developed by the UFC Virtual Institute at Federal University of Ceará. It is geared towards the teacher and the student, allowing the publication of courses and interaction with them."
   login_description2: "The Solar was developed to enhance the learning process, starting from the interaction with the graphic interface of the environment, and to allow fast access to the pages and the content, easy navigation and browser compatibility. Here, the learner feels safe to explore the available spaces. The environment is supported by a philosophy of interaction, not control."
@@ -731,7 +733,7 @@ en_US:
   mysolar_open_lesson_alt: "Show opened lesson %{disabled}"
   open_lesson_no_lesson: "( No lesson opened )"
   mysolar_languages: "Languages"
-  mysolar_suggestions: 'Suggestions for Solar 2.0'
+  mysolar_suggestions: 'Send Suggestions'
   date_name: Date
   help: "Help"
   new_window: " (This link will open a new window)"

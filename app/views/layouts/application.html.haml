@@ -66,6 +66,7 @@
                 %li.sub_nav_menu= link_to t(:login_faq), faq_path, class: "sub_nav_item", :'aria-label' => t(:login_faq)
                 %li.sub_nav_menu= link_to t(:videos), "../../video_tutorials.html", target: "_blank", class: "sub_nav_item", :'aria-label' => t(:videos)+ t(:new_window)
                 %li.sub_nav_menu= link_to t(:contact), support_new_messages_path, class: "sub_nav_item"
+                %li.sub_nav_menu= link_to t(:mysolar_suggestions), 'https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ', target: '_blank', :'aria-label' => t(:mysolar_suggestions) + t(:new_window)
             %li#mysolar_top_logout.nav_menu
               = link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, id: "logout", class: "mysolar_top_link logout nav_item")
         / Submenu
@@ -100,8 +101,14 @@
                   .shortcut_title= t('scores.info.shortcut')
                   = link_to content_tag(:i, nil, class: "icon-cancel-circle"), "#", class: 'close_dropdown', :'data-tooltip' => t("shortcut.close"), :'aria-label' => t("shortcut.close")
 
-            %li#mysolar_suggestions
-              = link_to t(:mysolar_suggestions), 'https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ', class: 'btn', target: '_blank', :'aria-label' => t(:mysolar_suggestions) + t(:new_window)
+            %li
+              %button.btn{"data-tooltip" => t(:googleformtitle), name: t(:googleformtitle), type: "button", :'aria-label' => t(:googleformtitle)+ t(:new_window)}
+                = link_to content_tag(:i, nil, class: "icon-thumbs-up"), "https://forms.gle/pRmAo9bdja4Rcmq98", class: "sub_nav_item", target: "_blank"
+
+            %li
+              %button.btn{"data-tooltip" => t(:support_button), name: t(:support_button), type: "button", :'aria-label' => t(:support_button)}
+                = link_to content_tag(:i, nil, class: "icon-help"), support_new_messages_path, class: "sub_nav_item"
+
             %li
               %noscript= content_tag(:i, nil, class: 'icon-warning noscript', :'aria-label' => t(:no_javascript), title: t(:no_javascript))
 

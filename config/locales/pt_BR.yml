@@ -668,6 +668,8 @@ pt_BR:
   item_search_no_found: "Nenhum item encontrado"
   no_javascript: Seu navegador não suporta JavaScript ou está com este desabilitado.
   other: Outro
+  googleformtitle: Como tem sido sua experiência com o Solar 2.0?
+  support_button: Precisa de ajuda ou quer fazer uma reclamação? Escreva pro nosso atendimento.
 
   #Página de Login
   login_description1: "O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,
@@ -882,7 +884,7 @@ pt_BR:
   mysolar_open_lesson_alt: "Exibir aula aberta %{disabled}"
   open_lesson_no_lesson: "( Nenhuma aula aberta )"
   mysolar_languages: "Idiomas"
-  mysolar_suggestions: 'Sugestões para o Solar 2.0'
+  mysolar_suggestions: 'Enviar Sugestões'
   date_name: Data
   help: "Ajuda"
   new_window: " (Este link abrirá uma nova janela)"
