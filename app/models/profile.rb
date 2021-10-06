@@ -44,6 +44,10 @@ class Profile < ActiveRecord::Base
     Profile.where("(types <> ? AND types <> ?) OR id=29", Profile_Type_Basic, Profile_Type_Student).order("name")
   end
 
+  def self.only_responsible_and_observers
+    Profile.where("((profiles.types & ?)::boolean OR (profiles.types & ?)::boolean OR id = 29) AND id != 31 AND id != 20 AND id != 16", Profile_Type_Class_Responsible, Profile_Type_Observer).order("name")
+  end
+
   def self.student_profile
     find_by_types(Profile_Type_Student).id
   end

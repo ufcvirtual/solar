@@ -62,9 +62,9 @@ class Allocation < ActiveRecord::Base
       if((!course.blank? && !course.min_hours.blank?) || (!uc.blank? && !uc.min_hours.blank?))
         calculate_working_hours unless allocation_tag.nil?
         calculate_final_grade unless allocation_tag.nil?
-      end 
-    end  
-    
+      end
+    end
+
     send_email_to_enrolled_user
   end
 
@@ -192,7 +192,7 @@ class Allocation < ActiveRecord::Base
   def self.list_for_designates(allocation_tags_ids, is_admin = false)
     query = []
     query << (allocation_tags_ids.empty? ? "allocation_tag_id IS NULL" : "allocation_tag_id IN (?)")
-    query << (!!is_admin ? "not(profiles.types & #{Profile_Type_Basic})::boolean" : "((profiles.types & #{Profile_Type_Class_Responsible})::boolean OR profiles.id = 29)")
+    query << (!!is_admin ? "not(profiles.types & #{Profile_Type_Basic})::boolean" : "((profiles.types & #{Profile_Type_Class_Responsible})::boolean OR profiles.id = 29 OR (profiles.types & #{Profile_Type_Observer})::boolean)")
 
     joins(:profile, :user).where(query.join(' AND '), allocation_tags_ids)
   end
