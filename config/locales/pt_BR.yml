@@ -1684,7 +1684,7 @@ pt_BR:
       shared: Esta webconferência já foi encerrada. Este campo não pode ser alterado.
       removed_record: Gravação removida ou vazia
       copy: Não é possível remover a gravação desta webconferência, pois ela é uma cópia. É necessário remover a gravação da webconferência original.
-      acu: Não é possível remover a gravação ou webconferência, pois há alunos avaliados/com comentários.
+      acu: Não é possível remover a gravação ou webconferência, pois houve acesso de alunos.
       cant_edit_date: Apenas o dia não pode ser alterado.
     preview:
       delete_record: Remover gravação

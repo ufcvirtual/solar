@@ -283,7 +283,7 @@ module Bbb
     raise 'date_range'               if respond_to?(:in_time?)  && !in_time?
     raise 'unavailable'              unless server.blank? || bbb_online?
     raise 'not_ended'                unless !started? || is_over?
-    raise 'acu'                      if (respond_to?(:academic_allocation_users) && academic_allocation_users.any?) || (!respond_to?(:academic_allocation_users) && academic_allocation_user.blank?)
+    raise 'acu'                      if (respond_to?(:academic_allocation_users) && academic_allocation_users.any?) || (respond_to?(:academic_allocation_user) && !academic_allocation_user.blank?)
   end
 
   def can_destroy_boolean?

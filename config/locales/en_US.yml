@@ -1487,7 +1487,7 @@ en_US:
       shared: This webconference already happened. It's not possible to change this field.
       removed_record: Removed or empty record
       copy: It's not possible to remove this webconference record. This webconferenceis a copy. It's necessary to remove original webconference's record.
-      acu: It's not possible to remove this webconferences or its record. There are evaluated students or with comments.
+      acu: It's not possible to remove this webconferences or its record. There was student access.
       cant_edit_date: Only the day can not be changed.
     preview:
       delete_record: Remove record
