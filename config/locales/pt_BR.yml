@@ -4385,6 +4385,7 @@ pt_BR:
       time_and_place: Já existe uma webconferência para este grupo neste trabalho para este dia e horário.
       unavailable_or_date_range: Não é possível realizar ação. Webconferência indisponível ou prazo encerrado.
       date: Esta webconferência já foi encerrada e possui gravação. Seu período não pode ser alterado.
+      acu: Não é possível remover a gravação ou webconferência, pois já recebeu comentários, nota ou frequência.
     success:
       removed: Webconferência deletada com sucesso
       record: Gravação removida com sucesso

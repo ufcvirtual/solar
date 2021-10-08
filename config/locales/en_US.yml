@@ -4067,6 +4067,7 @@ en_US:
       time_and_place: There's already a webconference for this group at this assignment at the choosen time.
       unavailable_or_date_range: It was not possible to execute action. Webconference's unavailable or date range expirded.
       date: This webconference already happened and was recorded. It's not possible to change it's period.
+      acu: It's not possible to remove this webconferences or its record. There are comments, grade or working hours.
     success:
       removed: Webconference was successfully deleted.
       record: Webconference's record successfully removed.
