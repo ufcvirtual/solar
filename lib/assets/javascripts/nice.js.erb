@@ -45,6 +45,9 @@ $.fn.nice_checkbox = function(options) {
     var enable_deletion = function() { $(".btn_del", parent_block_div).attr("disabled", false); };
     var disable_deletion = function() { $(".btn_del", parent_block_div).attr("disabled", true); };
 
+    var enable_send_msg = function() { $(".btn_send_msg", $(parent_block_div).parent()).attr("disabled", false); };
+    var disable_send_msg = function() { $(".btn_send_msg", $(parent_block_div).parent()).attr("disabled", true); };
+
     children.click(function(){
       var kid = this;
       var children_checked = $('input:checkbox[name*="' + children_names + '"]:checked:not(".disabled")', parent_block_div);
@@ -57,16 +60,24 @@ $.fn.nice_checkbox = function(options) {
           enable_edition();
           if (children_checked.length == 0 || children_checked.length > 1)
             disable_edition();
+
+            enable_send_msg();
         } else { // o evento de click tirou selecao do filho
           if (children_checked.length == 0) { // nenhum filho selecionado
             disable_deletion();
             disable_edition();
+
+            disable_send_msg();
           } else if (children_checked.length == 1) { // apenas um filho selecionado
             enable_deletion();
             enable_edition();
+
+            enable_send_msg();
           } else if (children_checked.length > 1) { // mais de um filho selecionado
             enable_deletion();
             disable_edition();
+
+            enable_send_msg();
           }
         }
       } // end if
@@ -106,6 +117,8 @@ $.fn.nice_checkbox = function(options) {
       var children_checked = $('input:checkbox[name*="' + children_names + '"]:checked:not(".disabled")');
       $(".btn_edit", parent_block_div).attr("disabled", !(children_checked.length == 1));
       $(".btn_del", parent_block_div).attr("disabled", !check);
+
+      $(".btn_send_msg", $(parent_block_div).parent()).attr("disabled", !check);
 
       enable_other_elements(children_checked.length);
     }
