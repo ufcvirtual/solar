@@ -308,7 +308,7 @@ GEM
     pry-rescue (1.5.2)
       interception (>= 0.5)
       pry (>= 0.12.0)
-    puma (4.3.7)
+    puma (4.3.9)
       nio4r (~> 2.0)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
@@ -544,7 +544,7 @@ DEPENDENCIES
   protected_attributes (~> 1.0.9)
   pry-rails
   pry-rescue
-  puma (~> 4.3.5)
+  puma (~> 4.3.9)
   quiet_assets (~> 1.1.0)
   rabl (~> 0.13.0)
   rack (~> 1.5.2)

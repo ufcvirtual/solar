@@ -36,7 +36,7 @@ gem "momentjs-rails", "~> 2.8.3"
 gem "bigbluebutton-api-ruby", "~> 1.6.0"
 
 # platform adicionado para evitar que o unicorn tente ser executado no windows
-gem "puma", "~> 4.3.5"
+gem "puma", "~> 4.3.9"
 
 gem "rubyzip", "~> 1.0.0"
 
