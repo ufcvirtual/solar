@@ -15,9 +15,9 @@ module AcademicTool
 
     after_save :set_situation_date, if: 'merge.nil?', on: :update
 
-    #after_update if: 'notify_change?' do
-    #  send_email(true)
-    #end
+    after_update if: 'notify_change?' do
+     send_email(true)
+    end
 
     attr_accessor :allocation_tag_ids_associations, :merge
   end
