@@ -199,6 +199,12 @@
 
           #mandatory_notification.invisible= link_to "", show_mandatory_notifications_path(':notification_id'), {class: 'link_content fancybox.iframe', target: '_blank' }
 
+          .enabled{:vw => ""}
+            .active{"vw-access-button" => ""}
+            %div{"vw-plugin-wrapper" => ""}
+              .vw-plugin-top-wrapper
+          %script{:src => "https://vlibras.gov.br/app/vlibras-plugin.js"}
+
       %footer
         #footer_push{style: "height:35px"}
         - locales  =  %w(pt_BR en_US)
@@ -233,6 +239,7 @@
   = javascript_include_tag 'jspanel'
 
   :javascript
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
 
     /**
      * Google Analytics
