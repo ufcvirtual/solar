@@ -10,7 +10,10 @@
       - if @is_student
         = render partial: 'scores/info/summary', locals: {user: @user, allocation_tag_id: @allocation_tag_id}
     .evaluation_info
-      %div{style: 'font-weight: bold; font-size: 12pt'}= @user.name
+      %div{style: 'font-weight: bold; font-size: 12pt'}
+        = @user.name
+        - unless @current_user_is_student
+          = link_to content_tag(:i, nil, class: 'icon-mail', :'aria-hidden' => 'true'),"#" , id: "send_scores_message", :'data-url' => new_by_scores_messages_path(user_ids: @user.id)
       %div= raw @curriculum_unit.try(:working_hours).nil? ? t('.uc_without_wh') : t('.frequency_uc', wh: @curriculum_unit.try(:working_hours))
       %div
         = raw t('.responsibles')
@@ -165,6 +168,18 @@
     }else{
       $('ul.dropdown-menu li input[type="checkbox"]#all').click();
     }
+
+    $("#send_scores_message, .send_score_message_participants").on('click', function(event){
+      event.preventDefault();
+
+      var url = $(this).data('url');
+      $(this).call_fancybox({
+        href: url,
+        open: true,
+      });
+
+    });
+
   });
 
   function calculate_user_grade_exam(link){
