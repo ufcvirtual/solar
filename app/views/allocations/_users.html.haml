@@ -4,7 +4,7 @@
 - @users.each do |user|
   - @specific_indication = @specific_indication=='false' ? false : @specific_indication
   - user_profiles = user.allocations.where(allocation_tag_id: (@allocation_tags_ids.nil? ? nil : @allocation_tags_ids.split(" "))).map(&:profile)
-  - profiles_allocable = ((@admin && access_indication)? ((is_admin && !@specific_indication ? Profile.all_except_basic : Profile.all_except_basic_and_admin) - user_profiles) : ((is_admin ? Profile.all_except_basic_and_student : Profile.all_except_basic_and_admin_and_student) - user_profiles))
+  - profiles_allocable = ((@admin && access_indication)? ((is_admin && !@specific_indication ? Profile.all_except_basic : Profile.all_except_basic_and_admin) - user_profiles) : ((is_admin ? Profile.all_except_basic_and_student : Profile.only_responsible_and_observers) - user_profiles))
 
   - if profiles_allocable.any?
     %tr.lines

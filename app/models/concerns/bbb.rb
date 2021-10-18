@@ -89,13 +89,11 @@ module Bbb
   end
 
   def verify_time(allocation_tags_ids = [])
-    query    = "(initial_time BETWEEN ? AND ?) OR ((initial_time + (interval '1 minutes')*duration) BETWEEN ? AND ?) OR (? BETWEEN initial_time AND ((initial_time + (interval '1 minutes')*duration))) OR (? BETWEEN initial_time AND ((initial_time + (interval '1 minutes')*duration)))"
-    end_time = initial_time + duration.minutes
-
     objs = if respond_to?(:academic_allocation_user_id)
-      AssignmentWebconference.where(academic_allocation_user_id: academic_allocation_user_id).where(query, initial_time, end_time, initial_time, end_time, initial_time, end_time)
+      AssignmentWebconference.where(academic_allocation_user_id: academic_allocation_user_id).where("initial_time = ?",initial_time)
     else
-      Webconference.joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids, academic_tool_type: 'Webconference' }).where(query, initial_time, end_time, initial_time, end_time, initial_time, end_time)
+      end_time = initial_time + duration.minutes
+      Webconference.joins(:academic_allocations).where(academic_allocations: { allocation_tag_id: allocation_tags_ids, academic_tool_type: 'Webconference' }).where("(initial_time BETWEEN ? AND ?) OR ((initial_time + (interval '1 minutes')*duration) BETWEEN ? AND ?) OR (? BETWEEN initial_time AND ((initial_time + (interval '1 minutes')*duration))) OR (? BETWEEN initial_time AND ((initial_time + (interval '1 minutes')*duration)))", initial_time, end_time, initial_time, end_time, initial_time, end_time)
     end
 
     if (objs - [self]).any?
@@ -283,7 +281,7 @@ module Bbb
     raise 'date_range'               if respond_to?(:in_time?)  && !in_time?
     raise 'unavailable'              unless server.blank? || bbb_online?
     raise 'not_ended'                unless !started? || is_over?
-    raise 'acu'                      if (respond_to?(:academic_allocation_users) && academic_allocation_users.any?) || (!respond_to?(:academic_allocation_users) && academic_allocation_user.blank?)
+    raise 'acu'                      if (respond_to?(:academic_allocation_users) && academic_allocation_users.any?) || (respond_to?(:academic_allocation_user) && !academic_allocation_user.blank? && academic_allocation_user.status == AcademicAllocationUser::STATUS[:evaluated])
   end
 
   def can_destroy_boolean?

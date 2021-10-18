@@ -2,7 +2,7 @@
 .chat_messages
   .title-warning
     = raw t('.warning')
-  - unless @recordings.empty?
+  - unless @recordings.nil? || @recordings.empty?
     .responsive-table
       %table.tb_list
         %thead
@@ -24,7 +24,7 @@
               - if @can_remove_record || (@can_download_record && ENV["WEB_DOWNLOAD"] == "true")
                 %td
                   - if @can_download_record && ENV["WEB_DOWNLOAD"] == "true"
-                    %span= link_to (content_tag(:i, nil, class: 'icon-arrow-down')), download_webconference_path(:url => url), class: "btn", :'data-tooltip' => t('.download_video'), :'aria-label' => t('.download_video'), method: :post
+                    %span= link_to (content_tag(:i, nil, class: 'icon-arrow-down')), download_webconference_path(url: record[:recordID]), class: "btn", :'data-tooltip' => t('.download_video'), :'aria-label' => t('.download_video'), method: :post
                   - if @can_remove_record
                     %span= button_tag (content_tag(:i, nil, class: 'icon-trash')), class: 'btn btn_caution remove_record', :'data-tooltip' => t('.remove'), :'aria-label' => t('.remove'), :'data-url' => remove_record_webconference_path(webconference: @webconference.id, at: @at_id, recordID: record[:recordID])
 
