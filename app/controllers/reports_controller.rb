@@ -3,7 +3,7 @@ class ReportsController < ApplicationController
   include ReportsHelper
 
   $document_title
-  
+
   def index
     authorize! :index, Report
     @types = ((!EDX.nil? && EDX['integrated']) ? CurriculumUnitType.all : CurriculumUnitType.where('id <> 7'))
@@ -12,10 +12,9 @@ class ReportsController < ApplicationController
   end
 
   def types_reports
- 
     allocation_tags = AllocationTag.get_by_params(params)
     @allocation_tags_ids, @selected, @offer_id = allocation_tags.values_at(:allocation_tags, :selected, :offer_id)
-    authorize! :index, Report 
+    authorize! :index, Report, {on: @allocation_tags_ids, accepts_general_profile: true}
     @user_profiles       = current_user.resources_by_allocation_tags_ids(@allocation_tags_ids)
     @allocation_tags_ids = @allocation_tags_ids.join(" ")
     @is_curriculum_unit = params[:curriculum_unit_id].nil? ? nil : params[:curriculum_unit_id]
@@ -28,7 +27,7 @@ class ReportsController < ApplicationController
   end
 
   def render_reports
-   
+    authorize! :index, Report, {on: params[:allocation_tags_ids], accepts_general_profile: true}
     time = Time.now
     info = {  :Title        => "Solar",
               :Author       => "UFC Virtual",
@@ -36,7 +35,7 @@ class ReportsController < ApplicationController
               :Keywords     => "reports",
               :Creator      => "ACME Soft App",
               :Producer     => "Prawn",
-              :CreationDate => Time.now}          
+              :CreationDate => Time.now}
 
     Prawn::Document.new(:info => info) do |pdf|
       pdf.font_families.update("Ubuntu Condensed" => {
@@ -79,14 +78,14 @@ class ReportsController < ApplicationController
         pdf.fill_color '000000'
         pdf.text @ats.no_group_info.to_s
          #groups
-        if !params[:groups].empty? 
-          groups = Array.new 
-          ats = params[:allocation_tags_ids].split(' ').map { |at| 
+        if !params[:groups].empty?
+          groups = Array.new
+          ats = params[:allocation_tags_ids].split(' ').map { |at|
             groups << AllocationTag.find(at.to_i).groups.first.code
           }
           pdf.text groups.join(" , ")
-        end  
-      end  
+        end
+      end
 
       pdf.move_down 15 # documento referente ao periodo tal......
       pdf.font("PT Sans", :style => :italic ,:size => 10)
@@ -98,29 +97,29 @@ class ReportsController < ApplicationController
 
       models_info = Report.query(params[:query_type], params[:allocation_tags_ids], params[:groups])
       @options_array = Report.get_options_array
-      
+
       pdf.font("PT Sans", :style => :italic ,:size => 10)
 
       if params[:query_type].to_i ==4
         header = [@options_array[9], @options_array[3], @options_array[4], @options_array[5], @options_array[6]]
-      elsif params[:query_type].to_i ==6  
+      elsif params[:query_type].to_i ==6
         header = [@options_array[9], @options_array[3], @options_array[4], @options_array[5]]
       else
          header = [@options_array[9], @options_array[3], @options_array[4]]
-      end  
+      end
       table_data = []
       table_data << header
-      
+
       index = 0
       models_info.each do |model|
         index = index +1
         if params[:query_type].to_i ==4
           table_data << [index ,model.name_model, model.total, model.total1, model.total2]
-        elsif params[:query_type].to_i ==6 
+        elsif params[:query_type].to_i ==6
           table_data << [index ,model.name_model, model.total, model.total1]
         else
           table_data << [index ,model.name_model, model.total]
-        end  
+        end
       end
       if params[:query_type].to_i ==4
         pdf.table(table_data, :header => true, :column_widths => [25, 300, 70, 70, 70], :row_colors => ["EBE6DD", "FFFFFF"]) do |t|
@@ -131,13 +130,13 @@ class ReportsController < ApplicationController
         pdf.table(table_data, :header => true, :column_widths => [25, 350, 80, 80], :row_colors => ["EBE6DD", "FFFFFF"]) do |t|
           t.row(0).font_style = :bold
           t.row(0).background_color = 'EEE8AA' #AMARELO
-        end  
+        end
       else
         pdf.table(table_data, :header => true, :column_widths => [25, 425, 90], :row_colors => ["EBE6DD", "FFFFFF"]) do |t|
           t.row(0).font_style = :bold
           t.row(0).background_color = 'EEE8AA' #AMARELO
-        end  
-      end  
+        end
+      end
       # enumerando paginas
       string = t('reports.commun_texts.pages')
       options = { :at => [pdf.bounds.right - 150, 0],
@@ -150,7 +149,7 @@ class ReportsController < ApplicationController
       send_data pdf.render, :filename => "report_"+time.strftime("%d-%m-%Y_%H-%M-%S")+".pdf", :type => "application/pdf", disposition: 'inline'
 
     end
- 
+
   end
   # form
   private
@@ -171,7 +170,7 @@ class ReportsController < ApplicationController
     when '5'
       $document_title = t('reports.index.report_seven.document_title')
     when '6'
-      $document_title = t('reports.index.report_six.document_title')  
+      $document_title = t('reports.index.report_six.document_title')
     end
   end
 
