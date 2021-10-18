@@ -4,6 +4,10 @@ module AcademicTool
   extend ActiveSupport::Concern
 
   included do
+    before_destroy do
+     send_email('delete') if allocation_tags.any? && merge.nil? && verify_start
+    end
+
     has_many :academic_allocations, as: :academic_tool, dependent: :destroy
     has_many :allocation_tags, through: :academic_allocations
     has_many :groups, through: :allocation_tags
@@ -18,6 +22,11 @@ module AcademicTool
     after_update if: 'notify_change?' do
      send_email(true)
     end
+
+    after_create if: 'notify_change?' do
+     send_email(false)
+    end
+
 
     attr_accessor :allocation_tag_ids_associations, :merge
   end
@@ -36,7 +45,6 @@ module AcademicTool
         )
       ) && verify_start
     )
-
   end
 
   def verify_start
