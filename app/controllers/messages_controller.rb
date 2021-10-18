@@ -262,7 +262,7 @@ class MessagesController < ApplicationController
 
       @reply_to = [User.find(params[:user_ids]).to_msg]
     end
-    
+
     @scores = true
     render partial: 'form'
   end
