@@ -32,9 +32,24 @@ class AgendasController < ApplicationController
 
   def calendar
     @allocation_tags_ids = @allocation_tags_ids.join(' ')
+    user_profiles = current_user.resources_by_allocation_tags_ids(@allocation_tags_ids)
+
     @access_forms = Event.descendants.collect do |model|
-      model.to_s.tableize.singularize if model.constants.include?("#{params[:selected].try(:upcase)}_PERMISSION".to_sym)
+      model_name = model.to_s.tableize.singularize
+      if model.constants.include?("#{params[:selected].try(:upcase)}_PERMISSION".to_sym)
+        case model_name
+        when 'chat_room'
+          model_name if user_profiles.include?(chat_rooms: :index)
+        when 'discussion'
+          model_name if user_profiles.include?(discussions: :list)
+        when 'assignment'
+          model_name if user_profiles.include?(assignments: :index)
+        when 'schedule_event'
+          model_name if user_profiles.include?(schedule_events: :list)
+        end
+      end
     end
+
     @access_forms = @access_forms.compact.join(',')
   end
 
