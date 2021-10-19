@@ -13,13 +13,10 @@ $(function(){
         else
           var course_id = course.combobox('value');
 
-        var url = "#{courses_path(type_id: @type_id, course_id: 'course_param')}".replace('course_param', course_id);
+        var url = submit_url.replace('course_param', course_id);
 
         $.get(url, function(data) {
-          var inicio = data.search("<table class='tb_list'>");
-          var fim = data.search("</table>");
-
-          $('table.tb_list').html(data.substr(inicio, fim-inicio+7));
+          $('.courses_list').html(data);
 
           var autocomplete_option = $('option[value='+id+']');
 

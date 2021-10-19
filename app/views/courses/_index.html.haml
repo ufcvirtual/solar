@@ -4,7 +4,7 @@
     %h2= t(:courses, scope: [:editions, :academic])
   .block_content_toolbar
     .block_toolbar_left.btn-group
-      = link_to content_tag(:i, nil, class: 'icon-plus'), new_course_path, class: " btn btn_main", id: "new_course", :'data-tooltip' => t(".new") 
+      = link_to content_tag(:i, nil, class: 'icon-plus'), new_course_path, class: " btn btn_main", id: "new_course", :'data-tooltip' => t(".new")
   - unless @courses.blank?
     %table.tb_list
       %thead
@@ -16,7 +16,7 @@
         = render partial: 'courses/courses', locals: { courses: @courses }
     = link_to content_tag(:i, nil, class: "icon-ellipsis"), courses_path(page: @courses.next_page, type_id: @type_id), class: 'load-more-courses', remote: true, :"data-tooltip" => t(:load_items) if @courses.next_page
   - else
-    .block_content_text_list.text_none 
+    .block_content_text_list.text_none
       = t(:item_search_no_found)
 
 :javascript
@@ -40,9 +40,9 @@
       complement_success: function(data) {
 
         // se eu tiver selecionado no autocomplete o curso que quero deletar
-        if(curriculum_unit_id == $("#code_name").combobox('value')){
+        if(curriculum_unit_id == $("#code_name").combobox('value') || $(".courses_list table tbody").length == 1){
           // atualiza o conteúdo da lista e do autocomplete selecionado
-          $.get("#{courses_path(type: @type)}", function(data) {
+          $.get("#{courses_path(type_id: @type_id)}", function(data) {
             $('.courses_list').html(data);
             $("#autocomplete-input").val("");
           });

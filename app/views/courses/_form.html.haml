@@ -20,3 +20,7 @@
         = render partial: 'headers', locals: { f: f }
 
 = javascript_include_tag 'courses', 'tooltip'
+
+:javascript
+
+  var submit_url = "#{courses_path(type_id: @type_id, course_id: 'course_param')}";
