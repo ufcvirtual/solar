@@ -17,7 +17,7 @@
             - if lesson.type_lesson == 1 && lesson.address.match('virtual.ufc.br') == nil
               = link_to lesson.name, lesson.address, class: 'type_class', :title => lesson.name, :'aria-label'=> t('posts.post.open_site_new_tab', file: lesson.address), :'data-tooltip' => t('posts.post.open_site_new_tab', file: lesson.address), target: '_blank'
             - else
-              = link_to lesson.name, open_lesson_path(lesson.id), class: "link_content lesson", "data-fancybox-type" => "iframe", :'aria-label' => lesson.name + t('fancybox.open')
+              = link_to lesson.name, open_lesson_path(lesson.id), class: 'link_content lesson jspanel', :'aria-label' => lesson.name + t('fancybox.open'), onkeydown: 'click_on_keypress(event, this);', :'name' => lesson.name
             -if lesson.is_draft?
               .test_lesson= "(#{t(:lesson_test)})"
             - if lesson.will_open?

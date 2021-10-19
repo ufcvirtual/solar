@@ -127,9 +127,6 @@
                             = link_to(name_tab.truncate(30), activate_tab_path(id: id), :'aria-label'=>t('tabs.access', name: name_tab), style: "display: inline-block; padding: 0 10px;")
                             = link_to('',close_tab_path(id: id), class: 'tabs_close', id: "#{active_tab_id}", :'aria-label' => t('tabs.close', name: name_tab), style: "display: inline-block; padding: 0; left: -2px;", data: { confirm: t('tabs.close_confirm', name: name_tab) })
           %ul#mysolar_extras.dont-show-in-mobile
-            %li#mysolar_open_lesson.dont-show-in-mobile
-              %button.btn.btn_main.disabled{"data-tooltip" => t(:mysolar_open_lesson), name: t(:mysolar_open_lesson), onclick: "javascript:maximize_lesson(this);", type: "button", "data-fancybox-type" => "iframe", :'aria-label' => t(:mysolar_open_lesson_alt, disabled: t(:open_lesson_no_lesson)), disabled: true}
-                %i.icon-class{:'aria-hidden' => 'true'}
             %li#mysolar_open_shortcut
               %a.btn.btn_main#shortcut_accesskey{ href: '#', :"data-dropdown" => "#dropdown_eq_1_2", :'aria-label' => t('scores.info.shortcut'), accesskey: 9, "data-tooltip" => t('scores.info.shortcut')}
                 = t('scores.info.shortcut')

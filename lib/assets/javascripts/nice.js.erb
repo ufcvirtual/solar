@@ -394,8 +394,6 @@ $.fn.nice_open_lesson = function(options) {
     autoScale: true,
     autoSize: true,
     afterShow: function() {
-      $("<a class='fancybox-item fancybox-minimize'  title=<%=I18n.t('fancybox.minimize')%> aria-label=<%=I18n.t('fancybox.minimize')%>></a>").appendTo(this.skin).click(minimize_lesson);
-
       add_description_to_close_fancybox_btn("<%=I18n.t(:menu_lesson)%>");
       focus_on_fancybox_element(undefined, undefined, "<%=I18n.t(:menu_lesson)%>");
       remove_focus_from_back();
