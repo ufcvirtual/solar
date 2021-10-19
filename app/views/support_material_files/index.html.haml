@@ -32,13 +32,13 @@
               %td{headers: "name_#{folder}" }
                 - if file['url'] == nil
                   - if file['attachment_content_type'].index('image')
-                    - type_class = 'link_content open_file fancybox.ajax'
+                    - type_class = 'link_content open_file jspanel'
                   - elsif file['attachment_content_type'].index('pdf')
-                    - type_class = 'link_content open_url fancybox.iframe'
+                    - type_class = 'link_content open_url jspanel'
                   - elsif file['attachment_content_type'].index('audio')
-                    - type_class = 'link_content open_audio fancybox.iframe'
+                    - type_class = 'link_content open_audio jspanel'
                   -else
-                    - type_class = 'link_content open_file fancybox.iframe'
+                    - type_class = 'link_content open_file jspanel'
 
                   - if file['attachment_content_type'].start_with?('image', 'application/pdf', 'audio', 'video') && (!file['attachment_content_type'].start_with?('video') || SupportMaterialFile.verify_file_type(file["attachment_file_name"]))
                     = link_to image_tag(icon_attachment(file["attachment_file_name"])), open_support_material_files_path(id: file['id']), class: 'file_icon', :'aria-hidden'=> true
@@ -51,7 +51,7 @@
                     = link_to image_tag('icon_file_link.png', alt: t("link_site_img", site: file['url'])), file["url"], class: 'type_class', :title => file['title'], :'aria-label'=> t('posts.post.open_site_new_tab', file: file["url"]), :'data-tooltip' => t('posts.post.open_site_new_tab', file: file["url"]), target: '_blank'
                     = link_to file["url"], file["url"], class: 'type_class', :title => file['title'], :'aria-label'=> t('posts.post.open_site_new_tab', file: file["url"]), :'data-tooltip' => t('posts.post.open_site_new_tab', file: file["url"]), target: '_blank'
                   - else
-                    - type_class = 'link_content open_url fancybox.iframe'
+                    - type_class = 'link_content open_url jspanel'
                     = link_to image_tag('icon_file_link.png', alt: t("link_site_img", site: file['url'])), open_support_material_files_path(id: file['id']), :'aria-label'=> t('posts.post.open_site', file: file["url"]), class: type_class, :'aria-hidden' => 'true', :title => file['title']
                     = link_to file['url'], open_support_material_files_path(id: file['id']), :'aria-label'=> t('posts.post.open_site', file: file["url"]), class: type_class, :title => file['title']
 
@@ -71,31 +71,3 @@
   .block_content.block_content_text= t(:itens_not_found)
 
 = javascript_include_tag "contextual_help/support_material", 'contextual_help/lessons'
-
-:javascript
-
-  $(function(){
-    focus_element_time('#flash_message_span');
-    $('.open_file').call_fancybox({
-      autoScale: true,
-      autoSize: true,
-      maxHeight: '80%',
-      maxWidth: '90%',
-      height: '80%',
-      autoDimensions: true
-    });
-
-    $('.open_audio').call_fancybox({
-      maxWidth: '350px',
-      maxHeight: '50px',
-    });
-
-    $('.open_url').call_fancybox({
-      minHeight: '95%',
-      minWidth: '95%',
-      autoScale: true,
-      autoSize: true,
-      maxHeight: '80%',
-      height: '80%',
-    });
-  });

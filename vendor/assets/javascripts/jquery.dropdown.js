@@ -136,7 +136,7 @@ if(jQuery) (function($) {
     if( dropdown.length === 0 || !trigger ) return;
      
     // Position the jq-dropdown relative-to-parent...
-    if (!dropdown.hasClass('dropdown-relative') && !dropdown.parent("div").hasClass("equivalent")) {
+    if (!dropdown.hasClass('dropdown-relative') && !dropdown.parent("div").hasClass("equivalent") && !dropdown.hasClass("info_list")) {
       dropdown.css({
         left: dropdown.hasClass('dropdown-anchor-right') ?
           trigger.position().left - (dropdown.outerWidth(true) - trigger.outerWidth(true)) - parseInt(trigger.css('margin-right'),10) + hOffset :

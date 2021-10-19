@@ -598,6 +598,8 @@ en_US:
   dont_destroy_with_content: "It has content"
   item_search_no_found: "No item found"
   no_javascript: "Your browser does not support JavaScript or it's disabled."
+  googleformtitle: How has it been your experience with Solar 2.0?
+  support_button: Do you need any help or want to do a complaint? Write to our support team.
   other: Other
   login_description1: "Solar is a virtual learning environment developed by the UFC Virtual Institute at Federal University of Ceará. It is geared towards the teacher and the student, allowing the publication of courses and interaction with them."
   login_description2: "The Solar was developed to enhance the learning process, starting from the interaction with the graphic interface of the environment, and to allow fast access to the pages and the content, easy navigation and browser compatibility. Here, the learner feels safe to explore the available spaces. The environment is supported by a philosophy of interaction, not control."
@@ -731,7 +733,7 @@ en_US:
   mysolar_open_lesson_alt: "Show opened lesson %{disabled}"
   open_lesson_no_lesson: "( No lesson opened )"
   mysolar_languages: "Languages"
-  mysolar_suggestions: 'Suggestions for Solar 2.0'
+  mysolar_suggestions: 'Send Suggestions'
   date_name: Date
   help: "Help"
   new_window: " (This link will open a new window)"
@@ -1485,7 +1487,7 @@ en_US:
       shared: This webconference already happened. It's not possible to change this field.
       removed_record: Removed or empty record
       copy: It's not possible to remove this webconference record. This webconferenceis a copy. It's necessary to remove original webconference's record.
-      acu: It's not possible to remove this webconferences or its record. There are evaluated students or with comments.
+      acu: It's not possible to remove this webconferences or its record. There was student access.
       cant_edit_date: Only the day can not be changed.
     preview:
       delete_record: Remove record
@@ -4065,6 +4067,7 @@ en_US:
       time_and_place: There's already a webconference for this group at this assignment at the choosen time.
       unavailable_or_date_range: It was not possible to execute action. Webconference's unavailable or date range expirded.
       date: This webconference already happened and was recorded. It's not possible to change it's period.
+      acu: It's not possible to remove this webconferences or its record. There are comments, grade or working hours.
     success:
       removed: Webconference was successfully deleted.
       record: Webconference's record successfully removed.

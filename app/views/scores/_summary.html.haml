@@ -4,6 +4,7 @@
     = link_to t('scores.index.set_situation'), '#void', class: "btn", :'data-confirm' => (!@allocation_tag.situation_date.blank? && Date.today < @allocation_tag.situation_date && !@allocation_tag.setted_situation), onclick: 'set_situation(this);', :'data-url' => set_situation_scores_path, onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.scores.code.situation"), :'data-shortcut-name'=> t("shortcut.scores.name.situation")
     - if Date.today < @allocation_tag.situation_date
       = link_to t('scores.index.remove_situation'), '#void', class: "btn", onclick: 'remove_situation(this);', :'data-url' => remove_situation_scores_path,onkeydown: 'click_on_keypress(event, this);', :'data-shortcut'=> t("shortcut.scores.code.remove_situation"), :'data-shortcut-name'=> t("shortcut.scores.name.remove_situation")
+  = link_to t('messages.send_message'), "#", class: "btn btn_send_msg", disabled: true, :'data-url' => new_by_scores_messages_path(user_ids: ':user_ids')
 
 %br
 %ul.title-warning
@@ -21,6 +22,8 @@
     %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('scores.index.list_of_students')}
       %thead
         %tr.lines
+          %th.no_sort
+            %input#all_students_scores{type: "checkbox", :"data-children-names" => "ckb_student_score"}
           %th#student{style: "width: 100px;"}= t("scores.index.student")
           %th#access_to_the_course= t('scores.index.access_to_the_course')
           - unless @wh.nil?
@@ -32,7 +35,6 @@
           %th#situation= t('scores.index.situation')
           - if @merged_group
             %th#main_group= t('scores.index.origin_group')
-
       %tbody.users
         - if @users.blank?
           %tr.lines
@@ -41,3 +43,24 @@
           = render partial: 'pending_summary', locals: { users: @users, merged_group: @merged_group }
 - unless @users.blank?
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), summary_scores_path(page: @users.next_page, user_name: @username), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items), :'aria-label' => t(:load_items)  if @users.next_page
+
+
+:javascript
+  $(function(){
+    $('#all_students_scores').nice_checkbox();
+    $(".btn_send_msg").on('click', function(event){
+      event.preventDefault();
+      if($(this).is('[disabled]')){
+       return false
+      }
+      students_ids = []
+      $('tbody :checkbox:checked').each(function(index, element){
+        students_ids.push(element.value)
+      });
+      var url = $(this).data('url').replace(':user_ids', students_ids.join(","));
+      $(this).call_fancybox({
+        href: url,
+        open: true,
+      });
+    });
+  });

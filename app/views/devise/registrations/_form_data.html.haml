@@ -52,7 +52,7 @@
           %span.form_field= f.date_select :birthdate, start_year: Time.now.year - 2, end_year: 1900, include_blank: true, disabled: @user.integrated?
         %li
           %span.form_label= f.label :gender, class: 'label_gender'
-          %span.form_field= f.select :gender, ([["M", true], ["F", false]]) , id: 'gender', size: 2, :'data-previous-value' => @user.gender
+          %span.form_field= f.select :gender, ([["M", true], ["F", false]]) , {id: 'gender', size: 2, :'data-previous-value' => @user.gender}, { disabled: @user.integrated? }
         %li
           %span.form_label= f.label "#{t(:form_special_needs)}*"
           %span.for
@@ -121,31 +121,31 @@
       %ul
         %li
           %span.form_label= f.label :address
-          %span.form_field= f.text_field :address , id: 'address', size: field_size, :'data-previous-value' => @user.address
+          %span.form_field= f.text_field :address , id: 'address', size: field_size, :'data-previous-value' => @user.address, disabled: @user.integrated?
           %span.form_e
         %li
           %span.form_label= f.label :address_number
-          %span.form_field= f.text_field :address_number , id: 'address_number', size: 10, :'data-previous-value' => @user.address_number
+          %span.form_field= f.text_field :address_number , id: 'address_number', size: 10, :'data-previous-value' => @user.address_number, disabled: @user.integrated?
           %span.form_label= f.label :address_complement
-          %span.form_field= f.text_field :address_complement, id: 'address_complement', size: 16, :'data-previous-value' => @user.address_complement
+          %span.form_field= f.text_field :address_complement, id: 'address_complement', size: 16, :'data-previous-value' => @user.address_complement, disabled: @user.integrated?
         %li
           %span.form_label= f.label :address_neighborhood
-          %span.form_field= f.text_field :address_neighborhood, id: 'address_neighborhood', size: 10, :'data-previous-value' => @user.address_neighborhood
+          %span.form_field= f.text_field :address_neighborhood, id: 'address_neighborhood', size: 10, :'data-previous-value' => @user.address_neighborhood, disabled: @user.integrated?
           %span.form_label= f.label :zipcode
-          %span.form_field= f.text_field :zipcode, size: 16, id: 'zipcode', :'data-previous-value' => @user.zipcode
+          %span.form_field= f.text_field :zipcode, size: 16, id: 'zipcode', :'data-previous-value' => @user.zipcode, disabled: @user.integrated?
         %li
           %span.form_label= f.label :country
-          %span.form_field= f.text_field :country, id: 'country', size: 10, :'data-previous-value' => @user.country
+          %span.form_field= f.text_field :country, id: 'country', size: 10, :'data-previous-value' => @user.country, disabled: @user.integrated?
           %span.form_label= f.label :state
           %span.form_field= f.select :state, ([["AC", "AC"], ["AL", "AL"], ["AP", "AP"],
                 ["AM", "AM"], ["BA", "BA"], ["CE", "CE"], ["DF", "DF"], ["ES", "ES"],
                 ["GO", "GO"], ["MA", "MA"], ["MT", "MT"], ["MS", "MS"], ["MG", "MG"],
                 ["PA", "PA"], ["PB", "PB"], ["PR", "PR"], ["PE", "PE"], ["PI", "PI"],
                 ["RJ", "RJ"], ["RN", "RN"], ["RS", "RS"], ["RO", "RO"], ["RR", "RR"],
-                ["SC", "SC"], ["SP", "SP"], ["SE", "SE"], ["TO", "TO"]]), include_blank: true, :'data-previous-value' => @user.state
+                ["SC", "SC"], ["SP", "SP"], ["SE", "SE"], ["TO", "TO"]]), {include_blank: true, :'data-previous-value' => @user.state}, { disabled: @user.integrated? }
         %li
           %span.form_label= f.label :city
-          %span.form_field= f.text_field :city, id: 'city', size: field_size, :'data-previous-value' => @user.city
+          %span.form_field= f.text_field :city, id: 'city', size: field_size, :'data-previous-value' => @user.city, disabled: @user.integrated?
         %li
           %span.form_label= f.label :telephone
           %span.form_field= f.text_field :telephone, size: 10, id: 'telephone', :'data-previous-value' => @user.telephone, disabled: @user.integrated?
@@ -160,7 +160,7 @@
       %ul
         %li
           %span.form_label= f.label :institution
-          %span.form_field= f.text_field :institution, id: 'institution', size: field_size, :'data-previous-value' => @user.institution
+          %span.form_field= f.text_field :institution, id: 'institution', size: field_size, :'data-previous-value' => @user.institution, disabled: @user.integrated?
           %span.form_error= msg_institution
 
   / Pessoais

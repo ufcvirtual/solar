@@ -668,6 +668,8 @@ pt_BR:
   item_search_no_found: "Nenhum item encontrado"
   no_javascript: Seu navegador não suporta JavaScript ou está com este desabilitado.
   other: Outro
+  googleformtitle: Como tem sido sua experiência com o Solar 2.0?
+  support_button: Precisa de ajuda ou quer fazer uma reclamação? Escreva pro nosso atendimento.
 
   #Página de Login
   login_description1: "O Solar é um ambiente virtual de aprendizagem desenvolvido pelo instituto UFC Virtual,
@@ -882,7 +884,7 @@ pt_BR:
   mysolar_open_lesson_alt: "Exibir aula aberta %{disabled}"
   open_lesson_no_lesson: "( Nenhuma aula aberta )"
   mysolar_languages: "Idiomas"
-  mysolar_suggestions: 'Sugestões para o Solar 2.0'
+  mysolar_suggestions: 'Enviar Sugestões'
   date_name: Data
   help: "Ajuda"
   new_window: " (Este link abrirá uma nova janela)"
@@ -1682,7 +1684,7 @@ pt_BR:
       shared: Esta webconferência já foi encerrada. Este campo não pode ser alterado.
       removed_record: Gravação removida ou vazia
       copy: Não é possível remover a gravação desta webconferência, pois ela é uma cópia. É necessário remover a gravação da webconferência original.
-      acu: Não é possível remover a gravação ou webconferência, pois há alunos avaliados/com comentários.
+      acu: Não é possível remover a gravação ou webconferência, pois houve acesso de alunos.
       cant_edit_date: Apenas o dia não pode ser alterado.
     preview:
       delete_record: Remover gravação
@@ -4386,6 +4388,7 @@ pt_BR:
       time_and_place: Já existe uma webconferência para este grupo neste trabalho para este dia e horário.
       unavailable_or_date_range: Não é possível realizar ação. Webconferência indisponível ou prazo encerrado.
       date: Esta webconferência já foi encerrada e possui gravação. Seu período não pode ser alterado.
+      acu: Não é possível remover a gravação ou webconferência, pois já recebeu comentários, nota ou frequência.
     success:
       removed: Webconferência deletada com sucesso
       record: Gravação removida com sucesso

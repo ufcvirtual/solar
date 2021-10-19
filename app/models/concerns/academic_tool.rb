@@ -15,9 +15,9 @@ module AcademicTool
 
     after_save :set_situation_date, if: -> {merge.nil?}, on: :update
 
-    #after_update if: 'notify_change?' do
-    #  send_email(true)
-    #end
+    after_update if: 'notify_change?' do
+     send_email(true)
+    end
 
     attr_accessor :allocation_tag_ids_associations, :merge
   end
@@ -289,7 +289,7 @@ end
 
     def set_situation_date
       # if changed end date
-      #if (respond_to?(:schedule) && self.schedule.end_date_changed?) || (respond_to?(:initial_time) && initial_time_changed?)
+      if (respond_to?(:schedule) && !self.schedule.previous_changes["end_date"].blank?) || (respond_to?(:initial_time) && (initial_time != initial_time_was))
        # end_date = (respond_to?(:schedule) ? schedule.end_date : initial_time) + 2.days
        # while(end_date.saturday? || end_date.sunday?)
        #   end_date = end_date + 1.day
@@ -297,21 +297,23 @@ end
 
         academic_allocations.each do |ac|
           at = ac.allocation_tag
-          last_date = AcademicTool.last_date(at.id)
-          at.update_attributes situation_date: last_date[:date], situation_date_ac_id: last_date[:ac_id]
-          # if is last date to set situation and date is bigger, update date
-          # if at.situation_date_ac_id == ac.id && (!at.situation_date.blank? && end_date > at.situation_date)
-          #   at.update_attributes situation_date: end_date
-          # # if is last date to set situation and date is smaller, search date
-          # elsif at.situation_date_ac_id == ac.id && (!at.situation_date.blank? && end_date < at.situation_date)
-          #   last_date = AcademicTool.last_date(at.id)
-          #   at.update_attributes situation_date: last_date[:date], situation_date_ac_id: last_date[:ac_id]
-          # # if is not last date to set situation and date is bigger, update date and ac
-          # elsif (!at.situation_date.blank? && end_date > at.situation_date)
-          #   at.update_attributes situation_date: end_date, situation_date_ac_id: ac.id
-          # end
+          unless at.blank?
+            last_date = AcademicTool.last_date(at.id)
+            at.update_attributes situation_date: last_date[:date], situation_date_ac_id: last_date[:ac_id]
+            # if is last date to set situation and date is bigger, update date
+            # if at.situation_date_ac_id == ac.id && (!at.situation_date.blank? && end_date > at.situation_date)
+            #   at.update_attributes situation_date: end_date
+            # # if is last date to set situation and date is smaller, search date
+            # elsif at.situation_date_ac_id == ac.id && (!at.situation_date.blank? && end_date < at.situation_date)
+            #   last_date = AcademicTool.last_date(at.id)
+            #   at.update_attributes situation_date: last_date[:date], situation_date_ac_id: last_date[:ac_id]
+            # # if is not last date to set situation and date is bigger, update date and ac
+            # elsif (!at.situation_date.blank? && end_date > at.situation_date)
+            #   at.update_attributes situation_date: end_date, situation_date_ac_id: ac.id
+            # end
+          end
         end
-     # end
+     end
     end
 
 end

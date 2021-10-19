@@ -15,8 +15,10 @@
           .label.align-left.no-float-mobile
             = label_tag :message_to, t('.message_to')
           .input.align-right.no-float-mobile
-            = text_field_tag :message_to, [@reply_to].flatten.compact.map { |c| c[:resume] }.join(', '), disabled: true
-            - unless @support
+            - unless @reply_to_many.blank?
+              = text_field_tag :message_to, @reply_to_many.map{|u| u[:resume]}.join(', '), disabled: true
+            - else
+              = text_field_tag :message_to, [@reply_to].flatten.compact.map { |c| c[:resume] }.join(', '), disabled: true
               = link_to t('.add_contacts'), '#void', :'aria-label' => (t('.add_contacts') + t('fancybox.open')), onkeydown: 'click_on_keypress(event, this);', class: 'message_new_textbox', :'data-url' => contacts_messages_path(allocation_tag_id: @allocation_tag_id, reply_to: 'reply_params'), onclick: 'open_contacts_selection(this);', id: '_add_contacts'
 
         .message_new_text_to

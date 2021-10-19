@@ -278,40 +278,20 @@ class WebconferencesController < ApplicationController
     if Exam.verify_blocking_content(current_user.id)
       render text: t('exams.restrict')
     else
-      require 'rest-client'
-      require 'json'
-      require 'uri'
-
-      address = YAML::load(File.open('config/webconference.yml'))['url_downloader']
-      email = current_user ? current_user.email : 'guest@example.com'
-      url = URI.extract(params[:url])[0]
-
       begin
-        resp = RestClient.get "#{address}email=#{email}&url=#{url}"
-
-        msg = JSON.parse(resp.body)["msg"]
-        meetingID = msg.split("download/")[1]
-
-        if (msg.slice(URI::regexp(%w(http https))) == msg)
-          path = YAML::load(File.open('config/webconference.yml'))['path_files'] + meetingID
-          send_file( path,
-          :disposition => 'attachment',
-          :type => 'video/mp4',
-          :x_sendfile => true )
-        else
-          respond_to do |format|
-            format.html { redirect_to request.referer , flash: { notice: msg } }
-          end
-        end
+        path = YAML::load(File.open('config/webconference.yml'))['path_files'] + params[:url] + ".mp4"
+        send_file( path,
+        :disposition => 'attachment',
+        :type => 'video/mp4',
+        :x_sendfile => true )
 
       rescue => ex
         respond_to do |format|
-          format.html { redirect_to request.referer , flash: { notice: "Servidor indisponível no momento. Por favor, tente novamente mais tarde." } }
+          format.html { redirect_to request.referer , flash: { notice: "Download em processamento. Por favor, tente novamente mais tarde." } }
         end
       end
-
     end
-end
+  end
 
   private
 
