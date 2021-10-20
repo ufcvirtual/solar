@@ -180,4 +180,21 @@ $(function(){
       maxHeight: '70%'
     });
 
+  $('#all_students_scores').nice_checkbox();
+  $(".btn_send_msg").on('click', function(event){
+    event.preventDefault();
+    if($(this).is('[disabled]')){
+     return false
+    }
+    students_ids = []
+    $('tbody :checkbox:checked').each(function(index, element){
+      students_ids.push(element.value)
+    });
+    var url = $(this).data('url').replace(':user_ids', students_ids.join(","));
+    $(this).call_fancybox({
+      href: url,
+      open: true,
+    });
+  });
+
 });
