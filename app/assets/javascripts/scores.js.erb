@@ -187,10 +187,15 @@ $(function(){
      return false
     }
     students_ids = []
-    $('tbody :checkbox:checked').each(function(index, element){
-      students_ids.push(element.value)
-    });
-    var url = $(this).data('url').replace(':user_ids', students_ids.join(","));
+    if(!$('#all_students_scores:checked')){
+      $('tbody :checkbox:checked').each(function(index, element){
+        students_ids.push(element.value)
+      });
+      var url = $(this).data('url').replace(':user_ids', students_ids.join(","));
+    }else{
+      var url = $(this).data('url').replace(':user_ids', 'all');
+    }
+
     $(this).call_fancybox({
       href: url,
       open: true,
