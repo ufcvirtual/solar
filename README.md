@@ -11,11 +11,15 @@ O Ambiente Virtual de Aprendizagem Solar é um software livre; você pode redist
 Este programa é distribuído na esperança que possa ser útil, mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a GNU General Public License (GPLv3) para maiores detalhes. 
 
 
-### Concepção e Desenvolvimento da aplicação
+### Criação, colaboração na concepção e desenvolvimento da aplicação
 
-#### Concepção
+### Criação e Concepção Geral
 ```
 Prof. Wellington Wagner Ferreira Sarmento
+```
+
+#### Colaboração na concepção
+```
 Me. Patrícia de Sousa Paula
 Prof. Henrique Sérgio Lima Pequeno
 Prof. George Allan Gomes
