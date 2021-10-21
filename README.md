@@ -25,6 +25,7 @@ Prof. Henrique Sérgio Lima Pequeno
 Prof. George Allan Gomes
 Ba. Humberto Osório Ovídeo Gomes
 Prof. Mauro C. Pequeno
+Me. Bianca S. Barone
 ```
 
 #### Equipe de Análise e Desenvolvimento atual
