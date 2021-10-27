@@ -44,8 +44,8 @@ module V1
             verify_permission(:interact, @at.related)
             webconference = Webconference.find(params[:id])
 
-            raise 'closed' unless webconference.on_going?
-            raise 'offline' unless webconference.bbb_online?
+            error!({ error: :closed }, 404) unless webconference.on_going?
+            error!({ error: :offline }, 404) unless webconference.bbb_online?
 
             @url = webconference.link_to_join(current_user, @at.id, true)
             URI.parse(@url).path
@@ -73,10 +73,10 @@ module V1
 
             webconference = Webconference.find(params[:id])
 
-            raise 'not_started' unless webconference.started?
-            raise 'on_going' if webconference.on_going?
-            raise 'offline' unless webconference.bbb_online?
-            raise 'still_processing' unless webconference.is_over?
+            error!({ error: :not_started }, 404) unless webconference.started?
+            error!({ error: :on_going }, 404) if webconference.on_going?
+            error!({ error: :offline }, 404) unless webconference.bbb_online?
+            error!({ error: :still_processing }, 404) unless webconference.is_over?
 
             return webconference.get_all_recordings_urls(@at.id)
           end
