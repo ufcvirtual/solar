@@ -80,8 +80,11 @@ class AssignmentsController < ApplicationController
     if @assignment.errors.empty?
       render_json_error(error, 'assignments.error')
     else
-      @files_errors = @assignment.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
-      @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
+      if @assignment.enunciation_files.empty?
+        @assignment.enunciation_files.build
+      else
+        @files_errors = @assignment.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
+      end
       render :new
     end
   end
@@ -91,8 +94,11 @@ class AssignmentsController < ApplicationController
     if @assignment.update_attributes(assignment_params)
       render_assignment_success_json('updated')
     else
-      @files_errors = @assignment.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
-      @assignment.enunciation_files.build if @assignment.enunciation_files.empty?
+      if @assignment.enunciation_files.empty?
+        @assignment.enunciation_files.build
+      else
+        @files_errors = @assignment.enunciation_files.compact.map(&:errors).map(&:full_messages).flatten.uniq.join(', ')
+      end
       render :edit
     end
   rescue => error

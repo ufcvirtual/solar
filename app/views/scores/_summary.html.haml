@@ -44,23 +44,3 @@
 - unless @users.blank?
   = link_to content_tag(:i, nil, class: "icon-ellipsis"), summary_scores_path(page: @users.next_page, user_name: @username), class: 'load-more-users', remote: true, :"data-tooltip" => t(:load_items), :'aria-label' => t(:load_items)  if @users.next_page
 
-
-:javascript
-  $(function(){
-    $('#all_students_scores').nice_checkbox();
-    $(".btn_send_msg").on('click', function(event){
-      event.preventDefault();
-      if($(this).is('[disabled]')){
-       return false
-      }
-      students_ids = []
-      $('tbody :checkbox:checked').each(function(index, element){
-        students_ids.push(element.value)
-      });
-      var url = $(this).data('url').replace(':user_ids', students_ids.join(","));
-      $(this).call_fancybox({
-        href: url,
-        open: true,
-      });
-    });
-  });

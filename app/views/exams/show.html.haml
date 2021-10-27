@@ -5,10 +5,10 @@
     .input
       = label_tag t(".name"), nil, class: "form_label"
       %span.label_info= @exam.name
-    
+
     .input
       = label_tag t(".description"), nil, class: "form_label"
-      %span.label_info= @exam.description
+      %span.label_info=raw @exam.description
 
     .input
       = label_tag t(".attempts"), nil, class: "form_label"

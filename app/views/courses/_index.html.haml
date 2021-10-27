@@ -41,9 +41,9 @@
       complement_success: function(data) {
 
         // se eu tiver selecionado no autocomplete o curso que quero deletar
-        if(curriculum_unit_id == $("#code_name").combobox('value')){
+        if(curriculum_unit_id == $("#code_name").combobox('value') || $(".courses_list table tbody").length == 1){
           // atualiza o conteúdo da lista e do autocomplete selecionado
-          $.get("#{courses_path(type: @type)}", function(data) {
+          $.get("#{courses_path(type_id: @type_id)}", function(data) {
             $('.courses_list').html(data);
             $("#autocomplete-input").val("");
           });

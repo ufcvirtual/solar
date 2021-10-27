@@ -256,12 +256,14 @@ class MessagesController < ApplicationController
     @message = Message.new
     @message.files.build
 
-    unless params[:user_ids].nil?
+    unless params[:user_ids].nil? || params[:user_ids] == 'all'
       users = User.find(params[:user_ids].split(","))
-      @reply_to_many = users.size > 0 ? users.map{|u| u.to_msg} : nil
-
-      @reply_to = [User.find(params[:user_ids]).to_msg]
+    else
+      users = AllocationTag.find(@allocation_tag_id).get_students
     end
+
+    @reply_to_many = users.map(&:to_msg)
+    @reply_to = [@reply_to_many]
 
     @scores = true
     render partial: 'form'
