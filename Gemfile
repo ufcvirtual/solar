@@ -96,7 +96,7 @@ group :development do
   gem "foreman", require: false
 
   gem "sshkit-sudo" # usar sudo no capistrano
-  gem "capistrano", "~> 3.0"
+  gem "capistrano", "~> 3.16.0"
   gem "capistrano-rails"
   gem "capistrano3-delayed-job"
   gem "capistrano-nvm"

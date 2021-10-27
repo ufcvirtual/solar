@@ -63,7 +63,7 @@ GEM
       debug_inspector (>= 0.0.1)
     builder (3.2.4)
     cancancan (1.8.4)
-    capistrano (3.14.1)
+    capistrano (3.16.0)
       airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
@@ -121,7 +121,7 @@ GEM
     compass-rails (1.1.7)
       compass (>= 0.12.2)
       sprockets (<= 2.11.0)
-    concurrent-ruby (1.1.7)
+    concurrent-ruby (1.1.9)
     cpf_utils (1.2.1)
     cucumber (3.2.0)
       builder (>= 2.1.2)
@@ -431,7 +431,7 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
-    sshkit (1.21.1)
+    sshkit (1.21.2)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     sshkit-sudo (0.1.0)
@@ -491,7 +491,7 @@ DEPENDENCIES
   bigbluebutton-api-ruby (~> 1.6.0)
   binding_of_caller (~> 0.8.0)
   cancancan (~> 1.8.0)
-  capistrano (~> 3.0)
+  capistrano (~> 3.16.0)
   capistrano-dotenv-tasks
   capistrano-nvm
   capistrano-rails
