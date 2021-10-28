@@ -102,6 +102,10 @@ module Solar
     #config.gem "koala"
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+      
+    config.assets.configure do |env|
+      env.export_concurrent = false
+    end
 
     config.assets.configure do |env|
         env.export_concurrent = false
