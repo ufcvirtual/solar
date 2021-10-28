@@ -4,8 +4,7 @@
   - if is_curriculum_unit_selected?
     - group_selection = render_group_selection
   %head
-    %meta{content: "text/html; charset=utf-8", "http-equiv" => "Content-Type"}
-    %meta{name: "viewport", content: "width=device-width, initial-scale=1"}
+    %meta{content: "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
     %title= show_breadcrumb_title
 
     = javascript_include_tag "application"
@@ -15,7 +14,7 @@
     /[if lte IE 7]
       <haml_loud> javascript_include_tag 'lte-ie7' </haml_loud>
       <haml_loud> stylesheet_link_tag "misc/ie7" </haml_loud>
-    = stylesheet_link_tag "application", "fancyBox"
+    = stylesheet_link_tag "application", "fancybox"
     = stylesheet_link_tag "themes/theme_" + "#{user_session[:theme]}", id: "themes"
     / Datapicker with time
     = stylesheet_link_tag 'jquery-ui-timepicker-addon'
@@ -41,13 +40,12 @@
             %li#mysolar_top_submenu_label.mysolar_top_submenu_label_regular.nav_menu
               = link_to '#void', {onclick: "mysolarTopSubmenuToggle();return false;", class: 'mysolar_top_link nav_item', id: 'mysolar_top_user_nick'} do
                 = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", :'aria-hidden' => 'true'
-                %span#student-name.dont-show-in-mobile= current_user.nick
-            %li#server_clock_wrapper.nav_menu.dont-show-in-mobile
-              %span#server_clock.nav_item.dont-show-in-mobile{name: "server_clock"}
+                = current_user.nick
+            %li#server_clock_wrapper.nav_menu
+              %span#server_clock.nav_item{name: "server_clock"}
             %li#accessibility_top_menu.mysolar_top_submenu_label_regular.nav_menu
               %a#accessibility_top.mysolar_top_link.nav_item{ href: "", onclick: "mysolarAccessibilitySubmenuToggle();return false;", :'aria-label' =>  t(:accessibility_menu)}
-                = image_tag 'accessibility-icon2.png', id: "image_accessibility", class: "show-only-in-mobile", alt: t(:accessibility), :'aria-hidden' => 'true'
-                %span#accessibility-link.dont-show-in-mobile= t(:accessibility)
+                = t(:accessibility)
               %ul#mysolar_accessibility_submenu
                 %li.sub_nav_menu= link_to t(:main_content), "#main_content_accesskey", accesskey: "1", class: "sub_nav_item"
                 %li#link_to_menu_accesskey.sub_nav_menu= link_to t(:menu_aside), "#menu_accesskey", accesskey: "2", class: "sub_nav_item"
@@ -61,19 +59,16 @@
                   %li.sub_nav_menu=link_to t(:libras), 'https://www.vlibras.gov.br/', target: '_blank', 'aria-label'=> t(:libras) + t(:new_window), class: "sub_nav_item"
             %li#mysolar_top_help.mysolar_top_submenu_label_regular.nav_menu
               %a#help_top.mysolar_top_link.nav_item{href: "", onclick: "mysolarTopSubmenuHelpToggle();return false;"}
-                = image_tag 'help-icon2.png', id: "image_help", class: "show-only-in-mobile", alt: t(:help), :'aria-hidden' => 'true'
-                %span#help-link.dont-show-in-mobile= t(:help)
+                = t(:help)
               %ul#mysolar_submenu_help
-                %li.sub_nav_menu.dont-show-in-mobile= link_to t(:context), "#", id: 'help_context', class: "sub_nav_item"
+                %li.sub_nav_menu= link_to t(:context), "#", id: 'help_context', class: "sub_nav_item"
                 %li.sub_nav_menu= link_to t('tutorials.menu'), tutorials_path, id: 'my_tutorials', class: "sub_nav_item"
                 %li.sub_nav_menu= link_to t(:login_faq), faq_path, class: "sub_nav_item", :'aria-label' => t(:login_faq)
                 %li.sub_nav_menu= link_to t(:videos), "../../video_tutorials.html", target: "_blank", class: "sub_nav_item", :'aria-label' => t(:videos)+ t(:new_window)
                 %li.sub_nav_menu= link_to t(:contact), support_new_messages_path, class: "sub_nav_item"
                 %li.sub_nav_menu= link_to t(:mysolar_suggestions), 'https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ', target: '_blank', :'aria-label' => t(:mysolar_suggestions) + t(:new_window)
             %li#mysolar_top_logout.nav_menu
-              = link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, id: "logout", class: "mysolar_top_link logout nav_item dont-show-in-mobile")
-              %a{href: "/logout", class: "mysolar_top_link logout nav_item"}
-                = image_tag 'exit-icon.png', id: "image_exit", height: "30", width: "30", class: "show-only-in-mobile", alt: t(:mysolar_alt_img_exit), :'aria-hidden' => 'true'
+              = link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, id: "logout", class: "mysolar_top_link logout nav_item")
         / Submenu
         #mysolar_top_submenu
           %div
@@ -91,42 +86,12 @@
             %li.sub_nav_menu= link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, class: "sub_nav_item")
 
         / tabs
-        .open-menu
-          .bar1
-          .bar2
-          .bar3
-
         #mysolar_tabs{role: 'menubar'}
-          %ul#mysolar_tabs_wrapper.dont-show-in-mobile= raw render_tabs
-          %ul#mysolar_tabs_wrapper_with_dropdown.show-only-in-mobile
-            - unless user_session[:tabs][:opened].nil?
-              - if user_session[:tabs][:opened]["Home"] && user_session[:tabs][:opened]["Home"][:url][:context] == Context_General
-                %li.mysolar_unit_tab.general_context{:'data-tab-context'=>"#{Context_General}", :'data-tab-id'=>"home", class: user_session[:tabs][:active] == "Home" ? "mysolar_unit_active_tab" : ""}
-                  = link_to user_session[:tabs][:opened]["Home"][:breadcrumb].first[:name], activate_tab_path(id: "Home"), :'aria-label' => t('tabs.access', name: user_session[:tabs][:opened]["Home"][:breadcrumb].first[:name])
-              - if user_session[:tabs][:opened].length > 1
-                - if user_session[:tabs][:opened].length == 2
-                  - link_id = user_session[:tabs][:opened].keys[1]
-                  - link_name = user_session[:tabs][:opened][link_id][:breadcrumb].first[:tab]
-                  %li.mysolar_unit_tab{:'data-tab-context'=>"#{Context_Curriculum_Unit}", :'data-tab-id'=>"#{link_id}", class: user_session[:tabs][:active] != "Home" ? "mysolar_unit_active_tab" : ""}
-                    = link_to(link_name.truncate(30), activate_tab_path(id: link_id), :'aria-label'=>t('tabs.access', name: link_name))
-                    = link_to('',close_tab_path(id: link_id), class: 'tabs_close', style: "top: 4px;", id: "#{link_id}", :'aria-label' => t('tabs.close', name: link_name), data: { confirm: t('tabs.close_confirm', name: link_name) })
-                - else
-                  - menu_dropdown_open_id = user_session[:tabs][:active] == "Home" ? user_session[:tabs][:opened].keys[1] : user_session[:tabs][:active]
-                  - menu_dropdown_open_name = user_session[:tabs][:opened][menu_dropdown_open_id][:breadcrumb].first[:tab]
-                  %li.mysolar_unit_tab{:'data-tab-context'=>"#{Context_Curriculum_Unit}", :'data-tab-id'=>"#{menu_dropdown_open_id}", class: user_session[:tabs][:active] != "Home" ? "mysolar_unit_active_tab" : ""}
-                    = link_to(activate_tab_path(id: menu_dropdown_open_id), :'aria-label'=>t('tabs.access', name: menu_dropdown_open_name), :"data-dropdown"=>"#dropdown_tabs") do
-                      = menu_dropdown_open_name.truncate(30)
-                      = content_tag(:i, nil, class: "icon-arrow-down-triangle")
-                    .dropdown.dropdown-tip.dropdown-relative{id: "dropdown_tabs", style: "display: none;"}
-                      %ul.dropdown-menu
-                        - user_session[:tabs][:opened].each do |id, name|
-                          - next if id == "Home"
-                          - name_tab = name[:breadcrumb].first[:tab]
-                          - active_tab_id = user_session[:tabs][:opened][id][:breadcrumb].first[:url][:id]
-                          %li.mysolar_unit_tab{:'data-tab-context'=>"#{Context_Curriculum_Unit}", :'data-tab-id'=>"#{active_tab_id}"}
-                            = link_to(name_tab.truncate(30), activate_tab_path(id: id), :'aria-label'=>t('tabs.access', name: name_tab), style: "display: inline-block; padding: 0 10px;")
-                            = link_to('',close_tab_path(id: id), class: 'tabs_close', id: "#{active_tab_id}", :'aria-label' => t('tabs.close', name: name_tab), style: "display: inline-block; padding: 0; left: -2px;", data: { confirm: t('tabs.close_confirm', name: name_tab) })
-          %ul#mysolar_extras.dont-show-in-mobile
+          %ul#mysolar_tabs_wrapper= raw render_tabs
+          %ul#mysolar_extras
+            %li#mysolar_open_lesson
+              %button.btn.btn_main.disabled{"data-tooltip" => t(:mysolar_open_lesson), name: t(:mysolar_open_lesson), onclick: "javascript:maximize_lesson(this);", type: "button", "data-fancybox-type" => "iframe", :'aria-label' => t(:mysolar_open_lesson_alt, disabled: t(:open_lesson_no_lesson)), disabled: true}
+                %i.icon-class{:'aria-hidden' => 'true'}
             %li#mysolar_open_shortcut
               %a.btn.btn_main#shortcut_accesskey{ href: '#', :"data-dropdown" => "#dropdown_eq_1_2", :'aria-label' => t('scores.info.shortcut'), accesskey: 9, "data-tooltip" => t('scores.info.shortcut')}
                 = t('scores.info.shortcut')
@@ -148,66 +113,54 @@
               %noscript= content_tag(:i, nil, class: 'icon-warning noscript', :'aria-label' => t(:no_javascript), title: t(:no_javascript))
 
       / sidebar
-      .col-xs-12.col-sm-2
-        %nav#mysolar_sidebar{role: 'navigation'}
-          #mysolar_menu_accordion.responsive-menu-sidebar
-            .mysolar_menu
-              .close-menu.change
-                .bar1
-                .bar2
-                .bar3
-              %p.menu_accessible
-                %a#menu_accesskey{href: "#menu_accesskey", :'aria-label' => t(:start_menu)}= t(:menu_first_item)
-              - if active_tab[:url][:context] == Context_Curriculum_Unit
-                .mysolar_menu_group
-                  %ul
-                    %li.mysolar_menu_title_single{'data-menu-bread' => 'menu_home', 'data-contexts' => [Context_Curriculum_Unit]}
-                      = link_to t(:menu_home), active_tab[:breadcrumb].first[:url], class: 'mysolar_menu_title', :'data-shortcut-shift' => true, :'data-shortcut' => t(:menu_home, scope: "shortcut.vertical_menu.code"), :'data-shortcut-complement' => (I18n.translate!(:menu_home, scope: "shortcut.vertical_menu.complement", raise: true) rescue '')
+      %nav#mysolar_sidebar{role: 'navigation'}
+        #mysolar_menu_accordion
+          .mysolar_menu
+            %p.menu_accessible
+              %a#menu_accesskey{href: "#menu_accesskey", :'aria-label' => t(:start_menu)}= t(:menu_first_item)
+            - if active_tab[:url][:context] == Context_Curriculum_Unit
+              .mysolar_menu_group
+                %ul
+                  %li.mysolar_menu_title_single{'data-menu-bread' => 'menu_home', 'data-contexts' => [Context_Curriculum_Unit]}
+                    = link_to t(:menu_home), active_tab[:breadcrumb].first[:url], class: 'mysolar_menu_title', :'data-shortcut-shift' => true, :'data-shortcut' => t(:menu_home, scope: "shortcut.vertical_menu.code"), :'data-shortcut-shift' => true, :'data-shortcut-complement' => (I18n.translate!(:menu_home, scope: "shortcut.vertical_menu.complement", raise: true) rescue '')
 
-              = raw menu_list
+            = raw menu_list
 
-              %p.menu_accessible
-                %a#menu_end{href: "#menu_end", :'aria-label' => t(:end_menu)}= t(:menu_last_item)
+            %p.menu_accessible
+              %a#menu_end{href: "#menu_end", :'aria-label' => t(:end_menu)}= t(:menu_last_item)
 
       / content
-      .col-xs-12.col-sm-10
-        %section#mysolar_content{role: 'main'}
-          / page titles
-          .block_wrapper
-            .flash_message_wrapper
-              - flash.each do |name, msg|
-                #flash_message{ class: name }
-                  = content_tag(:span, msg, id: "flash_message_span")
-                  - if @attribute.blank?
-                    = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: "erase_flash_messages(true)", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
-                  - else
-                    = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: "erase_flash_messages(true, "+@attribute.to_s+")", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
-            - name = active_tab[:breadcrumb].last[:name]#.gsub(".", "-") unless active_tab[:breadcrumb].last[:name].nil?
-            #breadcrumb= raw show_breadcrumb
-            - if is_curriculum_unit_selected?
-              #page_title
-                - if current_page?(controller: 'lessons', action: 'index')
-                  %h1#main_content_accesskey{ tabindex: "0", :'aria-label' => t(name, default: name) + t('lessons.index.lesson_number_modules', modules: @lessons_modules.size) }= t(name, default: name)
+      %section#mysolar_content{role: 'main'}
+        / page titles
+        .block_wrapper
+          .flash_message_wrapper
+            - flash.each do |name, msg|
+              #flash_message{ class: name }
+                = content_tag(:span, msg, id: "flash_message_span")
+                - if @attribute.blank?
+                  = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: "erase_flash_messages(true)", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
                 - else
-                  %h1#main_content_accesskey{ tabindex: "0" }=t(name, default: name)
-                .block_content_text.position_correction.no-float-mobile
-                  %span.views#classes{role: 'menubar'}= raw(group_selection)
-            - elsif not(in_mysolar?)
-              #page_title
+                  = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: "erase_flash_messages(true, "+@attribute.to_s+")", onkeydown: 'click_on_keypress(event, this)', :'aria-label' => t('flash_message.close')
+          - name = active_tab[:breadcrumb].last[:name]#.gsub(".", "-") unless active_tab[:breadcrumb].last[:name].nil?
+          #breadcrumb= raw show_breadcrumb
+          - if is_curriculum_unit_selected?
+            #page_title
+              - if current_page?(controller: 'lessons', action: 'index')
+                %h1#main_content_accesskey{ tabindex: "0", :'aria-label' => t(name, default: name) + t('lessons.index.lesson_number_modules', modules: @lessons_modules.size) }= t(name, default: name)
+              - else
                 %h1#main_content_accesskey{ tabindex: "0" }=t(name, default: name)
-          = yield
+              .block_content_text
+                %span.views#classes{role: 'menubar'}= raw(group_selection)
+          - elsif not(in_mysolar?)
+            #page_title
+              %h1#main_content_accesskey{ tabindex: "0" }=t(name, default: name)
+        = yield
 
-          #lesson_external_div.invisible
+        #lesson_external_div.invisible
 
-          #sav_url.invisible= link_to "", "#", {class: 'link_content fancybox.iframe', target: '_blank' }
+        #sav_url.invisible= link_to "", "#", {class: 'link_content fancybox.iframe', target: '_blank' }
 
-          #mandatory_notification.invisible= link_to "", show_mandatory_notifications_path(':notification_id'), {class: 'link_content fancybox.iframe', target: '_blank' }
-
-          .enabled{:vw => ""}
-            .active{"vw-access-button" => ""}
-            %div{"vw-plugin-wrapper" => ""}
-              .vw-plugin-top-wrapper
-          %script{:src => "https://vlibras.gov.br/app/vlibras-plugin.js"}
+        #mandatory_notification.invisible= link_to "", show_mandatory_notifications_path(':notification_id'), {class: 'link_content fancybox.iframe', target: '_blank' }
 
         .enabled{:vw => ""}
           .active{"vw-access-button" => ""}
@@ -229,9 +182,9 @@
             %li.choice-tutorial
               = link_to t(:login_footer4), '#', class: "link-arrow"
               %ul.choice-tutorial-menu
-                %li= link_to t(:login_footer5), 'https://github.com/ufcvirtual/solar', :target => '_blank', :'aria-label' => 'Código' + t(:new_window)
-                %li= link_to t(:login_footer6), 'https://github.com/ufcvirtual/solar/blob/master/README.md', :target => '_blank', :'aria-label' => 'Equipe' + t(:new_window)
-                %li= link_to t(:license_terms), 'https://github.com/ufcvirtual/solar/blob/master/LICENSE', :target => '_blank', :'aria-label' => t(:license_terms)+ t(:new_window)
+                %li= link_to t(:login_footer5), 'https://github.com/wwagner33/solar', :target => '_blank', :'aria-label' => 'Código' + t(:new_window)
+                %li= link_to t(:login_footer6), 'https://github.com/wwagner33/solar/blob/master/README', :target => '_blank', :'aria-label' => 'Equipe' + t(:new_window)
+                %li= link_to t(:license_terms), 'https://github.com/wwagner33/solar/blob/master/GPLv3', :target => '_blank', :'aria-label' => t(:license_terms)+ t(:new_window)
             %li= link_to t('privacy_policies.title'), privacy_policy_path, target: '_blank', :'aria-label' => t('privacy_policies.title') + t(:new_window)
             - if (ENV["SOLAR_CURSOS"] == "false")
               %li= link_to t(:login_app), apps_path
@@ -245,8 +198,6 @@
     #loading
       %h2=t(:page_loading)
       %div= image_tag('loading.gif')
-
-  = javascript_include_tag 'jspanel'
 
   :javascript
     new window.VLibras.Widget('https://vlibras.gov.br/app');
@@ -299,9 +250,9 @@
               }, 8000);
             }
           })
-          //.error(function(data){
+          .error(function(data){
             // console.log(data);
-          //});
+          });
         }
       }
     }
@@ -356,19 +307,6 @@
     });
 
     $(document).ready(function(e){
-      document.querySelector('.open-menu').onclick = function() {
-        $('#mysolar_sidebar').addClass('active-menu');
-      };
-
-      document.querySelector('.close-menu').onclick = function() {
-        $('#mysolar_sidebar').removeClass('active-menu');
-      };
-
-      document.documentElement.onclick = function(event) {
-        if(event.target === $('#mysolar_sidebar')[0]) {
-          $('#mysolar_sidebar').removeClass('active-menu');
-        }
-      };
 
       var pathname = $(location).attr("pathname");
 
@@ -392,7 +330,7 @@
             $("#mysolar_top_submenu_username").html(data.name);
           if (typeof(data.email) != "undefined")
             $("#mysolar_top_submenu_useremail").html(data.email);
-        }).fail(function(data){
+        }).error(function(data){
           var data = $.parseJSON(data.responseText);
           if (typeof(data.alert) != "undefined")
             flash_message(data.alert, "alert");
