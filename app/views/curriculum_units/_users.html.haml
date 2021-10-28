@@ -16,9 +16,9 @@
                   %span.count_icon{:'aria-hidden' => 'true'}= user.u_public_files
           / futuramente link para visualizar o perfil do usuário
         .participant_name{ :'data-tooltip' => user.name, :'aria-label' => user.name }
-          = (user.name.length >= 20 ? user.name.truncate(14) : user.name)
+          = (user.name.length >= 20 ? user.name.truncate(16) : user.name)
         .participant_role{ :'data-tooltip' => user.profile_name, :'aria-label' => user.profile_name }
-          = (user.profile_name.length > 20 ? ['(',user.profile_name,')'].join.truncate(23) : raw("(#{user.profile_name})") )
+          = (user.profile_name.length >= 20 ? ['(',user.profile_name,')'].join.truncate(23) : raw("(#{user.profile_name})") )
 
 = javascript_include_tag 'tooltip'
 
