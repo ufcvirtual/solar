@@ -99,8 +99,9 @@ jQuery(function($){
           case 46: // [delete]
             deleteNodes([node]);
         }
-      }else
+      }else{
         flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
+      }
     },
     onPostInit: function(){ // ao carregar a árvore
 
@@ -197,8 +198,9 @@ jQuery(function($){
     if (is_file==true){
       editNode(selNodes[0]);
     }
-    else
+    else{
       flash_message("<%=I18n.t(:item_must_be_selected, :scope => [:lesson_files])%>", "alert", "flash_messages");
+    }
   });
 
   /* caso nenhum arquivo/pasta tenha sido selecionado, exibe uma mensagem de erro dentro
@@ -277,7 +279,6 @@ jQuery(function($){
               // },
               success: function(data){
                 $("#lesson_file_management").html(data);
-                $("#lesson_file_management").html(data);
                 deselect_all();
               },
               error: function() {
@@ -351,7 +352,6 @@ jQuery(function($){
           type: 'GET',
           url: $(this).data('unzip-path').replace(':file', getPath(selNodes[0])),
           success: function(data){
-            $("#lesson_file_management").html(data);
             $("#lesson_file_management").html(data);
             deselect_all();
           },
@@ -599,7 +599,6 @@ function saveDeletion(node, root_node){
     },
     success: function(data) {
       $("#lesson_file_management").html(data);
-      $("#lesson_file_management").html(data);
       deselect_all();
       if(root_node) // atualiza listagem para que esta aula vire, se necessário, rascunho
         $.get($('.list_lessons').data('link-list'), function(data){
@@ -621,7 +620,6 @@ function newFolder(path){
     url: url,
     data: { "path": path },
     success: function(data){
-      $("#lesson_file_management").html(data);
       $("#lesson_file_management").html(data);
       deselect_all();
     },
@@ -647,7 +645,6 @@ function renameNode(node, new_title, path){
       if(initial_file_node != null && initial_file_node == node)
         defineInitialFile(node);
       else{
-        $("#lesson_file_management").html(data);
         $("#lesson_file_management").html(data);
       }
       deselect_all();
@@ -706,7 +703,6 @@ function saveMove(nodesToMove){
           },
           success: function(data) {
             $("#lesson_file_management").html(data);
-            $("#lesson_file_management").html(data);
             deselect_all();
           },
           error: function() {
@@ -725,7 +721,6 @@ function defineInitialFile(node){
     url: jQuery("#initial_file_path").attr("value"),
     data: { "path": getPath(node) },
     success: function(data){
-      $("#lesson_file_management").html(data);
       $("#lesson_file_management").html(data);
       deselect_all();
     },
