@@ -1,7 +1,11 @@
 $('.scores').append('#{escape_javascript(render partial: "pending_evaluatives_frequency", locals: { users: @users , username: @username})}');
 $('a.load-more-users').attr('href', '#{not_evaluative_scores_path page: @users.next_page, type: @score_type, user_name: @username}');
-$('a.load-more-users').attr("aria-label", "#{t(:load_items)}"); 
+$('a.load-more-users').attr("aria-label", "#{t(:load_items)}");
 $(".tb_list").trigger("update");
+
+if($('input#all_students_scores').prop("checked")){
+$('.tb_list_students input:checkbox').prop("checked", true);
+}
 
 - unless @users.next_page
   $('a.load-more-users').remove();

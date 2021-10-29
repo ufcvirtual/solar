@@ -67,7 +67,7 @@ module Solar
     #config.assets.precompile << /(^[^_\/]|\/[^_])[^\/]*$/
     #config.assets.precompile += ['ckeditor/*']
     config.assets.check_precompiled_asset = false
-    
+
     config.i18n.enforce_available_locales = true
     I18n.config.enforce_available_locales = true
 
@@ -102,6 +102,14 @@ module Solar
     #config.gem "koala"
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+      
+    config.assets.configure do |env|
+      env.export_concurrent = false
+    end
+
+    config.assets.configure do |env|
+        env.export_concurrent = false
+    end
 
     config.middleware.use(Rack::Config) do |env|
       env['api.tilt.root'] = Rails.root.join "app", "api", "templates"

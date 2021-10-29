@@ -179,7 +179,7 @@ $(function(){
 
         if ($(events_ids).length != 0){
           $.delete($(this).data('link-delete').replace(':id', events_ids), function(data){
-            flash_message(data.notice, 'notice');
+            flash_message(data.message, data.type_message);
             events.parents('tr').fadeOut().remove();
 
             $(".btn_edit, .btn_del").attr("disabled", true);

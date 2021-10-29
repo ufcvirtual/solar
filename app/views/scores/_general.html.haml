@@ -1,11 +1,14 @@
 %div{ class: 'link_btns_scores' }
   = link_to t('scores.index.print_pdf'), general_scores_path(report: true, format: :pdf), :target => "_blank", class: "btn"
+  = link_to t('messages.send_message'), "#", class: "btn btn_send_msg", disabled: true, :'data-url' => new_by_scores_messages_path(user_ids: ':user_ids')
 
 .parent
   .responsive-table
     %table.tb_list#list_of_students{cellspacing: "0", border: "0", summary: t('scores.index.list_of_students')}
       %thead
         %tr.lines
+          %th.no_sort
+            %input#all_students_scores{type: "checkbox", :"data-children-names" => "ckb_student_score"}
           %th#student{style: "width: 100px;"}= t("scores.index.student")
           %th#public_files= t('scores.index.public_files')
           %th#assignment= t("activerecord.models.assignment")
