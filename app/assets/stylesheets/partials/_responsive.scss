@@ -115,6 +115,14 @@
   width: 100%;
 }
 
+// .fancybox-wrap {
+//   width: 80% !important;
+// }
+
+// .fancybox-inner {
+//   width: 100% !important;
+// }
+
 /* Grid
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
@@ -401,6 +409,10 @@
   .close-menu {
     display: none;
   }
+
+  .lesson_notes {
+    min-width: 300px;
+  }
 }
 
 @media (max-width: 576px) {
@@ -633,7 +645,7 @@
       .right_buttons {
         margin-top: 5px;
         margin-bottom: 5px;
-        margin-left: auto;
+        // margin-left: auto;
       }
     }
 
