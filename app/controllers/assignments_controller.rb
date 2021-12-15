@@ -138,8 +138,6 @@ class AssignmentsController < ApplicationController
       @can_evaluate = can?(:evaluate, Assignment, on: [@allocation_tag_id] )
 
       @acu = AcademicAllocationUser.find_one(@ac.id, @student_id, @group_id, false, @can_evaluate)
-<<<<<<< HEAD
-=======
 
       allocations = Allocation.where(allocation_tag_id: @allocation_tag_id)
       all = allocations.select{|a| a.user_id == current_user.id}
@@ -153,7 +151,6 @@ class AssignmentsController < ApplicationController
         @student_id = params[:student_id]
       end
 
->>>>>>> ff4393920... [#152318222] Permitindo notas diferentes dentro de um grupo
     end
   rescue CanCan::AccessDenied
     redirect_to list_assignments_path, alert: t(:no_permission)
