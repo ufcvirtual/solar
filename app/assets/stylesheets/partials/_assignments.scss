@@ -1,46 +1,64 @@
-.assignments .attached_files{
+.assignments .attached_files {
   padding-top: 3px;
   padding-bottom: 3px;
   font-weight: bold;
   color: $color_gray_text;
- }
+}
 
-.assignments .file{
+.assignments .file {
   margin-left: 10px;
 }
 
-.schedule_dates .right{
+.schedule_dates .right {
   margin-right: 100px;
 }
 
-.tb_list{
-  td{
-    .participants_box{
+.tb_list {
+  td {
+    .participants_box {
       max-height: 300px;
       overflow: auto;
       padding: 10px;
     }
   }
 
-  td[headers^='comments'] a{
+  td[headers^="comments"] a {
     text-decoration: none;
   }
-  td[headers="frequencyindiv"], td[headers="frequencygroup"]{
+  td[headers="frequencyindiv"],
+  td[headers="frequencygroup"] {
     padding: 6px 5px 4px;
   }
 }
 
-.new_assignment{
-  .input.files{
-    #file{
+.new_assignment {
+  .input.files {
+    #file {
       padding: 10px;
       margin-left: -150px;
     }
   }
 
-  i.remove_file{
+  i.remove_file {
     padding: 5px;
     color: $remove_file_color;
     cursor: pointer;
   }
+}
+
+.individually_graded_setter {
+  float: right;
+  display: inline-flex;
+  align-items: flex-end;
+  text-align: end;
+  gap: 5px;
+
+  img {
+    position: relative;
+    top: 4px;
+  }
+}
+
+.individually_graded_link_cursor_wait {
+  cursor: wait !important;
 }

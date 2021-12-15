@@ -226,8 +226,8 @@ class Allocation < ActiveRecord::Base
     AcademicAllocation.find_by_sql <<-SQL
       WITH groups AS (
         SELECT group_participants.group_assignment_id AS group_id
-        FROM group_participants
-        WHERE user_id = #{user_id}
+        FROM group_participants JOIN group_assignments ON group_participants.group_assignment_id = group_assignments.id
+        WHERE user_id = #{user_id} AND individually_graded = FALSE
       )
       SELECT SUM(ac.grade) as grade
       FROM (

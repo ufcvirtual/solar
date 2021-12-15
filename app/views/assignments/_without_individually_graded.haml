@@ -1,0 +1,38 @@
+%tr.lines.without_individually_graded
+  = simple_form_for :academic_allocation_user, url: evaluate_assignment_path(@assignment), html: { method: :put } do |f|
+    - if @assignment.start_hour.blank?
+      %td.center{headers: "begin" }= l(@assignment.schedule.start_date, format: :normal)
+      %td.center{headers: "end" }= l(@assignment.schedule.end_date, format: :normal)
+    - else
+      %td.center{headers: "begin" }= l(@assignment.schedule.start_date, format: :normal) + t(".at") + @assignment.start_hour
+      %td.center{headers: "end" }= l(@assignment.schedule.end_date, format: :normal) + t(".at") + @assignment.end_hour
+    %td.center{:class => "assignment_#{info[:situation]}", headers: "situation"}= t(info[:situation].to_sym)
+    = f.input :user_id, as: :hidden, input_html: { value: @student_id }
+    = f.input :group_id, as: :hidden, input_html: { value: @group_id }
+    %td.center.evaluation{headers: "grade" }
+      .student_assignment_evaluation
+        .text
+        - if !@group.nil? && @group.individually_graded
+          = acu_student.try(:grade)
+        - else
+          = @acu.try(:grade)
+        - if @can_evaluate && @in_time
+          .input.invisible
+            = f.input :grade, required: true, as: :float, step: 0.01, label: false, input_html: {  value: @acu.try(:grade), min:0, max:10, style: 'width: 50px', :'aria-label' => t(".grade") }
+    - if @ac.frequency
+      %td.center.frequency{headers: "working_hours" }
+        .student_assignment_evaluation
+          .text
+          - if !@group.nil? && @group.individually_graded
+            = acu_student.try(:working_hours)
+          - else
+            = @acu.try(:working_hours)
+          - if @can_evaluate && @in_time
+            .input.invisible
+              = f.input :working_hours, required: true, as: :float, label: false, input_html: { style: 'width: 90px', value: @acu.try(:working_hours), min:0, max: @ac.max_working_hours, :'aria-label' => t(".working_hours"), placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@ac.max_working_hours.to_s ) }
+    - if @can_evaluate && @in_time
+      %td.center{headers: "evaluate" }
+        .edit_button= link_to content_tag(:i, nil, class: 'icon-write'), "#void", onclick: 'edit_button(this)', class: "btn edit", :'aria-label' => t(".edit"), :"data-tooltip" => t(".edit")
+        .evaluation_buttons.invisible
+          = link_to content_tag(:i, nil, class: 'icon-checkmark'), "#void", onclick: 'finish_evaluation(this)', class: 'btn btn_main', :"data-tooltip" => t('.save'), :'aria-label' => t(".save")
+          = link_to content_tag(:i, nil, class: 'icon-cross'), "#void", onclick: 'cancel_button(this)', class: "btn btn_caution cancel_evaluation", :"data-tooltip" => t('.cancel'), :'aria-label' => t(".cancel")

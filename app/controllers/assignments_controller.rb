@@ -131,13 +131,26 @@ class AssignmentsController < ApplicationController
     else
       assignment_started?(@assignment)
       verify_owner_or_responsible!(@allocation_tag_id, nil, :html)
-      @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
+      @class_participants = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
 
       @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
       @ac = AcademicAllocation.where(academic_tool_id: @assignment.id, allocation_tag_id: @allocation_tag_id, academic_tool_type: 'Assignment').first
       @can_evaluate = can?(:evaluate, Assignment, on: [@allocation_tag_id] )
 
       @acu = AcademicAllocationUser.find_one(@ac.id, @student_id, @group_id, false, @can_evaluate)
+
+      allocations = Allocation.where(allocation_tag_id: @allocation_tag_id)
+      all = allocations.select{ |a| a.user_id == current_user.id }
+      current_user_profiles = Profile.find(all.map{ |a| a.profile_id })
+      @not_only_student_profile = current_user_profiles.any?{ |p| p.types != Profile_Type_Student }
+      @only_student_profile = current_user_profiles.any?{ |p| p.types == Profile_Type_Student }
+
+      if !@group.nil? && @group.individually_graded
+        @acu.remove_grade_and_working_hours
+        @individually_graded_acus = set_academic_allocation_user_for_individually_graded(@ac.id, @allocation_tag_id, @group)
+        @student_id = params[:student_id]
+      end
+
     end
   rescue CanCan::AccessDenied
     redirect_to list_assignments_path, alert: t(:no_permission)
@@ -153,7 +166,7 @@ class AssignmentsController < ApplicationController
       @assignment = Assignment.find(params[:id])
       @score_type = params[:score_type]
       verify_owner_or_responsible!(@allocation_tag_id, nil, :text)
-      @class_participants             = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
+      @class_participants = AllocationTag.get_participants(@allocation_tag_id, { students: true }).map(&:id)
       @in_time = @assignment.in_time?(@allocation_tag_id, current_user.id)
 
       @ac = AcademicAllocation.where(academic_tool_id: @assignment.id, allocation_tag_id: @allocation_tag_id, academic_tool_type: 'Assignment').first
@@ -200,6 +213,39 @@ class AssignmentsController < ApplicationController
     render partial: (assignment.type_assignment == Assignment_Type_Group ? 'groups' : 'participants'), locals: { assignment: assignment }
   end
 
+  def individually_graded
+    authorize! :evaluate, Assignment, on: [at_id = active_tab[:url][:allocation_tag_id]]
+
+    group = GroupAssignment.find(params[:group_id])
+    group.individually_graded = params[:individually_graded]
+    allocation_tag_id = active_tab[:url][:allocation_tag_id]
+
+    if group.save
+      ac = AcademicAllocation.where(academic_tool_id: params[:id], allocation_tag_id: allocation_tag_id, academic_tool_type: 'Assignment').first
+
+      if !@group.nil? && group.individually_graded
+        acu_group = AcademicAllocationUser.where(academic_allocation_id: ac.id, group_assignment_id: group.id).first
+        acu_group.remove_grade_and_working_hours
+
+        individually_graded_acus = set_academic_allocation_user_for_individually_graded(ac.id, allocation_tag_id, group)
+        assignment = Assignment.find(params[:id])
+
+        students_info = []
+
+        individually_graded_acus.each do |acu|
+          info = assignment.info(acu.user_id, allocation_tag_id, group.id)
+          students_info << {"student_id" => acu.user_id, "student_name" => acu.user_name, "start_date" => l(assignment.schedule.start_date, format: :normal), "end_date" => l(assignment.schedule.end_date, format: :normal), "student_situation" => t(info[:situation].to_sym), "student_grade" => acu.grade, "student_working_hours" => acu.working_hours, "id" => assignment.id, "max_wh" => ac.max_working_hours}
+        end
+      else
+        remove_acu_for_group_assignments(ac.id, group)
+      end
+
+      render json: { success: true, notice: t(group.individually_graded ? 'individually' : 'not_individually', scope: [:assignments, :success]), students_info: students_info}
+    else
+      render json: { success: false, alert: t('assignments.error.individually_error') }, status: :unprocessable_entity
+    end
+  end
+
   private
 
     def assignment_params
@@ -215,6 +261,25 @@ class AssignmentsController < ApplicationController
 
     def assignment_started?(assignment)
       raise "not_started" unless assignment.started? || AllocationTag.find(active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id)
+    end
+
+    def set_academic_allocation_user_for_individually_graded(academic_allocation_id, allocation_tag_id, group)
+      individually_graded_acus = []
+
+      group.users.each do |student|
+        individually_graded_acu = AcademicAllocationUser.where(academic_allocation_id: academic_allocation_id, user_id: student.id).first_or_create
+        individually_graded_acu.user_name = student.name
+        individually_graded_acus << individually_graded_acu
+      end
+
+      individually_graded_acus
+    end
+
+    def remove_acu_for_group_assignments(academic_allocation_id, group)
+      group.users.each do |student|
+        acu = AcademicAllocationUser.where(academic_allocation_id: academic_allocation_id, user_id: student.id).first
+        acu.delete unless acu.nil?
+      end
     end
 
 end
