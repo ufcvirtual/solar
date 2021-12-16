@@ -1,6 +1,7 @@
 object @webconference
 
-attributes :id, :title, :initial_time, :duration, :situation, :evaluative, :frequency
+attributes :id, :title, :initial_time, :situation, :duration, :evaluative, :frequency
+attributes :situation => :finished_and_processed
 
 node (:access_url) { |web| "/api/v1/webconferences/#{@group_id}/access/#{web.id}" }
 
