@@ -182,6 +182,9 @@
 
           flash_message(data.notice, 'notice');
           mutex.lock += 1;
+          setTimeout(function() {
+            document.location.reload(true);
+          }, 3000);
         },
         error: function(data) {
           $(link).find('img').removeClass('individually_graded_link_cursor_wait');
