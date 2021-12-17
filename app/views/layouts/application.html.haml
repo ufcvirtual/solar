@@ -200,13 +200,6 @@
       %div= image_tag('loading.gif')
 
   :javascript
-    try{
-      new window.VLibras.Widget('https://vlibras.gov.br/app');
-    }
-    catch (e){
-      console.log("Vlibras Indisponível");
-    }
-
     /**
      * Google Analytics
      */
@@ -530,3 +523,10 @@
         });
       });
     });
+
+    try{
+      new window.VLibras.Widget('https://vlibras.gov.br/app');
+    }
+    catch (e){
+      console.log("Vlibras Indisponível");
+    }
