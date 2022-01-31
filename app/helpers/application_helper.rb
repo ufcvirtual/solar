@@ -110,6 +110,10 @@ module ApplicationHelper
     not(user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:id].nil?)
   end
 
+  def curriculum_unit_selected
+    user_session[:tabs][:opened][user_session[:tabs][:active]][:url][:id]
+  end
+
   def in_mysolar?
     return (params[:action] == "mysolar")
   end
