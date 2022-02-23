@@ -216,6 +216,7 @@
           %script{:src => "https://vlibras.gov.br/app/vlibras-plugin.js"}
 
       %footer
+        #curriculum_unit_selected= curriculum_unit_selected
         #footer_push{style: "height:35px"}
         - locales  =  %w(pt_BR en_US)
         - selected = I18n.locale.to_s
@@ -246,7 +247,7 @@
       %h2=t(:page_loading)
       %div= image_tag('loading.gif')
 
-  = javascript_include_tag 'jspanel'
+  = javascript_include_tag 'jspanel', 'extensions/layout/jspanel.layout'
 
   :javascript
     new window.VLibras.Widget('https://vlibras.gov.br/app');
@@ -586,4 +587,25 @@
           remove_underline_shortcut(this);
         });
       });
+
+      let currente_allocation_tag = $("#curriculum_unit_selected").text();
+      let localstorage_allocation_tag = localStorage.getItem('curriculum_unit_selected');
+      if(currente_allocation_tag==localstorage_allocation_tag){
+        let configs = JSON.parse(localStorage.getItem('configs'));
+        if(configs){
+          configs.forEach(function (config, indice, array) {
+            //config["setStatus"] = 'minimized';
+            jsPanel.layout.restoreId({
+              id: config.id,
+              config: config,
+              storagename: 'solar_jspanels'
+            });
+          });
+        } 
+      }else{
+        if (localStorage.hasOwnProperty("configs"))
+          localStorage.removeItem('configs');
+        localStorage.setItem('curriculum_unit_selected', 'nil');
+      }
     });
+
