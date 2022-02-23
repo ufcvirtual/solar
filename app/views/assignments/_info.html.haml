@@ -1,24 +1,23 @@
 - info = @assignment.info(@student_id, @allocation_tag_id, @group_id)
 - acu_student = @individually_graded_acus.select { |acu| acu.user_id == @student_id.to_i }.first if !@individually_graded_acus.nil?
-= simple_form_for :academic_allocation_user, url: evaluate_assignment_path(@assignment), html: { method: :put } do |f|
-  .responsive-table
-    %table.tb_list{:summary=> t("assignments.list.summary_info")}
-      %thead
-        %tr.lines{ style: 'border-top: 1px solid #c0c0c0;' }
-          %th.center.student_name.no_sort{class: !@group.nil? && @group.individually_graded && !@only_student_profile ? '' : 'hide'}= t(:student)
-          %th.center.date_column.no_sort{id: "begin", :'aria-label' => t(".date_begin")}= t('.begin')
-          %th.center.date_column.no_sort{id: "end", :'aria-label' => t(".date_end")}= t('.end')
-          %th.center.no_sort{ style: 'width:20%', id: "situation" }= t('.situation')
-          %th.center.no_sort{ style: 'width:15%', id: "grade" }= t('.grade')
-          - if @ac.frequency
-            %th.center.no_sort{ style: 'width:10%', id: "working_hours" }= t('.working_hours')
-          - if @can_evaluate
-            %th.center.no_sort{ style: 'width:20%',id: "evaluate" }
-      %tbody.info
-        - unless @individually_graded_acus.nil? || @individually_graded_acus.empty? || @only_student_profile
-          = render partial: 'with_individually_graded', locals: { info: info }
-        - else
-          = render partial: 'without_individually_graded', locals: { info: info, acu_student: acu_student }
+.responsive-table
+  %table.tb_list{:summary=> t("assignments.list.summary_info")}
+    %thead
+      %tr.lines{ style: 'border-top: 1px solid #c0c0c0;' }
+        %th.center.student_name.no_sort{class: !@group.nil? && @group.individually_graded && !@only_student_profile ? '' : 'hide'}= t(:student)
+        %th.center.date_column.no_sort{id: "begin", :'aria-label' => t(".date_begin")}= t('.begin')
+        %th.center.date_column.no_sort{id: "end", :'aria-label' => t(".date_end")}= t('.end')
+        %th.center.no_sort{ style: 'width:20%', id: "situation" }= t('.situation')
+        %th.center.no_sort{ style: 'width:15%', id: "grade" }= t('.grade')
+        - if @ac.frequency
+          %th.center.no_sort{ style: 'width:10%', id: "working_hours" }= t('.working_hours')
+        - if @can_evaluate
+          %th.center.no_sort{ style: 'width:20%',id: "evaluate" }
+    %tbody.info
+      - unless @individually_graded_acus.nil? || @individually_graded_acus.empty? || @only_student_profile
+        = render partial: 'with_individually_graded', locals: { info: info }
+      - else
+        = render partial: 'without_individually_graded', locals: { info: info, acu_student: acu_student }
 
 = javascript_include_tag "tooltip"
 
@@ -38,7 +37,7 @@
   }
 
   function finish_evaluation(btn){
-    var form = $(btn).closest('form');
+    var form = $(btn).closest('tr').find('form');
     $.put(form.attr('action'), form.serialize(), function(data){
       flash_message(data.notice, 'notice');
       var td = form.find('td.evaluation');

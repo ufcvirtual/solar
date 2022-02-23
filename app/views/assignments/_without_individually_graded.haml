@@ -1,5 +1,5 @@
 %tr.lines.without_individually_graded
-  = simple_form_for :academic_allocation_user, url: evaluate_assignment_path(@assignment), html: { method: :put } do |f|
+  = simple_form_for :academic_allocation_user, url: evaluate_assignment_path(@assignment), remote: true, html: { method: :put } do |f|
     - if @assignment.start_hour.blank?
       %td.center{headers: "begin" }= l(@assignment.schedule.start_date, format: :normal)
       %td.center{headers: "end" }= l(@assignment.schedule.end_date, format: :normal)
