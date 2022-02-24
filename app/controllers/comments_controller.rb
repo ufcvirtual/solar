@@ -16,6 +16,17 @@ class CommentsController < ApplicationController
   def new
     academic_allocation_user = AcademicAllocationUser.find_or_create_one(@ac.id, active_tab[:url][:allocation_tag_id], params[:student_id], params[:group_id], false, nil)
     raise 'no_acu' if academic_allocation_user.nil?
+
+    tool = Assignment.find(params[:tool_id]) if params[:tool] == "Assignment"
+
+    if !tool.nil? && tool.type_assignment == Assignment_Type_Group
+      @is_group_assignment = true
+      @comments_to_students = [[I18n.t(:all), "all"]]
+      GroupAssignment.find(params[:group_id]).users.each do |student|
+        @comments_to_students << [student.name, student.id]
+      end
+    end
+
     @comment = Comment.new academic_allocation_user_id: academic_allocation_user.id
     @comment.files.build
   rescue => error
@@ -27,6 +38,7 @@ class CommentsController < ApplicationController
 
     @comment      = Comment.new comment_params
     @comment.user = current_user
+    @comment.specific_user_id = (params[:send_to] == 'all' ? nil : params[:send_to].to_i) unless params[:send_to].blank?
 
     if @comment.save
       return_acu_result(@comment.academic_allocation_user, at, @score_type, comment_path(@comment, score_type: @score_type))
@@ -80,7 +92,7 @@ class CommentsController < ApplicationController
   private
 
     def comment_params
-      params.require(:comment).permit(:academic_allocation_user_id, :comment, files_attributes: [:id, :attachment, :_destroy])
+      params.require(:comment).permit(:academic_allocation_user_id, :specific_user_id, :comment, files_attributes: [:id, :attachment, :_destroy])
     end
 
     def get_ac_tool
@@ -116,4 +128,3 @@ class CommentsController < ApplicationController
     end
 
 end
-

@@ -2374,6 +2374,14 @@ pt_BR:
       participants: 'Participantes: '
       grade: Nota
       frequency: Frequência
+    with_individually_graded:
+      edit: Alterar nota
+      save: Salvar
+      cancel: Cancelar
+    without_individually_graded:
+      edit: Alterar nota
+      save: Salvar
+      cancel: Cancelar
 
   assignment_files:
     list:
@@ -5472,6 +5480,7 @@ pt_BR:
       title_alt2: "Acessar notas/frequências e comentários para %{tool}"
     list:
       new: Novo comentário
+      to: "para %{user_name}"
       title: Comentários dos responsáveis
       confirm: Confirma cancelamento do comentário?
       comment_finish_evaluation_unsaved: Há comentário não salvo, deseja salvá-lo antes de finalizar a ação?
@@ -5483,6 +5492,7 @@ pt_BR:
     form:
       attach_file: Anexar arquivo
       attached_files: Anexos
+      send_to: 'Enviar comentário para: '
     success:
       new: Comentário criado com sucesso
       edit: Comentário alterado com sucesso

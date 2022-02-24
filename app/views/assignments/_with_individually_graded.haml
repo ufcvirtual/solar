@@ -1,5 +1,4 @@
 - @individually_graded_acus.each do |acu|
-  - p acu
   %tr.lines.with_individually_graded
     = simple_form_for :academic_allocation_user, url: evaluate_assignment_path(@assignment), remote: true, html: { method: :post } do |f|
       %td.center{style: 'width: 20%'}= acu.user_name

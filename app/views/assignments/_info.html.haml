@@ -25,22 +25,22 @@
   function cancel_button(btn){
     $(btn).parent().addClass("invisible");
     $(btn).parents('td').find('.edit_button').removeClass("invisible");
-    $(btn).parents('tbody').find('td .input').addClass('invisible');
-    $(btn).parents('tbody').find('td .text').removeClass('invisible');
+    $(btn).closest('tr').find('td .input').addClass('invisible');
+    $(btn).closest('tr').find('td .text').removeClass('invisible');
   }
 
   function edit_button(btn){
     $(btn).parent().addClass("invisible");
     $(btn).parents('td').find('.evaluation_buttons').removeClass("invisible");
-    $(btn).parents('tbody').find('td .input').removeClass('invisible');
-    $(btn).parents('tbody').find('td .text').addClass('invisible');
+    $(btn).closest('tr').find('td .input').removeClass('invisible');
+    $(btn).closest('tr').find('td .text').addClass('invisible');
   }
 
   function finish_evaluation(btn){
     var form = $(btn).closest('tr').find('form');
     $.put(form.attr('action'), form.serialize(), function(data){
       flash_message(data.notice, 'notice');
-      var td = form.find('td.evaluation');
+      var td = form.closest('tr').find('td.evaluation');
       td.find('.text').html(td.find('.input input').val());
       td = form.find('td.frequency');
       td.find('.text').html(td.find('.input input').val());

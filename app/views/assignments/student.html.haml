@@ -170,6 +170,7 @@
 
           flash_message(data.notice, 'notice');
           mutex.lock += 1;
+          document.location.reload(true);
         },
         error: function(data) {
           $(link).find('img').removeClass('individually_graded_link_cursor_wait');

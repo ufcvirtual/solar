@@ -17,7 +17,7 @@
   min-height: 17px;
   font-size: 12px;
   white-space: normal;
-  font-family: 'Ubuntu';
+  font-family: "Ubuntu";
   width: 100%;
   // display: block;
   display: flex;
@@ -29,9 +29,14 @@
   background-color: $color_white_base;
 }
 
+.to {
+  margin-left: 4px;
+  display: inline-block;
+}
+
 .comment_files_info,
 .comment_date {
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
   font-weight: normal;
   font-size: 8pt;
   text-align: right;
@@ -39,7 +44,7 @@
   margin-right: 8px;
   margin-left: 10px;
   color: $color_gray_font;
-  display: inline-block;
+  // display: inline-block;
   float: right;
 }
 
@@ -59,7 +64,7 @@
 .comment_form,
 li.comment {
   width: 100%;
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
   font-size: 10pt;
   vertical-align: top;
 }
@@ -87,11 +92,17 @@ li.comment {
 
 .comment_button {
   text-align: right;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  label {
+    color: $color_black;
+  }
 }
 
 .summary {
   .info {
-
     .label_info {
       width: auto;
     }

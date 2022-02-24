@@ -13,7 +13,7 @@ class Comment < ActiveRecord::Base
 
   has_one :academic_allocation, through: :academic_allocation_user
   has_one :allocation_tag, through: :academic_allocation
-  
+
   has_one :assignment, through: :academic_allocation_user
 
   has_many :files, class_name: 'CommentFile', dependent: :delete_all
@@ -46,6 +46,14 @@ class Comment < ActiveRecord::Base
 
   def define_user
     self.user_id = User.current.try(:id)
+  end
+
+  def responsibles
+    Allocation.responsibles(self.allocation_tag.id).map { |allocation| allocation.user_id }.uniq
+  end
+
+  def to_user
+    User.find(self.specific_user_id) unless self.specific_user_id.blank?
   end
 
   def delete_with_dependents
