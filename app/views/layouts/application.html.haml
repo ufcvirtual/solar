@@ -216,7 +216,7 @@
           %script{:src => "https://vlibras.gov.br/app/vlibras-plugin.js"}
 
       %footer
-        #curriculum_unit_selected= curriculum_unit_selected
+        #curriculum_unit_selected.invisible= curriculum_unit_selected
         #footer_push{style: "height:35px"}
         - locales  =  %w(pt_BR en_US)
         - selected = I18n.locale.to_s
@@ -601,11 +601,10 @@
               storagename: 'solar_jspanels'
             });
           });
-        } 
+        }
       }else{
         if (localStorage.hasOwnProperty("configs"))
           localStorage.removeItem('configs');
         localStorage.setItem('curriculum_unit_selected', 'nil');
       }
     });
-

@@ -23,7 +23,7 @@
   %section.comments
     = render partial: 'comments/list', locals: { comments: @acu.try(:comments), tool: @assignment, tool_type: 'Assignment' }
 
-  - if @can_evaluate
+  - if @can_evaluate && (@group.nil? || (!@group.nil? && !@group.individually_graded))
     = simple_form_for :academic_allocation_user, url: evaluate_assignment_path(@assignment), html: { method: :put, id: 'academic_allocation_user_grade_form' } do |f|
       = f.input :user_id, as: :hidden, input_html: { value: @student_id }
       = f.input :group_id, as: :hidden, input_html: { value: @group_id }

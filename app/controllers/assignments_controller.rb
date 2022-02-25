@@ -146,7 +146,6 @@ class AssignmentsController < ApplicationController
       @only_student_profile = current_user_profiles.any?{ |p| p.types == Profile_Type_Student }
 
       if !@group.nil? && @group.individually_graded
-        @acu.remove_grade_and_working_hours
         @individually_graded_acus = set_academic_allocation_user_for_individually_graded(@ac.id, @allocation_tag_id, @group)
         @student_id = params[:student_id]
       end

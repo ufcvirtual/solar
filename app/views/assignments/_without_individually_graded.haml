@@ -12,10 +12,10 @@
     %td.center.evaluation{headers: "grade" }
       .student_assignment_evaluation
         .text
-        - if !@group.nil? && @group.individually_graded
-          = acu_student.try(:grade)
-        - else
-          = @acu.try(:grade)
+          - if !@group.nil? && @group.individually_graded
+            = acu_student.try(:grade)
+          - else
+            = @acu.try(:grade)
         - if @can_evaluate && @in_time
           .input.invisible
             = f.input :grade, required: true, as: :float, step: 0.01, label: false, input_html: {  value: @acu.try(:grade), min:0, max:10, style: 'width: 50px', :'aria-label' => t(".grade") }
@@ -23,10 +23,10 @@
       %td.center.frequency{headers: "working_hours" }
         .student_assignment_evaluation
           .text
-          - if !@group.nil? && @group.individually_graded
-            = acu_student.try(:working_hours)
-          - else
-            = @acu.try(:working_hours)
+            - if !@group.nil? && @group.individually_graded
+              = acu_student.try(:working_hours)
+            - else
+              = @acu.try(:working_hours)
           - if @can_evaluate && @in_time
             .input.invisible
               = f.input :working_hours, required: true, as: :float, label: false, input_html: { style: 'width: 90px', value: @acu.try(:working_hours), min:0, max: @ac.max_working_hours, :'aria-label' => t(".working_hours"), placeholder: t(:info_frequency, scope: [:chat_rooms, :user_messages], wh:@ac.max_working_hours.to_s ) }

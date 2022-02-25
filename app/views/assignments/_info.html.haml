@@ -24,7 +24,7 @@
 :javascript
   function cancel_button(btn){
     $(btn).parent().addClass("invisible");
-    $(btn).parents('td').find('.edit_button').removeClass("invisible");
+    $(btn).closest('td').find('.edit_button').removeClass("invisible");
     $(btn).closest('tr').find('td .input').addClass('invisible');
     $(btn).closest('tr').find('td .text').removeClass('invisible');
   }
@@ -42,7 +42,7 @@
       flash_message(data.notice, 'notice');
       var td = form.closest('tr').find('td.evaluation');
       td.find('.text').html(td.find('.input input').val());
-      td = form.find('td.frequency');
+      td = form.closest('tr').find('td.frequency');
       td.find('.text').html(td.find('.input input').val());
 
       cancel_button(btn);
