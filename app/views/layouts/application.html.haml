@@ -250,8 +250,6 @@
   = javascript_include_tag 'jspanel', 'extensions/layout/jspanel.layout'
 
   :javascript
-    new window.VLibras.Widget('https://vlibras.gov.br/app');
-
     /**
      * Google Analytics
      */
@@ -608,3 +606,10 @@
         localStorage.setItem('curriculum_unit_selected', 'nil');
       }
     });
+
+    try{
+      new window.VLibras.Widget('https://vlibras.gov.br/app');
+    }
+    catch (e){
+      console.log("Vlibras Indisponível");
+    }
