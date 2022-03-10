@@ -435,6 +435,13 @@
     transition: left 0.3s ease-out;
   }
 
+  .limited_text {
+    white-space: nowrap;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   #mysolar_content {
     width: 100%;
 
