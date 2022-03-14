@@ -101,7 +101,7 @@
           %ul#mysolar_tabs_wrapper_with_dropdown.show-only-in-mobile
             - unless user_session[:tabs][:opened].nil?
               - if user_session[:tabs][:opened]["Home"] && user_session[:tabs][:opened]["Home"][:url][:context] == Context_General
-                %li.mysolar_unit_tab.general_context{:'data-tab-context'=>"#{Context_General}", :'data-tab-id'=>"home", class: user_session[:tabs][:active] == "Home" ? "mysolar_unit_active_tab limited_text" : ""}
+                %li.mysolar_unit_tab.general_context{:'data-tab-context'=>"#{Context_General}", :'data-tab-id'=>"home", class: user_session[:tabs][:active] == "Home" ? "mysolar_unit_active_tab" : ""}
                   = link_to user_session[:tabs][:opened]["Home"][:breadcrumb].first[:name], activate_tab_path(id: "Home"), :'aria-label' => t('tabs.access', name: user_session[:tabs][:opened]["Home"][:breadcrumb].first[:name])
               - if user_session[:tabs][:opened].length > 1
                 - if user_session[:tabs][:opened].length == 2
@@ -113,7 +113,7 @@
                 - else
                   - menu_dropdown_open_id = user_session[:tabs][:active] == "Home" ? user_session[:tabs][:opened].keys[1] : user_session[:tabs][:active]
                   - menu_dropdown_open_name = user_session[:tabs][:opened][menu_dropdown_open_id][:breadcrumb].first[:tab]
-                  %li.mysolar_unit_tab{:'data-tab-context'=>"#{Context_Curriculum_Unit}", :'data-tab-id'=>"#{menu_dropdown_open_id}", class: user_session[:tabs][:active] != "Home" ? "mysolar_unit_active_tab limited_text" : ""}
+                  %li.mysolar_unit_tab{:'data-tab-context'=>"#{Context_Curriculum_Unit}", :'data-tab-id'=>"#{menu_dropdown_open_id}", class: user_session[:tabs][:active] != "Home" ? "mysolar_unit_active_tab" : ""}
                     = link_to(activate_tab_path(id: menu_dropdown_open_id), :'aria-label'=>t('tabs.access', name: menu_dropdown_open_name), :"data-dropdown"=>"#dropdown_tabs") do
                       = menu_dropdown_open_name.truncate(18)
                       = content_tag(:i, nil, class: "icon-arrow-down-triangle")
