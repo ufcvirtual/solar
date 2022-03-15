@@ -79,5 +79,5 @@ module AssignmentsHelper
     @group_id   = acu.group_assignment_id
     @student_id = acu.user_id
   end
-  
+
 end
