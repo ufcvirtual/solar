@@ -241,8 +241,13 @@ class AcademicAllocationUser < ActiveRecord::Base
     last_attempt.exam_responses_question_items.where("exam_responses_question_items.value IS NOT NULL").select('DISTINCT exam_response_id').count rescue 0
   end
 
-  def has_attempt(exam)
-    (exam_user_attempts.empty? || (!exam_user_attempts.last.complete && !exam.uninterrupted) || (exam.attempts > exam_user_attempts.count))
+  def has_attempt(exam, last_attempt=nil)
+    if last_attempt.nil?
+      (exam_user_attempts.empty? || (!exam_user_attempts.last.complete && !exam.uninterrupted) || (exam.attempts > exam_user_attempts.count))
+    else  
+      (exam_user_attempts.empty? || last_attempt.get_total_duration==0 || (!exam_user_attempts.last.complete && !exam.uninterrupted) || (exam.attempts > exam_user_attempts.count))
+      
+    end
   end
 
   def delete_with_dependents

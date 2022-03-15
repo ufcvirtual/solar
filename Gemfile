@@ -76,7 +76,8 @@ gem "rufus-scheduler", "~> 3.4.2"
 gem "daemons"
 gem "delayed_job_active_record", "~> 4.1.5"
 
-gem "activerecord-session_store", "~> 1.1.3"
+#gem "activerecord-session_store", "~> 1.1.3"
+gem 'redis-actionpack'
 
 # add these gems to help with the transition:
 #gem "protected_attributes", "~> 1.0.9"

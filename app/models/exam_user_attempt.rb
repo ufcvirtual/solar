@@ -42,6 +42,9 @@ class ExamUserAttempt < ActiveRecord::Base
       self.save!
     end
     duration = self.end.nil? ? 0 : self.end - self.start
+    p self.end 
+    p self.start
+    duration
     #if time.blank? || er_id.blank?
     #  exam_responses.sum(:duration)
     #else
@@ -53,4 +56,7 @@ class ExamUserAttempt < ActiveRecord::Base
     ((exam_responses.present? && exam.uninterrupted?) || exam.ended?)
   end
 
+  def get_total_duration
+    exam_responses.sum(:duration)
+  end  
 end
