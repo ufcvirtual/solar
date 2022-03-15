@@ -400,7 +400,7 @@
 /* Media Queries
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
-@media (min-width: 577px) {
+@media (min-width: 672px) {
   .show-only-in-mobile {
     display: none !important;
   }
@@ -415,7 +415,7 @@
   }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 671px) {
   .responsive-menu-sidebar {
     background: $background_light;
     margin: 0;
@@ -482,7 +482,7 @@
   }
 
   .fancybox-wrap {
-    min-width: 280px !important;
+    min-width: 80% !important;
   }
 
   .fancybox-inner,
@@ -1124,6 +1124,11 @@
       width: 100% !important;
       margin: 10px 0 !important;
     }
+
+  }
+
+  .label_display .middle_column, .label_display .first_column, .label_display .last_column{
+    max-height: none !important;
   }
 
   .dropdown .select_all_box,
@@ -1166,6 +1171,7 @@
       width: 100% !important;
       margin-left: 0;
       margin-right: 0;
+      display: block;
     }
   }
 
@@ -1237,7 +1243,7 @@
 }
 
 /* Larger than mobile */
-@media (min-width: 577px) {
+@media (min-width: 672px) {
   .col-sm-1,
   .col-sm-2,
   .col-sm-3,
