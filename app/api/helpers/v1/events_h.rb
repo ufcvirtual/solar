@@ -8,7 +8,7 @@ module V1::EventsH
       when 4; {type: 1, title: "Prova Presencial: AF - 1ª chamada"} # prova presencial - AF - 1ª chamada
       when 5; {type: 1, title: "Prova Presencial: AF - 2ª chamada"} # prova presencial - AF - 2ª chamada
       when 6; {type: 5, title: "Aula por Web Conferência"} # aula por webconferência
-      when 7; {type: 7, title: "Avaliação Remota"}  
+      when 7; {type: 7, title: "Avaliação Remota"}
     end
   end
 
@@ -26,7 +26,7 @@ module V1::EventsH
     start_hour, end_hour = params[:event][:start].split(':'), params[:event][:end].split(':')
     group_events = []
 
-    event = ScheduleEvent.joins(:schedule, :academic_allocations).where(schedules: { start_date: params[:event][:date], end_date: params[:event][:date] }, title: event_info[:title], type_event: event_info[:type], place: 'Polo', start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":"), academic_allocations: { allocation_tag_id: ats } ).first_or_initialize
+    event = ScheduleEvent.joins(:schedule, :academic_allocations).where(schedules: { start_date: params[:event][:date], end_date: params[:event][:date] }, title: event_info[:title], type_event: event_info[:type], place: ([6,7].include?(event_info[:type]) ? 'Solar' : 'Polo'), start_hour: [start_hour[0], start_hour[1]].join(":"), end_hour: [end_hour[0], end_hour[1]].join(":"), academic_allocations: { allocation_tag_id: ats } ).first_or_initialize
     event.integrated = true
 
     if event.new_record? && update_event.blank?
