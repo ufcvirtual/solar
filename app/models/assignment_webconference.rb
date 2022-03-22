@@ -78,11 +78,12 @@ class AssignmentWebconference < ActiveRecord::Base
     @api.create_meeting(meeting_name, meeting_id, options) unless @api.is_meeting_running?(meeting_id)
 
     group_id = academic_allocation_user.group_assignment_id
+    user_name = (user.use_nick_at_webconference ? user.nick : user.name)
 
     if group_id.nil? || GroupParticipant.where(group_assignment_id: group_id, user_id: user.id).any?
-      @api.join_meeting_url(meeting_id, "#{user.name}*", options[:moderatorPW])
+      @api.join_meeting_url(meeting_id, "#{user_name}*", options[:moderatorPW])
     elsif AllocationTag.find(academic_allocation.allocation_tag_id).is_responsible?(user.id)
-      @api.join_meeting_url(meeting_id, user.name, options[:attendeePW])
+      @api.join_meeting_url(meeting_id, user_name, options[:attendeePW])
     end
   end
 
