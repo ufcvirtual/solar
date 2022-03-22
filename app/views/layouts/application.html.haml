@@ -39,7 +39,7 @@
               = image_tag 'solar_logo_small_cursos.png', alt: t(:mysolar_alt_img_solar), id: "solar_logo"
           %ul#mysolar_top_options
             %li#mysolar_top_submenu_label.mysolar_top_submenu_label_regular.nav_menu
-              = link_to '#void', {onclick: "mysolarTopSubmenuToggle();return false;", class: 'mysolar_top_link nav_item', id: 'mysolar_top_user_nick'} do
+              = link_to '#void', {onclick: "mysolarTopSubmenuToggle();return false;", class: 'mysolar_top_link nav_item', id: 'mysolar_top_user_nick', :'aria-label' => "#{t(:mysolar_alt_img_user)} #{current_user.nick}"} do
                 = image_tag photo_user, alt: "#{t(:mysolar_alt_img_user)} #{current_user.nick}", id: "image_user", :'aria-hidden' => 'true'
                 %span#student-name.dont-show-in-mobile= current_user.nick
             %li#server_clock_wrapper.nav_menu.dont-show-in-mobile
@@ -58,21 +58,21 @@
                 %li.sub_nav_menu= link_to t(:high_contrast_link), "#", accesskey: 6, :'data-url' => update_theme_personal_configurations_path, :'data-theme' => "#{user_session[:theme]}", id: "mysolar_high_contrast_option", class: "sub_nav_item", remote: true
                 %li.sub_nav_menu= link_to t('shortcut.shortcut_link'), general_shortcuts_path , accesskey: 8, class: "fancybox.ajax sub_nav_item", :'aria-label' => t('shortcut.shortcut_link') + t("fancybox.open"), :'data-shortcut' => t('shortcut.shortcut_link_code'), :'data-shortcut-shift' => true, id: 'shortcut_link'
                 - if I18n.locale.to_s == 'pt_BR'
-                  %li.sub_nav_menu=link_to t(:libras), 'https://www.vlibras.gov.br/', target: '_blank', 'aria-label'=> t(:libras) + t(:new_window), class: "sub_nav_item"
+                  %li.sub_nav_menu=link_to t(:libras), 'https://www.vlibras.gov.br/', target: '_blank', :'aria-label'=> t(:libras) + t(:new_window), class: "sub_nav_item"
             %li#mysolar_top_help.mysolar_top_submenu_label_regular.nav_menu
-              %a#help_top.mysolar_top_link.nav_item{href: "", onclick: "mysolarTopSubmenuHelpToggle();return false;"}
+              %a#help_top.mysolar_top_link.nav_item{href: "", onclick: "mysolarTopSubmenuHelpToggle();return false;", :'aria-label' => t(:help)}
                 = image_tag 'help-icon2.png', id: "image_help", class: "show-only-in-mobile", alt: t(:help), :'aria-hidden' => 'true'
                 %span#help-link.dont-show-in-mobile= t(:help)
               %ul#mysolar_submenu_help
                 %li.sub_nav_menu.dont-show-in-mobile= link_to t(:context), "#", id: 'help_context', class: "sub_nav_item"
-                %li.sub_nav_menu= link_to t('tutorials.menu'), tutorials_path, id: 'my_tutorials', class: "sub_nav_item"
+                %li.sub_nav_menu= link_to t('tutorials.menu'), tutorials_path, id: 'my_tutorials', class: "sub_nav_item", :'aria-label' => t('tutorials.menu')
                 %li.sub_nav_menu= link_to t(:login_faq), faq_path, class: "sub_nav_item", :'aria-label' => t(:login_faq)
                 %li.sub_nav_menu= link_to t(:videos), "../../video_tutorials.html", target: "_blank", class: "sub_nav_item", :'aria-label' => t(:videos)+ t(:new_window)
-                %li.sub_nav_menu= link_to t(:contact), support_new_messages_path, class: "sub_nav_item"
+                %li.sub_nav_menu= link_to t(:contact), support_new_messages_path, class: "sub_nav_item", :'aria-label' => t(:contact)
                 %li.sub_nav_menu= link_to t(:mysolar_suggestions), 'https://docs.google.com/a/virtual.ufc.br/spreadsheet/viewform?formkey=dFpzVU4xa1FMT3ZldjhDS014NFMtaXc6MQ', target: '_blank', :'aria-label' => t(:mysolar_suggestions) + t(:new_window)
             %li#mysolar_top_logout.nav_menu
               = link_to_if(current_user, t(:mysolar_alt_img_exit), logout_path, id: "logout", class: "mysolar_top_link logout nav_item dont-show-in-mobile")
-              %a{href: "/logout", class: "mysolar_top_link logout nav_item"}
+              %a{href: "/logout", class: "mysolar_top_link logout nav_item", :'aria-label' => t(:mysolar_alt_img_exit)}
                 = image_tag 'exit-icon.png', id: "image_exit", height: "30", width: "30", class: "show-only-in-mobile", alt: t(:mysolar_alt_img_exit), :'aria-hidden' => 'true'
         / Submenu
         #mysolar_top_submenu

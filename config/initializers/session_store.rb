@@ -8,4 +8,8 @@
 # (create the session table with "rails generate session_migration")
 
 #mudando armazenamento de sessao para o banco
-Solar::Application.config.session_store :active_record_store
+#Solar::Application.config.session_store :active_record_store
+
+#mudando armazenamento de sessao para o banco nosql(redis)
+Rails.application.config.session_store :cookie_store, key: '_solar_session'
+Solar::Application.config.session_store :redis_store, servers: "redis://#{ENV['DB_REDIS']}:6379/0/session",expire_after: 30.days, key: '_solar_session', httponly: true
