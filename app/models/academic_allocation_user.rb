@@ -35,7 +35,7 @@ class AcademicAllocationUser < ActiveRecord::Base
   validate :verify_wh, if: -> {!working_hours.blank? && merge.nil?}
   validate :verify_grade, if: -> {!grade.blank? && merge.nil?}
   validate :verify_offer, :verify_date, if: -> {(saved_change_to_working_hours? || saved_change_to_grade?) && merge.nil?}
-  # validates :group_assignment_id, presence: true, if: Proc.new { |a| a.try(:assignment).try(:type_assignment) == Assignment_Type_Group }
+  validates :group_assignment_id, presence: true, if: Proc.new { |a| a.try(:assignment).try(:type_assignment) == Assignment_Type_Group }
 
   before_save :if_group_assignment_remove_user_id
   before_save :verify_profile, :verify_group, :verify_participants, if: -> {merge.nil?}
@@ -244,9 +244,9 @@ class AcademicAllocationUser < ActiveRecord::Base
   def has_attempt(exam, last_attempt=nil)
     if last_attempt.nil?
       (exam_user_attempts.empty? || (!exam_user_attempts.last.complete && !exam.uninterrupted) || (exam.attempts > exam_user_attempts.count))
-    else  
+    else
       (exam_user_attempts.empty? || last_attempt.get_total_duration==0 || (!exam_user_attempts.last.complete && !exam.uninterrupted) || (exam.attempts > exam_user_attempts.count))
-      
+
     end
   end
 
@@ -382,6 +382,11 @@ class AcademicAllocationUser < ActiveRecord::Base
 
     # if final_exam rules not defined or (have enough hours and everything is ok)
     return true if (course.passing_grade.blank? || ((!allocation.parcial_grade.blank? && (allocation.parcial_grade < course.passing_grade && (course.min_grade_to_final_exam.blank? || course.min_grade_to_final_exam <= allocation.parcial_grade))) && (min_hours.blank? || uc.working_hours.blank? || (min_hours*0.01)*uc.working_hours <= allocation.working_hours)))
+  end
+
+  def if_group_assignment_is_individually_graded(assignment)
+    p assignment
+    assignment.try(:assignment).try(:type_assignment) == Assignment_Type_Group || !assignment.try(:group_individual_assignment_id).nil?
   end
 
   def remove_grade_and_working_hours

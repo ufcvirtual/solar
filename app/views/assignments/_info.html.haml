@@ -14,7 +14,7 @@
         - if @can_evaluate
           %th.center.no_sort{ style: 'width:20%',id: "evaluate" }
     %tbody.info
-      - unless @individually_graded_acus.nil? || @individually_graded_acus.empty? || @only_student_profile
+      - unless @individually_graded_acus.blank? || @only_student_profile
         = render partial: 'with_individually_graded', locals: { info: info }
       - else
         = render partial: 'without_individually_graded', locals: { info: info, acu_student: acu_student }

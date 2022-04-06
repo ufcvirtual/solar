@@ -43,7 +43,7 @@ class AcademicAllocationUsersController < ApplicationController
 
   private
     def acu_params
-      params.require(:academic_allocation_user).permit(:group_id, :user_id, :grade, :working_hours, :score_type)
+      params.require(:academic_allocation_user).permit(:group_id, :user_id, :grade, :working_hours, :score_type, :group_individual_assignment_id)
     end
 
 end

@@ -146,77 +146,77 @@ schedule28:
 # para as ofertas (período de matrícula)
 schedule29:
   id: 29
-  start_date: '2011-01-01'
-  end_date: '2021-03-02'
+  start_date: "2011-01-01"
+  end_date: "2021-03-02"
 
 schedule30:
   id: 30
-  start_date: '2011-01-01'
-  end_date: '2021-03-02'
+  start_date: "2011-01-01"
+  end_date: "2021-03-02"
 
 schedule31:
   id: 31
-  start_date: '2011-01-01'
-  end_date: '2021-03-02'
+  start_date: "2011-01-01"
+  end_date: "2021-03-02"
 
 schedule32:
   id: 32
-  start_date: '2011-01-01'
-  end_date: '2021-03-02'
+  start_date: "2011-01-01"
+  end_date: "2021-03-02"
 
 schedule33: # não deve ser utilizado, pois deve ser únicamente utilizado para a oferta7 (para que o teste de remoção funcione adequadamente)
   id: 33
-  start_date: '2013-05-01'
+  start_date: "2013-05-01"
   end_date:
 
 schedule34:
   id: 34
-  start_date: '2013-05-01'
+  start_date: "2013-05-01"
   end_date:
 
 ## para ofertas
 
 sc_for_offers1:
   id: 35
-  start_date: '2011-03-10'
-  end_date: '2021-12-01'
+  start_date: "2011-03-10"
+  end_date: <%= (Date.today + 24.months).to_s(:db) %>
 
 sc_for_offers2:
   id: 36
-  start_date: '2011-03-10'
-  end_date: '2011-12-01'
+  start_date: "2011-03-10"
+  end_date: <%= (Date.today + 24.months).to_s(:db) %>
 
 sc_for_offers3:
   id: 37
-  start_date: '2011-03-10'
-  end_date: '2021-12-01'
+  start_date: "2011-03-10"
+  end_date: <%= (Date.today + 24.months).to_s(:db) %>
 
 sc_for_offers4:
   id: 38
-  start_date: '2011-03-10'
-  end_date: '2011-12-01'
+  start_date: "2011-03-10"
+  end_date: <%= (Date.today + 24.months).to_s(:db) %>
 
 schedule39:
   id: 39
   start_date: <%= Date.today.to_s(:db) %>
-  end_date: <%= (Date.today + 6.months).to_s(:db) %>
+  end_date: <%= (Date.today + 24.months).to_s(:db) %>
 
 schedule40:
   id: 40
   start_date: <%= Date.today.to_s(:db) %>
-  end_date: <%= (Date.today + 1.months).to_s(:db) %>
+  end_date: <%= (Date.today + 24.months).to_s(:db) %>
 
 ## para chats_rooms
 
 sc_for_chat1:
   id: 41
-  start_date: '2011-12-01'
-  end_date: '2014-12-01'
+  start_date: "2011-12-01"
+  end_date: "2014-12-01"
 
 sc_for_chat2:
   id: 42
-  start_date: '2011-12-01'
-  end_date: '2014-12-01'
+  start_date: "2011-12-01"
+  end_date: "2014-12-01"
 
 ## para avisos
 
@@ -251,17 +251,17 @@ sc_for_chat3:
 
 sc_for_c_livre_offer:
   id: 48
-  start_date: '2014-02-01'
-  end_date: '2014-07-31'
+  start_date: "2014-02-01"
+  end_date: <%= (Date.today + 24.months).to_s(:db) %>
 
 sc_for_c_livre_enroll:
   id: 49
-  start_date: '2014-02-01'
-  end_date: '2014-03-31'
+  start_date: "2014-02-01"
+  end_date: <%= (Date.today + 24.months).to_s(:db) %>
 
 # atividade concluida
 
 assig_concluded:
   id: 50
-  start_date: '2011-03-10'
-  end_date: '2011-04-10'
+  start_date: "2011-03-10"
+  end_date: "2011-04-10"

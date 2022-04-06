@@ -145,16 +145,16 @@ class AssignmentsController < ApplicationController
       @not_only_student_profile = current_user_profiles.any?{ |p| p.types != Profile_Type_Student }
       @only_student_profile = current_user_profiles.any?{ |p| p.types == Profile_Type_Student }
 
-      if !@group.nil? && @group.individually_graded
-        @individually_graded_acus = set_academic_allocation_user_for_individually_graded(@ac.id, @allocation_tag_id, @group)
+      if !@group.blank? && @group.individually_graded
+        @individually_graded_acus = academic_allocation_user_for_individually_graded(@ac.id, @allocation_tag_id, @group)
         @student_id = params[:student_id]
       end
 
     end
-  rescue CanCan::AccessDenied
-    redirect_to list_assignments_path, alert: t(:no_permission)
-  rescue => error
-    redirect_to list_assignments_path, alert: (error.to_s == 'not_started' ? t('assignments.error.not_started2') : t('assignments.error.general_message'))
+  # rescue CanCan::AccessDenied
+  #   redirect_to list_assignments_path, alert: t(:no_permission)
+  # rescue => error
+  #   redirect_to list_assignments_path, alert: (error.to_s == 'not_started' ? t('assignments.error.not_started2') : t('assignments.error.general_message'))
   end
 
   def summarized
@@ -222,11 +222,17 @@ class AssignmentsController < ApplicationController
     if group.save
       ac = AcademicAllocation.where(academic_tool_id: params[:id], allocation_tag_id: allocation_tag_id, academic_tool_type: 'Assignment').first
 
-      if !@group.nil? && group.individually_graded
-        acu_group = AcademicAllocationUser.where(academic_allocation_id: ac.id, group_assignment_id: group.id).first
-        acu_group.remove_grade_and_working_hours
+      if !group.blank? && group.individually_graded
+        acu_group = AcademicAllocationUser.where(academic_allocation_id: group.academic_allocation_id, group_assignment_id: group.id).first
+        acu_group.update(group_individual_assignment_id: group.id)
 
-        individually_graded_acus = set_academic_allocation_user_for_individually_graded(ac.id, allocation_tag_id, group)
+        p acu_group
+        # student_acu = AcademicAllocationUser.where(academic_allocation_id: academic_allocation_id, group_assignment_id: group.id).first
+        # student_acu.update(user_id: student.id, group_assignment_id: nil, group_individual_assignment_id: group.id)
+
+        # acu_group.remove_grade_and_working_hours
+
+        individually_graded_acus = academic_allocation_user_for_individually_graded(ac.id, allocation_tag_id, group)
         assignment = Assignment.find(params[:id])
 
         students_info = []
@@ -235,8 +241,8 @@ class AssignmentsController < ApplicationController
           info = assignment.info(acu.user_id, allocation_tag_id, group.id)
           students_info << {"student_id" => acu.user_id, "student_name" => acu.user_name, "start_date" => l(assignment.schedule.start_date, format: :normal), "end_date" => l(assignment.schedule.end_date, format: :normal), "student_situation" => t(info[:situation].to_sym), "student_grade" => acu.grade, "student_working_hours" => acu.working_hours, "id" => assignment.id, "max_wh" => ac.max_working_hours}
         end
-      else
-        remove_acu_for_group_assignments(ac.id, group)
+      # else
+      #   remove_acu_for_group_assignments(ac.id, group)
       end
 
       render json: { success: true, notice: t(group.individually_graded ? 'individually' : 'not_individually', scope: [:assignments, :success]), students_info: students_info}
@@ -262,23 +268,23 @@ class AssignmentsController < ApplicationController
       raise "not_started" unless assignment.started? || AllocationTag.find(active_tab[:url][:allocation_tag_id]).is_observer_or_responsible?(current_user.id)
     end
 
-    def set_academic_allocation_user_for_individually_graded(academic_allocation_id, allocation_tag_id, group)
-      individually_graded_acus = []
+    def academic_allocation_user_for_individually_graded(academic_allocation_id, allocation_tag_id, group)
+      acus = []
 
-      group.users.each do |student|
-        individually_graded_acu = AcademicAllocationUser.where(academic_allocation_id: academic_allocation_id, user_id: student.id).first_or_create
-        individually_graded_acu.user_name = student.name
-        individually_graded_acus << individually_graded_acu
+      group.users.each_with_index do |student, index|
+        student_acu = AcademicAllocationUser.where(academic_allocation_id: academic_allocation_id, user_id: student.id, group_individual_assignment_id: group.id).first_or_create
+        student_acu.user_name = student.name
+        acus << student_acu
       end
 
-      individually_graded_acus
+      acus
     end
 
-    def remove_acu_for_group_assignments(academic_allocation_id, group)
-      group.users.each do |student|
-        acu = AcademicAllocationUser.where(academic_allocation_id: academic_allocation_id, user_id: student.id).first
-        acu.delete unless acu.nil?
-      end
-    end
+    # def remove_acu_for_group_assignments(academic_allocation_id, group)
+    #   group.users.each do |student|
+    #     acu = AcademicAllocationUser.where(academic_allocation_id: academic_allocation_id, user_id: student.id).first
+    #     acu.delete unless acu.nil?
+    #   end
+    # end
 
 end

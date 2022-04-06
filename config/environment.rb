@@ -37,6 +37,7 @@ Lesson_Type_Link = 1 # aula por link
 # constantes de tipo de trabalhos
 Assignment_Type_Individual = 0
 Assignment_Type_Group      = 1
+Assignment_Type_Individual_Group = 2
 
 # constantes de tipo de Prova
 Exam_Type_Objective  = 0
