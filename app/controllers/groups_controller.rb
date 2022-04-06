@@ -54,7 +54,7 @@ class GroupsController < ApplicationController
 
   def new
     authorize! :create, Group
-
+    @old_group_id = params[:old_group_id]
     @group = Group.new offer_id: params[:offer_id]
   end
 
@@ -71,6 +71,13 @@ class GroupsController < ApplicationController
 
     @group.user_id = current_user.id
     if @group.save
+      old_group_ids = params[:old_group_id]
+      unless old_group_ids.empty?
+        groups = Group.where(id: old_group_ids.split(","))
+        groups.each do |old_group|
+          Allocation.clone_allocation_by_group(old_group.id, @group.id)
+        end  
+      end  
       render_group_success_json('created')
     else
       render :new
@@ -179,6 +186,36 @@ class GroupsController < ApplicationController
   def show
     @group = Group.find(params[:id])
     authorize! :list, Group, on: [@group.offer.allocation_tag.id]
+  end
+
+  def view_unify
+    authorize! :create, Group
+    @group = Group.find(params[:old_group_id].split(",")[0])
+    @old_group_ids = params[:old_group_id]
+    offer = Offer.find(params[:offer_id]) if params.include?(:offer_id)
+    @groups = offer.groups.where.not(id: params[:old_group_id].split(","), status: false).order("code")
+    #@groups = Group.where.not(id: params[:old_group_id])
+    @type_id = params[:type_id]
+  end
+
+  def unify
+    group = Group.find(params[:id])
+    authorize! :create, Group, on: [group.offer.allocation_tag.id]
+    unless group.nil?
+      old_group_ids = params[:old_group_ids]
+      unless old_group_ids.empty?
+        groups = Group.where(id: old_group_ids.split(","))
+        groups.each do |old_group|
+          Allocation.clone_allocation_by_group(old_group.id, group.id)
+        end  
+      end  
+      render_group_success_json('created')
+    else
+      render :view_unify
+    end
+  rescue => error
+    request.format = :json
+    raise error.class
   end
 
   private

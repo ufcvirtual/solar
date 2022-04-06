@@ -7,7 +7,7 @@ function result_error(data) {
 
 $(function(){
 
-  $('.disable_group, .enable_group, .btn_del, .btn_edit').attr("disabled", true);
+  $('.disable_group, .enable_group, .btn_del, .btn_edit, .btn_unfolding').attr("disabled", true);
 
   $('#btn_new_group').click(function(){
     if ($('.filter #type_id').val() == "3") // curso livre
@@ -16,6 +16,39 @@ $(function(){
       var url = $(this).data("link-new").replace('type_param', $('.filter #type_id').val()).replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
 
     $(this).call_fancybox({href : url, open: true});
+  });
+
+  $('#btn_unfolding').click(function(){
+    if ($(this).attr('disabled') == 'disabled'){
+      flash_message("<%=I18n.t(:choose_one, scope: [:groups, :list])%>", 'alert');
+      return false;
+    }
+    var groups_ckb = $('.ckb_group:checked', $(this).parents("div.list_groups")).map(function() { return this.value; }).get();
+    if (!(!groups_ckb.length || groups_ckb.length > 1)) {
+      var url_unfolding = $(this).data('link-unfolding').replace('value_old_group_id', groups_ckb);
+      $(this).call_fancybox({href : url_unfolding, open: true});
+    }
+    return false;
+  });
+
+  $('#btn_unify').click(function(){
+    if ($(this).attr('disabled') == 'disabled'){
+      flash_message("<%=I18n.t(:choose_one, scope: [:groups, :list])%>", 'alert');
+      return false;
+    }
+    var groups_ids = $.map($("#ckb_group:checked"), function(n){
+      return ($(n).val());
+    });
+    console.log(groups_ids);
+      if($(groups_ids).length == 0)
+        flash_message("<%=I18n.t(:choose_at_least_one, scope: [:groups, :list])%>", 'alert');
+      else {
+        console.log('Teste 01');
+        var url_unify = $(this).data('link-unify').replace('value_old_group_id', groups_ids);
+        console.log(url_unify);
+        $(this).call_fancybox({href : url_unify, open: true});
+      }
+    return false;
   });
 
   $('.btn_edit').click(function(){
@@ -54,7 +87,7 @@ $(function(){
   });
 
   $('#all_groups').nice_checkbox({
-    objects_to_change_status: ['.disable_group', '.enable_group']
+    objects_to_change_status: ['.disable_group', '.enable_group', '.btn_unfolding']
   });
 
   $('.disable_group, .enable_group').click(function(){

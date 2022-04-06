@@ -152,6 +152,8 @@ Solar::Application.routes.draw do
       get :list_to_edit, action: :list, edition: true
       get :academic_index
       get :tags
+      get :view_unify
+      put :unify
     end
   end
 

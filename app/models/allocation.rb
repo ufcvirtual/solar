@@ -479,4 +479,16 @@ class Allocation < ActiveRecord::Base
       true
     end
 
+    def self.clone_allocation_by_group(origin_group_id, new_group_id)
+      allocations_old = Group.find(origin_group_id).students_allocations
+      new_allocation_tag_id = Group.find(new_group_id).allocation_tag.id
+      #allocations_old = Allocation.where(allocation_tag_id: allocation_tag_id_old, profile_id: 1,status: 1)
+      allocations_old.each do |allocation_old|
+        allocation_new = allocation_old.dup
+        allocation_new.allocation_tag_id = new_allocation_tag_id
+        allocation_new.origin_group_id = origin_group_id
+        allocation_new.save
+      end
+    end  
+
 end

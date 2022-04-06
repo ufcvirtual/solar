@@ -1,30 +1,14 @@
 .new_group
-  = simple_form_for @group, html: {id: 'group_form'} do |f|
-    %h1#lightBoxDialogTitle= t((f.object.persisted? ? :edit : :new), scope: "groups.list")
+  = simple_form_for @group, :url => url_for(:action => 'unify', :controller => 'groups'), :method => :put, html: { id: 'group_form' } do |f|
+    %h1#lightBoxDialogTitle= t(:unify, scope: "groups.list")
     %span.form_requirement= t(:required_fields)
 
     .form-inputs.block_content
       = f.input :offer_id, as: :hidden
 
-      %div
-        = f.label t(:course), class: 'responsive_group_label'
-        #text_as_label= @group.offer.course.try(:name)
-
-      - if @type_id != "3"
-        %div
-          = f.label t(:curriculum_unit), class: 'responsive_group_label'
-          #text_as_label= @group.offer.curriculum_unit.try(:name)
-
-      %div
-        = f.label t(:semester), class: 'responsive_group_label'
-        #text_as_label= @group.offer.semester.name
-
-      = f.input :name
-      = f.input :code
-      = f.input :location
-
+      = select_tag 'id', options_for_select(@groups.collect { |s| [ s.code, s.id] })
       = hidden_field_tag :type_id, @type_id
-      = hidden_field_tag :old_group_id, @old_group_id
+      = hidden_field_tag :old_group_ids, @old_group_ids
 
       .right_buttons
         = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox'
