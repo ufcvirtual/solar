@@ -2484,6 +2484,10 @@ pt_BR:
       choose_one: Selecione uma turma
       edit: Editar turma
       none: Nenhuma turma cadastrada
+      unfolding: Desdobrar
+      unify: Unificar
+      unfolding_groups: Desdobrar turmas
+      unify_groups: Unificar tumas
     group_list:
       code: Código
       enabled: Ativada

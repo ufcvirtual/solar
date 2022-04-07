@@ -1,11 +1,12 @@
 .new_group
   = simple_form_for @group, :url => url_for(:action => 'unify', :controller => 'groups'), :method => :put, html: { id: 'group_form' } do |f|
-    %h1#lightBoxDialogTitle= t(:unify, scope: "groups.list")
+    %h1#lightBoxDialogTitle= t(:unify_groups, scope: "groups.list")
     %span.form_requirement= t(:required_fields)
 
     .form-inputs.block_content
       = f.input :offer_id, as: :hidden
 
+      = label_tag :id,  t(:group), class: 'group_unify'
       = select_tag 'id', options_for_select(@groups.collect { |s| [ s.code, s.id] })
       = hidden_field_tag :type_id, @type_id
       = hidden_field_tag :old_group_ids, @old_group_ids

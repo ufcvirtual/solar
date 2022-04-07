@@ -2191,6 +2191,10 @@ en_US:
       choose_one: Choose a group
       edit: Edit group
       none: No group registered
+      unfolding: Unfolding
+      unify: Unify
+      unfolding_groups: Unfolding groups
+      unify_groups: Unify groups
     group_list:
       code: Code
       enabled: Enabled
