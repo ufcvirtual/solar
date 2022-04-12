@@ -803,9 +803,31 @@ function remove_focus_from_back_jspanel(){
   });
 }
 
+function restore_focus_from_back_jspanel(){
+  $('*').not('.jsPanel *').each(function(){
+    $(this).prop('tabindex', -1);
+  });
+
+  $('.jsPanel *').children().each(function(){
+    $(this).prop('tabindex', 0);
+  });
+
+  $(".jsPanel-title").focus();
+}
+
 function give_focus_to_back_jspanel(){
   $('*').not('.jsPanel *').each(function(){
     $(this).removeAttr('tabindex');
+  });
+}
+
+function restore_focus_to_back_jspanel(){
+  $('*').not('.jsPanel *').each(function(){
+    $(this).removeAttr('tabindex');
+  });
+
+  $('.jsPanel *').children().each(function(){
+    $(this).prop('tabindex', -1);
   });
 }
 

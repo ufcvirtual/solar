@@ -12,9 +12,26 @@ $(function(){
         }
       });
     }
+
+    $("body").on("click",".jsPanel-btn-maximize",function(e){
+      panel.maximize();
+    });
+
+    $("body").on("click",".jsPanel-btn-minimize",function(e){
+      panel.minimize();
+    });
+
+    $("body").on("click",".jsPanel-btn-normalize",function(e){
+      panel.normalize();
+    });
+
+    $("body").on("click",".jsPanel-btn-close",function(e){
+      panel.close();
+    });
   };
+
   $("body").on("click",".jspanel",function(e){
-    openjspanel(e, countInstanceJsPanel, e.target.href, this.id)
+    openjspanel(e, countInstanceJsPanel, e.target.href, this.id);
   });
 });
 
@@ -30,6 +47,9 @@ function openjspanel(object, countInstanceJsPanel, url, id){
           id: id+'_js_panel',
           theme:       color,
           headerTitle: object.target.name,
+          headerControls: {
+              smallify: 'remove',
+          },
           position: 'center-top',
           contentSize: {
               width:  $(window).width() * 0.9,
@@ -42,6 +62,18 @@ function openjspanel(object, countInstanceJsPanel, url, id){
             give_focus_to_back_jspanel();
             countInstanceJsPanel--;
             delete_elemente_in_local_storage(id+'_js_panel');
+            return true;
+          },
+          onbeforeminimize: () => {
+            restore_focus_to_back_jspanel();
+            return true;
+          },
+          onbeforemaximize: () => {
+            restore_focus_from_back_jspanel();
+            return true;
+          },
+          onbeforenormalize: () => {
+            restore_focus_from_back_jspanel();
             return true;
           },
           callback: panel => {
@@ -80,7 +112,7 @@ function openjspanel(object, countInstanceJsPanel, url, id){
           }
         });
       }
-    }else{
+    } else{
       flash_message("<%=I18n.t('lessons.index.jspanel_count_window') %>", "alert");
       return false;
     }
