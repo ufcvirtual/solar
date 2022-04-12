@@ -850,3 +850,17 @@ function select_elemente_in_local_storage(id){
   });
   return false;
 }
+
+function rename_aria_label_jspanel(panel) {
+  const lesson_title = panel.querySelector(".jsPanel-titlebar").textContent.trim();
+
+  const close_button = panel.querySelector(".jsPanel-btn-close");
+  const minimize_button = panel.querySelector(".jsPanel-btn-minimize");
+  const maximize_button = panel.querySelector(".jsPanel-btn-maximize");
+  const normalize_button = panel.querySelector(".jsPanel-btn-normalize");
+
+  close_button.setAttribute("aria-label", "<%=I18n.t('lessons.close_button')%>" + lesson_title);
+  minimize_button.setAttribute("aria-label", "<%=I18n.t('lessons.minimize_button')%>" + lesson_title);
+  maximize_button.setAttribute("aria-label", "<%=I18n.t('lessons.maximize_button')%>" + lesson_title);
+  normalize_button.setAttribute("aria-label", "<%=I18n.t('lessons.normalize_button')%>" + lesson_title);
+}

@@ -1090,6 +1090,10 @@ pt_BR:
   no_end_date: Em diante
 
   lessons:
+    close_button: "Fecha aula "
+    minimize_button: "Minimiza aula "
+    maximize_button: "Maximiza aula "
+    normalize_button: "Restaura aula "
     curriculum_unit_not_selected: Disciplina não selecionada
     no_data: "Não foi possível abrir aula"
     index:
