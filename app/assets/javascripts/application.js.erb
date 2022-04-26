@@ -225,3 +225,19 @@ $(function() {
   });
 
 });
+
+function get_block_content_exam(_async=false){
+  var url_for = "<%= Rails.application.routes.url_helpers.block_content_exams_path %>";
+  var block_content_exam = false;
+  $.ajax({
+    type: 'GET',
+    url: url_for,
+    success: function(data) {
+      if(data.situation==true){
+        block_content_exam = data.situation;
+      }
+    },
+    async: _async
+  });
+  return block_content_exam;
+}

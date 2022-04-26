@@ -123,10 +123,7 @@ class ExamsController < ApplicationController
     @total_attempts  = @acu.count_attempts rescue 0
     @total_time = (last_attempt.try(:complete) ? 0 : last_attempt.try(:get_total_time)) || 0
     duration = (@total_time/60).to_i
-    p @exam.duration
-    p (@total_time/60).to_i
     if @total_time==0 && (last_attempt.blank? || total_duration==0) && !@exam.end_hour.blank?
-      p 'TESTE 004'
       exam_end = @exam.schedule.end_date.to_s+' '+@exam.end_hour.to_s
       difference_minutes = (Time.parse(exam_end) - current_time_db) / 60
       @total_time = (difference_minutes.to_i > @exam.duration.to_i) ? @exam.duration : (@exam.duration.to_i-difference_minutes)
@@ -349,6 +346,13 @@ class ExamsController < ApplicationController
     @percentage = Exam.percent(exam.number_questions, acu.answered_questions)
   rescue => error
     render plain: (I18n.translate!("exams.error.#{error}", raise: true) rescue t("exams.error.general_message"))
+  end
+
+  def block_content
+    result = Exam.verify_blocking_content(current_user.id)
+    render json: { success: true, situation: result}
+  rescue => error
+    render json: { success: false,  alert: error }
   end
 
   private

@@ -30,7 +30,7 @@
                     - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
                       .title= link_to exam.name+ ' 1- ' +exam.situation, '#', disabled: true, :'aria-label' => exam.name + t('fancybox.open') +  t(:disabled), class: 'disabled'
                       - if (exam.closed == true || exam.situation == 'corrected')
-                        = link_to t('.result'), result_user_exam_path(exam.academic_tool_id), class: 'link_content', class: 'open-exam-result', :'aria-label' => t('.result', exam: exam.name) + t('fancybox.open')
+                        = link_to t('.result'), result_user_exam_path(exam.academic_tool_id), class: 'link_content open-exam-result', :'aria-label' => t('.result', exam: exam.name) + t('fancybox.open')
                         - if exam.situation == 'corrected' && exam.closed == true
                           |
                           = link_to t('.mirror_results'), open_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), class: 'link_open_exam', :'aria-label' => t('.mirror_results_alt', exam: exam.name) + t('fancybox.open')

@@ -36,8 +36,9 @@ $(function(){
 });
 
 function openjspanel(object, countInstanceJsPanel, url, id){
+  var block_content_exam = get_block_content_exam();
   $('head').append('<meta name="viewport" content="width=device-width, initial-scale=1"/>');
-    if(countInstanceJsPanel<3){
+    if(countInstanceJsPanel<3 && block_content_exam==false){
       countInstanceJsPanel++;
       object.preventDefault();
       object.target = object.currentTarget;
@@ -114,7 +115,9 @@ function openjspanel(object, countInstanceJsPanel, url, id){
         });
       }
     } else{
-      flash_message("<%=I18n.t('lessons.index.jspanel_count_window') %>", "alert");
+      if(block_content_exam==false){
+        flash_message("<%=I18n.t('lessons.index.jspanel_count_window') %>", "alert");
+       } 
       return false;
     }
 }
