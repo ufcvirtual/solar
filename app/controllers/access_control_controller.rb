@@ -181,7 +181,7 @@ class AccessControlController < ApplicationController
       end
     else
       user_session[:blocking_content] = nil
-      render text: t('exams.restrict')
+      #render text: t('exams.restrict')
     end
   end
 

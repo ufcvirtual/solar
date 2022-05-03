@@ -803,20 +803,44 @@ function remove_focus_from_back_jspanel(){
   });
 }
 
+function restore_focus_from_back_jspanel(){
+  $('*').not('.jsPanel *').each(function(){
+    $(this).prop('tabindex', -1);
+  });
+
+  $('.jsPanel *').children().each(function(){
+    $(this).prop('tabindex', 0);
+  });
+
+  $(".jsPanel-title").focus();
+}
+
 function give_focus_to_back_jspanel(){
   $('*').not('.jsPanel *').each(function(){
     $(this).removeAttr('tabindex');
   });
 }
 
+function restore_focus_to_back_jspanel(){
+  $('*').not('.jsPanel *').each(function(){
+    $(this).removeAttr('tabindex');
+  });
+
+  $('.jsPanel *').children().each(function(){
+    $(this).prop('tabindex', -1);
+  });
+}
+
 function delete_elemente_in_local_storage(id){
   let configs = JSON.parse(localStorage.getItem('configs'));
-  configs.forEach(function (config, indice, array) {
-    if(id == config.id){
-      configs.splice(indice, 1);
-    }
-  });
-  localStorage.setItem('configs', JSON.stringify(configs));
+  if(Array.isArray(configs) && configs.length>0){
+    configs.forEach(function (config, indice, array) {
+      if(id == config.id){
+        configs.splice(indice, 1);
+      }
+    });
+    localStorage.setItem('configs', JSON.stringify(configs));
+  }  
 }
 
 function select_elemente_in_local_storage(id){
@@ -827,4 +851,18 @@ function select_elemente_in_local_storage(id){
     }
   });
   return false;
+}
+
+function rename_aria_label_jspanel(panel) {
+  const lesson_title = panel.querySelector(".jsPanel-titlebar").textContent.trim();
+
+  const close_button = panel.querySelector(".jsPanel-btn-close");
+  const minimize_button = panel.querySelector(".jsPanel-btn-minimize");
+  const maximize_button = panel.querySelector(".jsPanel-btn-maximize");
+  const normalize_button = panel.querySelector(".jsPanel-btn-normalize");
+
+  close_button.setAttribute("aria-label", "<%=I18n.t('lessons.close_button')%>" + lesson_title);
+  minimize_button.setAttribute("aria-label", "<%=I18n.t('lessons.minimize_button')%>" + lesson_title);
+  maximize_button.setAttribute("aria-label", "<%=I18n.t('lessons.maximize_button')%>" + lesson_title);
+  normalize_button.setAttribute("aria-label", "<%=I18n.t('lessons.normalize_button')%>" + lesson_title);
 }

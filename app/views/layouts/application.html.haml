@@ -588,22 +588,25 @@
 
       let currente_allocation_tag = $("#curriculum_unit_selected").text();
       let localstorage_allocation_tag = localStorage.getItem('curriculum_unit_selected');
+
       if(currente_allocation_tag==localstorage_allocation_tag){
         let configs = JSON.parse(localStorage.getItem('configs'));
-        if(configs){
-          configs.forEach(function (config, indice, array) {
-            //config["setStatus"] = 'minimized';
-            jsPanel.layout.restoreId({
-              id: config.id,
-              config: config,
-              storagename: 'solar_jspanels'
+        if(Array.isArray(configs) && configs.length>0){
+          var block_content_exam = get_block_content_exam();
+          if(block_content_exam==false){
+            configs.forEach(function (config, indice, array) {
+              jsPanel.layout.restoreId({
+                id: config.id,
+                config: config,
+                storagename: 'solar_jspanels'
+              });
             });
-          });
+          }else{
+            clean_localstorege_jspanel();
+          }
         }
       }else{
-        if (localStorage.hasOwnProperty("configs"))
-          localStorage.removeItem('configs');
-        localStorage.setItem('curriculum_unit_selected', 'nil');
+        clean_localstorege_jspanel();
       }
     });
 

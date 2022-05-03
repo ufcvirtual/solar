@@ -73,7 +73,8 @@ class LessonsController < ApplicationController
   # GET /lessons/:id
   def open
     if Exam.verify_blocking_content(current_user.id)
-      render text: t('exams.restrict')
+      redirect_back fallback_location: :back, alert: t('exams.restrict')
+      #render text: t('exams.restrict')
     else
      authorize! :show, Lesson, { on: [@offer.allocation_tag.id], read: true, accepts_general_profile: true }
       user_session[:lessons] << params[:id].to_i unless user_session[:lessons].include?(params[:id].to_i)

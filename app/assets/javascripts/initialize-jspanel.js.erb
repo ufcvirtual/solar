@@ -5,22 +5,64 @@ $(function(){
   jsPanel.globalCallbacks = function (panel) {
     if (panel.options.paneltype === 'standard') {
       panel.titlebar.addEventListener('dblclick', function () {
-        if (panel.status !== 'maximized') {
-          panel.maximize();
-        } else {
-          panel.normalize();
-        }
+        var block_content_exam = get_block_content_exam();
+        if(block_content_exam==false){
+          if (panel.status !== 'maximized') {
+            panel.maximize();
+          } else {
+            panel.normalize();
+          }
+        }else{
+          panel.close();
+          clean_localstorege_jspanel();
+        }  
       });
     }
+
+    $("body").on("click",".jsPanel-btn-maximize",function(e){
+      var block_content_exam = get_block_content_exam();
+      if(block_content_exam==false){
+        panel.maximize();
+      }else{
+        panel.close();
+        clean_localstorege_jspanel();
+      } 
+    });
+
+    $("body").on("click",".jsPanel-btn-minimize",function(e){
+      var block_content_exam = get_block_content_exam();
+      if(block_content_exam==false){
+        panel.minimize();
+      }else{
+        panel.close();
+        clean_localstorege_jspanel();
+      } 
+    });
+
+    $("body").on("click",".jsPanel-btn-normalize",function(e){
+      var block_content_exam = get_block_content_exam();
+      if(block_content_exam==false){
+        panel.normalize();
+      }else{
+        panel.close();
+        clean_localstorege_jspanel();
+      } 
+    });
+
+    $("body").on("click",".jsPanel-btn-close",function(e){
+      panel.close();
+    });
   };
+
   $("body").on("click",".jspanel",function(e){
-    openjspanel(e, countInstanceJsPanel, e.target.href, this.id)
+    openjspanel(e, countInstanceJsPanel, e.target.href, this.id);
   });
 });
 
 function openjspanel(object, countInstanceJsPanel, url, id){
+  var block_content_exam = get_block_content_exam();
   $('head').append('<meta name="viewport" content="width=device-width, initial-scale=1"/>');
-    if(countInstanceJsPanel<3){
+    if(countInstanceJsPanel<3 && block_content_exam==false){
       countInstanceJsPanel++;
       object.preventDefault();
       object.target = object.currentTarget;
@@ -30,6 +72,9 @@ function openjspanel(object, countInstanceJsPanel, url, id){
           id: id+'_js_panel',
           theme:       color,
           headerTitle: object.target.name,
+          headerControls: {
+              smallify: 'remove',
+          },
           position: 'center-top',
           contentSize: {
               width:  $(window).width() * 0.9,
@@ -44,11 +89,29 @@ function openjspanel(object, countInstanceJsPanel, url, id){
             delete_elemente_in_local_storage(id+'_js_panel');
             return true;
           },
+          onbeforeminimize: () => {
+            restore_focus_to_back_jspanel();
+            return true;
+          },
+          onbeforemaximize: () => {
+            restore_focus_from_back_jspanel();
+            return true;
+          },
+          onbeforenormalize: () => {
+            var block_content_exam = get_block_content_exam();
+            if(block_content_exam==true){
+              panel.close();
+              clean_localstorege_jspanel();
+            } 
+            restore_focus_from_back_jspanel();
+            return true;
+          },
           callback: panel => {
             remove_focus_from_back_jspanel();
             add_description_to_buttons_jspanel();
             focus_on_jspanel_element();
             add_events_to_buttons_jspanel(panel);
+            rename_aria_label_jspanel(panel);
           }
       };
       if (localStorage.hasOwnProperty("configs")) {
@@ -80,8 +143,10 @@ function openjspanel(object, countInstanceJsPanel, url, id){
           }
         });
       }
-    }else{
-      flash_message("<%=I18n.t('lessons.index.jspanel_count_window') %>", "alert");
+    } else{
+      if(block_content_exam==false){
+        flash_message("<%=I18n.t('lessons.index.jspanel_count_window') %>", "alert");
+       } 
       return false;
     }
 }

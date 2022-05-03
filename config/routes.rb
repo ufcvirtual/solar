@@ -661,6 +661,7 @@ Solar::Application.routes.draw do
       put ':tool_id/remove/group/:id', to: 'groups#change_tool'  , type: 'remove', tool_type: 'Exam', as: :remove_group_from
       put ':tool_id/add/group/:id'   , to: 'groups#change_tool'  , type: 'add'   , tool_type: 'Exam', as: :add_group_to
       get ':tool_id/group/tags'      , to: 'groups#tags'                       , tool_type: 'Exam', as: :group_tags_from
+      get :block_content
     end
 
     member do
@@ -676,6 +677,7 @@ Solar::Application.routes.draw do
       put :calculate_user_grade
       put ':id/evaluate' , to: 'academic_allocation_users#evaluate', tool: 'Exam', as: :evaluate
     end
+    
   end
 
   resources :questions do

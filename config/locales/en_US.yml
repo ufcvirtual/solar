@@ -910,6 +910,10 @@ en_US:
   no_end_date: 'On'
 
   lessons:
+    close_button: "Close lesson "
+    minimize_button: "Minimize lesson "
+    maximize_button: "Maximize lesson "
+    normalize_button: "Normalize lesson "
     curriculum_unit_not_selected: Subject not selected
     no_data: Could not open lesson
     index:
