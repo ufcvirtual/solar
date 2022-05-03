@@ -833,12 +833,14 @@ function restore_focus_to_back_jspanel(){
 
 function delete_elemente_in_local_storage(id){
   let configs = JSON.parse(localStorage.getItem('configs'));
-  configs.forEach(function (config, indice, array) {
-    if(id == config.id){
-      configs.splice(indice, 1);
-    }
-  });
-  localStorage.setItem('configs', JSON.stringify(configs));
+  if(Array.isArray(configs) && configs.length>0){
+    configs.forEach(function (config, indice, array) {
+      if(id == config.id){
+        configs.splice(indice, 1);
+      }
+    });
+    localStorage.setItem('configs', JSON.stringify(configs));
+  }  
 }
 
 function select_elemente_in_local_storage(id){

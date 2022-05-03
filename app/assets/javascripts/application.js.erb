@@ -241,3 +241,9 @@ function get_block_content_exam(_async=false){
   });
   return block_content_exam;
 }
+
+function clean_localstorege_jspanel(){
+  if (localStorage.hasOwnProperty("configs"))
+    localStorage.removeItem('configs');
+  localStorage.setItem('curriculum_unit_selected', 'nil');
+}

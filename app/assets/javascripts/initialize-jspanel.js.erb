@@ -5,24 +5,48 @@ $(function(){
   jsPanel.globalCallbacks = function (panel) {
     if (panel.options.paneltype === 'standard') {
       panel.titlebar.addEventListener('dblclick', function () {
-        if (panel.status !== 'maximized') {
-          panel.maximize();
-        } else {
-          panel.normalize();
-        }
+        var block_content_exam = get_block_content_exam();
+        if(block_content_exam==false){
+          if (panel.status !== 'maximized') {
+            panel.maximize();
+          } else {
+            panel.normalize();
+          }
+        }else{
+          panel.close();
+          clean_localstorege_jspanel();
+        }  
       });
     }
 
     $("body").on("click",".jsPanel-btn-maximize",function(e){
-      panel.maximize();
+      var block_content_exam = get_block_content_exam();
+      if(block_content_exam==false){
+        panel.maximize();
+      }else{
+        panel.close();
+        clean_localstorege_jspanel();
+      } 
     });
 
     $("body").on("click",".jsPanel-btn-minimize",function(e){
-      panel.minimize();
+      var block_content_exam = get_block_content_exam();
+      if(block_content_exam==false){
+        panel.minimize();
+      }else{
+        panel.close();
+        clean_localstorege_jspanel();
+      } 
     });
 
     $("body").on("click",".jsPanel-btn-normalize",function(e){
-      panel.normalize();
+      var block_content_exam = get_block_content_exam();
+      if(block_content_exam==false){
+        panel.normalize();
+      }else{
+        panel.close();
+        clean_localstorege_jspanel();
+      } 
     });
 
     $("body").on("click",".jsPanel-btn-close",function(e){
@@ -74,6 +98,11 @@ function openjspanel(object, countInstanceJsPanel, url, id){
             return true;
           },
           onbeforenormalize: () => {
+            var block_content_exam = get_block_content_exam();
+            if(block_content_exam==true){
+              panel.close();
+              clean_localstorege_jspanel();
+            } 
             restore_focus_from_back_jspanel();
             return true;
           },

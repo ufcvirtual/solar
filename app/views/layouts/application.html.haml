@@ -591,7 +591,7 @@
 
       if(currente_allocation_tag==localstorage_allocation_tag){
         let configs = JSON.parse(localStorage.getItem('configs'));
-        if(configs){
+        if(Array.isArray(configs) && configs.length>0){
           var block_content_exam = get_block_content_exam();
           if(block_content_exam==false){
             configs.forEach(function (config, indice, array) {
@@ -602,15 +602,11 @@
               });
             });
           }else{
-            configs.forEach(function (panel, indice, array) {
-              panel.close();
-            });
+            clean_localstorege_jspanel();
           }
         }
       }else{
-        if (localStorage.hasOwnProperty("configs"))
-          localStorage.removeItem('configs');
-        localStorage.setItem('curriculum_unit_selected', 'nil');
+        clean_localstorege_jspanel();
       }
     });
 
