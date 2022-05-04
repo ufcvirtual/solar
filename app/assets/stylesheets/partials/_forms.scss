@@ -18,7 +18,8 @@
   width: $form_label_width - 1px;
 }
 
-.form_label label, .form-inputs .control-label {
+.form_label label,
+.form-inputs .control-label {
   padding-right: 5px;
   padding-top: 5px;
   vertical-align: top;
@@ -44,7 +45,7 @@
   padding-left: 5px;
 }
 
-.right_form label.form_label{
+.right_form label.form_label {
   width: 20px !important;
 }
 
@@ -60,7 +61,7 @@
   width: 80px;
 }
 
-.space .form_label:first-child{
+.space .form_label:first-child {
   width: 80px;
 }
 
@@ -68,7 +69,8 @@
   margin-bottom: 5px;
 }
 
-.form-inputs .input input, .form-inputs > .input > textarea {
+.form-inputs .input input,
+.form-inputs > .input > textarea {
   max-width: 340px;
   min-width: 80px;
 }
@@ -86,7 +88,8 @@
   display: inline-block;
 }
 
-.required + .error, .optional + .error {
+.required + .error,
+.optional + .error {
   display: block;
   margin-left: 125px;
   margin-bottom: 5px;
@@ -97,13 +100,16 @@
   margin-left: $form_label_width - 20px;
 }
 
-.form_error, .error, span.field_with_errors {
+.form_error,
+.error,
+span.field_with_errors {
   padding-left: 10px;
   vertical-align: top;
   color: $error_color_font;
 }
 
-.field_with_errors input, .field_with_errors textarea {
+.field_with_errors input,
+.field_with_errors textarea {
   border: 1px solid;
   border-color: $error_color_font;
 }
@@ -112,7 +118,9 @@
   display: none;
 }
 
-.form_requirement, .filter_counter { // FIXME: filter_counter é usado apenas em allocations
+.form_requirement,
+.filter_counter {
+  // FIXME: filter_counter é usado apenas em allocations
   font-style: italic;
   font-size: 9pt;
   margin-right: 2px;
@@ -127,11 +135,11 @@
   right: 0;
 }
 
-.form_requirement.warning{
+.form_requirement.warning {
   position: static;
 }
 
-.form_requirement.blue_warning{
+.form_requirement.blue_warning {
   position: static;
   color: $color_main;
 }
@@ -146,7 +154,7 @@ form #country,
 form #telephone,
 form #address_complement,
 form #zipcode,
-form #cell_phone{
+form #cell_phone {
   width: 128px;
 }
 
@@ -164,7 +172,8 @@ select[disabled] {
   background-color: $background_gray;
 }
 
-.radio_options label{ // TODO: usado apenas em editions
+.radio_options label {
+  // TODO: usado apenas em editions
   width: auto;
   margin: 5px;
 }
@@ -173,31 +182,32 @@ select[disabled] {
 * alinhamento do form
 */
 
-#module_form, #discussion_form{
+#module_form,
+#discussion_form {
   width: auto;
 }
 
-#lesson_form{
+#lesson_form {
   width: auto;
 }
 
-#module_form{
+#module_form {
   height: auto;
 }
 
-#exam_form{
+#exam_form {
   height: auto;
 }
 
-#exam_question_form{
+#exam_question_form {
   height: auto;
 }
 
-.lesson_module_name{
+.lesson_module_name {
   float: left;
 }
 
-#curriculum_unit_form{
+#curriculum_unit_form {
   width: auto;
 }
 
@@ -207,12 +217,11 @@ select[disabled] {
 .block_content.form-actions {
   padding-left: 143px;
   padding-bottom: 5px;
-
 }
-  .button-align {
-    text-align: right;
-    margin-top: 10px;
-  }
+.button-align {
+  text-align: right;
+  margin-top: 10px;
+}
 
 /**
 * Registration
@@ -226,7 +235,8 @@ select[disabled] {
   width: 413px; /*425px;*/
 }
 
-.form_user_content textarea, .form-inputs > .input > textarea {
+.form_user_content textarea,
+.form-inputs > .input > textarea {
   margin-bottom: 0px;
   padding: 2px;
 }
@@ -250,7 +260,7 @@ select[disabled] {
   padding: 2px 0;
 }
 
-.checkbox_label label{
+.checkbox_label label {
   color: $color_main;
   width: auto;
 }
@@ -275,13 +285,13 @@ select[disabled] {
   }
 }
 
-form .schedule_dates input{
+form .schedule_dates input {
   width: 85px;
 }
 
-.hide_label{
+.hide_label {
   display: inline-block;
-  label{
+  label {
     border: 0;
     clip: rect(0 0 0 0);
     height: 1px;
@@ -293,29 +303,35 @@ form .schedule_dates input{
   }
 }
 
-#text_as_label{
+#text_as_label {
   vertical-align: bottom;
   display: inline-block;
 }
 
-#course_form{
-  .form_label:first-child{
+#course_form {
+  .form_label:first-child {
     width: 27%;
   }
 
-  .string.required input{
+  .string.required input {
     width: 66%;
   }
 }
 
-#academic_allocation_user_grade_form, #academic_allocation_user_frequency_form{
-  .form-inputs.block_content{
-    .academic_allocation_user_grade, .academic_allocation_user_working_hours{
+#academic_allocation_user_grade_form,
+#academic_allocation_user_frequency_form {
+  .form-inputs.block_content {
+    .academic_allocation_user_grade,
+    .academic_allocation_user_working_hours {
       vertical-align: middle;
-      label{
+      label {
         vertical-align: middle;
         width: 33%;
       }
     }
   }
+}
+
+.group_unify {
+  width: 36px;
 }

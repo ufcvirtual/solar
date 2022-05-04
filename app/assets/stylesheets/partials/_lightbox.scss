@@ -20,7 +20,7 @@
   h1 {
     color: $color_gray_text;
   }
-  i{
+  i {
     padding-left: 10px;
   }
   word-break: break-word;
@@ -45,9 +45,9 @@
   opacity: 0.5;
 }
 
-#lightBoxDialogCloseBt:Hover {
+#lightBoxDialogCloseBt:hover {
   cursor: pointer;
-  opacity: 1.0;
+  opacity: 1;
 }
 
 /* ajustando aviso de campos obrigatorios dentro do lightbox de criacao de unidade curricular */
@@ -58,9 +58,12 @@
 .fancybox-wrap {
   .fancybox-skin {
     background-color: $color_white_base;
+    min-width: 276px;
   }
 
-  .fancybox-inner{
+  .fancybox-inner {
+    width: auto !important;
+    height: auto !important;
     max-height: 1000px;
     overflow-y: auto;
     color: $lightbox_fancybox_inner_color;
