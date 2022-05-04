@@ -151,6 +151,11 @@ class Group < ActiveRecord::Base
     groups.collect{ |group| group.verify_or_create_at_digital_class }
   end
 
+  # recupera as alocações
+  def allocations
+    Allocation.joins(:profile).where(status: Allocation_Activated, allocation_tag_id: allocation_tag.related).distinct(:user_id)
+  end
+
   trigger.after(:update).of(:offer_id, :status) do
     <<-SQL
       UPDATE related_taggables
