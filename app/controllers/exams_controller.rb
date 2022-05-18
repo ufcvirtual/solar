@@ -111,7 +111,7 @@ class ExamsController < ApplicationController
 
     last_attempt.get_total_time(nil, true) if !last_attempt.blank? && !last_attempt.end.blank?
     total_time = last_attempt.blank? ? 0 : (last_attempt.try(:get_total_time)/60).to_i
-    if total_time>=@exam.duration.to_i || @exam.uninterrupted
+    if total_time>=@exam.duration.to_i || (!last_attempt.blank? && @exam.uninterrupted) 
       last_attempt.update_attribute(:complete, true)
       last_attempt = @acu.exam_user_attempts.last
     end
