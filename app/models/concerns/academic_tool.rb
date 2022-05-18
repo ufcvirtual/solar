@@ -37,11 +37,11 @@ module AcademicTool
         (
           respond_to?(:schedule) && (schedule.previous_changes.has_key?(:start_date) || schedule.previous_changes.has_key?(:end_date))
         ) || (
-          respond_to?(:initial_time) && (initial_time_changed? || duration_changed?)
+          respond_to?(:initial_time) && (saved_change_to_initial_time? || saved_change_to_duration?)
         ) || (
-          respond_to?(:start_hour) && (start_hour_changed? || end_hour_changed?)
+          respond_to?(:start_hour) && (saved_change_to_start_hour? || saved_change_to_end_hour?)
         ) || (
-          respond_to?(:status_changed?) && status_changed?
+          respond_to?(:status_changed?) && saved_change_to_status?
         )
       ) && verify_start
     )
@@ -155,14 +155,14 @@ unless ats.blank?
         info = AllocationTag.find(ats.first).no_group_info
         groups = (ats.size > 1 ? ' - ' + Group.joins(:allocation_tag).where(allocation_tags: {id: ats}).map(&:code).join(', ') : '')
         unless emails.empty?
-          if ((verify_type == 'delete') || (respond_to?(:status_changed?) && (status_changed? && !status)))
+          if ((verify_type == 'delete') || (respond_to?(:status_changed?) && (saved_change_to_status? && !status)))
             if (verify_can_destroy)
               unless self.class.to_s == 'Notification'
                template_mail = delete_msg_template(info + groups)
                subject = I18n.t('editions.mail.subject_delete')
               end
             end
-          elsif !verify_type || (respond_to?(:status_changed?) && status_changed? && status)
+          elsif !verify_type || (respond_to?(:status_changed?) && saved_change_to_status? && status)
             template_mail = new_msg_template(info + groups)
             subject = I18n.t('editions.mail.subject_new')
           elsif verify_type
