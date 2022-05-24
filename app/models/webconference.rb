@@ -17,7 +17,7 @@ class Webconference < ActiveRecord::Base
 
   validates :title, :initial_time, :duration, presence: true
   validates :title, :description, length: { maximum: 255 }
-  validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
+  validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 300 }
 
   validate :cant_change_date, on: :update, if: -> {saved_change_to_initial_time? || saved_change_to_duration?}
   validate :cant_change_shared, on: :update, if: -> {saved_change_to_shared_between_groups?}
