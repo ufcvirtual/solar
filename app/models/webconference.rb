@@ -144,7 +144,7 @@ class Webconference < ActiveRecord::Base
   def login_meeting(user, meeting_id, meeting_name, options)
     user_name = (user.use_nick_at_webconference ? user.nick : user.name)
     @api.create_meeting(meeting_name, meeting_id, options) unless @api.is_meeting_running?(meeting_id)
-     if (responsible?(user.id) || user.can?(:preview, Webconference, { on: academic_allocations.flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true, any: true }))
+     if (responsible?(user.id) || user.can?(:preview, Webconference, { on: academic_allocations.to_a.flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true, any: true }))
       @api.join_meeting_url(meeting_id, "#{user_name}*", options[:moderatorPW])
     else
       @api.join_meeting_url(meeting_id, user_name, options[:attendeePW])
