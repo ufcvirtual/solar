@@ -154,7 +154,7 @@ class Webconference < ActiveRecord::Base
   def have_permission?(user, at_id = nil)
     (student_or_responsible?(user.id, at_id) ||
       (
-        ats = (shared_between_groups || at_id.nil?) ? academic_allocations.flatten.map(&:allocation_tag_id).flatten : [at_id].flatten
+        ats = (shared_between_groups || at_id.nil?) ? academic_allocations.to_a.flatten.map(&:allocation_tag_id).flatten : [at_id].flatten
         allocations_with_acess =  user.allocation_tags_ids_with_access_on('interact','webconferences', false, true)
         allocations_with_acess.include?(nil) || (allocations_with_acess & ats).any?
       )
