@@ -122,7 +122,7 @@ group :development do
   gem "rb-readline", "~> 0.5.1"
   #gem "spork", "~> 0.9.2"
   # gem "thin" # server local melhor
-  gem "better_errors", "~> 2.4.0"
+  gem "better_errors", "~> 2.8.0"
   gem "binding_of_caller", "~> 0.8.0" # better "better errors"
   #gem "quiet_assets", "~> 1.1.0" # nao mostra log de assets em development
   gem "rack-mini-profiler", "~> 0.10.7"
