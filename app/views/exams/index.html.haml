@@ -28,7 +28,7 @@
                 %div
                   - if @can_open
                     - if !['to_answer', 'not_finished', 'retake'].include?(exam.situation)
-                      .title= link_to exam.name+ ' 1- ' +exam.situation, '#', disabled: true, :'aria-label' => exam.name + t('fancybox.open') +  t(:disabled), class: 'disabled'
+                      .title= link_to exam.name, '#', disabled: true, :'aria-label' => exam.name + t('fancybox.open') +  t(:disabled), class: 'disabled'
                       - if (exam.closed == true || exam.situation == 'corrected')
                         = link_to t('.result'), result_user_exam_path(exam.academic_tool_id), class: 'link_content open-exam-result', :'aria-label' => t('.result', exam: exam.name) + t('fancybox.open')
                         - if exam.situation == 'corrected' && exam.closed == true
@@ -37,7 +37,7 @@
                     - elsif exam.opened == true && exam.closed ==  false
                       = link_to exam.name, pre_exam_path(exam.academic_tool_id, allocation_tag_id: @allocation_tag_id, situation: exam.situation), :'data-tooltip' => exam.name, class: 'link_content link_pre_exam', :'aria-label' => exam.name + t('fancybox.open')
                     - else
-                      .title= link_to exam.name+ ' 3- ' +exam.situation, '#', disabled: true, :'aria-label' => exam.name + t('fancybox.open') +  t(:disabled), class: 'disabled'
+                      .title= link_to exam.name, '#', disabled: true, :'aria-label' => exam.name + t('fancybox.open') +  t(:disabled), class: 'disabled'
                   - else
                     = link_to exam.name, preview_exam_path(exam.academic_tool_id, allocation_tags_ids: @allocation_tag_id), class: 'link_preview_exam'
 
