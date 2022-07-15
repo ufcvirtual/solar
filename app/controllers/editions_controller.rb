@@ -184,7 +184,7 @@ class EditionsController < ApplicationController
 
     ActiveRecord::Base.transaction do
       params[:academic_allocations].each do |data|
-        acs = AcademicAllocation.where(id: data['acs'].delete('[]').split(',')).each do |ac|
+        acs = AcademicAllocation.where(id: data['acs'].delete('[]').split(' ')).each do |ac|
 
 
           attributes = {'evaluative' => false, 'weight' => 1, 'final_weight' => 100, 'equivalent_academic_allocation_id' => nil, 'final_exam' => false, 'frequency' => false, 'frequency_automatic' => false, 'max_working_hours' => 0 }
