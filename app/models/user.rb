@@ -275,11 +275,6 @@ class User < ActiveRecord::Base
     self.previous_email = nil if email_changed? && !previous_email.blank?
   end
 
-  def set_previous
-    self.previous_username = nil if username_changed? && !previous_username.blank?
-    self.previous_email = nil if email_changed? && !previous_email.blank?
-  end
-
   ## Na criação, o usuário recebe o perfil de usuario basico
   def basic_profile_allocation
     Allocation.create profile_id: Profile.find_by_types(Profile_Type_Basic).id, status: Allocation_Activated, user_id: self.id
@@ -299,7 +294,7 @@ class User < ActiveRecord::Base
 
   # faltando pegar apenas alocacoes validas
   def all_allocation_tags(objects = false)
-    allocation_tags.collect! { |at| RelatedTaggable.related(at) }.flatten.uniq
+    allocation_tags.collect { |at| RelatedTaggable.related(at) }.flatten.uniq
   end
 
   def to_msg
