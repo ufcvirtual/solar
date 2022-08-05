@@ -136,8 +136,8 @@
 
     CKEDITOR_BASEPATH  = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
 
-    var websocket_host = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["host"]}";
-    var websocket_port = "#{YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["websocket"]["port"]}";
+    var websocket_host = "#{ENV['WEBSOCKET_HOST']}";
+    var websocket_port = "#{ENV['WEBSOCKET_HOST']}";
 
     $(".forum_button_attachment").call_fancybox({
       element_selector: '.focu'
