@@ -20,9 +20,10 @@ if (ENV["SCHEDULER"] == "true")
   scheduler.in '60s' do
     Job.job_send_mail
   end
+
   #execute a cada 15 minutos
-  if (YAML::load(File.open('config/mailer.yml'))['mass_emails']['scheduled_time'] rescue false)
-    scheduler.every "#{YAML::load(File.open('config/mailer.yml'))['mass_emails']['scheduled_time']}m" do
+  unless (ENV["MASS_EMAILS_SCHEDULED_TIME"].blank?)
+    scheduler.every "#{ENV["MASS_EMAILS_SCHEDULED_TIME"].to_i}m" do
       Job.job_send_mail
     end
   end

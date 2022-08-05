@@ -1,21 +1,21 @@
 
 common: &common
-dns: <%= ENV['DNS'] %>
-websocket:
-  port: 
-  host: 
-import_users:
-  media_path: "/media/admin/logs/users/import"
-  header: "Nome;CPF;Gênero;Email;Endereço;País;Estado;Cidade;Instituição;Cpf;Turma"
+  dns: <%= ENV['DNS_HOST'] %>
+  websocket:
+    port: <%= ENV['WEBSOCKET_PORT'] %>
+    host: <%= ENV['WEBSOCKET_HOST'] %>
+  import_users:
+    media_path: "/media/admin/logs/users/import"
+    header: "Nome;CPF;Gênero;Email;Endereço;País;Estado;Cidade;Instituição;Cpf;Turma"
 
 production:
   <<: *common
   devise:
-    secret_key_base: ""
+    secret_key_base: <%= ENV['DEVISE_SECRET_KEY'] %>
   url_options:
-    :host: <%= ENV['HOST'] %>
-    :port: 80
-  domain: "virtual.ufc.br"
+    :host: <%= ENV['SOLAR_HOST'] %>
+    :port: <%= ENV['SOLAR_PORT'] %>
+  domain: <%= ENV['SOLAR_DOMAIN'] %>
 
 development:
   <<: *common

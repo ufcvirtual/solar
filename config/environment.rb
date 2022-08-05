@@ -12,7 +12,10 @@ Fb_Config = YAML::load_file(File.open('config/facebook.yml'))
 ActionMailer::Base.perform_deliveries   = true
 # ActionMailer::Base.delivery_method      = :smtp
 ActionMailer::Base.default_url_options  = mailer_config['default_url_options']
-ActionMailer::Base.smtp_settings        = mailer_config['smtp_settings']
+
+if Rails.env.production?
+    ActionMailer::Base.smtp_settings    = mailer_config['smtp_settings']
+end
 
 # constantes de status de matricula e pedido de matricula - table ALLOCATIONS
 Allocation_Pending            = 0 # quando pede alocação(matricula) pela 1a vez

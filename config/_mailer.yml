@@ -1,18 +1,18 @@
 smtp_settings:
-  :address: 
-  :authentication: 
-  :domain: 
-  :user_name: 
-  :password: 
-  :enable_starttls_auto: true
-  :port: 25
+  :address: <%= ENV["SMTP_ADDRESS"] %>
+  :authentication: <%= ENV["SMTP_AUTHENTICATION"] %>
+  :domain: <%= ENV["SMTP_DOMAIN"] %>
+  :user_name: <%= ENV["SMTP_USER"] %>
+  :password: <%= ENV["SMTP_PASSWORD"] %>
+  :enable_starttls_auto: <%= ENV["SMTP_TTLS"] %>
+  :port: <%= ENV["SMTP_PORT"] %>
 
 default_sender:
-  :from: 
+  :from: <%= ENV["DEFAULT_SENDER"] %>
 
 default_url_options:
-  :host: <%= ENV['HOST'] %>
+  :host: <%= ENV["SMTP_HOST"] %>
 
 mass_emails:
-  scheduled_time: 30
-  max_amount: 300
+  scheduled_time: <%= ENV["MASS_EMAILS_SCHEDULED_TIME"] %>
+  max_amount: <%= ENV["MASS_EMAILS_MAX_AMOUNT"] %>

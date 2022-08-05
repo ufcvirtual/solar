@@ -12,4 +12,4 @@
 
 #mudando armazenamento de sessao para o banco nosql(redis)
 Rails.application.config.session_store :cookie_store, key: '_solar_session'
-Solar::Application.config.session_store :redis_store, servers: "redis://#{ENV['DB_REDIS']}:6379/0/session",expire_after: 30.days, key: '_solar_session', httponly: true
+Solar::Application.config.session_store :redis_store, servers: "#{ENV['DB_URL_REDIS']}", expire_after: "#{ENV['DAYS_TO_EXPIRE']}".to_i.days, key: '_solar_session', httponly: true
