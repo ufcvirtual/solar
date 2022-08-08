@@ -389,7 +389,7 @@ class AdministrationsController < ApplicationController
   def import_users_log
     authorize! :import_users, Administration
 
-    media_path = YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['import_users']['media_path']
+    media_path = ENV["IMPORT_USERS_MEDIA_PATH"]
     file_path = File.join(Rails.root.to_s, media_path, params[:file])
 
     download_file(home_path, file_path, 'import-log.txt')
@@ -420,7 +420,7 @@ class AdministrationsController < ApplicationController
 
     def save_log_into_file(logs)
       filename   = "#{current_user.id}-log-#{I18n.l(Time.now, format: :log)}"
-      media_path = YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['import_users']['media_path']
+      media_path = ENV["IMPORT_USERS_MEDIA_PATH"]
 
       FileUtils.mkdir_p(dir = File.join(Rails.root.to_s, media_path))
       File.open(File.join(dir, filename), 'w') do |f|

@@ -493,7 +493,7 @@ class User < ActiveRecord::Base
     spreadsheet = open_spreadsheet(file, ';')
     header      = spreadsheet.row(1)
 
-    raise I18n.t(:invalid_file, scope: [:administrations, :import_users]) unless (['.xlsx', '.xls', '.odt'].include?(File.extname(file.original_filename)) && (header & (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['import_users']['header'].split(';'))).size == header.size)
+    raise I18n.t(:invalid_file, scope: [:administrations, :import_users]) unless (['.xlsx', '.xls', '.odt'].include?(File.extname(file.original_filename)) && (header & (ENV["IMPORT_USERS_HEADER"].split(';'))).size == header.size)
 
     (2..spreadsheet.last_row).each do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose]

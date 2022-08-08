@@ -1,7 +1,7 @@
 
 class Notifier < ActionMailer::Base
 
-  default YAML::load(File.open('config/mailer.yml'))['default_sender']
+  default ENV["DEFAULT_SENDER"]
 
   def send_mail(recipients, subject, message, files, from = nil, with_template_view = false)
     files.each do |file|
