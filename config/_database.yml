@@ -16,7 +16,7 @@ common: &common
 
 development:
   <<: *common
-  database: solar_development
+  database: <%= ENV["DB_NAME"] %>
 
 test:
   <<: *common
@@ -24,4 +24,4 @@ test:
 
 production:
   <<: *common
-  database: solar_production
+  database: <%= ENV["DB_NAME"] %>
