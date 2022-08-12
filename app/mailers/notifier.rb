@@ -1,7 +1,7 @@
 
 class Notifier < ActionMailer::Base
 
-  default ENV["DEFAULT_SENDER"]
+  default sender: ENV["DEFAULT_SENDER"]
 
   def send_mail(recipients, subject, message, files, from = nil, with_template_view = false)
     files.each do |file|
