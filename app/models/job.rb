@@ -46,7 +46,6 @@ class Job
 
           end
           Job.job_send_mail unless DELAYEDJOB.blank?
-          puts "TESTE!!!"
         end
     #   end
     # end
