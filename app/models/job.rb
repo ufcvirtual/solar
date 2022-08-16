@@ -1,7 +1,7 @@
 class Job
 
-  AMOUNT = ENV["MASS_EMAILS_MAX_AMOUNT"].blank ? nil : ENV["MASS_EMAILS_MAX_AMOUNT"].to_i rescue nil
-  SCHEDULEDTIME = ENV["MASS_EMAILS_SCHEDULED_TIME"].blank ? nil : ENV["MASS_EMAILS_SCHEDULED_TIME"].to_i rescue nil
+  AMOUNT = ENV["MASS_EMAILS_MAX_AMOUNT"].blank? ? nil : ENV["MASS_EMAILS_MAX_AMOUNT"].to_i rescue nil
+  SCHEDULEDTIME = ENV["MASS_EMAILS_SCHEDULED_TIME"].blank? ? nil : ENV["MASS_EMAILS_SCHEDULED_TIME"].to_i rescue nil
   DELAYEDJOB = ENV["DELAYED_JOB"] == "true"
 
   # returns a list of jobs that wasnt sent and still could
@@ -46,6 +46,7 @@ class Job
 
           end
           Job.job_send_mail unless DELAYEDJOB.blank?
+          puts "TESTE!!!"
         end
     #   end
     # end
