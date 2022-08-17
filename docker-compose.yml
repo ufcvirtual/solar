@@ -1,25 +1,29 @@
-version: '3.4'
+version: '3.7'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    entrypoint: ./entrypoints/app-entrypoint.sh
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    # entrypoint: ./entrypoints/app-entrypoint.sh
+    image: ufcvirtualdevops2022/solar:v1
     depends_on:
       - database
+      - redis
     ports:
       - "8080:8080"
     volumes:
       - .:/app
       - gem_cache:/usr/local/bundle/gems
       - node_modules:/app/node_modules
+    networks:
+      - solar_net
     env_file: .env
-    environment:
-      RAILS_ENV: development
 
   database:
-    image: postgres:9.5
+    image: postgres:14
+    networks:
+      - solar_net
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -27,32 +31,31 @@ services:
       POSTGRES_DB: "solar"
       POSTGRES_HOST_AUTH_METHOD: "trust"
     ports:
-      - "5433:5432"
+      - "5432:5432"
 
-  mailcatcher:
-    image: yappabe/mailcatcher
+  redis:
+    image: redis:7.0.4
+    networks:
+      - solar_net
+    volumes:
+      - db_redis:/data
+    ports:
+      - "6379:6379"
+
+  mailhog:
+    image: mailhog/mailhog
+    networks:
+      - solar_net
     ports:
         - "1025:1025"
-        - "1080:1080"
-
-  # sidekiq:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   depends_on:
-  #     - app
-  #     - database
-  #     - redis
-  #   volumes:
-  #     - .:/app
-  #     - gem_cache:/usr/local/bundle/gems
-  #     - node_modules:/app/node_modules
-  #   env_file: .env
-  #   environment:
-  #     RAILS_ENV: development
-  #   entrypoint: ./entrypoints/sidekiq-entrypoint.sh
+        - "8025:8025"
 
 volumes:
   gem_cache:
   db_data:
+  db_redis:
   node_modules:
+
+networks:
+  solar_net:
+    driver: bridge
