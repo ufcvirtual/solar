@@ -14,7 +14,7 @@ class Notifier < ActionMailer::Base
     @message = message
 
     mail(config_mail) do |format|
-      format.text { render plain: @message }
+      #format.text { render plain: @message }
       format.html { render 'send_general_mail' }
     end
   end
