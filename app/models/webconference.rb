@@ -17,7 +17,7 @@ class Webconference < ActiveRecord::Base
 
   validates :title, :initial_time, :duration, presence: true
   validates :title, :description, length: { maximum: 255 }
-  validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
+  validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 300 }
 
   validate :cant_change_date, on: :update, if: -> {saved_change_to_initial_time? || saved_change_to_duration?}
   validate :cant_change_shared, on: :update, if: -> {saved_change_to_shared_between_groups?}
@@ -144,7 +144,7 @@ class Webconference < ActiveRecord::Base
   def login_meeting(user, meeting_id, meeting_name, options)
     user_name = (user.use_nick_at_webconference ? user.nick : user.name)
     @api.create_meeting(meeting_name, meeting_id, options) unless @api.is_meeting_running?(meeting_id)
-     if (responsible?(user.id) || user.can?(:preview, Webconference, { on: academic_allocations.flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true, any: true }))
+     if (responsible?(user.id) || user.can?(:preview, Webconference, { on: academic_allocations.to_a.flatten.map(&:allocation_tag_id).flatten, accepts_general_profile: true, any: true }))
       @api.join_meeting_url(meeting_id, "#{user_name}*", options[:moderatorPW])
     else
       @api.join_meeting_url(meeting_id, user_name, options[:attendeePW])
@@ -154,7 +154,7 @@ class Webconference < ActiveRecord::Base
   def have_permission?(user, at_id = nil)
     (student_or_responsible?(user.id, at_id) ||
       (
-        ats = (shared_between_groups || at_id.nil?) ? academic_allocations.flatten.map(&:allocation_tag_id).flatten : [at_id].flatten
+        ats = (shared_between_groups || at_id.nil?) ? academic_allocations.to_a.flatten.map(&:allocation_tag_id).flatten : [at_id].flatten
         allocations_with_acess =  user.allocation_tags_ids_with_access_on('interact','webconferences', false, true)
         allocations_with_acess.include?(nil) || (allocations_with_acess & ats).any?
       )

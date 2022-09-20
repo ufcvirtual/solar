@@ -196,6 +196,7 @@ class GroupsController < ApplicationController
     @groups = offer.groups.where.not(id: params[:old_group_id].split(","), status: false).order("code")
     #@groups = Group.where.not(id: params[:old_group_id])
     @type_id = params[:type_id]
+    @action ='unify'
   end
 
   def unify
@@ -213,6 +214,28 @@ class GroupsController < ApplicationController
     else
       render :view_unify
     end
+  rescue => error
+    request.format = :json
+    raise error.class
+  end
+
+  def view_load
+    authorize! :create, Group
+    @group = Group.find(params[:old_group_id].split(",")[0])
+    @old_group_ids = params[:old_group_id]
+    offer = Offer.find(params[:offer_id]) if params.include?(:offer_id)
+    @groups = offer.groups.where.not(id: params[:old_group_id].split(","), status: false).order("code")
+    @type_id = params[:type_id]
+    @action ='load'
+  end
+
+  def load
+    @group = Group.find(params[:old_group_ids].split(",")[0])
+    authorize! :create, Group, on: [@group.offer.allocation_tag.id]
+    old_group_ids = params[:old_group_ids].split(",")
+    new_group_ids = params[:new_group_ids]
+    other_group_ids = params[:other_group_ids].split(",")
+    Allocation.load_clone_allocation_by_groups(old_group_ids, new_group_ids, other_group_ids)
   rescue => error
     request.format = :json
     raise error.class

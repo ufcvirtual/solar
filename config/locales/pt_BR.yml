@@ -2491,7 +2491,9 @@ pt_BR:
       unfolding: Desdobrar
       unify: Unificar
       unfolding_groups: Desdobrar turmas
-      unify_groups: Unificar tumas
+      unify_groups: Unificar turmas
+      load_groups: Carregar turmas
+      load: Carregar
     group_list:
       code: Código
       enabled: Ativada

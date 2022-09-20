@@ -28,7 +28,7 @@ class Exam < Event
   validates_format_of :start_hour, with: /\A\d{2}:\d{2}\z/, :allow_blank => true
   validates_format_of :end_hour, with: /\A\d{2}:\d{2}\z/, :allow_blank => true
 
-  before_save :after_immediate_result_release, if: -> {immediate_result_release && merge.nil? && saved_change_to_immediate_result_release?}
+  before_save :after_immediate_result_release, if: -> {immediate_result_release && merge.nil?}
 
   accepts_nested_attributes_for :schedule
 

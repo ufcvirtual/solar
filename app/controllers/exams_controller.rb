@@ -111,11 +111,14 @@ class ExamsController < ApplicationController
 
     last_attempt.get_total_time(nil, true) if !last_attempt.blank? && !last_attempt.end.blank?
     total_time = last_attempt.blank? ? 0 : (last_attempt.try(:get_total_time)/60).to_i
-    if total_time>=@exam.duration.to_i
+    if total_time>=@exam.duration.to_i || (!last_attempt.blank? && @exam.uninterrupted) 
       last_attempt.update_attribute(:complete, true)
       last_attempt = @acu.exam_user_attempts.last
     end
 
+    #if @exam.uninterrupted
+    #  last_attempt = nil
+    #end  
     total_duration = last_attempt.blank? ? 0 : last_attempt.get_total_duration
 
     raise 'time' unless @exam.on_going?
@@ -129,8 +132,8 @@ class ExamsController < ApplicationController
       @total_time = (difference_minutes.to_i > @exam.duration.to_i) ? @exam.duration : (@exam.duration.to_i-difference_minutes)
       @total_time = @total_time*60
     end
-    
-    @total_attempts = @exam.attempts<@total_attempts ? @total_attempts+1 : @exam.attempts
+
+    @total_attempts = @exam.attempts>@total_attempts ? @total_attempts+1 : @exam.attempts
     if (last_attempt.try(:uninterrupted_or_ended, @exam) && @total_attempts == @exam.attempts && total_duration>0)
       redirect_to result_user_exam_path(@exam)
     else

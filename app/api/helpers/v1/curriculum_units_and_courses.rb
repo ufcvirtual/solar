@@ -16,7 +16,7 @@ module V1::CurriculumUnitsAndCourses
   def curriculum_unit_params(params, attributes = false)
     name       = (params.has_key?(:name) ? params[:name] : params["name"])
   	attributes = (attributes ? {resume: name, syllabus: name, objectives: name} : {})
-  	ActiveSupport::HashWithIndifferentAccess.new attributes.merge!(params.except("route_info", "update_if_exists").to_a.delete_if { |k,v| v.nil? })
+  	ActiveSupport::HashWithIndifferentAccess.new attributes.merge!(params.except("route_info", "update_if_exists").to_a.delete_if { |k,v| v.nil? }.to_h)
   end
 
 end

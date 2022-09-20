@@ -488,6 +488,95 @@ class Allocation < ActiveRecord::Base
         allocation_new.origin_group_id = origin_group_id
         allocation_new.save
       end
+    end
+
+    def self.load_clone_allocation_by_groups(origin_group_ids, new_group_ids, other_group_ids)
+      #group_origin = Group.find(new_group_ids.join(',')[0])
+      #new_group_at_ids    = group_origin.allocation_tag.related.join(',')
+
+      #allocations_old = Group.where(id: origin_group_ids.split(',')).allocations
+      groups = Allocation.list_group_with_fewer_students_count(new_group_ids).to_a
+      students_in_group_origin = Allocation.list_students_group_origin(origin_group_ids).to_a
+      allocations_old = Allocation.list_students(origin_group_ids, other_group_ids).to_a
+      allocations_responsible_old = Allocation.list_responsible(origin_group_ids).to_a
+
+      allocations_old.each do |allocation_old|
+        group = Allocation.get_group_with_fewer_students(groups)
+        group['count'] = group['count'].to_i + 1
+        new_allocation_tag_id = Group.find(group.id).allocation_tag.id
+        origin_group_id = Allocation.get_group_origin_user(students_in_group_origin, allocation_old.user_id)
+
+        allocation_new = allocation_old.dup
+        allocation_new.allocation_tag_id = new_allocation_tag_id
+        allocation_new.origin_group_id = origin_group_id
+        allocation_new.save
+      end
+      #alocação dos professores
+      allocations_responsible_old.each do |allocation_responsible_old|
+        new_group_ids.each do |group_id|
+          new_resp_allocation_tag_id = Group.find(group_id).allocation_tag.id
+          allocation_resp_new = allocation_responsible_old.dup
+          allocation_resp_new.allocation_tag_id = new_resp_allocation_tag_id
+          allocation_resp_new.save
+        end
+      end
     end  
+
+    def self.get_group_with_fewer_students(groups)
+      groups.sort_by(&:count)[0]
+    end
+
+    def self.get_group_origin_user(students_in_group_origin, user_id)
+      students_in_group_origin.filter { |obj| obj.user_id == user_id }
+    end
+
+    def self.list_students(origin_group_ids, other_group_ids)
+      allocations_old = Allocation.find_by_sql <<-SQL
+        SELECT DISTINCT allocations.*
+        FROM related_taggables
+        LEFT JOIN allocations ON related_taggables.group_at_id = allocations.allocation_tag_id
+        LEFT JOIN profiles ON allocations.profile_id=profiles.id
+        WHERE cast(profiles.types & '#{Profile_Type_Student}' as boolean ) AND profiles.status='#{Allocation_Activated}' AND related_taggables.group_id IN (#{origin_group_ids.join(',')})
+        AND allocations.user_id NOT IN (SELECT DISTINCT allocations.user_id FROM related_taggables
+        LEFT JOIN allocations ON related_taggables.group_at_id = allocations.allocation_tag_id
+        LEFT JOIN profiles ON allocations.profile_id=profiles.id
+        WHERE cast(profiles.types & '#{Profile_Type_Student}' as boolean ) AND profiles.status='#{Allocation_Activated}' AND related_taggables.group_id IN (#{other_group_ids.join(',')}))
+        ORDER BY 1 ASC;
+      SQL
+    end
+
+    def self.list_responsible(origin_group_ids)
+      allocations_old = Allocation.find_by_sql <<-SQL
+        SELECT DISTINCT allocations.*
+        FROM related_taggables
+        LEFT JOIN allocations ON related_taggables.group_at_id = allocations.allocation_tag_id
+        LEFT JOIN profiles ON allocations.profile_id=profiles.id
+        WHERE cast(profiles.types & '#{Profile_Type_Class_Responsible}' as boolean ) AND profiles.status='#{Allocation_Activated}' 
+        AND related_taggables.group_id IN (#{origin_group_ids.join(',')})
+        ORDER BY 1 ASC;
+      SQL
+    end
+
+    def self.list_group_with_fewer_students_count(groups_ids)
+      groups = Group.find_by_sql <<-SQL
+        SELECT DISTINCT related_taggables.group_id id, count(DISTINCT allocations.user_id) as count
+        FROM related_taggables 
+        LEFT JOIN allocations ON related_taggables.group_at_id = allocations.allocation_tag_id
+        LEFT JOIN profiles ON allocations.profile_id=profiles.id AND cast(profiles.types & '#{Profile_Type_Student}' as boolean ) AND profiles.status='#{Allocation_Activated}'
+        WHERE related_taggables.group_id IN (#{groups_ids.join(',')})
+        GROUP BY 1 ORDER BY 2 ASC;
+      SQL
+    end
+
+    def self.list_students_group_origin(groups_ids)
+      users_group = Group.find_by_sql <<-SQL
+        SELECT DISTINCT related_taggables.group_id group_id, allocations.user_id user_id
+        FROM allocations, related_taggables, profiles
+        WHERE related_taggables.group_at_id = allocations.allocation_tag_id AND allocations.profile_id=profiles.id 
+        AND cast(profiles.types & '#{Profile_Type_Student}' as boolean ) 
+        AND related_taggables.group_id IN (#{groups_ids.join(',')})
+        ORDER BY 1 ASC;
+      SQL
+    end
 
 end

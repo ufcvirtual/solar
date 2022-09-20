@@ -7,7 +7,7 @@ function result_error(data) {
 
 $(function(){
 
-  $('.disable_group, .enable_group, .btn_del, .btn_edit, .btn_unfolding, .btn_unify').attr("disabled", true);
+  $('.disable_group, .enable_group, .btn_del, .btn_edit, .btn_unfolding, .btn_unify, .btn_load').attr("disabled", true);
 
   $('#btn_new_group').click(function(){
     if ($('.filter #type_id').val() == "3") // curso livre
@@ -53,6 +53,26 @@ $(function(){
     return false;
   });
 
+   $('#btn_load').click(function(){
+    if ($(this).attr('disabled') == 'disabled'){
+      flash_message("<%=I18n.t(:choose_one, scope: [:groups, :list])%>", 'alert');
+      return false;
+    }
+
+    var groups_ids = $.map($(".ckb_group:checked"), function(n){
+      return ($(n).val());
+    });
+
+    if($(groups_ids).length == 0){
+      flash_message("<%=I18n.t(:choose_at_least_one, scope: [:groups, :list])%>", 'alert');
+    } else {
+      var url_load = $(this).data('link-load').replace('value_old_group_id', groups_ids);
+      $(this).call_fancybox({href : url_load, open: true});
+    }
+
+    return false;
+  });
+
   $('.btn_edit').click(function(){
     if ($(this).attr('disabled') == 'disabled'){
       flash_message("<%=I18n.t(:choose_one, scope: [:groups, :list])%>", 'alert');
@@ -89,7 +109,7 @@ $(function(){
   });
 
   $('#all_groups').nice_checkbox({
-    objects_to_change_status: ['.disable_group', '.enable_group', '.btn_unfolding', '.btn_unify']
+    objects_to_change_status: ['.disable_group', '.enable_group', '.btn_unfolding', '.btn_unify',  '.btn_load']
   });
 
   $('.disable_group, .enable_group').click(function(){

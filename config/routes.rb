@@ -154,6 +154,8 @@ Solar::Application.routes.draw do
       get :tags
       get :view_unify
       put :unify
+      get :view_load
+      put :load
     end
   end
 

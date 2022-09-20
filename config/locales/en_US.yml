@@ -2199,6 +2199,7 @@ en_US:
       unify: Unify
       unfolding_groups: Unfolding groups
       unify_groups: Unify groups
+      load_groups: Load groups
     group_list:
       code: Code
       enabled: Enabled

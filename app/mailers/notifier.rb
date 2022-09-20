@@ -11,17 +11,11 @@ class Notifier < ActionMailer::Base
     config_mail = { bcc: recipients, subject: "[SOLAR] #{subject}" }
     config_mail[:reply_to] = from unless from.nil?
 
-    unless with_template_view
-      config_mail[:body] = message
-      config_mail[:content_type] = "text/html" if files.blank?
+    @message = message
 
-      mail(config_mail)
-    else
-      mail(config_mail) do |format|
-        format.text { render text: message }
-        format.html { render text: message }
-      end
-
+    mail(config_mail) do |format|
+      #format.text { render plain: @message }
+      format.html { render 'send_general_mail' }
     end
   end
 

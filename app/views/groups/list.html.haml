@@ -9,6 +9,7 @@
       = link_to content_tag(:i, nil, class: 'icon-plus'), "#void", class: " btn btn_main", id: "btn_new_group", :"data-link-new" => new_group_path(type_id: @type_id, offer_id: @offer_id), :"data-tooltip" => t(".new")
       = link_to t(".unfolding"), "#void", class: 'btn btn_unfolding', id: 'btn_unfolding', :'data-tooltip' => t(".unfolding_groups"), :"data-link-unfolding" => new_group_path(old_group_id: 'value_old_group_id', type_id: @type_id, offer_id: @offer_id)
       = link_to t(".unify"), "#void", class: 'btn btn_unify', id: 'btn_unify', :'data-tooltip' => t(".unify_groups"), :"data-link-unify" => view_unify_groups_path(old_group_id: 'value_old_group_id', type_id: @type_id, offer_id: @offer_id)
+      = link_to t(".load"), "#void", class: 'btn btn_load', id: 'btn_load', :'data-tooltip' => t(".load_groups"), :"data-link-load" => view_load_groups_path(old_group_id: 'value_old_group_id', type_id: @type_id, offer_id: @offer_id)
 
     .block_toolbar_right
       = link_to (content_tag(:i, nil, class: 'icon-checkbox-unchecked')), "#void", id: 'all_groups', class: 'btn', :'data-tooltip' => t(".all"), :"data-children-names" => "ckb_group", disabled: (@groups.empty?)

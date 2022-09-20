@@ -43,7 +43,7 @@
 
 .responsive-table {
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: auto;
 
   table {
     overflow-y: scroll;
@@ -1135,10 +1135,11 @@
       width: 100% !important;
       margin: 10px 0 !important;
     }
-
   }
 
-  .label_display .middle_column, .label_display .first_column, .label_display .last_column{
+  .label_display .middle_column,
+  .label_display .first_column,
+  .label_display .last_column {
     max-height: none !important;
   }
 

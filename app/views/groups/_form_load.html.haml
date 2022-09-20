@@ -1,0 +1,43 @@
+.new_group
+  = simple_form_for @group, :url => url_for(:action => @action, :controller => 'groups'), :method => :put, html: { id: 'group_form' } do |f|
+    - if @action=='load'
+      %h1#lightBoxDialogTitle= t(:load_groups, scope: "groups.list")
+    -else
+      %h1#lightBoxDialogTitle= t(:unify_groups, scope: "groups.list")
+    %span.form_requirement= t(:required_fields)
+
+    .form-inputs.block_content
+      = f.input :offer_id, as: :hidden
+
+      = label_tag :id,  t(:group), class: 'group_unify'
+      - if @action=='load'
+        = select_tag 'new_group_ids[]', options_for_select(@groups.collect { |s| [ s.code, s.id] }), multiple: true, required: true
+      - else
+        = select_tag 'id', options_for_select(@groups.collect { |s| [ s.code, s.id] }), required: true
+
+      = hidden_field_tag :type_id, @type_id
+      = hidden_field_tag :old_group_ids, @old_group_ids
+      = hidden_field_tag :other_group_ids, @groups.map(&:id).join(',')
+
+      .right_buttons
+        = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox'
+        = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", id: "save"
+
+:javascript
+
+  $(function(){
+    $("form.new_group .form-inputs").keypress(function(e) { if (e.which == 13) e.preventDefault(); });
+
+    $("#save").click(function(){
+      $('form#group_form').serialize_and_submit({
+        complement_success: function(data) {
+          var url = "#{list_groups_path(type_id: @type_id, offer_id: @group.offer_id)}";
+
+          $.get(url, function(data) {
+            $('.groups_list').html(data);
+          });
+        }
+      });
+    });
+
+  });

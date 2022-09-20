@@ -32,7 +32,7 @@ module MenuHelper
 
       if menu.parent.nil?
         menu_list[:singles] << menu_item
-      else
+      elsif menu.name != "menu_chat"
         menu_list[:parents][menu.parent_id] = {name: t(menu.parent.name), children: []} unless menu_list[:parents].has_key?(menu.parent_id)
         menu_list[:parents][menu.parent_id][:children] << menu_item
       end
