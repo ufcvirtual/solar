@@ -11,7 +11,7 @@
 
       = label_tag :id,  t(:group), class: 'group_unify'
       - if @action=='load'
-        = select_tag 'new_group_ids[]', options_for_select(@groups.collect { |s| [ s.code, s.id] }), multiple: true, required: true
+        = select_tag 'new_group_ids[]', options_for_select(@groups.collect { |s| [ s.code, s.id] }), multiple: true, required: true, class: 'space_w'
       - else
         = select_tag 'id', options_for_select(@groups.collect { |s| [ s.code, s.id] }), required: true
 
@@ -19,7 +19,7 @@
       = hidden_field_tag :old_group_ids, @old_group_ids
       = hidden_field_tag :other_group_ids, @groups.map(&:id).join(',')
 
-      .right_buttons
+      .right_buttons.space_h
         = button_tag t(:cancel), :type => 'button', :onclick => "jQuery.fancybox.close()", class: 'btn btn_default btn_lightbox'
         = button_tag t(:save), class: "btn btn_main btn_lightbox", type: "button", id: "save"
 
