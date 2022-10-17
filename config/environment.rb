@@ -4,17 +4,23 @@ Encoding.default_internal = Encoding::UTF_8
 
 Solar::Application.initialize!
 
-mailer_config = YAML::load(File.open('config/mailer.yml'))
-
 Fb_Config = YAML::load_file(File.open('config/facebook.yml'))
 
 # configuracoes do action mailer para o gmail - porta: 465 ou 587
 ActionMailer::Base.perform_deliveries   = true
-# ActionMailer::Base.delivery_method      = :smtp
-ActionMailer::Base.default_url_options  = mailer_config['default_url_options']
+ActionMailer::Base.delivery_method      = :smtp
+ActionMailer::Base.default_url_options  = { host: ENV["SMTP_HOST"] }
 
 if Rails.env.production?
-    ActionMailer::Base.smtp_settings    = mailer_config['smtp_settings']
+    ActionMailer::Base.smtp_settings = {
+        address: ENV["SMTP_ADDRESS"],
+        authentication: ENV["SMTP_AUTHENTICATION"],
+        domain: ENV["SMTP_DOMAIN"],
+        user_name: ENV["SMTP_USER"],
+        password: ENV["SMTP_PASSWORD"],
+        enable_starttls_auto: ENV["SMTP_TTLS"],
+        port: ENV["SMTP_PORT"]
+    }
 end
 
 # constantes de status de matricula e pedido de matricula - table ALLOCATIONS

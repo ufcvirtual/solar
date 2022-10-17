@@ -51,7 +51,10 @@ Solar::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  routes.default_url_options = YAML::load(File.open("config/global.yml"))[Rails.env.to_s]["url_options"] rescue {}
+  routes.default_url_options = {
+    host: ENV['SOLAR_HOST'],
+    port: ENV['SOLAR_PORT']
+  } rescue {}
 
   WillPaginate.per_page = 100
   #config.force_ssl = true
