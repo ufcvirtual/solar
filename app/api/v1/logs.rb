@@ -72,6 +72,7 @@ module V1
       get "user/:id", rabl: "users/show" do
         user = User.find(params[:id])
         courses = (YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['uab_courses'] rescue nil)
+        # configuração 'uab_courses' não existe no arquivo global.yml
 
         unless courses.blank?
           courses_ids = Course.where(code: courses.split(',')).pluck(:id)
