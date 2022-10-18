@@ -1,9 +1,9 @@
 module SavConfig
-  CONFIG = YAML.load_file(Rails.root.join("config","sav.yml"))[Rails.env] rescue nil
+  CONFIG = ENV['SAV_CONFIG_ENABLE'] rescue nil
   unless CONFIG.nil?
-    IV     = CONFIG['IV']
-    KEY    = CONFIG['key']
-    WSDL   = CONFIG['wsdl']
-    METHOD = CONFIG['method']
+    IV     = ENV['SAV_IV']
+    KEY    = ENV['SAV_KEY']
+    WSDL   = ENV['SAV_WSDL']
+    METHOD = ENV['SAV_METHOD']
   end
 end
