@@ -134,7 +134,7 @@ Course.create!(code: load_group["codGraduacao"], name: (load_group["nomeGraduaca
               end
 
               allocate_professors(group, cpfs || [])
- allocate_professors(group, cpfs || [], 5) unless ['107', '108', '109', '110', '111', '112', '113', '115', '118'].include?(course.try(:code))
+ allocate_professors(group, cpfs || [], 5) unless ENV["UAB_CODE_COURSES"].split(',').include?(course.try(:code))
 
               { ok: :ok }
             end
