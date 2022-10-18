@@ -63,21 +63,20 @@ class GroupAssignment < ActiveRecord::Base
   def self.send_email_one_week_before_start_assignment_in_group(assignment_id = nil)
     unless assignment_id.nil?
       assignments_in_group = Assignment.includes(:schedule).where(type_assignment: Assignment_Type_Group).where('schedules.start_date > ? AND schedules.start_date < ?', Date.current, Date.current + 6).where(id: assignment_id).references(:schedules)
-      puts assignments_in_group
     else
       assignments_in_group = Assignment.includes(:schedule).where(type_assignment: Assignment_Type_Group).where('schedules.start_date = ?', Date.current + 6.days).references(:schedules)
     end
-    
+
     assignments_in_group.each do |assignment_group|
 
       assignment_group.academic_allocations.each do |academic_allocation|
         alloc_tag_ids = AllocationTag.find(academic_allocation.allocation_tag_id).related
-        
+
         responsibles_emails = User.joins(:profiles, :allocations)
                                   .where(allocations: {allocation_tag_id: alloc_tag_ids})
                                   .where(profiles: {id: Profile.with_access_on(:automatic_email_group_assignment_division, :emails)})
                                   .uniq.map{|user| user.email}
-        
+
         Job.send_mass_email(responsibles_emails, I18n.t("group_assignments.alert_create_assignment_group_email"), "#{I18n.t('group_assignments.automatic_one_week_before_email_split_group', assignment_group_name: assignment_group.name)}", [], nil, false)
       end
     end
