@@ -2,14 +2,14 @@ version: '3.7'
 
 services:
   app:
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile
-    # entrypoint: ./entrypoints/app-entrypoint.sh
-    image: ufcvirtualdevops2022/solar:v1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: ./entrypoints/app-entrypoint.sh
+    # image: ufcvirtualdevops2022/solar:v1
     depends_on:
       - database
-      - redis
+      - redis-db
     ports:
       - "8080:8080"
     volumes:
@@ -33,7 +33,7 @@ services:
     ports:
       - "5432:5432"
 
-  redis:
+  redis-db:
     image: redis:7.0.4
     networks:
       - solar_net
