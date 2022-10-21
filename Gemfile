@@ -155,7 +155,7 @@ group :test do
   gem "cucumber-rails", "~> 2.2.0", require: false
   gem "selenium-webdriver", "~> 3.142.7"
   gem "launchy", "2.5.0"
-  gem "nokogiri", "1.11.1" # html, css parser (search)
+  gem "nokogiri", "1.13.9" # html, css parser (search)
   # gem "spreewald", "0.8.4" # collection of cucumber steps
   gem "simplecov", "~> 0.15.1", require: false # cobertura de testes
 end
