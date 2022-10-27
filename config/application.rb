@@ -16,6 +16,13 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
+if Rails.env == 'production'
+  Dotenv.load(
+    File.join("/etc/envfiles", ".env.#{Rails.env}"),
+    File.join("/etc/envfiles", ".env")
+  )
+end
+
 module Solar
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
