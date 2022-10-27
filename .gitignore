@@ -24,12 +24,6 @@ media/
 public/assets
 db/schema.rb
 db/structure.sql
-config/global.yml
-config/global.deploy.yml
-config/database.yml
-config/database.deploy.yml
-config/mailer.yml
-config/mailer.deploy.yml
 config/deploy.rb
 config/facebook.yml
 config/facebook.deploy.yml
