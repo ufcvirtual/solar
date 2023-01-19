@@ -4,7 +4,7 @@ ruby "2.7.2"
 
 #gem "rails", "~> 3.2.16"
 gem "rails", "5.1.7"
-gem "rack", "~> 2.0.9"
+gem "rack", "~> 2.1.4"
 gem "rake", "~> 13.0.3"
 gem "pg", "~> 1.2.3"
 #gem "foreigner", "~> 1.4.0"
