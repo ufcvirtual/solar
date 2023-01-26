@@ -202,7 +202,7 @@ class AllocationTag < ActiveRecord::Base
       end
 
       unless query.blank?
-        rts = RelatedTaggable.where(query, params.permit!.slice(:groups_ids, :offer_id, :semester_id, :course_id, :curriculum_unit_id, :curriculum_unit_type_id).to_h)
+        rts = RelatedTaggable.where(query, params.slice(:groups_ids, :offer_id, :semester_id, :course_id, :curriculum_unit_id, :curriculum_unit_type_id))
         raise ActiveRecord::RecordNotFound if rts.empty?
 
         offer_id = rts.map(&:offer_id).first if offer
