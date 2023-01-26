@@ -10,45 +10,47 @@ services:
     depends_on:
       - database
       - redis-db
-    ports:
-      - "8080:8080"
     volumes:
       - .:/app
       - gem_cache:/usr/local/bundle/gems
       - node_modules:/app/node_modules
     networks:
-      - solar_net
+      solar_net:
+        ipv4_address: 172.20.0.10
     env_file: .env
 
   database:
     image: postgres:14
     networks:
-      - solar_net
+      solar_net:
+        ipv4_address: 172.20.0.11
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       POSTGRES_DB: "solar"
       POSTGRES_HOST_AUTH_METHOD: "trust"
-    ports:
-      - "5432:5432"
+    # ports:
+    #   - "5432:5432"
 
   redis-db:
     image: redis:7.0.4
     networks:
-      - solar_net
+      solar_net:
+        ipv4_address: 172.20.0.12
     volumes:
       - db_redis:/data
-    ports:
-      - "6379:6379"
+    # ports:
+    #   - "6379:6379"
 
   mailhog:
     image: mailhog/mailhog
     networks:
-      - solar_net
-    ports:
-        - "1025:1025"
-        - "8025:8025"
+      solar_net:
+        ipv4_address: 172.20.0.13
+    # ports:
+    #     - "1025:1025"
+    #     - "8025:8025"
 
 volumes:
   gem_cache:
@@ -58,4 +60,6 @@ volumes:
 
 networks:
   solar_net:
-    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

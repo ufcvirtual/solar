@@ -137,7 +137,7 @@
     CKEDITOR_BASEPATH  = "#{request.env['RAILS_RELATIVE_URL_ROOT']}/assets/ckeditor/";
 
     var websocket_host = "#{ENV['WEBSOCKET_HOST']}";
-    var websocket_port = "#{ENV['WEBSOCKET_HOST']}";
+    var websocket_port = "#{ENV['WEBSOCKET_PORT']}";
 
     $(".forum_button_attachment").call_fancybox({
       element_selector: '.focu'
@@ -220,6 +220,7 @@
        // formData.append("post[parent_id]", parent_id);
 
       //{discussion_post: {parent_id: parent_id, content: content, draft: draft}}
+      console.log(form.attr("action"));
       $.ajax({
         type: form.attr("method"),
         url: form.attr("action"),
