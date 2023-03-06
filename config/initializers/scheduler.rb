@@ -29,7 +29,7 @@ if (ENV["SCHEDULER"] == "true")
 
   #minutos e horas * * * 14:06
   scheduler.cron '06 14 * * *' do
-    GroupAssignment.split_students_in_groups #criação automática de grupos de trabalho
+    # GroupAssignment.split_students_in_groups #criação automática de grupos de trabalho
   end
 
   #minutos e horas * * * 15:05
