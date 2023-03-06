@@ -71,7 +71,7 @@ class Group < ActiveRecord::Base
   end
 
   def as_label
-    [offer.semester.name, code, offer.curriculum_unit.try(:name)].join('|')
+    [offer.semester.name, code, offer.curriculum_unit.try(:name), offer.course.try(:name)].uniq.join('|')
   end
 
   def detailed_info

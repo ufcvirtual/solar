@@ -78,7 +78,7 @@ class AllocationTag < ActiveRecord::Base
 
   ## return group, offer, course or curriculum_unit
   def refer_to
-    self.attributes.keep_if {|k,v| k != 'id' && !v.nil?}.keys.first.sub(/\_id/, '')
+    self.attributes.keep_if {|k,v| k != 'id' && k != 'setted_situation' && k != 'situation_date' && k != 'situation_date_ac_id' && !v.nil?}.keys.first.sub(/\_id/, '')
   end
 
   def is_student?(user_id)
@@ -202,7 +202,7 @@ class AllocationTag < ActiveRecord::Base
       end
 
       unless query.blank?
-        rts = RelatedTaggable.where(query, params.permit!.slice(:groups_ids, :offer_id, :semester_id, :course_id, :curriculum_unit_id, :curriculum_unit_type_id).to_h)
+        rts = RelatedTaggable.where(query, params.slice(:groups_ids, :offer_id, :semester_id, :course_id, :curriculum_unit_id, :curriculum_unit_type_id))
         raise ActiveRecord::RecordNotFound if rts.empty?
 
         offer_id = rts.map(&:offer_id).first if offer
@@ -372,7 +372,7 @@ class AllocationTag < ActiveRecord::Base
   def can_set_situation_automatically?
     if situation_date.blank?
       last_date = AcademicTool.last_date(id)
-      update_attributes situation_date: last_date[:date], situation_date_ac_id: last_date[:ac_id]
+      update_attributes(situation_date: last_date[:date], situation_date_ac_id: last_date[:ac_id])
     end
 
     course = get_course
