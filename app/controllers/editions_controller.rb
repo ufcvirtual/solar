@@ -182,37 +182,6 @@ class EditionsController < ApplicationController
 
     max_working_hours = at.first.offers.first.try(:curriculum_unit).try(:working_hours)
 
-
-    allocation_tags.where('group_id IS NOT NULL').each do |at|
-      # getting errors to working_hours
-      unless max_working_hours.nil?
-        acs = AcademicAllocation.where(allocation_tag_id: at.related, frequency: true).where('final_exam = false AND equivalent_academic_allocation_id IS NULL').pluck("SUM(max_working_hours) AS max_working_hours")
-        if acs.any?
-          wh = acs.first
-          if wh != max_working_hours
-            working_hours_errors << {at: at, wh: wh}
-            ats_errors << at.id
-          end
-        end
-      end
-
-      # getting errors to final_weight
-      acs = AcademicAllocation.where(allocation_tag_id: at.related, evaluative: true).where('final_exam = false').pluck('DISTINCT final_weight')
-
-      if acs.any?
-        sum = acs.inject(:+) || 0
-        if sum != 100
-          final_weight_errors << {at: at, sum: sum}
-          ats_errors << at.id
-        end
-      end
-
-
-    end
-
-    raise 'error' unless working_hours_errors.blank? && final_weight_errors.blank?
-
-
     ActiveRecord::Base.transaction do
       params[:academic_allocations].each do |data|
         acs = AcademicAllocation.where(id: data['acs'].delete('[]').split(' ')).each do |ac|
@@ -256,7 +225,34 @@ class EditionsController < ApplicationController
     end
 
 
+
     allocation_tags.where('group_id IS NOT NULL').each do |at|
+      # getting errors to working_hours
+      unless max_working_hours.nil?
+        acs = AcademicAllocation.where(allocation_tag_id: at.related, frequency: true).where('final_exam = false AND equivalent_academic_allocation_id IS NULL').pluck("SUM(max_working_hours) AS max_working_hours")
+        if acs.any?
+          wh = acs.first
+          if wh != max_working_hours
+            working_hours_errors << {at: at, wh: wh}
+            ats_errors << at.id
+          end
+        end
+      end
+
+      # getting errors to final_weight
+      acs = AcademicAllocation.where(allocation_tag_id: at.related, evaluative: true).where('final_exam = false').pluck('DISTINCT final_weight')
+
+      if acs.any?
+        sum = acs.inject(:+) || 0
+        if sum != 100
+          final_weight_errors << {at: at, sum: sum}
+          ats_errors << at.id
+        end
+      end
+
+      errors = errors.delete_if {|x| x == true}
+      raise 'error' unless errors.blank? && working_hours_errors.blank? && final_weight_errors.blank?
+
       last_date = AcademicTool.last_date(at.id)
       at.update_attributes(situation_date: last_date[:date], situation_date_ac_id: last_date[:ac_id])
       # recalculating users final grades (if exists)
