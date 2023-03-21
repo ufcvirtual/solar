@@ -15,6 +15,7 @@
               %th{id: "name_#{lmodule.id}"}= t('.lesson_table_title')
               %th.date{id: "period_#{lmodule.id}"}= t('.lesson_table_date')
               %th.date{id: "notes_#{lmodule.id}"}= t('.lesson_notes')
+              %th.date{id: "audio_#{lmodule.id}"}= t('.download_audio')
               - if @responsible
                 %th.no_sort{id: "accept_#{lmodule.id}"}= t('.acceptance')
           %tbody

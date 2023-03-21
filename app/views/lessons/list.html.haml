@@ -27,7 +27,7 @@
       $($(this).parent().siblings()[0]).show();
     });
 
-    $(".btn_edit, .btn_del, .release_lessons, .download_lesson_zip, .manage_files_lesson").attr("disabled", true);
+    $(".btn_edit, .btn_del, .release_lessons, .download_lesson_zip, .manage_files_lesson, .export_lessonaudio").attr("disabled", true);
 
     $(".link_new_lesson, .link_new_module, .edit_module").call_fancybox({
       width: '70%'
@@ -35,7 +35,7 @@
 
     $('.lesson_check_all').map(function(){
       $(this).nice_checkbox({
-        objects_to_change_status: ['.manage_files_lesson', '.download_lesson_zip', '.release_lessons', '[id^="move_lesson_from"]']
+        objects_to_change_status: ['.manage_files_lesson', '.download_lesson_zip', '.release_lessons', '[id^="move_lesson_from"]', '.export_lessonaudio']
       });
     });
 
@@ -220,6 +220,30 @@
           }
         });
       }
+    });
+
+    $(".export_lessonaudio").click(function(){
+      var selected_lessons = get_selected_lessons($(this).data('module-id'));
+      if(selected_lessons.length == 1){
+        var id = selected_lessons[0];
+        var url_get = "#{verify_contains_audio_lesson_path(id: ':id')}";
+        var obj = this;
+        $.get(url_get.replace(':id', id), function(data) { 
+
+          url = $(obj).data("link-to-export").replace(':id', id);
+          $(obj).call_fancybox({href : url, width: '700pox', height: 'auto', open: true});
+          return false;
+
+        }).fail(function(data){
+          $.fancybox.close();
+          var data = $.parseJSON(data.responseText);
+          if (typeof(data.alert) != "undefined")
+            flash_message(data.alert, 'alert');
+        });
+      }else
+        flash_message("<%=I18n.t(:one_lesson_must_be_selected, scope: [:lesson_files])%>", "alert");
+
+      return false;
     });
 
   });

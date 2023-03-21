@@ -555,3 +555,7 @@
 .icon-redo:before {
   content: "\2b6e";
 }
+.icon-music3:before {
+	content: "\e029";
+	color: #FFFFFF;
+}

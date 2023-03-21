@@ -328,6 +328,11 @@ Solar::Application.routes.draw do
       put :change_module
       get :edition, action: :open, defaults: { edition: true }
       get :open
+      post :generate_audio
+      get :download_audios
+      post :export_lessonaudio
+      get '/export/lessons/steps',   to: 'lessons#export_steps',   as: :export_steps
+      get :verify_contains_audio
     end
     collection do
       get 'open_module/:lesson_module_id', action: :open_module, as: :open_module
@@ -341,6 +346,11 @@ Solar::Application.routes.draw do
       get "/import/lessons/details", to: "lessons#import_details", as: :import_details
       get "/import/lessons/preview", to: "lessons#import_preview", as: :import_preview
       put "/import/lessons/",        to: "lessons#import",         as: :import
+
+      get '/export/lessons/list',    to: 'lessons#export_list',    as: :export_list
+      get '/export/lessons/details', to: 'lessons#export_details', as: :export_details
+      get "/export/lessons/preview", to: "lessons#export_preview", as: :export_preview
+      put '/export/lessons/',        to: 'lessons#export',         as: :export
     end
     resources :files, controller: :lesson_files, except: [:index, :show, :update, :create] do
       collection do
@@ -753,6 +763,8 @@ Solar::Application.routes.draw do
   get '/media/lessons/:id/:file(.:extension)', to: 'access_control#lesson_media', index: true
   get '/media/lessons/:id/:folder/*path',    to: 'access_control#lesson_media', index: false
 
+  get '/media/lessons/:id/audios/:file(.:extension)', to: 'access_control#lesson_media', index: false
+  
   get '/media/users/:user_id/photos/:style.:extension', to: 'access_control#users'
 
   get '/media/assignment/sent_assignment_files/:file.:extension', to: 'access_control#assignment'

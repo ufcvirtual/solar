@@ -1,0 +1,25 @@
+.new_question
+  = simple_form_for(@lesson, html: { multipart: true, id: 'question_form' }) do |eq|
+    %span.form_requirement= t(:required_fields)
+    %h1#lightBoxDialogTitle= (eq.object.persisted? ? t('questions.form.steps.edit') : t('questions.form.steps.new'))
+    = eq.input :id, as: :hidden, input_html: { value: @lesson.id }
+    .question_form.block_content
+      .form-inputs.block_content
+        #steps
+          %ul
+            %li.info.active
+              = t('questions.form.steps.info')
+              .dot.active#dot-info
+            %li.medias
+              = t('questions.form.steps.medias')  
+              .dot#dot-medias
+            %li.items
+              = t('questions.form.steps.items')
+              .dot#dot-items
+        = eq.simple_fields_for :question do |f|
+          .step-info
+            = render partial: 'questions/form/info', locals: { f: f, eq: eq }
+          .step-medias.invisible
+            = render partial: 'questions/form/media', locals: { f: f, eq: nil }  
+          .step-items.invisible
+            = render partial: 'questions/form/items', locals: { f: f, eq: eq }

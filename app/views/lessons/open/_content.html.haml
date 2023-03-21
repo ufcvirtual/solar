@@ -1,4 +1,53 @@
 .content{ :"data-url" => open_lesson_path(@lesson) }
   -# - path = @lesson.path.sub('&feature=youtu.be', '')
   -# - path = path.sub('https://youtu.be', 'https://www.youtube.com/embed')
-  %iframe#content_lesson{ title: @lesson.name, src: @lesson.path, width: '100%', height: '100%', name: 'content_lesson', target: '_self', frameborder: 0, framespacing: 0 }
+  - if @lesson.valid_file? && @lesson.is_video?
+    %span.hide=t(:audio_suggestions)
+    %video{ src: @lesson.path, autoplay: false, controls: 'true', name: 'audioQuestion', preload: 'auto', onplay: 'check(this);', onclick: 'handleMediaErrorFirefox(this);', onkeypress: "return handleEnterKey(event, this);" }
+      %track{ kind: "captions"}
+      %track{ kind: "descriptions"}
+  - else
+    %iframe#content_lesson{ title: @lesson.name, src: @lesson.path, width: '100%', height: '100%', name: 'content_lesson', target: '_self', frameborder: 0, framespacing: 0 }
+
+= javascript_include_tag 'lessons', 'audios'
+
+:javascript
+  var get_lesson_url = "#{lesson_url('lesson_id')}";
+  var get_module_lessons_url = "#{open_module_lessons_path('lesson_module_id', allocation_tags_ids: 'allocation_tags_ids_value')}";
+
+  $(function(){
+    setTimeout(function() {
+      console.log(array_topicos);
+      console.log(lesson_text);
+      console.log(array_topicos_missing);
+      var audio = document.querySelector('audio');
+      audio.controlsList.remove('nodownload');
+
+      let menu = $("#content_lesson").contents().find("md-sidenav").find(".navigation").last();
+      menu.find("li").each(function(i, li) {
+        array_topicos.push(new Array($(li).text().trim()));
+      });
+      load_text();
+      $("#content_lesson").contents().find("#root").on('click', function(e) {
+        setTimeout(function () {
+          load_text();
+        },1000); 
+      });
+    },3000);
+
+    function load_text(){
+      let topico = $("#content_lesson").contents().find("#content").text().trim();
+      let texto = $("#content_lesson").contents().find(".white-paper").text().replace(/\s{2,}/g,' ');
+      texto = texto.replace(/\r?\n|\r/g,'').replace(/\s{2,}/g,' ');
+      for (var i in array_topicos) {
+        //verifica se o texto pertence ao tópico
+        if(array_topicos[i][0]==topico){ 
+          array_topicos[i][1] = texto;
+          let idx = array_topicos_missing.indexOf(topico)
+          if(idx != -1){
+            delete array_topicos_missing[idx];
+            array_topicos_missing = array_topicos_missing.filter(Boolean); 
+          }
+        }
+      }
+    }

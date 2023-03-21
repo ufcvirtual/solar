@@ -16,6 +16,7 @@ class Lesson < ActiveRecord::Base #< Event
   has_many :offers, through: :allocation_tags
   has_many :notes, class_name: 'LessonNote', foreign_key: 'lesson_id', dependent: :destroy
   has_many :imported_to, class_name: 'Lesson', foreign_key: 'imported_from_id'
+  has_many :lesson_audios, class_name: 'LessonAudio', dependent: :destroy
 
   before_create :set_order
 
@@ -200,9 +201,29 @@ class Lesson < ActiveRecord::Base #< Event
     File.join(Lesson::FILES_PATH, id.to_s)
   end
 
+  def is_video?
+    (address.last(4).eql?('.aac') || address.last(4).eql?('.m4a') || address.last(4).eql?('.mp4') || address.last(4).eql?('.avi') || address.last(5).eql?('.webm') || address.last(4).eql?('.m4v'))
+  end
+
   def can_change_status?
     errors.add(:base, I18n.t('lessons.errors.blank_address')) if address.blank?
   end
+
+  def clone_audio_to_another_lesson(lesson_id)
+    audioslesson = LessonAudio.where(lesson_id: self.id, status: true)
+    LessonAudio.where(lesson_id: lesson_id, status: true).update_all(status: false)
+    audioslesson.each do |lessonaudio|
+      new_audiolesson = lessonaudio.dup
+      new_audiolesson.lesson_id = lesson_id
+      new_audiolesson.count_text = 0
+      new_audiolesson.audio = lessonaudio.audio
+      new_audiolesson.save!
+    end
+  end 
+
+  def contains_audio?
+    LessonAudio.where(lesson_id: self.id, status: true).count > 0 ? true : false
+  end 
 
   private
 

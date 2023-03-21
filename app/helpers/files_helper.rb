@@ -58,14 +58,23 @@ module FilesHelper
         name_zip_file = Digest::SHA1.hexdigest(opts[:files].map(&opts[:table_column_name].to_sym).flatten.compact.sort.join)
         archive       = archive % name_zip_file
 
-        return archive if File.exists?(archive)
+        return archive if File.exists?(archive) && opts[:audio].blank?
 
         Zip::File.open(archive, Zip::File::CREATE) do |zipfile| # criação do zip
           make_tree(opts[:files], opts[:name_zip_file]).each do |dir, files|
             zipfile.mkdir(dir.to_s)
             # adiciona todos os arquivos do nível em questão no zip
             files.map do |file|
-              if File.exists?(file.attachment.path.to_s)
+              if opts[:audio]
+                if File.exists?(file.audio.path.to_s)
+                  begin
+                    zipfile.add(File.join(dir.to_s, file.audio_file_name), file.audio.path.to_s)
+                  rescue
+                  end
+                else
+                  some_file_doesnt_exist = true
+                end
+              elsif File.exists?(file.attachment.path.to_s)
                 begin
                   zipfile.add(File.join(dir.to_s, file.attachment_file_name), file.attachment.path.to_s)
                 rescue

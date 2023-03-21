@@ -1,4 +1,6 @@
 - path = (@not_offer_area ? open_lesson_path(lesson.id, allocation_tags_ids: @allocation_tags_ids, offer_id: @offer.id) : open_lesson_path(lesson.id))
+- audio = get_audio(lesson.id, true)
+- size = audio.nil? ? 0 : format('%.2f KB', audio.audio_file_size.to_i/1024.0).to_s
 %td{headers: "name_#{lesson.lesson_module_id}"}
   - closed = " (#{t(:lesson_closed_short)})"
   - draft = lesson.is_draft? ? " (#{t(:lesson_test)})" : ''
@@ -44,6 +46,9 @@
     - unless no_notes
       %span.count_icon{:'aria-hidden' => 'true'}= notes.count
 
+%td{ style: 'width: 10%; text-align: center', headers: "audio_#{lesson.lesson_module_id}" }
+  = link_to (content_tag(:i, nil, class: 'icon-download')), audio.audio.url.gsub(':lesson_id', lesson.id.to_s), class: 'btn', :'aria-label'=> t('posts.post.download', file: audio.audio_file_name, size: size), :'data-tooltip' => t('posts.post.download', file: audio.audio_file_name, size: size) unless audio.nil?
+  
 - if @responsible
   %td{ width: '12%' }
     - status = [Lesson_Test, Lesson_Approved].delete_if { |v| v == lesson.status }

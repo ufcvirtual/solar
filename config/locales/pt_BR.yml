@@ -1110,6 +1110,7 @@ pt_BR:
       caption: Lista de aulas para o módulo %{module_name}
       number_of_lessons: "%{module_name} possui %{lesson_number} aulas"
       jspanel_count_window: "Permitido somente 3 janelas"
+      download_audio: Baixar áudio
     list:
       lesson: Aula
       order: Ordem
@@ -1267,7 +1268,30 @@ pt_BR:
       lesson_menu: " %{lesson} (Clique para alterar a aula. Um submenu para seleção de aulas ficará disponível)"
       download: "Baixar aula em arquivo PDF"
       download_file: "Caso você não consiga executar o arquivo, click aqui para fazer o download"
-
+      missing_topics: 'Texto está incompleto faltam os seguintes tópicos: '
+      generate_audio: Gerar audio
+      used: "Usado: (%{count})"
+      available: "Disponível: (%{count})"
+      text_generate_audio: Gerando áudios
+    export:
+      error: 'Aula não é do tipo arquivo e/ou não possui áudios validos' 
+      message_audio_success: "Áudio da aula gerado com sucesso."
+      button: Exportar áudios
+      lesson:
+        preview: Ver aula
+      list:
+        name: Nome
+        preview: Ver
+        type: Tipo
+        preview_tooltip: Visualizar aula
+        conclude: Finalizar
+        no_lesson: Nenhuma aula
+      steps:
+        title: Exportação de áudio de aula
+        choose: Escolher aula
+        conclude: Finalizar
+        back: Voltar
+        original_lesson: '** com relação a aula original'  
   lesson_modules:
     general_of_offer: "Geral"
     general_of_group: "Geral da Turma"

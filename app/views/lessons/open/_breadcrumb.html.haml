@@ -14,6 +14,14 @@
     %span.lessons#nav_lessons{role: 'menubar'}
       = render partial: "lessons/open/lessons", locals: { lesson_module: @lesson.lesson_module }
 
+    %span.lesson-file-download{role: 'menubar', class: @lesson.is_video? ? '' : 'invisible'}
+      = link_to (content_tag(:i, nil, class: 'icon-download')), @lesson.path + "?download=true", class: 'btn', :'aria-label'=> t('lessons.open.download_file'), :'data-tooltip' => t('lessons.open.download_file')
+      = select_tag "Idioma", options_for_select(['', ['PORTUGUÊS', 'pt-BR'], ['ESPANHOL', 'esp']], selected: 'pt-BR'), include_blank: false
+      = link_to (content_tag(:i, nil, class: 'icon-music3')), '#', onclick: 'send_text_lesson(this)', :'data-url' => generate_audio_lesson_path(@lesson.id), :'aria-label'=> 'Gerar Áudio', :'data-tooltip' => 'Gerar Áudio'
+      %audio{ src: @path_audio, autoplay: false, controls: "controls", type: "audio/mpeg", name: 'audio_lesson', id: 'audio_lesson', preload: true}
+      %span="Usado: "+@count_text_month.to_s
+      %span="Disponível: "+@text_available.to_s
+
 :javascript
   $(function(){
     $(document).on("keydown", function(event){
