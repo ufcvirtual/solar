@@ -59,7 +59,7 @@ class RelatedTaggable < ActiveRecord::Base
     unless options[:upper] && options[:lower]
       if options[:lower]
 
-        RelatedTaggable.joins('JOIN allocation_tags ON ((allocation_tags.group_id IS NOT NULL AND allocation_tags.group_id = related_taggables.group_id) OR 
+        RelatedTaggable.joins('JOIN allocation_tags ON ((allocation_tags.group_id IS NOT NULL AND allocation_tags.group_id = related_taggables.group_id) OR
           (allocation_tags.curriculum_unit_id IS NOT NULL AND allocation_tags.curriculum_unit_id = related_taggables.curriculum_unit_id) OR (allocation_tags.offer_id IS NOT NULL AND allocation_tags.offer_id = related_taggables.offer_id) OR
           (allocation_tags.curriculum_unit_type_id IS NOT NULL AND allocation_tags.curriculum_unit_type_id = related_taggables.curriculum_unit_type_id) OR (allocation_tags.course_id IS NOT NULL AND allocation_tags.course_id = related_taggables.course_id))')
           .where(allocation_tags: { id: array_of_ats })
