@@ -28,10 +28,7 @@ module V1::OffersAndSemesters
   def verify_or_create_offer(semester, params, offer_period, enrollment_period = {})
     enrollment_period = {start_date: enrollment_period[:start_date].try(:to_date) || offer_period[:start_date], end_date: enrollment_period[:end_date].try(:to_date) || offer_period[:end_date]}
     offer = Offer.where(params.merge!({semester_id: semester.id})).first_or_create!
-    group_count = Group.where(offer_id: params[:offer_id], can_update: true).count
-    if group_count < 1
-      verify_dates(offer, semester, offer_period, enrollment_period)
-    end
+    verify_dates(offer, semester, offer_period, enrollment_period)
     offer
   end
 
@@ -58,11 +55,13 @@ module V1::OffersAndSemesters
 
   def update_dates(offer, params)
     semester = offer.semester
-
-    offer_period      = get_date_attributes(offer, semester, params)
+    group_count = Group.where(offer_id: offer.id, can_update: true).count
+    if group_count < 1
+      offer_period = get_date_attributes(offer, semester, params)
+    end
     enrollment_period = get_date_attributes(offer, semester, params, true)
 
-    (offer.period_schedule.nil?     ? offer.build_period_schedule(offer_period) : offer.period_schedule.update_attributes!(offer_period)) if params[:offer_start].present? or params[:offer_end].present?
+    (offer.period_schedule.nil?     ? offer.build_period_schedule(offer_period) : offer.period_schedule.update_attributes!(offer_period)) if ((params[:offer_start].present? or params[:offer_end].present?) && group_count<1)
     (offer.enrollment_schedule.nil? ? offer.build_enrollment_schedule(enrollment_period) : offer.enrollment_schedule.update_attributes!(enrollment_period)) if params[:enrollment_start].present? or params[:enrollment_end].present?
 
     offer.verify_current_date = false

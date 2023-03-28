@@ -20,7 +20,7 @@ module V1::GroupsH
     #offer_query = {offers: {curriculum_unit_id: CurriculumUnit.where(code: curriculum_unit_code).first}.merge!(query)}
     offer_query = {offers: {curriculum_unit_id: uc.try(:id)}.merge!(query)}
     basic_query = {name: name, semesters: {name: semester}}.merge!(offer_query)
-    basic_query.merge!({status: true}) if course_code.blank?
+    #basic_query.merge!({status: true}) if course_code.blank?
 
     group = Group.joins(offer: :semester).where(basic_query).first
 
