@@ -2497,6 +2497,7 @@ pt_BR:
       location: Localização
       details: Detalhes
       details_about: Detalhes sobre a turma %{name}
+      visible: Visível
     groups_tags:
       groups: Turmas
       add: Adicionar

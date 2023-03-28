@@ -84,4 +84,15 @@ $(function(){
     }).fail(result_error);
   });
 
+   $(".change_can_update_group").click(function(){
+    $.put($(this).data('link-can_update'), function(data) {
+      var url = $(".list_groups").data("link").replace('semester_param', $('#semester').combobox('value')).replace('course_param', $('#course').combobox('value')).replace('curriculum_unit_param', $('#curriculum_unit').combobox('value'));
+
+      flash_message(data.notice, 'notice');
+
+      $.get(url, function(data){ $(".groups_list").html(data); });
+      return false;
+    }).fail(result_error);
+  });
+
 });
