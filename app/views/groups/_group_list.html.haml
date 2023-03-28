@@ -8,6 +8,7 @@
           %th.center= t(".location")
           - unless hide_edition
             %th.center{style: "width: 10%"}= t(".activation")
+            %th.center{style: "width: 10%"}= t(".visible")
       %tbody
         - groups.each do |group|
           %tr.lines{class: (group.status ? "" : "disabled")}
@@ -18,6 +19,7 @@
             %td.center= link_to content_tag(:i, nil, class: 'icon-eye', :'aria-hidden'=>'true'), group_path(group), class: 'show_group', :'data-tooltip' => t('.details'), :'aria-label'=> t('.details_about', name: group.get_code_name) + t('fancybox.open')
             - unless hide_edition
               %td{style: "text-align: center"}= link_to (image_tag "#{(group.status) ? 'released' : 'rejected'}.png"), "#void", class: "change_status_group", :'data-tooltip' => (group.status ?  t(".enabled") :  t(".disabled")), :"data-link-status" => group_path(id: group.id, status: !group.status, multiple: true, offer_id: @offer_id), disabled: !(can? :update, Group)
+              %td{style: "text-align: center"}= link_to (image_tag "#{(group.can_update) ? 'released' : 'rejected'}.png"), "#void", class: "change_can_update_group", :'data-tooltip' => (group.can_update ?  t(".enabled") :  t(".disabled")), :"data-link-can_update" => group_path(id: group.id, can_update: !group.can_update, multiple: true, offer_id: @offer_id), disabled: !(can? :update, Group)
 
 :javascript
   $(function(){

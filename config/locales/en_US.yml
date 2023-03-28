@@ -2199,11 +2199,11 @@ en_US:
       code: Code
       enabled: Enabled
       disabled: Disabled
-      activation: Activation
       name: Name
       location: Location
       details: Details
       details_about: Details about group %{name}
+      visible: Visible
     groups_tags:
       groups: Groups
       add: Add

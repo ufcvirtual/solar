@@ -56,7 +56,7 @@ module V1::GroupsH
 
     group.location = [params[:location_name], params[:location_office]].join(' - ') unless params[:location_name].blank? && params[:location_office].blank?
     group.code = params[:code]
-    group.status = true
+    group.status = true if group.can_update == false || group.can_update.nil?
     group.integrated = true
     group.new_record? ? (group.created_at = DateTime.now) : (group.updated_at = DateTime.now)
     group.api = true

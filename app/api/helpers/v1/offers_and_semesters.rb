@@ -28,7 +28,10 @@ module V1::OffersAndSemesters
   def verify_or_create_offer(semester, params, offer_period, enrollment_period = {})
     enrollment_period = {start_date: enrollment_period[:start_date].try(:to_date) || offer_period[:start_date], end_date: enrollment_period[:end_date].try(:to_date) || offer_period[:end_date]}
     offer = Offer.where(params.merge!({semester_id: semester.id})).first_or_create!
-    verify_dates(offer, semester, offer_period, enrollment_period)
+    group_count = Group.where(offer_id: params[:offer_id], can_update: true).count
+    if group_count < 1
+      verify_dates(offer, semester, offer_period, enrollment_period)
+    end
     offer
   end
 
