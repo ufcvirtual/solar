@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     entrypoint: ./entrypoints/app-entrypoint.sh
-    # image: ufcvirtualdevops2022/solar:v1
+    # image: ufcvirtual/solar
     depends_on:
       - database
       - redis-db
