@@ -14,7 +14,7 @@ class EditionsController < ApplicationController
     authorize! :content, Edition, on: @allocation_tags_ids
     @user_profiles       = current_user.resources_by_allocation_tags_ids(@allocation_tags_ids)
     @allocation_tags_ids = @allocation_tags_ids.join(" ")
-    
+
     render partial: 'items'
   rescue=> error
     render json: {success: false, alert: t(:no_permission)}, status: :unauthorized
@@ -56,7 +56,7 @@ class EditionsController < ApplicationController
     authorize! :semesters, Edition
     @periods  = [[t(:actives, scope: [:editions, :semesters]), "active"], [t(:all, scope: [:editions, :semesters]), "all"]]
     @periods += Schedule.joins(:semester_periods).map {|p| [p.start_date.year, p.end_date.year] }.flatten.uniq.sort! {|x,y| y <=> x} # desc
-    
+
     ids = current_user.allocation_tags_ids_with_access_on([:update, :destroy], "offers")
 
     @allocation_tags_ids = RelatedTaggable.related_from_array_ats(ids)
@@ -219,37 +219,44 @@ class EditionsController < ApplicationController
         end
       end
 
-      allocation_tags.where('group_id IS NOT NULL').each do |at|
-        # getting errors to working_hours
-        unless max_working_hours.nil?
-          acs = AcademicAllocation.where(allocation_tag_id: at.related, frequency: true).where('final_exam = false AND equivalent_academic_allocation_id IS NULL').pluck("SUM(max_working_hours) AS max_working_hours")
-          if acs.any?
-            wh = acs.first
-            if wh != max_working_hours
-              working_hours_errors << {at: at, wh: wh}
-              ats_errors << at.id
-            end
-          end
-        end
+      errors = errors.delete_if {|x| x == true}
+      raise 'error' unless errors.blank? && working_hours_errors.blank? && final_weight_errors.blank?
 
-        # getting errors to final_weight
-        acs = AcademicAllocation.where(allocation_tag_id: at.related, evaluative: true).where('final_exam = false').pluck('DISTINCT final_weight')
- 
+    end
+
+
+
+    allocation_tags.where('group_id IS NOT NULL').each do |at|
+      # getting errors to working_hours
+      unless max_working_hours.nil?
+        acs = AcademicAllocation.where(allocation_tag_id: at.related, frequency: true).where('final_exam = false AND equivalent_academic_allocation_id IS NULL').pluck("SUM(max_working_hours) AS max_working_hours")
         if acs.any?
-          sum = acs.inject(:+) || 0
-          if sum != 100
-            final_weight_errors << {at: at, sum: sum}
+          wh = acs.first
+          if wh != max_working_hours
+            working_hours_errors << {at: at, wh: wh}
             ats_errors << at.id
           end
         end
-
-        last_date = AcademicTool.last_date(at.id)
-        at.update_attributes situation_date: last_date[:date], situation_date_ac_id: last_date[:ac_id]
-        # recalculating users final grades (if exists)
-        at.recalculate_students_grades
       end
+
+      # getting errors to final_weight
+      acs = AcademicAllocation.where(allocation_tag_id: at.related, evaluative: true).where('final_exam = false').pluck('DISTINCT final_weight')
+
+      if acs.any?
+        sum = acs.inject(:+) || 0
+        if sum != 100
+          final_weight_errors << {at: at, sum: sum}
+          ats_errors << at.id
+        end
+      end
+
       errors = errors.delete_if {|x| x == true}
       raise 'error' unless errors.blank? && working_hours_errors.blank? && final_weight_errors.blank?
+
+      last_date = AcademicTool.last_date(at.id)
+      at.update_attributes(situation_date: last_date[:date], situation_date_ac_id: last_date[:ac_id])
+      # recalculating users final grades (if exists)
+      at.recalculate_students_grades
     end
 
     LogAction.create(log_type: LogAction::TYPE[:update], user_id: current_user.id, ip: get_remote_ip, description: "management changes: #{changes.as_json}") rescue nil
@@ -259,6 +266,8 @@ class EditionsController < ApplicationController
   rescue CanCan::AccessDenied
     render json: { success: false, alert: t('evaluative_tools.errors.permission')}, status: :unprocessable_entity
   rescue => error
+
+
     alert = []
 
     errors.each do |error|
