@@ -24,7 +24,6 @@ RUN bundle exec rails assets:precompile \
     && rm -rf /usr/local/bundle/gems/cache/*.gem \
     && find /usr/local/bundle/gems/ -name "*.c" -delete \
     && find /usr/local/bundle/gems -name "*.o" -delete
-# && rm -rf spec node_modules app/assets vendor/assets lib/assets tmp/cache
 
 FROM ruby:$RUBY_VERSION-slim AS runner
 
