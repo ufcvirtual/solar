@@ -196,8 +196,13 @@ class GroupsController < ApplicationController
     end
 
     def update_multiple
-      @group.update_all(status: params[:status])
-      @group.first.offer.notify_editors_of_disabled_groups([@group]) if params[:status] == 'false'
+      unless params[:status].blank?
+        @group.update_all(status: params[:status]) 
+        @group.first.offer.notify_editors_of_disabled_groups([@group]) if params[:status] == 'false'
+      end
+      unless params[:can_update].blank?
+        @group.update_all(can_update: params[:can_update])
+      end
 
       render_group_success_json('updated')
     end
