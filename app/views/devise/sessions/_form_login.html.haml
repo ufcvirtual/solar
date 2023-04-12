@@ -29,21 +29,10 @@
         #flash_message{class: name}= content_tag :span, msg
 
   / # = link_to image_tag("help-solar-grande2.png", alt: t(:solar_faq)), faq_path, target: '_blank', :'aria-label' => t(:login_faq)+ t(:new_window), id: "faq-button"
-  / # = link_to image_tag("app-solar-grande2.png", alt: t(:login_app)), apps_path, target: '_blank', :'aria-label' => t(:login_app)+ t(:new_window)
   %br
   = image_tag("logos_brancos6.png", alt: '',  size: "290x80")
   %br
-  - if (ENV["SOLAR_CURSOS"] == "false")
-    .app
-      %h2
-        =t(:login_app2)
-        = content_tag(:i, nil, class: 'icon-mobile', :'aria-hidden' => 'true')
-      /= link_to image_tag("apps/apple_#{I18n.locale}.svg", alt: t(:form_apple_store2) + t(:new_window)), "https://itunes.apple.com/us/app/solar-mobilis/id1213025314?ls=1&mt=8", class: 'apple-app', target: '_blank'
-      = link_to image_tag("apps/google-play-badge_#{I18n.locale}.png", alt: t(:form_google_play2) + t(:new_window)), "https://play.google.com/store/apps/details?id=br.ufc.virtual.solarmobilis&hl=#{I18n.locale}&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1", class: 'google-app', target: '_blank'
-  - else
-    #fail
-    %br
-
+  
 :javascript
   function access_without_problems(){
     $(".instructions").hide();

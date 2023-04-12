@@ -101,6 +101,8 @@ Course.create!(code: load_group["codGraduacao"], name: (load_group["nomeGraduaca
             if uc.try(:curriculum_unit_type_id) == 1
             fim = load_group[:dtFim].to_date
             offer_period  = { start_date: load_group[:dtInicio].to_date, end_date: ((fim < '2020-10-30'.to_date) ? '2020-10-30'.to_date : fim) }
+            elsif ['107', '108', '109', '110', '111', '112', '113', '115', '118'].include?(course.try(:code)) && semester_name=="2023.1"
+            offer_period  = { start_date: "2023-03-13", end_date: "2023-07-22" }
             else
             offer_period  = { start_date: load_group[:dtInicio].to_date, end_date: (load_group[:dtFim].to_date) }
             end
