@@ -6,16 +6,15 @@ require 'rails'
 # Always when this file is changed, the production proccess must be killed and then the upgrade of project must be done
 
 class WebsocketServer
-  config = YAML::load(File.open('config/global.yml'))[Rails.env.to_s]['websocket']
   EM.run do
     @subs = {} # list with subscribed users
     EventMachine::WebSocket.start(
-        :host => config['host'],
-        :port => config['port'],
-        :secure => true,
-        :tls_options => {
-          :private_key_file => "/etc/ssl/nginx/cert.key",
-          :cert_chain_file => "/etc/ssl/nginx/cert.crt"
+        host: ENV['WEBSOCKET_HOST'],
+        port: ENV['WEBSOCKET_PORT'],
+        secure: true,
+        tls_options: {
+          private_key_file: "/etc/ssl/nginx/cert.key",
+          cert_chain_file: "/etc/ssl/nginx/cert.crt"
         }
       ) do |ws|
       ws.onopen do |data|
