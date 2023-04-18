@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="<%= I18n.t('administrations.tutor_report_uab.report') %>">
+    <Table>
+      <Row> 
+        <Cell><Data ss:Type="String"><html:B><%= @period %></html:B></Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.tutor_report_uab.count') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.tutor_report_uab.type') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.tutor_report_uab.user') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.tutor_report_uab.course') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.tutor_report_uab.curriculum_unit') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.tutor_report_uab.group') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= I18n.t('administrations.tutor_report_uab.semester') %></Data></Cell>
+      </Row>
+    <% @logs.each do |log| %>
+      <Row>
+        <Cell><Data ss:Type="String"><%= log['quantidade'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['tipo'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['tutor'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['curso'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['disciplina'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['turma'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= log['semestre'] %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

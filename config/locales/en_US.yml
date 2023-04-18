@@ -2389,6 +2389,8 @@ en_US:
       created_at: Date
       actions: Actions
       accesses: Accesses
+      navigations: Navigations
+      tutor_report_uab: UAB tutor report
       search: Search
       user: User
       log_not_found: Log not found
@@ -2438,6 +2440,16 @@ en_US:
       participant: Participant
       digital_class: Digital Class Lesson
       yes: Yes
+    tutor_report_uab:
+      user: Tutor
+      course: Course
+      curriculum_unit: Curriculum Unit
+      semester: Semester
+      group: Group
+      type: TipTypeo
+      count: Count
+      period: "Period de %{dstart} à %{dend}"
+      report: Report
   editions:
     alert: Fill the required fields
     show_questions: "Show Questions"

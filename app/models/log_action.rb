@@ -97,4 +97,13 @@ class LogAction < ActiveRecord::Base
     create(params)
   end
 
+  def self.to_csv(logs, attributes_to_include, options = {})
+    CSV.generate(options) do |csv|
+      csv << attributes_to_include
+      logs.each do |log|
+        csv << log.attributes.values_at(*attributes_to_include)
+      end
+    end
+  end
+
 end

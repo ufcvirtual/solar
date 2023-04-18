@@ -41,7 +41,7 @@
       var url_for = $(this).data("url-search").replace(":type", $("#log_type").val());
       var data = { user: encodeURIComponent($("#search_user").val()), date: $("#search_date").val(), date_end: $("#search_date_end").val()};
 
-      if ($("#log_type").val() == 'navigation'){
+      if ($("#log_type").val() == 'navigation' || $("#log_type").val() == 'tutor_report_uab'){
         url_for = url_for.concat(".", $("#download_type").val());
         var confirm = 0;
         var data_i = $("#search_date").val();
@@ -90,7 +90,7 @@
 
 
     $('#log_type').click(function() {
-      if ($("#log_type").val() == 'navigation'){
+      if ($("#log_type").val() == 'navigation' || $("#log_type").val() == 'tutor_report_uab'){
          $("#search_date_end").attr('type', 'text');
          $("#download_type").show( 20 );
          $("#up_until").text("#{I18n.t(:up_until, scope: "administrations.logs")}");

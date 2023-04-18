@@ -2686,6 +2686,7 @@ pt_BR:
       actions: Ações
       accesses: Acessos
       navigations: Navegações
+      tutor_report_uab: Relatório Tutor UAB
       search: Busca
       user: Usuário
       log_not_found: Sem logs para exibir
@@ -2735,8 +2736,16 @@ pt_BR:
       participant: Participante
       digital_class: Lição do Digital Class
       yes: Sim
-
-
+    tutor_report_uab:
+      user: Tutor
+      course: Curso
+      curriculum_unit: Unidade Curricular
+      semester: Semestre
+      group: Turma
+      type: Tipo
+      count: Quantidade
+      period: "Período de %{dstart} à %{dend}"
+      report: Relatório
   editions:
     alert: "Preencha os campos obrigatórios"
     show_questions: "Visualizar Questões"
