@@ -248,7 +248,13 @@ class AdministrationsController < ApplicationController
       user_ids    = User.where("lower(unaccent(name)) LIKE lower(unaccent(?)) OR lower(unaccent(cpf)) LIKE lower(unaccent(?))" , "%#{text_search}", "%#{text_search}").map(&:id).join(',')
       if (params[:type] == 'actions' || params[:type] == 'access')
         query << "(user_id IN (#{user_ids}))" unless user_ids.blank?
-      else
+      elsif(params[:type] == 'tutor_report_uab')
+        unless user_ids.blank?
+          where_user_discussion_post = "AND discussion_posts.user_id IN (#{user_ids})"
+          where_user_log_action = "AND log_actions.user_id IN (#{user_ids})"
+          where_user_log_accesse = "AND log_accesses.user_id IN (#{user_ids})"
+        end 
+      else  
         query << "log_navigations.user_id IN (#{user_ids})" unless user_ids.blank?
       end
     end
@@ -276,7 +282,7 @@ class AdministrationsController < ApplicationController
           WHERE discussion_posts.user_id = users.id AND discussion_posts.profile_id = profiles.id 
         AND discussion_posts.created_at >= '#{date.to_s(:db)}' AND discussion_posts.created_at<='#{date_end.to_s(:db)}' AND discussion_posts.profile_id IN (18)
         AND academic_allocations.id = discussion_posts.academic_allocation_id AND academic_allocations.academic_tool_type::text = 'Discussion'::text 
-        AND academic_allocations.allocation_tag_id = related_taggables.group_at_id AND curriculum_unit_types.id=2
+        AND academic_allocations.allocation_tag_id = related_taggables.group_at_id AND curriculum_unit_types.id=2 #{where_user_discussion_post}
         GROUP BY 2,3,4,5,6,7
         UNION
         SELECT count(log_actions.id) quantidade, 'WEBCONFERENCIA' tipo, users.name tutor, courses.name curso, curriculum_units.name disciplina, 
@@ -291,7 +297,7 @@ class AdministrationsController < ApplicationController
         WHERE log_actions.user_id = users.id AND users.id = allocations.user_id
         AND allocations.profile_id IN (18) AND log_actions.log_type=7
         AND log_actions.created_at>='#{date.to_s(:db)}' AND log_actions.created_at<='#{date_end.to_s(:db)}'
-        AND curriculum_unit_types.id=2
+        AND curriculum_unit_types.id=2 #{where_user_log_action}
         GROUP BY 2,3,4,5,6,7 
         UNION
         SELECT COUNT(log_accesses.id) quantidade, 
@@ -306,14 +312,12 @@ class AdministrationsController < ApplicationController
         LEFT JOIN groups ON related_taggables.group_id = groups.id
         LEFT JOIN semesters ON related_taggables.semester_id = semesters.id
         WHERE log_accesses.user_id = users.id AND users.id = allocations.user_id
-        AND allocations.profile_id IN (18) 
+        AND allocations.profile_id IN (18) #{where_user_log_accesse} 
         AND log_accesses.created_at>='#{date.to_s(:db)}' AND log_accesses.created_at<='#{date_end.to_s(:db)}'
         GROUP BY 2,3,4,5,6,7
         ORDER BY 1 DESC;
       SQL
       attributes_to_include = %w(quantidade tipo tutor curso disciplina turma semestre)
-      @date = date
-      @date_end = date_end
       @period = t('administrations.tutor_report_uab.period', dstart: date, dend: date_end)
 
       respond_to do |format|
