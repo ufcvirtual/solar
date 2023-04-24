@@ -171,7 +171,7 @@ class AllocationTag < ActiveRecord::Base
       case
         when !params[:groups_id].blank?
           params[:groups_ids] = params[:groups_id].split(" ").flatten.map(&:to_i)
-          query = "group_id IN (#{params[:groups_ids].map(&:to_i)})"
+          query = "group_id IN (#{params[:groups_ids].join(',')})"
           selected = 'GROUP'
           offer = true
         when !params[:semester_id].blank? || !params[:semester].blank?
