@@ -171,38 +171,38 @@ class AllocationTag < ActiveRecord::Base
       case
         when !params[:groups_id].blank?
           params[:groups_ids] = params[:groups_id].split(" ").flatten.map(&:to_i)
-          query = 'group_id IN (:groups_ids)'
+          query = "group_id IN (#{params[:groups_ids].map(&:to_i)})"
           selected = 'GROUP'
           offer = true
         when !params[:semester_id].blank? || !params[:semester].blank?
           query = []
           params.merge!(semester_id: Semester.where(name: params[:semester]).first.try(:id)) unless params[:semester_id]
           raise ActiveRecord::RecordNotFound unless params[:semester_id]
-          query << 'semester_id = :semester_id'
-          query << (params[:curriculum_unit_id].blank? ? 'curriculum_unit_id IS NULL'  : 'curriculum_unit_id = :curriculum_unit_id') unless (params[:curriculum_unit_id].blank? && params[:curriculum_unit_type_id].to_i == 3)
-          query << (params[:course_id].blank? ? 'course_id IS NULL' : 'course_id = :course_id')
-          query << 'curriculum_unit_type_id = :curriculum_unit_type_id' if params[:curriculum_unit_type_id]
+          query << "semester_id = #{params[:semester_id].to_i}"
+          query << (params[:curriculum_unit_id].blank? ? 'curriculum_unit_id IS NULL'  : "curriculum_unit_id = #{params[:curriculum_unit_id].to_i}") unless (params[:curriculum_unit_id].blank? && params[:curriculum_unit_type_id].to_i == 3)
+          query << (params[:course_id].blank? ? 'course_id IS NULL' : "course_id = #{params[:course_id].to_i}")
+          query << "curriculum_unit_type_id = #{params[:curriculum_unit_type_id].to_i}" if params[:curriculum_unit_type_id]
           query = query.join(" AND ")
           selected = 'OFFER'
           offer = true
         when !params[:offer_id].blank?
           query = []
-          query << 'offer_id = :offer_id'
+          query << "offer_id = #{params[:offer_id].to_i}"
           selected = 'OFFER'
           offer = true
         when !params[:course_id].blank?
-          query = 'course_id = :course_id'
+          query = "course_id = #{params[:course_id].to_i}"
           selected = 'COURSE'
         when !params[:curriculum_unit_id].blank?
-          query = 'curriculum_unit_id = :curriculum_unit_id'
+          query = "curriculum_unit_id = #{params[:curriculum_unit_id].to_i}"
           selected = 'CURRICULUM_UNIT'
         when !params[:curriculum_unit_type_id].blank?
-          query = 'curriculum_unit_type_id = :curriculum_unit_type_id'
+          query = "curriculum_unit_type_id = #{params[:curriculum_unit_type_id].to_i}"
           selected = 'CURRICULUM_UNIT_TYPE'
       end
 
       unless query.blank?
-        rts = RelatedTaggable.where(query, params.slice(:groups_ids, :offer_id, :semester_id, :course_id, :curriculum_unit_id, :curriculum_unit_type_id))
+        rts = RelatedTaggable.where(query)
         raise ActiveRecord::RecordNotFound if rts.empty?
 
         offer_id = rts.map(&:offer_id).first if offer
