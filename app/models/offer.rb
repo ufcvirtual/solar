@@ -194,7 +194,7 @@ class Offer < ActiveRecord::Base
   end
 
   def notify_editors_of_disabled_groups(groups)
-    groups = groups.flatten
+    groups = [groups].flatten
     emails = users_with_profile_type(Profile_Type_Editor).map(&:email)
     emails << groups.map { |group| group.users_with_profile_type(Profile_Type_Editor).map(&:email) }
 
