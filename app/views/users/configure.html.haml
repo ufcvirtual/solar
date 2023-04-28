@@ -6,10 +6,10 @@
       = f.collection_radio_buttons :theme, [['blue', t(".theme_blue")] ,['high_contrast', t(".theme_high_contrast")]], :first, :last
     %fieldset
       %legend= t(".notification_mail")
-      = f.input :message, as: :boolean, checked_value: true, unchecked_value: false, input_html: { onchange: 'change(this)' }
-      = f.input :post, as: :boolean, checked_value: true, unchecked_value: false, input_html: { onchange: 'change(this);' }
-      = f.input :exam, as: :boolean, checked_value: true, unchecked_value: false, input_html: { onchange: 'change(this);' }
-      = f.input :academic_tool, as: :boolean, checked_value: true, unchecked_value: false, :input_html => { onchange: 'change(this);' }
+      = f.input :message, as: :boolean, input_html: { onchange: 'change(this);', checked: @configure.message }
+      = f.input :post, as: :boolean, input_html: { onchange: 'change(this);', checked: @configure.post }
+      = f.input :exam, as: :boolean, input_html: { onchange: 'change(this);', checked: @configure.exam }
+      = f.input :academic_tool, as: :boolean, :input_html => { onchange: 'change(this);', checked: @configure.academic_tool }
 
 
 :javascript
@@ -17,15 +17,6 @@
   $('#main_content_accesskey').html("#{t(".configure")}");
 
   function change(elem) {
-    if ( !confirm("#{I18n.t(:message_confirm_user)}")){
-      if ($(elem).is(':checked')){
-        $(elem).prop('checked', false);
-      }else{
-        $(elem).prop('checked', true);
-      }
-      return false;
-    }
-
     $('form#configure_form').serialize_and_submit({});
   }
 
