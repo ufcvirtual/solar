@@ -37,7 +37,6 @@
     });
 
     $("#search_log").click(function(){
-
       var url_for = $(this).data("url-search").replace(":type", $("#log_type").val());
       var data = { user: encodeURIComponent($("#search_user").val()), date: $("#search_date").val(), date_end: $("#search_date_end").val()};
 
@@ -59,9 +58,36 @@
         }
 
         if(confirm == 1){
-          window.location=url_for.concat("?user=", $("#search_user").val(),"&date=",$("#search_date").val(),"&date_end=",$("#search_date_end").val() );
-          $('#list_logs').html(data);
-          flash_message("#{I18n.t(:navigation_info, scope: [:administrations, :logs])}", "notice");
+          //$('#loading').show();
+          loading_page($(this));
+
+          // Use XMLHttpRequest instead of Jquery $ajax
+          xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+              var a;
+              if (xhttp.readyState === 4 && xhttp.status === 200) {
+                  // Trick for making downloadable link
+                  a = document.createElement('a');
+                  a.href = window.URL.createObjectURL(xhttp.response);
+                  // Give filename you wish to download
+                  a.download = $("#log_type").val() +"."+ $("#download_type").val();
+                  a.style.display = 'none';
+                  document.body.appendChild(a);
+                  a.click();
+
+                  //$('#loading').hide();
+                  $.fancybox.close();
+
+                  $('#list_logs').html(data);
+                  flash_message("#{I18n.t(:navigation_info, scope: [:administrations, :logs])}", "notice");
+              }
+          };
+          // Post data to URL which handles post request
+          xhttp.open("GET", url_for.concat("?user=", $("#search_user").val(),"&date=",$("#search_date").val(),"&date_end=",$("#search_date_end").val(), "&download_type=",$("#download_type").val()));
+          xhttp.setRequestHeader("Content-Type", "application/json");
+          // You should set responseType as blob for binary responses
+          xhttp.responseType = 'blob';
+          xhttp.send(JSON.stringify(data));
         }
 
       }else{
