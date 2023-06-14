@@ -253,8 +253,8 @@ class AdministrationsController < ApplicationController
           where_user_discussion_post = "AND discussion_posts.user_id IN (#{user_ids})"
           where_user_log_action = "AND log_actions.user_id IN (#{user_ids})"
           where_user_log_accesse = "AND log_accesses.user_id IN (#{user_ids})"
-        end 
-      else  
+        end
+      else
         query << "log_navigations.user_id IN (#{user_ids})" unless user_ids.blank?
       end
     end
@@ -269,8 +269,8 @@ class AdministrationsController < ApplicationController
       @logs = log.joins(join_query).where(query.join(' AND ')).order('created_at DESC').limit(100)
     elsif( params[:type] == 'tutor_report_uab' )
       @logs = LogAction.find_by_sql <<-SQL
-        SELECT DISTINCT count(discussion_posts.id) quantidade, 'POST' tipo, users.name tutor,
-          courses.name curso, curriculum_units.name disciplina, 
+        SELECT DISTINCT count(discussion_posts.id) quantidade, 'FORUM' tipo, users.name tutor,
+          courses.name curso, curriculum_units.name disciplina,
         groups.code turma, semesters.name semestre
           FROM profiles, discussion_posts, users, academic_allocations
             LEFT JOIN related_taggables ON academic_allocations.allocation_tag_id = related_taggables.group_at_id
@@ -279,13 +279,13 @@ class AdministrationsController < ApplicationController
           LEFT JOIN courses ON related_taggables.course_id = courses.id
           LEFT JOIN groups ON related_taggables.group_id = groups.id
           LEFT JOIN semesters ON related_taggables.semester_id = semesters.id
-          WHERE discussion_posts.user_id = users.id AND discussion_posts.profile_id = profiles.id 
+          WHERE discussion_posts.user_id = users.id AND discussion_posts.profile_id = profiles.id
         AND discussion_posts.created_at >= '#{date.to_s(:db)}' AND discussion_posts.created_at<='#{date_end.to_s(:db)}' AND discussion_posts.profile_id IN (18)
-        AND academic_allocations.id = discussion_posts.academic_allocation_id AND academic_allocations.academic_tool_type::text = 'Discussion'::text 
+        AND academic_allocations.id = discussion_posts.academic_allocation_id AND academic_allocations.academic_tool_type::text = 'Discussion'::text
         AND academic_allocations.allocation_tag_id = related_taggables.group_at_id AND curriculum_unit_types.id=2 #{where_user_discussion_post}
         GROUP BY 2,3,4,5,6,7
         UNION
-        SELECT count(log_actions.id) quantidade, 'WEBCONFERENCIA' tipo, users.name tutor, courses.name curso, curriculum_units.name disciplina, 
+        SELECT count(log_actions.id) quantidade, 'WEBCONFERENCIA' tipo, users.name tutor, courses.name curso, curriculum_units.name disciplina,
         groups.code turma, semesters.name semestre
           FROM users, allocations, log_actions
         LEFT JOIN related_taggables ON log_actions.allocation_tag_id = related_taggables.group_at_id
@@ -298,10 +298,10 @@ class AdministrationsController < ApplicationController
         AND allocations.profile_id IN (18) AND log_actions.log_type=7
         AND log_actions.created_at>='#{date.to_s(:db)}' AND log_actions.created_at<='#{date_end.to_s(:db)}'
         AND curriculum_unit_types.id=2 #{where_user_log_action}
-        GROUP BY 2,3,4,5,6,7 
+        GROUP BY 2,3,4,5,6,7
         UNION
-        SELECT COUNT(log_accesses.id) quantidade, 
-        CASE WHEN log_accesses.allocation_tag_id IS NULL THEN 'ACESSO AO SOLAR' ELSE 'ACESSO AO CURSO' END AS tipo, users.name tutor, courses.name curso, curriculum_units.name disciplina, 
+        SELECT COUNT(log_accesses.id) quantidade,
+        CASE WHEN log_accesses.allocation_tag_id IS NULL THEN 'ACESSO AO SOLAR' ELSE 'ACESSO AO CURSO' END AS tipo, users.name tutor, courses.name curso, curriculum_units.name disciplina,
         groups.code turma, semesters.name semestre
           FROM users, allocations, log_accesses
         LEFT JOIN related_taggables ON log_accesses.allocation_tag_id = related_taggables.group_at_id
@@ -312,7 +312,7 @@ class AdministrationsController < ApplicationController
         LEFT JOIN groups ON related_taggables.group_id = groups.id
         LEFT JOIN semesters ON related_taggables.semester_id = semesters.id
         WHERE log_accesses.user_id = users.id AND users.id = allocations.user_id
-        AND allocations.profile_id IN (18) #{where_user_log_accesse} 
+        AND allocations.profile_id IN (18) #{where_user_log_accesse}
         AND log_accesses.created_at>='#{date.to_s(:db)}' AND log_accesses.created_at<='#{date_end.to_s(:db)}'
         GROUP BY 2,3,4,5,6,7
         ORDER BY 1 DESC;
@@ -325,7 +325,7 @@ class AdministrationsController < ApplicationController
         format.csv { send_data LogAction.to_csv(@logs, attributes_to_include) }
         format.xls { render :tutor_report_uab }
       end
-    else 
+    else
       if(date_end && date)
         query << "log_navigations.created_at::date >= '#{date.to_s(:db)}' AND log_navigations.created_at::date <= '#{date_end.to_s(:db)}'"
       else
